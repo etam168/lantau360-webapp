@@ -6,6 +6,8 @@
       flat
       size="16px"
       text-color="grey-10"
+      style="width: 100%"
+      class="justify-center"
       :options="[
         { label: $t('layout.menu.dashboard'), value: 'dashboard' },
         { label: $t('layout.menu.members'), value: 'members' },
@@ -24,8 +26,6 @@
   // Vue Import
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  //import { usePermissionStore } from "@/stores/permission";
-  //import { useUserStore } from "@/stores/user";
 
   const router = useRouter();
   const menuNav = ref("");
@@ -57,59 +57,4 @@
         break;
     }
   };
-
-  //   const tabItems = reactive([
-  //     {
-  //       name: "members",
-  //       content: `Lorem ipsum dolor sit amet consectetur adipisicing elit. Fugit nihil praesentium
-  //               molestias a adipisci, dolore vitae odit, quidem consequatur optio voluptates
-  //               asperiores pariatur eos numquam rerum delectus commodi perferendis voluptate?`,
-  //       label: "members"
-  //     },
-  //     {
-  //       name: "videos",
-  //       content: `Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
-  //       label: "Videos"
-  //     },
-  //     {
-  //       name: "articles",
-  //       content: `Lorem ipsum dolor sit amet consectetur adipisicing elit.`,
-  //       label: "Articles"
-  //     }
-  //   ]);
-
-  //   const navigateTo = (routeName: any) => {
-  //     // Use the router to navigate to the specified route
-  //     router.push({ name: routeName });
-  //   };
-
-  //const userStore = useUserStore();
-  // const user = ref(userStore.user);
-  // const roles = ref(userStore.roles);
-  //   const permissionStore = usePermissionStore();
-  //   const permissionRoutes = computed(() => permissionStore.permissionRoutes);
-
-  //   const visibleRoutes = computed(() => {
-  //     return permissionRoutes.value.filter((route: RouteRecordRaw) => {
-  //       return route.path !== "/auth" && (!route.meta || !route.meta.hidden);
-  //     });
-  //   });
-
-  //   const commonRoutes = computed(() => {
-  //     return visibleRoutes.value.filter((route: RouteRecordRaw) => route.meta?.group == "common");
-  //   });
-
-  // const manageUsersRoutes = computed(() => {
-  //   return visibleRoutes.value.filter(
-  //     (route: RouteRecordRaw) => route.meta?.group == "manageUsers"
-  //   );
-  // });
-
-  // const moreRoutes = computed(() => {
-  //   return visibleRoutes.value.filter((route: RouteRecordRaw) => route.meta?.group == "more");
-  // });
-
-  // const isAdmin = computed(() => {
-  //   return (roles.value as Array<string>).includes("cs_admin");
-  // });
 </script>
