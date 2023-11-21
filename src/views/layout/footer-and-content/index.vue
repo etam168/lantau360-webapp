@@ -1,18 +1,4 @@
 <template>
-  <q-page-container>
-    <q-page class="q-pa-md">
-      <div>{{ commonRoutes }}</div>
-      <router-view :key="$route.fullPath"></router-view>
-      <q-tab-panels v-model="tab" animated>
-        <q-tab-panel v-for="item in tabItems" :key="item.name" :name="item.name">
-          <p>
-            {{ item.content }}
-          </p>
-        </q-tab-panel>
-      </q-tab-panels>
-    </q-page>
-  </q-page-container>
-
   <q-footer bordered class="bg-grey-3 text-primary">
     <q-btn-toggle
       v-model="menuNav"
@@ -31,21 +17,6 @@
       ]"
       @update:model-value="handleToggleUpdate"
     />
-    <q-tabs
-      no-caps
-      active-color="primary"
-      indicator-color="transparent"
-      class="text-grey-8"
-      v-model="tab"
-    >
-      <q-tab
-        v-for="item in tabItems"
-        :key="item.name"
-        :name="item.name"
-        :label="item.label"
-        @click="navigateTo(item.name)"
-      />
-    </q-tabs>
   </q-footer>
 </template>
 
@@ -56,7 +27,6 @@
   //import { usePermissionStore } from "@/stores/permission";
   //import { useUserStore } from "@/stores/user";
 
-  const tab = ref("images");
   const router = useRouter();
   const menuNav = ref("");
 
