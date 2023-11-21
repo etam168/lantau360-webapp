@@ -1,0 +1,19 @@
+import { defineStore } from "pinia";
+import Auth from "../types/authType";
+
+export const useAuthStore = defineStore("auth", {
+  state: (): Auth => {
+    return { loggedIn: false };
+  },
+  getters: {
+    getAuth(state: Auth): boolean {
+      return state.loggedIn;
+    }
+  },
+  actions: {
+    changeAuth(data: boolean) {
+      this.loggedIn = data;
+    }
+  },
+  persist: true
+});
