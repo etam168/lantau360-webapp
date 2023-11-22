@@ -1,5 +1,6 @@
 export default {
   drawerComponents: {
+    home: "Home",
     business: "Business",
     contactUs: "Contact Us",
     dashboard: "Dashboard",

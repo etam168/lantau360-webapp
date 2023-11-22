@@ -5,6 +5,7 @@ import contact from "./modules/contact";
 import dialog from "./modules/dialog";
 import document from "./modules/document";
 import dashboard from "./modules/dashboard";
+import home from "./modules/home";
 import errors from "./modules/errors";
 import layout from "./modules/layout";
 import member from "./modules/member";
@@ -20,6 +21,7 @@ import directory from "./modules/directory";
 import weather from "./modules/weather";
 import content from "./modules/content";
 export default {
+  home,
   action,
   auth,
   business,

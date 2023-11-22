@@ -14,10 +14,10 @@ const drawerRouter: Array<RouteRecordRaw> = [
     children: [
       {
         path: "/",
-        alias: "/dashboard",
-        component: () => import("@/views/modules/dashboard/index.vue"),
+        alias: "/home",
+        component: () => import("@/views/modules/home/index.vue"),
         meta: {
-          title: "route.drawerComponents.dashboard",
+          title: "route.drawerComponents.home",
           icon: "home",
           group: "common",
           roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]

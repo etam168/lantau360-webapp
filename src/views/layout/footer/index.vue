@@ -9,7 +9,7 @@
       style="width: 100%"
       class="justify-center"
       :options="[
-        { value: 'dashboard', slot: 'dashboard' },
+        { value: 'home', slot: 'home' },
         { value: 'members', slot: 'members' },
         { value: 'staff', slot: 'staff' },
         { value: 'directories', slot: 'directories' },
@@ -17,7 +17,7 @@
       ]"
       @update:model-value="handleToggleUpdate"
     >
-      <template v-slot:dashboard>
+      <template v-slot:home>
         <q-item>
           <q-item-section top class="text-center row items-center">
             <q-item-label caption>Home</q-item-label>
@@ -75,8 +75,8 @@
 
   const handleToggleUpdate = (newVal: any) => {
     switch (newVal) {
-      case "dashboard":
-        router.push("/dashboard");
+      case "home":
+        router.push("/home");
         break;
       case "staff":
         router.push("/staff");
