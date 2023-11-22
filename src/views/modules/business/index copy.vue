@@ -1,11 +1,8 @@
 <template>
   <suspense>
-    <!-- "default" slot belongs to Suspense -->
     <template #default>
-      <main-page />
+      <main-datatable />
     </template>
-
-    <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
       <div class="row justify-center items-center" style="height: 500px">
         <app-spinner size="10em" />
@@ -15,11 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import { defineAsyncComponent } from "vue";
+  // Custom Components
+  import MainDatatable from "./main-datatable.vue";
   import AppSpinner from "@/components/widgets/app-spinner.vue";
-
-  const MainPage = defineAsyncComponent({
-    loader: () => import("./main-page.vue"),
-    delay: 500
-  });
 </script>

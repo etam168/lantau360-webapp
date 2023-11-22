@@ -13,7 +13,7 @@
         name="business"
         icon="fa-solid fa-money-check-dollar"
         label="Business"
-        @click="navigateTo('/staff')"
+        @click="navigateTo('/businesses')"
       />
       <q-tab
         name="community"
