@@ -147,6 +147,9 @@ export const AGENTS_URL = `${BASE_URL}/Agent`;
 export const AREA_URL = `${BASE_URL}/Area/Area`;
 export const AVAILABLE_AREA_URL = `${BASE_URL}/Area/GetAvailableAreas`;
 
+export const ATTRACTION_URL = `${BASE_URL}/Site/ByDirectoryId/1`;
+export const WEATHER_URL = `${BASE_URL}/Weather`;
+
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
 export const PROPERTY_TYPE_URL = `${BASE_URL}/PropertyType`;
 export const PROPERTY_VIEW_URL = `${BASE_URL}/PropertyView`;

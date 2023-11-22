@@ -1,10 +1,24 @@
 // useUtilities.ts
-import { date, EventBus, Notify } from "quasar";
+import { date, EventBus, Notify, useQuasar } from "quasar";
 import { useI18n } from "vue-i18n";
 
 export function useUtilities() {
   const eventBus = new EventBus();
+  const $q = useQuasar();
 
+  function aspectRatio() {
+    switch ($q.screen.name) {
+      case "xs":
+        return 2;
+      case "sm":
+        return 2;
+      case "md":
+        return 2;
+      case "lg":
+      default:
+        return 3;
+    }
+  }
   function dateFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD");
   }
@@ -114,6 +128,7 @@ export function useUtilities() {
   }
 
   return {
+    aspectRatio,
     dateFormatter,
     eventBus,
     isNotEmptyArray,

@@ -1,5 +1,7 @@
 <template>
   <hero-section :data="heroData" />
+
+  <weather-section :data="weatherData" />
 </template>
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
@@ -10,31 +12,34 @@
   import axios, { AxiosError } from "axios";
 
   // .ts file
+  import { Site } from "@/interfaces/models/entities/site";
+  import { ATTRACTION_URL, WEATHER_URL } from "@/constants";
+
+  // Custom Components
+  import HeroSection from "./section/hero-section.vue";
+  import weatherSection from "./section/weather-section.vue";
+  import { Weather } from "@/interfaces/models/entities/weather";
 
   const heroData = ref<any | null>(null);
+  const weatherData = ref<any | null>(null);
   const error = ref<string | null>(null);
 
-  //   try {
-  //     const [response1, response2, response3, messageLists] = await Promise.all([
-  //       axios.get<PropertyListingDatatable[]>(Latest_PROPERTIES_URL),
-  //       axios.get<PropertyListingDatatable[]>(HERO_PROPERTIES_URL),
-  //       axios.get<PropertyListingDatatable[]>(FEATURED_PROPERTIES_URL),
-  //       axios.get<RequestMessage[]>(REQUEST_MESSAGE_URL)
-  //     ]);
-  //     data.value = response1.data;
-  //     heroData.value = response2.data;
-  //     featurePropertydata.value = response3.data;
-  //     messageList.value = messageLists.data;
-  //     provide("messageList", messageList.value);
-  //   } catch (err) {
-  //     if (err instanceof AxiosError) {
-  //       if (err.response && err.response.status === 404) {
-  //         error.value = "Not found";
-  //       } else {
-  //         error.value = "An error occurred";
-  //       }
-  //     } else {
-  //       error.value = "An unexpected error occurred";
-  //     }
-  //   }
+  try {
+    const [attractionResponse, weatherResponse] = await Promise.all([
+      axios.get<Site[]>(ATTRACTION_URL),
+      axios.get<Weather>(WEATHER_URL)
+    ]);
+    heroData.value = attractionResponse.data;
+    weatherData.value = weatherResponse.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response && err.response.status === 404) {
+        error.value = "Not found";
+      } else {
+        error.value = "An error occurred";
+      }
+    } else {
+      error.value = "An unexpected error occurred";
+    }
+  }
 </script>

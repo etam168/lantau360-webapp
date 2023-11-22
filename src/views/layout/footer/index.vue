@@ -8,75 +8,27 @@
       no-caps
     >
       <!-- <q-tab name="home" icon="img:/img/logo/logo.png" label="Home" /> -->
-      <q-tab name="home" icon="fas fa-home" label="Home" />
-      <q-tab name="business" icon="fa-solid fa-money-check-dollar" label="Business" />
-      <q-tab name="community" icon="fa-solid fa-people-group" label="Community" />
-      <q-tab name="favourites" icon="fa-solid fa-heart" label="Favourites" />
-      <q-tab name="more" icon="fa-solid fa-ellipsis" label="More" />
+      <q-tab name="home" icon="fas fa-home" label="Home" @click="navigateTo('/home')" />
+      <q-tab
+        name="business"
+        icon="fa-solid fa-money-check-dollar"
+        label="Business"
+        @click="navigateTo('/staff')"
+      />
+      <q-tab
+        name="community"
+        icon="fa-solid fa-people-group"
+        label="Community"
+        @click="navigateTo('/directories')"
+      />
+      <q-tab
+        name="favourites"
+        icon="fa-solid fa-heart"
+        label="Favourites"
+        @click="navigateTo('/weather')"
+      />
+      <q-tab name="more" icon="fa-solid fa-ellipsis" label="More" @click="navigateTo('/staff')" />
     </q-tabs>
-
-    <!-- <q-btn-toggle
-      v-model="menuNav"
-      toggle-color="primary"
-      flat
-      size="16px"
-      text-color="grey-10"
-      style="width: 100%"
-      class="justify-center"
-      :options="[
-        { value: 'home', slot: 'home' },
-        { value: 'members', slot: 'members' },
-        { value: 'staff', slot: 'staff' },
-        { value: 'directories', slot: 'directories' },
-        { value: 'weather', slot: 'weather' }
-      ]"
-      @update:model-value="handleToggleUpdate"
-    >
-      <template v-slot:home>
-        <q-item>
-          <q-item-section top class="text-center row items-center">
-            <q-item-label caption>Home</q-item-label>
-            <q-icon name="home" color="yellow" />
-          </q-item-section>
-        </q-item>
-      </template>
-
-      <template v-slot:members>
-        <q-item>
-          <q-item-section top class="text-center row items-center">
-            <q-item-label caption>Business</q-item-label>
-            <q-icon name="home" color="yellow" />
-          </q-item-section>
-        </q-item>
-      </template>
-
-      <template v-slot:staff>
-        <q-item>
-          <q-item-section top class="text-center row items-center">
-            <q-item-label caption>Community</q-item-label>
-            <q-icon name="home" color="yellow" />
-          </q-item-section>
-        </q-item>
-      </template>
-
-      <template v-slot:directories>
-        <q-item>
-          <q-item-section top class="text-center row items-center">
-            <q-item-label caption>Favourites</q-item-label>
-            <q-icon name="home" color="yellow" />
-          </q-item-section>
-        </q-item>
-      </template>
-
-      <template v-slot:weather>
-        <q-item>
-          <q-item-section top class="text-center row items-center">
-            <q-item-label caption>More</q-item-label>
-            <q-icon name="home" color="yellow" />
-          </q-item-section>
-        </q-item>
-      </template>
-    </q-btn-toggle> -->
   </q-footer>
 </template>
 
@@ -90,6 +42,10 @@
   const menuNav = ref("");
 
   const tab = ref("mails");
+
+  const navigateTo = (route: string) => {
+    router.push(route);
+  };
 
   const handleToggleUpdate = (newVal: any) => {
     switch (newVal) {
