@@ -1,6 +1,21 @@
 <template>
   <q-footer bordered class="bg-grey-3 text-primary">
-    <q-btn-toggle
+    <q-tabs
+      v-model="tab"
+      active-color="primary"
+      class="bg-indigo text-white"
+      indicator-color="transparent"
+      no-caps
+    >
+      <!-- <q-tab name="home" icon="img:/img/logo/logo.png" label="Home" /> -->
+      <q-tab name="home" icon="fas fa-home" label="Home" />
+      <q-tab name="business" icon="fa-solid fa-money-check-dollar" label="Business" />
+      <q-tab name="community" icon="fa-solid fa-people-group" label="Community" />
+      <q-tab name="favourites" icon="fa-solid fa-heart" label="Favourites" />
+      <q-tab name="more" icon="fa-solid fa-ellipsis" label="More" />
+    </q-tabs>
+
+    <!-- <q-btn-toggle
       v-model="menuNav"
       toggle-color="primary"
       flat
@@ -61,10 +76,11 @@
           </q-item-section>
         </q-item>
       </template>
-    </q-btn-toggle>
+    </q-btn-toggle> -->
   </q-footer>
 </template>
 
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
   import { ref } from "vue";
@@ -72,6 +88,8 @@
 
   const router = useRouter();
   const menuNav = ref("");
+
+  const tab = ref("mails");
 
   const handleToggleUpdate = (newVal: any) => {
     switch (newVal) {
