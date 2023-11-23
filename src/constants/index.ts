@@ -157,6 +157,7 @@ export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
+export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;
 
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
 export const PROPERTY_TYPE_URL = `${BASE_URL}/PropertyType`;

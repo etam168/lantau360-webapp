@@ -64,8 +64,8 @@
 
   const onImageClick = (item: Site) => {
     router.push({
-      name: "directory-item-detail",
-      query: { directoryItemId: item.siteId, group: 1 }
+      name: "site-directory-item-detail",
+      query: { directoryItemId: item.siteId }
     });
   };
 
