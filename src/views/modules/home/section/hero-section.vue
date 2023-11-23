@@ -21,7 +21,7 @@
           :name="row.siteId"
           class="q-pa-none"
           :img-src="getImageSrc(row)"
-          @click="showPropertyDetails(row)"
+          @click="onImageClick(row)"
         >
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
             <strong>SiteId Id:</strong> {{ row.siteId }}
@@ -62,9 +62,12 @@
 
   const slide = ref(data.value?.[0]?.siteId ?? 0);
 
-  function showPropertyDetails(row: Site) {
-    router.push({ name: "property-detail", params: { id: row.siteId } });
-  }
+  const onImageClick = (item: Site) => {
+    router.push({
+      name: "directory-item-detail",
+      query: { directoryItemId: item.siteId, group: 1 }
+    });
+  };
 
   function getImageSrc(row: Site) {
     return row.bannerPath !== null && row.bannerPath !== ""
