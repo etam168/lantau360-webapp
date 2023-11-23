@@ -45,7 +45,7 @@
         ]
       })
         .onOk(action => {
-          console.log("Action chosen:", action.label);
+          console.log("Action chosen:", action.value);
           changeLanguage(action.value);
         })
         .onCancel(() => {
