@@ -19,6 +19,7 @@ import video from "./modules/video";
 import directory from "./modules/directory";
 import weather from "./modules/weather";
 import content from "./modules/content";
+import more from "./modules/more";
 
 export default {
   action,
@@ -47,6 +48,7 @@ export default {
   directory,
   weather,
   content,
+  more,
 
   language: {
     name: "EN"

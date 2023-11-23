@@ -1,8 +1,6 @@
 <template>
   <div>
-    <bottom-dialogue-language />
     <div v-for="item in moreItems" :key="item.Title" class="q-ma-lg">
-      <!-- Display the group name outside the card -->
       <div class="row-cards">
         <q-card class="shadow-6 q-mt-sm q-pa-sm" style="border-radius: 12px">
           <q-item clickable class="q-pa-sm" @click="showBottomSheet(item)">
@@ -23,14 +21,16 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, watch } from "vue";
   import { useQuasar } from "quasar";
+  import { useI18n } from "vue-i18n";
   import data from "./data/data.json";
   import { MoreItem } from "@/interfaces/models/entities/moreItem";
-  import BottomDialogueLanguage from "./bottom-dialogue-language.vue";
 
   const moreItems = ref<MoreItem[]>([]);
   const $q = useQuasar();
+
+  const { locale } = useI18n({ useScope: "global" });
 
   const showBottomSheet = (item: MoreItem) => {
     if (item.ResKey === "language_settings") {
@@ -39,27 +39,14 @@
         message: "Bottom Sheet message",
         grid: true,
         actions: [
-          { label: "Drive", img: "https://cdn.quasar.dev/img/logo_drive_128px.png", id: "drive" },
-          { label: "Keep", img: "https://cdn.quasar.dev/img/logo_keep_128px.png", id: "keep" },
-          {
-            label: "Google Hangouts",
-            img: "https://cdn.quasar.dev/img/logo_hangouts_128px.png",
-            id: "calendar"
-          },
-          {
-            label: "Calendar",
-            img: "https://cdn.quasar.dev/img/logo_calendar_128px.png",
-            id: "calendar"
-          },
-          {},
-          { label: "Share", icon: "share", id: "share" },
-          { label: "Upload", icon: "cloud_upload", color: "primary", id: "upload" },
-          {},
-          { label: "John", avatar: "https://cdn.quasar.dev/img/boy-avatar.png", id: "john" }
+          { label: " En", value: "en", onClick: () => changeLanguage("en") },
+          { label: "繁", value: "hk", onClick: () => changeLanguage("hk") },
+          { label: "简", value: "cn", onClick: () => changeLanguage("cn") }
         ]
       })
         .onOk(action => {
-          console.log("Action chosen:", action.id);
+          console.log("Action chosen:", action.label);
+          changeLanguage(action.value);
         })
         .onCancel(() => {
           // console.log('Dismissed')
@@ -81,4 +68,12 @@
       console.error("Error loading data:", error);
     }
   }
+
+  const changeLanguage = (language: string) => {
+    locale.value = language;
+  };
+
+  watch(locale, (value: any) => {
+    localStorage.setItem("locale", value);
+  });
 </script>
