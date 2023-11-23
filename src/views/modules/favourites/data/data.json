@@ -42,5 +42,17 @@
         "subTitle": "Sunny Bay Beach",
         "meta": null,
         "directoryMeta":null
+    },
+    {
+        "directoryId": 2,
+        "directoryName": "Beaches",
+        "itemName": "Tong Fuk Beach",
+        "itemId": 26,
+        "groupId": 1,
+        "iconPath": "site-image/1672795880leisure_and_cultural.png",
+        "subTitle": "Tong Fuk Beach",
+        "meta": null,
+        "directoryMeta":null
     }
+
 ]

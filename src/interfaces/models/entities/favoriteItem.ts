@@ -6,6 +6,6 @@ export interface FavoriteItem {
   groupId: number;
   iconPath: string;
   subTitle: string;
-  meta: Record<string, unknown>;
-  directoryMeta: Record<string, unknown>;
+  meta: Record<string, unknown> | null;
+  directoryMeta: Record<string, unknown> | null;
 }
