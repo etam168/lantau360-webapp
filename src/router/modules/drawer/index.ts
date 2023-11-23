@@ -1,7 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import { Role } from "@/constants";
 import Error404 from "@/views/modules/errors/error-404.vue";
-// import { administratorRoutes } from "./administrator-routes";
 // import { moreRoutes } from "./more-routes";
 
 const drawerRouter: Array<RouteRecordRaw> = [
