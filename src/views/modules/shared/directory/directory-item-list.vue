@@ -30,11 +30,11 @@
   });
 
   const onItemClick = (value: any) => {
-    //  const id = (query.group as any) == 1 ? DIRECTORY_SITES_URL : DIRECTORY_BUSINESS_URL;
+    const itemId = (query.group as any) == 1 ? value.siteId : value.businessId;
 
     router.push({
       name: "directory-item-detail",
-      query: { directoryItemId: value.siteId, group: query.group }
+      query: { directoryItemId: itemId, group: query.group }
     });
   };
 
