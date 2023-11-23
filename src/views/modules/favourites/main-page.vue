@@ -57,9 +57,6 @@
   const favoriteItems = ref<FavoriteItem[]>([]);
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
 
-  const directoriesData = ref();
-  const error = ref<string | null>(null);
-
   onMounted(() => {
     loadData();
   });
