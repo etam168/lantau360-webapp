@@ -29,7 +29,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BUSINESS_GALLERY_URL, BUSINESS_URL, SITE_GALLERY_URL, SITE_URL } from "@/constants";
+  import { SITE_GALLERY_URL, SITE_URL } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
@@ -48,14 +48,11 @@
   });
 
   const loadData = async () => {
-    if (query?.directoryItemId !== undefined && query?.group !== undefined) {
+    if (query?.directoryItemId !== undefined) {
       try {
-        const itemUrl = (query.group as any) == 1 ? SITE_URL : BUSINESS_URL;
-        const galleryUrl = (query.group as any) == 1 ? SITE_GALLERY_URL : BUSINESS_GALLERY_URL;
-
         const [siteResponse, galleryResponse] = await Promise.all([
-          axios.get(`${itemUrl}/${query?.directoryItemId}`),
-          axios.get<GalleryImage[]>(`${galleryUrl}/${query?.directoryItemId}`)
+          axios.get(`${SITE_URL}/${query?.directoryItemId}`),
+          axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${query?.directoryItemId}`)
         ]);
         directoryItem.value = siteResponse.data;
         galleryItems.value = galleryResponse.data;

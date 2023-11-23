@@ -68,9 +68,9 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/directory-items",
-        name: "directory-items",
-        component: () => import("@/views/modules/shared/directory/directory-item-list.vue"),
+        path: "/site-directory-items",
+        name: "site-directory-items",
+        component: () => import("@/views/modules/home/section/directory/directory-item-list.vue"),
         props: true,
 
         meta: {
@@ -82,9 +82,9 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/directory-item-detail",
-        name: "directory-item-detail",
-        component: () => import("@/views/modules/shared/directory/directory-item-detail.vue"),
+        path: "/site-directory-item-detail",
+        name: "site-directory-item-detail",
+        component: () => import("@/views/modules/home/section/directory/directory-item-detail.vue"),
         props: true,
 
         meta: {
@@ -96,9 +96,25 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/gallery",
-        name: "gallery",
-        component: () => import("@/views/modules/shared/directory/gallery-images/index.vue"),
+        path: "/business-directory-items",
+        name: "business-directory-items",
+        component: () =>
+          import("@/views/modules/business/section/directory/directory-item-list.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
+      {
+        path: "/business-directory-item-detail",
+        name: "business-directory-item-detail",
+        component: () =>
+          import("@/views/modules/business/section/directory/directory-item-detail.vue"),
         props: true,
 
         meta: {
