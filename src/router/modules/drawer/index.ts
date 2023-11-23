@@ -1,8 +1,8 @@
 import { RouteRecordRaw } from "vue-router";
 import { Role } from "@/constants";
 import Error404 from "@/views/modules/errors/error-404.vue";
-import { administratorRoutes } from "./administrator-routes";
-import { moreRoutes } from "./more-routes";
+// import { administratorRoutes } from "./administrator-routes";
+// import { moreRoutes } from "./more-routes";
 
 const drawerRouter: Array<RouteRecordRaw> = [
   {
@@ -23,9 +23,53 @@ const drawerRouter: Array<RouteRecordRaw> = [
           roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
         }
       },
+      {
+        path: "/businesses",
+        name: "businesses",
+        component: () => import("@/views/modules/business/index.vue"),
+        meta: {
+          title: "route.drawerComponents.business",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+      {
+        path: "/community",
+        name: "community",
+        component: () => import("@/views/modules/community/index.vue"),
+        meta: {
+          title: "route.drawerComponents.community",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+      {
+        path: "/favourites",
+        name: "favourites",
+        component: () => import("@/views/modules/favourites/index.vue"),
+        meta: {
+          title: "route.drawerComponents.favourites",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+      {
+        path: "/more",
+        name: "more",
+        component: () => import("@/views/modules/more/index.vue"),
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
 
-      ...administratorRoutes,
-      ...moreRoutes,
+      // ...administratorRoutes,
+      // ...moreRoutes,
 
       {
         path: "/:catchAll(.*)",

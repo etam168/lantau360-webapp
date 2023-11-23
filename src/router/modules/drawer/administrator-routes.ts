@@ -46,17 +46,17 @@ export const administratorRoutes = [
       roles: [Role.CS_ADMIN, Role.FRONT_DESK]
     }
   },
-  {
-    path: "/businesses",
-    name: "Businesses",
-    component: () => import("@/views/modules/business/index.vue"),
-    meta: {
-      title: "route.drawerComponents.business",
-      icon: "mdi-briefcase-check",
-      group: "manageUsers",
-      roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-    }
-  },
+  // {
+  //   path: "/businesses",
+  //   name: "Businesses",
+  //   component: () => import("@/views/modules/business/index.vue"),
+  //   meta: {
+  //     title: "route.drawerComponents.business",
+  //     icon: "mdi-briefcase-check",
+  //     group: "manageUsers",
+  //     roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+  //   }
+  // },
   {
     path: "/sites",
     name: "Sites",
@@ -89,17 +89,17 @@ export const administratorRoutes = [
       roles: [Role.CS_ADMIN, Role.FRONT_DESK]
     },
     children: [
-      {
-        path: "/contact-us",
-        name: "contactUs",
-        component: () => import("@/views/modules/contact-us/index.vue"),
-        meta: {
-          title: "route.drawerComponents.contactUs",
-          group: "manageUsers",
-          queryParam: "ContactUs",
-          roles: [Role.CS_ADMIN]
-        }
-      },
+      // {
+      //   path: "/contact-us",
+      //   name: "contactUs",
+      //   component: () => import("@/views/modules/contact-us/index.vue"),
+      //   meta: {
+      //     title: "route.drawerComponents.contactUs",
+      //     group: "manageUsers",
+      //     queryParam: "ContactUs",
+      //     roles: [Role.CS_ADMIN]
+      //   }
+      // },
       {
         path: "/privacy-policy",
         name: "Privacy",
