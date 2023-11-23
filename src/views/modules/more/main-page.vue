@@ -27,12 +27,37 @@
   import data from "./data/data.json";
   import { MoreItem } from "@/interfaces/models/entities/moreItem";
   import i18n from "@/plugins/i18n/i18n";
+  import axios, { AxiosError } from "axios";
 
   const moreItems = ref<MoreItem[]>([]);
   const $q = useQuasar();
   const { t } = i18n.global;
 
   const { locale } = useI18n({ useScope: "global" });
+  const content = ref();
+
+  const loadContent = async (resKey: string) => {
+    try {
+      const url = `/Content/ContentByName/${resKey}`;
+      const response = await axios.get<Content>(url);
+      content.value = response.data.contentData;
+      return content.value;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          // Handle 404 error
+          console.error("Content not found");
+        } else {
+          // Handle other errors
+          console.error("An error occurred while fetching content");
+        }
+      } else {
+        // Handle unexpected errors
+        console.error("An unexpected error occurred");
+      }
+      return null; // Return null or handle error based on your requirement
+    }
+  };
 
   const shouldShowBottomSheet = (item: MoreItem) => {
     return ["language_settings", "about_us", "tnc", "privacy_policy"].includes(item.ResKey);
@@ -42,6 +67,7 @@
     if (shouldShowBottomSheet(item)) {
       let actions;
       let message = "";
+      let grid = true;
 
       switch (item.ResKey) {
         case "language_settings":
@@ -51,29 +77,39 @@
             { label: "简", value: "cn", onClick: () => changeLanguage("cn") }
           ];
           message = t("more.language");
+          grid = true;
           break;
         case "about_us":
-          // Customize actions for about us
           actions = [
-            // Add actions for about us
+            {
+              label: content.value,
+              value: loadContent("About")
+            }
           ];
           message = t("more.aboutUs");
-
+          grid = false;
           break;
         case "tnc":
           // Customize actions for terms and conditions
           actions = [
-            // Add actions for terms and conditions
+            {
+              label: content.value,
+              value: loadContent("Terms")
+            }
           ];
           message = t("more.termsConditions");
-
+          grid = false;
           break;
         case "privacy_policy":
           // Customize actions for privacy policy
           actions = [
-            // Add actions for privacy policy
+            {
+              label: content.value,
+              value: loadContent("Privacy")
+            }
           ];
           message = t("more.privacyPolicy");
+          grid = false;
           break;
         default:
           actions = [];
@@ -82,7 +118,7 @@
       $q.bottomSheet({
         dark: true,
         message,
-        grid: true,
+        grid,
         actions
       })
         .onOk(action => {
@@ -100,6 +136,7 @@
 
   onMounted(() => {
     loadData();
+    loadContent();
   });
 
   function loadData() {
