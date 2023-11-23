@@ -152,8 +152,11 @@ export const HOME_DIRECTORY = `${BASE_URL}/Directory/DirectoryGroupsData/1`;
 export const WEATHER_URL = `${BASE_URL}/Weather`;
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
 export const SITE_URL = `${BASE_URL}/Site/SiteById`;
+export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
 
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
+export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
+export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
 export const PROPERTY_TYPE_URL = `${BASE_URL}/PropertyType`;

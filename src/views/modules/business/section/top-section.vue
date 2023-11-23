@@ -1,6 +1,12 @@
 <template>
   <q-list class="row">
-    <q-item clickable v-for="items in data.slice(0, 8)" :key="items.directoryId" class="col-3">
+    <q-item
+      clickable
+      v-for="items in data.slice(0, 8)"
+      :key="items.directoryId"
+      class="col-3"
+      @click="onItemClick"
+    >
       <q-item-section class="row justify-center items-center">
         <q-item-label>
           <q-item-section top avatar class="q-pr-none justify-center items-center">
@@ -20,10 +26,20 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { useRouter } from "vue-router";
   defineProps({
     data: {
       type: Object as PropType<Directory[]>,
       required: true
     }
   });
+
+  const router = useRouter();
+
+  const onItemClick = (value: any) => {
+    router.push({
+      name: "directory-items",
+      query: { directoryId: value.directoryId, group: value.groupId }
+    });
+  };
 </script>

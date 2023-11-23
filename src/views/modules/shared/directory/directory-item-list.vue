@@ -15,8 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, DIRECTORY_SITES_URL } from "@/constants";
-  import { Site } from "@/interfaces/site";
+  import { BLOB_URL, DIRECTORY_BUSINESS_URL, DIRECTORY_SITES_URL } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
@@ -31,7 +30,12 @@
   });
 
   const onItemClick = (value: any) => {
-    router.push({ name: "directory-item-detail", query: { directoryItemId: value.siteId } });
+    //  const id = (query.group as any) == 1 ? DIRECTORY_SITES_URL : DIRECTORY_BUSINESS_URL;
+
+    router.push({
+      name: "directory-item-detail",
+      query: { directoryItemId: value.siteId, group: query.group }
+    });
   };
 
   const computePath = (path: string) => {
@@ -39,11 +43,11 @@
   };
 
   const loadData = async () => {
-    if (query?.directoryId !== undefined) {
+    if (query?.directoryId !== undefined && query?.group !== undefined) {
       try {
-        const [response] = await Promise.all([
-          axios.get<Site[]>(`${DIRECTORY_SITES_URL}/${query?.directoryId}`)
-        ]);
+        const url = (query.group as any) == 1 ? DIRECTORY_SITES_URL : DIRECTORY_BUSINESS_URL;
+
+        const [response] = await Promise.all([axios.get(`${url}/${query?.directoryId}`)]);
         directoryItems.value = response.data;
       } catch (err) {
         if (err instanceof AxiosError) {

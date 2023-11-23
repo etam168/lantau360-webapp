@@ -1,6 +1,10 @@
 <template>
-  <q-item>
-    <q-img height="400px" :src="computePath(directoryItem.imagePath)" />
+  <q-item class="q-items-center">
+    <gallery-images-component
+      class="col-md-8 q-items-center"
+      style="max-height: 600px"
+      :gallery-images="galleryItems"
+    />
   </q-item>
 
   <q-item>
@@ -11,8 +15,7 @@
   <q-item>
     <q-btn color="primary" text-color="white" icon="location_on" round />
     <q-space />
-    <q-btn color="primary" text-color="white" icon="photo_library" round />
-    <q-space />
+
     <q-btn color="primary" text-color="white" icon="phone" round />
     <q-space />
     <q-btn color="primary" text-color="white" icon="favorite" round />
@@ -26,32 +29,36 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, SITE_URL } from "@/constants";
-  import { Site } from "@/interfaces/site";
+  import { BUSINESS_GALLERY_URL, BUSINESS_URL, SITE_GALLERY_URL, SITE_URL } from "@/constants";
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
+  import GalleryImagesComponent from "./gallery-images/index.vue";
+
   const router = useRouter();
-  const directoryItem = ref<Site>({} as Site);
+  const directoryItem = ref<any>({} as any);
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
+  const galleryItems = ref<GalleryImage[]>([]);
 
   onMounted(() => {
     loadData();
   });
 
-  const computePath = (path: string) => {
-    return `${BLOB_URL}/${path}`;
-  };
-
   const loadData = async () => {
-    if (query?.directoryItemId !== undefined) {
+    if (query?.directoryItemId !== undefined && query?.group !== undefined) {
       try {
-        const [response] = await Promise.all([
-          axios.get<Site>(`${SITE_URL}/${query?.directoryItemId}`)
+        const itemUrl = (query.group as any) == 1 ? SITE_URL : BUSINESS_URL;
+        const galleryUrl = (query.group as any) == 1 ? SITE_GALLERY_URL : BUSINESS_GALLERY_URL;
+
+        const [siteResponse, galleryResponse] = await Promise.all([
+          axios.get(`${itemUrl}/${query?.directoryItemId}`),
+          axios.get<GalleryImage[]>(`${galleryUrl}/${query?.directoryItemId}`)
         ]);
-        directoryItem.value = response.data;
+        directoryItem.value = siteResponse.data;
+        galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
