@@ -15,7 +15,7 @@
 
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
-  import { ATTRACTION_URL, WEATHER_URL, HOME_DIRECTORY } from "@/constants";
+  import { ATTRACTION_URL, WEATHER_URL, MAIN_DIRECTORIES } from "@/constants";
 
   // Custom Components
   import HeroSection from "./section/hero-section.vue";
@@ -33,7 +33,7 @@
     const [attractionResponse, weatherResponse, homeDirectories] = await Promise.all([
       axios.get<Site[]>(ATTRACTION_URL),
       axios.get<Weather>(WEATHER_URL),
-      axios.get<Directory>(HOME_DIRECTORY)
+      axios.get<Directory>(`${MAIN_DIRECTORIES}/1`)
     ]);
     heroData.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
