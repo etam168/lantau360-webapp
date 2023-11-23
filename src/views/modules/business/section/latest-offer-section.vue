@@ -17,15 +17,15 @@
       <q-virtual-scroll
         ref="virtualScroll"
         class="full-width justify-center"
-        :items="galleryImages"
+        :items="offers ?? []"
         :virtual-scroll-item-size="100"
         virtual-scroll-horizontal
         @virtual-scroll="onVirtualScroll"
         v-slot="{ item: row }"
       >
-        <div class="q-pa-none" style="width: 260px">
+        <div class="q-pa-none" style="width: 260px" @click="onItemClick(row)">
           <q-card class="my-card" flat bordered>
-            <q-img src="https://cdn.quasar.dev/img/parallax2.jpg" />
+            <q-img class="q-ml-md" :src="computeImagePath(row.imagePath)" />
 
             <q-card-section>
               <div class="text-overline text-orange-9">Offer 1</div>
@@ -45,58 +45,33 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { onMounted, ref } from "vue";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  // .ts file
-  import axios from "axios";
-  import eventBus from "@/utils/event-bus";
-  import { BusinessImage } from "@/interfaces/businessImage";
+  import { PropType, ref } from "vue";
+  import { Business } from "@/interfaces/models/entities/business";
+
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { useRouter } from "vue-router";
 
-  const galleryImages = ref<Array<GalleryImage>>([]);
   const virtualScrollIndex = ref(0);
+  const router = useRouter();
+  defineProps({
+    offers: {
+      type: Array as PropType<Business[] | null>,
+      required: true
+    }
+  });
 
-  function loadData() {
-    // const businessId = props.rowData.businessId;
-    const url = `/BusinessImage/GalleryImages/1`;
-
-    axios.get(url).then(response => {
-      const rec = response.data as Array<BusinessImage>;
-      // const gImages = rec.slice(0, 9).sort(function (x, y) {
-      //   return x.ranking - y.ranking;
-      // });
-
-      galleryImages.value = [];
-
-      for (const [index, gImage] of rec.entries()) {
-        galleryImages.value.push({
-          imageId: gImage.imageId,
-          index: index + 2,
-          imagePath: getImageURL(gImage.imagePath),
-          isAddCard: false
-        });
-      }
+  const onItemClick = (value: any) => {
+    router.push({
+      name: "business-directory-item-detail",
+      query: { directoryItemId: value.businessId }
     });
-  }
+  };
 
-  function getImageURL(imagePath: any) {
+  function computeImagePath(imagePath: any) {
     return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 
   function onVirtualScroll(details: any) {
     virtualScrollIndex.value = details.index;
   }
-
-  onMounted(() => {
-    loadData();
-    // eventBus.on("RefreshExpandedGallery", businessId => {
-    //   if (businessId == props.rowData.businessId) {
-    //     loadData();
-    //   }
-    // });
-
-    eventBus.on("on-gallery-image-updates", () => {
-      loadData();
-    });
-  });
 </script>
