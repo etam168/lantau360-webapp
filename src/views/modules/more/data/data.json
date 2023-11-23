@@ -1,0 +1,50 @@
+[
+    {
+      "Icon": "ic_language_setting.svg",
+      "Title": "Language Settings",
+      "Route": "language",
+      "ResKey": "language_settings"
+    },
+    {
+      "Icon": "ic_inbox.svg",
+      "Title": "About Us",
+      "Route": "about_us",
+      "ResKey": "about_us"
+    },
+    {
+      "Icon": "ic_terms_conditions.svg",
+      "Title": "Terms & Conditions",
+      "Route": "terms_conditions",
+      "ResKey": "tnc"
+    },
+    {
+      "Icon": "ic_privacy.svg",
+      "Title": "Privacy Policy",
+      "Route": "privacy_policy",
+      "ResKey": "privacy_policy"
+    },
+    {
+      "Icon": "ic_privacy.svg",
+      "Title": "Location Permission",
+      "Route": "location_permission",
+      "ResKey": "location_permission"
+    },
+    {
+      "Icon": "login.png",
+      "Title": "Login",
+      "Route": "login",
+      "ResKey": "login"
+    },
+    {
+      "Icon": "update_pic.png",
+      "Title": "Profile",
+      "Route": "profile",
+      "ResKey": "profile"
+    },
+    {
+      "Icon": "login.png",
+      "Title": "Logout",
+      "Route": "logout",
+      "ResKey": "logout"
+    }
+  ]
