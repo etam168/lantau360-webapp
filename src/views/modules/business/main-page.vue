@@ -32,7 +32,7 @@
       axios.get<Directory>(`${MAIN_DIRECTORIES}/2`)
     ]);
     promotions.value = respPromotions.data.data;
-    latestOffers.value = respPromotions.data.data;
+    latestOffers.value = respLatestOffers.data.data;
     directoriesData.value = respDirectories.data;
   } catch (err) {
     if (err instanceof AxiosError) {

@@ -1,17 +1,16 @@
 <template>
-  <q-card flat class="my-card q-ma-lg">
+  <q-card flat class="q-ma-lg">
     <q-card-actions class="q-pa-none">
-      <p class="q-mb-none">Latest Offer</p>
+      <p>Latest Offer</p>
       <q-space />
       <q-btn
         flat
         icon-right="keyboard_double_arrow_right"
         label="See All"
-        class="text-capitalize q-pa-none"
+        @click="navigateToAllPage()"
       />
     </q-card-actions>
   </q-card>
-
   <q-card flat>
     <q-card-section horizontal class="q-py-none">
       <q-virtual-scroll
@@ -23,9 +22,9 @@
         @virtual-scroll="onVirtualScroll"
         v-slot="{ item: row }"
       >
-        <div class="q-pa-none" style="width: 260px" @click="onItemClick(row)">
-          <q-card class="my-card" flat bordered>
-            <q-img class="q-ml-md" :src="computeImagePath(row.imagePath)" />
+        <div class="q-pa-none q-ml-md" style="width: 260px">
+          <q-card>
+            <q-img :src="computeImagePath(row.imagePath)" />
 
             <q-card-section>
               <div class="text-overline text-orange-9">Offer 1</div>
@@ -34,7 +33,7 @@
 
             <q-card-actions>
               <q-space />
-              <q-btn flat color="primary" label="More Details" />
+              <q-btn flat color="primary" label="More Details" @click="navigateToDetailPage(row)" />
             </q-card-actions>
           </q-card>
         </div>
@@ -60,10 +59,17 @@
     }
   });
 
-  const onItemClick = (value: any) => {
+  const navigateToDetailPage = (value: any) => {
     router.push({
       name: "business-directory-item-detail",
       query: { directoryItemId: value.businessId }
+    });
+  };
+
+  const navigateToAllPage = () => {
+    router.push({
+      name: "business-directory-items",
+      query: { directoryId: 100 }
     });
   };
 
