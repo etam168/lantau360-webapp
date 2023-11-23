@@ -9,9 +9,9 @@
             </q-item-section>
 
             <q-item-section top class="q-mt-sm">
-              <q-item-label class="text-subtitle1 text-weight-medium">{{
-                item.Title
-              }}</q-item-label>
+              <q-item-label class="text-subtitle1 text-weight-medium">
+                {{ $t(item.Title) }}</q-item-label
+              >
             </q-item-section>
           </q-item>
         </q-card>
