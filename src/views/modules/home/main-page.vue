@@ -20,7 +20,7 @@
   // Custom Components
   import HeroSection from "./section/hero-section.vue";
   import weatherSection from "./section/weather-section.vue";
-  import DirectoryList from "./section/directory/directory-list.vue";
+  import DirectoryList from "../shared/directory/directory-list.vue";
   import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
 
