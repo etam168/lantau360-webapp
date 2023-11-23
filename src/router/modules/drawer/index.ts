@@ -81,6 +81,20 @@ const drawerRouter: Array<RouteRecordRaw> = [
         }
       },
 
+      {
+        path: "/directory-item-detail",
+        name: "directory-item-detail",
+        component: () => import("@/views/modules/home/section/directory/directory-item-detail.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
       // ...administratorRoutes,
       // ...moreRoutes,
 

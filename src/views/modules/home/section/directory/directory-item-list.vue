@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable v-for="item in directoryItems" :key="item.siteId">
+  <q-item clickable v-for="item in directoryItems" :key="item.siteId" @click="onItemClick(item)">
     <q-img width="80px" height="80px" :src="computePath(item.iconPath)" />
 
     <q-item-section class="q-ml-lg">
@@ -29,6 +29,11 @@
   onMounted(() => {
     loadData();
   });
+
+  const onItemClick = (value: any) => {
+    router.push({ name: "directory-item-detail", query: { directoryItemId: value.siteId } });
+  };
+
   const computePath = (path: string) => {
     return `${BLOB_URL}/${path}`;
   };

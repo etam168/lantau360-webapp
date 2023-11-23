@@ -151,6 +151,8 @@ export const ATTRACTION_URL = `${BASE_URL}/Site/ByDirectoryId/1`;
 export const HOME_DIRECTORY = `${BASE_URL}/Directory/DirectoryGroupsData/1`;
 export const WEATHER_URL = `${BASE_URL}/Weather`;
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
+export const SITE_URL = `${BASE_URL}/Site/SiteById`;
+
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
