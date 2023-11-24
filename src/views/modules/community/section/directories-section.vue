@@ -11,31 +11,34 @@
         <q-item-label>
           <q-item-section top avatar class="q-pr-none justify-center items-center">
             <q-avatar>
-              <img :src="item?.meta['file-path']" />
+              <img :src="computeImagePath(item.imagePath)" />
             </q-avatar>
           </q-item-section>
         </q-item-label>
-        <q-item-label>{{ item.directoryName }}</q-item-label>
+        <q-item-label>{{ item.communityDirectoryName }}</q-item-label>
       </q-item-section>
     </q-item>
   </q-list>
 </template>
 <script setup lang="ts">
   // Vue Import
+  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { PropType } from "vue";
 
   // .ts file
-  import { Directory } from "@/interfaces/models/entities/directory";
   import { useRouter } from "vue-router";
   defineProps({
     data: {
-      type: Object as PropType<Directory[]>,
+      type: Object as PropType<any[]>,
       required: true
     }
   });
 
   const router = useRouter();
 
+  function computeImagePath(imagePath: any) {
+    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
+  }
   const onItemClick = (value: any) => {
     router.push({
       name: "business-directory-items",
