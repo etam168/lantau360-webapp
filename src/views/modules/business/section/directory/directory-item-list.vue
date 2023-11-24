@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, DIRECTORY_BUSINESS_URL } from "@/constants";
+  import { BLOB_URL, DIRECTORY_BUSINESS_URL, DIRECTORY_URL } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
@@ -24,6 +24,7 @@
   const directoryItems = ref();
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
+  const directory = ref();
 
   onMounted(() => {
     loadData();
@@ -32,7 +33,7 @@
   const onItemClick = (value: any) => {
     router.push({
       name: "business-directory-item-detail",
-      query: { directoryItemId: value.businessId }
+      query: { directoryItemId: value.businessId, directoryName: directory.value.directoryName }
     });
   };
 
@@ -43,10 +44,12 @@
   const loadData = async () => {
     if (query?.directoryId !== undefined) {
       try {
-        const [response] = await Promise.all([
-          axios.get(`${DIRECTORY_BUSINESS_URL}/${query?.directoryId}`)
+        const [response, respDirectory] = await Promise.all([
+          axios.get(`${DIRECTORY_BUSINESS_URL}/${query?.directoryId}`),
+          axios.get(`${DIRECTORY_URL}/${query?.directoryId}`)
         ]);
         directoryItems.value = response.data;
+        directory.value = respDirectory.data;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {

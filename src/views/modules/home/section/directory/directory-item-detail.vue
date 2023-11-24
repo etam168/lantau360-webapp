@@ -43,7 +43,6 @@
   import { useRouter } from "vue-router";
   import GalleryImagesComponent from "./gallery-images/index.vue";
   import { LocalStorage } from "quasar";
-  import { Favourite } from "@/interfaces/models/Favourite";
   import { Site } from "@/interfaces/site";
 
   const router = useRouter();
@@ -52,7 +51,7 @@
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<Favourite | any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const isFavourite = ref<boolean>(false);
 
   const onBtnFavClick = () => {

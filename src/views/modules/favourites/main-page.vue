@@ -48,32 +48,20 @@
   // 3rd Party Import
 
   // .ts file
-  import data from "./data/data.json";
   import { FavoriteItem } from "@/interfaces/models/entities/favoriteItem";
-  import { BLOB_URL } from "@/constants";
-  // Custom Components
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { LocalStorage } from "quasar";
 
-  // const favoriteItems = ref<any | null>(null);
-  const favoriteItems = ref<FavoriteItem[]>([]);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
 
   onMounted(() => {
-    loadData();
+    groupItemsByDirectory();
   });
-
-  function loadData() {
-    try {
-      // Assuming 'data' is an array of objects representing FavoriteItem
-      favoriteItems.value = data as FavoriteItem[];
-      groupItemsByDirectory();
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
-  }
 
   function groupItemsByDirectory() {
     groupedItems.value = favoriteItems.value.reduce(
-      (acc, item) => {
+      (acc: any, item: any) => {
         const { directoryName } = item;
         if (!acc[directoryName]) {
           acc[directoryName] = [];

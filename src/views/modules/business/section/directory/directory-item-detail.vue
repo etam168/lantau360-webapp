@@ -18,7 +18,13 @@
 
     <q-btn color="primary" text-color="white" icon="phone" round />
     <q-space />
-    <q-btn color="primary" text-color="white" icon="favorite" round @click="onBtnFavClick" />˝
+    <q-btn
+      color="primary"
+      :text-color="isFavourite ? 'red' : 'white'"
+      icon="favorite"
+      round
+      @click="onBtnFavClick"
+    />
   </q-item>
   <q-separator class="q-mt-sm" />
 
@@ -36,7 +42,6 @@
   import { ref } from "vue";
   import { useRouter } from "vue-router";
   import GalleryImagesComponent from "./gallery-images/index.vue";
-  import { Favourite } from "@/interfaces/models/Favourite";
   import { LocalStorage } from "quasar";
 
   const router = useRouter();
@@ -45,14 +50,38 @@
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
 
-  const favoriteItems = ref<Favourite | any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const isFavourite = ref<boolean>(false);
 
   const onBtnFavClick = () => {
-    favoriteItems.value ??= {};
-    favoriteItems.value.business ??= {};
-    favoriteItems.value.business.directoryId ??= [];
-    favoriteItems.value.business.directoryId.push(directoryItem.value.siteId);
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+    favoriteItems.value = favoriteItems.value || [];
+
+    const itemIdToMatch = directoryItem.value.businessId;
+    const isCurrentlyFavourite = isFavourite.value;
+
+    if (isCurrentlyFavourite) {
+      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+
+      if (itemIndex !== -1) {
+        favoriteItems.value.splice(itemIndex, 1);
+      }
+
+      isFavourite.value = false;
+    } else {
+      const favItem = {
+        directoryId: query?.directoryItemId,
+        directoryName: query?.directoryName,
+        itemName: directoryItem.value.businessId,
+        itemId: itemIdToMatch,
+        groupId: 1,
+        iconPath: directoryItem.value.iconPath,
+        subTitle: directoryItem.value.subtitle1
+      };
+
+      isFavourite.value = true;
+      favoriteItems.value.push(favItem);
+      LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+    }
   };
 
   onMounted(() => {
@@ -68,6 +97,11 @@
         ]);
         directoryItem.value = siteResponse.data;
         galleryItems.value = galleryResponse.data;
+
+        isFavourite.value =
+          (favoriteItems?.value ?? []).find(
+            (item: any) => item.itemId == directoryItem.value.businessId
+          ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
