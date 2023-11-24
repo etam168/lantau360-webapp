@@ -13,12 +13,12 @@
   </q-item>
 
   <q-item>
-    <q-btn color="primary" text-color="white" icon="location_on" round />
+    <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
     <q-space />
 
     <q-btn color="primary" text-color="white" icon="phone" round />
     <q-space />
-    <q-btn color="primary" text-color="white" icon="favorite" round />
+    <q-btn color="primary" text-color="white" icon="favorite" round @click="onBtnFavClick" />
   </q-item>
   <q-separator class="q-mt-sm" />
 
@@ -29,19 +29,34 @@
 </template>
 
 <script setup lang="ts">
-  import { SITE_GALLERY_URL, SITE_URL } from "@/constants";
+  import { SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
   import GalleryImagesComponent from "./gallery-images/index.vue";
+  import { LocalStorage } from "quasar";
+  import { Favourite } from "@/interfaces/models/Favourite";
 
   const router = useRouter();
   const directoryItem = ref<any>({} as any);
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
+  const favoriteItems = ref<Favourite | any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+
+  const onBtnFavClick = () => {
+    favoriteItems.value ??= {};
+    favoriteItems.value.site ??= {};
+    favoriteItems.value.site.directoryId ??= [];
+    favoriteItems.value.site.directoryId.push(directoryItem.value.siteId);
+    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+  };
+
+  const temp = () => {
+    alert(JSON.stringify(favoriteItems.value.site));
+  };
 
   onMounted(() => {
     loadData();
