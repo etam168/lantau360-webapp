@@ -153,6 +153,7 @@ export const WEATHER_URL = `${BASE_URL}/Weather`;
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
 export const SITE_URL = `${BASE_URL}/Site/SiteById`;
 export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
+export const DIRECTORY_URL = `${BASE_URL}/Directory`;
 
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;

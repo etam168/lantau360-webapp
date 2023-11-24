@@ -6,11 +6,11 @@
       :gallery-images="galleryItems"
     />
   </q-item>
-
   <q-item>
     <q-icon name="location_on" size="2em" color="blue" />
     <q-item-label class="q-mt-sm">{{ directoryItem.subtitle1 }}</q-item-label>
   </q-item>
+  {{ isFavourite }}
 
   <q-item>
     <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
@@ -18,7 +18,13 @@
 
     <q-btn color="primary" text-color="white" icon="phone" round />
     <q-space />
-    <q-btn color="primary" text-color="white" icon="favorite" round @click="onBtnFavClick" />
+    <q-btn
+      color="primary"
+      :text-color="isFavourite ? 'red' : 'white'"
+      icon="favorite"
+      round
+      @click="onBtnFavClick"
+    />
   </q-item>
   <q-separator class="q-mt-sm" />
 
@@ -38,24 +44,50 @@
   import GalleryImagesComponent from "./gallery-images/index.vue";
   import { LocalStorage } from "quasar";
   import { Favourite } from "@/interfaces/models/Favourite";
+  import { Site } from "@/interfaces/site";
 
   const router = useRouter();
-  const directoryItem = ref<any>({} as any);
+  const directoryItem = ref<Site>({} as Site);
+
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<Favourite | any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const isFavourite = ref<boolean>(false);
 
   const onBtnFavClick = () => {
-    favoriteItems.value ??= {};
-    favoriteItems.value.site ??= {};
-    favoriteItems.value.site.directoryId ??= [];
-    favoriteItems.value.site.directoryId.push(directoryItem.value.siteId);
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+    favoriteItems.value = favoriteItems.value || [];
+
+    const itemIdToMatch = directoryItem.value.siteId;
+    const isCurrentlyFavourite = isFavourite.value;
+
+    if (isCurrentlyFavourite) {
+      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+
+      if (itemIndex !== -1) {
+        favoriteItems.value.splice(itemIndex, 1);
+      }
+
+      isFavourite.value = false;
+    } else {
+      const favItem = {
+        directoryId: query?.directoryItemId,
+        directoryName: query?.directoryName,
+        itemName: directoryItem.value.siteName,
+        itemId: itemIdToMatch,
+        groupId: 1,
+        iconPath: directoryItem.value.iconPath,
+        subTitle: directoryItem.value.subtitle1
+      };
+
+      isFavourite.value = true;
+      favoriteItems.value.push(favItem);
+      LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+    }
   };
 
   const temp = () => {
-    alert(JSON.stringify(favoriteItems.value.site));
+    alert(JSON.stringify(favoriteItems.value));
   };
 
   onMounted(() => {
@@ -71,6 +103,11 @@
         ]);
         directoryItem.value = siteResponse.data;
         galleryItems.value = galleryResponse.data;
+
+        isFavourite.value =
+          (favoriteItems?.value ?? []).find(
+            (item: any) => item.itemId == directoryItem.value.siteId
+          ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
