@@ -40,11 +40,5 @@
     "Title": "more.profile",
     "Route": "profile",
     "ResKey": "profile"
-  },
-  {
-    "Icon": "login.png",
-    "Title": "more.logout",
-    "Route": "logout",
-    "ResKey": "logout"
   }
 ]
