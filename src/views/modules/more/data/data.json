@@ -8,19 +8,19 @@
   {
     "Icon": "ic_inbox.svg",
     "Title": "more.aboutUs",
-    "Route": "about_us",
+    "Route": "/about-us",
     "ResKey": "about_us"
   },
   {
     "Icon": "ic_terms_conditions.svg",
     "Title": "more.termsConditions",
-    "Route": "terms_conditions",
+    "Route": "/terms-and-conditions",
     "ResKey": "tnc"
   },
   {
     "Icon": "ic_privacy.svg",
     "Title": "more.privacyPolicy",
-    "Route": "privacy_policy",
+    "Route": "/privacy-policy",
     "ResKey": "privacy_policy"
   },
   {

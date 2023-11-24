@@ -16,6 +16,10 @@
             <q-item-section side v-if="item.Route == 'language'">
               <language-select class="q-mr-md" @on-language="onLanguageChange" />
             </q-item-section>
+
+            <q-item-section side v-if="item.Route == 'location_permission'">
+              <q-toggle v-model="locationPermission" color="green" />
+            </q-item-section>
           </q-item>
         </q-card>
       </div>
@@ -25,22 +29,22 @@
 
 <script setup lang="ts">
   import { ref, onMounted, watch } from "vue";
-  import { useQuasar } from "quasar";
   import { useI18n } from "vue-i18n";
   import data from "./data/data.json";
   import { MoreItem } from "@/interfaces/models/entities/moreItem";
-  import i18n from "@/plugins/i18n/i18n";
   import axios, { AxiosError } from "axios";
+  import { useRouter } from "vue-router";
 
   //Custom Components
   import LanguageSelect from "@/components/language-select.vue";
+  import { Content } from "@/interfaces/content";
 
   const moreItems = ref<MoreItem[]>([]);
-  const $q = useQuasar();
-  const { t } = i18n.global;
+  const router = useRouter();
 
   const { locale } = useI18n({ useScope: "global" });
   const content = ref();
+  const locationPermission = ref(false);
 
   const loadContent = async (resKey: string) => {
     try {
@@ -65,79 +69,72 @@
     }
   };
 
-  const shouldShowBottomSheet = (item: MoreItem) => {
-    return ["about_us", "tnc", "privacy_policy"].includes(item.ResKey);
-  };
+  // const shouldShowBottomSheet = (item: MoreItem) => {
+  //   return ["about_us", "tnc", "privacy_policy"].includes(item.ResKey);
+  // };
 
   const showBottomSheet = (item: MoreItem) => {
-    if (shouldShowBottomSheet(item)) {
-      let actions;
-      let message = "";
-      let grid = true;
+    router.push(item.Route);
 
-      switch (item.ResKey) {
-        // case "language_settings":
-        //   actions = [
-        //     { label: "En", value: "en", onClick: () => changeLanguage("en") },
-        //     { label: "繁", value: "hk", onClick: () => changeLanguage("hk") },
-        //     { label: "简", value: "cn", onClick: () => changeLanguage("cn") }
-        //   ];
-        //   message = t("more.language");
-        //   grid = true;
-        //   break;
-        case "about_us":
-          actions = [
-            {
-              label: content.value,
-              value: loadContent("About")
-            }
-          ];
-          message = t("more.aboutUs");
-          grid = false;
-          break;
-        case "tnc":
-          // Customize actions for terms and conditions
-          actions = [
-            {
-              label: content.value,
-              value: loadContent("Terms")
-            }
-          ];
-          message = t("more.termsConditions");
-          grid = false;
-          break;
-        case "privacy_policy":
-          // Customize actions for privacy policy
-          actions = [
-            {
-              label: content.value,
-              value: loadContent("Privacy")
-            }
-          ];
-          message = t("more.privacyPolicy");
-          grid = false;
-          break;
-        default:
-          actions = [];
-      }
+    // if (shouldShowBottomSheet(item)) {
+    //   let actions;
+    //   let message = "";
+    //   let grid = true;
 
-      $q.bottomSheet({
-        dark: true,
-        message,
-        grid,
-        actions
-      })
-        .onOk(action => {
-          console.log("Action chosen:", action.value);
-          changeLanguage(action.value);
-        })
-        .onCancel(() => {
-          // console.log('Dismissed')
-        })
-        .onDismiss(() => {
-          // console.log('I am triggered on both OK and Cancel')
-        });
-    }
+    //   switch (item.ResKey) {
+    //     case "about_us":
+    //       actions = [
+    //         {
+    //           label: content.value,
+    //           value: loadContent("About")
+    //         }
+    //       ];
+    //       message = t("more.aboutUs");
+    //       grid = false;
+    //       break;
+    //     case "tnc":
+    //       // Customize actions for terms and conditions
+    //       actions = [
+    //         {
+    //           label: content.value,
+    //           value: loadContent("Terms")
+    //         }
+    //       ];
+    //       message = t("more.termsConditions");
+    //       grid = false;
+    //       break;
+    //     case "privacy_policy":
+    //       // Customize actions for privacy policy
+    //       actions = [
+    //         {
+    //           label: content.value,
+    //           value: loadContent("Privacy")
+    //         }
+    //       ];
+    //       message = t("more.privacyPolicy");
+    //       grid = false;
+    //       break;
+    //     default:
+    //       actions = [];
+    //   }
+
+    //   $q.bottomSheet({
+    //     dark: true,
+    //     message,
+    //     grid,
+    //     actions
+    //   })
+    //     .onOk(action => {
+    //       console.log("Action chosen:", action.value);
+    //       changeLanguage(action.value);
+    //     })
+    //     .onCancel(() => {
+    //       // console.log('Dismissed')
+    //     })
+    //     .onDismiss(() => {
+    //       // console.log('I am triggered on both OK and Cancel')
+    //     });
+    // }
   };
 
   onMounted(() => {
@@ -156,10 +153,6 @@
   function onLanguageChange() {
     // emit("update-language", locale.value);
   }
-
-  const changeLanguage = (language: string) => {
-    locale.value = language;
-  };
 
   watch(locale, (value: any) => {
     localStorage.setItem("locale", value);

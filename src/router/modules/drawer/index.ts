@@ -125,6 +125,40 @@ const drawerRouter: Array<RouteRecordRaw> = [
         }
       },
 
+      {
+        path: "/privacy-policy",
+        name: "Privacy",
+        component: () => import("@/views/modules/content/index.vue"),
+        meta: {
+          title: "route.drawerComponents.privacyPolicy",
+          group: "manageUsers",
+          queryParam: "Privacy",
+          roles: [Role.CS_ADMIN]
+        }
+      },
+      {
+        path: "/terms-and-conditions",
+        name: "Terms",
+        component: () => import("@/views/modules/content/index.vue"),
+        meta: {
+          title: "route.drawerComponents.termsAndConditions",
+          group: "manageUsers",
+          queryParam: "Terms",
+
+          roles: [Role.CS_ADMIN]
+        }
+      },
+      {
+        path: "/about-us",
+        name: "About",
+        component: () => import("@/views/modules/content/index.vue"),
+        meta: {
+          title: "route.drawerComponents.aboutUs",
+          group: "manageUsers",
+          queryParam: "About",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK]
+        }
+      },
       // ...administratorRoutes,
       // ...moreRoutes,
 

@@ -20,7 +20,7 @@
         </q-list>
       </q-btn-dropdown>
 
-      <q-btn
+      <!-- <q-btn
         v-for="({ slug, option, active, icon }, index) in textActions"
         :key="index"
         flat
@@ -30,7 +30,7 @@
         @click="onActionClick(slug, option)"
         :icon="icon"
       >
-      </q-btn>
+      </q-btn> -->
     </q-card-section>
     <q-separator />
     <q-scroll-area :style="{ height: contentHeight }">
