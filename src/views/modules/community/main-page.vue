@@ -1,8 +1,9 @@
 <template>
-  <top-section :data="directoriesData" class="q-mb-md" />
-  <latest-offer />
+  <directories :data="directoriesData" class="q-mb-md" />
+  <promotions :data="promotions" />
+  <!-- <latest-offer :offers="latestOffers" /> -->
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
   import { ref } from "vue";
@@ -11,26 +12,28 @@
   import axios, { AxiosError } from "axios";
 
   // .ts file
-  import { Site } from "@/interfaces/models/entities/site";
-  import { ATTRACTION_URL, HOME_DIRECTORY } from "@/constants";
+  import { MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
 
-  // Custom Components
-  import { Directory } from "@/interfaces/models/entities/directory";
+  import Directories from "./section/directories-section.vue";
+  import Promotions from "./section/promotion-section.vue";
   import LatestOffer from "./section/latest-offer-section.vue";
-  import TopSection from "./section/top-section.vue";
+  import { Directory } from "@/interfaces/models/entities/directory";
 
-  const heroData = ref<any | null>(null);
+  const promotions = ref<any | null>(null);
   const directoriesData = ref();
+  const latestOffers = ref();
+
   const error = ref<string | null>(null);
 
   try {
-    const [attractionResponse, homeDirectories] = await Promise.all([
-      axios.get<Site[]>(ATTRACTION_URL),
-      // axios.get<Weather>(WEATHER_URL),
-      axios.get<Directory>(HOME_DIRECTORY)
+    const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
+      axios.get(`${PROMOTION_URL}/108`),
+      axios.get(`${PROMOTION_URL}/100`),
+      axios.get<Directory>(`${MAIN_DIRECTORIES}/3`)
     ]);
-    heroData.value = attractionResponse.data;
-    directoriesData.value = homeDirectories.data;
+    promotions.value = respPromotions.data.data;
+    latestOffers.value = respLatestOffers.data.data;
+    directoriesData.value = respDirectories.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
