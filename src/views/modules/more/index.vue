@@ -3,7 +3,7 @@
     <div v-for="item in moreItems" :key="item.Title" class="q-ma-lg">
       <div class="row-cards">
         <q-card class="shadow-6 q-mt-sm q-pa-sm" style="border-radius: 12px">
-          <q-item clickable class="q-pa-sm" @click="showBottomSheet(item)">
+          <q-item clickable class="q-pa-sm" @click="showContent(item)">
             <q-item-section top avatar>
               <img :src="item.Icon" style="height: 35px; width: 35px" />
             </q-item-section>
@@ -69,72 +69,19 @@
     }
   };
 
-  // const shouldShowBottomSheet = (item: MoreItem) => {
-  //   return ["about_us", "tnc", "privacy_policy"].includes(item.ResKey);
-  // };
-
-  const showBottomSheet = (item: MoreItem) => {
-    router.push(item.Route);
-
-    // if (shouldShowBottomSheet(item)) {
-    //   let actions;
-    //   let message = "";
-    //   let grid = true;
-
-    //   switch (item.ResKey) {
-    //     case "about_us":
-    //       actions = [
-    //         {
-    //           label: content.value,
-    //           value: loadContent("About")
-    //         }
-    //       ];
-    //       message = t("more.aboutUs");
-    //       grid = false;
-    //       break;
-    //     case "tnc":
-    //       // Customize actions for terms and conditions
-    //       actions = [
-    //         {
-    //           label: content.value,
-    //           value: loadContent("Terms")
-    //         }
-    //       ];
-    //       message = t("more.termsConditions");
-    //       grid = false;
-    //       break;
-    //     case "privacy_policy":
-    //       // Customize actions for privacy policy
-    //       actions = [
-    //         {
-    //           label: content.value,
-    //           value: loadContent("Privacy")
-    //         }
-    //       ];
-    //       message = t("more.privacyPolicy");
-    //       grid = false;
-    //       break;
-    //     default:
-    //       actions = [];
-    //   }
-
-    //   $q.bottomSheet({
-    //     dark: true,
-    //     message,
-    //     grid,
-    //     actions
-    //   })
-    //     .onOk(action => {
-    //       console.log("Action chosen:", action.value);
-    //       changeLanguage(action.value);
-    //     })
-    //     .onCancel(() => {
-    //       // console.log('Dismissed')
-    //     })
-    //     .onDismiss(() => {
-    //       // console.log('I am triggered on both OK and Cancel')
-    //     });
-    // }
+  const showContent = (item: MoreItem) => {
+    switch (item.ResKey) {
+      case "about_us":
+        router.push(item.Route);
+        break;
+      case "tnc":
+        router.push(item.Route);
+        break;
+      case "privacy_policy":
+        router.push(item.Route);
+        break;
+      default:
+    }
   };
 
   onMounted(() => {
