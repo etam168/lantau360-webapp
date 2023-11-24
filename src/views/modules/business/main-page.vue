@@ -12,7 +12,7 @@
   import axios, { AxiosError } from "axios";
 
   // .ts file
-  import { MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
+  import { DIRECTORY_GROUPS, MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
 
   import Directories from "./section/directories-section.vue";
   import Promotions from "./section/promotion-section.vue";
@@ -27,9 +27,9 @@
 
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
-      axios.get(`${PROMOTION_URL}/108`),
-      axios.get(`${PROMOTION_URL}/100`),
-      axios.get<Directory>(`${MAIN_DIRECTORIES}/2`)
+      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.PROMOTIONS}`),
+      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.LATEST_OFFERS}`),
+      axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
     ]);
     promotions.value = respPromotions.data.data;
     latestOffers.value = respLatestOffers.data.data;
