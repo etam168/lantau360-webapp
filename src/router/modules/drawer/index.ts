@@ -70,7 +70,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
       {
         path: "/site-directory-items",
         name: "site-directory-items",
-        component: () => import("@/views/modules/home/section/directory/directory-item-list.vue"),
+        component: () => import("@/views/modules/site-directory/site-item.vue"),
         props: true,
 
         meta: {
@@ -84,7 +84,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
       {
         path: "/site-directory-item-detail",
         name: "site-directory-item-detail",
-        component: () => import("@/views/modules/home/section/directory/directory-item-detail.vue"),
+        component: () => import("@/views/modules/site-directory/site-detail.vue"),
         props: true,
 
         meta: {

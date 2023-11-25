@@ -3,7 +3,7 @@
 
   <weather-section :data="weatherData" />
 
-  <directory-list :data="directoriesData" class="q-mb-md" />
+  <directory-section :data="directoriesData" class="q-mb-md" />
 </template>
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
@@ -19,8 +19,8 @@
 
   // Custom Components
   import HeroSection from "./section/hero-section.vue";
-  import weatherSection from "./section/weather-section.vue";
-  import DirectoryList from "./section/directory/directory-list.vue";
+  import WeatherSection from "./section/weather-section.vue";
+  import DirectorySection from "./section/directory-section.vue";
   import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
 
