@@ -35,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  import { SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
+  import { DIRECTORY_GROUPS, SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
@@ -53,7 +53,6 @@
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const isFavourite = ref<boolean>(false);
-
   const onBtnFavClick = () => {
     favoriteItems.value = favoriteItems.value || [];
 
@@ -74,7 +73,7 @@
         directoryName: query?.directoryName,
         itemName: directoryItem.value.siteName,
         itemId: itemIdToMatch,
-        groupId: 1,
+        groupId: DIRECTORY_GROUPS.HOME,
         iconPath: directoryItem.value.iconPath,
         subTitle: directoryItem.value.subtitle1
       };

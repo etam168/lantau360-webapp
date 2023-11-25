@@ -3,7 +3,7 @@
     <q-item
       clickable
       v-for="item in data.slice(0, 8)"
-      :key="item.directoryId"
+      :key="item.communityDirectoryId"
       class="col-3"
       @click="onItemClick(item)"
     >
@@ -15,7 +15,7 @@
             </q-avatar>
           </q-item-section>
         </q-item-label>
-        <q-item-label>{{ item.communityDirectoryName }}</q-item-label>
+        <q-item-label>{{ item.shortName }}</q-item-label>
       </q-item-section>
     </q-item>
   </q-list>
@@ -41,8 +41,8 @@
   }
   const onItemClick = (value: any) => {
     router.push({
-      name: "business-directory-items",
-      query: { directoryId: value.directoryId }
+      name: "community-list",
+      query: { directoryId: value.communityDirectoryId }
     });
   };
 </script>

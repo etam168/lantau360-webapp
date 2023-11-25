@@ -11,14 +11,14 @@
           class="shadow-6 q-mt-sm"
           style="border-radius: 12px"
         >
-          <q-item class="q-pa-sm">
+          <q-item class="q-pa-sm" clickable @click="onItemClick(item)">
             <q-item-section top avatar>
               <q-avatar
                 class="q-pa-none"
                 size="60px"
                 style="border-radius: 0px; border: 1px solid rgba(0, 0, 0, 0.12)"
               >
-                <!-- <q-img :src="getImageSrc(item.iconPath)" /> -->
+                <q-img :src="getImageSrc(item.iconPath)" />
                 <div :style="getAvatarStyle(item.iconPath)"></div>
               </q-avatar>
             </q-item-section>
@@ -49,18 +49,43 @@
 
   // .ts file
   import { FavoriteItem } from "@/interfaces/models/entities/favoriteItem";
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
   import { LocalStorage } from "quasar";
+  import { useRouter } from "vue-router";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
+  const router = useRouter();
 
   onMounted(() => {
     groupItemsByDirectory();
   });
 
+  const onItemClick = (item: any) => {
+    let nextPage = "community-detail";
+
+    switch (item.groupId) {
+      case DIRECTORY_GROUPS.HOME:
+        nextPage = "site-detail";
+        break;
+      case DIRECTORY_GROUPS.BUSINESS:
+        nextPage = "business-detail";
+        break;
+    }
+
+    const queryParams = {
+      directoryItemId: item.itemId,
+      directoryName: item.directoryName
+    };
+
+    router.push({
+      name: nextPage,
+      query: queryParams
+    });
+  };
+
   function groupItemsByDirectory() {
-    groupedItems.value = favoriteItems.value.reduce(
+    groupedItems.value = (favoriteItems.value ?? []).reduce(
       (acc: any, item: any) => {
         const { directoryName } = item;
         if (!acc[directoryName]) {
@@ -73,8 +98,8 @@
     );
   }
 
-  function getImageSrc(iamgePath: any) {
-    return `${BLOB_URL}/${iamgePath}`;
+  function getImageSrc(imagePath: any) {
+    return `${BLOB_URL}/${imagePath}`;
   }
   function getAvatarStyle(iconPath: string | undefined) {
     return {

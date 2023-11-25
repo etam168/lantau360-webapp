@@ -155,6 +155,10 @@ export const SITE_URL = `${BASE_URL}/Site/SiteById`;
 export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
 export const DIRECTORY_URL = `${BASE_URL}/Directory`;
 
+export const COMMUNITY_POSTING_URL = `${BASE_URL}/Posting/ByDirectoryId`;
+export const POSTING_GALLERY_URL = `${BASE_URL}/PostingImage/GetPostingImages`;
+export const POSTING_URL = `${BASE_URL}/Posting/PostingById`;
+
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
@@ -189,7 +193,8 @@ export const DIRECTORY_GROUPS = {
   HOME: 1,
   BUSINESS: 2,
   PROMOTIONS: 108,
-  LATEST_OFFERS: 100
+  LATEST_OFFERS: 100,
+  COMMUNITY: 7
 };
 
 export const STORAGE_KEYS = {

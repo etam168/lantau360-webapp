@@ -7,7 +7,7 @@
             v-for="(image, index) in galleryItems"
             :key="index"
             :name="image.imageId"
-            :img-src="computePath(image.imagePath)"
+            :img-src="image.imagePath"
           >
           </q-carousel-slide>
         </q-carousel>
@@ -62,7 +62,7 @@
   import { PropType, ref, watch } from "vue";
 
   // .ts file
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";
@@ -81,9 +81,9 @@
   const virtualScroll = ref(null);
   const virtualScrollIndex = ref(0);
 
-  const computePath = (path: string) => {
-    return `${BLOB_URL}/${path}`;
-  };
+  // const computePath = (path: string) => {
+  //   return `${BLOB_URL}/${path}`;
+  // };
   watch(
     () => props.galleryImages,
     () => {

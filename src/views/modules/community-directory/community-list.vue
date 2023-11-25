@@ -1,6 +1,6 @@
 <template>
   <q-item clickable v-for="item in directoryItems" :key="item.siteId" @click="onItemClick(item)">
-    <q-img width="80px" height="80px" :src="computePath(item.iconPath)" />
+    <q-img width="80px" height="80px" :src="item.iconPath" />
 
     <q-item-section class="q-ml-lg">
       <q-item-label>{{ item.title }}</q-item-label>
@@ -15,13 +15,15 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, DIRECTORY_BUSINESS_URL } from "@/constants";
+  import { COMMUNITY_POSTING_URL, COMMUNITY_DIRECTORY } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
   const directoryItems = ref();
+  const directory = ref();
+
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
 
@@ -31,22 +33,24 @@
 
   const onItemClick = (value: any) => {
     router.push({
-      name: "business-directory-item-detail",
-      query: { directoryItemId: value.businessId }
+      name: "community-detail",
+      query: { directoryItemId: value.postingId, directoryName: directory.value.directoryName }
     });
   };
 
-  const computePath = (path: string) => {
-    return `${BLOB_URL}/${path}`;
-  };
+  // const computePath = (path: string) => {
+  //   return `${BLOB_URL}/${path}`;
+  // };
 
   const loadData = async () => {
     if (query?.directoryId !== undefined) {
       try {
-        const [response] = await Promise.all([
-          axios.get(`${DIRECTORY_BUSINESS_URL}/${query?.directoryId}`)
+        const [response, respDirectory] = await Promise.all([
+          axios.get(`${COMMUNITY_POSTING_URL}/${query?.directoryId}`),
+          axios.get(`${COMMUNITY_DIRECTORY}/${query?.directoryId}`)
         ]);
         directoryItems.value = response.data;
+        directory.value = respDirectory.data;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {

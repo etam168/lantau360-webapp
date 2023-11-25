@@ -124,6 +124,34 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
+        path: "/community-list",
+        name: "community-list",
+        component: () => import("@/views/modules/community-directory/community-list.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
+      {
+        path: "/community-detail",
+        name: "community-detail",
+        component: () => import("@/views/modules/community-directory/community-detail.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
+      {
         path: "/privacy-policy",
         name: "Privacy",
         component: () => import("@/views/modules/content/index.vue"),
