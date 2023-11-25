@@ -15,17 +15,16 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, DIRECTORY_SITES_URL, DIRECTORY_URL } from "@/constants";
+  import { BLOB_URL, DIRECTORY_BUSINESS_URL, DIRECTORY_URL } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
   const router = useRouter();
   const directoryItems = ref();
-  const directory = ref();
-
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
+  const directory = ref();
 
   onMounted(() => {
     loadData();
@@ -33,8 +32,8 @@
 
   const onItemClick = (value: any) => {
     router.push({
-      name: "site-directory-item-detail",
-      query: { directoryItemId: value.siteId, directoryName: directory.value.directoryName }
+      name: "business-detail",
+      query: { directoryItemId: value.businessId, directoryName: directory.value.directoryName }
     });
   };
 
@@ -46,7 +45,7 @@
     if (query?.directoryId !== undefined) {
       try {
         const [response, respDirectory] = await Promise.all([
-          axios.get(`${DIRECTORY_SITES_URL}/${query?.directoryId}`),
+          axios.get(`${DIRECTORY_BUSINESS_URL}/${query?.directoryId}`),
           axios.get(`${DIRECTORY_URL}/${query?.directoryId}`)
         ]);
         directoryItems.value = response.data;

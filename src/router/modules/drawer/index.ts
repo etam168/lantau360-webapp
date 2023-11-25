@@ -68,9 +68,9 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/site-directory-items",
-        name: "site-directory-items",
-        component: () => import("@/views/modules/site-directory/site-item.vue"),
+        path: "/site-list",
+        name: "site-list",
+        component: () => import("@/views/modules/site-directory/site-list.vue"),
         props: true,
 
         meta: {
@@ -82,8 +82,8 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/site-directory-item-detail",
-        name: "site-directory-item-detail",
+        path: "/site-detail",
+        name: "site-detail",
         component: () => import("@/views/modules/site-directory/site-detail.vue"),
         props: true,
 
@@ -96,10 +96,9 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/business-directory-items",
-        name: "business-directory-items",
-        component: () =>
-          import("@/views/modules/business/section/directory/directory-item-list.vue"),
+        path: "/business-list",
+        name: "business-list",
+        component: () => import("@/views/modules/business-directory/business-list.vue"),
         props: true,
 
         meta: {
@@ -111,10 +110,9 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
-        path: "/business-directory-item-detail",
-        name: "business-directory-item-detail",
-        component: () =>
-          import("@/views/modules/business/section/directory/directory-item-detail.vue"),
+        path: "/business-detail",
+        name: "business-detail",
+        component: () => import("@/views/modules/business-directory/business-detail.vue"),
         props: true,
 
         meta: {

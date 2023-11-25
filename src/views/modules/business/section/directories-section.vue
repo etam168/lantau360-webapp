@@ -38,7 +38,7 @@
 
   const onItemClick = (value: any) => {
     router.push({
-      name: "business-directory-items",
+      name: "business-list",
       query: { directoryId: value.directoryId }
     });
   };
