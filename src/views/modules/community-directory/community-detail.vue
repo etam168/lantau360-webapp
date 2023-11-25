@@ -80,8 +80,8 @@
 
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
-      LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
     }
+    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
   };
 
   const temp = () => {

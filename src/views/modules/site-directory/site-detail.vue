@@ -61,7 +61,6 @@
 
     if (isCurrentlyFavourite) {
       const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
-
       if (itemIndex !== -1) {
         favoriteItems.value.splice(itemIndex, 1);
       }
@@ -80,8 +79,8 @@
 
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
-      LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
     }
+    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
   };
 
   const temp = () => {
