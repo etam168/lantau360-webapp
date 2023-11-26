@@ -186,14 +186,25 @@ const drawerRouter: Array<RouteRecordRaw> = [
         }
       },
       {
-        path: "/sites",
-        name: "Sites",
+        path: "/site-search",
+        name: "SitesSeacrh",
         component: () => import("@/views/modules/search-site/index.vue"),
         meta: {
           title: "route.drawerComponents.sites",
           icon: "mdi-google-maps",
           group: "manageUsers",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK]
+          roles: [Role.CS_ADMIN]
+        }
+      },
+      {
+        path: "/business-search",
+        name: "BusinessSeacrh",
+        component: () => import("@/views/modules/search-business/index.vue"),
+        meta: {
+          title: "route.drawerComponents.sites",
+          icon: "mdi-google-maps",
+          group: "manageUsers",
+          roles: [Role.CS_ADMIN]
         }
       },
       // ...administratorRoutes,

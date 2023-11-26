@@ -65,6 +65,6 @@
 
   function handleSearch() {
     const queryString = { searchKeyword: keyword.value };
-    router.push({ name: "Sites", query: queryString });
+    router.push({ name: "SitesSeacrh", query: queryString });
   }
 </script>
