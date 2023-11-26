@@ -6,7 +6,7 @@
         style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
       >
         <q-separator vertical />
-        <custom-search-input v-model="keyword" @search="onSearch" />
+        <custom-search-input v-model="filter" @search="onSearch" />
       </q-toolbar>
       <q-card-section class="q-py-xs">
         <site-list-table
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { onBeforeUnmount, onMounted, ref } from "vue";
+  import { onBeforeUnmount, onMounted } from "vue";
   import { useRouter } from "vue-router";
 
   // 3rd Party Import
@@ -53,7 +53,6 @@
   );
 
   const router = useRouter();
-  const keyword = ref("");
 
   // function handleFilterOptions(val: any) {
   //   if (val != null) {
