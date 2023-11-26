@@ -68,7 +68,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: query?.directoryItemId,
+        directoryId: query?.siteId,
         directoryName: query?.directoryName,
         itemName: directoryItem.value.siteName,
         itemId: itemIdToMatch,
@@ -93,11 +93,11 @@
 
   const loadData = async () => {
     debugger;
-    if (query?.directoryItemId !== undefined) {
+    if (query?.siteId !== undefined) {
       try {
         const [siteResponse, galleryResponse] = await Promise.all([
-          axios.get(`${SITE_URL}/${query?.directoryItemId}`),
-          axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${query?.directoryItemId}`)
+          axios.get(`${SITE_URL}/${query?.siteId}`),
+          axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${query?.siteId}`)
         ]);
         directoryItem.value = siteResponse.data;
         galleryItems.value = galleryResponse.data;

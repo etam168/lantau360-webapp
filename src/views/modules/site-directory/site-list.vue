@@ -34,7 +34,7 @@
   const onItemClick = (value: any) => {
     router.push({
       name: "site-detail",
-      query: { directoryItemId: value.siteId, directoryName: directory.value.directoryName }
+      query: { siteId: value.siteId }
     });
   };
 

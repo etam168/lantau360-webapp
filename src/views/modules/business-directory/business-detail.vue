@@ -69,7 +69,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: query?.directoryItemId,
+        directoryId: query?.businessId,
         directoryName: query?.directoryName,
         itemName: directoryItem.value.title,
         itemId: itemIdToMatch,
@@ -89,11 +89,11 @@
   });
 
   const loadData = async () => {
-    if (query?.directoryItemId !== undefined) {
+    if (query?.businessId !== undefined) {
       try {
         const [siteResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${query?.directoryItemId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${query?.directoryItemId}`)
+          axios.get(`${BUSINESS_URL}/${query?.businessId}`),
+          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${query?.businessId}`)
         ]);
         directoryItem.value = siteResponse.data;
         galleryItems.value = galleryResponse.data;
