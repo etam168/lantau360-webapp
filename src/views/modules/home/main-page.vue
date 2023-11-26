@@ -32,7 +32,7 @@
   import HeroSection from "./section/hero-section.vue";
   import WeatherSection from "./section/weather-section.vue";
   import DirectorySection from "./section/directory-section.vue";
-  import CustomSearchInput from "./section/custom-search-input.vue";
+  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
   const router = useRouter();
 

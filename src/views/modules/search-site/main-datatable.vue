@@ -1,89 +1,89 @@
 <template>
   <q-page class="bg-grey-2">
-    <app-page-title>{{ $t("site.title") }}</app-page-title>
+    <q-card flat square>
+      <q-toolbar
+        class="q-pa-none bg-grey-3 q-ma-lg"
+        style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
+      >
+        <q-separator vertical />
+        <custom-search-input v-model="keyword" @search="onSearch" />
+      </q-toolbar>
+      <q-card-section class="q-py-xs">
+        <site-list-table
+          v-model:pagination="pagination"
+          row-key="siteId"
+          :rows="rows"
+          :loading="loading"
+          @on-detail="handleDetail"
+          @on-pagination="updatePagination"
+          @request="loadData"
+        />
+      </q-card-section>
 
-    <q-separator />
-    <crud-expanded-table
-      class="q-ma-md"
-      v-model:pagination="pagination"
-      row-key="siteId"
-      dense
-      :expandedRow="expandedRow"
-      :rows="rows"
-      :columns="columns"
-      :loading="loading"
-      :filter="filter"
-      :actionButtons="actionButtons"
-      :toolTipCreate="toolTipCreate"
-      @on-create="onCreate"
-      @on-update="onUpdate"
-      @on-refresh="onRefresh"
-      @on-search="onSearch"
-      @request="loadData"
-      @on-rowsperpage-change="handlePageCountChange"
-    />
+      <!-- <q-card-section v-else class="q-pa-none">
+        <no-data />
+      </q-card-section> -->
+    </q-card>
   </q-page>
 </template>
 
 <script setup lang="ts">
   // Vue Import
-  import { ref, onMounted, onBeforeUnmount, defineAsyncComponent, provide } from "vue";
+  import { onBeforeUnmount, onMounted, ref } from "vue";
+  import { useRouter } from "vue-router";
 
-  // 3rd Party Modules
-  import axios, { AxiosError } from "axios";
-  import { useRouter, onBeforeRouteLeave } from "vue-router";
+  // 3rd Party Import
 
-  // .ts files
+  // .ts file
   import eventBus from "@/utils/event-bus";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import {
-    actionButtons,
-    pagination,
-    rows,
-    columns,
-    loading,
-    filter,
-    onRefresh,
-    onSearch,
-    loadData,
-    toolTipCreate
-  } from "./use-table-options";
+  import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
-  import AppPageTitle from "@/components/widgets/app-page-title.vue";
-  import CrudExpandedTable from "@/components/table/crud-expanded-table.vue";
+  // import ListingGridTable from "@/components/table/listing-grid-table.vue";
+  import siteListTable from "./site-list-table.vue";
+  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
+  // import NoData from "@/components/custom/no-data.vue";
 
-  const expandedRow = defineAsyncComponent(() => import("./crud-expanded-row/index.vue"));
+  const url = "/Site/Datatable";
+  const key = "siteId";
 
-  const isDialogOpen = ref(false);
-  const isSiteDialogOpen = ref(false);
-
-  const directoryList = ref<Directory[]>([]);
-  const error = ref<string | null>(null);
+  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
+    url,
+    key
+  );
 
   const router = useRouter();
+  const keyword = ref("");
 
-  function onUpdate() {}
+  // function handleFilterOptions(val: any) {
+  //   if (val != null) {
+  //     if (val.length != 0) {
+  //       filterOptions.value = JSON.stringify(val);
+  //     }
+  //     console.log(messageList);
+  //     console.log(filterOptions.value);
+  //     loadData({
+  //       filter: filter.value,
+  //       filterOptions: filterOptions.value,
+  //       pagination: pagination.value
+  //     });
+  //   }
+  // }
 
-  const onCreate = () => {};
+  function updatePagination(val: any) {
+    pagination.value.page = val;
+    loadData({ pagination: pagination.value });
+  }
 
-  onBeforeRouteLeave((_to, _from, next) => {
-    if (isSiteDialogOpen.value) {
-      isSiteDialogOpen.value = false;
-      eventBus.emit("CloseBusinessDilaog");
-      next(false);
-    } else if (isDialogOpen.value) {
-      isDialogOpen.value = false;
-      eventBus.emit("CloseDilaog");
-      next(false);
-    } else {
-      next();
-    }
+  function handleDetail(rowData: any) {
+    router.push({ name: "property-detail", params: { id: rowData.propertyListingId } });
+  }
+
+  onBeforeUnmount(() => {
+    eventBus.off("LoadData");
   });
 
   onMounted(() => {
-    // loadData({ pagination: pagination.value });
-
     eventBus.on("LoadData", () => {
       loadData({ pagination: pagination.value });
       onRefresh();
@@ -95,41 +95,14 @@
     if (query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value
       filter.value = query.searchKeyword as string;
+      // keyword.value = filter.value;
     }
     debugger;
-
     loadData({ pagination: pagination.value });
   });
 
-  onBeforeUnmount(() => {
-    eventBus.off("LoadData");
-  });
-
-  function handlePageCountChange(val: any) {
-    if (val != null) {
-      pagination.value.rowsPerPage = val;
-      loadData({
-        filter: filter.value,
-        pagination: pagination.value
-      });
-    }
-  }
-
-  try {
-    const [response] = await Promise.all([
-      axios.get<Directory[]>("/Directory/DirectoryGroupsData/1")
-    ]);
-    directoryList.value = response.data;
-    provide("directoryList", directoryList.value);
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = "Not found";
-      } else {
-        error.value = "An error occurred";
-      }
-    } else {
-      error.value = "An unexpected error occurred";
-    }
-  }
+  // function handleSearch() {
+  //   const queryString = { searchKeyword: keyword.value };
+  //   router.push({ name: "Sites", query: queryString });
+  // }
 </script>

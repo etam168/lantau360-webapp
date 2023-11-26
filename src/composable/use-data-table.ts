@@ -37,13 +37,12 @@ export default function useDataTable(url: string, key: string, opt?: any) {
     const { page, rowsPerPage, sortBy, descending } = props.pagination;
 
     const sort = descending ? sortBy + "|desc" : sortBy;
-    const filter = props.filter;
 
     const params = {
       page,
       per_page: rowsPerPage,
       sort,
-      filter,
+      filter: filter.value,
       column_filter: columnFilter.value
     };
 
@@ -52,6 +51,7 @@ export default function useDataTable(url: string, key: string, opt?: any) {
       else params["businessId"] = opt.businessId;
     }
 
+    debugger;
     const data = await getDataTable(params);
 
     loading.value = false;
