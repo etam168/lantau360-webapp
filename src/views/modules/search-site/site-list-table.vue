@@ -12,7 +12,7 @@
     :rows-per-page="25"
   >
     <template #item="props">
-      <div>
+      <div class="col-12">
         <site-item
           :row="props.row"
           @on-contact="handleContact(props.row)"
