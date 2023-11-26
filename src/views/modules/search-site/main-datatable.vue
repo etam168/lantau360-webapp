@@ -54,28 +54,12 @@
 
   const router = useRouter();
 
-  // function handleFilterOptions(val: any) {
-  //   if (val != null) {
-  //     if (val.length != 0) {
-  //       filterOptions.value = JSON.stringify(val);
-  //     }
-  //     console.log(messageList);
-  //     console.log(filterOptions.value);
-  //     loadData({
-  //       filter: filter.value,
-  //       filterOptions: filterOptions.value,
-  //       pagination: pagination.value
-  //     });
-  //   }
-  // }
-
   function updatePagination(val: any) {
     pagination.value.page = val;
     loadData({ pagination: pagination.value });
   }
 
   function handleDetail(rowData: any) {
-    // router.push({ name: "property-detail", params: { id: rowData.propertyListingId } });
     router.push({
       name: "site-detail",
       query: { directoryItemId: rowData.siteId, directoryName: rowData.siteName }
@@ -102,9 +86,4 @@
     }
     loadData({ pagination: pagination.value });
   });
-
-  // function handleSearch() {
-  //   const queryString = { searchKeyword: keyword.value };
-  //   router.push({ name: "Sites", query: queryString });
-  // }
 </script>

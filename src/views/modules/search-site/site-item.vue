@@ -35,27 +35,4 @@
   function handleDetail() {
     emits("on-detail");
   }
-
-  // const loadData = async () => {
-  //   if (query?.directoryId !== undefined) {
-  //     try {
-  //       const [response, respDirectory] = await Promise.all([
-  //         axios.get(`${DIRECTORY_SITES_URL}/${query?.directoryId}`),
-  //         axios.get(`${DIRECTORY_URL}/${query?.directoryId}`)
-  //       ]);
-  //       directoryItems.value = response.data;
-  //       directory.value = respDirectory.data;
-  //     } catch (err) {
-  //       if (err instanceof AxiosError) {
-  //         if (err.response && err.response.status === 404) {
-  //           error.value = "Not found";
-  //         } else {
-  //           error.value = "An error occurred";
-  //         }
-  //       } else {
-  //         error.value = "An unexpected error occurred";
-  //       }
-  //     }
-  //   }
-  // };
 </script>
