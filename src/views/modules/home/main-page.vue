@@ -3,12 +3,21 @@
 
   <weather-section :data="weatherData" />
 
+  <q-toolbar
+    class="q-pa-none bg-grey-3 q-ma-lg"
+    style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
+  >
+    <q-separator vertical />
+    <custom-search-input v-model="keyword" @search="handleSearch" />
+  </q-toolbar>
+
   <directory-section :data="directoriesData" class="q-mb-md" />
 </template>
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
   import { provide, ref } from "vue";
+  import { useRouter } from "vue-router";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -16,14 +25,18 @@
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
   import { ATTRACTION_URL, WEATHER_URL, MAIN_DIRECTORIES, DIRECTORY_GROUPS } from "@/constants";
+  import { Weather } from "@/interfaces/models/entities/weather";
+  import { Directory } from "@/interfaces/models/entities/directory";
 
   // Custom Components
   import HeroSection from "./section/hero-section.vue";
   import WeatherSection from "./section/weather-section.vue";
   import DirectorySection from "./section/directory-section.vue";
-  import { Weather } from "@/interfaces/models/entities/weather";
-  import { Directory } from "@/interfaces/models/entities/directory";
+  import CustomSearchInput from "./section/custom-search-input.vue";
 
+  const router = useRouter();
+
+  const keyword = ref("");
   const heroData = ref<any | null>(null);
   const weatherData = ref<any | null>(null);
   const directoriesData = ref();
@@ -48,5 +61,10 @@
     } else {
       error.value = "An unexpected error occurred";
     }
+  }
+
+  function handleSearch() {
+    const queryString = { searchKeyword: keyword.value };
+    router.push({ name: "Sites", query: queryString });
   }
 </script>

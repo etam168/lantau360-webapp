@@ -1,3 +1,6 @@
 export default {
-  title: "Home"
+  title: "Home",
+  searchBar: {
+    placeholder: "Enter Keyword"
+  }
 };

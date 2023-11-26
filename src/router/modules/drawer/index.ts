@@ -185,6 +185,17 @@ const drawerRouter: Array<RouteRecordRaw> = [
           roles: [Role.CS_ADMIN, Role.FRONT_DESK]
         }
       },
+      {
+        path: "/sites",
+        name: "Sites",
+        component: () => import("@/views/modules/search-site/index.vue"),
+        meta: {
+          title: "route.drawerComponents.sites",
+          icon: "mdi-google-maps",
+          group: "manageUsers",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK]
+        }
+      },
       // ...administratorRoutes,
       // ...moreRoutes,
 
