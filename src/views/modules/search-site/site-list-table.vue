@@ -13,11 +13,7 @@
   >
     <template #item="props">
       <div class="col-12">
-        <site-item
-          :row="props.row"
-          @on-contact="handleContact(props.row)"
-          @on-detail="handleDetail(props.row)"
-        />
+        <site-item :row="props.row" @on-detail="handleDetail(props.row)" />
       </div>
 
       <!-- <div>
@@ -61,10 +57,6 @@
   defineProps({
     hidePagination: { type: Boolean, default: false }
   });
-
-  function handleContact(props: any) {
-    emits("on-contact", props);
-  }
 
   function handleDetail(props: any) {
     emits("on-detail", props);

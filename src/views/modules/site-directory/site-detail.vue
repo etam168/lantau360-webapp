@@ -92,6 +92,7 @@
   });
 
   const loadData = async () => {
+    debugger;
     if (query?.directoryItemId !== undefined) {
       try {
         const [siteResponse, galleryResponse] = await Promise.all([

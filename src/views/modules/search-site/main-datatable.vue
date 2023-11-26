@@ -75,7 +75,11 @@
   }
 
   function handleDetail(rowData: any) {
-    router.push({ name: "property-detail", params: { id: rowData.propertyListingId } });
+    // router.push({ name: "property-detail", params: { id: rowData.propertyListingId } });
+    router.push({
+      name: "site-detail",
+      query: { directoryItemId: rowData.siteId, directoryName: rowData.siteName }
+    });
   }
 
   onBeforeUnmount(() => {
@@ -96,7 +100,6 @@
       filter.value = query.searchKeyword as string;
       // keyword.value = filter.value;
     }
-    debugger;
     loadData({ pagination: pagination.value });
   });
 

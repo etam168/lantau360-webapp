@@ -1,5 +1,5 @@
 <template>
-  <q-item>
+  <q-item clickable @click="handleDetail">
     <q-img width="80px" height="80px" :src="computePath(row.iconPath)" />
 
     <q-item-section class="q-ml-lg">
@@ -19,6 +19,8 @@
   import { Site } from "@/interfaces/site";
   import { PropType } from "vue";
 
+  const emits = defineEmits(["on-detail"]);
+
   const computePath = (path: string) => {
     return `${BLOB_URL}/${path}`;
   };
@@ -29,6 +31,10 @@
       required: true
     }
   });
+
+  function handleDetail() {
+    emits("on-detail");
+  }
 
   // const loadData = async () => {
   //   if (query?.directoryId !== undefined) {
