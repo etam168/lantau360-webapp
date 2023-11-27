@@ -1,7 +1,10 @@
 <template>
   <div class="text-center">
-    <q-avatar>
-      <q-img :src="data?.meta['file-path']" />
+    <q-avatar v-if="data && data.meta && data.meta['file-path']">
+      <q-img :src="data.meta['file-path']" />
+    </q-avatar>
+    <q-avatar v-else>
+      <q-img :src="PLACEHOLDER_THUMBNAIL" />
     </q-avatar>
   </div>
   <div class="text-h6 text-center q-ma-sm">
@@ -14,6 +17,7 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   defineProps({
     data: {
