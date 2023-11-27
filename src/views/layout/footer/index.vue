@@ -1,9 +1,9 @@
 <template>
-  <q-footer bordered class="bg-grey-3 text-primary">
+  <q-footer bordered class="bg-white text-primary">
     <q-tabs
       v-model="tab"
       active-color="primary"
-      class="bg-indigo text-white"
+      class="text-grey"
       indicator-color="transparent"
       no-caps
     >
