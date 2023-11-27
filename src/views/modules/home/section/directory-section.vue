@@ -3,14 +3,7 @@
     <div class="row">
       <div class="col-4 q-pa-lg" v-for="directory in data" :key="directory.directoryId">
         <div @click="onItemClick(directory)">
-          <div class="text-center">
-            <q-avatar>
-              <q-img :src="directory?.meta['file-path']" />
-            </q-avatar>
-          </div>
-          <div class="text-h6 text-center q-ma-sm">
-            {{ directory.directoryName }}
-          </div>
+          <directory-item :data="directory" />
         </div>
       </div>
     </div>
@@ -23,6 +16,9 @@
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useRouter } from "vue-router";
+
+  //Custom Components
+  import DirectoryItem from "@/components/custom/directory-item.vue";
 
   defineProps({
     data: {
