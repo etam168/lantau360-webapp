@@ -51,11 +51,10 @@
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    favoriteItems.value = favoriteItems.value || [];
-
     const itemIdToMatch = directoryItem.value.siteId;
     const isCurrentlyFavourite = isFavourite.value;
 
@@ -69,7 +68,7 @@
     } else {
       const favItem = {
         directoryId: query?.siteId,
-        directoryName: query?.directoryName,
+        directoryName: directoryItem.value.directoryName,
         itemName: directoryItem.value.siteName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
@@ -80,7 +79,7 @@
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
     }
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems);
+    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
   };
 
   const temp = () => {
@@ -92,7 +91,6 @@
   });
 
   const loadData = async () => {
-    debugger;
     if (query?.siteId !== undefined) {
       try {
         const [siteResponse, galleryResponse] = await Promise.all([

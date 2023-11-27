@@ -59,6 +59,7 @@
 
   onMounted(() => {
     groupItemsByDirectory();
+    console.log(groupedItems);
   });
 
   const onItemClick = (item: any) => {
