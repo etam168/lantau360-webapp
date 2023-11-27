@@ -75,8 +75,7 @@
     }
 
     const queryParams = {
-      directoryItemId: item.itemId,
-      directoryName: item.directoryName
+      directoryItemId: item.itemId
     };
 
     router.push({
