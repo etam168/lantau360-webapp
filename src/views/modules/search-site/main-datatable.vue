@@ -62,7 +62,7 @@
   function handleDetail(rowData: any) {
     router.push({
       name: "site-detail",
-      query: { directoryItemId: rowData.siteId, directoryName: rowData.siteName }
+      query: { siteId: rowData.siteId }
     });
   }
 

@@ -62,7 +62,7 @@
   function handleDetail(rowData: any) {
     router.push({
       name: "business-detail",
-      query: { directoryItemId: rowData.businessId, directoryName: rowData.businessName }
+      query: { businessId: rowData.businessId }
     });
   }
 
