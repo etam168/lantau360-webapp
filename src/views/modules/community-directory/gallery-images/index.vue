@@ -75,7 +75,8 @@
     }
   });
 
-  const slide = ref(0);
+  const slide = ref(props.galleryImages[0]?.imageId);
+
   const galleryItems = ref<GalleryImage[]>([]);
 
   const virtualScroll = ref(null);
@@ -94,7 +95,7 @@
   );
 
   function showImage(row: any) {
-    slide.value = row.index;
+    slide.value = row.imageId;
   }
 
   function onVirtualScroll(details: any) {
