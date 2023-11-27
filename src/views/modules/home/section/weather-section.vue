@@ -1,7 +1,7 @@
 <template>
-  <q-card class="my-card text-white q-ma-lg" style="background: #009ef7">
+  <q-card class="my-card text-white q-ma-md" style="background: #009ef7">
     <q-card-section>
-      <q-item>
+      <q-item class="q-pa-none">
         <q-item-section top>
           <i class="fa-regular fa-solid fa-cloud text-h2"></i>
           <q-item-label class="text-weight-medium text-h6">{{ data?.caption }}</q-item-label>

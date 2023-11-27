@@ -9,11 +9,11 @@ export function useUtilities() {
   function aspectRatio() {
     switch ($q.screen.name) {
       case "xs":
-        return 2;
+        return 1.7777;
       case "sm":
-        return 2;
+        return 1.7777;
       case "md":
-        return 2;
+        return 1.7777;
       case "lg":
       default:
         return 3;

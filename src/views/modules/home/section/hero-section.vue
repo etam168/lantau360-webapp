@@ -12,7 +12,6 @@
         transition-next="fade"
         transition-duration="1200"
         :autoplay="slideInterval"
-        arrows
         class="bg-primary"
       >
         <q-carousel-slide
