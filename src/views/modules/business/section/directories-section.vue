@@ -1,28 +1,20 @@
 <template>
-  <q-list class="row">
-    <q-item
-      clickable
-      v-for="item in data.slice(0, 8)"
-      :key="item.directoryId"
-      class="col-3"
-      @click="onItemClick(item)"
-    >
-      <q-item-section class="row justify-center items-center">
-        <q-item-label>
-          <q-item-section top avatar class="q-pr-none justify-center items-center">
-            <q-avatar>
-              <img :src="item?.meta['file-path']" />
-            </q-avatar>
-          </q-item-section>
-        </q-item-label>
-        <q-item-label>{{ item.directoryName }}</q-item-label>
-      </q-item-section>
-    </q-item>
+  <q-list>
+    <div class="row">
+      <div class="col-3 q-pa-lg" v-for="directory in data.slice(0, 8)" :key="directory.directoryId">
+        <div @click="onItemClick(directory)">
+          <directory-item :data="directory" />
+        </div>
+      </div>
+    </div>
   </q-list>
 </template>
 <script setup lang="ts">
   // Vue Import
   import { PropType } from "vue";
+
+  //Custom Components
+  import DirectoryItem from "@/components/custom/directory-item.vue";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
