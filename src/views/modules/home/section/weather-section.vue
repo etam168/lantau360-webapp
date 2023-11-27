@@ -1,8 +1,5 @@
 <template>
-  <q-card
-    class="my-card text-white q-ma-lg"
-    style="background: radial-gradient(circle, #35a2ff 0%, #014a88 100%)"
-  >
+  <q-card class="my-card text-white q-ma-lg" style="background: #009ef7">
     <q-card-section>
       <q-item>
         <q-item-section top>
