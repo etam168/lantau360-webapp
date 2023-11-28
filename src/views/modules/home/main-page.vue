@@ -2,7 +2,7 @@
   <hero-section :data="heroData" />
 
   <weather-section :data="weatherData" />
-
+  <top-directory-section :data="directoriesData" class="q-mb-md" />
   <q-toolbar
     class="q-pa-none bg-grey-3 q-ma-lg"
     style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
@@ -13,10 +13,10 @@
 
   <directory-section :data="directoriesData" class="q-mb-md" />
 </template>
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+
 <script setup lang="ts">
   // Vue Import
-  import { provide, ref } from "vue";
+  import { ref } from "vue";
   import { useRouter } from "vue-router";
 
   // 3rd Party Import
@@ -33,6 +33,7 @@
   import WeatherSection from "./section/weather-section.vue";
   import DirectorySection from "./section/directory-section.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
+  import TopDirectorySection from "./section/top-directory-section.vue";
 
   const router = useRouter();
 
