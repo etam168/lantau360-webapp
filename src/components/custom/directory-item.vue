@@ -1,14 +1,12 @@
 <template>
   <div class="text-center">
-    <q-avatar v-if="data && data.meta && data.meta['file-path']">
-      <q-img :src="data.meta['file-path']" />
-    </q-avatar>
-    <q-avatar v-else>
-      <q-img :src="PLACEHOLDER_THUMBNAIL" />
+    <q-avatar size="64px">
+      <q-img :src="directoryIcon" />
     </q-avatar>
   </div>
   <div class="text-center q-ma-sm">
-    {{ getTitle(data.directoryName, data.meta, "directoryName") }}
+    <!-- {{ getTitle(data.directoryName, data.meta, "directoryName") }} -->
+    {{ directoryTitle }}
   </div>
 </template>
 <script setup lang="ts">
@@ -18,24 +16,31 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { computed } from "vue";
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
 
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object as PropType<Directory>,
       required: true
     }
   });
 
-  const getTitle = (label: string, meta: any, key: string) => {
+  const directoryIcon = computed(() => {
+    return props.data && props.data.meta && props.data.meta["file-path"]
+      ? props.data.meta["file-path"]
+      : PLACEHOLDER_THUMBNAIL;
+  });
+
+  const directoryTitle = computed(() => {
     const { locale } = useI18n({ useScope: "global" });
     switch (locale.value) {
       case "hk":
-        return meta?.i18n?.hk?.[key] ?? label;
+        return props.data.meta?.i18n?.hk?.["directoryName"] ?? props.data.directoryName;
       case "cn":
-        return meta?.i18n?.cn?.[key] ?? label;
+        return props.data.meta?.i18n?.cn?.["directoryName"] ?? props.data.directoryName;
       default:
-        return label;
+        return props.data.directoryName;
     }
-  };
+  });
 </script>

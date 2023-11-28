@@ -1,7 +1,7 @@
 <template>
   <q-list>
     <div class="row">
-      <div class="col-4 q-pa-lg" v-for="directory in data" :key="directory.directoryId">
+      <div class="col-3 q-pa-lg" v-for="directory in data" :key="directory.directoryId">
         <div @click="onItemClick(directory)">
           <directory-item :data="directory" />
         </div>
