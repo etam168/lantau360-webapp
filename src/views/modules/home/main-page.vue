@@ -2,7 +2,7 @@
   <hero-section :data="heroData" />
 
   <weather-section :data="weatherData" />
-  <top-directory-section :data="directoriesData" class="q-mb-md" />
+  <top-directory-section class="q-mb-md" />
   <q-responsive full-width style="height: 48px" class="q-mx-lg">
     <q-toolbar>
       <custom-search-input v-model="keyword" @search="handleSearch" />

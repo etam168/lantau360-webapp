@@ -1,33 +1,24 @@
 <template>
-  <q-scroll-area style="height: 110px">
-    <div class="row no-wrap">
-      <div class="col-1 q-px-lg q-py-sm" v-for="directory in data" :key="directory.directoryId">
-        <div @click="onItemClick(directory)">
-          <directory-item :data="directory" />
-        </div>
+  <div class="row no-wrap">
+    <div class="col-4 q-px-lg q-py-sm" v-for="directory in data" :key="directory.directoryId">
+      <div @click="onItemClick(directory)">
+        <directory-item :data="directory" />
       </div>
     </div>
-  </q-scroll-area>
+  </div>
 </template>
 <script setup lang="ts">
-  // Vue Import
-  import { PropType } from "vue";
-
   // .ts file
-  import { Directory } from "@/interfaces/models/entities/directory";
   import { useRouter } from "vue-router";
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item.vue";
-
-  defineProps({
-    data: {
-      type: Object as PropType<Directory[]>,
-      required: true
-    }
-  });
+  // Json
+  import directorData from "./data/data.json";
+  import { ref } from "vue";
 
   const router = useRouter();
+  const data = ref<any>(directorData || []);
 
   const onItemClick = (value: any) => {
     router.push({
