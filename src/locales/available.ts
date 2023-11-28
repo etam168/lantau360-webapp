@@ -1,5 +1,6 @@
 import en from "./en_US";
 import hk from "./zh_HK";
+import cn from "./zh_CN";
 
 /**
  * Available locales
@@ -19,4 +20,4 @@ const locales = [
   }
 ];
 
-export { en, hk, locales };
+export { en, hk, cn, locales };
