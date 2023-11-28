@@ -3,15 +3,12 @@
 
   <weather-section :data="weatherData" />
   <top-directory-section :data="directoriesData" class="q-mb-md" />
-  <q-toolbar
-    class="q-pa-none bg-grey-3 q-ma-lg"
-    style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
-  >
-    <q-separator vertical />
-    <custom-search-input v-model="keyword" @search="handleSearch" />
-  </q-toolbar>
-
-  <directory-section :data="directoriesData" class="q-mb-md" />
+  <q-responsive full-width style="height: 48px" class="q-mx-lg">
+    <q-toolbar>
+      <custom-search-input v-model="keyword" @search="handleSearch" />
+    </q-toolbar>
+  </q-responsive>
+  <directory-section :data="directoriesData" class="q-my-md" />
 </template>
 
 <script setup lang="ts">

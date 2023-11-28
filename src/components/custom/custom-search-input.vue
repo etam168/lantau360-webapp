@@ -16,7 +16,7 @@
     </template>
 
     <template v-slot:after>
-      <q-btn square unelevated size="lg" padding="md 8px" color="primary" @click="$emit('search')">
+      <q-btn square unelevated padding="md 18px" color="primary" @click="$emit('search')">
         <q-icon size="sm" name="search" />
       </q-btn>
     </template>
