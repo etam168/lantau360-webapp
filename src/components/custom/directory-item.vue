@@ -7,13 +7,14 @@
       <q-img :src="PLACEHOLDER_THUMBNAIL" />
     </q-avatar>
   </div>
-  <div class="text-h6 text-center q-ma-sm">
-    {{ data.directoryName }}
+  <div class="text-center q-ma-sm">
+    {{ getTitle(data.directoryName, data.meta, "directoryName") }}
   </div>
 </template>
 <script setup lang="ts">
   // Vue Import
   import { PropType } from "vue";
+  import { useI18n } from "vue-i18n";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -25,4 +26,16 @@
       required: true
     }
   });
+
+  const getTitle = (label: string, meta: any, key: string) => {
+    const { locale } = useI18n({ useScope: "global" });
+    switch (locale.value) {
+      case "hk":
+        return meta?.i18n?.hk?.[key] ?? label;
+      case "cn":
+        return meta?.i18n?.cn?.[key] ?? label;
+      default:
+        return label;
+    }
+  };
 </script>
