@@ -1,11 +1,9 @@
 <template>
-  <q-toolbar
-    class="q-pa-none bg-grey-3 q-ma-lg"
-    style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
-  >
-    <q-separator vertical />
-    <custom-search-input v-model="keyword" @search="handleSearch" />
-  </q-toolbar>
+  <q-responsive full-width style="height: 48px" class="q-ma-lg">
+    <q-toolbar>
+      <custom-search-input v-model="keyword" @search="handleSearch" />
+    </q-toolbar>
+  </q-responsive>
   <directories :data="directoriesData" class="q-mb-md" />
   <promotions :data="promotions" />
   <latest-offer :offers="latestOffers" />
