@@ -1,14 +1,31 @@
 <template>
   <hero-section :data="heroData" />
-
   <weather-section :data="weatherData" />
-  <top-directory-section class="q-mb-md" />
-  <q-responsive full-width style="height: 48px" class="q-mx-lg">
-    <q-toolbar>
-      <custom-search-input v-model="keyword" @search="handleSearch" />
-    </q-toolbar>
-  </q-responsive>
-  <directory-section :data="directoriesData" class="q-my-md" />
+  <q-tabs
+    v-model="tab"
+    dense
+    class="text-grey"
+    active-color="primary"
+    indicator-color="primary"
+    align="justify"
+    narrow-indicator
+  >
+    <q-tab name="allLocations" label="All Locations" />
+    <q-tab name="info" label="Info" />
+  </q-tabs>
+
+  <q-separator />
+
+  <q-tab-panels v-model="tab" animated>
+    <q-tab-panel name="allLocations">
+      <directory-section :data="directoriesData" class="q-my-md" />
+    </q-tab-panel>
+
+    <q-tab-panel name="info">
+      <custom-search-bar @on-search="handleSearch" />
+      <top-directory-section class="q-mb-md" />
+    </q-tab-panel>
+  </q-tab-panels>
 </template>
 
 <script setup lang="ts">
@@ -29,12 +46,12 @@
   import HeroSection from "./section/hero-section.vue";
   import WeatherSection from "./section/weather-section.vue";
   import DirectorySection from "./section/directory-section.vue";
-  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
+  import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
   import TopDirectorySection from "./section/top-directory-section.vue";
 
   const router = useRouter();
-
-  const keyword = ref("");
+  const tab = ref("allLocations");
+  // const keyword = ref("");
   const heroData = ref<any | null>(null);
   const weatherData = ref<any | null>(null);
   const directoriesData = ref();
@@ -61,8 +78,8 @@
     }
   }
 
-  function handleSearch() {
-    const queryString = { searchKeyword: keyword.value };
+  function handleSearch(value: string) {
+    const queryString = { searchKeyword: value };
     router.push({ name: "SitesSeacrh", query: queryString });
   }
 </script>
