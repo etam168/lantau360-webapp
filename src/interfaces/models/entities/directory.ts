@@ -4,6 +4,7 @@ export interface Directory {
   shortName: string;
   imagePath: string;
   description: string;
+  displayMask: number;
   groupId: number;
   status: number;
   createdAt: Date;

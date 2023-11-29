@@ -18,7 +18,7 @@
 
   <q-tab-panels v-model="tab" animated>
     <q-tab-panel name="allLocations">
-      <directory-section :data="directoriesData" class="q-my-md" />
+      <directory-section :data="allLocationsData" class="q-my-md" />
     </q-tab-panel>
 
     <q-tab-panel name="info">
@@ -55,6 +55,7 @@
   const heroData = ref<any | null>(null);
   const weatherData = ref<any | null>(null);
   const directoriesData = ref();
+  const allLocationsData = ref();
   const error = ref<string | null>(null);
 
   try {
@@ -66,6 +67,9 @@
     heroData.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
     directoriesData.value = homeDirectories.data;
+    allLocationsData.value = directoriesData.value.filter((directory: Directory) => {
+      return directory.displayMask === 1 || directory.displayMask === 3;
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
