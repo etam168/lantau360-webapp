@@ -53,6 +53,7 @@
   const tab = ref("allLocations");
   // const keyword = ref("");
   const heroData = ref<any | null>(null);
+  const filteredheroData = ref<any | null>(null);
   const weatherData = ref<any | null>(null);
   const directoriesData = ref();
   const allLocationsData = ref();
@@ -69,6 +70,9 @@
     directoriesData.value = homeDirectories.data;
     allLocationsData.value = directoriesData.value.filter((directory: Directory) => {
       return directory.displayMask === 1 || directory.displayMask === 3;
+    });
+    filteredheroData.value = heroData.value.filter((directory: Directory) => {
+      return directory.displayMask === 2 || directory.displayMask === 3;
     });
   } catch (err) {
     if (err instanceof AxiosError) {
