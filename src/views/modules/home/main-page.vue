@@ -18,12 +18,13 @@
 
   <q-tab-panels v-model="tab" animated>
     <q-tab-panel name="allLocations">
-      <directory-section :data="allLocationsData" class="q-my-md" />
+      <directory-section :data="directoriesData" class="q-my-md" />
     </q-tab-panel>
 
     <q-tab-panel name="info">
       <custom-search-bar @on-search="handleSearch" />
-      <top-directory-section class="q-mb-md" />
+      <!-- <top-directory-section class="q-mb-md" /> -->
+      <directory-section :data="infoData" class="q-my-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -47,7 +48,7 @@
   import WeatherSection from "./section/weather-section.vue";
   import DirectorySection from "./section/directory-section.vue";
   import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
-  import TopDirectorySection from "./section/top-directory-section.vue";
+  // import TopDirectorySection from "./section/top-directory-section.vue";
 
   const router = useRouter();
   const tab = ref("allLocations");
@@ -56,7 +57,8 @@
   const filteredheroData = ref<any | null>(null);
   const weatherData = ref<any | null>(null);
   const directoriesData = ref();
-  const allLocationsData = ref();
+  // const allLocationsData = ref();
+  const infoData = ref();
   const error = ref<string | null>(null);
 
   try {
@@ -68,7 +70,7 @@
     heroData.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
     directoriesData.value = homeDirectories.data;
-    allLocationsData.value = directoriesData.value.filter((directory: Directory) => {
+    infoData.value = directoriesData.value.filter((directory: Directory) => {
       return directory.displayMask === 1 || directory.displayMask === 3;
     });
     filteredheroData.value = heroData.value.filter((directory: Directory) => {
