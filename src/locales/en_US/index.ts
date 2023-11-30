@@ -21,6 +21,7 @@ import directory from "./modules/directory";
 import weather from "./modules/weather";
 import content from "./modules/content";
 import more from "./modules/more";
+import footer from "./modules/footer";
 
 export default {
   home,
@@ -45,6 +46,7 @@ export default {
   privacyPolicy,
   termsAndConditions,
   more,
+  footer,
 
   video,
   document,

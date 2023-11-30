@@ -34,6 +34,7 @@
   // Vue Import
   import { ref } from "vue";
   import { useRouter } from "vue-router";
+  import { useI18n } from "vue-i18n";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -52,6 +53,8 @@
   import WeatherSection from "./section/weather-section.vue";
 
   const { isNthBitSet } = useUtilities();
+  const { t } = useI18n({ useScope: "global" });
+
   const router = useRouter();
   const tab = ref("all");
 
@@ -63,8 +66,8 @@
   const weatherData = ref<any | null>(null);
 
   const tabItems = ref([
-    { name: "all", label: "All Locations" },
-    { name: "info", label: "Info" }
+    { name: "all", label: t("home.allLocations") },
+    { name: "info", label: t("home.info") }
   ]);
 
   function handleSearch(value: string) {

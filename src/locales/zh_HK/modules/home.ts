@@ -1,7 +1,7 @@
 export default {
   title: "Home",
-  allLocations: "All Locations",
-  info: "Info",
+  allLocations: "所有地点",
+  info: "信息",
   searchBar: {
     placeholder: "Enter Keyword"
   }

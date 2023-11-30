@@ -20,6 +20,8 @@ import directory from "./modules/directory";
 import weather from "./modules/weather";
 import content from "./modules/content";
 import more from "./modules/more";
+import home from "./modules/home";
+import footer from "./modules/footer";
 
 export default {
   action,
@@ -49,6 +51,8 @@ export default {
   weather,
   content,
   more,
+  home,
+  footer,
 
   language: {
     name: "EN"

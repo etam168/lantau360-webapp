@@ -10,26 +10,36 @@
       dense
       no-caps
     >
-      <q-tab name="home" icon="fas fa-home" label="Home" @click="navigateTo('/home')" />
+      <q-tab
+        name="home"
+        icon="fas fa-home"
+        :label="$t('footer.home')"
+        @click="navigateTo('/home')"
+      />
       <q-tab
         name="business"
         icon="fa-solid fa-money-check-dollar"
-        label="Business"
+        :label="$t('footer.business')"
         @click="navigateTo('/businesses')"
       />
       <q-tab
         name="community"
         icon="fa-solid fa-people-group"
-        label="Community"
+        :label="$t('footer.community')"
         @click="navigateTo('/community')"
       />
       <q-tab
         name="favourites"
         icon="fa-solid fa-heart"
-        label="Favourites"
+        :label="$t('footer.favourite')"
         @click="navigateTo('/favourites')"
       />
-      <q-tab name="more" icon="fa-solid fa-ellipsis" label="More" @click="navigateTo('/more')" />
+      <q-tab
+        name="more"
+        icon="fa-solid fa-ellipsis"
+        :label="$t('footer.more')"
+        @click="navigateTo('/more')"
+      />
     </q-tabs>
   </q-footer>
 </template>

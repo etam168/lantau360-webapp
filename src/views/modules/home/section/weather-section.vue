@@ -6,7 +6,7 @@
           <q-img :src="iconPath" />
         </q-avatar>
 
-        <q-item-label class="text-weight-medium text-subtitle1">{{ data?.caption }}</q-item-label>
+        <q-item-label class="text-weight-medium text-subtitle1">{{ caption }}</q-item-label>
         <q-item-label class="text-caption">{{ weatherDate }}</q-item-label>
       </q-item-section>
 
@@ -57,6 +57,8 @@
 
   // .ts file
   import { Weather } from "@/interfaces/models/entities/weather";
+  import { useUtilities } from "@/composable/use-utilities";
+  const { translate } = useUtilities();
 
   const props = defineProps({
     data: {
@@ -66,6 +68,9 @@
     }
   });
 
+  const caption = computed(() => {
+    return translate(props.data?.caption ?? "", props.data?.meta, "caption");
+  });
   const iconPath = computed(() => {
     const fileNameWithoutExtension = props.data?.icon.split(".")[0];
     return new URL(`../../../../assets/img/${fileNameWithoutExtension}.svg`, import.meta.url).href;
