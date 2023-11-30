@@ -6,6 +6,7 @@
     :placeholder="$t('home.searchBar.placeholder')"
     class="q-pl-md bg-grey-3 full-width"
     borderless
+    dense
     input-class="text-left"
     style="overflow: hidden; border-radius: 24px"
     hide-bottom-space

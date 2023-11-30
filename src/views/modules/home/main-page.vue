@@ -25,7 +25,10 @@
 
     <q-tab-panel name="info">
       <directory-section :data="infoData" />
-      <custom-search-bar @on-search="handleSearch" />
+
+      <div class="row justify-center q-ma-lg">
+        <custom-search-bar @on-search="handleSearch" />
+      </div>
     </q-tab-panel>
   </q-tab-panels>
 </template>

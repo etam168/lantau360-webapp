@@ -34,7 +34,7 @@
   const $q = useQuasar();
 
   const classMenuItem = computed((): string => {
-    return $q.screen.gt.xs ? "col-3" : "col-4";
+    return $q.screen.gt.xs ? "col-3" : "col-3";
   });
 
   const onItemClick = (value: any) => {

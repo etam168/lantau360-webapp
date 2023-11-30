@@ -1,9 +1,7 @@
 <template>
-  <q-responsive full-width style="height: 48px" class="q-my-md">
-    <q-toolbar>
-      <custom-search-input v-model="keyword" @search="handleSearch" />
-    </q-toolbar>
-  </q-responsive>
+  <q-toolbar style="max-width: 800px">
+    <custom-search-input v-model="keyword" @search="handleSearch" />
+  </q-toolbar>
 </template>
 
 <script setup lang="ts">
