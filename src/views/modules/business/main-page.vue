@@ -1,14 +1,18 @@
 <template>
-  <q-responsive full-width style="height: 48px" class="q-ma-lg">
-    <q-toolbar>
-      <custom-search-input v-model="keyword" @search="handleSearch" />
-    </q-toolbar>
-  </q-responsive>
+  <q-card-actions align="center">
+    <div class="text-h6 text-weight-medium">Business</div>
+  </q-card-actions>
+
+  <q-toolbar>
+    <custom-search-input v-model="keyword" @search="handleSearch" />
+  </q-toolbar>
+
   <directories :data="directoriesData" class="q-mb-md" />
-  <promotions :data="promotions" />
+
+  <promotion-section :data="promotions" />
   <latest-offer :offers="latestOffers" />
 </template>
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+
 <script setup lang="ts">
   // Vue Import
   import { ref } from "vue";
@@ -19,12 +23,13 @@
 
   // .ts file
   import { DIRECTORY_GROUPS, MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
+  import { Directory } from "@/interfaces/models/entities/directory";
 
+  // Custom Components
   import Directories from "./section/directories-section.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
-  import Promotions from "./section/promotion-section.vue";
   import LatestOffer from "./section/latest-offer-section.vue";
-  import { Directory } from "@/interfaces/models/entities/directory";
+  import PromotionSection from "./section/promotion-section.vue";
 
   const router = useRouter();
 
@@ -41,6 +46,7 @@
       axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.LATEST_OFFERS}`),
       axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
     ]);
+
     promotions.value = respPromotions.data.data;
     latestOffers.value = respLatestOffers.data.data;
     directoriesData.value = respDirectories.data;

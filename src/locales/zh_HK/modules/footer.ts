@@ -1,7 +1,7 @@
 export default {
-  home: "家",
-  business: "商业",
-  community: "社区",
-  favourite: "最喜欢的",
-  more: "更多的"
+  home: "主頁",
+  business: "商務",
+  community: "社區",
+  favourite: "我的最愛",
+  more: "更多"
 };
