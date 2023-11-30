@@ -1,9 +1,10 @@
 <template>
+  {{ data }}
   <q-card class="text-white q-ma-md bg-primary q-pa-sm">
     <q-item>
       <q-item-section top>
         <q-avatar size="64px" class="q-mb-sm">
-          <img src="https://cdn.quasar.dev/img/avatar.png" />
+          <q-img :src="iconPath" />
         </q-avatar>
 
         <q-item-label class="text-weight-medium text-subtitle1">{{ data?.caption }}</q-item-label>
@@ -64,6 +65,11 @@
       required: false,
       default: null
     }
+  });
+
+  const iconPath = computed(() => {
+    const fileNameWithoutExtension = props.data?.icon.split(".")[0];
+    return new URL(`../../../../assets/img/${fileNameWithoutExtension}.svg`, import.meta.url).href;
   });
 
   const weatherDate = computed(() =>
