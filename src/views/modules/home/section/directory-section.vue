@@ -1,19 +1,20 @@
 <template>
-  <div class="row">
+  <div class="row q-gutter-y-md">
     <directory-item
-      :class="classMenuItem"
       v-for="item in data"
       :key="item.directoryId"
       :data="item"
+      :class="classMenuItem"
       @on-click="onItemClick"
     />
   </div>
 </template>
+
 <script setup lang="ts">
   // Vue Import
   import { PropType, computed } from "vue";
 
-  import { Screen } from "quasar";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -30,9 +31,10 @@
   });
 
   const router = useRouter();
+  const $q = useQuasar();
 
   const classMenuItem = computed((): string => {
-    return Screen.gt.xs ? "col-3" : "col-4";
+    return $q.screen.gt.xs ? "col-3" : "col-4";
   });
 
   const onItemClick = (value: any) => {
