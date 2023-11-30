@@ -1,7 +1,7 @@
 <template>
   <q-footer bordered class="bg-white text-primary">
     <q-tabs
-      v-if="$q.screen.gt.sm"
+      v-if="$q.screen.gt.xs"
       v-model="tab"
       active-color="primary"
       align="justify"
