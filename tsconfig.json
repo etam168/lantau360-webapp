@@ -17,7 +17,7 @@
       "@/*": ["src/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
-    "types": ["vite/client", "@intlify/unplugin-vue-i18n/messages", "vue-phone-number-input"]
+    "types": ["vite/client", "@intlify/unplugin-vue-i18n/messages"]
   },
   "include": [
     "src/**/*.ts",

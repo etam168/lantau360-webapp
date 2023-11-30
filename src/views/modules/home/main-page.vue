@@ -1,30 +1,31 @@
 <template>
-  <hero-section :data="heroData" />
+  <carousel-section :data="carouselData" />
   <weather-section :data="weatherData" />
-  <q-tabs
-    v-model="tab"
-    dense
-    class="text-grey"
-    active-color="primary"
-    indicator-color="primary"
-    align="justify"
-    narrow-indicator
-  >
-    <q-tab name="allLocations" label="All Locations" />
-    <q-tab name="info" label="Info" />
-  </q-tabs>
 
-  <q-separator />
+  <q-separator size="2px" inset spaced color="primary" />
+
+  <q-toolbar class="text-white">
+    <q-chip
+      v-for="(tabItem, index) in tabItems"
+      :key="index"
+      :outline="tab !== tabItem.name"
+      color="primary"
+      text-color="white"
+      clickable
+      @click="setTab(tabItem.name)"
+    >
+      {{ tabItem.label }}
+    </q-chip>
+  </q-toolbar>
 
   <q-tab-panels v-model="tab" animated>
-    <q-tab-panel name="allLocations">
-      <directory-section :data="directoriesData" class="q-my-md" />
+    <q-tab-panel name="all">
+      <directory-section :data="directoriesData" class="q-ma-md" />
     </q-tab-panel>
 
     <q-tab-panel name="info">
       <custom-search-bar @on-search="handleSearch" />
-      <!-- <top-directory-section class="q-mb-md" /> -->
-      <directory-section :data="infoData" class="q-my-md" />
+      <directory-section :data="infoData" class="q-ma-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -42,39 +43,55 @@
   import { ATTRACTION_URL, WEATHER_URL, MAIN_DIRECTORIES, DIRECTORY_GROUPS } from "@/constants";
   import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
-  import HeroSection from "./section/hero-section.vue";
-  import WeatherSection from "./section/weather-section.vue";
-  import DirectorySection from "./section/directory-section.vue";
   import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
-  // import TopDirectorySection from "./section/top-directory-section.vue";
+  import DirectorySection from "./section/directory-section.vue";
+  import CarouselSection from "./section/carousel-section.vue";
+  import WeatherSection from "./section/weather-section.vue";
 
+  const { isNthBitSet } = useUtilities();
   const router = useRouter();
-  const tab = ref("allLocations");
-  // const keyword = ref("");
-  const heroData = ref<any | null>(null);
-  const filteredheroData = ref<any | null>(null);
-  const weatherData = ref<any | null>(null);
-  const directoriesData = ref();
-  // const allLocationsData = ref();
-  const infoData = ref();
+  const tab = ref("all");
+
   const error = ref<string | null>(null);
+  const carouselData = ref<any | null>(null);
+
+  const directoriesData = ref();
+  const infoData = ref();
+  const weatherData = ref<any | null>(null);
+
+  const tabItems = ref([
+    { name: "all", label: "All Locations" },
+    { name: "info", label: "Info" }
+  ]);
+
+  function handleSearch(value: string) {
+    const queryString = { searchKeyword: value };
+    router.push({ name: "SitesSeacrh", query: queryString });
+  }
+
+  function setTab(val: string) {
+    tab.value = val;
+  }
 
   try {
     const [attractionResponse, weatherResponse, homeDirectories] = await Promise.all([
       axios.get<Site[]>(ATTRACTION_URL),
       axios.get<Weather>(WEATHER_URL),
-      axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
+      axios.get<Directory[]>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
     ]);
-    heroData.value = attractionResponse.data;
+
+    carouselData.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
-    directoriesData.value = homeDirectories.data;
-    infoData.value = directoriesData.value.filter((directory: Directory) => {
-      return directory.displayMask === 1 || directory.displayMask === 3;
+
+    directoriesData.value = homeDirectories.data.filter((directory: Directory) => {
+      return isNthBitSet(directory.displayMask, 1);
     });
-    filteredheroData.value = heroData.value.filter((directory: Directory) => {
-      return directory.displayMask === 2 || directory.displayMask === 3;
+
+    infoData.value = homeDirectories.data.filter((directory: Directory) => {
+      return isNthBitSet(directory.displayMask, 2);
     });
   } catch (err) {
     if (err instanceof AxiosError) {
@@ -86,10 +103,5 @@
     } else {
       error.value = "An unexpected error occurred";
     }
-  }
-
-  function handleSearch(value: string) {
-    const queryString = { searchKeyword: value };
-    router.push({ name: "SitesSeacrh", query: queryString });
   }
 </script>

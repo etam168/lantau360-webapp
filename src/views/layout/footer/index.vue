@@ -3,8 +3,11 @@
     <q-tabs
       v-model="tab"
       active-color="primary"
+      align="justify"
       class="text-grey"
       indicator-color="transparent"
+      mobile-arrows
+      dense
       no-caps
     >
       <q-tab name="home" icon="fas fa-home" label="Home" @click="navigateTo('/home')" />
@@ -37,7 +40,6 @@
   import { useRouter } from "vue-router";
 
   const router = useRouter();
-
   const tab = ref("home");
 
   const navigateTo = (route: string) => {

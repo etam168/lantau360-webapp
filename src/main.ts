@@ -16,7 +16,6 @@ import "quasar/src/css/index.sass";
 
 // Plugins
 import { registerPlugins } from "@/plugins";
-import "vue-tel-input/vue-tel-input.css";
 
 const app = createApp(App);
 registerPlugins(app);

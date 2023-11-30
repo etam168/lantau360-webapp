@@ -9,16 +9,18 @@ export function useUtilities() {
   function aspectRatio() {
     switch ($q.screen.name) {
       case "xs":
-        return 1.7777;
+        return 16 / 9;
       case "sm":
-        return 1.7777;
+        return 16 / 9;
       case "md":
-        return 1.7777;
+        return 16 / 9;
       case "lg":
+        return 2 / 1;
       default:
-        return 3;
+        return 2 / 1;
     }
   }
+
   function dateFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD");
   }
@@ -95,22 +97,6 @@ export function useUtilities() {
     }
   }
 
-  function splitAmenity(amenity: any) {
-    const half = Math.ceil(amenity.length / 2);
-    const firstHalf = amenity.slice(0, half);
-    const secondHalf = amenity.slice(half);
-
-    return [firstHalf, secondHalf].map(half =>
-      half.map((amenity: any) => ({
-        value: amenity.amenityId,
-        label: amenity.amenityName,
-        meta: {
-          hk: amenity.meta?.i18n?.hk,
-          cn: amenity.meta?.i18n?.cn
-        }
-      }))
-    );
-  }
   function formatPrice(price: number) {
     if (price <= 0) {
       return "0";
@@ -135,7 +121,6 @@ export function useUtilities() {
     isNthBitSet,
     notify,
     sleep,
-    splitAmenity,
     resizeImage,
     translate,
     formatPrice,
