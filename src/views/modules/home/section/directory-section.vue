@@ -1,17 +1,20 @@
 <template>
-  <q-list>
+  <q-card-section class="bg-transparent">
     <div class="row">
-      <div class="col-3 q-pa-lg" v-for="directory in data" :key="directory.directoryId">
-        <div @click="onItemClick(directory)">
-          <directory-item :data="directory" />
+      <div :class="classMenuItem" v-for="item in data" :key="item.directoryId">
+        <div @click="onItemClick(item)">
+          <directory-item :data="item" />
         </div>
       </div>
     </div>
-  </q-list>
+  </q-card-section>
 </template>
+
 <script setup lang="ts">
   // Vue Import
-  import { PropType } from "vue";
+  import { PropType, computed } from "vue";
+
+  import { Screen } from "quasar";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -28,6 +31,10 @@
   });
 
   const router = useRouter();
+
+  const classMenuItem = computed((): string => {
+    return Screen.gt.xs ? "col-3" : "col-4";
+  });
 
   const onItemClick = (value: any) => {
     router.push({

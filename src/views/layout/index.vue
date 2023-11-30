@@ -1,5 +1,5 @@
 <template>
-  <q-card flat tile class="mx-auto mt-8 mb-2 pb-8 row justify-center">
+  <q-card flat square tile class="mx-auto mt-8 mb-2 pb-8 row justify-center">
     <q-layout
       view="lHh lpr lFf"
       container

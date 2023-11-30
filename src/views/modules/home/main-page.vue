@@ -20,12 +20,12 @@
 
   <q-tab-panels v-model="tab" animated>
     <q-tab-panel name="all">
-      <directory-section :data="directoriesData" class="q-ma-md" />
+      <directory-section :data="directoriesData" />
     </q-tab-panel>
 
     <q-tab-panel name="info">
+      <directory-section :data="infoData" />
       <custom-search-bar @on-search="handleSearch" />
-      <directory-section :data="infoData" class="q-ma-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
