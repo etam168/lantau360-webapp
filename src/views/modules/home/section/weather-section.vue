@@ -1,5 +1,4 @@
 <template>
-  {{ data }}
   <q-card class="text-white q-ma-md bg-primary q-pa-sm">
     <q-item>
       <q-item-section top>
