@@ -1,15 +1,14 @@
 <template>
-  <q-card-section class="bg-transparent">
-    <div class="row">
-      <div :class="classMenuItem" v-for="item in data" :key="item.directoryId">
-        <div @click="onItemClick(item)">
-          <directory-item :data="item" />
-        </div>
-      </div>
-    </div>
-  </q-card-section>
+  <div class="row">
+    <directory-item
+      :class="classMenuItem"
+      v-for="item in data"
+      :key="item.directoryId"
+      :data="item"
+      @on-click="onItemClick"
+    />
+  </div>
 </template>
-
 <script setup lang="ts">
   // Vue Import
   import { PropType, computed } from "vue";

@@ -1,12 +1,11 @@
 <template>
-  <div class="text-center">
+  <div class="text-center" @click="onItemClick()">
     <q-avatar size="64px">
       <q-img :src="directoryIcon" />
     </q-avatar>
-  </div>
-  <div class="text-center q-ma-sm">
-    <!-- {{ getTitle(data.directoryName, data.meta, "directoryName") }} -->
-    {{ directoryTitle }}
+    <div class="text-center q-ma-sm">
+      {{ directoryTitle }}
+    </div>
   </div>
 </template>
 <script setup lang="ts">
@@ -18,6 +17,8 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { computed } from "vue";
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+
+  const emit = defineEmits(["on-click"]);
 
   const props = defineProps({
     data: {
@@ -43,4 +44,8 @@
         return props.data.directoryName;
     }
   });
+
+  function onItemClick() {
+    emit("on-click", props.data);
+  }
 </script>

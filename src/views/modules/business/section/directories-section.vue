@@ -1,13 +1,13 @@
 <template>
-  <q-list>
-    <div class="row">
-      <div class="col-3 q-pa-lg" v-for="directory in data.slice(0, 8)" :key="directory.directoryId">
-        <div @click="onItemClick(directory)">
-          <directory-item :data="directory" />
-        </div>
-      </div>
-    </div>
-  </q-list>
+  <div class="row">
+    <directory-item
+      class="col-3 q-pa-lg"
+      v-for="item in data.slice(0, 8)"
+      :key="item.directoryId"
+      :data="item"
+      @on-click="onItemClick"
+    />
+  </div>
 </template>
 <script setup lang="ts">
   // Vue Import
