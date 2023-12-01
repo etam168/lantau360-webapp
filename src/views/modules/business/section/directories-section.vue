@@ -1,8 +1,8 @@
 <template>
-  <div class="row">
+  <div class="row q-gutter-y-md">
     <directory-item
-      class="col-3 q-pa-lg"
-      v-for="item in data.slice(0, 8)"
+      :class="classMenuItem"
+      v-for="item in data"
       :key="item.directoryId"
       :data="item"
       @on-click="onItemClick"
@@ -11,7 +11,8 @@
 </template>
 <script setup lang="ts">
   // Vue Import
-  import { PropType } from "vue";
+  import { PropType, computed } from "vue";
+  import { useQuasar } from "quasar";
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item.vue";
@@ -27,6 +28,11 @@
   });
 
   const router = useRouter();
+  const $q = useQuasar();
+
+  const classMenuItem = computed((): string => {
+    return $q.screen.gt.xs ? "col-3" : "col-3";
+  });
 
   const onItemClick = (value: any) => {
     router.push({

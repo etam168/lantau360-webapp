@@ -35,7 +35,7 @@
     </q-tab-panel>
 
     <q-tab-panel name="directory">
-      <q-toolbar>
+      <q-toolbar class="q-pb-md">
         <custom-search-input v-model="keyword" @search="handleSearch" />
       </q-toolbar>
       <directories :data="directoriesData" class="q-mb-md" />
