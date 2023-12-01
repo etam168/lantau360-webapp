@@ -3,14 +3,34 @@
     <div class="text-h6 text-weight-medium">Business</div>
   </q-card-actions>
 
-  <q-toolbar>
-    <custom-search-input v-model="keyword" @search="handleSearch" />
+  <carousel-section :data="promotions" />
+
+  <q-toolbar class="text-white">
+    <q-chip
+      v-for="(tabItem, index) in tabItems"
+      :key="index"
+      :outline="tab !== tabItem.name"
+      color="primary"
+      text-color="white"
+      clickable
+      @click="setTab(tabItem.name)"
+    >
+      {{ tabItem.label }}
+    </q-chip>
   </q-toolbar>
 
-  <directories :data="directoriesData" class="q-mb-md" />
+  <q-tab-panels v-model="tab" animated>
+    <q-tab-panel name="main">
+      <latest-offer :offers="latestOffers" />
+    </q-tab-panel>
 
-  <promotion-section :data="promotions" />
-  <latest-offer :offers="latestOffers" />
+    <q-tab-panel name="directory">
+      <q-toolbar>
+        <custom-search-input v-model="keyword" @search="handleSearch" />
+      </q-toolbar>
+      <directories :data="directoriesData" class="q-mb-md" />
+    </q-tab-panel>
+  </q-tab-panels>
 </template>
 
 <script setup lang="ts">
@@ -20,25 +40,42 @@
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
+  import { useI18n } from "vue-i18n";
 
   // .ts file
   import { DIRECTORY_GROUPS, MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
 
   // Custom Components
-  import Directories from "./section/directories-section.vue";
+  import CarouselSection from "./section/carousel-section.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
+  import Directories from "./section/directories-section.vue";
   import LatestOffer from "./section/latest-offer-section.vue";
-  import PromotionSection from "./section/promotion-section.vue";
 
   const router = useRouter();
+  const { t } = useI18n({ useScope: "global" });
 
+  const tab = ref("main");
   const keyword = ref("");
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
 
   const error = ref<string | null>(null);
+
+  const tabItems = ref([
+    { name: "main", label: t("home.allLocations") },
+    { name: "directory", label: t("home.info") }
+  ]);
+
+  function handleSearch() {
+    const queryString = { searchKeyword: keyword.value };
+    router.push({ name: "BusinessSeacrh", query: queryString });
+  }
+
+  function setTab(val: string) {
+    tab.value = val;
+  }
 
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
@@ -60,10 +97,5 @@
     } else {
       error.value = "An unexpected error occurred";
     }
-  }
-
-  function handleSearch() {
-    const queryString = { searchKeyword: keyword.value };
-    router.push({ name: "BusinessSeacrh", query: queryString });
   }
 </script>

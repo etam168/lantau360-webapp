@@ -37,10 +37,10 @@
   // Vue Import
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import { useI18n } from "vue-i18n";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
+  import { useI18n } from "vue-i18n";
 
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
