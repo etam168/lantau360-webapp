@@ -1,7 +1,7 @@
 <template>
-  <div class="row">
+  <div class="row q-gutter-y-md">
     <directory-item
-      class="col-3 q-pa-lg"
+      :class="classMenuItem"
       v-for="item in data.slice(0, 8)"
       :key="item.directoryId"
       :data="item"
@@ -12,7 +12,8 @@
 <script setup lang="ts">
   // Vue Import
   // import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-  import { PropType } from "vue";
+  import { PropType, computed } from "vue";
+  import { useQuasar } from "quasar";
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item.vue";
@@ -27,10 +28,15 @@
   });
 
   const router = useRouter();
-
+  const $q = useQuasar();
   // function computeImagePath(imagePath: any) {
   //   return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   // }
+
+  const classMenuItem = computed((): string => {
+    return $q.screen.gt.xs ? "col-3" : "col-3";
+  });
+
   const onItemClick = (value: any) => {
     router.push({
       name: "community-list",

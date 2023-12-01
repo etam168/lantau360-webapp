@@ -39,7 +39,7 @@
     </q-tab-panel>
 
     <q-tab-panel name="directory">
-      <directorie-section :data="directoriesData" class="q-mb-md" />
+      <directories-section :data="directoriesData" class="q-mb-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -55,7 +55,7 @@
   // .ts file
   import { COMMUNITY_DIRECTORY, PROMOTION_URL } from "@/constants";
 
-  import DirectorieSection from "./section/directories-section.vue";
+  import DirectoriesSection from "./section/directories-section.vue";
   import PromotionSection from "./section/promotion-section.vue";
   import { Directory } from "@/interfaces/models/entities/directory";
 

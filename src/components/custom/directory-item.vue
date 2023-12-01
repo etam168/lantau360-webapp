@@ -1,8 +1,18 @@
 <template>
-  <div class="text-center" @click="onItemClick()">
+  <div v-if="data.directoryId" class="text-center" @click="onItemClick()">
     <q-avatar size="64px">
       <q-img :src="directoryIcon" />
     </q-avatar>
+    <div class="text-center q-ma-sm">
+      {{ directoryTitle }}
+    </div>
+  </div>
+  <div v-else class="text-center" @click="onItemClick()">
+    <q-btn outline round color="grey">
+      <q-avatar size="64px">
+        <q-img :src="communityDirectoryIcon" />
+      </q-avatar>
+    </q-btn>
     <div class="text-center q-ma-sm">
       {{ directoryTitle }}
     </div>
@@ -12,6 +22,9 @@
   // Vue Import
   import { PropType } from "vue";
   import { useI18n } from "vue-i18n";
+
+  // Custom Components
+  import { BLOB_URL } from "@/constants";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -25,6 +38,10 @@
       type: Object as PropType<Directory>,
       required: true
     }
+  });
+
+  const communityDirectoryIcon = computed(() => {
+    return props.data.imagePath ? `${BLOB_URL}/${props.data.imagePath}` : PLACEHOLDER_THUMBNAIL;
   });
 
   const directoryIcon = computed(() => {

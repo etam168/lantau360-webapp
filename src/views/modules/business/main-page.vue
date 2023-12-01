@@ -38,7 +38,7 @@
       <q-toolbar class="q-pb-md">
         <custom-search-input v-model="keyword" @search="handleSearch" />
       </q-toolbar>
-      <directories :data="directoriesData" class="q-mb-md" />
+      <directories-section :data="directoriesData" class="q-mb-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -60,7 +60,9 @@
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
-  const Directories = defineAsyncComponent(() => import("./section/directories-section.vue"));
+  const DirectoriesSection = defineAsyncComponent(
+    () => import("./section/directories-section.vue")
+  );
   const LatestOfferSection = defineAsyncComponent(
     () => import("./section/latest-offer-section.vue")
   );
