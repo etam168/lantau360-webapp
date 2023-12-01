@@ -4,6 +4,7 @@ export default {
   tabItems: {
     events: "Events",
     news: "News",
-    notice: "Notice"
+    notice: "Notice",
+    directory: "Directory"
   }
 };

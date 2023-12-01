@@ -18,7 +18,13 @@
     </q-chip>
   </q-toolbar>
 
-  <q-tab-panels v-model="tab" animated>
+  <q-tab-panels
+    v-model="tab"
+    animated
+    transition-prev="fade"
+    transition-next="fade"
+    transition-duration="1000"
+  >
     <q-tab-panel name="all">
       <directory-section :data="directoriesData" />
     </q-tab-panel>

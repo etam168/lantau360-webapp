@@ -4,6 +4,7 @@ export default {
   tabItems: {
     events: "活動",
     news: "新聞",
-    notice: "告示"
+    notice: "告示",
+    directory: "Directory"
   }
 };

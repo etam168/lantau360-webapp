@@ -3,7 +3,6 @@
     <div class="text-h6 text-weight-medium">{{ $t("community.title") }}</div>
   </q-card-actions>
 
-  <directorie-section :data="directoriesData" class="q-mb-md" />
   <promotion-section :data="promotions" />
 
   <q-toolbar class="text-white bg-grey-3">
@@ -38,6 +37,10 @@
     <q-tab-panel name="notice">
       <div>Notice</div>
     </q-tab-panel>
+
+    <q-tab-panel name="directory">
+      <directorie-section :data="directoriesData" class="q-mb-md" />
+    </q-tab-panel>
   </q-tab-panels>
 </template>
 
@@ -67,7 +70,8 @@
   const tabItems = ref([
     { name: "news", label: t("community.tabItems.news") },
     { name: "events", label: t("community.tabItems.events") },
-    { name: "notice", label: t("community.tabItems.notice") }
+    { name: "notice", label: t("community.tabItems.notice") },
+    { name: "directory", label: t("community.tabItems.directory") }
   ]);
 
   function setTab(val: string) {
