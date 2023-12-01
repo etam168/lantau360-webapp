@@ -19,9 +19,19 @@
     </q-chip>
   </q-toolbar>
 
-  <q-tab-panels v-model="tab" animated>
+  <q-tab-panels
+    v-model="tab"
+    animated
+    transition-prev="fade"
+    transition-next="fade"
+    transition-duration="1000"
+  >
     <q-tab-panel name="promotion">
       <latest-offer :offers="latestOffers" />
+    </q-tab-panel>
+
+    <q-tab-panel name="voucher">
+      <div>Voucher</div>
     </q-tab-panel>
 
     <q-tab-panel name="directory">
@@ -66,6 +76,7 @@
 
   const tabItems = ref([
     { name: "promotion", label: t("business.tabItems.promotion") },
+    { name: "voucher", label: t("business.tabItems.voucher") },
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 

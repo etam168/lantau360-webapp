@@ -3,6 +3,7 @@ export default {
 
   tabItems: {
     promotion: "Promotions",
-    directory: "Directory"
+    voucher: "Vouchers",
+    directory: "Business Directory"
   }
 };
