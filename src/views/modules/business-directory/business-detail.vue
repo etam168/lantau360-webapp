@@ -1,5 +1,6 @@
 <template>
   <q-item class="q-items-center">
+    <div>Detail Of Business</div>
     <gallery-images-component
       class="col-md-8 q-items-center"
       style="max-height: 600px"
@@ -8,7 +9,7 @@
   </q-item>
 
   <q-item>
-    <q-icon name="location_on" size="2em" color="blue" />
+    <q-icon name="location_on" size="2em" color="primary" />
     <q-item-label class="q-mt-sm">{{ directoryItem.subtitle1 }}</q-item-label>
   </q-item>
 
@@ -18,13 +19,13 @@
 
     <q-btn color="primary" text-color="white" icon="phone" round />
     <q-space />
-    <q-btn
+    <!-- <q-btn
       color="primary"
       :text-color="isFavourite ? 'red' : 'white'"
       icon="favorite"
       round
       @click="onBtnFavClick"
-    />
+    /> -->
   </q-item>
   <q-separator class="q-mt-sm" />
 
@@ -35,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BUSINESS_GALLERY_URL, BUSINESS_URL, DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
+  import { BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
@@ -43,9 +44,10 @@
   import { useRouter } from "vue-router";
   import GalleryImagesComponent from "./gallery-images/index.vue";
   import { LocalStorage } from "quasar";
+  import { Business } from "@/interfaces/models/entities/business";
 
   const router = useRouter();
-  const directoryItem = ref<any>({} as any);
+  const directoryItem = ref<Business>({} as Business);
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
@@ -54,48 +56,51 @@
 
   const isFavourite = ref<boolean>(false);
 
-  const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
-    const isCurrentlyFavourite = isFavourite.value;
+  // const onBtnFavClick = () => {
+  //   const itemIdToMatch = directoryItem.value.businessId;
+  //   const isCurrentlyFavourite = isFavourite.value;
 
-    if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+  //   if (isCurrentlyFavourite) {
+  //     const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
 
-      if (itemIndex !== -1) {
-        favoriteItems.value.splice(itemIndex, 1);
-      }
+  //     if (itemIndex !== -1) {
+  //       favoriteItems.value.splice(itemIndex, 1);
+  //     }
 
-      isFavourite.value = false;
-    } else {
-      const favItem = {
-        directoryId: query?.businessId,
-        directoryName: directoryItem.value.directoryName,
-        itemName: directoryItem.value.title,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.BUSINESS,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
-      };
+  //     isFavourite.value = false;
+  //   } else {
+  //     const favItem = {
+  //       directoryId: query?.businessId,
+  //       directoryName: directoryItem.value.directoryName,
+  //       itemName: directoryItem.value.title,
+  //       itemId: itemIdToMatch,
+  //       groupId: DIRECTORY_GROUPS.BUSINESS,
+  //       iconPath: directoryItem.value.iconPath,
+  //       subTitle: directoryItem.value.subtitle1
+  //     };
 
-      isFavourite.value = true;
-      favoriteItems.value.push(favItem);
-    }
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
-  };
+  //     isFavourite.value = true;
+  //     favoriteItems.value.push(favItem);
+  //   }
+  //   LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+  // };
 
   onMounted(() => {
     loadData();
   });
 
   const loadData = async () => {
+    alert(JSON.stringify(query));
     if (query?.businessId !== undefined) {
       try {
-        const [siteResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${query?.businessId}`)
+        const [businessResponse, galleryResponse] = await Promise.all([
+          axios.get(`${BUSINESS_URL}/${query?.directoryItemId}`),
+          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${query?.directoryItemId}`)
         ]);
-        directoryItem.value = siteResponse.data;
+        directoryItem.value = businessResponse.data;
         galleryItems.value = galleryResponse.data;
+
+        alert(JSON.stringify(galleryItems.value));
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(

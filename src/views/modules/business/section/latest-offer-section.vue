@@ -22,18 +22,24 @@
         @virtual-scroll="onVirtualScroll"
         v-slot="{ item: row }"
       >
-        <div class="q-pa-none q-ml-md" style="width: 260px">
+        <div class="q-pb-md q-px-none q-pt-none q-ml-md" style="width: 260px">
           <q-card>
-            <q-img :src="computeImagePath(row.imagePath)" />
+            <q-img :ratio="16 / 9" :src="computeImagePath(row.imagePath)" />
 
             <q-card-section>
-              <div class="text-overline text-orange-9">Offer 1</div>
-              <div class="text-overline q-mb-xs">Offer 2</div>
+              <app-item icon="location_on" :label="row.subtitle1" />
+              <app-item icon="schedule" :label="businessHours" />
             </q-card-section>
 
             <q-card-actions>
               <q-space />
-              <q-btn flat color="primary" label="More Details" @click="navigateToDetailPage(row)" />
+              <q-btn
+                outline
+                color="primary"
+                label="More Details"
+                class="full-width"
+                @click="navigateToDetailPage(row.businessId)"
+              />
             </q-card-actions>
           </q-card>
         </div>
@@ -44,25 +50,46 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, ref } from "vue";
+  import { PropType, computed, ref } from "vue";
   import { Business } from "@/interfaces/models/entities/business";
+  import { date } from "quasar";
 
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { useRouter } from "vue-router";
 
+  import AppItem from "@/components/widgets/app-item.vue";
+
   const virtualScrollIndex = ref(0);
   const router = useRouter();
-  defineProps({
+  const props = defineProps({
     offers: {
       type: Array as PropType<Business[] | null>,
       required: true
     }
   });
 
-  const navigateToDetailPage = (value: any) => {
+  const businessHours = computed(() => {
+    if (props.offers && props.offers.length > 0) {
+      const datePart = date.formatDate(Date.now(), "YYYY-MM-DDT");
+      const openTime = Date.parse(datePart + props.offers[0].openTime);
+      const closeTime = Date.parse(datePart + props.offers[0].closeTime);
+
+      return `${date.formatDate(openTime, "HH:mm")} - ${date.formatDate(closeTime, "HH:mm")}`;
+    }
+    return "";
+  });
+
+  // const navigateToDetailPage = (value: any) => {
+  //   router.push({
+  //     name: "business-list",
+  //     query: { directoryItemId: value.businessId }
+  //   });
+  // };
+
+  const navigateToDetailPage = (businessId: any) => {
     router.push({
-      name: "business-directory-item-detail",
-      query: { directoryItemId: value.businessId }
+      name: "business-detail",
+      query: { directoryItemId: businessId }
     });
   };
 

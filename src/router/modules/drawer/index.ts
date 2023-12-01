@@ -98,7 +98,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
       {
         path: "/business-list",
         name: "business-list",
-        component: () => import("@/views/modules/business-directory/business-list.vue"),
+        component: () => import("@/views/modules/business-directory/business-detail.vue"),
         props: true,
 
         meta: {

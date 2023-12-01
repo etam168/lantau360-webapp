@@ -22,9 +22,10 @@
   import { useRouter } from "vue-router";
   const router = useRouter();
   const directoryItems = ref();
+  const directory = ref();
+
   const error = ref<string | null>(null);
   const { query } = router.currentRoute.value;
-  const directory = ref();
 
   onMounted(() => {
     loadData();
