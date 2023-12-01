@@ -38,7 +38,7 @@
                 color="primary"
                 label="More Details"
                 class="full-width"
-                @click="navigateToDetailPage(row.businessId)"
+                @click="navigateToDetailPage(row)"
               />
             </q-card-actions>
           </q-card>
@@ -61,6 +61,7 @@
 
   const virtualScrollIndex = ref(0);
   const router = useRouter();
+
   const props = defineProps({
     offers: {
       type: Array as PropType<Business[] | null>,
@@ -86,10 +87,10 @@
   //   });
   // };
 
-  const navigateToDetailPage = (businessId: any) => {
+  const navigateToDetailPage = (item: Business) => {
     router.push({
       name: "business-detail",
-      query: { directoryItemId: businessId }
+      query: { businessId: item.businessId }
     });
   };
 

@@ -13,7 +13,7 @@
     <template v-slot:item="props">
       <ImageCard
         :placeholder-src="PLACEHOLDER_THUMBNAIL"
-        :img-src="`https://insightpropertystorage.blob.core.windows.net/realty-hub-dev/${props.row.imagePath}`"
+        :img-src="`https://lantau360storage.blob.core.windows.net/lantau360-dev/${props.row.imagePath}`"
         :isDelete="isDelete"
       />
     </template>
