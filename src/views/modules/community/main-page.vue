@@ -1,29 +1,78 @@
 <template>
-  <directories :data="directoriesData" class="q-mb-md" />
-  <promotions :data="promotions" />
-  <!-- <latest-offer :offers="latestOffers" /> -->
+  <q-card-actions align="center">
+    <div class="text-h6 text-weight-medium">{{ $t("community.title") }}</div>
+  </q-card-actions>
+
+  <directorie-section :data="directoriesData" class="q-mb-md" />
+  <promotion-section :data="promotions" />
+
+  <q-toolbar class="text-white bg-grey-3">
+    <q-chip
+      v-for="(tabItem, index) in tabItems"
+      :key="index"
+      :outline="tab !== tabItem.name"
+      color="primary"
+      text-color="white"
+      clickable
+      @click="setTab(tabItem.name)"
+    >
+      {{ tabItem.label }}
+    </q-chip>
+  </q-toolbar>
+
+  <q-tab-panels
+    v-model="tab"
+    animated
+    transition-prev="fade"
+    transition-next="fade"
+    transition-duration="1000"
+  >
+    <q-tab-panel name="news">
+      <div>News</div>
+    </q-tab-panel>
+
+    <q-tab-panel name="events">
+      <div>Events</div>
+    </q-tab-panel>
+
+    <q-tab-panel name="notice">
+      <div>Notice</div>
+    </q-tab-panel>
+  </q-tab-panels>
 </template>
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+
 <script setup lang="ts">
   // Vue Import
   import { ref } from "vue";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
+  import { useI18n } from "vue-i18n";
 
   // .ts file
   import { COMMUNITY_DIRECTORY, PROMOTION_URL } from "@/constants";
 
-  import Directories from "./section/directories-section.vue";
-  import Promotions from "./section/promotion-section.vue";
-  import LatestOffer from "./section/latest-offer-section.vue";
+  import DirectorieSection from "./section/directories-section.vue";
+  import PromotionSection from "./section/promotion-section.vue";
   import { Directory } from "@/interfaces/models/entities/directory";
 
+  const { t } = useI18n({ useScope: "global" });
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
+  const tab = ref("news");
 
   const error = ref<string | null>(null);
+
+  const tabItems = ref([
+    { name: "news", label: t("community.tabItems.news") },
+    { name: "events", label: t("community.tabItems.events") },
+    { name: "notice", label: t("community.tabItems.notice") }
+  ]);
+
+  function setTab(val: string) {
+    tab.value = val;
+  }
 
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([

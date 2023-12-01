@@ -1,6 +1,7 @@
 import action from "./modules/action";
 import auth from "./modules/auth";
 import business from "./modules/business";
+import community from "./modules/community";
 import contact from "./modules/contact";
 import dialog from "./modules/dialog";
 import document from "./modules/document";
@@ -27,6 +28,7 @@ export default {
   action,
   auth,
   business,
+  community,
   contact,
   settings,
 
