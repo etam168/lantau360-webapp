@@ -1,84 +1,73 @@
 <template>
-  <q-card flat class="q-ma-lg">
-    <q-card-actions class="q-pa-none">
-      <p>Latest Offer</p>
-      <q-space />
-      <q-btn
-        flat
-        icon-right="keyboard_double_arrow_right"
-        label="See All"
-        @click="navigateToAllPage()"
-      />
-    </q-card-actions>
-  </q-card>
-  <q-card flat>
-    <q-card-section horizontal class="q-py-none">
-      <q-virtual-scroll
-        ref="virtualScroll"
-        class="full-width justify-center"
-        :items="offers ?? []"
-        :virtual-scroll-item-size="100"
-        virtual-scroll-horizontal
-        @virtual-scroll="onVirtualScroll"
-        v-slot="{ item: row }"
-      >
-        <div class="q-pb-md q-px-none q-pt-none q-ml-md" style="width: 260px">
-          <q-card>
-            <q-img :ratio="16 / 9" :src="computeImagePath(row.imagePath)" />
+  <q-list>
+    <q-item-label header class="q-pa-none">Latest Offer</q-item-label>
+    <q-item dense class="q-pa-none">
+      <q-item-section>
+        <q-item-label>
+          <q-card-section class="q-pa-none">
+            <q-card-section horizontal class="wrap" style="flex-wrap: wrap">
+              <div v-for="row in offers" :key="row.businessId" class="col-6 q-pa-sm">
+                <q-card class="my-card"
+                  ><q-img :ratio="16 / 9" :src="computeImagePath(row.imagePath)" />
+                  <q-card-section class="q-pa-sm">
+                    <app-item dense icon="location_on" :label="row.subtitle1" />
+                    <app-item dense icon="schedule" :label="computeBusinessHours(row)" />
+                  </q-card-section>
 
-            <q-card-section>
-              <app-item icon="location_on" :label="row.subtitle1" />
-              <app-item icon="schedule" :label="businessHours" />
+                  <q-card-actions>
+                    <q-space />
+                    <q-btn
+                      outline
+                      dense
+                      color="primary"
+                      label="More Details"
+                      class="full-width"
+                      @click="navigateToDetailPage(row)"
+                    /> </q-card-actions
+                ></q-card>
+              </div>
             </q-card-section>
-
-            <q-card-actions>
-              <q-space />
-              <q-btn
-                outline
-                color="primary"
-                label="More Details"
-                class="full-width"
-                @click="navigateToDetailPage(row)"
-              />
-            </q-card-actions>
-          </q-card>
-        </div>
-      </q-virtual-scroll>
-    </q-card-section>
-  </q-card>
+          </q-card-section>
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-list>
 </template>
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, computed, ref } from "vue";
+  import { PropType } from "vue";
   import { Business } from "@/interfaces/models/entities/business";
   import { date } from "quasar";
 
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { useRouter } from "vue-router";
 
   import AppItem from "@/components/widgets/app-item.vue";
 
-  const virtualScrollIndex = ref(0);
+  // const virtualScrollIndex = ref(0);
   const router = useRouter();
 
-  const props = defineProps({
+  defineProps({
     offers: {
       type: Array as PropType<Business[] | null>,
       required: true
     }
   });
 
-  const businessHours = computed(() => {
-    if (props.offers && props.offers.length > 0) {
-      const datePart = date.formatDate(Date.now(), "YYYY-MM-DDT");
-      const openTime = Date.parse(datePart + props.offers[0].openTime);
-      const closeTime = Date.parse(datePart + props.offers[0].closeTime);
+  const computeBusinessHours = (row: Business) => {
+    const datePart = date.formatDate(Date.now(), "YYYY-MM-DDT");
 
-      return `${date.formatDate(openTime, "HH:mm")} - ${date.formatDate(closeTime, "HH:mm")}`;
-    }
-    return "";
-  });
+    // Check if openTime and closeTime are undefined or null, provide default values
+    const openTime = row.openTime
+      ? Date.parse(datePart + row.openTime)
+      : Date.parse(datePart + "09:00");
+    const closeTime = row.closeTime
+      ? Date.parse(datePart + row.closeTime)
+      : Date.parse(datePart + "17:00");
+
+    return `${date.formatDate(openTime, "HH:mm")} - ${date.formatDate(closeTime, "HH:mm")}`;
+  };
 
   // const navigateToDetailPage = (value: any) => {
   //   router.push({
@@ -94,18 +83,11 @@
     });
   };
 
-  const navigateToAllPage = () => {
-    router.push({
-      name: "business-directory-items",
-      query: { directoryId: 100 }
-    });
-  };
-
   function computeImagePath(imagePath: any) {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
+    return imagePath ? `${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 
-  function onVirtualScroll(details: any) {
-    virtualScrollIndex.value = details.index;
-  }
+  // function onVirtualScroll(details: any) {
+  //   virtualScrollIndex.value = details.index;
+  // }
 </script>
