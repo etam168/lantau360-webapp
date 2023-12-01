@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div v-for="item in offers.slice(0, 8)" :key="item.businessId" class="col-md-3 col-6 q-pa-sm">
-      <latest-offer-card :offers="item" @on-click="onItemClick" />
+      <voucher-card :offers="item" @on-click="onItemClick" />
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
   import { PropType } from "vue";
 
   //Custom Components
-  import LatestOfferCard from "./cards/latest-offer-card.vue";
+  import VoucherCard from "./cards/voucher-card.vue";
 
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";

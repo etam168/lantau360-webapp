@@ -27,11 +27,11 @@
     transition-duration="1000"
   >
     <q-tab-panel name="promotion">
-      <latest-offer :offers="latestOffers" />
+      <latest-offer-section :offers="latestOffers" />
     </q-tab-panel>
 
     <q-tab-panel name="voucher">
-      <div>Voucher</div>
+      <voucher-card-section :offers="latestOffers" />
     </q-tab-panel>
 
     <q-tab-panel name="directory">
@@ -61,7 +61,10 @@
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const Directories = defineAsyncComponent(() => import("./section/directories-section.vue"));
-  const LatestOffer = defineAsyncComponent(() => import("./section/latest-offer-section.vue"));
+  const LatestOfferSection = defineAsyncComponent(
+    () => import("./section/latest-offer-section.vue")
+  );
+  const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
   const router = useRouter();
   const { t } = useI18n({ useScope: "global" });
