@@ -1,11 +1,11 @@
 <template>
   <q-card-actions align="center">
-    <div class="text-h6 text-weight-medium">Business</div>
+    <div class="text-h6 text-weight-medium">{{ $t("business.title") }}</div>
   </q-card-actions>
 
   <carousel-section :data="promotions" />
 
-  <q-toolbar class="text-white">
+  <q-toolbar class="text-white bg-grey-3">
     <q-chip
       v-for="(tabItem, index) in tabItems"
       :key="index"
@@ -20,7 +20,7 @@
   </q-toolbar>
 
   <q-tab-panels v-model="tab" animated>
-    <q-tab-panel name="main">
+    <q-tab-panel name="promotion">
       <latest-offer :offers="latestOffers" />
     </q-tab-panel>
 
@@ -35,7 +35,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { ref } from "vue";
+  import { defineAsyncComponent, ref } from "vue";
   import { useRouter } from "vue-router";
 
   // 3rd Party Import
@@ -47,15 +47,16 @@
   import { Directory } from "@/interfaces/models/entities/directory";
 
   // Custom Components
-  import CarouselSection from "./section/carousel-section.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
-  import Directories from "./section/directories-section.vue";
-  import LatestOffer from "./section/latest-offer-section.vue";
+
+  const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
+  const Directories = defineAsyncComponent(() => import("./section/directories-section.vue"));
+  const LatestOffer = defineAsyncComponent(() => import("./section/latest-offer-section.vue"));
 
   const router = useRouter();
   const { t } = useI18n({ useScope: "global" });
 
-  const tab = ref("main");
+  const tab = ref("promotion");
   const keyword = ref("");
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
@@ -64,8 +65,8 @@
   const error = ref<string | null>(null);
 
   const tabItems = ref([
-    { name: "main", label: t("home.allLocations") },
-    { name: "directory", label: t("home.info") }
+    { name: "promotion", label: t("business.tabItems.promotion") },
+    { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
   function handleSearch() {
