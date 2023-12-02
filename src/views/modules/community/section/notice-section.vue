@@ -9,17 +9,18 @@
     />
   </div>
 </template>
+
 <script setup lang="ts">
   // Vue Import
-  // import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { PropType, computed } from "vue";
+  import { useRouter } from "vue-router";
+
+  // 3rd Party
   import { useQuasar } from "quasar";
 
   //Custom Components
-  import NoticeCard from "./cards/notice-card.vue";
+  import NoticeCard from "./components/notice-card.vue";
 
-  // .ts file
-  import { useRouter } from "vue-router";
   defineProps({
     data: {
       type: Object as PropType<any[]>,
@@ -29,9 +30,6 @@
 
   const router = useRouter();
   const $q = useQuasar();
-  // function computeImagePath(imagePath: any) {
-  //   return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
-  // }
 
   const classMenuItem = computed((): string => {
     return $q.screen.gt.xs ? "col-3" : "col-3";

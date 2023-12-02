@@ -1,12 +1,13 @@
 <template>
-  <q-card class="my-card">
+  <q-card>
     <q-img :ratio="16 / 9" :src="computeImagePath(events?.imagePath)" />
+
     <q-card-section class="q-pa-sm">
       <app-item dense icon="schedule" :label="eventTime(events)" />
       <app-item dense icon="location_on" :label="events?.subtitle1" />
     </q-card-section>
+
     <q-card-actions>
-      <q-space />
       <q-btn
         outline
         dense
@@ -26,12 +27,8 @@
   import { date } from "quasar";
 
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
-  //import { useRouter } from "vue-router";
 
   import AppItem from "@/components/widgets/app-item.vue";
-
-  // const virtualScrollIndex = ref(0);
-  //   const router = useRouter();
 
   const props = defineProps({
     events: {
@@ -51,13 +48,6 @@
     return modifiedAt;
   };
 
-  // const navigateToDetailPage = (value: any) => {
-  //   router.push({
-  //     name: "business-list",
-  //     query: { directoryItemId: value.businessId }
-  //   });
-  // };
-
   function onItemClick() {
     emit("on-click", props.events);
   }
@@ -65,8 +55,4 @@
   function computeImagePath(imagePath: any) {
     return imagePath ? `${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
-
-  // function onVirtualScroll(details: any) {
-  //   virtualScrollIndex.value = details.index;
-  // }
 </script>

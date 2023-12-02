@@ -18,7 +18,6 @@
 
 <script setup lang="ts">
   // Vue Import
-  // import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { PropType } from "vue";
   import { date } from "quasar";
 
