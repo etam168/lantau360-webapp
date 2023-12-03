@@ -23,23 +23,23 @@
 <script setup lang="ts">
   // Vue Import
   import { PropType } from "vue";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { date } from "quasar";
 
-  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   import AppItem from "@/components/widgets/app-item.vue";
 
   const props = defineProps({
     events: {
-      type: Object as PropType<Business>,
+      type: Object as PropType<CommunityEvent>,
       required: true
     }
   });
 
   const emit = defineEmits(["on-click"]);
 
-  const eventTime = (row: Business) => {
+  const eventTime = (row: CommunityEvent) => {
     // Check if modifiedAt is undefined or null, provide a default value
     const modifiedAt = row.modifiedAt
       ? date.formatDate(row.modifiedAt, "YYYY-MM-DD")
@@ -53,6 +53,6 @@
   }
 
   function computeImagePath(imagePath: any) {
-    return imagePath ? `${imagePath}` : PLACEHOLDER_THUMBNAIL;
+    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 </script>

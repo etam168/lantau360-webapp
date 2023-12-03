@@ -31,7 +31,7 @@
     </q-tab-panel>
 
     <q-tab-panel name="events">
-      <events-section :events="latestOffers" class="q-mb-md" />
+      <events-section :events="eventData" class="q-mb-md" />
     </q-tab-panel>
 
     <q-tab-panel name="notice">
@@ -53,7 +53,7 @@
   import { useI18n } from "vue-i18n";
 
   // .ts file
-  import { COMMUNITY_DIRECTORY, COMMUNITY_NEWS, PROMOTION_URL } from "@/constants";
+  import { COMMUNITY_DIRECTORY, COMMUNITY_EVENT, COMMUNITY_NEWS, PROMOTION_URL } from "@/constants";
 
   import DirectoriesSection from "./section/directories-section.vue";
   import EventsSection from "./section/events-section.vue";
@@ -61,12 +61,14 @@
   import NoticeSection from "./section/notice-section.vue";
   import PromotionSection from "./section/promotion-section.vue";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { CommunityNews } from "@/interfaces/models/entities/communityNews";
 
   const { t } = useI18n({ useScope: "global" });
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
+  const eventData = ref();
   const newsData = ref();
   const tab = ref("news");
 
@@ -84,14 +86,17 @@
   }
 
   try {
-    const [respPromotions, respLatestOffers, respDirectories, respNews] = await Promise.all([
-      axios.get(`${PROMOTION_URL}/108`),
-      axios.get(`${PROMOTION_URL}/100`),
-      axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
-      axios.get<CommunityNews>(`${COMMUNITY_NEWS}`)
-    ]);
+    const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews] =
+      await Promise.all([
+        axios.get(`${PROMOTION_URL}/108`),
+        axios.get(`${PROMOTION_URL}/100`),
+        axios.get<CommunityEvent>(`${COMMUNITY_EVENT}`),
+        axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
+        axios.get<CommunityNews>(`${COMMUNITY_NEWS}`)
+      ]);
     promotions.value = respPromotions.data.data;
     latestOffers.value = respLatestOffers.data.data;
+    eventData.value = respEvent.data;
     directoriesData.value = respDirectories.data;
     newsData.value = respNews.data;
   } catch (err) {

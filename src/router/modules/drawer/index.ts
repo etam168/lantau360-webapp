@@ -124,6 +124,36 @@ const drawerRouter: Array<RouteRecordRaw> = [
       },
 
       {
+        path: "/community-event-list",
+        name: "community-event-list",
+        component: () =>
+          import("@/views/modules/community-event-directory/community-event-detail.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
+      {
+        path: "/community-event-detail",
+        name: "community-event-detail",
+        component: () =>
+          import("@/views/modules/community-event-directory/community-event-detail.vue"),
+        props: true,
+
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
+
+      {
         path: "/community-list",
         name: "community-list",
         component: () => import("@/views/modules/community-directory/community-list.vue"),

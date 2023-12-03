@@ -164,6 +164,9 @@ export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;
 
+export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
+export const COMMUNITY_EVENT_GALLERY_URL = `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`;
+
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
 export const PROPERTY_TYPE_URL = `${BASE_URL}/PropertyType`;
 export const PROPERTY_VIEW_URL = `${BASE_URL}/PropertyView`;
@@ -188,6 +191,7 @@ export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 export const DMY = "DD/MM/YYYY";
 
 export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
+export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;
 export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
 
 export const DIRECTORY_GROUPS = {
