@@ -188,6 +188,7 @@ export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 export const DMY = "DD/MM/YYYY";
 
 export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
+export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
 
 export const DIRECTORY_GROUPS = {
   HOME: 1,

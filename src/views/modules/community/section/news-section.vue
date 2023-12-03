@@ -3,7 +3,7 @@
     <news-card
       :class="classMenuItem"
       v-for="item in data.slice(0, 8)"
-      :key="item.directoryId"
+      :key="item.communityNewsId"
       :data="item"
       @on-click="onItemClick"
     />

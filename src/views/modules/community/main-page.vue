@@ -27,7 +27,7 @@
     transition-duration="1000"
   >
     <q-tab-panel name="news">
-      <news-section :data="newsArray" class="q-mb-md" />
+      <news-section :data="newsData" class="q-mb-md" />
     </q-tab-panel>
 
     <q-tab-panel name="events">
@@ -53,7 +53,7 @@
   import { useI18n } from "vue-i18n";
 
   // .ts file
-  import { COMMUNITY_DIRECTORY, PROMOTION_URL } from "@/constants";
+  import { COMMUNITY_DIRECTORY, COMMUNITY_NEWS, PROMOTION_URL } from "@/constants";
 
   import DirectoriesSection from "./section/directories-section.vue";
   import EventsSection from "./section/events-section.vue";
@@ -61,11 +61,13 @@
   import NoticeSection from "./section/notice-section.vue";
   import PromotionSection from "./section/promotion-section.vue";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { CommunityNews } from "@/interfaces/models/entities/communityNews";
 
   const { t } = useI18n({ useScope: "global" });
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
+  const newsData = ref();
   const tab = ref("news");
 
   const error = ref<string | null>(null);
@@ -82,14 +84,16 @@
   }
 
   try {
-    const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
+    const [respPromotions, respLatestOffers, respDirectories, respNews] = await Promise.all([
       axios.get(`${PROMOTION_URL}/108`),
       axios.get(`${PROMOTION_URL}/100`),
-      axios.get<Directory>(`${COMMUNITY_DIRECTORY}`)
+      axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
+      axios.get<CommunityNews>(`${COMMUNITY_NEWS}`)
     ]);
     promotions.value = respPromotions.data.data;
     latestOffers.value = respLatestOffers.data.data;
     directoriesData.value = respDirectories.data;
+    newsData.value = respNews.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
@@ -102,67 +106,67 @@
     }
   }
 
-  const newsArray = ref([
-    {
-      date: "2023-12-01",
-      title: "Exciting News Announcement",
-      description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
-    },
-    {
-      date: "2023-11-30",
-      title: "New Feature Release",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    },
-    {
-      date: "2023-11-29",
-      title: "Company Milestone Achieved",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      date: "2023-11-28",
-      title: "Upcoming Event Preview",
-      description:
-        "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
-    },
-    {
-      date: "2023-11-27",
-      title: "Product Update Details",
-      description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    },
-    {
-      date: "2023-11-26",
-      title: "Industry Recognition Received",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    },
-    {
-      date: "2023-11-25",
-      title: "Team Member Spotlight",
-      description:
-        "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
-    },
-    {
-      date: "2023-11-24",
-      title: "Community Engagement Initiative",
-      description:
-        "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
-    },
-    {
-      date: "2023-11-23",
-      title: "New Partnership Announcement",
-      description:
-        "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
-    },
-    {
-      date: "2023-11-22",
-      title: "Company Values Refinement",
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
-    }
-  ]);
+  // const newsArray = ref([
+  //   {
+  //     date: "2023-12-01",
+  //     title: "Exciting News Announcement",
+  //     description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit."
+  //   },
+  //   {
+  //     date: "2023-11-30",
+  //     title: "New Feature Release",
+  //     description:
+  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  //   },
+  //   {
+  //     date: "2023-11-29",
+  //     title: "Company Milestone Achieved",
+  //     description:
+  //       "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  //   },
+  //   {
+  //     date: "2023-11-28",
+  //     title: "Upcoming Event Preview",
+  //     description:
+  //       "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+  //   },
+  //   {
+  //     date: "2023-11-27",
+  //     title: "Product Update Details",
+  //     description:
+  //       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+  //   },
+  //   {
+  //     date: "2023-11-26",
+  //     title: "Industry Recognition Received",
+  //     description:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  //   },
+  //   {
+  //     date: "2023-11-25",
+  //     title: "Team Member Spotlight",
+  //     description:
+  //       "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+  //   },
+  //   {
+  //     date: "2023-11-24",
+  //     title: "Community Engagement Initiative",
+  //     description:
+  //       "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+  //   },
+  //   {
+  //     date: "2023-11-23",
+  //     title: "New Partnership Announcement",
+  //     description:
+  //       "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam."
+  //   },
+  //   {
+  //     date: "2023-11-22",
+  //     title: "Company Values Refinement",
+  //     description:
+  //       "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+  //   }
+  // ]);
 
   const notifications = ref([
     {
