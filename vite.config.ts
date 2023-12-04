@@ -27,7 +27,14 @@ export default defineConfig({
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
     }),
-    VitePWA()
+    VitePWA({
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      workbox: {
+        cleanupOutdatedCaches: false,
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
+      }
+    })
   ],
   resolve: {
     alias: {

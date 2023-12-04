@@ -4,10 +4,7 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="theme-color" content="#141414" />
-    <meta
-      name="viewport"
-      content="width=device-width,initial-scale=1.0,maximum-scale=1.0,user-scalable=no"
-    />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="HandheldFriendly" content="true" />
     <meta name="robots" content="noindex, nofollow" />
     <!-- Add this line to disallow search engine -->
@@ -33,5 +30,13 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script type="module" src="/src/main.ts"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js", { scope: "/" });
+        });
+      }
+    </script>
+    <script src="/registerSW.js"></script>
   </body>
 </html>
