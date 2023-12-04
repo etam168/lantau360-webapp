@@ -38,7 +38,7 @@
       <q-toolbar class="q-pb-md">
         <custom-search-input v-model="keyword" @search="handleSearch" />
       </q-toolbar>
-      <directories-section :data="directoriesData" class="q-mb-md" />
+      <directories-section @on-dialog="onDialog" :data="directoriesData" class="q-mb-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -51,6 +51,7 @@
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
   import { useI18n } from "vue-i18n";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import { DIRECTORY_GROUPS, MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
@@ -63,6 +64,9 @@
   const DirectoriesSection = defineAsyncComponent(
     () => import("./section/directories-section.vue")
   );
+  // const BusinessDetail = defineAsyncComponent(
+  //   () => import("../business-directory/business-detail.vue")
+  // );
   const LatestOfferSection = defineAsyncComponent(
     () => import("./section/latest-offer-section.vue")
   );
@@ -76,6 +80,8 @@
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
+
+  const $q = useQuasar();
 
   const error = ref<string | null>(null);
 
@@ -92,6 +98,19 @@
 
   function setTab(val: string) {
     tab.value = val;
+  }
+
+  function onDialog(data: any) {
+    alert(JSON.stringify(data));
+    // alert(JSON.stringify(props.data));
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("../business-directory/business-detail copy.vue")
+      ),
+      componentProps: {
+        row: data.data
+      }
+    });
   }
 
   try {

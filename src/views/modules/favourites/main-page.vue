@@ -3,6 +3,8 @@
     <div class="text-h6 text-weight-medium">{{ $t("favourite.title") }}</div>
   </q-card-actions>
 
+  <carousel-section :data="promotions" />
+
   <q-toolbar class="text-white bg-grey-3">
     <q-chip
       v-for="(tabItem, index) in tabItems"
@@ -66,16 +68,20 @@
   import { ref, onMounted, computed } from "vue";
 
   // 3rd Party Import
+  import axios, { AxiosError } from "axios";
 
   // .ts file
   import { FavoriteItem } from "@/interfaces/models/entities/favoriteItem";
-  import { BLOB_URL, DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, DIRECTORY_GROUPS, STORAGE_KEYS, PROMOTION_URL } from "@/constants";
   import { LocalStorage } from "quasar";
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
 
+  //const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
+  const promotions = ref<any | null>(null);
+  const error = ref<string | null>(null);
   const router = useRouter();
 
   const { t } = useI18n({ useScope: "global" });
@@ -165,5 +171,23 @@
       backgroundSize: "cover",
       backgroundPosition: "center"
     };
+  }
+
+  try {
+    const [respPromotions] = await Promise.all([
+      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.PROMOTIONS}`)
+    ]);
+
+    promotions.value = respPromotions.data.data;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response && err.response.status === 404) {
+        error.value = "Not found";
+      } else {
+        error.value = "An error occurred";
+      }
+    } else {
+      error.value = "An unexpected error occurred";
+    }
   }
 </script>
