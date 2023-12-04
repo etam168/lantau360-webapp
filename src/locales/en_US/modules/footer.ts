@@ -2,6 +2,6 @@ export default {
   home: "Home",
   business: "Business",
   community: "Community",
-  favourite: "Favourite",
+  favourite: "Saved",
   more: "More"
 };

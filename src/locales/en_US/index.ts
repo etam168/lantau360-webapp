@@ -8,6 +8,7 @@ import document from "./modules/document";
 import dashboard from "./modules/dashboard";
 import home from "./modules/home";
 import errors from "./modules/errors";
+import favourite from "./modules/favourite";
 import layout from "./modules/layout";
 import member from "./modules/member";
 import privacyPolicy from "./modules/privacy-policy";
@@ -31,6 +32,7 @@ export default {
   business,
   community,
   contact,
+  favourite,
   settings,
 
   staff,

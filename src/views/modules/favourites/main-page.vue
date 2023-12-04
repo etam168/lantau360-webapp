@@ -1,7 +1,27 @@
 <template>
+  <q-card-actions align="center">
+    <div class="text-h6 text-weight-medium">{{ $t("favourite.title") }}</div>
+  </q-card-actions>
+
+  <q-toolbar class="text-white bg-grey-3">
+    <q-chip
+      v-for="(tabItem, index) in tabItems"
+      :key="index"
+      :outline="tab !== tabItem.name"
+      color="primary"
+      text-color="white"
+      clickable
+      @click="setTab(tabItem.name)"
+    >
+      {{ tabItem.label }}
+    </q-chip>
+  </q-toolbar>
+
   <div>
-    <div v-for="(items, groupName) in groupedItems" :key="groupName" class="q-ma-lg">
-      <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
+    <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-lg">
+      <q-item-label v-if="tab !== 'business'" class="text-weight-medium text-h6">{{
+        groupName
+      }}</q-item-label>
 
       <!-- Display the group name outside the card -->
       <div class="row-cards">
@@ -43,7 +63,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
-  import { ref, onMounted } from "vue";
+  import { ref, onMounted, computed } from "vue";
 
   // 3rd Party Import
 
@@ -52,10 +72,25 @@
   import { BLOB_URL, DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
   import { LocalStorage } from "quasar";
   import { useRouter } from "vue-router";
+  import { useI18n } from "vue-i18n";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
   const router = useRouter();
+
+  const { t } = useI18n({ useScope: "global" });
+
+  const tab = ref("location");
+
+  const tabItems = ref([
+    { name: "location", label: t("favourite.tabItems.location") },
+    { name: "business", label: t("favourite.tabItems.business") },
+    { name: "coupon", label: t("favourite.tabItems.coupon") }
+  ]);
+
+  function setTab(val: string) {
+    tab.value = val;
+  }
 
   onMounted(() => {
     groupItemsByDirectory();
@@ -97,6 +132,27 @@
       {} as Record<string, FavoriteItem[]>
     );
   }
+
+  const filteredGroupedItems = computed(() => {
+    // Filter groupedItems based on groupId and tab.value
+    return Object.keys(groupedItems.value).reduce((acc, groupName) => {
+      const items = groupedItems.value[groupName];
+      const filteredItems = items.filter(item => {
+        if (tab.value === "location") {
+          return item.groupId === 1 || item.groupId === 3;
+        } else if (tab.value === "business") {
+          return item.groupId === 2 || item.groupId === 4;
+        }
+        return false;
+      });
+
+      if (filteredItems.length > 0) {
+        acc[groupName] = filteredItems;
+      }
+
+      return acc;
+    }, {});
+  });
 
   function getImageSrc(imagePath: any) {
     return `${BLOB_URL}/${imagePath}`;
