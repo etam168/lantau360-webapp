@@ -193,6 +193,7 @@ export const DMY = "DD/MM/YYYY";
 export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
 export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;
 export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
+export const COMMUNITY_NOTICE = `${BASE_URL}/CommunityNotice`;
 
 export const DIRECTORY_GROUPS = {
   HOME: 1,

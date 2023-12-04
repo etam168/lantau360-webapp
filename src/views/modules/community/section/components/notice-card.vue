@@ -21,7 +21,7 @@
   import { PropType } from "vue";
   import { date } from "quasar";
 
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object as PropType<any>,
       required: true
@@ -29,7 +29,14 @@
   });
 
   const noticeTime = (row: any) => {
-    // Check if modifiedAt is undefined or null, provide a default value
+    debugger;
+    console.log(props.data);
+    // Check if row is null or undefined
+    if (row === null || row === undefined) {
+      return ""; // Return an empty string or any default value if row is null or undefined
+    }
+
+    // Check if modifiedAt is present in the row object
     const modifiedAt = row.modifiedAt
       ? date.formatDate(row.modifiedAt, "YYYY-MM-DD")
       : date.formatDate(Date.now(), "YYYY-MM-DD");

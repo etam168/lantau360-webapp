@@ -53,7 +53,13 @@
   import { useI18n } from "vue-i18n";
 
   // .ts file
-  import { COMMUNITY_DIRECTORY, COMMUNITY_EVENT, COMMUNITY_NEWS, PROMOTION_URL } from "@/constants";
+  import {
+    COMMUNITY_DIRECTORY,
+    COMMUNITY_EVENT,
+    COMMUNITY_NEWS,
+    COMMUNITY_NOTICE,
+    PROMOTION_URL
+  } from "@/constants";
 
   import DirectoriesSection from "./section/directories-section.vue";
   import EventsSection from "./section/events-section.vue";
@@ -70,6 +76,7 @@
   const latestOffers = ref();
   const eventData = ref();
   const newsData = ref();
+  const notifications = ref();
   const tab = ref("news");
 
   const error = ref<string | null>(null);
@@ -86,19 +93,21 @@
   }
 
   try {
-    const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews] =
+    const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews, respNotice] =
       await Promise.all([
         axios.get(`${PROMOTION_URL}/108`),
         axios.get(`${PROMOTION_URL}/100`),
         axios.get<CommunityEvent>(`${COMMUNITY_EVENT}`),
         axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
-        axios.get<CommunityNews>(`${COMMUNITY_NEWS}`)
+        axios.get<CommunityNews>(`${COMMUNITY_NEWS}`),
+        axios.get<CommunityNews>(`${COMMUNITY_NOTICE}`)
       ]);
     promotions.value = respPromotions.data.data;
     latestOffers.value = respLatestOffers.data.data;
     eventData.value = respEvent.data;
     directoriesData.value = respDirectories.data;
     newsData.value = respNews.data;
+    notifications.value = respNotice.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
@@ -173,56 +182,56 @@
   //   }
   // ]);
 
-  const notifications = ref([
-    {
-      date: "2023-12-01T08:30:00",
-      title: "New Message Received",
-      description: "You have a new message from a friend."
-    },
-    {
-      date: "2023-11-30T15:45:00",
-      title: "Event Reminder",
-      description: "Don't forget about the upcoming event tomorrow."
-    },
-    {
-      date: "2023-11-29T12:00:00",
-      title: "Task Deadline Approaching",
-      description: "The deadline for your task is approaching. Finish it on time!"
-    },
-    {
-      date: "2023-11-28T09:15:00",
-      title: "Weather Alert",
-      description: "Severe weather warning in your area. Stay safe!"
-    },
-    {
-      date: "2023-11-27T18:00:00",
-      title: "New Feature Announcement",
-      description: "Exciting new features have been added to your favorite app."
-    },
-    {
-      date: "2023-11-26T14:30:00",
-      title: "Daily Check-In Reminder",
-      description: "Don't forget to complete your daily check-in."
-    },
-    {
-      date: "2023-11-25T11:45:00",
-      title: "Meeting Tomorrow",
-      description: "You have an important meeting scheduled for tomorrow. Be prepared!"
-    },
-    {
-      date: "2023-11-24T16:20:00",
-      title: "Payment Received",
-      description: "You received a payment for your recent transaction."
-    },
-    {
-      date: "2023-11-23T13:10:00",
-      title: "Product Sale Notification",
-      description: "One of your products has been sold. Check the details."
-    },
-    {
-      date: "2023-11-22T10:00:00",
-      title: "Upcoming Holiday",
-      description: "Plan your activities for the upcoming holiday."
-    }
-  ]);
+  // const notifications = ref([
+  //   {
+  //     date: "2023-12-01T08:30:00",
+  //     title: "New Message Received",
+  //     description: "You have a new message from a friend."
+  //   },
+  //   {
+  //     date: "2023-11-30T15:45:00",
+  //     title: "Event Reminder",
+  //     description: "Don't forget about the upcoming event tomorrow."
+  //   },
+  //   {
+  //     date: "2023-11-29T12:00:00",
+  //     title: "Task Deadline Approaching",
+  //     description: "The deadline for your task is approaching. Finish it on time!"
+  //   },
+  //   {
+  //     date: "2023-11-28T09:15:00",
+  //     title: "Weather Alert",
+  //     description: "Severe weather warning in your area. Stay safe!"
+  //   },
+  //   {
+  //     date: "2023-11-27T18:00:00",
+  //     title: "New Feature Announcement",
+  //     description: "Exciting new features have been added to your favorite app."
+  //   },
+  //   {
+  //     date: "2023-11-26T14:30:00",
+  //     title: "Daily Check-In Reminder",
+  //     description: "Don't forget to complete your daily check-in."
+  //   },
+  //   {
+  //     date: "2023-11-25T11:45:00",
+  //     title: "Meeting Tomorrow",
+  //     description: "You have an important meeting scheduled for tomorrow. Be prepared!"
+  //   },
+  //   {
+  //     date: "2023-11-24T16:20:00",
+  //     title: "Payment Received",
+  //     description: "You received a payment for your recent transaction."
+  //   },
+  //   {
+  //     date: "2023-11-23T13:10:00",
+  //     title: "Product Sale Notification",
+  //     description: "One of your products has been sold. Check the details."
+  //   },
+  //   {
+  //     date: "2023-11-22T10:00:00",
+  //     title: "Upcoming Holiday",
+  //     description: "Plan your activities for the upcoming holiday."
+  //   }
+  // ]);
 </script>
