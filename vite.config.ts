@@ -6,6 +6,7 @@ import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
+import { VitePWA } from "vite-plugin-pwa";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -25,7 +26,8 @@ export default defineConfig({
     }),
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
-    })
+    }),
+    VitePWA()
   ],
   resolve: {
     alias: {
