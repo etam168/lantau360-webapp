@@ -65,7 +65,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
-  import { ref, onMounted, computed } from "vue";
+  import { defineAsyncComponent, ref, onMounted, computed } from "vue";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -77,7 +77,7 @@
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
 
-  //const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
+  const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
   const promotions = ref<any | null>(null);
