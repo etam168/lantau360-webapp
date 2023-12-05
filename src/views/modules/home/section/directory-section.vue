@@ -5,7 +5,7 @@
       :key="item.directoryId"
       :data="item"
       :class="classMenuItem"
-      @on-click="onItemClick"
+      @on-click="handleDialog"
     />
   </div>
 </template>
@@ -37,7 +37,7 @@
     return $q.screen.gt.xs ? "col-3" : "col-3";
   });
 
-  async function onItemClick(item: any) {
+  async function handleDialog(item: any) {
     try {
       const response = await axios.get(`${DIRECTORY_SITES_URL}/${item?.directoryId}`); // Make API call using Axios
       // Assuming a successful response
@@ -45,6 +45,7 @@
         $q.dialog({
           component: defineAsyncComponent(() => import("./site-list-dialog.vue")),
           componentProps: {
+            directoryName: item.directoryName,
             directoryItemsList: response.data
           }
         });
