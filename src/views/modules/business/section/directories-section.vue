@@ -7,34 +7,28 @@
       :data="item"
       @on-dialog="handleDialog"
     />
-    <!-- <directory-item
-      :class="classMenuItem"
-      v-for="item in data"
-      :key="item.directoryId"
-      :data="item"
-      @on-click="onItemClick"
-    /> -->
   </div>
 </template>
+
 <script setup lang="ts">
   // Vue Import
   import { PropType, computed } from "vue";
   import { useQuasar } from "quasar";
 
+  // .ts file
+  import { Directory } from "@/interfaces/models/entities/directory";
+
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item-business.vue";
 
-  // .ts file
-  import { Directory } from "@/interfaces/models/entities/directory";
-  //import { useRouter } from "vue-router";
   defineProps({
     data: {
       type: Object as PropType<Directory[]>,
       required: true
     }
   });
-  const emits = defineEmits(["on-dialog"]);
-  //const router = useRouter();
+
+  //const emits = defineEmits(["on-dialog"]);
   const $q = useQuasar();
 
   const classMenuItem = computed((): string => {
@@ -43,13 +37,6 @@
 
   function handleDialog(item: any) {
     alert("ITEM: " + JSON.stringify(item));
-    emits("on-dialog", { directoryId: item.directoryId });
+    //emits("on-dialog", { directoryId: item.directoryId });
   }
-
-  // const onItemClick = (value: any) => {
-  //   router.push({
-  //     name: "business-list",
-  //     query: { directoryId: value.directoryId }
-  //   });
-  // };
 </script>

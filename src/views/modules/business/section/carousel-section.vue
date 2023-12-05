@@ -47,9 +47,9 @@
 
   // .ts file
   import { BLOB_URL } from "@/constants";
+  import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
   import imageNotFound from "@/assets/img/image_not_found.jpg";
-  import { Business } from "@/interfaces/models/entities/business";
 
   const props = defineProps({
     data: {

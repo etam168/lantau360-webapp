@@ -10,7 +10,7 @@
   import { PropType } from "vue";
 
   //Custom Components
-  import LatestOfferCard from "./cards/latest-offer-card.vue";
+  import LatestOfferCard from "./components/latest-offer-card.vue";
 
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
