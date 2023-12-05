@@ -163,6 +163,7 @@ export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;
+export const DIRECTORY_POST_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
 export const COMMUNITY_EVENT_GALLERY_URL = `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`;
