@@ -1,5 +1,6 @@
 <template>
   <div class="row q-gutter-y-md">
+    <!-- <div>{{ data }}</div> -->
     <directory-item
       :class="classMenuItem"
       v-for="item in data"

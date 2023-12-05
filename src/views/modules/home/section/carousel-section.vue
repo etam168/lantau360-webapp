@@ -20,7 +20,7 @@
           :name="row.siteId"
           class="q-pa-none"
           :img-src="getImageSrc(row)"
-          @click="onImageClick(row)"
+          @click="handleDialog(row)"
         >
           <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
             <strong>SiteId Id:</strong> {{ row.siteId }}
@@ -36,8 +36,9 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, ref } from "vue";
-  import { useRouter } from "vue-router";
+  import { PropType, defineAsyncComponent, ref } from "vue";
+  //import { useRouter } from "vue-router";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import { BLOB_URL } from "@/constants";
@@ -55,18 +56,28 @@
 
   const { aspectRatio } = useUtilities();
 
-  const router = useRouter();
+  //const router = useRouter();
+  const $q = useQuasar();
   const slideInterval = 10000;
   const data = ref(props.data);
 
   const slide = ref(data.value?.[0]?.siteId ?? 0);
 
-  const onImageClick = (item: Site) => {
-    router.push({
-      name: "site-detail",
-      query: { siteId: item.siteId }
+  // const onImageClick = (item: Site) => {
+  //   router.push({
+  //     name: "site-detail",
+  //     query: { siteId: item.siteId }
+  //   });
+  // };
+
+  function handleDialog(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../../site-directory/site-detail-dialog.vue")),
+      componentProps: {
+        query: { siteId: item.siteId }
+      }
     });
-  };
+  }
 
   function getImageSrc(row: Site) {
     return row.bannerPath !== null && row.bannerPath !== ""

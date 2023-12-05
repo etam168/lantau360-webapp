@@ -12,6 +12,7 @@ export interface Site {
   displayMask: number;
   description: string;
   directoryId: number;
+  directoryName: string;
   imagePath: string;
   iconPath: string;
   bannerPath: string;

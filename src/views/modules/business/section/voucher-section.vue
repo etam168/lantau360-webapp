@@ -10,7 +10,7 @@
   import { PropType } from "vue";
 
   //Custom Components
-  import VoucherCard from "./cards/voucher-card.vue";
+  import VoucherCard from "./components/voucher-card.vue";
 
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
