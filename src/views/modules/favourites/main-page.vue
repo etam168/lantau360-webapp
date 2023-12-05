@@ -26,39 +26,29 @@
       }}</q-item-label>
 
       <!-- Display the group name outside the card -->
-      <div class="row-cards">
-        <q-card
-          v-for="item in items"
-          :key="item.itemId"
-          class="shadow-6 q-mt-sm"
-          style="border-radius: 12px"
-        >
-          <q-item class="q-pa-sm" clickable @click="onItemClick(item)">
-            <q-item-section top avatar>
-              <q-avatar
-                class="q-pa-none"
-                size="60px"
-                style="border-radius: 0px; border: 1px solid rgba(0, 0, 0, 0.12)"
-              >
-                <q-img :src="getImageSrc(item.iconPath)" />
-                <div :style="getAvatarStyle(item.iconPath)"></div>
-              </q-avatar>
-            </q-item-section>
 
-            <q-item-section top class="q-mt-md">
-              <q-item-label class="text-subtitle1 text-weight-medium">{{
-                item.itemName
-              }}</q-item-label>
-              <q-item-label class="text-caption" lines="1" style="font-family: baloo">
-                {{ item.subTitle }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side class="q-ma-lg">
-              <i class="fa-solid fa-heart text-h6" style="color: green; margin-top: -20px"></i>
-            </q-item-section>
-          </q-item>
-        </q-card>
-      </div>
+      <q-item
+        clickable
+        v-for="item in items"
+        :key="item?.directoryId"
+        class="shadow-1 q-mb-md q-pl-sm"
+        @click="onItemClick(item)"
+      >
+        <q-item-section avatar>
+          <q-avatar size="64px" square>
+            <q-img ratio="1" :src="computePath(item?.iconPath)" />
+          </q-avatar>
+        </q-item-section>
+
+        <q-item-section class="q-ml-lg">
+          <q-item-label>{{ item.itemName }}</q-item-label>
+          <q-item-label>{{ item.subTitle }}</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <q-icon class="fa-solid fa-heart text-h6" style="color: green; margin-top: -20px" />
+        </q-item-section>
+      </q-item>
     </div>
   </div>
 </template>
@@ -72,7 +62,13 @@
 
   // .ts file
   import { FavoriteItem } from "@/interfaces/models/entities/favoriteItem";
-  import { BLOB_URL, DIRECTORY_GROUPS, STORAGE_KEYS, PROMOTION_URL } from "@/constants";
+  import {
+    BLOB_URL,
+    DIRECTORY_GROUPS,
+    STORAGE_KEYS,
+    PROMOTION_URL,
+    PLACEHOLDER_THUMBNAIL
+  } from "@/constants";
   import { LocalStorage } from "quasar";
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
@@ -190,4 +186,8 @@
       error.value = "An unexpected error occurred";
     }
   }
+
+  const computePath = (path: string) => {
+    return path ? `${path}` : PLACEHOLDER_THUMBNAIL;
+  };
 </script>

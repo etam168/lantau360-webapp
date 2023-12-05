@@ -1,4 +1,7 @@
 <template>
+  <q-card-actions align="center">
+    <div class="text-h6 text-weight-medium">{{ $t("footer.more") }}</div>
+  </q-card-actions>
   <div>
     <div v-for="item in moreItems" :key="item.Title" class="q-ma-lg">
       <div class="row-cards">

@@ -10,12 +10,12 @@
   >
     <q-card style="max-width: 1024px">
       <q-layout view="hHh lpR fFf">
-        <q-bar class="bg-primary text-white">
+        <q-card-actions align="center" class="button-margin">
           <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
           <q-space />
-          <div>{{ directoryName }}</div>
+          <div class="text-h6 text-weight-medium">{{ directoryName }}</div>
           <q-space />
-        </q-bar>
+        </q-card-actions>
 
         <q-page-container class="q-mx-xl q-my-md">
           <q-item
@@ -23,17 +23,20 @@
             v-for="item in directoryItems"
             :key="item.businessId"
             @click="onItemClick(item)"
-            class="shadow-3 q-my-md"
-            style="border-radius: 12px"
+            class="shadow-1 q-mb-md q-pl-sm"
           >
-            <q-img width="80px" height="80px" :src="computePath(item.iconPath)" />
+            <q-item-section avatar>
+              <q-avatar size="64px" square>
+                <q-img :src="computePath(item.iconPath)" />
+              </q-avatar>
+            </q-item-section>
 
             <q-item-section class="q-ml-lg">
               <q-item-label>{{ item.title }}</q-item-label>
               <q-item-label>{{ item.subtitle1 }}</q-item-label>
             </q-item-section>
 
-            <q-item-section>
+            <q-item-section side>
               <q-icon name="favorite" size="2em" color="red" />
               <q-item-label>distance in km</q-item-label>
             </q-item-section>
@@ -84,3 +87,9 @@
     return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
   };
 </script>
+
+<style scoped>
+  .button-margin {
+    margin-right: 40px;
+  }
+</style>
