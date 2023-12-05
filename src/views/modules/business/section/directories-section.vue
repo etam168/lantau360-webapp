@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, computed } from "vue";
+  import { PropType, computed, defineAsyncComponent } from "vue";
   import { useQuasar } from "quasar";
 
   // .ts file
@@ -20,6 +20,8 @@
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item-business.vue";
+  import axios from "axios";
+  import { DIRECTORY_BUSINESS_URL } from "@/constants";
 
   defineProps({
     data: {
@@ -35,8 +37,23 @@
     return $q.screen.gt.xs ? "col-3" : "col-3";
   });
 
-  function handleDialog(item: any) {
-    alert("ITEM: " + JSON.stringify(item));
-    //emits("on-dialog", { directoryId: item.directoryId });
+  async function handleDialog(item: any) {
+    // alert("ITEM: " + JSON.stringify(item));
+    try {
+      const response = await axios.get(`${DIRECTORY_BUSINESS_URL}/${item?.directoryId}`); // Make API call using Axios
+      // Assuming a successful response
+      if (response.status === 200) {
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./business-list-dialog.vue")),
+          componentProps: {
+            directoryItemsList: response.data
+          }
+        });
+      }
+    } catch (error) {
+      // Handle error if the API call fails
+      console.error("Error fetching data: ", error);
+    }
   }
+  //emits("on-dialog", { directoryId: item.directoryId });
 </script>
