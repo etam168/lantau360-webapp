@@ -54,6 +54,7 @@
 
   // .ts file
   import {
+    ADVERTISEMENT_URL,
     COMMUNITY_DIRECTORY,
     COMMUNITY_EVENT,
     COMMUNITY_NEWS,
@@ -95,14 +96,14 @@
   try {
     const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews, respNotice] =
       await Promise.all([
-        axios.get(`${PROMOTION_URL}/108`),
+        axios.get(`${ADVERTISEMENT_URL}`),
         axios.get(`${PROMOTION_URL}/100`),
         axios.get<CommunityEvent>(`${COMMUNITY_EVENT}`),
         axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
         axios.get<CommunityNews>(`${COMMUNITY_NEWS}`),
         axios.get<CommunityNews>(`${COMMUNITY_NOTICE}`)
       ]);
-    promotions.value = respPromotions.data.data;
+    promotions.value = respPromotions.data;
     latestOffers.value = respLatestOffers.data.data;
     eventData.value = respEvent.data;
     directoriesData.value = respDirectories.data;

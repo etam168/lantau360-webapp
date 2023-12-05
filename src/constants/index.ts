@@ -167,6 +167,8 @@ export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
 export const COMMUNITY_EVENT_GALLERY_URL = `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`;
 
+export const ADVERTISEMENT_URL = `${BASE_URL}/Advertisement`;
+
 export const AMENITY_URL = `${BASE_URL}/Amenity`;
 export const PROPERTY_TYPE_URL = `${BASE_URL}/PropertyType`;
 export const PROPERTY_VIEW_URL = `${BASE_URL}/PropertyView`;

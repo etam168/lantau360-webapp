@@ -54,7 +54,12 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { DIRECTORY_GROUPS, MAIN_DIRECTORIES, PROMOTION_URL } from "@/constants";
+  import {
+    ADVERTISEMENT_URL,
+    DIRECTORY_GROUPS,
+    MAIN_DIRECTORIES,
+    PROMOTION_URL
+  } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
 
   // Custom Components
@@ -115,12 +120,12 @@
 
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
-      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.PROMOTIONS}`),
+      axios.get(`${ADVERTISEMENT_URL}`),
       axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.LATEST_OFFERS}`),
       axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
     ]);
 
-    promotions.value = respPromotions.data.data;
+    promotions.value = respPromotions.data;
     latestOffers.value = respLatestOffers.data.data;
     directoriesData.value = respDirectories.data;
   } catch (err) {
