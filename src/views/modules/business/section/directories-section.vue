@@ -17,11 +17,11 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { DIRECTORY_BUSINESS_URL } from "@/constants";
+  import axios from "axios";
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item-business.vue";
-  import axios from "axios";
-  import { DIRECTORY_BUSINESS_URL } from "@/constants";
 
   defineProps({
     data: {
@@ -30,7 +30,6 @@
     }
   });
 
-  //const emits = defineEmits(["on-dialog"]);
   const $q = useQuasar();
 
   const classMenuItem = computed((): string => {
@@ -38,7 +37,6 @@
   });
 
   async function handleDialog(item: any) {
-    // alert("ITEM: " + JSON.stringify(item));
     try {
       const response = await axios.get(`${DIRECTORY_BUSINESS_URL}/${item?.directoryId}`); // Make API call using Axios
       // Assuming a successful response

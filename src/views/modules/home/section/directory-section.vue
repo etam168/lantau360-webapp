@@ -12,13 +12,14 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, computed } from "vue";
+  import { PropType, computed, defineAsyncComponent } from "vue";
 
   import { useQuasar } from "quasar";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { useRouter } from "vue-router";
+  import { DIRECTORY_SITES_URL } from "@/constants";
+  import axios from "axios";
 
   //Custom Components
   import DirectoryItem from "@/components/custom/directory-item.vue";
@@ -30,17 +31,27 @@
     }
   });
 
-  const router = useRouter();
   const $q = useQuasar();
 
   const classMenuItem = computed((): string => {
     return $q.screen.gt.xs ? "col-3" : "col-3";
   });
 
-  const onItemClick = (value: any) => {
-    router.push({
-      name: "site-list",
-      query: { directoryId: value.directoryId }
-    });
-  };
+  async function onItemClick(item: any) {
+    try {
+      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item?.directoryId}`); // Make API call using Axios
+      // Assuming a successful response
+      if (response.status === 200) {
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./site-list-dialog.vue")),
+          componentProps: {
+            directoryItemsList: response.data
+          }
+        });
+      }
+    } catch (error) {
+      // Handle error if the API call fails
+      console.error("Error fetching data: ", error);
+    }
+  }
 </script>
