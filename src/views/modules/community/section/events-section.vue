@@ -1,19 +1,16 @@
 <template>
   <div class="row q-col-gutter-sm">
-    <div
-      v-for="item in events.slice(0, 8)"
-      :key="item.communityEventId"
-      class="col-md-3 col-sm-4 col-6"
-    >
-      <events-card :events="item" @on-click="onItemClick" />
+    <div v-for="item in events" :key="item.communityEventId" class="col-md-3 col-sm-4 col-6">
+      <events-card :events="item" @on-click="handleDialog" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType } from "vue";
+  import { PropType, defineAsyncComponent } from "vue";
   import { useRouter } from "vue-router";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
@@ -29,6 +26,7 @@
   });
 
   const router = useRouter();
+  const $q = useQuasar();
 
   const onItemClick = (value: any) => {
     router.push({
@@ -36,4 +34,17 @@
       query: { communityEventId: value.communityEventId }
     });
   };
+
+  onItemClick;
+
+  function handleDialog(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("../../community-event-directory/community-event-detail-dialog.vue")
+      ),
+      componentProps: {
+        query: { communityEventId: item.communityEventId }
+      }
+    });
+  }
 </script>
