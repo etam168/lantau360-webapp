@@ -1,7 +1,17 @@
 <template>
   <suspense>
     <template #default>
-      <main-datatable />
+      <q-dialog
+        ref="dialogRef"
+        @hide="onDialogHide"
+        transition-show="slide-up"
+        transition-hide="slide-down"
+        @update:model-value="updateDialogState"
+        :model-value="isDialogVisible"
+        maximized
+      >
+        <main-datatable :query="query" />
+      </q-dialog>
     </template>
     <template #fallback>
       <div class="row justify-center items-center" style="height: 500px">
@@ -13,6 +23,22 @@
 
 <script setup lang="ts">
   // Custom Components
+  import { useDialogPluginComponent } from "quasar";
   import MainDatatable from "./main-datatable.vue";
   import AppSpinner from "@/components/widgets/app-spinner.vue";
+  import { PropType, ref } from "vue";
+
+  defineProps({
+    query: {
+      type: Object as PropType<any>,
+      required: true
+    }
+  });
+
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const isDialogVisible = ref();
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+  }
 </script>

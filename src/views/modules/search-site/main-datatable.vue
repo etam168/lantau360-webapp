@@ -1,35 +1,43 @@
 <template>
-  <q-page class="bg-grey-2">
-    <q-card flat square>
-      <q-toolbar
-        class="q-pa-none bg-grey-3 q-ma-lg"
-        style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 960px"
-      >
-        <q-separator vertical />
-        <custom-search-input v-model="filter" @search="onSearch" />
-      </q-toolbar>
-      <q-card-section class="q-py-xs">
-        <site-list-table
-          v-model:pagination="pagination"
-          row-key="siteId"
-          :rows="rows"
-          :loading="loading"
-          @on-detail="handleDetail"
-          @on-pagination="updatePagination"
-          @request="loadData"
-        />
-      </q-card-section>
+  <q-card flat square style="max-width: 1024px">
+    <q-layout view="hHh lpR fFf">
+      <q-card-actions align="center" class="button-margin">
+        <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
+        <q-space />
+        <q-toolbar
+          class="q-pa-none bg-grey-3 q-ma-lg"
+          style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 860px"
+        >
+          <q-separator vertical />
+          <custom-search-input v-model="filter" @search="onSearch" />
+        </q-toolbar>
+        <q-space />
+      </q-card-actions>
 
-      <!-- <q-card-section v-else class="q-pa-none">
+      <q-page-container class="q-mx-xl q-my-md">
+        <q-card-section class="q-py-xs">
+          <site-list-table
+            v-model:pagination="pagination"
+            row-key="siteId"
+            :rows="rows"
+            :loading="loading"
+            @on-detail="handleDetail"
+            @on-pagination="updatePagination"
+            @request="loadData"
+          />
+        </q-card-section>
+      </q-page-container>
+    </q-layout>
+
+    <!-- <q-card-section v-else class="q-pa-none">
         <no-data />
       </q-card-section> -->
-    </q-card>
-  </q-page>
+  </q-card>
 </template>
 
 <script setup lang="ts">
   // Vue Import
-  import { onBeforeUnmount, onMounted } from "vue";
+  import { PropType, onBeforeUnmount, onMounted } from "vue";
   import { useRouter } from "vue-router";
 
   // 3rd Party Import
@@ -43,6 +51,13 @@
   import siteListTable from "./site-list-table.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
   // import NoData from "@/components/custom/no-data.vue";
+
+  const props = defineProps({
+    query: {
+      type: Object as PropType<any>,
+      required: true
+    }
+  });
 
   const url = "/Site/Datatable";
   const key = "siteId";
@@ -76,12 +91,12 @@
       onRefresh();
     });
 
-    const { query } = router.currentRoute.value;
+    //const { query } = router.currentRoute.value;
 
     // Check if the route query is an object and contains the key searchKeyword
-    if (query?.searchKeyword !== undefined) {
+    if (props.query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value
-      filter.value = query.searchKeyword as string;
+      filter.value = props.query.searchKeyword as string;
       // keyword.value = filter.value;
     }
     loadData({ pagination: pagination.value });

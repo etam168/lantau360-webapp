@@ -33,7 +33,7 @@
       <directory-section :data="infoData" />
 
       <div class="row justify-center q-ma-lg">
-        <custom-search-bar @on-search="handleSearch" />
+        <custom-search-bar @on-search="handleSearchDialog" />
       </div>
     </q-tab-panel>
   </q-tab-panels>
@@ -41,12 +41,13 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { ref } from "vue";
-  import { useRouter } from "vue-router";
+  import { defineAsyncComponent, ref } from "vue";
+  //import { useRouter } from "vue-router";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
   import { useI18n } from "vue-i18n";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
@@ -64,8 +65,9 @@
   const { isNthBitSet } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
-  const router = useRouter();
+  //const router = useRouter();
   const tab = ref("all");
+  const $q = useQuasar();
 
   const error = ref<string | null>(null);
   const carouselData = ref<any | null>(null);
@@ -79,10 +81,21 @@
     { name: "info", label: t("home.info") }
   ]);
 
-  function handleSearch(value: string) {
-    const queryString = { searchKeyword: value };
-    router.push({ name: "SitesSeacrh", query: queryString });
+  // function handleSearch(value: string) {
+  //   const queryString = { searchKeyword: value };
+  //   router.push({ name: "SitesSeacrh", query: queryString });
+  // }
+
+  function handleSearchDialog(value: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../search-site/index.vue")),
+      componentProps: {
+        query: { searchKeyword: value }
+      }
+    });
   }
+
+  //handleSearchDialog;
 
   function setTab(val: string) {
     tab.value = val;
