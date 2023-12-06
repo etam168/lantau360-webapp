@@ -51,7 +51,6 @@ export default function useDataTable(url: string, key: string, opt?: any) {
       else params["businessId"] = opt.businessId;
     }
 
-    debugger;
     const data = await getDataTable(params);
 
     loading.value = false;

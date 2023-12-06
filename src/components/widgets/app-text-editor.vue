@@ -122,78 +122,78 @@
     return "";
   });
 
-  const textActions = ref([
-    { slug: "bold", icon: "format_bold", active: "bold" },
-    { slug: "italic", icon: "format_italic", active: "italic" },
-    { slug: "underline", icon: "format_underlined", active: "underline" },
-    { slug: "bulletList", icon: "format_list_bulleted", active: "bulletList" },
-    { slug: "orderedList", icon: "format_list_numbered", active: "orderedList" },
-    { slug: "subscript", icon: "subscript", active: "subscript" },
-    { slug: "superscript", icon: "superscript", active: "superscript" },
-    // { slug: "strike", icon: "format_strikethrough", active: "strike" },
-    {
-      slug: "align",
-      option: "left",
-      icon: "format_align_left",
-      active: { textAlign: "left" }
-    },
-    {
-      slug: "align",
-      option: "center",
-      icon: "format_align_center",
-      active: { textAlign: "center" }
-    },
-    {
-      slug: "align",
-      option: "right",
-      icon: "format_align_right",
-      active: { textAlign: "right" }
-    },
-    {
-      slug: "align",
-      option: "justify",
-      icon: "format_align_justify",
-      active: { textAlign: "justify" }
-    }
+  // const textActions = ref([
+  //   { slug: "bold", icon: "format_bold", active: "bold" },
+  //   { slug: "italic", icon: "format_italic", active: "italic" },
+  //   { slug: "underline", icon: "format_underlined", active: "underline" },
+  //   { slug: "bulletList", icon: "format_list_bulleted", active: "bulletList" },
+  //   { slug: "orderedList", icon: "format_list_numbered", active: "orderedList" },
+  //   { slug: "subscript", icon: "subscript", active: "subscript" },
+  //   { slug: "superscript", icon: "superscript", active: "superscript" },
+  //   // { slug: "strike", icon: "format_strikethrough", active: "strike" },
+  //   {
+  //     slug: "align",
+  //     option: "left",
+  //     icon: "format_align_left",
+  //     active: { textAlign: "left" }
+  //   },
+  //   {
+  //     slug: "align",
+  //     option: "center",
+  //     icon: "format_align_center",
+  //     active: { textAlign: "center" }
+  //   },
+  //   {
+  //     slug: "align",
+  //     option: "right",
+  //     icon: "format_align_right",
+  //     active: { textAlign: "right" }
+  //   },
+  //   {
+  //     slug: "align",
+  //     option: "justify",
+  //     icon: "format_align_justify",
+  //     active: { textAlign: "justify" }
+  //   }
 
-    // { slug: "undo", icon: "arrow-left", active: "undo" },
-    // { slug: "redo", icon: "arrow-right", active: "redo" },
-    // { slug: "clear", icon: "format_clear", active: "clear" }
-  ]);
+  //   // { slug: "undo", icon: "arrow-left", active: "undo" },
+  //   // { slug: "redo", icon: "arrow-right", active: "redo" },
+  //   // { slug: "clear", icon: "format_clear", active: "clear" }
+  // ]);
 
-  function onActionClick(slug: string, option: string | null = null) {
-    const vm = editor.value?.chain().focus();
+  // function onActionClick(slug: string, option: string | null = null) {
+  //   const vm = editor.value?.chain().focus();
 
-    if (!vm) {
-      // console.error("Editor is not available.");
-      return;
-    }
+  //   if (!vm) {
+  //     // console.error("Editor is not available.");
+  //     return;
+  //   }
 
-    const actionTriggers: { [key: string]: () => void } = {
-      bold: () => vm.toggleBold().run(),
-      italic: () => vm.toggleItalic().run(),
-      underline: () => vm.toggleUnderline().run(),
-      bulletList: () => vm.toggleBulletList().run(),
-      orderedList: () => vm.toggleOrderedList().run(),
-      subscript: () => vm.toggleSubscript().run(),
-      superscript: () => vm.toggleSuperscript().run(),
-      align: () => {
-        if (option !== null) {
-          vm.setTextAlign(option).run();
-        }
-      },
-      clear: () => {
-        vm.clearNodes().run();
-        vm.unsetAllMarks().run();
-      }
-    };
+  //   const actionTriggers: { [key: string]: () => void } = {
+  //     bold: () => vm.toggleBold().run(),
+  //     italic: () => vm.toggleItalic().run(),
+  //     underline: () => vm.toggleUnderline().run(),
+  //     bulletList: () => vm.toggleBulletList().run(),
+  //     orderedList: () => vm.toggleOrderedList().run(),
+  //     subscript: () => vm.toggleSubscript().run(),
+  //     superscript: () => vm.toggleSuperscript().run(),
+  //     align: () => {
+  //       if (option !== null) {
+  //         vm.setTextAlign(option).run();
+  //       }
+  //     },
+  //     clear: () => {
+  //       vm.clearNodes().run();
+  //       vm.unsetAllMarks().run();
+  //     }
+  //   };
 
-    if (slug in actionTriggers) {
-      actionTriggers[slug]();
-    } else {
-      // console.error(`Invalid action: ${slug}`);
-    }
-  }
+  //   if (slug in actionTriggers) {
+  //     actionTriggers[slug]();
+  //   } else {
+  //     // console.error(`Invalid action: ${slug}`);
+  //   }
+  // }
 
   function onHeadingClick(index: any) {
     const vm = editor.value?.chain().focus();
