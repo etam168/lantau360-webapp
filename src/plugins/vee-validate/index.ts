@@ -1,3 +1,6 @@
+// Types
+import type { App } from "vue";
+
 import {
   Form as VeeForm,
   Field as VeeField,
@@ -24,7 +27,7 @@ import {
 import { phoneNumber } from "./rules/phone-number";
 
 export default {
-  install(app) {
+  install(app: App) {
     app.component("VeeForm", VeeForm);
     app.component("VeeField", VeeField);
     app.component("ErrorMessage", ErrorMessage);
@@ -83,6 +86,7 @@ export default {
 
         return message;
       },
+
       validateOnBlur: true,
       validateOnChange: true,
       validateOnInput: false,

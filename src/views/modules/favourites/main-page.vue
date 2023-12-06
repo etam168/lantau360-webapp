@@ -1,7 +1,5 @@
 <template>
-  <q-card-actions align="center">
-    <div class="text-h6 text-weight-medium">{{ $t("favourite.title") }}</div>
-  </q-card-actions>
+  <app-page-title :title="$t('favourite.title')"></app-page-title>
 
   <carousel-section :data="promotions" />
 

@@ -1,7 +1,5 @@
 <template>
-  <q-card-actions align="center">
-    <div class="text-h6 text-weight-medium">{{ $t("community.title") }}</div>
-  </q-card-actions>
+  <app-page-title :title="$t('community.title')"></app-page-title>
 
   <promotion-section :data="promotions" />
 

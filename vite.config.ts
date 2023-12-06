@@ -1,7 +1,9 @@
 import dns from "dns";
 import eslintPlugin from "vite-plugin-eslint";
 import vue from "@vitejs/plugin-vue";
+import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+
 import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
@@ -39,6 +41,15 @@ export default defineConfig({
         cleanupOutdatedCaches: false,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
       }
+    }),
+    Components({
+      // relative paths to the directory to search for components.
+      dirs: ["src/components/global"],
+
+      // valid file extensions for components.
+      extensions: ["vue"],
+
+      dts: "src/components.d.ts" // enabled by default if `typescript` is installed
     })
   ],
   resolve: {

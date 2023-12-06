@@ -1,7 +1,5 @@
 <template>
-  <q-card-actions align="center">
-    <div class="text-h6 text-weight-medium">{{ $t("business.title") }}</div>
-  </q-card-actions>
+  <app-page-title :title="$t('business.title')"></app-page-title>
 
   <carousel-section :data="promotions" />
 
@@ -69,9 +67,7 @@
   const DirectoriesSection = defineAsyncComponent(
     () => import("./section/directories-section.vue")
   );
-  // const BusinessDetail = defineAsyncComponent(
-  //   () => import("../business-directory/business-detail.vue")
-  // );
+
   const LatestOfferSection = defineAsyncComponent(
     () => import("./section/latest-offer-section.vue")
   );
