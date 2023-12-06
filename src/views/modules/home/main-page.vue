@@ -95,8 +95,6 @@
     });
   }
 
-  //handleSearchDialog;
-
   function setTab(val: string) {
     tab.value = val;
   }

@@ -34,7 +34,7 @@
 
     <q-tab-panel name="directory">
       <q-toolbar class="q-pb-md">
-        <custom-search-input v-model="keyword" @search="handleSearch" />
+        <custom-search-bar @on-search="handleSearchDialog" />
       </q-toolbar>
       <directories-section :data="directoriesData" class="q-mb-md" />
     </q-tab-panel>
@@ -44,12 +44,12 @@
 <script setup lang="ts">
   // Vue Import
   import { defineAsyncComponent, ref } from "vue";
-  import { useRouter } from "vue-router";
+  //import { useRouter } from "vue-router";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
   import { useI18n } from "vue-i18n";
-  // import { useQuasar } from "quasar";
+  import { useQuasar } from "quasar";
 
   // .ts file
   import {
@@ -61,7 +61,7 @@
   import { Directory } from "@/interfaces/models/entities/directory";
 
   // Custom Components
-  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
+  import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectoriesSection = defineAsyncComponent(
@@ -73,11 +73,13 @@
   );
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
-  const router = useRouter();
+  //const router = useRouter();
   const { t } = useI18n({ useScope: "global" });
 
   const tab = ref("promotion");
-  const keyword = ref("");
+  const $q = useQuasar();
+
+  //const keyword = ref("");
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
   const latestOffers = ref();
@@ -92,10 +94,21 @@
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
-  function handleSearch() {
-    const queryString = { searchKeyword: keyword.value };
-    router.push({ name: "BusinessSeacrh", query: queryString });
+  // function handleSearch() {
+  //   const queryString = { searchKeyword: keyword.value };
+  //   router.push({ name: "BusinessSeacrh", query: queryString });
+  // }
+
+  function handleSearchDialog(value: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../search-business/index.vue")),
+      componentProps: {
+        query: { searchKeyword: value }
+      }
+    });
   }
+
+  handleSearchDialog;
 
   function setTab(val: string) {
     tab.value = val;

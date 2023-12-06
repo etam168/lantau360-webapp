@@ -1,8 +1,8 @@
 <template>
-  <q-item clickable @click="handleDetail">
+  <q-item clickable @click="handleDetail" class="shadow-1 q-mb-md q-pl-sm">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img :src="computePath(row.iconPath)" />
+        <q-img ratio="1" :src="computePath(row.iconPath)" />
       </q-avatar>
     </q-item-section>
 

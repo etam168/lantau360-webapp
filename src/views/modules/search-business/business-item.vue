@@ -1,15 +1,24 @@
 <template>
-  <q-item clickable @click="handleDetail">
-    <q-img width="80px" height="80px" :src="computePath(row.iconPath)" />
-
-    <q-item-section class="q-ml-lg">
-      <q-item-label>{{ row.title }}</q-item-label>
-      <q-item-label>{{ row.subtitle1 }}</q-item-label>
+  <q-item clickable @click="handleDetail" class="shadow-1 q-mb-md q-pl-sm">
+    <q-item-section avatar>
+      <q-avatar size="64px" square>
+        <q-img ratio="1" :src="computePath(row.iconPath)" />
+      </q-avatar>
     </q-item-section>
 
-    <q-item-section>
+    <q-item-section class="q-ml-lg">
+      <q-item-label>
+        {{ translate(row.title, row.meta, "title") }}
+      </q-item-label>
+
+      <q-item-label>
+        {{ translate(row.subtitle1, row.meta, "subtitle1") }}
+      </q-item-label>
+    </q-item-section>
+
+    <q-item-section side>
       <q-icon name="favorite" size="2em" color="red" />
-      <q-item-label>distance in km</q-item-label>
+      <!-- <q-item-label>distance in km</q-item-label> -->
     </q-item-section>
   </q-item>
 </template>
@@ -18,12 +27,15 @@
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { PropType } from "vue";
+  import { useUtilities } from "@/composable/use-utilities";
 
   const emits = defineEmits(["on-detail"]);
 
   const computePath = (path: string) => {
     return `${BLOB_URL}/${path}`;
   };
+
+  const { translate } = useUtilities();
 
   defineProps({
     row: {
