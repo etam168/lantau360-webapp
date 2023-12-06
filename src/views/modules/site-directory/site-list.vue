@@ -1,6 +1,10 @@
 <template>
   <q-item clickable v-for="item in directoryItems" :key="item.siteId" @click="onItemClick(item)">
-    <q-img width="80px" height="80px" :src="computePath(item.iconPath)" />
+    <q-item-section avatar>
+      <q-avatar size="64px" square>
+        <q-img ratio="1" :src="computePath(item.iconPath)" />
+      </q-avatar>
+    </q-item-section>
 
     <q-item-section class="q-ml-lg">
       <q-item-label>{{ item.title }}</q-item-label>

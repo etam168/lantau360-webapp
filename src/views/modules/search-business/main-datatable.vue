@@ -21,7 +21,7 @@
             row-key="businessId"
             :rows="rows"
             :loading="loading"
-            @on-detail="handleDetail"
+            @on-detail="handleDialog"
             @on-pagination="updatePagination"
             @request="loadData"
           />
@@ -37,10 +37,11 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, onBeforeUnmount, onMounted } from "vue";
-  import { useRouter } from "vue-router";
+  import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
+  //import { useRouter } from "vue-router";
 
   // 3rd Party Import
+  import { useQuasar } from "quasar";
 
   // .ts file
   import eventBus from "@/utils/event-bus";
@@ -67,17 +68,29 @@
     key
   );
 
-  const router = useRouter();
+  //const router = useRouter();
+  const $q = useQuasar();
 
   function updatePagination(val: any) {
     pagination.value.page = val;
     loadData({ pagination: pagination.value });
   }
 
-  function handleDetail(rowData: any) {
-    router.push({
-      name: "business-detail",
-      query: { businessId: rowData.businessId }
+  // function handleDetail(rowData: any) {
+  //   router.push({
+  //     name: "business-detail",
+  //     query: { businessId: rowData.businessId }
+  //   });
+  // }
+
+  async function handleDialog(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("../business-directory/business-detail-dialog.vue")
+      ),
+      componentProps: {
+        query: { businessId: item.businessId }
+      }
     });
   }
 

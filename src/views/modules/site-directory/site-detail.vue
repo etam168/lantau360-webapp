@@ -1,6 +1,5 @@
 <template>
   <q-item class="q-items-center">
-    <div>{{ query }}</div>
     <gallery-images-component
       class="col-md-8 q-items-center"
       style="max-height: 600px"
