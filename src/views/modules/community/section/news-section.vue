@@ -2,7 +2,7 @@
   <div class="column q-gutter-y-md">
     <news-card
       :class="classMenuItem"
-      v-for="item in data.slice(0, 8)"
+      v-for="item in data"
       :key="item.communityNewsId"
       :data="item"
       @on-click="onItemClick"

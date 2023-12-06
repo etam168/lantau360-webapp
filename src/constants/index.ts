@@ -157,7 +157,9 @@ export const DIRECTORY_URL = `${BASE_URL}/Directory`;
 
 export const COMMUNITY_POSTING_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 export const POSTING_GALLERY_URL = `${BASE_URL}/PostingImage/GetPostingImages`;
+export const COMMUNITY_NEWS_GALLERY_URL = `${BASE_URL}/CommunityNewsImage/GetCommunityNewsImages`;
 export const POSTING_URL = `${BASE_URL}/Posting/PostingById`;
+export const COMMUNITY_NEWS_URL = `${BASE_URL}/CommunityNews/CommunityNewsById`;
 
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const ADVERTISEMENT_DETAIL_URL = `${BASE_URL}/Advertisement/AdvertisementById`;

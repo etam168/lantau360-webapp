@@ -27,7 +27,7 @@
           >
             <q-item-section avatar>
               <q-avatar size="64px" square>
-                <q-img :src="computePath(item.imagePath)" />
+                <q-img ratio="1" :src="computePath(item.imagePath)" />
               </q-avatar>
             </q-item-section>
 
