@@ -67,61 +67,61 @@ const drawerRouter: Array<RouteRecordRaw> = [
         }
       },
 
-      // {
-      //   path: "/site-list",
-      //   name: "site-list",
-      //   component: () => import("@/views/modules/site-directory/site-list.vue"),
-      //   props: true,
+      {
+        path: "/site-list",
+        name: "site-list",
+        component: () => import("@/views/modules/site-directory/site-list.vue"),
+        props: true,
 
-      //   meta: {
-      //     title: "route.drawerComponents.more",
-      //     icon: "mdi-briefcase-check",
-      //     group: "common",
-      //     roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-      //   }
-      // },
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
 
-      // {
-      //   path: "/site-detail",
-      //   name: "site-detail",
-      //   component: () => import("@/views/modules/site-directory/site-detail.vue"),
-      //   props: true,
+      {
+        path: "/site-detail",
+        name: "site-detail",
+        component: () => import("@/views/modules/site-directory/site-detail.vue"),
+        props: true,
 
-      //   meta: {
-      //     title: "route.drawerComponents.more",
-      //     icon: "mdi-briefcase-check",
-      //     group: "common",
-      //     roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-      //   }
-      // },
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
 
-      // {
-      //   path: "/business-list",
-      //   name: "business-list",
-      //   component: () => import("@/views/modules/business-directory/business-detail.vue"),
-      //   props: true,
+      {
+        path: "/business-list",
+        name: "business-list",
+        component: () => import("@/views/modules/business-directory/business-detail.vue"),
+        props: true,
 
-      //   meta: {
-      //     title: "route.drawerComponents.more",
-      //     icon: "mdi-briefcase-check",
-      //     group: "common",
-      //     roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-      //   }
-      // },
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
 
-      // {
-      //   path: "/business-detail",
-      //   name: "business-detail",
-      //   component: () => import("@/views/modules/business-directory/business-detail.vue"),
-      //   props: true,
+      {
+        path: "/business-detail",
+        name: "business-detail",
+        component: () => import("@/views/modules/business-directory/business-detail.vue"),
+        props: true,
 
-      //   meta: {
-      //     title: "route.drawerComponents.more",
-      //     icon: "mdi-briefcase-check",
-      //     group: "common",
-      //     roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-      //   }
-      // },
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common",
+          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+        }
+      },
 
       {
         path: "/community-event-list",
