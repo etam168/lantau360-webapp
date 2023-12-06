@@ -42,7 +42,7 @@
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import GalleryImagesComponent from "./gallery-images/index.vue";
+  import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
   import { LocalStorage } from "quasar";
   import { Site } from "@/interfaces/site";
 
