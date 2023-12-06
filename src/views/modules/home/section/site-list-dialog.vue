@@ -9,11 +9,14 @@
     maximized
   >
     <q-card style="max-width: 1024px">
+      <!-- {{ directoryItems[0] }} -->
       <q-layout view="hHh lpR fFf">
         <q-card-actions align="center" class="button-margin">
           <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
           <q-space />
-          <div class="text-h6 text-weight-medium">{{ directoryName }}</div>
+          <div class="text-h6 text-weight-medium">
+            {{ translate(directory.directoryName, directory.meta, "directoryName") }}
+          </div>
           <q-space />
         </q-card-actions>
 
@@ -32,13 +35,18 @@
             </q-item-section>
 
             <q-item-section class="q-ml-lg">
-              <q-item-label>{{ item.title }}</q-item-label>
-              <q-item-label>{{ item.subtitle1 }}</q-item-label>
+              <q-item-label>
+                {{ translate(item.title, item.meta, "title") }}
+              </q-item-label>
+
+              <q-item-label>
+                {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+              </q-item-label>
             </q-item-section>
 
             <q-item-section side>
               <q-icon name="favorite" size="2em" color="red" />
-              <q-item-label>distance in km</q-item-label>
+              <!-- <q-item-label>distance in km</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-page-container>
@@ -54,6 +62,11 @@
   import { useDialogPluginComponent, useQuasar } from "quasar";
   // import { useRouter } from "vue-router";
   // const router = useRouter();
+  import { useUtilities } from "@/composable/use-utilities";
+  import { Directory } from "@/interfaces/models/entities/directory";
+
+  const { translate } = useUtilities();
+
   const $q = useQuasar();
 
   const isDialogVisible = ref();
@@ -64,8 +77,8 @@
     directoryItemsList: {
       type: Array as () => Business[]
     },
-    directoryName: {
-      type: String as PropType<any>,
+    directory: {
+      type: Object as PropType<Directory>,
       required: true
     }
   });

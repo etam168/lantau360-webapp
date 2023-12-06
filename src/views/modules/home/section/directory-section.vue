@@ -45,7 +45,7 @@
         $q.dialog({
           component: defineAsyncComponent(() => import("./site-list-dialog.vue")),
           componentProps: {
-            directoryName: item.directoryName,
+            directory: item,
             directoryItemsList: response.data
           }
         });
