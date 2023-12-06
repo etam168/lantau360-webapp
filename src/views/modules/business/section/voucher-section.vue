@@ -7,14 +7,16 @@
 </template>
 <script setup lang="ts">
   // Vue Import
-  import { PropType } from "vue";
+  import { PropType, defineAsyncComponent } from "vue";
 
   //Custom Components
   import VoucherCard from "./components/voucher-card.vue";
 
+  const $q = useQuasar();
+
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
-  import { useRouter } from "vue-router";
+  import { useQuasar } from "quasar";
   defineProps({
     offers: {
       type: Object as PropType<Business[]>,
@@ -22,12 +24,12 @@
     }
   });
 
-  const router = useRouter();
-
-  const onItemClick = (value: any) => {
-    router.push({
-      name: "business-list",
-      query: { businessId: value.businessId }
+  const onItemClick = (item: any) => {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("./business-detail-dialog.vue")),
+      componentProps: {
+        query: { businessId: item.businessId }
+      }
     });
   };
 </script>

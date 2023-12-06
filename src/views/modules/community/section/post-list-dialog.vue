@@ -38,7 +38,7 @@
 
             <q-item-section side>
               <q-icon name="favorite" size="2em" color="red" />
-              <q-item-label>distance in km</q-item-label>
+              <!-- <q-item-label>distance in km</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-page-container>
@@ -50,10 +50,12 @@
 <script setup lang="ts">
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { PropType, computed, ref } from "vue";
-  import { useDialogPluginComponent } from "quasar";
-  import { useRouter } from "vue-router";
-  const router = useRouter();
+  import { PropType, computed, defineAsyncComponent, ref } from "vue";
+  import { useDialogPluginComponent, useQuasar } from "quasar";
+  // import { useRouter } from "vue-router";
+  // const router = useRouter();
+  const $q = useQuasar();
+
   const isDialogVisible = ref();
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
@@ -76,12 +78,21 @@
     isDialogVisible.value = status;
   }
 
-  const onItemClick = (value: any) => {
-    router.push({
-      name: "business-detail",
-      query: { businessId: value.businessId }
+  // const onItemClick = (value: any) => {
+  //   router.push({
+  //     name: "business-detail",
+  //     query: { businessId: value.businessId }
+  //   });
+  // };
+
+  function onItemClick(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("./community-detail-dialog.vue")),
+      componentProps: {
+        query: { businessId: item.businessId }
+      }
     });
-  };
+  }
 
   const computePath = (path: string) => {
     return path ? `${path}` : PLACEHOLDER_THUMBNAIL;
