@@ -73,7 +73,8 @@
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
 
-  import GalleryImagesComponent from "./gallery-images/index.vue";
+  import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
+
   import { LocalStorage } from "quasar";
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";

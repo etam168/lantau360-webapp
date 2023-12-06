@@ -160,6 +160,8 @@ export const POSTING_GALLERY_URL = `${BASE_URL}/PostingImage/GetPostingImages`;
 export const POSTING_URL = `${BASE_URL}/Posting/PostingById`;
 
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
+export const ADVERTISEMENT_DETAIL_URL = `${BASE_URL}/Advertisement/AdvertisementById`;
+export const ADVERTISEMENT_GALLERY_URL = `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;

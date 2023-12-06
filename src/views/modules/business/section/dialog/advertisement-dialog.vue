@@ -15,7 +15,9 @@
           <q-space />
           <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
           <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.businessName, directoryItem.meta, "businessName") }}
+            {{
+              translate(directoryItem.advertisementName, directoryItem.meta, "advertisementName")
+            }}
           </div>
           <q-space />
         </q-card-actions>
@@ -34,7 +36,6 @@
               >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
             </q-item-label>
           </q-item>
-          {{ isFavourite }}
 
           <q-item>
             <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
@@ -65,7 +66,12 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import {
+    DIRECTORY_GROUPS,
+    ADVERTISEMENT_GALLERY_URL,
+    ADVERTISEMENT_DETAIL_URL,
+    STORAGE_KEYS
+  } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -74,13 +80,12 @@
   //import { useRouter } from "vue-router";
 
   import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
-
   import { LocalStorage } from "quasar";
-  import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
 
   //const router = useRouter();
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<Advertisement>({} as Advertisement);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -100,7 +105,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.advertisementId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -112,9 +117,9 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessId,
+        directoryId: props.query?.advertisementId,
         directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
+        itemName: directoryItem.value.advertisementName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
         iconPath: directoryItem.value.iconPath,
@@ -148,18 +153,18 @@
   });
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.query?.advertisementId !== undefined) {
       try {
-        const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+        const [advertisementResponse, galleryResponse] = await Promise.all([
+          axios.get(`${ADVERTISEMENT_DETAIL_URL}/${props.query?.advertisementId}`),
+          axios.get<GalleryImage[]>(`${ADVERTISEMENT_GALLERY_URL}/${props.query?.advertisementId}`)
         ]);
-        directoryItem.value = businessResponse.data;
+        directoryItem.value = advertisementResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.itemId == directoryItem.value.advertisementId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
