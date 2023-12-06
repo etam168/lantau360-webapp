@@ -6,7 +6,7 @@
       class="cursor-pointer"
       :placeholder-src="PLACEHOLDER_THUMBNAIL"
       :ratio="1"
-      :src="imagelink"
+      :src="getImageSrc(imagelink)"
       style="height: 84px"
       @click="handleimage"
     >
@@ -43,9 +43,21 @@
 
   const emits = defineEmits(["on-image"]);
 
+  const getImageSrc = (path: string | null) => {
+    const baseURL = "https://lantau360storage.blob.core.windows.net";
+
+    // Check if the imagelink is not null
+    if (path && path.startsWith(baseURL)) {
+      // If it does, use the image path directly
+      return path;
+    } else {
+      // If it doesn't or is null, compute the path using the BLOB_URL
+      return `${BLOB_URL}/${path || PLACEHOLDER_THUMBNAIL}`;
+    }
+  };
+
   const imagelink = computed(() => {
-    const url = `${BLOB_URL}/${props.rowData.imagePath}`;
-    return url || PLACEHOLDER_THUMBNAIL;
+    return getImageSrc(props.rowData.imagePath) || PLACEHOLDER_THUMBNAIL;
   });
 
   function handleimage(props: any) {

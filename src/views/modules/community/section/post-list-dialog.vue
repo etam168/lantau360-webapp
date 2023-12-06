@@ -21,7 +21,7 @@
           <q-item
             clickable
             v-for="item in directoryItems"
-            :key="item.businessId"
+            :key="item.postingId"
             @click="onItemClick(item)"
             class="shadow-1 q-mb-md q-pl-sm"
           >
@@ -49,7 +49,7 @@
 
 <script setup lang="ts">
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { PropType, computed, defineAsyncComponent, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   // import { useRouter } from "vue-router";
@@ -62,7 +62,7 @@
 
   const props = defineProps({
     directoryItemsList: {
-      type: Array as () => Business[]
+      type: Array as () => Posting[]
     },
     directoryName: {
       type: String as PropType<any>,
@@ -89,7 +89,7 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("./community-detail-dialog.vue")),
       componentProps: {
-        query: { businessId: item.businessId }
+        query: { postingId: item.postingId }
       }
     });
   }

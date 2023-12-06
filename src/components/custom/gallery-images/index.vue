@@ -7,7 +7,7 @@
             v-for="(image, index) in galleryItems"
             :key="index"
             :name="image.imageId"
-            :img-src="computePath(image.imagePath)"
+            :img-src="getImageSrc(image.imagePath)"
           >
           </q-carousel-slide>
         </q-carousel>
@@ -94,6 +94,19 @@
     },
     { deep: true }
   );
+
+  const getImageSrc = (path: string) => {
+    const baseURL = "https://lantau360storage.blob.core.windows.net";
+
+    // Check if the image path starts with the specified URL
+    if (path.startsWith(baseURL)) {
+      // If it does, use the image path directly
+      return path;
+    } else {
+      // If it doesn't, compute the path using the computePath function
+      return computePath(path);
+    }
+  };
 
   function showImage(row: any) {
     slide.value = row.imageId;

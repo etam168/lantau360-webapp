@@ -15,7 +15,7 @@
           <q-space />
           <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
           <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.businessName, directoryItem.meta, "businessName") }}
+            {{ translate(directoryItem.title, directoryItem.meta, "title") }}
           </div>
           <q-space />
         </q-card-actions>
@@ -64,7 +64,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import { DIRECTORY_GROUPS, POSTING_GALLERY_URL, POSTING_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -75,11 +75,11 @@
   import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
 
   import { LocalStorage } from "quasar";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { useUtilities } from "@/composable/use-utilities";
 
   //const router = useRouter();
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<Posting>({} as Posting);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -99,7 +99,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.postingId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -111,9 +111,9 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessId,
+        directoryId: props.query?.postingId,
         directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
+        itemName: directoryItem.value.postingName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
         iconPath: directoryItem.value.iconPath,
@@ -147,18 +147,18 @@
   });
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.query?.postingId !== undefined) {
       try {
-        const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+        const [postingResponse, galleryResponse] = await Promise.all([
+          axios.get(`${POSTING_URL}/${props.query?.postingId}`),
+          axios.get<GalleryImage[]>(`${POSTING_GALLERY_URL}/${props.query?.postingId}`)
         ]);
-        directoryItem.value = businessResponse.data;
+        directoryItem.value = postingResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.itemId == directoryItem.value.postingId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
