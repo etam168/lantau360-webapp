@@ -1,6 +1,7 @@
 export interface Business {
   businessId: number;
   businessName: string;
+  directoryName: string;
   contactWhatsApp: string;
   contactPhone: string;
   contactOther: string;

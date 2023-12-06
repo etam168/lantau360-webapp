@@ -50,10 +50,12 @@
 <script setup lang="ts">
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { PropType, computed, ref } from "vue";
-  import { useDialogPluginComponent } from "quasar";
-  import { useRouter } from "vue-router";
-  const router = useRouter();
+  import { PropType, computed, defineAsyncComponent, ref } from "vue";
+  import { useDialogPluginComponent, useQuasar } from "quasar";
+  // import { useRouter } from "vue-router";
+  // const router = useRouter();
+  const $q = useQuasar();
+
   const isDialogVisible = ref();
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
@@ -76,12 +78,22 @@
     isDialogVisible.value = status;
   }
 
-  const onItemClick = (value: any) => {
-    router.push({
-      name: "business-detail",
-      query: { businessId: value.businessId }
+  function onItemClick(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../../site-directory/site-detail-dialog.vue")),
+      componentProps: {
+        query: { siteId: item.siteId }
+      }
     });
-  };
+  }
+
+  // const onItemClick = (value: any) => {
+  //   debugger;
+  //   router.push({
+  //     name: "business-detail",
+  //     query: { businessId: value.businessId }
+  //   });
+  // };
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
