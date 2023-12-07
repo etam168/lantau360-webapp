@@ -19,9 +19,7 @@
 
   <div>
     <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-md">
-      <q-item-label v-if="tab !== 'business'" class="text-weight-medium text-h6">{{
-        groupName
-      }}</q-item-label>
+      <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
 
       <!-- Display the group name outside the card -->
 
@@ -66,7 +64,6 @@
     DIRECTORY_GROUPS,
     STORAGE_KEYS,
     PROMOTION_URL,
-    PLACEHOLDER_THUMBNAIL,
     BUSINESS_GALLERY_URL,
     SITE_GALLERY_URL
   } from "@/constants";
@@ -158,19 +155,6 @@
     }, {});
   });
 
-  function getImageSrc(imagePath: any) {
-    return `${BLOB_URL}/${imagePath}`;
-  }
-  function getAvatarStyle(iconPath: string | undefined) {
-    return {
-      width: "100%",
-      height: "100%",
-      backgroundImage: `url(${getImageSrc(iconPath)})`,
-      backgroundSize: "cover",
-      backgroundPosition: "center"
-    };
-  }
-
   try {
     const [respPromotions] = await Promise.all([
       axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.PROMOTIONS}`)
@@ -213,11 +197,7 @@
     }
   };
 
-  // const computePath = (path: string) => {
-  //   return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
-  // };
-
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 </script>
