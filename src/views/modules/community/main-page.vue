@@ -47,7 +47,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { defineAsyncComponent, ref } from "vue";
+  import { defineAsyncComponent, onMounted, ref } from "vue";
 
   // Custom Components
   import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
@@ -75,6 +75,8 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { CommunityNews } from "@/interfaces/models/entities/communityNews";
+  import eventBus from "@/utils/event-bus";
+  import { onBeforeRouteLeave } from "vue-router";
 
   const { t } = useI18n({ useScope: "global" });
   const promotions = ref<any | null>(null);
@@ -87,6 +89,7 @@
   const $q = useQuasar();
 
   const error = ref<string | null>(null);
+  const dialogStack = ref<string[]>([]);
 
   const tabItems = ref([
     { name: "news", label: t("community.tabItems.news") },
@@ -98,6 +101,28 @@
   function setTab(val: string) {
     tab.value = val;
   }
+
+  onMounted(() => {
+    eventBus.on("DialogStatus", (status, emitter) => {
+      if (status) {
+        dialogStack.value.push(emitter);
+      } else {
+        dialogStack.value = dialogStack.value.filter(item => item != emitter);
+      }
+    });
+  });
+
+  onBeforeRouteLeave((_to, _from, next) => {
+    if (dialogStack.value.length > 0) {
+      const emitter = dialogStack.value[dialogStack.value.length - 1];
+      eventBus.emit(emitter);
+      dialogStack.value = dialogStack.value.filter(item => item != emitter);
+
+      next(false);
+    } else {
+      next();
+    }
+  });
 
   try {
     const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews, respNotice] =

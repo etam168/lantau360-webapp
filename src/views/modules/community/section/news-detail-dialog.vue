@@ -84,6 +84,7 @@
   import { LocalStorage } from "quasar";
   import { CommunityNews } from "@/interfaces/models/entities/communityNews";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
   const directoryItem = ref<CommunityNews>({} as CommunityNews);
@@ -151,7 +152,15 @@
 
   onMounted(() => {
     loadData();
+    eventBus.on("NewsDetailDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "NewsDetailDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.communityNewsId !== undefined) {
@@ -180,7 +189,4 @@
       }
     }
   };
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>

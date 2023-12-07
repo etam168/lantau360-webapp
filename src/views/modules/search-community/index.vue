@@ -23,11 +23,12 @@
 
 <script setup lang="ts">
   //import { PropType, ref } from "vue";
-  import { PropType, ref } from "vue";
+  import { PropType, onMounted, ref } from "vue";
   // Custom Components
   import { useDialogPluginComponent } from "quasar";
   import MainDatatable from "./main-datatable.vue";
   import AppSpinner from "@/components/widgets/app-spinner.vue";
+  import eventBus from "@/utils/event-bus";
 
   defineProps({
     query: {
@@ -39,7 +40,14 @@
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
+  onMounted(() => {
+    eventBus.on("CommunitySearchDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "CommunitySearchDialog");
   }
 </script>

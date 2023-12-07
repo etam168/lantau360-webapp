@@ -50,9 +50,10 @@
 <script setup lang="ts">
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
-  import { PropType, computed, defineAsyncComponent, ref } from "vue";
+  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
   // import { useRouter } from "vue-router";
   // const router = useRouter();
   const $q = useQuasar();
@@ -76,8 +77,15 @@
     return props.directoryItemsList;
   });
 
+  onMounted(() => {
+    eventBus.on("PostListDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "PostListDialog");
   }
 
   // const onItemClick = (value: any) => {

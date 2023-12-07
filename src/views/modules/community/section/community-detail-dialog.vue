@@ -77,6 +77,7 @@
   import { LocalStorage } from "quasar";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
   const directoryItem = ref<Posting>({} as Posting);
@@ -141,10 +142,17 @@
   //       return props.data.directoryName;
   //   }
   // });
-
   onMounted(() => {
     loadData();
+    eventBus.on("CommunityDetailDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "CommunityDetailDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.postingId !== undefined) {
@@ -173,7 +181,4 @@
       }
     }
   };
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>

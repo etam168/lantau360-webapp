@@ -77,6 +77,7 @@
   import { LocalStorage } from "quasar";
   import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
 
   const props = defineProps({
     query: {
@@ -131,7 +132,15 @@
 
   onMounted(() => {
     loadData();
+    eventBus.on("CommunityEventDetailDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "CommunityEventDetailDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.communityEventId !== undefined) {
@@ -162,8 +171,4 @@
       }
     }
   };
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>

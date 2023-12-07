@@ -83,6 +83,7 @@
   import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
   const directoryItem = ref<Advertisement>({} as Advertisement);
@@ -150,7 +151,15 @@
 
   onMounted(() => {
     loadData();
+    eventBus.on("CommunityAdsDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "CommunityAdsDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.advertisementId !== undefined) {
@@ -179,7 +188,4 @@
       }
     }
   };
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>
