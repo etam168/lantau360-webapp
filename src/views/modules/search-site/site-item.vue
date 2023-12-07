@@ -34,7 +34,7 @@
   const emits = defineEmits(["on-detail"]);
 
   const computePath = (path: string) => {
-    return `${BLOB_URL}/${path}`;
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
   const isFavoriteItem = (siteId: string | number): boolean => {

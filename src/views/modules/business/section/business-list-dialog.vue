@@ -54,7 +54,7 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { PropType, computed, defineAsyncComponent, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
@@ -101,7 +101,7 @@
   }
 
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
   const isFavoriteItem = (businessId: string | number): boolean => {
