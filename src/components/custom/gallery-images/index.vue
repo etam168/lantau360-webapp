@@ -53,7 +53,7 @@
     </q-card>
   </div>
   <div v-else>
-    <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />
+    <q-img src="@/assets/img/no_image_available.jpeg" :ratio="16 / 9" />
   </div>
 </template>
 
@@ -62,7 +62,7 @@
   import { PropType, ref, watch } from "vue";
 
   // .ts file
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { BLOB_URL } from "@/constants";
 
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";

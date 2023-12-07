@@ -21,9 +21,8 @@
           </div>
           <q-space />
         </q-card-actions>
-
-        <q-page-container class="q-mx-md q-my-md">
-          <q-item class="q-items-center">
+        <q-page-container class="q-mx-sm q-pa-none">
+          <q-item class="q-items-center q-pa-xs">
             <gallery-images-component
               class="col-12 q-items-center"
               style="max-height: 600px"
