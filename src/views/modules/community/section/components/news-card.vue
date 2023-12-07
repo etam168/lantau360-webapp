@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL, COMMUNITY_NEWS_GALLERY_URL } from "@/constants";
+  import { BLOB_URL, COMMUNITY_NEWS_GALLERY_URL } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { CommunityNews } from "@/interfaces/models/entities/communityNews";
@@ -78,6 +78,6 @@
   };
 
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 </script>

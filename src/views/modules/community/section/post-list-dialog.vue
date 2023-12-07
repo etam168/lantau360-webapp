@@ -48,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+  //import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
@@ -105,7 +105,7 @@
   }
 
   const computePath = (path: string) => {
-    return path ? `${path}` : PLACEHOLDER_THUMBNAIL;
+    return path ? `${path}` : "/no_image_available.jpeg";
   };
 </script>
 

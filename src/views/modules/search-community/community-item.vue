@@ -2,21 +2,21 @@
   <q-item clickable @click="handleDetail" class="shadow-1 q-mb-md q-pl-sm">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img ratio="1" :src="computePath(row.iconPath)" />
+        <q-img ratio="1" :src="computePath(row.imagePath)" />
       </q-avatar>
     </q-item-section>
 
     <q-item-section class="q-ml-lg">
       <q-item-label>
-        {{ translate(row.title, row.meta, "title") }}
+        {{ translate(row.directoryName, row.meta, "directoryName") }}
       </q-item-label>
 
       <q-item-label>
-        {{ translate(row.subtitle1, row.meta, "subtitle1") }}
+        {{ translate(row.shortName, row.meta, "shortNameAlt") }}
       </q-item-label>
     </q-item-section>
 
-    <q-item-section side v-if="isFavoriteItem(row.businessId)">
+    <q-item-section side v-if="isFavoriteItem(row.communityDirectoryId)">
       <q-icon name="favorite" size="2em" color="red" />
     </q-item-section>
   </q-item>
@@ -48,7 +48,7 @@
   function handleDetail() {
     emits("on-detail");
   }
-  const isFavoriteItem = (businessId: string | number): boolean => {
-    return favoriteItems.value.some((item: any) => item.directoryId === businessId);
+  const isFavoriteItem = (communityDirectoryId: string | number): boolean => {
+    return favoriteItems.value.some((item: any) => item.directoryId === communityDirectoryId);
   };
 </script>

@@ -28,7 +28,7 @@
   import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { date } from "quasar";
 
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
+  import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
 
   import AppItem from "@/components/widgets/app-item.vue";
 
@@ -84,6 +84,6 @@
   };
 
   function computeImagePath(imagePath: any) {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
+    return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
   }
 </script>

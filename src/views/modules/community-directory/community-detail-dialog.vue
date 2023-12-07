@@ -15,7 +15,8 @@
           <q-space />
           <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
           <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.businessName, directoryItem.meta, "businessName") }}
+            {{ directoryItem }}
+            <!-- {{ translate(directoryItem.businessName, directoryItem.meta, "businessName") }} -->
           </div>
           <q-space />
         </q-card-actions>
@@ -30,8 +31,8 @@
           </q-item>
           <q-item>
             <q-icon name="location_on" size="2em" color="blue" />
-            <q-item-label class="q-mt-sm"
-              >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+            <q-item-label class="q-mt-sm">
+              <!-- {{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }} -->
             </q-item-label>
           </q-item>
 
@@ -64,7 +65,12 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import {
+    DIRECTORY_GROUPS,
+    BUSINESS_GALLERY_URL,
+    COMMUNITY_DIRECTORY,
+    STORAGE_KEYS
+  } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -75,12 +81,12 @@
   import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
 
   import { LocalStorage } from "quasar";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { CommunityDirectory } from "@/interfaces/models/entities/communityDirectory";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<CommunityDirectory>({} as CommunityDirectory);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -100,7 +106,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.communityDirectoryId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -112,13 +118,13 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessId,
+        directoryId: props.query?.communityDirectoryId,
         directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
+        itemName: directoryItem.value.directoryName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        iconPath: directoryItem.value.imagePath,
+        subTitle: directoryItem.value.shortName
       };
 
       isFavourite.value = true;
@@ -156,18 +162,18 @@
   }
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.query?.communityDirectoryId !== undefined) {
       try {
         const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+          axios.get(`${COMMUNITY_DIRECTORY}/${props.query?.communityDirectoryId}`),
+          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.communityDirectoryId}`)
         ]);
         directoryItem.value = businessResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.itemId == directoryItem.value.communityDirectoryId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

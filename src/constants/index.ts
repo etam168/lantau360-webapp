@@ -199,6 +199,8 @@ export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 
 export const DMY = "DD/MM/YYYY";
 
+//export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
+
 export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
 export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;
 export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;

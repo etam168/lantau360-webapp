@@ -15,7 +15,7 @@
 
         <community-list-table
           v-model:pagination="pagination"
-          row-key="directoryId"
+          row-key="communityDirectoryId"
           :rows="rows"
           :loading="loading"
           @on-detail="handleDialog"
@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
+  import { defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
   //import { useRouter } from "vue-router";
 
   // 3rd Party Import
