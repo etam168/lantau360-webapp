@@ -9,7 +9,6 @@
     maximized
   >
     <q-card style="max-width: 1024px">
-      <!-- {{ directoryItems[0] }} -->
       <q-layout view="hHh lpR fFf">
         <q-card-actions align="center" class="button-margin">
           <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
@@ -20,7 +19,7 @@
           <q-space />
         </q-card-actions>
 
-        <q-page-container class="q-mx-xl q-my-md">
+        <q-page-container class="q-mx-md q-my-md">
           <q-item
             clickable
             v-for="item in directoryItems"

@@ -19,7 +19,7 @@
           <q-space />
         </q-card-actions>
 
-        <q-page-container class="q-mx-xl q-my-md">
+        <q-page-container class="q-mx-md q-my-md">
           <q-item
             clickable
             v-for="item in directoryItems"

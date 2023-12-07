@@ -22,7 +22,7 @@
           <q-space />
         </q-card-actions>
 
-        <q-page-container class="q-mx-xl q-my-md">
+        <q-page-container class="q-mx-md q-my-md">
           <q-item class="q-items-center">
             <gallery-images-component
               class="col-12 q-items-center"
