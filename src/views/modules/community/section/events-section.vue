@@ -39,9 +39,7 @@
 
   function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(
-        () => import("../../community-event-directory/community-event-detail-dialog.vue")
-      ),
+      component: defineAsyncComponent(() => import("./community-event-detail-dialog.vue")),
       componentProps: {
         query: { communityEventId: item.communityEventId }
       }

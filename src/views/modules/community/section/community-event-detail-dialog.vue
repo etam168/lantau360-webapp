@@ -13,14 +13,9 @@
         <q-card-actions align="center" class="button-margin">
           <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
           <q-space />
+          <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
           <div class="text-h6 text-weight-medium">
-            {{
-              translate(
-                directoryItem.communityNoticeName,
-                directoryItem.meta,
-                "communityNoticeName"
-              )
-            }}
+            {{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
           </div>
           <q-space />
         </q-card-actions>
@@ -33,15 +28,14 @@
               :gallery-images="galleryItems"
             />
           </q-item>
+
           <q-item>
-            <q-icon name="location_on" size="2em" color="blue" />
-            <q-item-label class="q-mt-sm"
-              >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-            </q-item-label>
+            <q-icon name="location_on" size="2em" color="primary" />
+            <q-item-label class="q-mt-sm">{{ directoryItem.subtitle1 }}</q-item-label>
           </q-item>
-          d
+
           <q-item>
-            <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
+            <q-btn color="primary" text-color="white" icon="location_on" round />
             <q-space />
 
             <q-btn color="primary" text-color="white" icon="phone" round />
@@ -57,9 +51,7 @@
           <q-separator class="q-mt-sm" />
 
           <q-item>
-            <div
-              v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-            ></div>
+            <div v-html="directoryItem.description"></div>
           </q-item>
           <q-separator class="q-mt-sm" />
         </q-page-container>
@@ -70,9 +62,9 @@
 
 <script setup lang="ts">
   import {
+    COMMUNITY_EVENT_GALLERY_URL,
+    COMMUNITY_EVENT_URL,
     DIRECTORY_GROUPS,
-    COMMUNITY_NOTICE_GALLERY_URL,
-    COMMUNITY_NOTICE_URL,
     STORAGE_KEYS
   } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
@@ -81,17 +73,11 @@
   import { PropType, onMounted } from "vue";
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
-
   import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
-
   import { LocalStorage } from "quasar";
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
-
-  //const router = useRouter();
-  const directoryItem = ref<CommunityNotice>({} as CommunityNotice);
-  const { translate } = useUtilities();
 
   const props = defineProps({
     query: {
@@ -100,21 +86,28 @@
     }
   });
 
+  //const router = useRouter();
+  const directoryItem = ref<CommunityEvent>({} as CommunityEvent);
+
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
+  //const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
+  const { translate } = useUtilities();
+
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const isFavourite = ref<boolean>(false);
+
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.communityNoticeId;
+    const itemIdToMatch = directoryItem.value.communityEventId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
       const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+
       if (itemIndex !== -1) {
         favoriteItems.value.splice(itemIndex, 1);
       }
@@ -122,11 +115,11 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.communityNoticeId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.communityNoticeName,
+        directoryId: props.query?.communityEventId,
+        //directoryName: directoryItem.value.directoryName,
+        itemName: directoryItem.value.title,
         itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
+        groupId: DIRECTORY_GROUPS.COMMUNITY,
         iconPath: directoryItem.value.iconPath,
         subTitle: directoryItem.value.subtitle1
       };
@@ -137,49 +130,33 @@
     LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
   };
 
-  const temp = () => {
-    alert(JSON.stringify(favoriteItems.value));
-  };
-
-  // const translateTitle = computed(() => {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   switch (locale.value) {
-  //     case "hk":
-  //       return props.data.meta?.i18n?.hk?.["directoryName"] ?? props.data.directoryName;
-  //     case "cn":
-  //       return props.data.meta?.i18n?.cn?.["directoryName"] ?? props.data.directoryName;
-  //     default:
-  //       return props.data.directoryName;
-  //   }
-  // });
-
   onMounted(() => {
     loadData();
-    eventBus.on("NoticeDetailDialog", () => {
+    eventBus.on("CommunityEventDetailDialog", () => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "NoticeDetailDialog");
+    eventBus.emit("DialogStatus", status, "CommunityEventDetailDialog");
   }
 
   const loadData = async () => {
-    if (props.query?.communityNoticeId !== undefined) {
+    if (props.query?.communityEventId !== undefined) {
       try {
-        const [communityNoticeResponse, galleryResponse] = await Promise.all([
-          axios.get(`${COMMUNITY_NOTICE_URL}/${props.query?.communityNoticeId}`),
+        const [communityEventResponse, galleryResponse] = await Promise.all([
+          axios.get(`${COMMUNITY_EVENT_URL}/${props.query?.communityEventId}`),
           axios.get<GalleryImage[]>(
-            `${COMMUNITY_NOTICE_GALLERY_URL}/${props.query?.communityNoticeId}`
+            `${COMMUNITY_EVENT_GALLERY_URL}/${props.query?.communityEventId}`
           )
         ]);
-        directoryItem.value = communityNoticeResponse.data;
+        directoryItem.value = communityEventResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.communityNoticeId
+            (item: any) => item.itemId == directoryItem.value.communityEventId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
