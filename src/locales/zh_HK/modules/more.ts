@@ -1,4 +1,5 @@
 export default {
+  title: "更多",
   language: "語言設定",
   aboutUs: "關於我們",
   termsConditions: "條款與條件",

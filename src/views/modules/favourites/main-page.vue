@@ -194,7 +194,6 @@
   });
 
   const loadData = async () => {
-    alert(JSON.stringify(groupedItems.value));
     try {
       let galleryUrl = "";
       if (tab.value === "location") {

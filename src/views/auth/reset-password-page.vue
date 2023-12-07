@@ -115,7 +115,7 @@
         }
       });
     } catch (e: any) {
-      console.log("");
+      // console.log("");
     }
     loading.value = false;
   }

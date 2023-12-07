@@ -1,4 +1,5 @@
 export default {
+  title: "More",
   language: "Language Settings",
   aboutUs: "About Us",
   termsConditions: "Terms & Conditions",
