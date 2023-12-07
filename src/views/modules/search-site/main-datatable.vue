@@ -103,7 +103,7 @@
     });
 
     //const { query } = router.currentRoute.value;
-
+    debugger;
     // Check if the route query is an object and contains the key searchKeyword
     if (props.query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value

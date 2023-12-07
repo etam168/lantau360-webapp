@@ -10,6 +10,7 @@
     input-class="text-left"
     style="overflow: hidden; border-radius: 24px"
     hide-bottom-space
+    @keyup.enter="handleEnterKey"
     @update:model-value="updateModelValue"
   >
     <template v-slot:append>
@@ -37,5 +38,11 @@
 
   const clearInput = () => {
     emit("update:modelValue", "");
+  };
+
+  const handleEnterKey = (event: KeyboardEvent) => {
+    if (event.key === "Enter") {
+      emit("search");
+    }
   };
 </script>
