@@ -107,3 +107,8 @@
     loadData({ pagination: pagination.value });
   });
 </script>
+<style scoped>
+  .button-margin {
+    margin-right: 40px;
+  }
+</style>

@@ -1,22 +1,32 @@
 <template>
-  <q-card v-if="data != null" class="q-ma-md" flat>
-    <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
+  <q-card v-if="data != null" class="q-ma-sm" flat>
+    <!--<q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
       <q-toolbar-title>{{ contentName }} </q-toolbar-title>
       <q-space />
 
-      <!-- <q-tabs v-model="tab" shrink stretch>
+       <q-tabs v-model="tab" shrink stretch>
         <q-tab
           v-for="item in expansionItems"
           :key="item.name"
           :name="item.name"
           :label="item.label"
         />
-      </q-tabs> -->
-    </q-toolbar>
+      </q-tabs> 
+    </q-toolbar>-->
 
     <q-tab-panels v-model="tab" animated>
-      <q-tab-panel v-for="item in expansionItems" :key="item.name" :name="item.name">
-        <q-editor v-model="item.content" :contentHeight="contentHeightDefaultLang" :toolbar="[]" />
+      <q-tab-panel
+        v-for="item in expansionItems"
+        :key="item.name"
+        :name="item.name"
+        class="q-pa-none"
+      >
+        <q-editor
+          v-model="item.content"
+          :contentHeight="contentHeightDefaultLang"
+          :toolbar="[]"
+          class="q-pa-none"
+        />
       </q-tab-panel>
     </q-tab-panels>
   </q-card>
