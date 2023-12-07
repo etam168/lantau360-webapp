@@ -2,7 +2,7 @@
   <q-table
     ref="qTableRef"
     v-bind="$attrs"
-    card-container-class="q-pa-sm q-col-gutter-md"
+    card-container-class="q-col-gutter-md"
     binary-state-sort
     flat
     square

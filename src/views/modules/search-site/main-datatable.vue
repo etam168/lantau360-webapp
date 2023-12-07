@@ -4,28 +4,23 @@
       <q-card-actions align="center" class="button-margin">
         <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
         <q-space />
-        <q-toolbar
-          class="q-pa-none bg-grey-3 q-ma-lg"
-          style="overflow: hidden; border-radius: 24px; height: 48px; max-width: 860px"
-        >
-          <q-separator vertical />
-          <custom-search-input v-model="filter" @search="onSearch" />
-        </q-toolbar>
+        <div class="text-h6 text-weight-medium">
+          {{ "Site Search" }}
+        </div>
         <q-space />
       </q-card-actions>
+      <q-page-container class="q-mx-md q-my-md">
+        <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
 
-      <q-page-container class="q-mx-xl q-my-md">
-        <q-card-section class="q-py-xs">
-          <site-list-table
-            v-model:pagination="pagination"
-            row-key="siteId"
-            :rows="rows"
-            :loading="loading"
-            @on-detail="handleDialog"
-            @on-pagination="updatePagination"
-            @request="loadData"
-          />
-        </q-card-section>
+        <site-list-table
+          v-model:pagination="pagination"
+          row-key="siteId"
+          :rows="rows"
+          :loading="loading"
+          @on-detail="handleDialog"
+          @on-pagination="updatePagination"
+          @request="loadData"
+        />
       </q-page-container>
     </q-layout>
 
@@ -34,7 +29,7 @@
       </q-card-section> -->
   </q-card>
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // Vue Import
   import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
