@@ -1,32 +1,32 @@
 <template>
-  <app-page-title :title="$t('more.title')"></app-page-title>
+  <q-page-container class="q-mx-md q-my-md">
+    <app-page-title :title="$t('more.title')"></app-page-title>
 
-  <div>
-    <div v-for="item in moreItems" :key="item.Title" class="q-ma-lg">
-      <div class="row-cards">
-        <q-card class="shadow-6 q-mt-sm q-pa-sm" style="border-radius: 12px">
-          <q-item clickable class="q-pa-sm" @click="showContent(item)">
-            <q-item-section top avatar>
-              <img :src="item.Icon" style="height: 35px; width: 35px" />
-            </q-item-section>
+    <q-item
+      v-for="item in moreItems"
+      :key="item.Title"
+      clickable
+      @click="showContent(item)"
+      class="shadow-1 q-mb-md q-pl-sm"
+    >
+      <q-item-section avatar>
+        <q-avatar size="38px" square>
+          <q-img ratio="1" :src="item.Icon" />
+        </q-avatar>
+      </q-item-section>
 
-            <q-item-section top class="q-mt-sm">
-              <q-item-label class="text-subtitle1 text-weight-medium">
-                {{ $t(item.Title) }}</q-item-label
-              >
-            </q-item-section>
-            <q-item-section side v-if="item.Route == 'language'">
-              <language-select class="q-mr-md" @on-language="onLanguageChange" />
-            </q-item-section>
+      <q-item-section class="q-ml-lg">
+        <q-item-label class="text-subtitle1 text-weight-medium"> {{ $t(item.Title) }}</q-item-label>
+      </q-item-section>
+      <q-item-section side v-if="item.Route == 'language'">
+        <language-select class="q-mr-md" @on-language="onLanguageChange" />
+      </q-item-section>
 
-            <q-item-section side v-if="item.Route == 'location_permission'">
-              <q-toggle v-model="locationPermission" color="green" />
-            </q-item-section>
-          </q-item>
-        </q-card>
-      </div>
-    </div>
-  </div>
+      <q-item-section side v-if="item.Route == 'location_permission'">
+        <q-toggle v-model="locationPermission" color="green" />
+      </q-item-section>
+    </q-item>
+  </q-page-container>
 </template>
 
 <script setup lang="ts">
