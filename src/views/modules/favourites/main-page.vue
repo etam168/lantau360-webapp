@@ -54,6 +54,7 @@
 <script setup lang="ts">
   // Vue Import
   import { defineAsyncComponent, ref, onMounted, computed } from "vue";
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -65,7 +66,9 @@
     DIRECTORY_GROUPS,
     STORAGE_KEYS,
     PROMOTION_URL,
-    PLACEHOLDER_THUMBNAIL
+    PLACEHOLDER_THUMBNAIL,
+    BUSINESS_GALLERY_URL,
+    SITE_GALLERY_URL
   } from "@/constants";
   import { LocalStorage } from "quasar";
   import { useRouter } from "vue-router";
@@ -79,6 +82,7 @@
   const router = useRouter();
 
   const { t } = useI18n({ useScope: "global" });
+  const itemImage = ref();
 
   const tab = ref("location");
 
@@ -185,7 +189,36 @@
     }
   }
 
+  onMounted(() => {
+    loadData();
+  });
+
+  const loadData = async () => {
+    alert(JSON.stringify(groupedItems.value));
+    try {
+      let galleryUrl = "";
+      if (tab.value === "location") {
+        galleryUrl = SITE_GALLERY_URL;
+      } else if (tab.value === "business") {
+        // Assuming there is a communityNewsId property in the first item of groupedItems
+        const communityNewsId = groupedItems.value[Object.keys(groupedItems.value)[0]][0]?.itemId;
+        galleryUrl = `${BUSINESS_GALLERY_URL}/${communityNewsId}`;
+      }
+
+      const [galleryResponse] = await Promise.all([axios.get<GalleryImage[]>(galleryUrl)]);
+
+      // Assuming itemImage is a ref or reactive variable
+      itemImage.value = galleryResponse.data[0].imagePath;
+    } catch (err) {
+      // ... your existing error handling ...
+    }
+  };
+
+  // const computePath = (path: string) => {
+  //   return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+  // };
+
   const computePath = (path: string) => {
-    return path ? `${path}` : PLACEHOLDER_THUMBNAIL;
+    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
   };
 </script>
