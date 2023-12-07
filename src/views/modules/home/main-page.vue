@@ -17,7 +17,7 @@
       {{ tabItem.label }}
     </q-chip>
   </q-toolbar>
-
+  <q-item-label>Test updates -version 12</q-item-label>
   <q-tab-panels
     v-model="tab"
     animated

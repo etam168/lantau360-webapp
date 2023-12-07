@@ -30,7 +30,7 @@ export default defineConfig({
       sassVariables: "src/css/quasar.variables.scss"
     }),
     VitePWA({
-      registerType: "autoUpdate",
+      registerType: "prompt",
       injectRegister: "auto",
       devOptions: {
         enabled: true,
