@@ -113,21 +113,6 @@
   function setTab(val: string) {
     tab.value = val;
   }
-
-  // function onDialog(data: any) {
-  //   debugger;
-  //   alert(JSON.stringify(data));
-  //   // alert(JSON.stringify(props.data));
-  //   $q.dialog({
-  //     component: defineAsyncComponent(
-  //       () => import("./business-directory/business-detail copy.vue")
-  //     ),
-  //     componentProps: {
-  //       row: data.data
-  //     }
-  //   });
-  // }
-
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
       axios.get(`${ADVERTISEMENT_URL}`),

@@ -99,14 +99,6 @@
     });
   }
 
-  // const onItemClick = (value: any) => {
-  //   debugger;
-  //   router.push({
-  //     name: "business-detail",
-  //     query: { businessId: value.businessId }
-  //   });
-  // };
-
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
   };
