@@ -97,7 +97,9 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./business-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("../../business-directory/business-detail-dialog.vue")
+      ),
       componentProps: {
         query: { businessId: item.businessId }
       }

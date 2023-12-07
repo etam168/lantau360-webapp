@@ -26,7 +26,7 @@
 
   const onItemClick = (item: any) => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./business-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("./dialog/voucher-detail-dialog.vue")),
       componentProps: {
         query: { businessId: item.businessId }
       }

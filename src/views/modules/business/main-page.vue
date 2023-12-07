@@ -33,7 +33,7 @@
     </q-tab-panel>
 
     <q-tab-panel name="directory">
-      <q-toolbar class="q-pb-md">
+      <q-toolbar class="q-pb-md row justify-center">
         <custom-search-bar @on-search="handleSearchDialog" />
       </q-toolbar>
       <directories-section :data="directoriesData" class="q-mb-md" />

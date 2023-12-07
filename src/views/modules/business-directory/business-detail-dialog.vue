@@ -20,8 +20,8 @@
           <q-space />
         </q-card-actions>
 
-        <q-page-container class="q-mx-xl q-my-md">
-          <q-item class="q-items-center">
+        <q-page-container class="q-mx-sm q-pa-none">
+          <q-item class="q-items-center q-pa-xs">
             <gallery-images-component
               class="col-12 q-items-center"
               style="max-height: 600px"
@@ -34,7 +34,6 @@
               >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
             </q-item-label>
           </q-item>
-          {{ isFavourite }}
 
           <q-item>
             <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
