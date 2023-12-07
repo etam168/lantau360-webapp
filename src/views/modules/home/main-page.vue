@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { defineAsyncComponent, ref } from "vue";
+  import { defineAsyncComponent, onMounted, ref } from "vue";
   //import { useRouter } from "vue-router";
 
   // 3rd Party Import
@@ -61,6 +61,8 @@
   import DirectorySection from "./section/directory-section.vue";
   import CarouselSection from "./section/carousel-section.vue";
   import WeatherSection from "./section/weather-section.vue";
+  import eventBus from "@/utils/event-bus";
+  import { onBeforeRouteLeave } from "vue-router";
 
   const { isNthBitSet } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
@@ -75,6 +77,7 @@
   const directoriesData = ref();
   const infoData = ref();
   const weatherData = ref<any | null>(null);
+  const dialogStack = ref<string[]>([]);
 
   const tabItems = ref([
     { name: "all", label: t("home.allLocations") },
@@ -94,6 +97,28 @@
       }
     });
   }
+
+  onMounted(() => {
+    eventBus.on("DialogStatus", (status, emitter) => {
+      if (status) {
+        dialogStack.value.push(emitter);
+      } else {
+        dialogStack.value = dialogStack.value.filter(item => item != emitter);
+      }
+    });
+  });
+
+  onBeforeRouteLeave((_to, _from, next) => {
+    if (dialogStack.value.length > 0) {
+      const emitter = dialogStack.value[dialogStack.value.length - 1];
+      eventBus.emit(emitter);
+      dialogStack.value = dialogStack.value.filter(item => item != emitter);
+
+      next(false);
+    } else {
+      next();
+    }
+  });
 
   function setTab(val: string) {
     tab.value = val;

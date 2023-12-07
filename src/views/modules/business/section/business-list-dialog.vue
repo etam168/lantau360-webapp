@@ -56,11 +56,12 @@
 <script setup lang="ts">
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { PropType, computed, defineAsyncComponent, ref } from "vue";
+  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
+  import eventBus from "@/utils/event-bus";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -85,8 +86,15 @@
     return props.directoryItemsList;
   });
 
+  onMounted(() => {
+    eventBus.on("BusinessListDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "BusinessListDialog");
   }
 
   function onItemClick(item: any) {

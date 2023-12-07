@@ -53,12 +53,13 @@
 
 <script setup lang="ts">
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { PropType, computed, defineAsyncComponent, ref } from "vue";
+  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
+  import eventBus from "@/utils/event-bus";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -84,8 +85,15 @@
     return props.directoryItemsList;
   });
 
+  onMounted(() => {
+    eventBus.on("SiteListDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "SiteListDialog");
   }
 
   function onItemClick(item: any) {

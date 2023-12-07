@@ -76,6 +76,7 @@
   import { LocalStorage } from "quasar";
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
   const directoryItem = ref<Site>({} as Site);
@@ -143,7 +144,15 @@
 
   onMounted(() => {
     loadData();
+    eventBus.on("SiteDetailDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "SiteDetailDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.siteId !== undefined) {
@@ -172,7 +181,4 @@
       }
     }
   };
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>

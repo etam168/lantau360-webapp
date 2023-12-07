@@ -77,6 +77,7 @@
   import { LocalStorage } from "quasar";
   import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
+  import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
   const directoryItem = ref<Business>({} as Business);
@@ -144,7 +145,15 @@
 
   onMounted(() => {
     loadData();
+    eventBus.on("BusinessVoucherDialog", () => {
+      isDialogVisible.value = false;
+    });
   });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "BusinessVoucherDialog");
+  }
 
   const loadData = async () => {
     if (props.query?.businessId !== undefined) {
@@ -173,7 +182,4 @@
       }
     }
   };
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 </script>
