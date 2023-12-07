@@ -17,7 +17,7 @@
           <q-space />
         </q-card-actions>
 
-        <q-page-container class="q-mx-xl q-my-md">
+        <q-page-container class="q-mx-md q-my-md">
           <q-item
             clickable
             v-for="item in directoryItems"
@@ -32,13 +32,13 @@
             </q-item-section>
 
             <q-item-section class="q-ml-lg">
-              <q-item-label>{{ item.title }}</q-item-label>
-              <q-item-label>{{ item.subtitle1 }}</q-item-label>
-            </q-item-section>
+              <q-item-label>
+                {{ translate(item.title, item.meta, "title") }}
+              </q-item-label>
 
-            <q-item-section side>
-              <q-icon name="favorite" size="2em" color="red" />
-              <!-- <q-item-label>distance in km</q-item-label> -->
+              <q-item-label>
+                {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-page-container>
@@ -52,9 +52,11 @@
   import { Posting } from "@/interfaces/models/entities/posting";
   import { PropType, computed, defineAsyncComponent, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
+  import { useUtilities } from "@/composable/use-utilities";
   // import { useRouter } from "vue-router";
   // const router = useRouter();
   const $q = useQuasar();
+  const { translate } = useUtilities();
 
   const isDialogVisible = ref();
 
