@@ -18,7 +18,8 @@
   </q-toolbar>
 
   <div>
-    <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-lg">
+    {{ filteredGroupedItems }}
+    <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-md">
       <q-item-label v-if="tab !== 'business'" class="text-weight-medium text-h6">{{
         groupName
       }}</q-item-label>

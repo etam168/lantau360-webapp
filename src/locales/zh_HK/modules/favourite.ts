@@ -1,5 +1,5 @@
 export default {
-  title: "Favourite",
+  title: "Saved",
 
   tabItems: {
     location: "Locations",
