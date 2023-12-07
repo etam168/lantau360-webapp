@@ -16,18 +16,20 @@
       </q-item-label>
     </q-item-section>
 
-    <q-item-section side>
+    <q-item-section side v-if="isFavoriteItem(row.siteId)">
       <q-icon name="favorite" size="2em" color="red" />
-      <!-- <q-item-label>distance in km</q-item-label> -->
     </q-item-section>
   </q-item>
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL } from "@/constants";
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/site";
-  import { PropType } from "vue";
+  import { PropType, ref } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
+  import { LocalStorage } from "quasar";
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const emits = defineEmits(["on-detail"]);
 
@@ -35,6 +37,9 @@
     return `${BLOB_URL}/${path}`;
   };
 
+  const isFavoriteItem = (siteId: string | number): boolean => {
+    return favoriteItems.value.some((item: any) => item.directoryId === siteId);
+  };
   const { translate } = useUtilities();
 
   defineProps({

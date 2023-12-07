@@ -18,12 +18,11 @@
           </div>
           <q-space />
         </q-card-actions>
-
         <q-page-container class="q-mx-md q-my-md">
           <q-item
             clickable
             v-for="item in directoryItems"
-            :key="item.businessId"
+            :key="item.siteId"
             @click="onItemClick(item)"
             class="shadow-1 q-mb-md q-pl-sm"
           >
@@ -42,10 +41,8 @@
                 {{ translate(item.subtitle1, item.meta, "subtitle1") }}
               </q-item-label>
             </q-item-section>
-
-            <q-item-section side>
+            <q-item-section side v-if="isFavoriteItem(item.siteId)">
               <q-icon name="favorite" size="2em" color="red" />
-              <!-- <q-item-label>distance in km</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-page-container>
@@ -55,14 +52,15 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BLOB_URL, PLACEHOLDER_THUMBNAIL, STORAGE_KEYS } from "@/constants";
   import { PropType, computed, defineAsyncComponent, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
-  // import { useRouter } from "vue-router";
-  // const router = useRouter();
+  import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { Site } from "@/interfaces/models/entities/site";
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const { translate } = useUtilities();
 
@@ -74,7 +72,7 @@
 
   const props = defineProps({
     directoryItemsList: {
-      type: Array as () => Business[]
+      type: Array as () => Site[]
     },
     directory: {
       type: Object as PropType<Directory>,
@@ -101,6 +99,10 @@
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+  };
+
+  const isFavoriteItem = (siteId: string | number): boolean => {
+    return favoriteItems.value.some((item: any) => item.directoryId === siteId);
   };
 </script>
 

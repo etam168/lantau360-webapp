@@ -43,9 +43,8 @@
               </q-item-label>
             </q-item-section>
 
-            <q-item-section side>
+            <q-item-section side v-if="isFavoriteItem(item.businessId)">
               <q-icon name="favorite" size="2em" color="red" />
-              <!-- <q-item-label>distance in km</q-item-label> -->
             </q-item-section>
           </q-item>
         </q-page-container>
@@ -55,14 +54,16 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { BLOB_URL, PLACEHOLDER_THUMBNAIL, STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { PropType, computed, defineAsyncComponent, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useUtilities } from "@/composable/use-utilities";
-  // import { useRouter } from "vue-router";
-  // const router = useRouter();
+  import { LocalStorage } from "quasar";
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+
   const $q = useQuasar();
   const { translate } = useUtilities();
 
@@ -88,13 +89,6 @@
     isDialogVisible.value = status;
   }
 
-  // const onItemClick = (value: any) => {
-  //   router.push({
-  //     name: "business-detail",
-  //     query: { businessId: value.businessId }
-  //   });
-  // };
-
   function onItemClick(item: any) {
     $q.dialog({
       component: defineAsyncComponent(
@@ -108,6 +102,10 @@
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_THUMBNAIL;
+  };
+
+  const isFavoriteItem = (businessId: string | number): boolean => {
+    return favoriteItems.value.some((item: any) => item.directoryId === businessId);
   };
 </script>
 
