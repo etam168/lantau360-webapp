@@ -116,7 +116,7 @@
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.businessName,
         itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
+        groupId: DIRECTORY_GROUPS.BUSINESS,
         iconPath: directoryItem.value.iconPath,
         subTitle: directoryItem.value.subtitle1
       };

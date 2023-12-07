@@ -13,7 +13,7 @@
   >
     <template #item="props">
       <div class="col-12">
-        <business-item :row="props.row" @on-detail="handleDetail(props.row)" />
+        <community-item :row="props.row" @on-detail="handleDetail(props.row)" />
       </div>
 
       <!-- <div>
@@ -46,7 +46,7 @@
 
 <script setup lang="ts">
   // import ListingCard from "@/components/cards/for-sale.vue";
-  import businessItem from "./business-item.vue";
+  import communityItem from "./community-item.vue";
   import { QTable } from "quasar";
   import { ref } from "vue";
 
