@@ -9,7 +9,6 @@
     maximized
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-      YESSS
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
