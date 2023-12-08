@@ -36,7 +36,7 @@
       <q-toolbar class="q-pb-md row justify-center">
         <custom-search-bar @on-search="handleSearchDialog" />
       </q-toolbar>
-      <directories-section :data="directoriesData" class="q-mb-md" />
+      <directory-section :data="directoriesData" class="q-mb-md" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -66,9 +66,7 @@
   import { onBeforeRouteLeave } from "vue-router";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
-  const DirectoriesSection = defineAsyncComponent(
-    () => import("./section/directories-section.vue")
-  );
+  const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
 
   const LatestOfferSection = defineAsyncComponent(
     () => import("./section/latest-offer-section.vue")

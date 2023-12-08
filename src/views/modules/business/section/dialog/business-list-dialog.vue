@@ -8,48 +8,51 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <div class="text-h6 text-weight-medium">
-            {{ translate(directory.directoryName, directory.meta, "directoryName") }}
-          </div>
-          <q-space />
-        </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-md q-my-md">
-          <q-item
-            clickable
-            v-for="item in directoryItems"
-            :key="item.businessId"
-            @click="onItemClick(item)"
-            class="shadow-1 q-mb-md q-pl-sm"
-          >
-            <q-item-section avatar>
-              <q-avatar size="64px" square>
-                <q-img ratio="1" :src="computePath(item.iconPath)" />
-              </q-avatar>
-            </q-item-section>
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-pa-md">
+            <q-item
+              clickable
+              v-for="item in directoryItems"
+              :key="item.businessId"
+              @click="onItemClick(item)"
+              class="shadow-1 q-pa-sm q-mb-md"
+            >
+              <q-item-section avatar>
+                <q-avatar size="64px" square>
+                  <q-img ratio="1" :src="computePath(item.iconPath)">
+                    <template v-slot:error>
+                      <div class="absolute-full flex flex-center bg-negative text-white">
+                        Cannot load image
+                      </div>
+                    </template>
+                  </q-img>
+                </q-avatar>
+              </q-item-section>
 
-            <q-item-section>
-              <q-item-label>
-                {{ translate(item.title, item.meta, "title") }}
-              </q-item-label>
+              <q-item-section>
+                <q-item-label>
+                  {{ translate(item.title, item.meta, "title") }}
+                </q-item-label>
 
-              <q-item-label>
-                {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-              </q-item-label>
-            </q-item-section>
+                <q-item-label>
+                  {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+                </q-item-label>
+              </q-item-section>
 
-            <q-item-section side v-if="isFavoriteItem(item.businessId)">
-              <q-icon name="favorite" size="2em" color="red" />
-            </q-item-section>
-          </q-item>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+              <q-item-section side v-if="isFavoriteItem(item.businessId)">
+                <q-icon name="favorite" size="2em" color="red" />
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -86,6 +89,10 @@
     return props.directoryItemsList;
   });
 
+  const dialogTitle = computed(() => {
+    return translate(props.directory.directoryName, props.directory.meta, "directoryName");
+  });
+
   onMounted(() => {
     eventBus.on("BusinessListDialog", () => {
       isDialogVisible.value = false;
@@ -99,7 +106,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./dialog/business-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("./business-detail-dialog.vue")),
       componentProps: {
         query: { businessId: item.businessId }
       }

@@ -9,19 +9,13 @@
     maximized
   >
     <!-- <q-card style="max-width: 1024px"> -->
-    <q-layout view="hHh lpR fFf" container style="max-width: 1024px">
-      <q-page-container class="q-mx-sm q-pa-none">
-        <q-page>
-          <q-card-actions align="center" class="button-margin">
-            <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-            <q-space />
-            <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
-            <div class="text-h6 text-weight-medium">
-              {{ translate(directoryItem.siteName, directoryItem.meta, "siteName") }}
-            </div>
-            <q-space />
-          </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
+      <q-page-container>
+        <q-page>
           <q-item class="q-items-center q-pa-xs">
             <gallery-carousel-image
               class="col-12 q-items-center"
@@ -66,7 +60,7 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
-  import { PropType, onMounted } from "vue";
+  import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
 
   import { LocalStorage } from "quasar";
@@ -123,6 +117,10 @@
   const temp = () => {
     alert(JSON.stringify(favoriteItems.value));
   };
+
+  const dialogTitle = computed(() => {
+    return translate(directoryItem.value.siteName, directoryItem.value.meta, "siteName");
+  });
 
   onMounted(() => {
     loadData();

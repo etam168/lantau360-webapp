@@ -1,11 +1,10 @@
 <template>
   <div class="row q-gutter-y-md">
-    <!-- <div>{{ data }}</div> -->
     <directory-item
-      :class="classMenuItem"
       v-for="item in data"
       :key="item.directoryId"
       :data="item"
+      :class="classMenuItem"
       @on-dialog="handleDialog"
     />
   </div>
@@ -43,7 +42,7 @@
       // Assuming a successful response
       if (response.status === 200) {
         $q.dialog({
-          component: defineAsyncComponent(() => import("./business-list-dialog.vue")),
+          component: defineAsyncComponent(() => import("./dialog/business-list-dialog.vue")),
           componentProps: {
             directory: item,
             directoryItemsList: response.data

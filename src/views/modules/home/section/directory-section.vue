@@ -13,7 +13,6 @@
 <script setup lang="ts">
   // Vue Import
   import { PropType, computed, defineAsyncComponent } from "vue";
-
   import { useQuasar } from "quasar";
 
   // .ts file
@@ -43,7 +42,7 @@
       // Assuming a successful response
       if (response.status === 200) {
         $q.dialog({
-          component: defineAsyncComponent(() => import("./site-list-dialog.vue")),
+          component: defineAsyncComponent(() => import("./dialog/site-list-dialog.vue")),
           componentProps: {
             directory: item,
             directoryItemsList: response.data
