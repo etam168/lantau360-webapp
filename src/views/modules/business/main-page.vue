@@ -1,7 +1,7 @@
 <template>
   <app-page-title :title="$t('business.title')"></app-page-title>
 
-  <carousel-section :data="promotions" />
+  <carousel-section :data="advertisements" />
 
   <q-toolbar class="text-white bg-grey-3">
     <q-chip
@@ -25,7 +25,7 @@
     transition-duration="1000"
   >
     <q-tab-panel name="promotion">
-      <latest-offer-section :offers="businessPromotion" />
+      <promotion-card-section :offers="businessPromotion" />
     </q-tab-panel>
 
     <q-tab-panel name="voucher">
@@ -69,8 +69,8 @@
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
 
-  const LatestOfferSection = defineAsyncComponent(
-    () => import("./section/latest-offer-section.vue")
+  const PromotionCardSection = defineAsyncComponent(
+    () => import("./section/promotion-section.vue")
   );
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
@@ -81,7 +81,7 @@
   const $q = useQuasar();
 
   //const keyword = ref("");
-  const promotions = ref<any | null>(null);
+  const advertisements = ref<any | null>(null);
   const directoriesData = ref();
   const businessPromotion = ref();
   const businessVoucher = ref();
@@ -139,7 +139,7 @@
     tab.value = val;
   }
   try {
-    const [respPromotions, respLatestOffers, respBusinessVoucher, respDirectories] =
+    const [respAdvertisement, respPromotions, respBusinessVoucher, respDirectories] =
       await Promise.all([
         axios.get(`${ADVERTISEMENT_URL}`),
         axios.get(`${BUSINESS_PROMOTION_URL}`),
@@ -147,8 +147,8 @@
         axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
       ]);
 
-    promotions.value = respPromotions.data;
-    businessPromotion.value = respLatestOffers.data.data;
+    advertisements.value = respAdvertisement.data;
+    businessPromotion.value = respPromotions.data.data;
     businessVoucher.value = respBusinessVoucher.data.data;
     directoriesData.value = respDirectories.data;
   } catch (err) {

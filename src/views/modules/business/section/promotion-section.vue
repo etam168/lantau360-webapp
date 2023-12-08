@@ -1,7 +1,7 @@
 <template>
   <div class="row">
     <div v-for="item in offers" :key="item.businessPromotionId" class="col-md-3 col-6 q-pa-sm">
-      <latest-offer-card :offers="item" @on-click="onItemClick" />
+      <promotion-card :offers="item" @on-click="onItemClick" />
     </div>
   </div>
 </template>
@@ -10,7 +10,7 @@
   import { PropType, defineAsyncComponent } from "vue";
 
   //Custom Components
-  import LatestOfferCard from "./components/latest-offer-card.vue";
+  import PromotionCard from "./components/promotion-card.vue";
   const $q = useQuasar();
 
   // .ts file
@@ -25,7 +25,7 @@
 
   const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./dialog/business-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("./dialog/promotion-detail-dialog.vue")),
       componentProps: {
         query: { businessPromotionId: item.businessPromotionId }
       }

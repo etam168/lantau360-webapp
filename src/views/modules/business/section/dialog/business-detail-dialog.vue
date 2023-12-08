@@ -61,12 +61,7 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    DIRECTORY_GROUPS,
-    BUSINESS_PROMOTION_GALLERY_URL,
-    BUSINESS_PROMOTION_URL_BY_ID,
-    STORAGE_KEYS
-  } from "@/constants";
+  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -75,12 +70,12 @@
   //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
+  import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
-  const directoryItem = ref<BusinessPromotion>({} as BusinessPromotion);
+  const directoryItem = ref<Business>({} as Business);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -100,7 +95,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessPromotionId;
+    const itemIdToMatch = directoryItem.value.businessId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -112,7 +107,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessPromotionId,
+        directoryId: props.query?.businessId,
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.businessName,
         itemId: itemIdToMatch,
@@ -148,20 +143,18 @@
   }
 
   const loadData = async () => {
-    if (props.query?.businessPromotionId !== undefined) {
+    if (props.query?.businessId !== undefined) {
       try {
-        const [businessPromotionResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_PROMOTION_URL_BY_ID}/${props.query?.businessPromotionId}`),
-          axios.get<GalleryImage[]>(
-            `${BUSINESS_PROMOTION_GALLERY_URL}/${props.query?.businessPromotionId}`
-          )
+        const [businessResponse, galleryResponse] = await Promise.all([
+          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
+          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
         ]);
-        directoryItem.value = businessPromotionResponse.data;
+        directoryItem.value = businessResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessPromotionId
+            (item: any) => item.itemId == directoryItem.value.businessId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

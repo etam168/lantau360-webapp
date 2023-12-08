@@ -9,6 +9,7 @@
     maximized
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      YESSS
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -60,7 +61,12 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import {
+    DIRECTORY_GROUPS,
+    BUSINESS_PROMOTION_GALLERY_URL,
+    BUSINESS_PROMOTION_URL_BY_ID,
+    STORAGE_KEYS
+  } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -69,12 +75,12 @@
   //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<BusinessPromotion>({} as BusinessPromotion);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -94,7 +100,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.businessPromotionId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -106,7 +112,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessId,
+        directoryId: props.query?.businessPromotionId,
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.businessName,
         itemId: itemIdToMatch,
@@ -142,18 +148,20 @@
   }
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.query?.businessPromotionId !== undefined) {
       try {
-        const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+        const [businessPromotionResponse, galleryResponse] = await Promise.all([
+          axios.get(`${BUSINESS_PROMOTION_URL_BY_ID}/${props.query?.businessPromotionId}`),
+          axios.get<GalleryImage[]>(
+            `${BUSINESS_PROMOTION_GALLERY_URL}/${props.query?.businessPromotionId}`
+          )
         ]);
-        directoryItem.value = businessResponse.data;
+        directoryItem.value = businessPromotionResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.itemId == directoryItem.value.businessPromotionId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
