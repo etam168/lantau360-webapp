@@ -33,7 +33,7 @@
               </q-avatar>
             </q-item-section>
 
-            <q-item-section class="q-ml-lg">
+            <q-item-section>
               <q-item-label>
                 {{ translate(item.title, item.meta, "title") }}
               </q-item-label>
