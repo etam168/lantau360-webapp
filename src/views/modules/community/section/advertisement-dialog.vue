@@ -24,7 +24,7 @@
 
         <q-page-container class="q-mx-xl q-my-md">
           <q-item class="q-items-center">
-            <gallery-images-component
+            <gallery-carousel-image
               class="col-12 q-items-center"
               style="max-height: 600px"
               :gallery-images="galleryItems"
@@ -79,7 +79,7 @@
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
 
-  import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
+
   import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";

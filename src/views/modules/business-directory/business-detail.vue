@@ -1,6 +1,6 @@
 <template>
   <q-item class="q-items-center">
-    <gallery-images-component
+    <gallery-carousel-image
       class="col-md-8 q-items-center"
       style="max-height: 600px"
       :gallery-images="galleryItems"
@@ -41,7 +41,6 @@
   import { onMounted } from "vue";
   import { ref } from "vue";
   import { useRouter } from "vue-router";
-  import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
 
   import { LocalStorage } from "quasar";
   import { Business } from "@/interfaces/models/entities/business";
