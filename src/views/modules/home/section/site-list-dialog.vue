@@ -9,40 +9,46 @@
     maximized
   >
     <q-layout view="hHh lpR fFf" class="bg-white" style="max-width: 1024px">
-      <q-header class="flex flex-center bg-transparent text-dark">
-        <app-dialog-title style="max-width: 1024px">{{
-          translate(directory.directoryName, directory.meta, "directoryName")
-        }}</app-dialog-title>
+      <q-header class="bg-transparent flex flex-center text-dark">
+        <app-dialog-title style="max-width: 1024px">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <q-page>
-          <q-item
-            clickable
-            v-for="item in directoryItems"
-            :key="item.siteId"
-            @click="onItemClick(item)"
-            class="shadow-1 q-mb-md q-pl-sm"
-          >
-            <q-item-section avatar>
-              <q-avatar size="64px" square>
-                <q-img ratio="1" :src="computePath(item.iconPath)" />
-              </q-avatar>
-            </q-item-section>
+          <q-list padding class="q-pa-md">
+            <q-item
+              clickable
+              v-for="item in directoryItems"
+              :key="item.siteId"
+              @click="onItemClick(item)"
+              class="shadow-1 q-pa-sm q-mb-md"
+            >
+              <q-item-section avatar>
+                <q-avatar size="64px" square>
+                  <q-img :src="computePath(item.iconPath)">
+                    <template v-slot:error>
+                      <div class="absolute-full flex flex-center bg-negative text-white">
+                        Cannot load image
+                      </div>
+                    </template>
+                  </q-img>
+                </q-avatar>
+              </q-item-section>
 
-            <q-item-section>
-              <q-item-label>
-                {{ translate(item.title, item.meta, "title") }}
-              </q-item-label>
+              <q-item-section>
+                <q-item-label>
+                  {{ translate(item.title, item.meta, "title") }}
+                </q-item-label>
 
-              <q-item-label>
-                {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-              </q-item-label>
-            </q-item-section>
-            <q-item-section side v-if="isFavoriteItem(item.siteId)">
-              <q-icon name="favorite" size="2em" color="red" />
-            </q-item-section>
-          </q-item>
+                <q-item-label>
+                  {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side v-if="isFavoriteItem(item.siteId)">
+                <q-icon name="favorite" size="2em" color="red" />
+              </q-item-section>
+            </q-item>
+          </q-list>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -51,22 +57,21 @@
 
 <script setup lang="ts">
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { Directory } from "@/interfaces/models/entities/directory";
+  import { Site } from "@/interfaces/models/entities/site";
   import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { Site } from "@/interfaces/models/entities/site";
   import eventBus from "@/utils/event-bus";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
-
   const { translate } = useUtilities();
 
   const $q = useQuasar();
-
   const isDialogVisible = ref();
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const props = defineProps({
     directoryItemsList: {
@@ -80,6 +85,10 @@
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;
+  });
+
+  const dialogTitle = computed(() => {
+    return translate(props.directory.directoryName, props.directory.meta, "directoryName");
   });
 
   onMounted(() => {
