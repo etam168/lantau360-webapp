@@ -8,19 +8,20 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
-          <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.siteName, directoryItem.meta, "siteName") }}
-          </div>
-          <q-space />
-        </q-card-actions>
+    <!-- <q-card style="max-width: 1024px"> -->
+    <q-layout view="hHh lpR fFf" container style="max-width: 1024px">
+      <q-page-container class="q-mx-sm q-pa-none">
+        <q-page>
+          <q-card-actions align="center" class="button-margin">
+            <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
+            <q-space />
+            <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
+            <div class="text-h6 text-weight-medium">
+              {{ translate(directoryItem.siteName, directoryItem.meta, "siteName") }}
+            </div>
+            <q-space />
+          </q-card-actions>
 
-        <q-page-container class="q-mx-sm q-pa-none">
           <q-item class="q-items-center q-pa-xs">
             <gallery-carousel-image
               class="col-12 q-items-center"
@@ -29,12 +30,7 @@
               :address="translate(directoryItem.subtitle1, directoryItem.meta, 'subtitle1')"
             />
           </q-item>
-          <q-item>
-            <!-- <q-icon name="location_on" size="2em" color="blue" />
-            <q-item-label class="q-mt-sm"
-              >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-            </q-item-label> -->
-          </q-item>
+
           <q-item>
             <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
             <q-space />
@@ -49,6 +45,7 @@
               @click="onBtnFavClick"
             />
           </q-item>
+
           <q-separator class="q-mt-sm" />
 
           <q-item>
@@ -57,9 +54,10 @@
             ></div>
           </q-item>
           <q-separator class="q-mt-sm" />
-        </q-page-container>
-      </q-layout>
-    </q-card>
+        </q-page>
+      </q-page-container>
+    </q-layout>
+    <!-- </q-card> -->
   </q-dialog>
 </template>
 
@@ -70,16 +68,12 @@
   import { useDialogPluginComponent } from "quasar";
   import { PropType, onMounted } from "vue";
   import { ref } from "vue";
-  //import { useRouter } from "vue-router";
-
-  // import GalleryImagesComponent from "@/components/custom/gallery-images/index.vue";
 
   import { LocalStorage } from "quasar";
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
   const directoryItem = ref<Site>({} as Site);
   const { translate } = useUtilities();
 
@@ -94,7 +88,6 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -130,18 +123,6 @@
   const temp = () => {
     alert(JSON.stringify(favoriteItems.value));
   };
-
-  // const translateTitle = computed(() => {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   switch (locale.value) {
-  //     case "hk":
-  //       return props.data.meta?.i18n?.hk?.["directoryName"] ?? props.data.directoryName;
-  //     case "cn":
-  //       return props.data.meta?.i18n?.cn?.["directoryName"] ?? props.data.directoryName;
-  //     default:
-  //       return props.data.directoryName;
-  //   }
-  // });
 
   onMounted(() => {
     loadData();

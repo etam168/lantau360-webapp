@@ -8,22 +8,15 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <!-- <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <div class="text-h6 text-weight-medium">
-            {{ translate(directory.directoryName, directory.meta, "directoryName") }}
-          </div>
-          <q-space />
-        </q-card-actions> -->
-
-        <app-dialog-title>{{
+    <q-layout view="hHh lpR fFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="flex flex-center bg-transparent text-dark">
+        <app-dialog-title style="max-width: 1024px">{{
           translate(directory.directoryName, directory.meta, "directoryName")
         }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-md q-my-md">
+      <q-page-container>
+        <q-page>
           <q-item
             clickable
             v-for="item in directoryItems"
@@ -50,9 +43,9 @@
               <q-icon name="favorite" size="2em" color="red" />
             </q-item-section>
           </q-item>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -66,6 +59,7 @@
   import { Site } from "@/interfaces/models/entities/site";
   import eventBus from "@/utils/event-bus";
 
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const { translate } = useUtilities();
@@ -73,8 +67,6 @@
   const $q = useQuasar();
 
   const isDialogVisible = ref();
-
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
   const props = defineProps({
     directoryItemsList: {
@@ -118,9 +110,3 @@
     return favoriteItems.value.some((item: any) => item.directoryId === siteId);
   };
 </script>
-
-<!-- <style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style> -->

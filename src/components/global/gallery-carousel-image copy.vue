@@ -1,20 +1,30 @@
 <template>
   <div v-if="galleryItems && galleryItems?.length > 0">
     <q-card bordered flat>
-      <q-responsive :ratio="32 / 21">
-        <q-carousel v-model="slide" animated arrows thumbnails>
+      <q-responsive :ratio="16 / 11">
+        <q-carousel v-model="slide" animated thumbnails>
           <q-carousel-slide
             v-for="(image, index) in galleryItems"
             :key="index"
             :name="image.imageId"
+            ref="carousel"
             class="q-pa-none"
           >
             <!-- :img-src="getImageSrc(image.imagePath)" -->
+
+            <q-img :src="getImageSrc(image.imagePath)" :ratio="16 / 9" />
+
             <!-- <div class="absolute-bottom custom-caption">
               <div class="text-h6">{{ address }}</div>
             </div> -->
-            <q-img :src="getImageSrc(image.imagePath)" :ratio="16 / 9" />
           </q-carousel-slide>
+
+          <!-- <template v-slot:control>
+            <q-carousel-control position="bottom-right" :offset="[18, 18]" class="q-gutter-xs">
+              <q-btn push round dense color="orange" text-color="black" icon="arrow_left" />
+              <q-btn push round dense color="orange" text-color="black" icon="arrow_right" />
+            </q-carousel-control>
+          </template> -->
         </q-carousel>
       </q-responsive>
     </q-card>
@@ -72,6 +82,8 @@
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
+
+  const carousel = ref(null);
 
   const props = defineProps({
     galleryImages: {
