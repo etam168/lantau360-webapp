@@ -13,43 +13,47 @@
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
-      <q-page-container class="q-mx-sm q-pa-none">
-        <q-item class="q-items-center q-pa-xs">
-          <gallery-carousel-image
-            class="col-12 q-items-center"
-            style="max-height: 600px"
-            :gallery-images="galleryItems"
-          />
-        </q-item>
-        <q-item>
-          <q-icon name="location_on" size="2em" color="blue" />
-          <q-item-label class="q-mt-sm"
-            >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-          </q-item-label>
-        </q-item>
-        d
-        <q-item>
-          <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-          <q-space />
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-mx-sm q-pa-none">
+            <q-item class="q-items-center q-pa-xs">
+              <gallery-carousel-image
+                class="col-12 q-items-center"
+                style="max-height: 600px"
+                :gallery-images="galleryItems"
+              />
+            </q-item>
+            <q-item>
+              <q-icon name="location_on" size="2em" color="blue" />
+              <q-item-label class="q-mt-sm"
+                >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+              </q-item-label>
+            </q-item>
+            d
+            <q-item>
+              <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
+              <q-space />
 
-          <q-btn color="primary" text-color="white" icon="phone" round />
-          <q-space />
-          <q-btn
-            color="primary"
-            :text-color="isFavourite ? 'red' : 'white'"
-            icon="favorite"
-            round
-            @click="onBtnFavClick"
-          />
-        </q-item>
-        <q-separator class="q-mt-sm" />
+              <q-btn color="primary" text-color="white" icon="phone" round />
+              <q-space />
+              <q-btn
+                color="primary"
+                :text-color="isFavourite ? 'red' : 'white'"
+                icon="favorite"
+                round
+                @click="onBtnFavClick"
+              />
+            </q-item>
+            <q-separator class="q-mt-sm" />
 
-        <q-item>
-          <div
-            v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-          ></div>
-        </q-item>
-        <q-separator class="q-mt-sm" />
+            <q-item>
+              <div
+                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
+              ></div>
+            </q-item>
+            <q-separator class="q-mt-sm" />
+          </q-list>
+        </q-page>
       </q-page-container>
     </q-layout>
   </q-dialog>

@@ -8,55 +8,51 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
-          <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-          </div>
-          <q-space />
-        </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-sm q-pa-none">
-          <q-item class="q-items-center q-pa-xs">
-            <gallery-carousel-image
-              class="col-12 q-items-center"
-              style="max-height: 600px"
-              :gallery-images="galleryItems"
-            />
-          </q-item>
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-mx-sm q-pa-none">
+            <q-item class="q-items-center q-pa-xs">
+              <gallery-carousel-image
+                class="col-12 q-items-center"
+                style="max-height: 600px"
+                :gallery-images="galleryItems"
+              />
+            </q-item>
 
-          <q-item>
-            <q-icon name="location_on" size="2em" color="primary" />
-            <q-item-label class="q-mt-sm">{{ directoryItem.subtitle1 }}</q-item-label>
-          </q-item>
+            <q-item>
+              <q-icon name="location_on" size="2em" color="primary" />
+              <q-item-label class="q-mt-sm">{{ directoryItem.subtitle1 }}</q-item-label>
+            </q-item>
 
-          <q-item>
-            <q-btn color="primary" text-color="white" icon="location_on" round />
-            <q-space />
+            <q-item>
+              <q-btn color="primary" text-color="white" icon="location_on" round />
+              <q-space />
 
-            <q-btn color="primary" text-color="white" icon="phone" round />
-            <q-space />
-            <q-btn
-              color="primary"
-              :text-color="isFavourite ? 'red' : 'white'"
-              icon="favorite"
-              round
-              @click="onBtnFavClick"
-            />
-          </q-item>
-          <q-separator class="q-mt-sm" />
+              <q-btn color="primary" text-color="white" icon="phone" round />
+              <q-space />
+              <q-btn
+                color="primary"
+                :text-color="isFavourite ? 'red' : 'white'"
+                icon="favorite"
+                round
+                @click="onBtnFavClick"
+              />
+            </q-item>
+            <q-separator class="q-mt-sm" />
 
-          <q-item>
-            <div v-html="directoryItem.description"></div>
-          </q-item>
-          <q-separator class="q-mt-sm" />
-        </q-page-container>
-      </q-layout>
-    </q-card>
+            <q-item>
+              <div v-html="directoryItem.description"></div>
+            </q-item>
+            <q-separator class="q-mt-sm" />
+          </q-list>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -70,7 +66,7 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
-  import { PropType, onMounted } from "vue";
+  import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
   import { LocalStorage } from "quasar";
@@ -128,6 +124,10 @@
     }
     LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
   };
+
+  const dialogTitle = computed(() => {
+    return translate(directoryItem.value.subtitle1, directoryItem.value.meta, "subtitle1");
+  });
 
   onMounted(() => {
     loadData();

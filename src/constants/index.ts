@@ -167,12 +167,15 @@ export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const ADVERTISEMENT_DETAIL_URL = `${BASE_URL}/Advertisement/AdvertisementById`;
 export const ADVERTISEMENT_GALLERY_URL = `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`;
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
+export const BUSINESS_PROMOTION_URL_BY_ID = `${BASE_URL}/BusinessPromotion/BusinessPromotionById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
-export const PROMOTION_URL = `${BASE_URL}/Business/DatatableByDirectoryId`;
+export const BUSINESS_PROMOTION_URL = `${BASE_URL}/BusinessPromotion/Datatable`;
 export const DIRECTORY_POST_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
 export const COMMUNITY_EVENT_GALLERY_URL = `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`;
+
+export const BUSINESS_PROMOTION_GALLERY_URL = `${BASE_URL}/BusinessPromotionImage/GetBusinessPromotionImages`;
 
 export const ADVERTISEMENT_URL = `${BASE_URL}/Advertisement`;
 

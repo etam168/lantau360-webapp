@@ -8,78 +8,79 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
-          <div class="text-h6 text-weight-medium">
-            {{ translate(directoryItem.businessName, directoryItem.meta, "businessName") }}
-          </div>
-          <q-space />
-        </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-sm q-pa-none">
-          <q-item class="q-items-center q-pa-xs">
-            <gallery-carousel-image
-              class="col-12 q-items-center"
-              style="max-height: 600px"
-              :gallery-images="galleryItems"
-              :address="translate(directoryItem.subtitle1, directoryItem.meta, 'subtitle1')"
-            />
-          </q-item>
-          <q-item>
-            <!-- <q-icon name="location_on" size="2em" color="blue" />
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-mx-sm q-pa-none">
+            <q-item class="q-items-center q-pa-xs">
+              <gallery-carousel-image
+                class="col-12 q-items-center"
+                style="max-height: 600px"
+                :gallery-images="galleryItems"
+                :address="translate(directoryItem.subtitle1, directoryItem.meta, 'subtitle1')"
+              />
+            </q-item>
+            <q-item>
+              <!-- <q-icon name="location_on" size="2em" color="blue" />
             <q-item-label class="q-mt-sm"
               >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
             </q-item-label> -->
-          </q-item>
+            </q-item>
 
-          <q-item>
-            <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-            <q-space />
+            <q-item>
+              <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
+              <q-space />
 
-            <q-btn color="primary" text-color="white" icon="phone" round />
-            <q-space />
-            <q-btn
-              color="primary"
-              :text-color="isFavourite ? 'red' : 'white'"
-              icon="favorite"
-              round
-              @click="onBtnFavClick"
-            />
-          </q-item>
-          <q-separator class="q-mt-sm" />
+              <q-btn color="primary" text-color="white" icon="phone" round />
+              <q-space />
+              <q-btn
+                color="primary"
+                :text-color="isFavourite ? 'red' : 'white'"
+                icon="favorite"
+                round
+                @click="onBtnFavClick"
+              />
+            </q-item>
+            <q-separator class="q-mt-sm" />
 
-          <q-item>
-            <div
-              v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-            ></div>
-          </q-item>
-          <q-separator class="q-mt-sm" />
-        </q-page-container>
-      </q-layout>
-    </q-card>
+            <q-item>
+              <div
+                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
+              ></div>
+            </q-item>
+            <q-separator class="q-mt-sm" />
+          </q-list>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import {
+    DIRECTORY_GROUPS,
+    BUSINESS_PROMOTION_GALLERY_URL,
+    BUSINESS_PROMOTION_URL_BY_ID,
+    STORAGE_KEYS
+  } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
-  import { PropType, onMounted } from "vue";
+  import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
   //const router = useRouter();
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<BusinessPromotion>({} as BusinessPromotion);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -99,7 +100,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.businessPromotionId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -111,7 +112,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.businessId,
+        directoryId: props.query?.businessPromotionId,
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.businessName,
         itemId: itemIdToMatch,
@@ -130,17 +131,9 @@
     alert(JSON.stringify(favoriteItems.value));
   };
 
-  // const translateTitle = computed(() => {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   switch (locale.value) {
-  //     case "hk":
-  //       return props.data.meta?.i18n?.hk?.["directoryName"] ?? props.data.directoryName;
-  //     case "cn":
-  //       return props.data.meta?.i18n?.cn?.["directoryName"] ?? props.data.directoryName;
-  //     default:
-  //       return props.data.directoryName;
-  //   }
-  // });
+  const dialogTitle = computed(() => {
+    return translate(directoryItem.value.businessName, directoryItem.value.meta, "businessName");
+  });
 
   onMounted(() => {
     loadData();
@@ -155,18 +148,20 @@
   }
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.query?.businessPromotionId !== undefined) {
       try {
-        const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+        const [businessPromotionResponse, galleryResponse] = await Promise.all([
+          axios.get(`${BUSINESS_PROMOTION_URL_BY_ID}/${props.query?.businessPromotionId}`),
+          axios.get<GalleryImage[]>(
+            `${BUSINESS_PROMOTION_GALLERY_URL}/${props.query?.businessPromotionId}`
+          )
         ]);
-        directoryItem.value = businessResponse.data;
+        directoryItem.value = businessPromotionResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.itemId == directoryItem.value.businessPromotionId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

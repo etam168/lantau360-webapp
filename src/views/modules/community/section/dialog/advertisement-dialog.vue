@@ -8,60 +8,54 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <!-- <div class="text-h6 text-weight-medium">{{ directoryItem }}</div> -->
-          <div class="text-h6 text-weight-medium">
-            {{
-              translate(directoryItem.advertisementName, directoryItem.meta, "advertisementName")
-            }}
-          </div>
-          <q-space />
-        </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-xl q-my-md">
-          <q-item class="q-items-center">
-            <gallery-carousel-image
-              class="col-12 q-items-center"
-              style="max-height: 600px"
-              :gallery-images="galleryItems"
-            />
-          </q-item>
-          <q-item>
-            <q-icon name="location_on" size="2em" color="blue" />
-            <q-item-label class="q-mt-sm"
-              >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-            </q-item-label>
-          </q-item>
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-mx-sm q-pa-none">
+            <q-item class="q-items-center">
+              <gallery-carousel-image
+                class="col-12 q-items-center"
+                style="max-height: 600px"
+                :gallery-images="galleryItems"
+              />
+            </q-item>
+            <q-item>
+              <q-icon name="location_on" size="2em" color="blue" />
+              <q-item-label class="q-mt-sm"
+                >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+              </q-item-label>
+            </q-item>
 
-          <q-item>
-            <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-            <q-space />
+            <q-item>
+              <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
+              <q-space />
 
-            <q-btn color="primary" text-color="white" icon="phone" round />
-            <q-space />
-            <q-btn
-              color="primary"
-              :text-color="isFavourite ? 'red' : 'white'"
-              icon="favorite"
-              round
-              @click="onBtnFavClick"
-            />
-          </q-item>
-          <q-separator class="q-mt-sm" />
+              <q-btn color="primary" text-color="white" icon="phone" round />
+              <q-space />
+              <q-btn
+                color="primary"
+                :text-color="isFavourite ? 'red' : 'white'"
+                icon="favorite"
+                round
+                @click="onBtnFavClick"
+              />
+            </q-item>
+            <q-separator class="q-mt-sm" />
 
-          <q-item>
-            <div
-              v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-            ></div>
-          </q-item>
-          <q-separator class="q-mt-sm" />
-        </q-page-container>
-      </q-layout>
-    </q-card>
+            <q-item>
+              <div
+                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
+              ></div>
+            </q-item>
+            <q-separator class="q-mt-sm" />
+          </q-list>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -75,10 +69,9 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
-  import { PropType, onMounted } from "vue";
+  import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
   //import { useRouter } from "vue-router";
-
 
   import { LocalStorage } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
@@ -137,17 +130,13 @@
     alert(JSON.stringify(favoriteItems.value));
   };
 
-  // const translateTitle = computed(() => {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   switch (locale.value) {
-  //     case "hk":
-  //       return props.data.meta?.i18n?.hk?.["directoryName"] ?? props.data.directoryName;
-  //     case "cn":
-  //       return props.data.meta?.i18n?.cn?.["directoryName"] ?? props.data.directoryName;
-  //     default:
-  //       return props.data.directoryName;
-  //   }
-  // });
+  const dialogTitle = computed(() => {
+    return translate(
+      directoryItem.value.advertisementName,
+      directoryItem.value.meta,
+      "advertisementName"
+    );
+  });
 
   onMounted(() => {
     loadData();

@@ -1,6 +1,6 @@
 <template>
   <div class="row">
-    <div v-for="item in offers.slice(0, 8)" :key="item.businessId" class="col-md-3 col-6 q-pa-sm">
+    <div v-for="item in offers" :key="item.businessPromotionId" class="col-md-3 col-6 q-pa-sm">
       <latest-offer-card :offers="item" @on-click="onItemClick" />
     </div>
   </div>
@@ -14,11 +14,11 @@
   const $q = useQuasar();
 
   // .ts file
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
   import { useQuasar } from "quasar";
   defineProps({
     offers: {
-      type: Object as PropType<Business[]>,
+      type: Object as PropType<BusinessPromotion[]>,
       required: true
     }
   });
@@ -27,7 +27,7 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("./dialog/business-detail-dialog.vue")),
       componentProps: {
-        query: { businessId: item.businessId }
+        query: { businessPromotionId: item.businessPromotionId }
       }
     });
   };

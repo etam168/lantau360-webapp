@@ -56,7 +56,7 @@
     ADVERTISEMENT_URL,
     DIRECTORY_GROUPS,
     MAIN_DIRECTORIES,
-    PROMOTION_URL
+    BUSINESS_PROMOTION_URL
   } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
 
@@ -139,7 +139,7 @@
   try {
     const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
       axios.get(`${ADVERTISEMENT_URL}`),
-      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.LATEST_OFFERS}`),
+      axios.get(`${BUSINESS_PROMOTION_URL}`),
       axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
     ]);
 
