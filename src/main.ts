@@ -1,10 +1,12 @@
 import { createApp } from "vue";
-import App from "@/App.vue";
-import "@/plugins/axios";
-import "quasar/src/css/index.sass";
+
 import { registerSW } from "virtual:pwa-register";
 import { registerPlugins } from "@/plugins";
 import { Dialog } from "quasar";
+
+import App from "@/App.vue";
+import "@/plugins/axios";
+import "quasar/src/css/index.sass";
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -25,6 +27,7 @@ const updateSW = registerSW({
       })
       .onCancel(() => {});
   },
+
   onOfflineReady() {}
 });
 

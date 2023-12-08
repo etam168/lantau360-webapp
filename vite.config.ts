@@ -8,10 +8,47 @@ import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
-import { VitePWA } from "vite-plugin-pwa";
+import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+const pwaOptions: Partial<VitePWAOptions> = {
+  mode: "development",
+  base: "/",
+  includeAssets: ["favicon.svg"],
+  manifest: {
+    name: "Lantau360 App",
+    short_name: "Lantau360",
+    theme_color: "#ffffff",
+    icons: [
+      {
+        src: "pwa-192x192.png", // <== don't add slash, for testing
+        sizes: "192x192",
+        type: "image/png"
+      },
+      {
+        src: "/pwa-512x512.png", // <== don't remove slash, for testing
+        sizes: "512x512",
+        type: "image/png"
+      },
+      {
+        src: "pwa-512x512.png", // <== don't add slash, for testing
+        sizes: "512x512",
+        type: "image/png",
+        purpose: ["any", "maskable"] // testing new type declaration
+      }
+    ]
+  },
+  devOptions: {
+    enabled: process.env.SW_DEV === "true",
+    /* when using generateSW the PWA plugin will switch to classic */
+    type: "module",
+    navigateFallback: "index.html",
+    suppressWarnings: true
+  }
+};
 
 export default defineConfig({
   build: {

@@ -7,8 +7,12 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     CheckboxStatus: typeof import('./components/global/checkbox-status.vue')['default']
+    copy: typeof import('./components/global/app-page-title copy.vue')['default']
+    GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
+    PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
   }

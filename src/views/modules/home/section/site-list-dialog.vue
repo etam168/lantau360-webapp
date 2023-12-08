@@ -10,14 +10,19 @@
   >
     <q-card style="max-width: 1024px">
       <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
+        <!-- <q-card-actions align="center" class="button-margin">
           <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
           <q-space />
           <div class="text-h6 text-weight-medium">
             {{ translate(directory.directoryName, directory.meta, "directoryName") }}
           </div>
           <q-space />
-        </q-card-actions>
+        </q-card-actions> -->
+
+        <app-dialog-title>{{
+          translate(directory.directoryName, directory.meta, "directoryName")
+        }}</app-dialog-title>
+
         <q-page-container class="q-mx-md q-my-md">
           <q-item
             clickable
@@ -114,8 +119,8 @@
   };
 </script>
 
-<style scoped>
+<!-- <style scoped>
   .button-margin {
     margin-right: 40px;
   }
-</style>
+</style> -->
