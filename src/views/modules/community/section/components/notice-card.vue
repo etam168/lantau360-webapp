@@ -55,7 +55,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../notice-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("../dialog/notice-detail-dialog.vue")),
       componentProps: {
         query: { communityNoticeId: item.communityNoticeId }
       }

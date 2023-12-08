@@ -46,7 +46,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../news-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("../dialog/news-detail-dialog.vue")),
       componentProps: {
         query: { communityNewsId: item.communityNewsId }
       }

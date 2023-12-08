@@ -55,9 +55,9 @@
       // Assuming a successful response
       if (response.status === 200) {
         $q.dialog({
-          component: defineAsyncComponent(() => import("./post-list-dialog.vue")),
+          component: defineAsyncComponent(() => import("./dialog/community-list-dialog.vue")),
           componentProps: {
-            directoryName: item.directoryName,
+            directory: item,
             directoryItemsList: response.data
           }
         });

@@ -80,7 +80,7 @@
     },
     address: {
       type: String,
-      required: true,
+      required: false,
       default: ""
     }
   });

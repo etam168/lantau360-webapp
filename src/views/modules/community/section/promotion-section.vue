@@ -71,7 +71,7 @@
 
   const onImageClick = (item: Advertisement) => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./advertisement-dialog.vue")),
+      component: defineAsyncComponent(() => import("./dialog/advertisement-dialog.vue")),
       componentProps: {
         query: { advertisementId: item.advertisementId }
       }

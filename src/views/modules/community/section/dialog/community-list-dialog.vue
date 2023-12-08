@@ -8,48 +8,53 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-card style="max-width: 1024px">
-      <q-layout view="hHh lpR fFf">
-        <q-card-actions align="center" class="button-margin">
-          <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-          <q-space />
-          <div class="text-h6 text-weight-medium">{{ directoryName }}</div>
-          <q-space />
-        </q-card-actions>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
 
-        <q-page-container class="q-mx-md q-my-md">
-          <q-item
-            clickable
-            v-for="item in directoryItems"
-            :key="item.postingId"
-            @click="onItemClick(item)"
-            class="shadow-1 q-mb-md q-pl-sm"
-          >
-            <q-item-section avatar>
-              <q-avatar size="64px" square>
-                <q-img ratio="1" :src="computePath(item.imagePath)" />
-              </q-avatar>
-            </q-item-section>
+      <q-page-container>
+        <q-page>
+          <q-list padding class="q-pa-md">
+            <q-item
+              clickable
+              v-for="item in directoryItems"
+              :key="item.postingId"
+              @click="onItemClick(item)"
+              class="shadow-1 q-pa-sm q-mb-md"
+            >
+              <q-item-section avatar>
+                <q-avatar size="64px" square>
+                  <q-img ratio="1" :src="computePath(item.imagePath)" />
+                  <template v-slot:error>
+                    <div class="absolute-full flex flex-center bg-negative text-white">
+                      Cannot load image
+                    </div>
+                  </template>
+                </q-avatar>
+              </q-item-section>
 
-            <q-item-section class="q-ml-lg">
-              <q-item-label>
-                {{ translate(item.title, item.meta, "title") }}
-              </q-item-label>
+              <q-item-section class="q-ml-lg">
+                <q-item-label>
+                  {{ translate(item.title, item.meta, "title") }}
+                </q-item-label>
 
-              <q-item-label>
-                {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+                <q-item-label>
+                  {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
   //import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
+  import { Directory } from "@/interfaces/models/entities/directory";
   import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
@@ -67,14 +72,18 @@
     directoryItemsList: {
       type: Array as () => Posting[]
     },
-    directoryName: {
-      type: String as PropType<any>,
+    directory: {
+      type: Object as PropType<Directory>,
       required: true
     }
   });
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;
+  });
+
+  const dialogTitle = computed(() => {
+    return translate(props.directory.directoryName, props.directory.meta, "directoryName");
   });
 
   onMounted(() => {
