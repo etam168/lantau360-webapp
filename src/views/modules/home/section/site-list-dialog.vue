@@ -8,9 +8,9 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="hHh lpR fFf" class="bg-white" style="max-width: 1024px">
-      <q-header class="bg-transparent flex flex-center text-dark">
-        <app-dialog-title style="max-width: 1024px">{{ dialogTitle }}</app-dialog-title>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -36,14 +36,13 @@
               </q-item-section>
 
               <q-item-section>
-                <q-item-label>
-                  {{ translate(item.title, item.meta, "title") }}
-                </q-item-label>
+                <q-item-label> {{ translate(item.title, item.meta, "title") }} </q-item-label>
 
                 <q-item-label>
                   {{ translate(item.subtitle1, item.meta, "subtitle1") }}
                 </q-item-label>
               </q-item-section>
+
               <q-item-section side v-if="isFavoriteItem(item.siteId)">
                 <q-icon name="favorite" size="2em" color="red" />
               </q-item-section>

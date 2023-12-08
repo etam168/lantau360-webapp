@@ -1,15 +1,17 @@
 <template>
-  <q-toolbar>
-    <q-btn dense flat icon="arrow_back" v-close-popup></q-btn>
+  <q-card-actions align="center">
+    <q-toolbar style="max-width: 1024px">
+      <q-btn dense flat round icon="arrow_back" v-close-popup></q-btn>
 
-    <q-toolbar-title class="text-center text-weight-medium">
-      <slot></slot>
-      <!-- Default slot for content -->
-    </q-toolbar-title>
+      <q-toolbar-title class="text-center text-weight-medium">
+        <slot></slot>
+        <!-- Default slot for content -->
+      </q-toolbar-title>
 
-    <!-- Invisible button to balance the actual button -->
-    <q-btn dense flat icon="arrow_back" style="opacity: 0; pointer-events: none"></q-btn>
-  </q-toolbar>
+      <!-- Invisible button to balance the actual button -->
+      <q-btn dense flat icon="arrow_back" style="opacity: 0; pointer-events: none"></q-btn>
+    </q-toolbar>
+  </q-card-actions>
 </template>
 
 <script setup lang="ts">
