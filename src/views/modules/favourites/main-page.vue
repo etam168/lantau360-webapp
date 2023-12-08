@@ -63,7 +63,7 @@
     BLOB_URL,
     DIRECTORY_GROUPS,
     STORAGE_KEYS,
-    PROMOTION_URL,
+    BUSINESS_PROMOTION_URL_BY_ID,
     BUSINESS_GALLERY_URL,
     SITE_GALLERY_URL
   } from "@/constants";
@@ -156,9 +156,7 @@
   });
 
   try {
-    const [respPromotions] = await Promise.all([
-      axios.get(`${PROMOTION_URL}/${DIRECTORY_GROUPS.PROMOTIONS}`)
-    ]);
+    const [respPromotions] = await Promise.all([axios.get(`${BUSINESS_PROMOTION_URL_BY_ID}/1`)]);
 
     promotions.value = respPromotions.data.data;
   } catch (err) {

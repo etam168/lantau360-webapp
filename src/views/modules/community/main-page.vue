@@ -63,8 +63,7 @@
     COMMUNITY_DIRECTORY,
     COMMUNITY_EVENT,
     COMMUNITY_NEWS,
-    COMMUNITY_NOTICE,
-    PROMOTION_URL
+    COMMUNITY_NOTICE
   } from "@/constants";
 
   import DirectoriesSection from "./section/directories-section.vue";
@@ -81,7 +80,6 @@
   const { t } = useI18n({ useScope: "global" });
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
-  const latestOffers = ref();
   const eventData = ref();
   const newsData = ref();
   const notifications = ref();
@@ -125,17 +123,14 @@
   });
 
   try {
-    const [respPromotions, respLatestOffers, respEvent, respDirectories, respNews, respNotice] =
-      await Promise.all([
-        axios.get(`${ADVERTISEMENT_URL}`),
-        axios.get(`${PROMOTION_URL}/100`),
-        axios.get<CommunityEvent>(`${COMMUNITY_EVENT}`),
-        axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
-        axios.get<CommunityNews>(`${COMMUNITY_NEWS}`),
-        axios.get<CommunityNews>(`${COMMUNITY_NOTICE}`)
-      ]);
+    const [respPromotions, respEvent, respDirectories, respNews, respNotice] = await Promise.all([
+      axios.get(`${ADVERTISEMENT_URL}`),
+      axios.get<CommunityEvent>(`${COMMUNITY_EVENT}`),
+      axios.get<Directory>(`${COMMUNITY_DIRECTORY}`),
+      axios.get<CommunityNews>(`${COMMUNITY_NEWS}`),
+      axios.get<CommunityNews>(`${COMMUNITY_NOTICE}`)
+    ]);
     promotions.value = respPromotions.data;
-    latestOffers.value = respLatestOffers.data.data;
     eventData.value = respEvent.data;
     directoriesData.value = respDirectories.data;
     newsData.value = respNews.data;

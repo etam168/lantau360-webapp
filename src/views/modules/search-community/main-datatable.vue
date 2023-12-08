@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
+  import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
   //import { useRouter } from "vue-router";
 
   // 3rd Party Import
