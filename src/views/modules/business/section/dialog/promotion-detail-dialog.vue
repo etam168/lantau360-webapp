@@ -131,14 +131,14 @@
 
   onMounted(() => {
     loadData();
-    eventBus.on("BusinessPromoDialog", () => {
+    eventBus.on("BusinessPromotionDialog", () => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "BusinessPromoDialog");
+    eventBus.emit("DialogStatus", status, "BusinessPromotionDialog");
   }
 
   const loadData = async () => {

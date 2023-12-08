@@ -23,7 +23,7 @@
     }
   });
 
-  const onItemClick = (item: any) => {
+  const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
       component: defineAsyncComponent(() => import("./dialog/business-detail-dialog.vue")),
       componentProps: {

@@ -60,6 +60,7 @@
   };
 
   function onItemClick() {
+    alert(JSON.stringify(props.offers));
     emit("on-click", props.offers);
   }
 

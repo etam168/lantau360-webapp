@@ -1,9 +1,10 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computeImagePath(offers?.imagePath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
     <q-card-section class="q-pa-sm">
       <app-item dense icon="location_on" :label="offers?.businessName" />
     </q-card-section>
+
     <q-card-actions>
       <q-space />
       <q-btn
@@ -20,42 +21,58 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType } from "vue";
-  import { Business } from "@/interfaces/models/entities/business";
+  import axios, { AxiosError } from "axios";
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { PropType, onMounted, ref } from "vue";
+  import { BusinessVoucher } from "@/interfaces/models/entities/businessVoucher";
 
-  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
-  //import { useRouter } from "vue-router";
+  import { BLOB_URL, BUSINESS_VOUCHER_GALLERY_URL } from "@/constants";
 
   import AppItem from "@/components/widgets/app-item.vue";
 
-  // const virtualScrollIndex = ref(0);
-  //   const router = useRouter();
-
   const props = defineProps({
     offers: {
-      type: Object as PropType<Business>,
+      type: Object as PropType<BusinessVoucher>,
       required: true
     }
   });
 
   const emit = defineEmits(["on-click"]);
 
-  // const navigateToDetailPage = (value: any) => {
-  //   router.push({
-  //     name: "business-list",
-  //     query: { directoryItemId: value.businessId }
-  //   });
-  // };
+  const error = ref<string | null>(null);
+  const itemImage = ref();
 
   function onItemClick() {
     emit("on-click", props.offers);
   }
 
-  function computeImagePath(imagePath: any) {
-    return imagePath ? `${imagePath}` : PLACEHOLDER_THUMBNAIL;
-  }
+  onMounted(() => {
+    loadData();
+  });
 
-  // function onVirtualScroll(details: any) {
-  //   virtualScrollIndex.value = details.index;
-  // }
+  const loadData = async () => {
+    try {
+      const [galleryResponse] = await Promise.all([
+        axios.get<GalleryImage[]>(
+          `${BUSINESS_VOUCHER_GALLERY_URL}/${props?.offers?.businessVoucherId}`
+        )
+      ]);
+
+      itemImage.value = galleryResponse.data[0].imagePath;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = "Not found";
+        } else {
+          error.value = "An error occurred";
+        }
+      } else {
+        error.value = "An unexpected error occurred";
+      }
+    }
+  };
+
+  function computeImagePath(imagePath: any) {
+    return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
+  }
 </script>

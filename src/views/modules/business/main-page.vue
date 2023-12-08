@@ -25,11 +25,11 @@
     transition-duration="1000"
   >
     <q-tab-panel name="promotion">
-      <latest-offer-section :offers="latestOffers" />
+      <latest-offer-section :offers="businessPromotion" />
     </q-tab-panel>
 
     <q-tab-panel name="voucher">
-      <voucher-card-section :offers="latestOffers" />
+      <voucher-card-section :offers="businessVoucher" />
     </q-tab-panel>
 
     <q-tab-panel name="directory">
@@ -56,7 +56,8 @@
     ADVERTISEMENT_URL,
     DIRECTORY_GROUPS,
     MAIN_DIRECTORIES,
-    BUSINESS_PROMOTION_URL
+    BUSINESS_PROMOTION_URL,
+    BUSINESS_VOUCHER_URL
   } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
 
@@ -82,7 +83,8 @@
   //const keyword = ref("");
   const promotions = ref<any | null>(null);
   const directoriesData = ref();
-  const latestOffers = ref();
+  const businessPromotion = ref();
+  const businessVoucher = ref();
   const dialogStack = ref<string[]>([]);
 
   // const $q = useQuasar();
@@ -137,14 +139,17 @@
     tab.value = val;
   }
   try {
-    const [respPromotions, respLatestOffers, respDirectories] = await Promise.all([
-      axios.get(`${ADVERTISEMENT_URL}`),
-      axios.get(`${BUSINESS_PROMOTION_URL}`),
-      axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
-    ]);
+    const [respPromotions, respLatestOffers, respBusinessVoucher, respDirectories] =
+      await Promise.all([
+        axios.get(`${ADVERTISEMENT_URL}`),
+        axios.get(`${BUSINESS_PROMOTION_URL}`),
+        axios.get(`${BUSINESS_VOUCHER_URL}`),
+        axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
+      ]);
 
     promotions.value = respPromotions.data;
-    latestOffers.value = respLatestOffers.data.data;
+    businessPromotion.value = respLatestOffers.data.data;
+    businessVoucher.value = respBusinessVoucher.data.data;
     directoriesData.value = respDirectories.data;
   } catch (err) {
     if (err instanceof AxiosError) {
