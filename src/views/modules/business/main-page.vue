@@ -1,21 +1,7 @@
 <template>
   <app-page-title :title="$t('business.title')"></app-page-title>
-
   <carousel-section :data="advertisements" />
-
-  <q-toolbar class="text-white bg-grey-3">
-    <q-chip
-      v-for="(tabItem, index) in tabItems"
-      :key="index"
-      :outline="tab !== tabItem.name"
-      color="primary"
-      text-color="white"
-      clickable
-      @click="setTab(tabItem.name)"
-    >
-      {{ tabItem.label }}
-    </q-chip>
-  </q-toolbar>
+  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
   <app-tab-panels v-model="tab">
     <q-tab-panel name="promotion">
@@ -46,6 +32,7 @@
   // .ts file
   import { URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
@@ -67,7 +54,7 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("promotion");
-  const tabItems = ref([
+  const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t("business.tabItems.promotion") },
     { name: "voucher", label: t("business.tabItems.voucher") },
     { name: "directory", label: t("business.tabItems.directory") }
