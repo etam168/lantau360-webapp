@@ -110,6 +110,9 @@
       case "privacy_policy":
         showContentDialogByName("Privacy");
         break;
+      case "login":
+        showLoginDialog();
+        break;
       default:
         break;
     }
@@ -144,4 +147,10 @@
   watch(locale, (value: any) => {
     localStorage.setItem("locale", value);
   });
+
+  function showLoginDialog() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+    });
+  }
 </script>
