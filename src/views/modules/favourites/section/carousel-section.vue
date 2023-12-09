@@ -26,6 +26,12 @@
             <strong>Business Id:</strong> {{ row.businessId }}
           </q-tooltip>
         </q-carousel-slide>
+
+        <template v-slot:control>
+          <q-carousel-control position="top-left" :offset="[10, 10]">
+            <q-badge color="primary" class="text-white"> Sponsored </q-badge>
+          </q-carousel-control>
+        </template>
       </q-carousel>
     </q-responsive>
   </div>

@@ -60,14 +60,14 @@
   // .ts file
   import { FavoriteItem } from "@/interfaces/models/entities/favoriteItem";
   import {
+    URL,
     BLOB_URL,
     DIRECTORY_GROUPS,
     STORAGE_KEYS,
-    BUSINESS_PROMOTION_URL_BY_ID,
     BUSINESS_GALLERY_URL,
     SITE_GALLERY_URL
   } from "@/constants";
-  import { LocalStorage } from "quasar";
+  import { LocalStorage, useQuasar } from "quasar";
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
 
@@ -79,6 +79,7 @@
   const router = useRouter();
 
   const { t } = useI18n({ useScope: "global" });
+  const $q = useQuasar();
   const itemImage = ref();
 
   const tab = ref("location");
@@ -99,25 +100,36 @@
   });
 
   const onItemClick = (item: any) => {
-    let nextPage = "community-detail";
+    alert(JSON.stringify(item));
+    let dialogComponent = null;
+    let query = null;
 
     switch (item.groupId) {
       case DIRECTORY_GROUPS.HOME:
-        nextPage = "site-detail";
+        dialogComponent = defineAsyncComponent(
+          () => import("./section/dialog/site-detail-dialog.vue")
+        );
+        query = { siteId: item.itemId };
         break;
       case DIRECTORY_GROUPS.BUSINESS:
-        nextPage = "business-detail";
+        dialogComponent = defineAsyncComponent(
+          () => import("./section/dialog/business-detail-dialog.vue")
+        );
+        query = { businessId: item.itemId };
+        break;
+      default:
+        // Handle other cases or provide a default dialog component and query
         break;
     }
 
-    const queryParams = {
-      directoryItemId: item.itemId
-    };
-
-    router.push({
-      name: nextPage,
-      query: queryParams
-    });
+    if (dialogComponent) {
+      $q.dialog({
+        component: dialogComponent,
+        componentProps: {
+          query: query
+        }
+      });
+    }
   };
 
   function groupItemsByDirectory() {
@@ -156,9 +168,9 @@
   });
 
   try {
-    const [respPromotions] = await Promise.all([axios.get(`${BUSINESS_PROMOTION_URL_BY_ID}/1`)]);
+    const [respPromotions] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
 
-    promotions.value = respPromotions.data.data;
+    promotions.value = respPromotions.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

@@ -11,7 +11,6 @@
 
   //Custom Components
   import PromotionCard from "./components/promotion-card.vue";
-  const $q = useQuasar();
 
   // .ts file
   import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
@@ -22,6 +21,8 @@
       required: true
     }
   });
+
+  const $q = useQuasar();
 
   const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
