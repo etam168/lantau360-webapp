@@ -158,16 +158,20 @@ export const DIRECTORY_GROUPS = {
 
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
+  ATTRACTION_URL: `${BASE_URL}/Site/ByDirectoryId/1`,
   BUSINESS_DIRECTORY: `${BASE_URL}/Directory/DirectoryGroupsData/${DIRECTORY_GROUPS.BUSINESS}`,
   BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
-  BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`
+  BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`,
+  COMMUNITY_DIRECTORY: `${BASE_URL}/CommunityDirectory`,
+  COMMUNITY_EVENT: `${BASE_URL}/CommunityEvent`,
+  COMMUNITY_NEWS: `${BASE_URL}/CommunityNews`,
+  COMMUNITY_NOTICE: `${BASE_URL}/CommunityNotice`,
+  MAIN_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData`,
+  WEATHER_URL: `${BASE_URL}/Weather`
 };
 
 // axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
 
-export const ATTRACTION_URL = `${BASE_URL}/Site/ByDirectoryId/1`;
-export const MAIN_DIRECTORIES = `${BASE_URL}/Directory/DirectoryGroupsData`;
-export const WEATHER_URL = `${BASE_URL}/Weather`;
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
 export const SITE_URL = `${BASE_URL}/Site/SiteById`;
 export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
@@ -221,11 +225,6 @@ export const UPDATE_CONTENT_URL = `${BASE_URL}/Content/CreateOrUpdateContent`;
 export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 
 export const DMY = "DD/MM/YYYY";
-
-export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
-export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;
-export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
-export const COMMUNITY_NOTICE = `${BASE_URL}/CommunityNotice`;
 
 export const STORAGE_KEYS = {
   FAVOURITES: "favourites",

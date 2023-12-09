@@ -4,27 +4,11 @@
 
   <q-separator size="2px" inset spaced color="primary" />
 
-  <q-toolbar class="text-white">
-    <q-chip
-      v-for="(tabItem, index) in tabItems"
-      :key="index"
-      :outline="tab !== tabItem.name"
-      color="primary"
-      text-color="white"
-      clickable
-      @click="setTab(tabItem.name)"
-    >
-      {{ tabItem.label }}
-    </q-chip>
-  </q-toolbar>
+  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
   <q-item-label>Test updates -version 12</q-item-label>
-  <q-tab-panels
-    v-model="tab"
-    animated
-    transition-prev="fade"
-    transition-next="fade"
-    transition-duration="1000"
-  >
+
+  <app-tab-panels v-model="tab">
     <q-tab-panel name="all">
       <directory-section :data="directoriesData" />
     </q-tab-panel>
@@ -36,13 +20,13 @@
         <custom-search-bar @on-search="handleSearchDialog" />
       </div>
     </q-tab-panel>
-  </q-tab-panels>
+  </app-tab-panels>
 </template>
 
 <script setup lang="ts">
   // Vue Import
   import { defineAsyncComponent, onMounted, ref } from "vue";
-  //import { useRouter } from "vue-router";
+  import { onBeforeRouteLeave } from "vue-router";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -50,44 +34,38 @@
   import { useQuasar } from "quasar";
 
   // .ts file
+  import { URL, DIRECTORY_GROUPS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  import { ATTRACTION_URL, WEATHER_URL, MAIN_DIRECTORIES, DIRECTORY_GROUPS } from "@/constants";
   import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useUtilities } from "@/composable/use-utilities";
+  import { TabItem } from "@/interfaces/tab-item";
+  import eventBus from "@/utils/event-bus";
 
   // Custom Components
   import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
   import DirectorySection from "./section/directory-section.vue";
   import CarouselSection from "./section/carousel-section.vue";
   import WeatherSection from "./section/weather-section.vue";
-  import eventBus from "@/utils/event-bus";
-  import { onBeforeRouteLeave } from "vue-router";
 
   const { isNthBitSet } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
-
-  //const router = useRouter();
-  const tab = ref("all");
   const $q = useQuasar();
 
-  const error = ref<string | null>(null);
   const carouselData = ref<any | null>(null);
-
   const directoriesData = ref();
   const infoData = ref();
   const weatherData = ref<any | null>(null);
   const dialogStack = ref<string[]>([]);
 
-  const tabItems = ref([
+  const error = ref<string | null>(null);
+
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("all");
+  const tabItems = ref<TabItem[]>([
     { name: "all", label: t("home.allLocations") },
     { name: "info", label: t("home.info") }
   ]);
-
-  // function handleSearch(value: string) {
-  //   const queryString = { searchKeyword: value };
-  //   router.push({ name: "SitesSeacrh", query: queryString });
-  // }
 
   function handleSearchDialog(value: any) {
     $q.dialog({
@@ -120,15 +98,11 @@
     }
   });
 
-  function setTab(val: string) {
-    tab.value = val;
-  }
-
   try {
     const [attractionResponse, weatherResponse, homeDirectories] = await Promise.all([
-      axios.get<Site[]>(ATTRACTION_URL),
-      axios.get<Weather>(WEATHER_URL),
-      axios.get<Directory[]>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
+      axios.get<Site[]>(URL.ATTRACTION_URL),
+      axios.get<Weather>(URL.WEATHER_URL),
+      axios.get<Directory[]>(`${URL.MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
     ]);
 
     carouselData.value = attractionResponse.data;

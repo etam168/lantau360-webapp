@@ -12,7 +12,6 @@ declare module 'vue' {
     AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
-    CheckboxStatus: typeof import('./components/global/checkbox-status.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
