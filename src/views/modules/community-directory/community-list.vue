@@ -19,7 +19,7 @@
 </template>
 
 <script setup lang="ts">
-  import { COMMUNITY_POSTING_URL, COMMUNITY_DIRECTORY } from "@/constants";
+  import { COMMUNITY_POSTING_URL, URL } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { onMounted } from "vue";
   import { ref } from "vue";
@@ -51,7 +51,7 @@
       try {
         const [response, respDirectory] = await Promise.all([
           axios.get(`${COMMUNITY_POSTING_URL}/${query?.directoryId}`),
-          axios.get(`${COMMUNITY_DIRECTORY}/${query?.directoryId}`)
+          axios.get(`${URL.COMMUNITY_DIRECTORY}/${query?.directoryId}`)
         ]);
         directoryItems.value = response.data;
         directory.value = respDirectory.data;

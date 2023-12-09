@@ -65,12 +65,7 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    DIRECTORY_GROUPS,
-    BUSINESS_GALLERY_URL,
-    COMMUNITY_DIRECTORY,
-    STORAGE_KEYS
-  } from "@/constants";
+  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -163,7 +158,7 @@
     if (props.query?.communityDirectoryId !== undefined) {
       try {
         const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${COMMUNITY_DIRECTORY}/${props.query?.communityDirectoryId}`),
+          axios.get(`${URL.COMMUNITY_DIRECTORY}/${props.query?.communityDirectoryId}`),
           axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.communityDirectoryId}`)
         ]);
         directoryItem.value = businessResponse.data;
