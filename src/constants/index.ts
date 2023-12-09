@@ -148,11 +148,22 @@ export const AGENTS_URL = `${BASE_URL}/Agent`;
 export const AREA_URL = `${BASE_URL}/Area/Area`;
 export const AVAILABLE_AREA_URL = `${BASE_URL}/Area/GetAvailableAreas`;
 
+export const DIRECTORY_GROUPS = {
+  HOME: 1,
+  BUSINESS: 2,
+  PROMOTIONS: 108,
+  LATEST_OFFERS: 100,
+  COMMUNITY: 7
+};
+
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
+  BUSINESS_DIRECTORY: `${BASE_URL}/Directory/DirectoryGroupsData/${DIRECTORY_GROUPS.BUSINESS}`,
   BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`
 };
+
+// axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
 
 export const ATTRACTION_URL = `${BASE_URL}/Site/ByDirectoryId/1`;
 export const MAIN_DIRECTORIES = `${BASE_URL}/Directory/DirectoryGroupsData`;
@@ -215,14 +226,6 @@ export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
 export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;
 export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
 export const COMMUNITY_NOTICE = `${BASE_URL}/CommunityNotice`;
-
-export const DIRECTORY_GROUPS = {
-  HOME: 1,
-  BUSINESS: 2,
-  PROMOTIONS: 108,
-  LATEST_OFFERS: 100,
-  COMMUNITY: 7
-};
 
 export const STORAGE_KEYS = {
   FAVOURITES: "favourites"

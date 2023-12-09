@@ -1,10 +1,10 @@
-<!-- custom-search-input.vue -->
+<!-- app-search-bar.vue -->
 <template>
   <q-card-section align="center" class="q-px-xl q-py-sm">
     <q-input
       v-bind="$attrs"
       :model-value="modelValue"
-      :placeholder="$t('home.searchBar.placeholder')"
+      :placeholder="$t('component.searchBar.placeholder')"
       class="q-pl-md bg-grey-3 full-width"
       input-class="text-left"
       style="overflow: hidden; border-radius: 24px; max-width: 720px"

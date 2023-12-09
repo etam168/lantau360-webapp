@@ -44,7 +44,7 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { URL, DIRECTORY_GROUPS, MAIN_DIRECTORIES } from "@/constants";
+  import { URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
   import eventBus from "@/utils/event-bus";
 
@@ -65,16 +65,14 @@
 
   const error = ref<string | null>(null);
 
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("promotion");
   const tabItems = ref([
     { name: "promotion", label: t("business.tabItems.promotion") },
     { name: "voucher", label: t("business.tabItems.voucher") },
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
-  const tab = ref("promotion");
-  const setTab = (val: string) => (tab.value = val);
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleSearchDialog(value: any) {
     $q.dialog({
       component: defineAsyncComponent(() => import("../search-business/index.vue")),
@@ -112,7 +110,7 @@
         axios.get(`${URL.ADVERTISEMENT}`),
         axios.get(`${URL.BUSINESS_PROMOTION}`),
         axios.get(`${URL.BUSINESS_VOUCHER}`),
-        axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
+        axios.get<Directory>(`${URL.BUSINESS_DIRECTORY}`)
       ]);
 
     advertisements.value = respAdvertisement.data;
