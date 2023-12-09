@@ -15,10 +15,19 @@
 </template>
 
 <script setup lang="ts">
-  // Define the props the component takes
+  import { PropType, defineProps, defineEmits } from "vue";
+  import { TabItem } from "@/interfaces/tab-item"; // Ensure this path is correct
+
+  // Define the props the component takes with types and required fields
   defineProps({
-    tabItems: Array,
-    currentTab: String
+    tabItems: {
+      type: Array as PropType<TabItem[]>,
+      required: true // If tabItems is required, otherwise you can provide a default value
+    },
+    currentTab: {
+      type: String,
+      required: true // If currentTab is required, otherwise you can provide a default value
+    }
   });
 
   // Define the emits the component will make
