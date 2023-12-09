@@ -228,7 +228,8 @@ export const COMMUNITY_NEWS = `${BASE_URL}/CommunityNews`;
 export const COMMUNITY_NOTICE = `${BASE_URL}/CommunityNotice`;
 
 export const STORAGE_KEYS = {
-  FAVOURITES: "favourites"
+  FAVOURITES: "favourites",
+  IsLogOn: "IsLogin"
 };
 
 export const PLACEHOLDER_AVATAR =

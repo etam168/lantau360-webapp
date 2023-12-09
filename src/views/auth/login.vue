@@ -53,6 +53,8 @@
   import AppInputPassword from "@/components/widgets/app-input-password.vue";
   import VeeInput from "@/components/vee-validate/vee-input.vue";
   import axios from "axios";
+  import { LocalStorage } from "quasar";
+  import { STORAGE_KEYS } from "@/constants";
 
   const $q = useQuasar();
 
@@ -105,6 +107,7 @@
         type: "positive",
         color: "primary"
       });
+      LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
       await router.push(route.query.redirect?.toString() || "/");
     } catch (e: any) {
       $q.notify({

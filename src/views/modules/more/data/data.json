@@ -36,6 +36,12 @@
     "ResKey": "login"
   },
   {
+    "Icon": "login.png",
+    "Title": "more.login",
+    "Route": "logout",
+    "ResKey": "logout"
+  },
+  {
     "Icon": "update_pic.png",
     "Title": "more.profile",
     "Route": "profile",

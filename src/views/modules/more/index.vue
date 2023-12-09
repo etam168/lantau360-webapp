@@ -43,6 +43,7 @@
   import axios, { AxiosError } from "axios";
   //import eventBus from "@/utils/event-bus";
   //import { useRouter } from "vue-router";
+  import { LocalStorage } from "quasar";
 
   // 3rd Party Import
   import { useQuasar } from "quasar";
@@ -50,6 +51,7 @@
   //Custom Components
   import LanguageSelect from "@/components/language-select.vue";
   import { Content } from "@/interfaces/content";
+  import { STORAGE_KEYS } from "@/constants";
 
   const moreItems = ref<MoreItem[]>([]);
   //const router = useRouter();
@@ -58,6 +60,7 @@
   const { locale } = useI18n({ useScope: "global" });
   const content = ref();
   const locationPermission = ref(false);
+  const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
 
   const loadContent = async (resKey: string) => {
     try {
@@ -134,7 +137,14 @@
 
   function loadData() {
     try {
-      moreItems.value = data as MoreItem[];
+      // moreItems.value = data as MoreItem[];
+      moreItems.value = data.filter(item => {
+        // Check if IsLogOn is true and item's ResKey is 'login'
+        if (IsLogOn.value && item.ResKey === "login") {
+          return false; // Do not include the 'login' item if IsLogOn is true
+        }
+        return true; // Include other items in the array
+      }) as MoreItem[];
     } catch (error) {
       console.error("Error loading data:", error);
     }
