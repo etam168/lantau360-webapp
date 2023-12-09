@@ -71,6 +71,7 @@
   import NewsSection from "./section/news-section.vue";
   import NoticeSection from "./section/notice-section.vue";
   import PromotionSection from "./section/promotion-section.vue";
+
   import { Directory } from "@/interfaces/models/entities/directory";
   import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
   import { CommunityNews } from "@/interfaces/models/entities/communityNews";

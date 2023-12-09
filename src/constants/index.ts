@@ -140,12 +140,19 @@ export const splitterStyle = {
   laptop: "min-height: 390px; min-width: 100%;; max-width: 100%;",
   tablet: "height: auto; min-width: 100%; max-width: 100%;"
 };
+
 export const BASE_WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 export const BASE_URL = import.meta.env.VITE_API_URL;
 export const BLOB_URL = import.meta.env.VITE_BLOB_URL;
 export const AGENTS_URL = `${BASE_URL}/Agent`;
 export const AREA_URL = `${BASE_URL}/Area/Area`;
 export const AVAILABLE_AREA_URL = `${BASE_URL}/Area/GetAvailableAreas`;
+
+export const URL = {
+  ADVERTISEMENT: `${BASE_URL}/Advertisement`,
+  BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
+  BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`
+};
 
 export const ATTRACTION_URL = `${BASE_URL}/Site/ByDirectoryId/1`;
 export const MAIN_DIRECTORIES = `${BASE_URL}/Directory/DirectoryGroupsData`;
@@ -170,8 +177,6 @@ export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_PROMOTION_URL_BY_ID = `${BASE_URL}/BusinessPromotion/BusinessPromotionById`;
 export const BUSINESS_VOUCHER_URL_BY_ID = `${BASE_URL}/BusinessVoucher/BusinessVoucherById`;
 export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
-export const BUSINESS_PROMOTION_URL = `${BASE_URL}/BusinessPromotion/Datatable`;
-export const BUSINESS_VOUCHER_URL = `${BASE_URL}/BusinessVoucher/Datatable`;
 export const DIRECTORY_POST_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
@@ -205,8 +210,6 @@ export const UPDATE_CONTENT_URL = `${BASE_URL}/Content/CreateOrUpdateContent`;
 export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 
 export const DMY = "DD/MM/YYYY";
-
-//export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 
 export const COMMUNITY_DIRECTORY = `${BASE_URL}/CommunityDirectory`;
 export const COMMUNITY_EVENT = `${BASE_URL}/CommunityEvent`;

@@ -17,15 +17,9 @@
     </q-chip>
   </q-toolbar>
 
-  <q-tab-panels
-    v-model="tab"
-    animated
-    transition-prev="fade"
-    transition-next="fade"
-    transition-duration="1000"
-  >
+  <app-tab-panels v-model="tab">
     <q-tab-panel name="promotion">
-      <promotion-card-section :offers="businessPromotion" />
+      <promotion-section :offers="businessPromotion" />
     </q-tab-panel>
 
     <q-tab-panel name="voucher">
@@ -33,18 +27,16 @@
     </q-tab-panel>
 
     <q-tab-panel name="directory">
-      <q-toolbar class="q-pb-md row justify-center">
-        <custom-search-bar @on-search="handleSearchDialog" />
-      </q-toolbar>
-      <directory-section :data="directoriesData" class="q-mb-md" />
+      <app-search-bar @search="handleSearchDialog" />
+      <directory-section :data="directoriesData" class="q-my-sm" />
     </q-tab-panel>
-  </q-tab-panels>
+  </app-tab-panels>
 </template>
 
 <script setup lang="ts">
   // Vue Import
   import { defineAsyncComponent, onMounted, ref } from "vue";
-  //import { useRouter } from "vue-router";
+  import { onBeforeRouteLeave } from "vue-router";
 
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
@@ -52,42 +44,24 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import {
-    ADVERTISEMENT_URL,
-    DIRECTORY_GROUPS,
-    MAIN_DIRECTORIES,
-    BUSINESS_PROMOTION_URL,
-    BUSINESS_VOUCHER_URL
-  } from "@/constants";
+  import { URL, DIRECTORY_GROUPS, MAIN_DIRECTORIES } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
-  import eventBus from "@/utils/event-bus";
-  import { onBeforeRouteLeave } from "vue-router";
-
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
-
-  const PromotionCardSection = defineAsyncComponent(
-    () => import("./section/promotion-section.vue")
-  );
+  const PromotionSection = defineAsyncComponent(() => import("./section/promotion-section.vue"));
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
-  //const router = useRouter();
   const { t } = useI18n({ useScope: "global" });
-
-  const tab = ref("promotion");
   const $q = useQuasar();
 
-  //const keyword = ref("");
   const advertisements = ref<any | null>(null);
   const directoriesData = ref();
   const businessPromotion = ref();
   const businessVoucher = ref();
   const dialogStack = ref<string[]>([]);
-
-  // const $q = useQuasar();
 
   const error = ref<string | null>(null);
 
@@ -97,11 +71,10 @@
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
-  // function handleSearch() {
-  //   const queryString = { searchKeyword: keyword.value };
-  //   router.push({ name: "BusinessSeacrh", query: queryString });
-  // }
+  const tab = ref("promotion");
+  const setTab = (val: string) => (tab.value = val);
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function handleSearchDialog(value: any) {
     $q.dialog({
       component: defineAsyncComponent(() => import("../search-business/index.vue")),
@@ -133,17 +106,12 @@
     }
   });
 
-  handleSearchDialog;
-
-  function setTab(val: string) {
-    tab.value = val;
-  }
   try {
     const [respAdvertisement, respPromotions, respBusinessVoucher, respDirectories] =
       await Promise.all([
-        axios.get(`${ADVERTISEMENT_URL}`),
-        axios.get(`${BUSINESS_PROMOTION_URL}`),
-        axios.get(`${BUSINESS_VOUCHER_URL}`),
+        axios.get(`${URL.ADVERTISEMENT}`),
+        axios.get(`${URL.BUSINESS_PROMOTION}`),
+        axios.get(`${URL.BUSINESS_VOUCHER}`),
         axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
       ]);
 

@@ -9,10 +9,10 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
+    AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
+    AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     CheckboxStatus: typeof import('./components/global/checkbox-status.vue')['default']
-    copy: typeof import('./components/global/gallery-carousel-image copy.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
-    'GalleryCarouselImage copy': typeof import('./components/global/gallery-carousel-image copy.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
