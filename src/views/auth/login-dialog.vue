@@ -8,7 +8,7 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout>
+    <q-layout view="lHh lpr lFf" style="max-width: 1024px">
       <q-page-container class="bg-image">
         <q-page class="column items-end justify-center">
           <!-- card section -->
