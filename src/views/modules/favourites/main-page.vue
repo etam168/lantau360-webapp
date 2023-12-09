@@ -100,7 +100,6 @@
   });
 
   const onItemClick = (item: any) => {
-    alert(JSON.stringify(item));
     let dialogComponent = null;
     let query = null;
 

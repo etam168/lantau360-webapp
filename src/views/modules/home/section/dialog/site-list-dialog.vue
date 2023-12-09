@@ -43,8 +43,14 @@
                 </q-item-label>
               </q-item-section>
 
-              <q-item-section side v-if="isFavoriteItem(item.siteId)">
-                <q-icon name="favorite" size="2em" color="red" />
+              <q-item-section side>
+                <q-icon
+                  v-if="isFavoriteItem(item.siteId)"
+                  name="favorite"
+                  size="2em"
+                  color="red"
+                  class="favorite-icon"
+                />
               </q-item-section>
             </q-item>
           </q-list>
@@ -94,6 +100,25 @@
     eventBus.on("SiteListDialog", () => {
       isDialogVisible.value = false;
     });
+  });
+
+  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
+    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
+
+    if (itemIndex !== -1) {
+      if (!isFavorite) {
+        // Remove the item if it's no longer a favorite
+        favoriteItems.value.splice(itemIndex, 1);
+      }
+    } else {
+      if (isFavorite) {
+        // Add the item if it's newly favorited
+        favoriteItems.value.push({
+          directoryId: itemId
+          // other properties as needed
+        });
+      }
+    }
   });
 
   function updateDialogState(status: any) {

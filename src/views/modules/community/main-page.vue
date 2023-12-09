@@ -8,7 +8,7 @@
       <news-section :data="newsData" />
     </q-tab-panel>
 
-    <q-tab-panel name="events">
+    <q-tab-panel name="events" class="q-pa-sm">
       <events-section :events="eventData" />
     </q-tab-panel>
 

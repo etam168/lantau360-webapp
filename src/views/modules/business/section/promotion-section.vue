@@ -1,10 +1,11 @@
 <template>
-  <div class="row">
-    <div v-for="item in offers" :key="item.businessPromotionId" class="col-md-3 col-6 q-pa-sm">
+  <div class="row q-col-gutter-sm">
+    <div v-for="item in offers" :key="item.businessPromotionId" class="col-md-3 col-sm-4 col-6">
       <promotion-card :offers="item" @on-click="onItemClick" />
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
   // Vue Import
   import { PropType, defineAsyncComponent } from "vue";

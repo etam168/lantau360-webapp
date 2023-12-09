@@ -111,7 +111,12 @@
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
     }
+
     LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+    eventBus.emit("favoriteUpdated", {
+      itemId: directoryItem.value.siteId,
+      isFavorite: isFavourite.value
+    });
   };
 
   const temp = () => {

@@ -4,11 +4,11 @@
   <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
   <app-tab-panels v-model="tab">
-    <q-tab-panel name="promotion">
+    <q-tab-panel name="promotion" class="q-pa-sm">
       <promotion-section :offers="businessPromotion" />
     </q-tab-panel>
 
-    <q-tab-panel name="voucher">
+    <q-tab-panel name="voucher" class="q-pa-sm">
       <voucher-card-section :offers="businessVoucher" />
     </q-tab-panel>
 
