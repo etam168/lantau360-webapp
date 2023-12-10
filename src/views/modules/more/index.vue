@@ -4,7 +4,7 @@
 
     <q-card-section>
       <q-avatar size="96px">
-        <img src="https://cdn.quasar.dev/img/avatar.png" />
+        <img :src="computePath(userStore.avatar)" />
       </q-avatar>
       <q-btn
         :label="$t('auth.login.button')"
@@ -63,7 +63,7 @@
   // import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
   // import { STORAGE_KEYS } from "@/constants";
-  import { ContentOption } from "@/constants";
+  import { BLOB_URL, ContentOption } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
@@ -117,6 +117,11 @@
   const logout = () => {
     userStore.LogOut();
     LocalStorage.remove(STORAGE_KEYS.IsLogOn);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const computePath = (path: string) => {
+    return path ? `${BLOB_URL}/${path}` : "https://cdn.quasar.dev/img/avatar.png";
   };
 
   // watch(locale, (value: any) => {
