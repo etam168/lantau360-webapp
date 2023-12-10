@@ -39,8 +39,6 @@
 
 <script setup lang="ts">
   // Vue Import
-  import { ref } from "vue";
-  import { useRoute, useRouter } from "vue-router";
 
   // 3rd Party Import
   import { useQuasar } from "quasar";
@@ -55,11 +53,13 @@
   import axios from "axios";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
+  import { ref } from "vue";
+
+  const emits = defineEmits(["close-dialog"]);
 
   const $q = useQuasar();
 
-  const router = useRouter();
-  const route = useRoute();
+  // const route = useRoute();
   const userStore = useUserStore();
   const userName = ref("");
 
@@ -108,7 +108,9 @@
         color: "primary"
       });
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      await router.push(route.query.redirect?.toString() || "/");
+      // await router.push(prop.query.path || "/");
+      // await router.push({ name: prop.query.path });
+      emits("close-dialog");
     } catch (e: any) {
       $q.notify({
         message: e.message,

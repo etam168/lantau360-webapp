@@ -19,7 +19,7 @@
 
             <!-- login and Registration -->
             <!-- <router-view></router-view> -->
-            <Login />
+            <Login @close-dialog="closeDialog" />
           </q-card>
         </q-page>
       </q-page-container>
@@ -34,7 +34,7 @@
   // 3rd Party Import
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import Login from "./login.vue";
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
 
   const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
@@ -47,6 +47,11 @@
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
   }
+  const closeDialog = () => {
+    setTimeout(() => {
+      onDialogCancel();
+    }, 1200);
+  };
 </script>
 
 <style scoped>
