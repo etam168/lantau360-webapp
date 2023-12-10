@@ -95,7 +95,7 @@
         $q.dialog({
           component: defineAsyncComponent(() => import("./content/index.vue")),
           componentProps: {
-            contentNameValue: item.ResKey
+            contentNameValue: item.resKey
           }
         });
 

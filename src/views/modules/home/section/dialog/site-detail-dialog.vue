@@ -8,7 +8,6 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <!-- <q-card style="max-width: 1024px"> -->
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
@@ -51,7 +50,6 @@
         </q-page>
       </q-page-container>
     </q-layout>
-    <!-- </q-card> -->
   </q-dialog>
 </template>
 
@@ -167,8 +165,3 @@
     }
   };
 </script>
-<style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style>
