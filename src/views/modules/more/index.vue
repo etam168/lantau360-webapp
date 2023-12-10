@@ -6,6 +6,25 @@
       <q-avatar size="96px">
         <img src="https://cdn.quasar.dev/img/avatar.png" />
       </q-avatar>
+      <q-btn
+        :label="$t('auth.login.button')"
+        color="primary"
+        type="button"
+        class="q-mx-lg"
+        size="md"
+        v-if="!userStore.token"
+        @click="showLoginDialog()"
+      />
+
+      <q-btn
+        label="Logout"
+        color="primary"
+        type="button"
+        class="q-mx-lg"
+        size="md"
+        v-if="userStore.token"
+        @click="logout()"
+      />
     </q-card-section>
 
     <q-card-section>
@@ -45,6 +64,12 @@
   import { useQuasar } from "quasar";
   // import { STORAGE_KEYS } from "@/constants";
   import { ContentOption } from "@/constants";
+  import { useUserStore } from "@/stores/user";
+  import { LocalStorage } from "quasar";
+  import { STORAGE_KEYS } from "@/constants";
+  const userStore = useUserStore();
+
+  //Custom Components
 
   const $q = useQuasar();
   // const { locale } = useI18n({ useScope: "global" });
@@ -88,6 +113,11 @@
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
     });
   }
+
+  const logout = () => {
+    userStore.LogOut();
+    LocalStorage.remove(STORAGE_KEYS.IsLogOn);
+  };
 
   // watch(locale, (value: any) => {
   //   localStorage.setItem("locale", value);

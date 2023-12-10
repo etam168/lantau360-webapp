@@ -1,5 +1,5 @@
 import { defineStore } from "pinia";
-import router, { asyncRoutes, constantRoutes } from "@/router";
+import router, { asyncRoutes } from "@/router";
 
 /**
  * Through meta.role determines whether the current user rights match

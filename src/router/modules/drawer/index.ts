@@ -1,14 +1,12 @@
 import { RouteRecordRaw } from "vue-router";
-import { Role } from "@/constants";
+// import { Role } from "@/constants";
 import Error404 from "@/views/modules/errors/error-404.vue";
 
 const drawerRouter: Array<RouteRecordRaw> = [
   {
     path: "/",
     component: () => import("@/views/layout/index.vue"),
-    meta: {
-      roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-    },
+    meta: {},
     children: [
       {
         path: "/",
@@ -17,8 +15,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.home",
           icon: "home",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -28,8 +25,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.business",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -39,8 +35,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.community",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -50,8 +45,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.favourites",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -61,8 +55,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -75,8 +68,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -89,8 +81,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -103,8 +94,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -116,8 +106,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -131,8 +120,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -146,8 +134,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -160,8 +147,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
 
@@ -174,8 +160,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.more",
           icon: "mdi-briefcase-check",
-          group: "common",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
+          group: "common"
         }
       },
       {
@@ -185,8 +170,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.sites",
           icon: "mdi-google-maps",
-          group: "manageUsers",
-          roles: [Role.CS_ADMIN]
+          group: "manageUsers"
         }
       },
       {
@@ -196,17 +180,14 @@ const drawerRouter: Array<RouteRecordRaw> = [
         meta: {
           title: "route.drawerComponents.sites",
           icon: "mdi-google-maps",
-          group: "manageUsers",
-          roles: [Role.CS_ADMIN]
+          group: "manageUsers"
         }
       },
       {
         path: "/:catchAll(.*)",
         name: "not-found",
         component: Error404,
-        meta: {
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
-        }
+        meta: {}
       }
     ]
   }
