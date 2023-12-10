@@ -29,9 +29,11 @@
 <script setup lang="ts">
   // Vue Import
   import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
+
+  // Other Import
   import { useDialogPluginComponent } from "quasar";
-  import AppSpinner from "@/components/widgets/app-spinner.vue";
   import eventBus from "@/utils/event-bus";
+  import { ContentOption } from "@/constants";
 
   const props = defineProps({
     contentNameValue: {
@@ -51,9 +53,9 @@
   // Create a computed property for contentName
   const contentName = computed(() => {
     switch (props.contentNameValue) {
-      case "Terms":
-      case "Privacy":
-      case "About":
+      case ContentOption.ABOUT:
+      case ContentOption.PRIVACY:
+      case ContentOption.TERMS:
         return props.contentNameValue;
       default:
         return "default";

@@ -3,6 +3,12 @@
     <app-page-title :title="$t('more.title')"></app-page-title>
 
     <q-card-section>
+      <q-avatar size="96px">
+        <img src="https://cdn.quasar.dev/img/avatar.png" />
+      </q-avatar>
+    </q-card-section>
+
+    <q-card-section>
       <q-item
         v-for="item in menuItems"
         :key="item.resKey"
@@ -11,7 +17,9 @@
         class="shadow-1 q-mb-md q-pl-sm"
       >
         <q-item-section avatar>
-          <q-img size="36px" ratio="1" :src="item.icon" />
+          <q-avatar size="36px" square>
+            <img :src="item.icon" />
+          </q-avatar>
         </q-item-section>
 
         <q-item-section>
@@ -29,52 +37,25 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted, watch, defineAsyncComponent } from "vue";
+  import { defineAsyncComponent } from "vue";
   // import { LocalStorage } from "quasar";
 
   // 3rd Party Import
-  import { useI18n } from "vue-i18n";
+  // import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
-  import axios, { AxiosError } from "axios";
-
   // import { STORAGE_KEYS } from "@/constants";
-  import { Content } from "@/interfaces/content";
+  import { ContentOption } from "@/constants";
 
   const $q = useQuasar();
-
-  const { locale } = useI18n({ useScope: "global" });
-  const content = ref();
+  // const { locale } = useI18n({ useScope: "global" });
   // const locationPermission = ref(false);
   // const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
 
-  const loadContent = async (resKey: string) => {
-    try {
-      const url = `/Content/ContentByName/${resKey}`;
-      const response = await axios.get<Content>(url);
-      content.value = response.data.contentData;
-      return content.value;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          // Handle 404 error
-          console.error("Content not found");
-        } else {
-          // Handle other errors
-          console.error("An error occurred while fetching content");
-        }
-      } else {
-        // Handle unexpected errors
-        console.error("An unexpected error occurred");
-      }
-      return null; // Return null or handle error based on your requirement
-    }
-  };
-
   const menuItems = [
     { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
-    { icon: "ic_inbox.svg", title: "more.aboutUs", resKey: "about_us" },
-    { icon: "ic_terms_conditions.svg", title: "more.termsConditions", resKey: "tnc" },
-    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: "privacy_policy" }
+    { icon: "ic_inbox.svg", title: "more.aboutUs", resKey: ContentOption.ABOUT },
+    { icon: "ic_terms_conditions.svg", title: "more.termsConditions", resKey: ContentOption.TERMS },
+    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY }
   ];
 
   function onLanguageChange() {
@@ -83,28 +64,13 @@
 
   function showContentDialog(item: any) {
     switch (item.ResKey) {
-      case "about_us":
+      case ContentOption.ABOUT:
+      case ContentOption.PRIVACY:
+      case ContentOption.TERMS:
         $q.dialog({
           component: defineAsyncComponent(() => import("./content/index.vue")),
           componentProps: {
-            contentNameValue: "About"
-          }
-        });
-        break;
-      case "tnc":
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./content/index.vue")),
-          componentProps: {
-            contentNameValue: "Terms"
-          }
-        });
-
-        break;
-      case "privacy_policy":
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./content/index.vue")),
-          componentProps: {
-            contentNameValue: "Privacy"
+            contentNameValue: item.ResKey
           }
         });
 
@@ -123,11 +89,7 @@
     });
   }
 
-  onMounted(() => {
-    loadContent("");
-  });
-
-  watch(locale, (value: any) => {
-    localStorage.setItem("locale", value);
-  });
+  // watch(locale, (value: any) => {
+  //   localStorage.setItem("locale", value);
+  // });
 </script>

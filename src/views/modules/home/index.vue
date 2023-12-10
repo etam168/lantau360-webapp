@@ -16,7 +16,6 @@
 
 <script setup lang="ts">
   import { defineAsyncComponent } from "vue";
-  import AppSpinner from "@/components/widgets/app-spinner.vue";
 
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),

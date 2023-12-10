@@ -17,7 +17,6 @@
 <script setup lang="ts">
   // Vue Import
   import { defineAsyncComponent } from "vue";
-  import AppSpinner from "@/components/widgets/app-spinner.vue";
 
   const AppPageTitle = defineAsyncComponent(
     () => import("@/components/widgets/app-page-title.vue")

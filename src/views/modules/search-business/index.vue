@@ -27,7 +27,6 @@
   // Custom Components
   import { useDialogPluginComponent } from "quasar";
   import MainDatatable from "./main-datatable.vue";
-  import AppSpinner from "@/components/widgets/app-spinner.vue";
   import eventBus from "@/utils/event-bus";
 
   defineProps({

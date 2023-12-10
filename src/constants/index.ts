@@ -32,58 +32,6 @@ export const PropertyStatus = {
   BUY: 2
 };
 
-export const PropertyStatuses = [
-  {
-    value: 0,
-    label: "In-Active",
-    meta: {
-      hk: "In-Active hk",
-      cn: "In-Active cn"
-    }
-  },
-  {
-    value: 1,
-    label: "Active",
-    meta: {
-      hk: "Active hk",
-      cn: "Active cn"
-    }
-  },
-  {
-    value: null,
-    label: "All",
-    meta: {
-      hk: "Archive hk",
-      cn: "Archive cn"
-    }
-  },
-  {
-    value: -1,
-    label: "Archive",
-    meta: {
-      hk: "Archive hk",
-      cn: "Archive cn"
-    }
-  }
-];
-export const PropertyListingStatus = [
-  {
-    label: "Current",
-    value: 1
-  },
-  {
-    label: "Rented",
-    value: -1
-  },
-  {
-    label: "Sold",
-    value: -2
-  },
-  {
-    label: "Pending",
-    value: 4
-  }
-];
 export const DateFormat = {
   ISO: "YYYY-MM-DD",
   ISO1: "YYYY-MM-DD mm:ss",
@@ -91,10 +39,9 @@ export const DateFormat = {
 };
 
 export const ContentOption = {
-  CONTACT: "Contact",
-  HOME: "Home",
-  LISTING: "Listing",
-  ABOUT: "About"
+  ABOUT: "about_us",
+  PRIVACY: "privacy_policy",
+  TERMS: "tnc"
 };
 
 export const FabOption = {
@@ -169,8 +116,6 @@ export const URL = {
   MAIN_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData`,
   WEATHER_URL: `${BASE_URL}/Weather`
 };
-
-// axios.get<Directory>(`${MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.BUSINESS}`)
 
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
 export const SITE_URL = `${BASE_URL}/Site/SiteById`;

@@ -31,11 +31,7 @@
   import { Content } from "@/interfaces/content";
   import { useContentInput } from "./use-content-input";
 
-  // Custom Components
-  // import AppTextEditor from "@/components/widgets/app-text-editor.vue";
-
   const tab = ref("en");
-
   const { setContentInput } = useContentInput();
 
   // Define the props
