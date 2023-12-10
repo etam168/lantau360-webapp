@@ -6,7 +6,7 @@
 
   <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-  <q-item-label>Test updates -version 12</q-item-label>
+  <!-- <q-item-label>Test updates -version 12</q-item-label> -->
 
   <app-tab-panels v-model="tab">
     <q-tab-panel name="all">

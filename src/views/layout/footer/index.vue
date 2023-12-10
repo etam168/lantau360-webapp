@@ -44,7 +44,7 @@
       name: "business",
       icon: "fa-solid fa-money-check-dollar",
       label: t("footer.business"),
-      route: "/businesses"
+      route: "/business"
     },
     {
       name: "community",
@@ -56,7 +56,7 @@
       name: "favourites",
       icon: "fa-solid fa-heart",
       label: t("footer.favourite"),
-      route: "/favourites"
+      route: "/favourite"
     },
     { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
