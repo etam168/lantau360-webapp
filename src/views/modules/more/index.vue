@@ -1,66 +1,51 @@
 <template>
-  <q-layout>
-    <q-page-container>
-      <q-page class="q-mx-md q-my-md">
-        <app-page-title :title="$t('more.title')"></app-page-title>
+  <q-page>
+    <app-page-title :title="$t('more.title')"></app-page-title>
 
-        <q-item
-          v-for="item in moreItems"
-          :key="item.Title"
-          clickable
-          @click="showContentDialog(item)"
-          class="shadow-1 q-mb-md q-pl-sm"
-        >
-          <q-item-section avatar>
-            <q-avatar size="38px" square>
-              <q-img ratio="1" :src="item.Icon" />
-            </q-avatar>
-          </q-item-section>
+    <q-card-section>
+      <q-item
+        v-for="item in menuItems"
+        :key="item.resKey"
+        clickable
+        @click="showContentDialog(item)"
+        class="shadow-1 q-mb-md q-pl-sm"
+      >
+        <q-item-section avatar>
+          <q-img size="36px" ratio="1" :src="item.icon" />
+        </q-item-section>
 
-          <q-item-section class="q-ml-lg">
-            <q-item-label class="text-subtitle1 text-weight-medium">
-              {{ $t(item.Title) }}</q-item-label
-            >
-          </q-item-section>
-          <q-item-section side v-if="item.Route == 'language'">
-            <language-select class="q-mr-md" @on-language="onLanguageChange" />
-          </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-subtitle1 text-weight-medium">
+            {{ $t(item.title) }}</q-item-label
+          >
+        </q-item-section>
 
-          <q-item-section side v-if="item.Route == 'location_permission'">
-            <q-toggle v-model="locationPermission" color="green" />
-          </q-item-section>
-        </q-item>
-      </q-page>
-    </q-page-container>
-  </q-layout>
+        <q-item-section side v-if="item.resKey == 'language'">
+          <language-select @on-language="onLanguageChange" />
+        </q-item-section>
+      </q-item>
+    </q-card-section>
+  </q-page>
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted, watch, defineAsyncComponent } from "vue";
-  import { useI18n } from "vue-i18n";
-  import data from "./data/data.json";
-  import { MoreItem } from "@/interfaces/models/entities/moreItem";
-  import axios, { AxiosError } from "axios";
-  //import eventBus from "@/utils/event-bus";
-  //import { useRouter } from "vue-router";
-  import { LocalStorage } from "quasar";
+  // import { LocalStorage } from "quasar";
 
   // 3rd Party Import
+  import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
+  import axios, { AxiosError } from "axios";
 
-  //Custom Components
-  import LanguageSelect from "@/components/language-select.vue";
+  // import { STORAGE_KEYS } from "@/constants";
   import { Content } from "@/interfaces/content";
-  import { STORAGE_KEYS } from "@/constants";
 
-  const moreItems = ref<MoreItem[]>([]);
-  //const router = useRouter();
   const $q = useQuasar();
 
   const { locale } = useI18n({ useScope: "global" });
   const content = ref();
-  const locationPermission = ref(false);
-  const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
+  // const locationPermission = ref(false);
+  // const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
 
   const loadContent = async (resKey: string) => {
     try {
@@ -85,33 +70,44 @@
     }
   };
 
-  // const showContent = (item: MoreItem) => {
-  //   switch (item.ResKey) {
-  //     case "about_us":
-  //       router.push(item.Route);
-  //       break;
-  //     case "tnc":
-  //       router.push(item.Route);
-  //       break;
-  //     case "privacy_policy":
-  //       router.push(item.Route);
-  //       break;
-  //     default:
-  //   }
-  // };
+  const menuItems = [
+    { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
+    { icon: "ic_inbox.svg", title: "more.aboutUs", resKey: "about_us" },
+    { icon: "ic_terms_conditions.svg", title: "more.termsConditions", resKey: "tnc" },
+    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: "privacy_policy" }
+  ];
 
-  // showContent;
+  function onLanguageChange() {
+    // emit("update-language", locale.value);
+  }
 
   function showContentDialog(item: any) {
     switch (item.ResKey) {
       case "about_us":
-        showContentDialogByName("About");
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./content/index.vue")),
+          componentProps: {
+            contentNameValue: "About"
+          }
+        });
         break;
       case "tnc":
-        showContentDialogByName("Terms");
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./content/index.vue")),
+          componentProps: {
+            contentNameValue: "Terms"
+          }
+        });
+
         break;
       case "privacy_policy":
-        showContentDialogByName("Privacy");
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./content/index.vue")),
+          componentProps: {
+            contentNameValue: "Privacy"
+          }
+        });
+
         break;
       case "login":
         showLoginDialog();
@@ -121,46 +117,17 @@
     }
   }
 
-  function showContentDialogByName(contentName: string) {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("../content/index.vue")),
-      componentProps: {
-        contentNameValue: contentName
-      }
-    });
-  }
-
-  onMounted(() => {
-    loadData();
-    loadContent("");
-  });
-
-  function loadData() {
-    try {
-      // moreItems.value = data as MoreItem[];
-      moreItems.value = data.filter(item => {
-        // Check if IsLogOn is true and item's ResKey is 'login'
-        if (IsLogOn.value && item.ResKey === "login") {
-          return false; // Do not include the 'login' item if IsLogOn is true
-        }
-        return true; // Include other items in the array
-      }) as MoreItem[];
-    } catch (error) {
-      console.error("Error loading data:", error);
-    }
-  }
-
-  function onLanguageChange() {
-    // emit("update-language", locale.value);
-  }
-
-  watch(locale, (value: any) => {
-    localStorage.setItem("locale", value);
-  });
-
   function showLoginDialog() {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
     });
   }
+
+  onMounted(() => {
+    loadContent("");
+  });
+
+  watch(locale, (value: any) => {
+    localStorage.setItem("locale", value);
+  });
 </script>

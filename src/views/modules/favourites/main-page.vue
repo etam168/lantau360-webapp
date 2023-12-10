@@ -1,52 +1,54 @@
 <template>
-  <app-page-title :title="$t('favourite.title')"></app-page-title>
+  <q-page>
+    <app-page-title :title="$t('favourite.title')"></app-page-title>
 
-  <carousel-section :data="promotions" />
+    <carousel-section :data="promotions" />
 
-  <q-toolbar class="text-white bg-grey-3">
-    <q-chip
-      v-for="(tabItem, index) in tabItems"
-      :key="index"
-      :outline="tab !== tabItem.name"
-      color="primary"
-      text-color="white"
-      clickable
-      @click="setTab(tabItem.name)"
-    >
-      {{ tabItem.label }}
-    </q-chip>
-  </q-toolbar>
-
-  <div>
-    <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-md">
-      <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
-
-      <!-- Display the group name outside the card -->
-
-      <q-item
+    <q-toolbar class="text-white bg-grey-3">
+      <q-chip
+        v-for="(tabItem, index) in tabItems"
+        :key="index"
+        :outline="tab !== tabItem.name"
+        color="primary"
+        text-color="white"
         clickable
-        v-for="item in items"
-        :key="item?.directoryId"
-        class="shadow-1 q-mb-md q-pl-sm"
-        @click="onItemClick(item)"
+        @click="setTab(tabItem.name)"
       >
-        <q-item-section avatar>
-          <q-avatar size="64px" square>
-            <q-img ratio="1" :src="computePath(item?.iconPath)" />
-          </q-avatar>
-        </q-item-section>
+        {{ tabItem.label }}
+      </q-chip>
+    </q-toolbar>
 
-        <q-item-section class="q-ml-lg">
-          <q-item-label>{{ item.itemName }}</q-item-label>
-          <q-item-label>{{ item.subTitle }}</q-item-label>
-        </q-item-section>
+    <div>
+      <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-md">
+        <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
 
-        <q-item-section side>
-          <q-icon class="fa-solid fa-heart text-h6" style="color: green; margin-top: -20px" />
-        </q-item-section>
-      </q-item>
+        <!-- Display the group name outside the card -->
+
+        <q-item
+          clickable
+          v-for="item in items"
+          :key="item?.directoryId"
+          class="shadow-1 q-mb-md q-pl-sm"
+          @click="onItemClick(item)"
+        >
+          <q-item-section avatar>
+            <q-avatar size="64px" square>
+              <q-img ratio="1" :src="computePath(item?.iconPath)" />
+            </q-avatar>
+          </q-item-section>
+
+          <q-item-section class="q-ml-lg">
+            <q-item-label>{{ item.itemName }}</q-item-label>
+            <q-item-label>{{ item.subTitle }}</q-item-label>
+          </q-item-section>
+
+          <q-item-section side>
+            <q-icon class="fa-solid fa-heart text-h6" style="color: green; margin-top: -20px" />
+          </q-item-section>
+        </q-item>
+      </div>
     </div>
-  </div>
+  </q-page>
 </template>
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">

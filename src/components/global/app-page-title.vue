@@ -1,11 +1,11 @@
 <template>
-  <q-card-actions align="center">
-    <div class="text-h6 text-weight-medium">{{ props.title }}</div>
+  <q-card-actions align="center" class="q-pa-none">
+    <q-toolbar class="bg-white shadow-1">
+      <q-toolbar-title class="text-center text-weight-medium">
+        {{ props.title }}
+      </q-toolbar-title>
+    </q-toolbar>
   </q-card-actions>
-
-  <!-- <div class="text-h6 text-weight-medium">
-    <slot></slot>
-  </div> -->
 </template>
 
 <script setup lang="ts">

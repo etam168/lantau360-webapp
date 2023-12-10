@@ -1,7 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import { Role } from "@/constants";
 import Error404 from "@/views/modules/errors/error-404.vue";
-// import { moreRoutes } from "./more-routes";
 
 const drawerRouter: Array<RouteRecordRaw> = [
   {
@@ -108,7 +107,6 @@ const drawerRouter: Array<RouteRecordRaw> = [
           roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
         }
       },
-
       {
         path: "/business-detail",
         name: "business-detail",
@@ -180,41 +178,6 @@ const drawerRouter: Array<RouteRecordRaw> = [
           roles: [Role.CS_ADMIN, Role.FRONT_DESK, Role.AGENT]
         }
       },
-
-      {
-        path: "/privacy-policy",
-        name: "Privacy",
-        component: () => import("@/views/modules/content/index.vue"),
-        meta: {
-          title: "route.drawerComponents.privacyPolicy",
-          group: "manageUsers",
-          queryParam: "Privacy",
-          roles: [Role.CS_ADMIN]
-        }
-      },
-      {
-        path: "/terms-and-conditions",
-        name: "Terms",
-        component: () => import("@/views/modules/content/index.vue"),
-        meta: {
-          title: "route.drawerComponents.termsAndConditions",
-          group: "manageUsers",
-          queryParam: "Terms",
-
-          roles: [Role.CS_ADMIN]
-        }
-      },
-      {
-        path: "/about-us",
-        name: "About",
-        component: () => import("@/views/modules/content/index.vue"),
-        meta: {
-          title: "route.drawerComponents.aboutUs",
-          group: "manageUsers",
-          queryParam: "About",
-          roles: [Role.CS_ADMIN, Role.FRONT_DESK]
-        }
-      },
       {
         path: "/site-search",
         name: "SitesSeacrh",
@@ -237,9 +200,6 @@ const drawerRouter: Array<RouteRecordRaw> = [
           roles: [Role.CS_ADMIN]
         }
       },
-      // ...administratorRoutes,
-      // ...moreRoutes,
-
       {
         path: "/:catchAll(.*)",
         name: "not-found",

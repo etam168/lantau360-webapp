@@ -1,22 +1,24 @@
 <template>
-  <app-page-title :title="$t('business.title')"></app-page-title>
-  <carousel-section :data="advertisements" />
-  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+  <q-page>
+    <app-page-title :title="$t('business.title')"></app-page-title>
+    <carousel-section :data="advertisements" />
+    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-  <app-tab-panels v-model="tab">
-    <q-tab-panel name="promotion" class="q-pa-sm">
-      <promotion-section :offers="businessPromotion" />
-    </q-tab-panel>
+    <app-tab-panels v-model="tab">
+      <q-tab-panel name="promotion" class="q-pa-sm">
+        <promotion-section :offers="businessPromotion" />
+      </q-tab-panel>
 
-    <q-tab-panel name="voucher" class="q-pa-sm">
-      <voucher-card-section :offers="businessVoucher" />
-    </q-tab-panel>
+      <q-tab-panel name="voucher" class="q-pa-sm">
+        <voucher-card-section :offers="businessVoucher" />
+      </q-tab-panel>
 
-    <q-tab-panel name="directory">
-      <app-search-bar @search="handleSearchDialog" />
-      <directory-section :data="directoriesData" class="q-my-sm" />
-    </q-tab-panel>
-  </app-tab-panels>
+      <q-tab-panel name="directory">
+        <app-search-bar @search="handleSearchDialog" />
+        <directory-section :data="directoriesData" class="q-my-sm" />
+      </q-tab-panel>
+    </app-tab-panels>
+  </q-page>
 </template>
 
 <script setup lang="ts">

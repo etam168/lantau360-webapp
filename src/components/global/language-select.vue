@@ -1,4 +1,4 @@
-<!-- LanguageSelect.vue -->
+<!-- language-select.vue -->
 <template>
   <q-btn-dropdown
     unelevated
@@ -37,7 +37,6 @@
   import { useI18n } from "vue-i18n";
 
   const emit = defineEmits<{
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     (event: "on-language"): void;
   }>();
 

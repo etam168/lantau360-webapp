@@ -1,6 +1,6 @@
 export default {
   title: "More",
-  language: "Language Settings",
+  language: "Language",
   aboutUs: "About Us",
   termsConditions: "Terms & Conditions",
   privacyPolicy: "Privacy Policy",
