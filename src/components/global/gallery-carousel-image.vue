@@ -1,8 +1,8 @@
 <template>
   <div v-if="galleryItems && galleryItems?.length > 0">
     <q-card bordered flat>
-      <q-responsive :ratio="32 / 21">
-        <q-carousel v-model="slide" animated arrows thumbnails>
+      <q-responsive :ratio="16 / 9">
+        <q-carousel v-model="slide" animated arrows>
           <q-carousel-slide
             v-for="(image, index) in galleryItems"
             :key="index"

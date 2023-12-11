@@ -19,7 +19,6 @@
           <q-item class="q-items-center q-pa-xs">
             <gallery-carousel-image
               class="col-12 q-items-center"
-              style="max-height: 600px"
               :gallery-images="galleryItems"
               :address="translate(directoryItem.subtitle1, directoryItem.meta, 'subtitle1')"
             />
@@ -40,6 +39,15 @@
             />
           </q-item>
 
+          <q-separator class="q-mt-sm" />
+          <q-item>
+            <q-item-section>
+              <q-item-label class="q-mt-sm"
+                >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+              </q-item-label>
+              <q-item-label class="q-mt-sm" caption>{{ $t("favourite.subtitle1") }} </q-item-label>
+            </q-item-section>
+          </q-item>
           <q-separator class="q-mt-sm" />
 
           <q-item>

@@ -19,16 +19,16 @@
             <q-item class="q-items-center">
               <gallery-carousel-image
                 class="col-12 q-items-center"
-                style="max-height: 600px"
+                
                 :gallery-images="galleryItems"
               />
             </q-item>
-            <q-item>
+            <!-- <q-item>
               <q-icon name="location_on" size="2em" color="blue" />
               <q-item-label class="q-mt-sm"
                 >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
               </q-item-label>
-            </q-item>
+            </q-item> -->
 
             <q-item>
               <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />

@@ -4,5 +4,8 @@ export default {
   info: "其他資訊",
   searchBar: {
     placeholder: "Enter Keyword"
-  }
+  },
+  subtitle1: "地址",
+  subtitle2: "標題2",
+  subtitle3: "標題3"
 };
