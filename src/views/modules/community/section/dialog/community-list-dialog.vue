@@ -45,6 +45,9 @@
               </q-item-section>
             </q-item>
           </q-list>
+          <q-page-sticky position="bottom-right" :offset="[18, 18]">
+            <q-btn fab icon="add" color="primary" @click="addPosting" />
+          </q-page-sticky>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -52,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+  import { LocalStorage } from "quasar";
+
   //import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -59,10 +64,12 @@
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
+  import { STORAGE_KEYS } from "@/constants";
   // import { useRouter } from "vue-router";
   // const router = useRouter();
   const $q = useQuasar();
   const { translate } = useUtilities();
+  const isLogon = ref<any>(LocalStorage.getItem(STORAGE_KEYS.IsLogOn));
 
   const isDialogVisible = ref();
 
@@ -97,12 +104,20 @@
     eventBus.emit("DialogStatus", status, "PostListDialog");
   }
 
-  // const onItemClick = (value: any) => {
-  //   router.push({
-  //     name: "business-detail",
-  //     query: { businessId: value.businessId }
-  //   });
-  // };
+  function addPosting() {
+    if (!isLogon.value) {
+      $q.notify({
+        message: "Please login to procceed",
+        type: "info"
+      });
+
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+      });
+    } else {
+      //Open Page
+    }
+  }
 
   function onItemClick(item: any) {
     $q.dialog({

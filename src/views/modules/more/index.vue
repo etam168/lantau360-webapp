@@ -116,7 +116,7 @@
 
   const logout = () => {
     userStore.LogOut();
-    LocalStorage.remove(STORAGE_KEYS.IsLogOn);
+    LocalStorage.set(STORAGE_KEYS.IsLogOn, false);
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
