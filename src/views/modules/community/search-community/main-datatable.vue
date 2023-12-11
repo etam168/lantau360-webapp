@@ -1,34 +1,27 @@
 <template>
-  <q-card flat square style="max-width: 1024px">
-    <q-layout view="hHh lpR fFf">
-      <q-card-actions align="center" class="button-margin">
-        <q-btn dense flat icon="arrow_back" v-close-popup> </q-btn>
-        <q-space />
-        <div class="text-h6 text-weight-medium">
-          {{ "Community Search" }}
-        </div>
-        <q-space />
-      </q-card-actions>
+  <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+    <q-header class="bg-transparent text-dark">
+      <app-dialog-title>{{ "Community Search" }}</app-dialog-title>
+    </q-header>
 
-      <q-page-container class="q-mx-md q-my-md">
-        <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
+    <q-page-container class="q-mx-md q-my-md">
+      <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
 
-        <community-list-table
-          v-model:pagination="pagination"
-          row-key="communityDirectoryId"
-          :rows="rows"
-          :loading="loading"
-          @on-detail="handleDialog"
-          @on-pagination="updatePagination"
-          @request="loadData"
-        />
-      </q-page-container>
-    </q-layout>
+      <community-list-table
+        v-model:pagination="pagination"
+        row-key="communityDirectoryId"
+        :rows="rows"
+        :loading="loading"
+        @on-detail="handleDialog"
+        @on-pagination="updatePagination"
+        @request="loadData"
+      />
+    </q-page-container>
+  </q-layout>
 
-    <!-- <q-card-section v-else class="q-pa-none">
+  <!-- <q-card-section v-else class="q-pa-none">
         <no-data />
       </q-card-section> -->
-  </q-card>
 </template>
 
 <script setup lang="ts">
