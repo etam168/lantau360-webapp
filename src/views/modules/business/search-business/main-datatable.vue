@@ -81,9 +81,7 @@
 
   async function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(
-        () => import("../business/section/dialog/business-detail-dialog.vue")
-      ),
+      component: defineAsyncComponent(() => import("../section/dialog/business-detail-dialog.vue")),
       componentProps: {
         query: { businessId: item.businessId }
       }
@@ -108,6 +106,7 @@
       filter.value = props.query.searchKeyword as string;
       // keyword.value = filter.value;
     }
+    debugger;
     loadData({ pagination: pagination.value });
   });
 </script>

@@ -73,8 +73,9 @@
   ]);
 
   function handleSearchDialog(value: any) {
+    debugger;
     $q.dialog({
-      component: defineAsyncComponent(() => import("../search-community/index.vue")),
+      component: defineAsyncComponent(() => import("./search-community/index.vue")),
       componentProps: {
         query: { searchKeyword: value }
       }

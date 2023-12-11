@@ -8,11 +8,11 @@
 
     <q-item-section class="q-ml-lg">
       <q-item-label>
-        {{ translate(row.directoryName, row.meta, "directoryName") }}
+        {{ translate(row.title, row.meta, "title") }}
       </q-item-label>
 
       <q-item-label>
-        {{ translate(row.shortName, row.meta, "shortNameAlt") }}
+        {{ translate(row.subtitle1, row.meta, "subtitle1") }}
       </q-item-label>
     </q-item-section>
 
@@ -23,24 +23,27 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { CommunityDirectory } from "@/interfaces/models/entities/communityDirectory";
+  import { STORAGE_KEYS } from "@/constants";
   import { PropType, ref } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const emits = defineEmits(["on-detail"]);
 
+  // const computePath = (path: string) => {
+  //   return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+  // };
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+    return path ? `${path}` : "/no_image_available.jpeg";
   };
   const { translate } = useUtilities();
 
   defineProps({
     row: {
-      type: Object as PropType<CommunityDirectory>,
+      type: Object as PropType<Posting>,
       required: true
     }
   });

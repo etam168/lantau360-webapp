@@ -56,8 +56,8 @@
     }
   });
 
-  const url = "/CommunityDirectory/Datatable";
-  const key = "communityDirectoryId";
+  const url = "/Posting/Datatable";
+  const key = "postingId";
 
   const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
     url,
@@ -82,7 +82,7 @@
   async function handleDialog(item: any) {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("../community-directory/community-detail-dialog.vue")
+        () => import("../section/dialog/community-detail-dialog.vue")
       ),
       componentProps: {
         query: { directoryId: item.communityDirectoryId }
