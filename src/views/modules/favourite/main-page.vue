@@ -3,27 +3,13 @@
     <app-page-title :title="$t('favourite.title')"></app-page-title>
 
     <carousel-section :data="promotions" />
-
-    <q-toolbar class="text-white bg-grey-3">
-      <q-chip
-        v-for="(tabItem, index) in tabItems"
-        :key="index"
-        :outline="tab !== tabItem.name"
-        color="primary"
-        text-color="white"
-        clickable
-        @click="setTab(tabItem.name)"
-      >
-        {{ tabItem.label }}
-      </q-chip>
-    </q-toolbar>
+    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <div>
-      <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-ma-md">
+      <div v-for="(items, groupName) in filteredGroupedItems" :key="groupName" class="q-pa-md">
         <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
 
         <!-- Display the group name outside the card -->
-
         <q-item
           clickable
           v-for="item in items"
@@ -38,12 +24,18 @@
           </q-item-section>
 
           <q-item-section class="q-ml-lg">
-            <q-item-label>{{ item.itemName }}</q-item-label>
-            <q-item-label>{{ item.subTitle }}</q-item-label>
+            <q-item-label>{{ item?.itemName }}</q-item-label>
+            <q-item-label>{{ item?.subTitle }}</q-item-label>
           </q-item-section>
 
           <q-item-section side>
-            <q-icon class="fa-solid fa-heart text-h6" style="color: green; margin-top: -20px" />
+            <q-icon
+              v-if="isFavoriteItem(item?.itemId)"
+              name="favorite"
+              size="2em"
+              color="red"
+              class="favorite-icon"
+            />
           </q-item-section>
         </q-item>
       </div>
@@ -72,6 +64,7 @@
   import { LocalStorage, useQuasar } from "quasar";
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
+  import eventBus from "@/utils/event-bus";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
@@ -189,6 +182,25 @@
     loadData();
   });
 
+  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
+    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
+
+    if (itemIndex !== -1) {
+      if (!isFavorite) {
+        // Remove the item if it's no longer a favorite
+        favoriteItems.value.splice(itemIndex, 1);
+      }
+    } else {
+      if (isFavorite) {
+        // Add the item if it's newly favorited
+        favoriteItems.value.push({
+          directoryId: itemId
+          // other properties as needed
+        });
+      }
+    }
+  });
+
   const loadData = async () => {
     try {
       let galleryUrl = "";
@@ -211,5 +223,9 @@
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+  };
+
+  const isFavoriteItem = (siteId: string | number): boolean => {
+    return favoriteItems.value.some((item: any) => item.directoryId === siteId);
   };
 </script>
