@@ -15,6 +15,12 @@
         >Please check your mails, If you havn't received an email then please contact the
         administrator</q-item-label
       >
+      <q-card-actions class="q-px-none q-py-none">
+        <q-space />
+        <a href="#" @click="handleForgotPassword" class="forgot-password-link">
+          {{ $t("auth.login.forgotPassword") }}
+        </a>
+      </q-card-actions>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
           :label="$t('auth.login.button')"
@@ -28,13 +34,6 @@
     </q-card-section>
   </vee-form>
 
-  <q-card-actions class="q-px-md q-py-none">
-    <a href="#" @click="handleForgotPassword" class="forgot-password-link">
-      {{ $t("auth.login.forgotPassword") }}
-    </a>
-    <q-space />
-    <app-button-localization dense color="dark" />
-  </q-card-actions>
   <q-card-actions class="q-px-md q-py-none justify-center">
     {{ $t("auth.login.newAccount") }}
     <a href="#" @click="register" class="forgot-password-link">
@@ -53,7 +52,6 @@
 
   // Custom Components
   import AppButton from "@/components/widgets/app-button.vue";
-  import AppButtonLocalization from "@/components/widgets/app-button-localization.vue";
   import AppInputPassword from "@/components/widgets/app-input-password.vue";
   import VeeInput from "@/components/vee-validate/vee-input.vue";
   import axios from "axios";
