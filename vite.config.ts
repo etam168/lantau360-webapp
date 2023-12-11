@@ -1,6 +1,7 @@
 import dns from "dns";
 import eslintPlugin from "vite-plugin-eslint";
 import vue from "@vitejs/plugin-vue";
+import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
@@ -77,6 +78,25 @@ export default defineConfig({
       workbox: {
         cleanupOutdatedCaches: false,
         globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
+      }
+    }),
+    AutoImport({
+      include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
+      imports: [
+        "vue",
+        "vue-router",
+        {
+          axios: [["default", "axios"]]
+        }
+      ],
+      dirs: ["@/composables/**"],
+      dts: "src/auto-imports.d.ts",
+      vueTemplate: true,
+      resolvers: [],
+      eslintrc: {
+        enabled: true,
+        filepath: "./.eslintrc-auto-import.json",
+        globalsPropValue: true
       }
     }),
     Components({
