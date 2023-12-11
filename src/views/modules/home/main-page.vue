@@ -69,7 +69,7 @@
 
   function handleSearchDialog(value: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../search-site/index.vue")),
+      component: defineAsyncComponent(() => import("./search-site/index.vue")),
       componentProps: {
         query: { searchKeyword: value }
       }

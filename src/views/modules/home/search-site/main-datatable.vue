@@ -80,9 +80,7 @@
 
   async function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(
-        () => import("../home/section/dialog/site-detail-dialog.vue")
-      ),
+      component: defineAsyncComponent(() => import("./home/section/dialog/site-detail-dialog.vue")),
       componentProps: {
         query: { siteId: item.siteId }
       }
