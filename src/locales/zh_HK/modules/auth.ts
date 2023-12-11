@@ -4,7 +4,8 @@ export default {
     newAccount: "還未開戶？ 按此",
     password: "密碼",
     register: "注册",
-    userName: "用戶名稱"
+    userName: "用戶名稱",
+    forgotPassword: "忘记密码"
   },
   register: {
     login: "登入",

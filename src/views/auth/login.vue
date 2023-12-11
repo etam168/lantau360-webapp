@@ -36,9 +36,9 @@
     <app-button-localization dense color="dark" />
   </q-card-actions>
   <q-card-actions class="q-px-md q-py-none justify-center">
-    {{ "Dont have an account? " }}
+    {{ $t("auth.login.newAccount") }}
     <a href="#" @click="register" class="forgot-password-link">
-      {{ "Register" }}
+      {{ $t("auth.login.register") }}
     </a>
   </q-card-actions>
 </template>

@@ -2,28 +2,28 @@
   <vee-form :validation-schema="schema" @submit="onSubmit" v-slot="{ meta, values }">
     <q-card-section>
       <vee-input
-        :label="$t('auth.email')"
+        :label="$t('auth.register.email')"
         :value="email"
         icon="mdi-account"
         name="email"
         placeholder="user@example.com"
       />
       <vee-input
-        :label="$t('auth.firstName')"
+        :label="$t('auth.register.firstName')"
         :value="firstName"
         icon="mdi-account"
         name="firstName"
         placeholder="First Name"
       />
       <vee-input
-        :label="$t('auth.lastName')"
+        :label="$t('auth.register.lastName')"
         :value="lastName"
         icon="mdi-account"
         name="lastName"
         placeholder="Last Name"
       />
       <vee-input
-        :label="$t('auth.phone')"
+        :label="$t('auth.register.phone')"
         :value="phone"
         icon="mdi-account"
         name="phone"
@@ -34,7 +34,7 @@
       <div>{{ setFormValues(values) }}</div>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
-          :label="$t('auth.register')"
+          :label="$t('auth.register.register')"
           :loading="loading"
           class="full-width"
           color="primary"
@@ -46,9 +46,10 @@
   </vee-form>
 
   <q-card-actions class="q-px-md q-py-none justify-center">
-    {{ "Already have an account? " }}
+    {{ $t("auth.register.haveAccount") }}
+
     <a href="#" @click="login" class="forgot-password-link">
-      {{ " Login" }}
+      {{ $t("auth.register.login") }}
     </a>
   </q-card-actions>
 </template>
