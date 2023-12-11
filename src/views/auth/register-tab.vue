@@ -2,22 +2,39 @@
   <vee-form :validation-schema="schema" @submit="onSubmit" v-slot="{ meta, values }">
     <q-card-section>
       <vee-input
-        :label="$t('auth.login.userName')"
-        :value="userName"
+        :label="$t('auth.email')"
+        :value="email"
         icon="mdi-account"
-        name="userName"
+        name="email"
         placeholder="user@example.com"
+      />
+      <vee-input
+        :label="$t('auth.firstName')"
+        :value="firstName"
+        icon="mdi-account"
+        name="firstName"
+        placeholder="First Name"
+      />
+      <vee-input
+        :label="$t('auth.lastName')"
+        :value="lastName"
+        icon="mdi-account"
+        name="lastName"
+        placeholder="Last Name"
+      />
+      <vee-input
+        :label="$t('auth.phone')"
+        :value="phone"
+        icon="mdi-account"
+        name="phone"
+        placeholder="Phone"
       />
 
       <app-input-password :label="$t('auth.login.password')" :value="password" name="password" />
       <div>{{ setFormValues(values) }}</div>
-      <q-item-label v-if="isEmailSent" class="text-red"
-        >Please check your mails, If you havn't received an email then please contact the
-        administrator</q-item-label
-      >
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
-          :label="$t('auth.login.button')"
+          :label="$t('auth.register')"
           :loading="loading"
           class="full-width"
           color="primary"
@@ -28,17 +45,10 @@
     </q-card-section>
   </vee-form>
 
-  <q-card-actions class="q-px-md q-py-none">
-    <a href="#" @click="handleForgotPassword" class="forgot-password-link">
-      {{ $t("auth.login.forgotPassword") }}
-    </a>
-    <q-space />
-    <app-button-localization dense color="dark" />
-  </q-card-actions>
   <q-card-actions class="q-px-md q-py-none justify-center">
-    {{ "Dont have an account? " }}
-    <a href="#" @click="register" class="forgot-password-link">
-      {{ "Register" }}
+    {{ "Already have an account? " }}
+    <a href="#" @click="login" class="forgot-password-link">
+      {{ " Login" }}
     </a>
   </q-card-actions>
 </template>
@@ -48,77 +58,66 @@
 
   // 3rd Party Import
   import { useQuasar } from "quasar";
-  import { useUserStore } from "@/stores/user";
   import * as yup from "yup";
 
   // Custom Components
   import AppButton from "@/components/widgets/app-button.vue";
-  import AppButtonLocalization from "@/components/widgets/app-button-localization.vue";
   import AppInputPassword from "@/components/widgets/app-input-password.vue";
   import VeeInput from "@/components/vee-validate/vee-input.vue";
-  import axios from "axios";
+  // import axios from "axios";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { ref } from "vue";
+  import axios from "axios";
 
-  const emits = defineEmits(["close-dialog", "on-register"]);
+  const emits = defineEmits(["close-dialog", "on-login"]);
 
   const $q = useQuasar();
 
   // const route = useRoute();
-  const userStore = useUserStore();
-  const userName = ref("");
-
+  const email = ref("");
+  const firstName = ref("");
+  const lastName = ref("");
+  const phone = ref("");
   const password = ref("");
 
   const loading = ref(false);
 
-  const isEmailSent = ref(false);
-
   const schema = yup.object({
-    userName: yup.string().required().label("user name"),
+    email: yup.string().email().required(),
     password: yup.string().required().min(4).label("Password")
   });
 
-  function register() {
-    emits("on-register");
+  function login() {
+    emits("on-login");
   }
-  async function handleForgotPassword() {
-    if (userName.value == "") {
-      $q.notify({
-        message: "Username required",
-        type: "negative"
-      });
-      return;
-    }
-    try {
-      loading.value = true;
 
-      await axios.post(`/StaffAuth/ResetPasswordRequest/${userName.value}`);
-      isEmailSent.value = true;
-    } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
-    }
-    loading.value = false;
-  }
-  const onSubmit = async (values: { userName: any; password: any }) => {
+  const onSubmit = async (values: {
+    email: any;
+    firstName: any;
+    lastName: any;
+    phone: any;
+    password: any;
+  }) => {
     loading.value = true;
+    debugger;
     try {
-      await userStore.loginByUserName({
-        userName: values.userName,
-        password: values.password
+      const response = await axios.post("MemberAuth/SingUp", {
+        email: values.email,
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+        password: values.password,
+        userName: values.email,
+        status: 1
       });
+      console.log("API response:", response.data);
       $q.notify({
-        message: "Login successful",
+        message: "Register successful",
         type: "positive",
         color: "primary"
       });
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      // await router.push(prop.query.path || "/");
-      // await router.push({ name: prop.query.path });
       emits("close-dialog");
     } catch (e: any) {
       $q.notify({
@@ -131,7 +130,11 @@
     loading.value = false;
   };
   function setFormValues(values: any) {
-    userName.value = values.userName;
+    email.value = values.email;
+    firstName.value = values.firstName;
+    lastName.value = values.lastName;
+    phone.value = values.phone;
+    password.value = values.password;
   }
 </script>
 

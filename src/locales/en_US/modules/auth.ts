@@ -12,5 +12,9 @@ export default {
   },
 
   email: "Email",
-  phone: "Phone"
+  firstName: "First Name",
+  lastName: "Last Name",
+  password: "password",
+  phone: "Phone",
+  register: "Register"
 };
