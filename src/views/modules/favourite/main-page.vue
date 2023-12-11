@@ -19,11 +19,16 @@
         >
           <q-item-section avatar>
             <q-avatar size="64px" square>
-              <q-img ratio="1" :src="computePath(item?.iconPath)" />
+              <q-img ratio="1" :src="computePath(item.iconPath)" />
+              <template v-slot:error>
+                <div class="absolute-full flex flex-center bg-negative text-white">
+                  Cannot load image
+                </div>
+              </template>
             </q-avatar>
           </q-item-section>
 
-          <q-item-section class="q-ml-lg">
+          <q-item-section>
             <q-item-label>{{ item?.itemName }}</q-item-label>
             <q-item-label>{{ item?.subTitle }}</q-item-label>
           </q-item-section>

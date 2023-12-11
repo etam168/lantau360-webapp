@@ -6,7 +6,7 @@
       </q-avatar>
     </q-item-section>
 
-    <q-item-section class="q-ml-lg">
+    <q-item-section>
       <q-item-label>
         {{ translate(row.title, row.meta, "title") }}
       </q-item-label>
@@ -27,7 +27,7 @@
   import { PropType, ref } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { CommunityDirectory } from "@/interfaces/models/entities/communityDirectory";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -43,7 +43,7 @@
 
   defineProps({
     row: {
-      type: Object as PropType<Posting>,
+      type: Object as PropType<CommunityDirectory>,
       required: true
     }
   });

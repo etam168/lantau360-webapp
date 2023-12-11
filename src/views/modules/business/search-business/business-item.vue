@@ -6,7 +6,7 @@
       </q-avatar>
     </q-item-section>
 
-    <q-item-section class="q-ml-lg">
+    <q-item-section>
       <q-item-label>
         {{ translate(row.title, row.meta, "title") }}
       </q-item-label>
