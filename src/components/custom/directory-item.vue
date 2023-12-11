@@ -22,6 +22,7 @@
   // Vue Import
   import { PropType } from "vue";
   import { useI18n } from "vue-i18n";
+  import { throttle } from "quasar";
 
   // Custom Components
   import { BLOB_URL } from "@/constants";
@@ -61,6 +62,9 @@
         return props.data.directoryName;
     }
   });
+
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onItemClickThrottled = throttle(onItemClick, 5000); // Set the throttle delay (in milliseconds)
 
   function onItemClick() {
     emit("on-click", props.data);
