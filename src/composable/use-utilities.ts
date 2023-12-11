@@ -73,16 +73,20 @@ export function useUtilities() {
     });
   }
 
+  // function translate(label: string, meta: any, key: string) {
+  //   const { locale } = useI18n({ useScope: "global" });
+  //   switch (locale.value) {
+  //     case "hk":
+  //     case "cn":
+  //       return meta?.i18n?.cn?.[key] ?? label;
+  //     default:
+  //       return label;
+  //   }
+  // }
+
   function translate(label: string, meta: any, key: string) {
     const { locale } = useI18n({ useScope: "global" });
-    switch (locale.value) {
-      case "hk":
-        return meta?.i18n?.hk?.[key] ?? label;
-      case "cn":
-        return meta?.i18n?.cn?.[key] ?? label;
-      default:
-        return label;
-    }
+    return meta?.i18n?.[locale.value]?.[key] || label;
   }
 
   function translateAltName(locale: string, meta: any, key: string) {

@@ -8,11 +8,13 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
+    AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
     AppSpinner: typeof import('./components/global/app-spinner.vue')['default']
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
+    DirectoryItem: (typeof import("./components/global/directory-item.vue"))["default"]
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']

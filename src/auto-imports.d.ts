@@ -6,6 +6,7 @@
 export {}
 declare global {
   const EffectScope: typeof import('vue')['EffectScope']
+  const Status: typeof import('./composable/use-member')['Status']
   const axios: typeof import('axios')['default']
   const computed: typeof import('vue')['computed']
   const createApp: typeof import('vue')['createApp']
@@ -53,12 +54,21 @@ declare global {
   const triggerRef: typeof import('vue')['triggerRef']
   const unref: typeof import('vue')['unref']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useContent: typeof import('./composable/use-content')['default']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVars: typeof import('vue')['useCssVars']
+  const useDataTable: typeof import('./composable/use-data-table')['default']
+  const useDirectory: typeof import('./composable/use-directory')['default']
+  const useEditor: typeof import('./composable/use-editor')['default']
+  const useEventBus: typeof import('./composable/use-event-bus')['default']
+  const useI18n: typeof import('vue-i18n')['useI18n']
   const useLink: typeof import('vue-router')['useLink']
+  const useMember: typeof import('./composable/use-member')['default']
   const useRoute: typeof import('vue-router')['useRoute']
   const useRouter: typeof import('vue-router')['useRouter']
+  const useShowCrudDialogs: typeof import('./composable/use-show-crud-dialogs')['default']
   const useSlots: typeof import('vue')['useSlots']
+  const useUtilities: typeof import('./composable/use-utilities')['useUtilities']
   const watch: typeof import('vue')['watch']
   const watchEffect: typeof import('vue')['watchEffect']
   const watchPostEffect: typeof import('vue')['watchPostEffect']
@@ -75,6 +85,7 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Status: UnwrapRef<typeof import('./composable/use-member')['Status']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -122,12 +133,21 @@ declare module 'vue' {
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useContent: UnwrapRef<typeof import('./composable/use-content')['default']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useDataTable: UnwrapRef<typeof import('./composable/use-data-table')['default']>
+    readonly useDirectory: UnwrapRef<typeof import('./composable/use-directory')['default']>
+    readonly useEditor: UnwrapRef<typeof import('./composable/use-editor')['default']>
+    readonly useEventBus: UnwrapRef<typeof import('./composable/use-event-bus')['default']>
+    readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
+    readonly useMember: UnwrapRef<typeof import('./composable/use-member')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
+    readonly useShowCrudDialogs: UnwrapRef<typeof import('./composable/use-show-crud-dialogs')['default']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
+    readonly useUtilities: UnwrapRef<typeof import('./composable/use-utilities')['useUtilities']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>
@@ -137,6 +157,7 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly Status: UnwrapRef<typeof import('./composable/use-member')['Status']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -184,12 +205,21 @@ declare module '@vue/runtime-core' {
     readonly triggerRef: UnwrapRef<typeof import('vue')['triggerRef']>
     readonly unref: UnwrapRef<typeof import('vue')['unref']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useContent: UnwrapRef<typeof import('./composable/use-content')['default']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
+    readonly useDataTable: UnwrapRef<typeof import('./composable/use-data-table')['default']>
+    readonly useDirectory: UnwrapRef<typeof import('./composable/use-directory')['default']>
+    readonly useEditor: UnwrapRef<typeof import('./composable/use-editor')['default']>
+    readonly useEventBus: UnwrapRef<typeof import('./composable/use-event-bus')['default']>
+    readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
+    readonly useMember: UnwrapRef<typeof import('./composable/use-member')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
+    readonly useShowCrudDialogs: UnwrapRef<typeof import('./composable/use-show-crud-dialogs')['default']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
+    readonly useUtilities: UnwrapRef<typeof import('./composable/use-utilities')['useUtilities']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
     readonly watchEffect: UnwrapRef<typeof import('vue')['watchEffect']>
     readonly watchPostEffect: UnwrapRef<typeof import('vue')['watchPostEffect']>

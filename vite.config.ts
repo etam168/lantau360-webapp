@@ -85,11 +85,18 @@ export default defineConfig({
       imports: [
         "vue",
         "vue-router",
+        // Auto-import vue-i18n functions
+        {
+          "vue-i18n": [
+            // import { useI18n } from "vue-i18n"
+            "useI18n" // if you're using Composition API
+          ]
+        },
         {
           axios: [["default", "axios"]]
         }
       ],
-      dirs: ["@/composables/**"],
+      dirs: ["src/composable/**"],
       dts: "src/auto-imports.d.ts",
       vueTemplate: true,
       resolvers: [],

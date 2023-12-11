@@ -68,6 +68,16 @@
     "watch": true,
     "watchEffect": true,
     "watchPostEffect": true,
-    "watchSyncEffect": true
+    "watchSyncEffect": true,
+    "useI18n": true,
+    "Status": true,
+    "useContent": true,
+    "useDataTable": true,
+    "useDirectory": true,
+    "useEditor": true,
+    "useEventBus": true,
+    "useMember": true,
+    "useShowCrudDialogs": true,
+    "useUtilities": true
   }
 }

@@ -1,27 +1,23 @@
 <template>
   <div class="row q-gutter-y-md">
-    <directory-item
+    <app-directory-item
       v-for="item in data"
       :key="item.directoryId"
-      :data="item"
-      :class="classMenuItem"
-      @on-click="handleDialog"
+      :item="item"
+      class="col-3"
+      @on-click="throttledHandleDialog"
     />
   </div>
 </template>
 
 <script setup lang="ts">
   // Vue Import
-  import { PropType, computed, defineAsyncComponent } from "vue";
-  import { useQuasar } from "quasar";
+  import { PropType, defineAsyncComponent } from "vue";
+  import { throttle, useQuasar } from "quasar";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
   import { DIRECTORY_SITES_URL } from "@/constants";
-  import axios from "axios";
-
-  //Custom Components
-  import DirectoryItem from "@/components/custom/directory-item.vue";
 
   defineProps({
     data: {
@@ -32,13 +28,9 @@
 
   const $q = useQuasar();
 
-  const classMenuItem = computed((): string => {
-    return $q.screen.gt.xs ? "col-3" : "col-3";
-  });
-
-  async function handleDialog(item: any) {
+  const handleDialog = async (item: Directory) => {
     try {
-      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item?.directoryId}`); // Make API call using Axios
+      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`); // Make API call using Axios
       // Assuming a successful response
       if (response.status === 200) {
         $q.dialog({
@@ -53,5 +45,9 @@
       // Handle error if the API call fails
       console.error("Error fetching data: ", error);
     }
-  }
+  };
+
+  // Throttle the handleDialog function
+  // Here we're specifying a 500ms throttle period. Adjust as needed.
+  const throttledHandleDialog = throttle(handleDialog, 500);
 </script>
