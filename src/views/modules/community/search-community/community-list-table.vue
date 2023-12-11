@@ -2,7 +2,6 @@
   <q-table
     ref="qTableRef"
     v-bind="$attrs"
-    card-container-class="q-col-gutter-md"
     binary-state-sort
     flat
     square
@@ -12,9 +11,7 @@
     :rows-per-page="25"
   >
     <template #item="props">
-      <div class="col-12">
-        <community-item :row="props.row" @on-detail="handleDetail(props.row)" />
-      </div>
+      <community-item class="col-12" :row="props.row" @on-detail="handleDetail(props.row)" />
 
       <!-- <div>
         <business-item
