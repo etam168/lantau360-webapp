@@ -19,7 +19,6 @@
             <q-item class="q-items-center">
               <gallery-carousel-image
                 class="col-12 q-items-center"
-                
                 :gallery-images="galleryItems"
               />
             </q-item>
