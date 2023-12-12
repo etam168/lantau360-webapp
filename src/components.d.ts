@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
+    AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
     AppSpinner: typeof import('./components/global/app-spinner.vue')['default']
