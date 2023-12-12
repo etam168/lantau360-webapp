@@ -1,10 +1,10 @@
-import { ref, Ref } from "vue";
+import { ref } from "vue";
 import axios, { AxiosError } from "axios";
 import { useUtilities } from "@/composable/use-utilities";
 import { Content } from "@/interfaces/models/entities/content";
 import { useUserStore } from "@/stores/user";
 import { BASE_URL } from "@/constants";
-import { Member } from "@/interfaces/models/entities/member";
+//import { Member } from "@/interfaces/models/entities/member";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -16,7 +16,7 @@ const newInput = () => {
 };
 
 const error = ref<string | null>(null);
-const member: Ref<Member> = ref({} as Member);
+//const member: Ref<Member> = ref({} as Member);
 
 export function useContentInput() {
   const contentInput = ref<Content>(newInput());
@@ -80,14 +80,14 @@ export function useContentInput() {
       });
   }
 
-  async function handleUpdateMemberAvatar(newAvatar: any) {
-    const url = `${BASE_URL}/Member/Image/${member.value.memberId}`;
+  async function handleUpdateMemberAvatar(newAvatar: any, id: number) {
+    const url = `${BASE_URL}/MemberImage/${id}`;
 
     const formData = new FormData();
     formData.append("image", newAvatar);
 
     await axios
-      .put(url, formData, {
+      .post(url, formData, {
         headers: { "Content-Type": "multipart/form-data" }
       })
       .then(response => {

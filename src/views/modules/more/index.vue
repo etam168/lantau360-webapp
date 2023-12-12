@@ -4,7 +4,7 @@
     <q-card-section horizontal class="justify-between">
       <q-item>
         <q-item-section>
-          <q-item-label>{{ userStore.user }}</q-item-label>
+          <q-item-label>{{ userStore }}</q-item-label>
         </q-item-section>
       </q-item>
 
@@ -40,7 +40,7 @@
             ref="imageRef"
             v-show="false"
             v-model="imagePath"
-            @update:model-value="uploadImage"
+            @update:model-value="uploadImage(userStore.userId)"
           >
           </q-file>
         </q-btn>
@@ -143,8 +143,12 @@
     imageRef.value.pickFiles();
   }
 
+  const memberId = ref(userStore.userId);
+
   function uploadImage() {
-    handleUpdateMemberAvatar(imagePath.value);
+    alert(JSON.stringify(imagePath.value));
+    alert(JSON.stringify(memberId.value));
+    handleUpdateMemberAvatar(imagePath.value, memberId.value);
   }
 
   const menuItems = [
