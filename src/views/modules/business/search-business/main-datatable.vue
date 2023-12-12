@@ -21,10 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
-  //import { useRouter } from "vue-router";
-
   // 3rd Party Import
   import { useQuasar } from "quasar";
 
@@ -33,7 +29,6 @@
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
-  // import ListingGridTable from "@/components/table/listing-grid-table.vue";
   import BusinessListTable from "./business-list-table.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
@@ -52,20 +47,12 @@
     key
   );
 
-  //const router = useRouter();
   const $q = useQuasar();
 
   function updatePagination(val: any) {
     pagination.value.page = val;
     loadData({ pagination: pagination.value });
   }
-
-  // function handleDetail(rowData: any) {
-  //   router.push({
-  //     name: "business-detail",
-  //     query: { businessId: rowData.businessId }
-  //   });
-  // }
 
   async function handleDialog(item: any) {
     $q.dialog({
@@ -86,8 +73,6 @@
       onRefresh();
     });
 
-    //const { query } = router.currentRoute.value;
-
     // Check if the route query is an object and contains the key searchKeyword
     if (props.query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value
@@ -98,8 +83,3 @@
     loadData({ pagination: pagination.value });
   });
 </script>
-<style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style>

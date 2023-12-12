@@ -52,9 +52,13 @@
   type DirectoryTypes = Business | Site;
 
   const props = defineProps({
-    favoriteItems: {
+    listItems: {
       type: Array as PropType<DirectoryTypes[]>,
       default: () => [] as DirectoryTypes[]
+    },
+    groupKey: {
+      type: String as PropType<GroupKeys>,
+      default: "directoryName"
     }
   });
 
@@ -64,8 +68,16 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
+  // Define a type that includes all possible keys you want to group by
+  type GroupKeys = keyof DirectoryTypes;
+
   const groupedArray = computed(() => {
-    return groupBy(props.favoriteItems, item => item.directoryName);
+    // Use the groupKey prop with a fallback to "directoryName"
+    const key: GroupKeys = props.groupKey || "directoryName";
+    return groupBy(
+      props.listItems.filter(item => item[key] !== undefined),
+      item => item[key] as string | number // Make sure the key exists on the item
+    );
   });
 
   function handleItemClick(item: DirectoryTypes) {

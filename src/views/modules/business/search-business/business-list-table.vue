@@ -12,14 +12,6 @@
   >
     <template #item="props">
       <business-item class="col-12" :row="props.row" @on-detail="handleDetail(props.row)" />
-
-      <!-- <div>
-        <business-item
-          :row="props.row"
-          @on-contact="handleContact(props.row)"
-          @on-detail="handleDetail(props.row)"
-        />
-      </div> -->
     </template>
 
     <template v-slot:bottom="scope">
@@ -74,7 +66,6 @@
         });
       }
     }
-    //emits("on-pagination", val);
   }
 </script>
 
