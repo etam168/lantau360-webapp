@@ -65,7 +65,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
+  import { BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -112,14 +112,35 @@
 
       isFavourite.value = false;
     } else {
-      const favItem = {
-        businessId: props.query?.businessId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.BUSINESS,
+      const favItem: Business = {
+        businessId: directoryItem.value.businessId,
+        businessName: directoryItem.value.businessName,
+        directoryName: directoryItem.value.directoryName,
+        contactWhatsApp: directoryItem.value.contactWhatsApp,
+        contactPhone: directoryItem.value.contactPhone,
+        contactOther: directoryItem.value.contactOther,
+        buttonText: directoryItem.value.buttonText,
+        title: directoryItem.value.title,
+        subtitle1: directoryItem.value.subtitle1,
+        subtitle2: directoryItem.value.subtitle2,
+        subtitle3: directoryItem.value.subtitle3,
+        displayMask: directoryItem.value.displayMask,
+        description: directoryItem.value.description,
+        directoryId: directoryItem.value.directoryId,
+        imagePath: directoryItem.value.imagePath,
         iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        bannerPath: directoryItem.value.bannerPath,
+        hashKey: directoryItem.value.hashKey,
+        latitude: directoryItem.value.latitude,
+        longitude: directoryItem.value.longitude,
+        openTime: directoryItem.value.openTime,
+        closeTime: directoryItem.value.closeTime,
+        status: directoryItem.value.status,
+        createdAt: directoryItem.value.createdAt,
+        createdBy: directoryItem.value.createdBy,
+        modifiedAt: directoryItem.value.modifiedAt,
+        modifiedBy: directoryItem.value.modifiedBy,
+        meta: directoryItem.value.meta
       };
 
       isFavourite.value = true;
@@ -164,7 +185,7 @@
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.businessId
+            (item: any) => item.businessId == directoryItem.value.businessId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

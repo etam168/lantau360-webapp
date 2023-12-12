@@ -56,7 +56,7 @@
       required: false
     },
     favoriteItems: {
-      type: Array,
+      type: Array as PropType<DirectoryTypes[]>,
       default: () => []
     }
   });
@@ -66,15 +66,6 @@
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
-
-  // const isFavoriteItem = (item: DirectoryTypes): boolean => {
-  //   const id = isBusiness(item) ? item.businessId : isSite(item) ? item.siteId : null;
-
-  //   if (id !== null) {
-  //     return props.favoriteItems.some((favItem: any) => favItem.businessId === id);
-  //   }
-  //   return false;
-  // };
 
   const isFavoriteItem = (item: DirectoryTypes): boolean => {
     switch (true) {
@@ -89,6 +80,7 @@
         return false;
     }
   };
+
   function handleItemClick(item: DirectoryTypes) {
     emit("item-click", item);
   }

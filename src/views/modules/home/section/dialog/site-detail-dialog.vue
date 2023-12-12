@@ -62,7 +62,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
+  import { SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
@@ -104,16 +104,33 @@
 
       isFavourite.value = false;
     } else {
-      const favItem = {
+      const favItem: Site = {
         siteId: props.query?.siteId,
         directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.siteName,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
+        siteName: directoryItem.value.siteName,
         iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        contactWhatsApp: directoryItem.value.contactWhatsApp,
+        contactPhone: directoryItem.value.contactPhone,
+        contactOther: directoryItem.value.contactOther,
+        buttonText: directoryItem.value.buttonText,
+        title: directoryItem.value.title,
+        subtitle1: directoryItem.value.subtitle1,
+        subtitle2: directoryItem.value.subtitle2,
+        subtitle3: directoryItem.value.subtitle3,
+        displayMask: directoryItem.value.displayMask,
+        description: directoryItem.value.description,
+        directoryId: directoryItem.value.directoryId,
+        imagePath: directoryItem.value.imagePath,
+        bannerPath: directoryItem.value.bannerPath,
+        hashKey: directoryItem.value.hashKey,
+        latitude: directoryItem.value.latitude,
+        longitude: directoryItem.value.longitude,
+        createdAt: directoryItem.value.createdAt,
+        createdBy: directoryItem.value.createdBy,
+        modifiedAt: directoryItem.value.modifiedAt,
+        modifiedBy: directoryItem.value.modifiedBy,
+        meta: directoryItem.value.meta
       };
-
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
     }
