@@ -17,7 +17,7 @@ export const loginByUserName = async (
 ): Promise<ILoginResponse | undefined> => {
   let response;
   await Axios({
-    url: "/StaffAuth/SignIn",
+    url: "/MemberAuth/SignIn",
     method: "POST",
     data: { login: loginRequest.userName, password: loginRequest.password }
   })
