@@ -1,6 +1,6 @@
 export default {
   login: {
-    button: "Login",
+    button: "Sign in",
     newAccount: "Don't have an account before?",
     password: "Password",
     register: "Register",
@@ -8,11 +8,13 @@ export default {
     oldPassword: "Old Password",
     newPassword: "New Password",
     forgotPassword: "Forgot Password",
-    submit: "Submit"
+    submit: "Submit",
+    logout: "Logout"
   },
 
   register: {
-    login: "Login",
+    login: "Sign in",
+    joinNow: "Join now",
     firstName: "First Name",
     lastName: "Last Name",
     name: "名稱",

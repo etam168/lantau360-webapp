@@ -6,18 +6,18 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
-    maximized
   >
     <q-layout view="lHh lpr lFf" style="max-width: 1024px">
-      <q-page-container class="bg-image">
-        <q-page class="column items-end justify-center">
+      <q-page-container>
+        <q-page class="column items-center justify-center">
           <!-- card section -->
-          <q-card class="bg-secondary q-pt-none q-pa-lg q-mr-xl" :style="authStyle">
+          <q-card class="bg-secondary q-pt-none q-pa-lg" :style="authStyle">
+            <q-btn icon="close" flat round dense v-close-popup />
             <q-card-section align="center" class="q-pa-none">
               <q-avatar size="128px" square> <q-img :src="logo" /></q-avatar>
             </q-card-section>
 
-            <q-tabs v-model="tab" class="text-transparent">
+            <q-tabs v-model="tab" class="text-transparent hidden">
               <q-tab name="login" />
               <q-tab name="register" />
             </q-tabs>
@@ -59,15 +59,22 @@
   import Login from "./login.vue";
   import Register from "./register-tab.vue";
   import ResetPassword from "./reset-password-tab.vue";
+
+  const props = defineProps({
+    tabValue: {
+      type: String
+    }
+  });
+
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
 
   const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
   const isDialogVisible = ref();
-  const tab = ref("login");
+  const tab = ref(props.tabValue);
   const userName = ref();
   const authStyle = computed(() =>
-    $q.screen.lt.sm ? { width: "100vw", opacity: "100%" } : { width: "480px", opacity: "90%" }
+    $q.screen.lt.sm ? { width: "100vw", opacity: "100%" } : { width: "520px", opacity: "90%" }
   );
 
   function updateDialogState(status: any) {

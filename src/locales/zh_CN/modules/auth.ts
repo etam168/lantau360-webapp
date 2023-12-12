@@ -1,24 +1,35 @@
 export default {
   login: {
-    button: "登入",
-    newAccount: "還未開戶？ 按此",
-    password: "密碼",
+    button: "登录",
+    newAccount: "之前没有账户吗？",
+    password: "密码",
     register: "注册",
-    userName: "用戶名稱",
-    forgotPassword: "忘记密码"
+    userName: "用户名",
+    oldPassword: "旧密码",
+    newPassword: "新密码",
+    forgotPassword: "忘记密码",
+    submit: "提交",
+    logout: "Logout"
   },
+
   register: {
-    login: "登入",
-    firstName: "名",
-    lastName: "姓",
-    name: "名稱",
-    email: "電郵",
+    login: "登录",
+    joinNow: "立即加入",
+    firstName: "名字",
+    lastName: "姓氏",
+    name: "名称",
+    email: "电子邮件",
     register: "注册",
-    phone: "電話",
-    password: "密碼",
-    confirm: "確認密碼",
-    sex: "性別",
-    ageGroup: "年齡組別",
-    haveAccount: "如已開戶, 按此"
+    phone: "电话",
+    password: "密码",
+    confirm: "确认密码",
+    sex: "性别",
+    ageGroup: "年龄组别",
+    haveAccount: "已经有账户？"
+  },
+
+  forgotPassword: {
+    otp: "验证码",
+    update: "更新密码"
   }
 };

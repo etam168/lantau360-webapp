@@ -68,7 +68,6 @@
   ]);
 
   function handleSearchDialog(value: any) {
-    debugger;
     $q.dialog({
       component: defineAsyncComponent(() => import("./search-business/index.vue")),
       componentProps: {

@@ -1,30 +1,51 @@
 <template>
   <q-page>
     <app-page-title :title="$t('more.title')"></app-page-title>
-
     <q-card-section>
-      <q-avatar size="96px">
-        <img :src="computePath(userStore.avatar)" />
-      </q-avatar>
-      <q-btn
-        :label="$t('auth.login.button')"
-        color="primary"
-        type="button"
-        class="q-mx-lg"
-        size="md"
-        v-if="!userStore.token"
-        @click="showLoginDialog()"
-      />
+      <q-item>
+        <div>{{ userStore.avatar }}</div>
+        <q-item-section avatar v-if="userStore.token">
+          <q-avatar>
+            <img :src="computePath(userStore.avatar)" />
+          </q-avatar>
+        </q-item-section>
+        <q-item-section>
+          <q-item-label>{{ userStore.user }}</q-item-label>
+        </q-item-section>
 
-      <q-btn
-        label="Logout"
-        color="primary"
-        type="button"
-        class="q-mx-lg"
-        size="md"
-        v-if="userStore.token"
-        @click="logout()"
-      />
+        <q-item-section side top>
+          <div class="text-grey-8 q-gutter-xs">
+            <q-chip
+              v-if="userStore.token"
+              clickable
+              @click="logout()"
+              outline
+              color="primary"
+              text-color="white"
+            >
+              {{ $t("auth.login.logout") }}
+            </q-chip>
+            <q-chip
+              v-if="!userStore.token"
+              clickable
+              @click="showLoginDialog('login')"
+              outline
+              color="primary"
+              text-color="white"
+            >
+              {{ $t("auth.login.button") }}
+            </q-chip>
+            <q-chip
+              clickable
+              @click="showLoginDialog('register')"
+              color="primary"
+              text-color="white"
+            >
+              {{ $t("auth.register.joinNow") }}
+            </q-chip>
+          </div>
+        </q-item-section>
+      </q-item>
     </q-card-section>
 
     <q-card-section>
@@ -63,7 +84,7 @@
   // import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
   // import { STORAGE_KEYS } from "@/constants";
-  import { BLOB_URL, ContentOption } from "@/constants";
+  import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
@@ -101,16 +122,19 @@
 
         break;
       case "login":
-        showLoginDialog();
+        showLoginDialog("login");
         break;
       default:
         break;
     }
   }
 
-  function showLoginDialog() {
+  function showLoginDialog(tabValue: string) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+      componentProps: {
+        tabValue: tabValue
+      }
     });
   }
 
@@ -121,7 +145,7 @@
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "https://cdn.quasar.dev/img/avatar.png";
+    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_AVATAR;
   };
 
   // watch(locale, (value: any) => {
