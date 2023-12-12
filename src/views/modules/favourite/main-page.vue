@@ -34,13 +34,13 @@
           </q-item-section>
 
           <q-item-section side>
-            <q-icon
+            <!-- <q-icon
               v-if="isFavoriteItem(item?.itemId)"
               name="favorite"
               size="2em"
               color="red"
               class="favorite-icon"
-            />
+            /> -->
           </q-item-section>
         </q-item>
       </div>
@@ -70,9 +70,18 @@
   import { useRouter } from "vue-router";
   import { useI18n } from "vue-i18n";
   import eventBus from "@/utils/event-bus";
+  import { Site } from "@/interfaces/models/entities/site";
+  import { Business } from "@/interfaces/models/entities/business";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  // const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
+  const siteFavoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES));
+  const businessFavoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES));
+
+  // Group site and business items separately
+  const siteGroupedItems = ref<Record<string, Site[]>>({});
+  const businessGroupedItems = ref<Record<string, Business[]>>({});
+
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
   const promotions = ref<any | null>(null);
   const error = ref<string | null>(null);
@@ -131,8 +140,21 @@
     }
   };
 
+  // function groupItemsByDirectory() {
+  //   groupedItems.value = (favoriteItems.value ?? []).reduce(
+  //     (acc: any, item: any) => {
+  //       const { directoryName } = item;
+  //       if (!acc[directoryName]) {
+  //         acc[directoryName] = [];
+  //       }
+  //       acc[directoryName].push(item);
+  //       return acc;
+  //     },
+  //     {} as Record<string, FavoriteItem[]>
+  //   );
+  // }
   function groupItemsByDirectory() {
-    groupedItems.value = (favoriteItems.value ?? []).reduce(
+    siteGroupedItems.value = (siteFavoriteItems.value ?? []).reduce(
       (acc: any, item: any) => {
         const { directoryName } = item;
         if (!acc[directoryName]) {
@@ -141,30 +163,59 @@
         acc[directoryName].push(item);
         return acc;
       },
-      {} as Record<string, FavoriteItem[]>
+      {} as Record<string, Site[]>
+    );
+
+    businessGroupedItems.value = (businessFavoriteItems.value ?? []).reduce(
+      (acc: any, item: any) => {
+        const { directoryName } = item;
+        if (!acc[directoryName]) {
+          acc[directoryName] = [];
+        }
+        acc[directoryName].push(item);
+        return acc;
+      },
+      {} as Record<string, Business[]>
     );
   }
 
   const filteredGroupedItems = computed(() => {
-    // Filter groupedItems based on groupId and tab.value
-    return Object.keys(groupedItems.value).reduce((acc, groupName) => {
-      const items = groupedItems.value[groupName];
-      const filteredItems = items.filter(item => {
-        if (tab.value === "location") {
-          return item.groupId === 1 || item.groupId === 3;
-        } else if (tab.value === "business") {
-          return item.groupId === 2 || item.groupId === 4;
-        }
-        return false;
+    const selectedItems: Record<string, any[]> = {};
+
+    if (tab.value === "location") {
+      Object.keys(siteGroupedItems.value).forEach(groupName => {
+        selectedItems[groupName] = siteGroupedItems.value[groupName];
       });
+    } else if (tab.value === "business") {
+      Object.keys(businessGroupedItems.value).forEach(groupName => {
+        // Type assertion to cast Business type to Site type
+        selectedItems[groupName] = businessGroupedItems.value[groupName] as Business[];
+      });
+    }
 
-      if (filteredItems.length > 0) {
-        acc[groupName] = filteredItems;
-      }
-
-      return acc;
-    }, {});
+    return selectedItems;
   });
+
+  // const filteredGroupedItems = computed(() => {
+  //   // Filter groupedItems based on groupId and tab.value
+  //   return Object.keys(groupedItems.value).reduce((acc, groupName) => {
+  //     const items = groupedItems.value[groupName];
+  //     const filteredItems = items.filter(item => {
+  //       if (tab.value === "location") {
+  //         return item.groupId === 1 || item.groupId === 3;
+  //       } else if (tab.value === "business") {
+  //         return item.groupId === 2 || item.groupId === 4;
+  //       }
+  //       return false;
+  //     });
+
+  //     if (filteredItems.length > 0) {
+  //       acc[groupName] = filteredItems;
+  //     }
+
+  //     return acc;
+  //   }, {});
+  // });
 
   try {
     const [respPromotions] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
@@ -186,24 +237,24 @@
     loadData();
   });
 
-  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
+  // eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
+  //   const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
 
-    if (itemIndex !== -1) {
-      if (!isFavorite) {
-        // Remove the item if it's no longer a favorite
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-    } else {
-      if (isFavorite) {
-        // Add the item if it's newly favorited
-        favoriteItems.value.push({
-          directoryId: itemId
-          // other properties as needed
-        });
-      }
-    }
-  });
+  //   if (itemIndex !== -1) {
+  //     if (!isFavorite) {
+  //       // Remove the item if it's no longer a favorite
+  //       favoriteItems.value.splice(itemIndex, 1);
+  //     }
+  //   } else {
+  //     if (isFavorite) {
+  //       // Add the item if it's newly favorited
+  //       favoriteItems.value.push({
+  //         directoryId: itemId
+  //         // other properties as needed
+  //       });
+  //     }
+  //   }
+  // });
 
   const loadData = async () => {
     try {
@@ -229,7 +280,7 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
-  const isFavoriteItem = (siteId: string | number): boolean => {
-    return favoriteItems.value.some((item: any) => item.directoryId === siteId);
-  };
+  // const isFavoriteItem = (siteId: string | number): boolean => {
+  //   return favoriteItems.value.some((item: any) => item.directoryId === siteId);
+  // };
 </script>
