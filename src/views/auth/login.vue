@@ -59,7 +59,7 @@
   import { STORAGE_KEYS } from "@/constants";
   import { ref } from "vue";
 
-  const emits = defineEmits(["close-dialog", "on-register"]);
+  const emits = defineEmits(["close-dialog", "on-register", "on-forgotPassword"]);
 
   const $q = useQuasar();
 
@@ -91,9 +91,13 @@
     }
     try {
       loading.value = true;
-
-      await axios.post(`/StaffAuth/ResetPasswordRequest/${userName.value}`);
+      await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
       isEmailSent.value = true;
+      emits("on-forgotPassword", userName.value);
+      $q.notify({
+        message: "Otp sent to email",
+        type: "positive"
+      });
     } catch (e: any) {
       $q.notify({
         message: e.message,

@@ -24,10 +24,21 @@
 
             <q-tab-panels v-model="tab" animated>
               <q-tab-panel name="login">
-                <Login @close-dialog="closeDialog" @on-register="showRegister" />
+                <Login
+                  @close-dialog="closeDialog"
+                  @on-register="showRegister"
+                  @on-forgot-password="handleForgotPassword"
+                />
               </q-tab-panel>
               <q-tab-panel name="register">
-                <register @close-dialog="closeDialog" @on-login="showlogin" />
+                <Register @close-dialog="closeDialog" @on-login="showlogin" />
+              </q-tab-panel>
+              <q-tab-panel name="reset">
+                <ResetPassword
+                  @close-dialog="closeDialog"
+                  @on-login="showlogin"
+                  :email="userName"
+                />
               </q-tab-panel>
             </q-tab-panels>
           </q-card>
@@ -46,15 +57,15 @@
 
   //Custom Components
   import Login from "./login.vue";
-  import register from "./register-tab.vue";
-
+  import Register from "./register-tab.vue";
+  import ResetPassword from "./reset-password-tab.vue";
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
 
   const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
   const isDialogVisible = ref();
   const tab = ref("login");
-
+  const userName = ref();
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100vw", opacity: "100%" } : { width: "480px", opacity: "90%" }
   );
@@ -74,6 +85,11 @@
 
   function showlogin() {
     tab.value = "login";
+  }
+
+  function handleForgotPassword(value: any) {
+    userName.value = value;
+    tab.value = "reset";
   }
 </script>
 

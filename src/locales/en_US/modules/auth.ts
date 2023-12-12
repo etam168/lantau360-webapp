@@ -24,5 +24,10 @@ export default {
     sex: "性別",
     ageGroup: "年齡組別",
     haveAccount: "Already have an account? "
+  },
+
+  forgotPassword: {
+    otp: "Otp",
+    update: "Update Password"
   }
 };
