@@ -73,16 +73,24 @@ export function useUtilities() {
     });
   }
 
-  // function translate(label: string, meta: any, key: string) {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   switch (locale.value) {
-  //     case "hk":
-  //     case "cn":
-  //       return meta?.i18n?.cn?.[key] ?? label;
-  //     default:
-  //       return label;
-  //   }
-  // }
+  function groupBy<T, K extends string | number>(
+    array: T[],
+    keyGetter: (item: T) => K
+  ): Array<{ group: K; items: T[] }> {
+    const grouped: Record<K, T[]> = {} as Record<K, T[]>;
+    array.forEach(item => {
+      const key = keyGetter(item);
+      if (!grouped[key]) {
+        grouped[key] = [];
+      }
+      grouped[key].push(item);
+    });
+
+    return Object.keys(grouped).map(key => ({
+      group: key as K,
+      items: grouped[key as K] // Type assertion here
+    }));
+  }
 
   function translate(label: string, meta: any, key: string) {
     const { locale } = useI18n({ useScope: "global" });
@@ -120,6 +128,7 @@ export function useUtilities() {
     aspectRatio,
     dateFormatter,
     eventBus,
+    groupBy,
     isNotEmptyArray,
     isNthBitSet,
     notify,

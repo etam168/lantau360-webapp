@@ -26,12 +26,20 @@
 
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
+  import { Site } from "@/interfaces/models/entities/site";
+  import { Business } from "@/interfaces/models/entities/business";
   import { LocalStorage } from "quasar";
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
 
-  const siteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES));
-  const businessItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES));
+  const siteItems = computed(() => {
+    return (LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) ?? []) as Site[];
+  });
+
+  const businessItems = computed(() => {
+    return (LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) ?? []) as Business[];
+  });
+
   const advertisements = ref<any | null>(null);
   const error = ref<string | null>(null);
 
