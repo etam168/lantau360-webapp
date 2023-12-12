@@ -46,16 +46,16 @@
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
 
-  const emit = defineEmits(["onItemClick"]);
+  const emit = defineEmits(["item-click"]);
 
-  defineProps({
+  const props = defineProps({
     directoryItems: {
       type: Array as PropType<Business[]>,
       required: true
     },
-    isFavoriteItem: {
-      type: Function as PropType<(businessId: string | number) => boolean>,
-      required: true
+    favoriteItems: {
+      type: Array,
+      default: () => []
     }
   });
 
@@ -65,7 +65,11 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
+  const isFavoriteItem = (businessId: string | number): boolean => {
+    return props.favoriteItems.some((item: any) => item.directoryId === businessId);
+  };
+
   function handleItemClick(item: Business) {
-    emit("onItemClick", item);
+    emit("item-click", item);
   }
 </script>
