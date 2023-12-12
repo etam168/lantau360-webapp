@@ -101,7 +101,6 @@
     password: any;
   }) => {
     loading.value = true;
-    debugger;
     try {
       const response = await axios.post("MemberAuth/SingUp", {
         email: values.email,

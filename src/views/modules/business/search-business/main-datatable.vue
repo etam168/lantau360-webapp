@@ -99,7 +99,7 @@
       filter.value = props.query.searchKeyword as string;
       // keyword.value = filter.value;
     }
-    debugger;
+
     loadData({ pagination: pagination.value });
   });
 </script>
