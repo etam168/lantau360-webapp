@@ -74,7 +74,7 @@
   const tab = ref(props.tabValue);
   const userName = ref();
   const authStyle = computed(() =>
-    $q.screen.lt.sm ? { width: "100vw", opacity: "100%" } : { width: "520px", opacity: "90%" }
+    $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "90%" }
   );
 
   function updateDialogState(status: any) {

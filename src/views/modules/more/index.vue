@@ -1,16 +1,17 @@
 <template>
   <q-page>
     <app-page-title :title="$t('more.title')"></app-page-title>
-    <q-card-section horizontal class="justify-between">
-      <q-item>
+    <q-card-section horizontal class="justify-between" v-if="$q.screen.gt.sm">
+      <q-item v-if="userStore.token">
         <q-item-section>
-          <q-item-label>{{ userStore }}</q-item-label>
+          <q-item-label>{{ userStore.user }}</q-item-label>
+          <q-item-label caption> {{ $t("more.loginName") }} </q-item-label>
         </q-item-section>
       </q-item>
 
       <q-item>
         <q-btn outline round color="black" v-if="userStore.token" class="q-mx-auto">
-          <q-avatar size="64px">
+          <q-avatar size="120px">
             <q-img :src="computePath">
               <template v-slot:error>
                 <q-img :src="PLACEHOLDER_AVATAR" />
@@ -40,14 +41,14 @@
             ref="imageRef"
             v-show="false"
             v-model="imagePath"
-            @update:model-value="uploadImage(userStore.userId)"
+            @update:model-value="uploadImage"
           >
           </q-file>
         </q-btn>
       </q-item>
 
       <q-item>
-        <q-item-section side top>
+        <q-item-section>
           <div class="text-grey-8 q-gutter-xs">
             <q-chip
               v-if="userStore.token"
@@ -80,6 +81,88 @@
             </q-chip>
           </div>
         </q-item-section>
+      </q-item>
+    </q-card-section>
+
+    <q-card-section class="justify-between q-pb-none" v-else>
+      <q-item class="q-pa-none">
+        <q-item-section>
+          <q-item-section v-if="userStore.token">
+            <q-item-label>{{ userStore.user }}</q-item-label>
+            <q-item-label caption> {{ $t("more.loginName") }} </q-item-label>
+          </q-item-section>
+          <q-item-label>
+            <q-item-section>
+              <div class="text-grey-8 q-gutter-xs">
+                <q-chip
+                  v-if="userStore.token"
+                  clickable
+                  @click="logout()"
+                  outline
+                  color="primary"
+                  text-color="white"
+                >
+                  {{ $t("auth.login.logout") }}
+                </q-chip>
+                <q-chip
+                  v-if="!userStore.token"
+                  clickable
+                  @click="showLoginDialog('login')"
+                  outline
+                  color="primary"
+                  text-color="white"
+                >
+                  {{ $t("auth.login.button") }}
+                </q-chip>
+                <q-chip
+                  v-if="!userStore.token"
+                  clickable
+                  @click="showLoginDialog('register')"
+                  color="primary"
+                  text-color="white"
+                >
+                  {{ $t("auth.register.joinNow") }}
+                </q-chip>
+              </div>
+            </q-item-section></q-item-label
+          >
+        </q-item-section>
+        <q-item-section side
+          ><q-btn outline round color="black" v-if="userStore.token" class="q-mx-auto">
+            <q-avatar size="80px">
+              <q-img :src="computePath">
+                <template v-slot:error>
+                  <q-img :src="PLACEHOLDER_AVATAR" />
+                </template>
+
+                <template v-slot:loading>
+                  <div class="absolute-full flex flex-center bg-gray text-white">
+                    <q-inner-loading showing class="spinner-card row justify-center items-center">
+                      <q-spinner size="50px" color="primary" />
+                    </q-inner-loading>
+                  </div>
+                </template>
+              </q-img>
+
+              <q-badge class="absolute-bottom-left" color="transparent">
+                <app-button
+                  round
+                  color="black"
+                  icon="photo_camera"
+                  size="xs"
+                  @click="onImageUpload"
+                />
+              </q-badge>
+            </q-avatar>
+
+            <q-file
+              ref="imageRef"
+              v-show="false"
+              v-model="imagePath"
+              @update:model-value="uploadImage"
+            >
+            </q-file> </q-btn
+        ></q-item-section>
       </q-item>
     </q-card-section>
 
@@ -143,12 +226,8 @@
     imageRef.value.pickFiles();
   }
 
-  const memberId = ref(userStore.userId);
-
   function uploadImage() {
-    alert(JSON.stringify(imagePath.value));
-    alert(JSON.stringify(memberId.value));
-    handleUpdateMemberAvatar(imagePath.value, memberId.value);
+    handleUpdateMemberAvatar(imagePath.value);
   }
 
   const menuItems = [

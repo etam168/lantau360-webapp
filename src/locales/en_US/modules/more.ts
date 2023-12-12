@@ -7,5 +7,6 @@ export default {
   locationPermission: "Location Permission",
   login: "Login",
   profile: "Profile",
-  logout: "Logout"
+  logout: "Logout",
+  loginName: "Login Name"
 };

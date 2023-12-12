@@ -7,5 +7,6 @@ export default {
   locationPermission: "地理位置权限",
   login: "登录",
   profile: "个人资料",
-  logout: "登出"
+  logout: "登出",
+  loginName: "登录名"
 };
