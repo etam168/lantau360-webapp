@@ -89,7 +89,7 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []);
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
@@ -97,7 +97,7 @@
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+      const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === itemIdToMatch);
       if (itemIndex !== -1) {
         favoriteItems.value.splice(itemIndex, 1);
       }
@@ -105,7 +105,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.siteId,
+        siteId: props.query?.siteId,
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.siteName,
         itemId: itemIdToMatch,
@@ -118,9 +118,9 @@
       favoriteItems.value.push(favItem);
     }
 
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+    LocalStorage.set(STORAGE_KEYS.SITEFAVOURITES, favoriteItems.value);
     eventBus.emit("favoriteUpdated", {
-      itemId: directoryItem.value.siteId,
+      siteId: directoryItem.value.siteId,
       isFavorite: isFavourite.value
     });
   };
@@ -157,7 +157,7 @@
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.siteId
+            (item: any) => item.siteId == directoryItem.value.siteId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

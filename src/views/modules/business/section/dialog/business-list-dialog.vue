@@ -35,7 +35,7 @@
   import { LocalStorage } from "quasar";
   import eventBus from "@/utils/event-bus";
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []);
 
   const $q = useQuasar();
   const { translate } = useUtilities();
@@ -68,8 +68,8 @@
     });
   });
 
-  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
+  eventBus.on("favoriteUpdated", ({ businessId, isFavorite }) => {
+    const itemIndex = favoriteItems.value.findIndex((item: any) => item.businessId === businessId);
 
     if (itemIndex !== -1) {
       if (!isFavorite) {
@@ -80,7 +80,7 @@
       if (isFavorite) {
         // Add the item if it's newly favorited
         favoriteItems.value.push({
-          directoryId: itemId
+          businessId: businessId
           // other properties as needed
         });
       }

@@ -174,7 +174,9 @@ export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 export const DMY = "DD/MM/YYYY";
 
 export const STORAGE_KEYS = {
-  FAVOURITES: "favourites",
+  // FAVOURITES: "favourites",
+  BUSINESSFAVOURITES: "businessFavourites",
+  SITEFAVOURITES: "siteFavourites",
   IsLogOn: "IsLogin"
 };
 

@@ -42,7 +42,7 @@
   const $q = useQuasar();
   const isDialogVisible = ref();
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []);
 
   const props = defineProps({
     directoryItemsList: {
@@ -68,8 +68,8 @@
     });
   });
 
-  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
+  eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
+    const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
 
     if (itemIndex !== -1) {
       if (!isFavorite) {
@@ -80,7 +80,7 @@
       if (isFavorite) {
         // Add the item if it's newly favorited
         favoriteItems.value.push({
-          directoryId: itemId
+          siteId: siteId
           // other properties as needed
         });
       }

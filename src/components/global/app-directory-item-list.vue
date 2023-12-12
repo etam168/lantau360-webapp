@@ -67,24 +67,29 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
+  // const isFavoriteItem = (item: DirectoryTypes): boolean => {
+  //   const id = isBusiness(item) ? item.businessId : isSite(item) ? item.siteId : null;
+
+  //   if (id !== null) {
+  //     return props.favoriteItems.some((favItem: any) => favItem.businessId === id);
+  //   }
+  //   return false;
+  // };
+
   const isFavoriteItem = (item: DirectoryTypes): boolean => {
-    const id = isBusiness(item) ? item.businessId : isSite(item) ? item.siteId : null;
-
-    if (id !== null) {
-      return props.favoriteItems.some((favItem: any) => favItem.directoryId === id);
+    switch (true) {
+      case "businessId" in item:
+        return props.favoriteItems.some(
+          favItem => (favItem as Business).businessId === item.businessId
+        );
+      case "siteId" in item:
+        return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
+      default:
+        // No known type matched, or it's not a favorite item
+        return false;
     }
-    return false;
   };
-
   function handleItemClick(item: DirectoryTypes) {
     emit("item-click", item);
   }
-
-  const isBusiness = (item: DirectoryTypes): item is Business => {
-    return "businessId" in item;
-  };
-
-  const isSite = (item: DirectoryTypes): item is Site => {
-    return "siteId" in item;
-  };
 </script>
