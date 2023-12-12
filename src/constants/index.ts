@@ -100,7 +100,9 @@ export const DIRECTORY_GROUPS = {
   BUSINESS: 2,
   PROMOTIONS: 108,
   LATEST_OFFERS: 100,
-  COMMUNITY: 7
+  COMMUNITY: 7,
+  TIMETABLE: 24,
+  TAXI: 26
 };
 
 export const URL = {

@@ -73,7 +73,6 @@
 
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES));
-  debugger;
   const groupedItems = ref<Record<string, FavoriteItem[]>>({});
   const promotions = ref<any | null>(null);
   const error = ref<string | null>(null);

@@ -17,7 +17,7 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { DIRECTORY_SITES_URL } from "@/constants";
+  import { DIRECTORY_SITES_URL, DIRECTORY_GROUPS } from "@/constants";
 
   defineProps({
     data: {
@@ -33,13 +33,31 @@
       const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`); // Make API call using Axios
       // Assuming a successful response
       if (response.status === 200) {
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./dialog/site-list-dialog.vue")),
-          componentProps: {
-            directory: item,
-            directoryItemsList: response.data
-          }
-        });
+        if (item.directoryId == DIRECTORY_GROUPS.TIMETABLE) {
+          $q.dialog({
+            component: defineAsyncComponent(() => import("./dialog/timetable-list-dialog.vue")),
+            componentProps: {
+              directory: item,
+              directoryItemsList: response.data
+            }
+          });
+        } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
+          $q.dialog({
+            component: defineAsyncComponent(() => import("./dialog/taxi-list-dialog.vue")),
+            componentProps: {
+              directory: item,
+              directoryItemsList: response.data
+            }
+          });
+        } else {
+          $q.dialog({
+            component: defineAsyncComponent(() => import("./dialog/site-list-dialog.vue")),
+            componentProps: {
+              directory: item,
+              directoryItemsList: response.data
+            }
+          });
+        }
       }
     } catch (error) {
       // Handle error if the API call fails
