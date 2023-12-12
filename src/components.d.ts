@@ -12,6 +12,7 @@ declare module 'vue' {
     AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
     AppFavouriteItemList: typeof import('./components/global/app-favourite-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
+    AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
     AppSpinner: typeof import('./components/global/app-spinner.vue')['default']
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']

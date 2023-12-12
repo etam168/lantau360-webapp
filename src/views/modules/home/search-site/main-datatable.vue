@@ -18,12 +18,8 @@
       />
     </q-page-container>
   </q-layout>
-
-  <!-- <q-card-section v-else class="q-pa-none">
-        <no-data />
-      </q-card-section> -->
 </template>
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
+
 <script setup lang="ts">
   // Vue Import
   import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
@@ -40,7 +36,6 @@
   // import ListingGridTable from "@/components/table/listing-grid-table.vue";
   import siteListTable from "./site-list-table.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
-  // import NoData from "@/components/custom/no-data.vue";
 
   const props = defineProps({
     query: {

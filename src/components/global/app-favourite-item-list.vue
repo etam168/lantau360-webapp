@@ -54,7 +54,7 @@
   const props = defineProps({
     favoriteItems: {
       type: Array as PropType<DirectoryTypes[]>,
-      default: () => []
+      default: () => [] as DirectoryTypes[]
     }
   });
 

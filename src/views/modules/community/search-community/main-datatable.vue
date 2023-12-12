@@ -18,10 +18,6 @@
       />
     </q-page-container>
   </q-layout>
-
-  <!-- <q-card-section v-else class="q-pa-none">
-        <no-data />
-      </q-card-section> -->
 </template>
 
 <script setup lang="ts">
@@ -40,7 +36,6 @@
   // import ListingGridTable from "@/components/table/listing-grid-table.vue";
   import CommunityListTable from "./community-list-table.vue";
   import CustomSearchInput from "@/components/custom/custom-search-input.vue";
-  // import NoData from "@/components/custom/no-data.vue";
 
   const props = defineProps({
     query: {

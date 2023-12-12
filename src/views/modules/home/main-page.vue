@@ -1,26 +1,26 @@
 <template>
-  <carousel-section :data="carouselData" />
-  <weather-section :data="weatherData" />
+  <q-page>
+    <carousel-section :data="carouselData" />
+    <weather-section :data="weatherData" />
 
-  <q-separator size="2px" inset spaced color="primary" />
+    <q-separator size="2px" inset spaced color="primary" />
 
-  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-  <!-- <q-item-label>Test updates -version 12</q-item-label> -->
+    <q-card-actions align="center">
+      <app-search-bar @on-search="handleSearchDialog" />
+    </q-card-actions>
 
-  <app-tab-panels v-model="tab">
-    <q-tab-panel name="all">
-      <directory-section :data="directoriesData" />
-    </q-tab-panel>
+    <app-tab-panels v-model="tab">
+      <q-tab-panel name="all">
+        <directory-section :data="directoriesData" />
+      </q-tab-panel>
 
-    <q-tab-panel name="info">
-      <directory-section :data="infoData" />
-
-      <div class="row justify-center q-ma-lg">
-        <custom-search-bar @on-search="handleSearchDialog" />
-      </div>
-    </q-tab-panel>
-  </app-tab-panels>
+      <q-tab-panel name="info">
+        <directory-section :data="infoData" />
+      </q-tab-panel>
+    </app-tab-panels>
+  </q-page>
 </template>
 
 <script setup lang="ts">
@@ -43,7 +43,6 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
   import DirectorySection from "./section/directory-section.vue";
   import CarouselSection from "./section/carousel-section.vue";
   import WeatherSection from "./section/weather-section.vue";

@@ -17,8 +17,5 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  //import { useUserStore } from "@/stores/user";
-  // import HeaderComponent from "./header/index.vue";
   import FooterComponent from "./footer/index.vue";
 </script>

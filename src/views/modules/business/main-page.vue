@@ -14,9 +14,10 @@
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <div class="row justify-center q-ma-lg">
-          <custom-search-bar @on-search="handleSearchDialog" />
-        </div>
+        <q-card-actions align="center">
+          <app-search-bar @on-search="handleSearchDialog" />
+        </q-card-actions>
+
         <directory-section :data="directoriesData" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
@@ -40,9 +41,6 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  const CustomSearchBar = defineAsyncComponent(
-    () => import("@/components/custom/custom-search-bar.vue")
-  );
   const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
   const PromotionSection = defineAsyncComponent(() => import("./section/promotion-section.vue"));

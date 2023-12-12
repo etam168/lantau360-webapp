@@ -1,28 +1,30 @@
 <template>
-  <app-page-title :title="$t('community.title')"></app-page-title>
-  <carousel-section :data="promotions" />
-  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+  <q-page>
+    <app-page-title :title="$t('community.title')"></app-page-title>
+    <carousel-section :data="promotions" />
+    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-  <app-tab-panels v-model="tab">
-    <q-tab-panel name="news">
-      <news-section :data="newsData" />
-    </q-tab-panel>
+    <app-tab-panels v-model="tab">
+      <q-tab-panel name="news">
+        <news-section :data="newsData" />
+      </q-tab-panel>
 
-    <q-tab-panel name="events" class="q-pa-sm">
-      <events-section :events="eventData" />
-    </q-tab-panel>
+      <q-tab-panel name="events" class="q-pa-sm">
+        <events-section :events="eventData" />
+      </q-tab-panel>
 
-    <q-tab-panel name="notice">
-      <notice-section :data="notifications" />
-    </q-tab-panel>
+      <q-tab-panel name="notice">
+        <notice-section :data="notifications" />
+      </q-tab-panel>
 
-    <q-tab-panel name="directory">
-      <q-toolbar class="q-pb-md row justify-center">
-        <custom-search-bar @on-search="handleSearchDialog" />
-      </q-toolbar>
-      <directories-section :data="directoriesData" class="q-mb-md" />
-    </q-tab-panel>
-  </app-tab-panels>
+      <q-tab-panel name="directory">
+        <q-card-actions align="center">
+          <app-search-bar @on-search="handleSearchDialog" />
+        </q-card-actions>
+        <directories-section :data="directoriesData" class="q-mb-md" />
+      </q-tab-panel>
+    </app-tab-panels>
+  </q-page>
 </template>
 
 <script setup lang="ts">
@@ -44,7 +46,6 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  import CustomSearchBar from "@/components/custom/custom-search-bar.vue";
   import DirectoriesSection from "./section/directories-section.vue";
   import EventsSection from "./section/events-section.vue";
   import NewsSection from "./section/news-section.vue";
