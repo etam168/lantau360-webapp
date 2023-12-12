@@ -3,7 +3,7 @@
     <q-item
       clickable
       v-for="item in directoryItems"
-      :key="item.businessId"
+      :key="item.directoryId"
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
@@ -31,7 +31,7 @@
 
       <q-item-section side>
         <q-icon
-          v-if="isFavoriteItem(item.businessId)"
+          v-if="isFavoriteItem(item)"
           name="favorite"
           size="2em"
           color="red"
@@ -45,13 +45,15 @@
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
+  import { Site } from "@/interfaces/models/entities/site";
 
   const emit = defineEmits(["item-click"]);
+  type DirectoryTypes = Business | Site;
 
   const props = defineProps({
     directoryItems: {
-      type: Array as PropType<Business[]>,
-      required: true
+      type: Array as PropType<DirectoryTypes[]>,
+      required: false
     },
     favoriteItems: {
       type: Array,
@@ -65,11 +67,24 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
-  const isFavoriteItem = (businessId: string | number): boolean => {
-    return props.favoriteItems.some((item: any) => item.directoryId === businessId);
+  const isFavoriteItem = (item: DirectoryTypes): boolean => {
+    const id = isBusiness(item) ? item.businessId : isSite(item) ? item.siteId : null;
+
+    if (id !== null) {
+      return props.favoriteItems.some((favItem: any) => favItem.directoryId === id);
+    }
+    return false;
   };
 
-  function handleItemClick(item: Business) {
+  function handleItemClick(item: DirectoryTypes) {
     emit("item-click", item);
   }
+
+  const isBusiness = (item: DirectoryTypes): item is Business => {
+    return "businessId" in item;
+  };
+
+  const isSite = (item: DirectoryTypes): item is Site => {
+    return "siteId" in item;
+  };
 </script>

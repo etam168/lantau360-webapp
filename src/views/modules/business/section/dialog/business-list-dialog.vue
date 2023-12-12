@@ -15,55 +15,18 @@
 
       <q-page-container>
         <q-page>
-          <q-list padding class="q-pa-md">
-            <q-item
-              clickable
-              v-for="item in directoryItems"
-              :key="item.businessId"
-              @click="onItemClick(item)"
-              class="shadow-1 q-pa-sm q-mb-md"
-            >
-              <q-item-section avatar>
-                <q-avatar size="64px" square>
-                  <q-img ratio="1" :src="computePath(item.iconPath)">
-                    <template v-slot:error>
-                      <div class="absolute-full flex flex-center bg-negative text-white">
-                        Cannot load image
-                      </div>
-                    </template>
-                  </q-img>
-                </q-avatar>
-              </q-item-section>
-
-              <q-item-section>
-                <q-item-label>
-                  {{ translate(item.title, item.meta, "title") }}
-                </q-item-label>
-
-                <q-item-label>
-                  {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-                </q-item-label>
-              </q-item-section>
-
-              <q-item-section side>
-                <q-icon
-                  v-if="isFavoriteItem(item.businessId)"
-                  name="favorite"
-                  size="2em"
-                  color="red"
-                  class="favorite-icon"
-                />
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <app-directory-item-list
+            @item-click="onItemClick"
+            :directoryItems="directoryItems"
+            :favoriteItems="favoriteItems"
+          />
         </q-page>
       </q-page-container>
     </q-layout>
   </q-dialog>
 </template>
-
 <script setup lang="ts">
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
   import { useDialogPluginComponent, useQuasar } from "quasar";
@@ -137,14 +100,6 @@
       }
     });
   }
-
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
-  };
-
-  const isFavoriteItem = (businessId: string | number): boolean => {
-    return favoriteItems.value.some((item: any) => item.directoryId === businessId);
-  };
 </script>
 
 <style scoped>
