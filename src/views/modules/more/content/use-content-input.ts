@@ -1,8 +1,10 @@
-import { ref } from "vue";
+import { ref, Ref } from "vue";
 import axios, { AxiosError } from "axios";
 import { useUtilities } from "@/composable/use-utilities";
-import { Content } from "@/interfaces/content";
+import { Content } from "@/interfaces/models/entities/content";
 import { useUserStore } from "@/stores/user";
+import { BASE_URL } from "@/constants";
+import { Member } from "@/interfaces/models/entities/member";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -12,6 +14,9 @@ const newInput = () => {
     modifiedAt: new Date()
   } as Content;
 };
+
+const error = ref<string | null>(null);
+const member: Ref<Member> = ref({} as Member);
 
 export function useContentInput() {
   const contentInput = ref<Content>(newInput());
@@ -74,10 +79,39 @@ export function useContentInput() {
         return false;
       });
   }
+
+  async function handleUpdateMemberAvatar(newAvatar: any) {
+    const url = `${BASE_URL}/Member/Image/${member.value.memberId}`;
+
+    const formData = new FormData();
+    formData.append("image", newAvatar);
+
+    await axios
+      .put(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      .then(response => {
+        if (response.status == 200) {
+          userStore.avatar = response.data;
+        }
+      })
+      .catch(err => {
+        if (err instanceof AxiosError) {
+          if (err.response && err.response.status === 404) {
+            error.value = "Not found";
+          } else {
+            error.value = "An error occurred";
+          }
+        } else {
+          error.value = "An unexpected error occurred";
+        }
+      });
+  }
   return {
     contentInput,
     loadContentData,
     updateContent,
-    setContentInput
+    setContentInput,
+    handleUpdateMemberAvatar
   };
 }

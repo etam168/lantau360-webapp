@@ -28,7 +28,7 @@
   import { ref, reactive, onMounted } from "vue";
 
   import axios, { AxiosError } from "axios";
-  import { Content } from "@/interfaces/content";
+  import { Content } from "@/interfaces/models/entities/content";
   import { useContentInput } from "./use-content-input";
 
   const tab = ref("en");

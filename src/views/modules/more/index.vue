@@ -1,18 +1,52 @@
 <template>
   <q-page>
     <app-page-title :title="$t('more.title')"></app-page-title>
-    <q-card-section>
+    <q-card-section horizontal class="justify-between">
       <q-item>
-        <div>{{ userStore.avatar }}</div>
-        <q-item-section avatar v-if="userStore.token">
-          <q-avatar>
-            <img :src="computePath(userStore.avatar)" />
-          </q-avatar>
-        </q-item-section>
         <q-item-section>
           <q-item-label>{{ userStore.user }}</q-item-label>
         </q-item-section>
+      </q-item>
 
+      <q-item>
+        <q-btn outline round color="black" v-if="userStore.token" class="q-mx-auto">
+          <q-avatar size="64px">
+            <q-img :src="computePath">
+              <template v-slot:error>
+                <q-img :src="PLACEHOLDER_AVATAR" />
+              </template>
+
+              <template v-slot:loading>
+                <div class="absolute-full flex flex-center bg-gray text-white">
+                  <q-inner-loading showing class="spinner-card row justify-center items-center">
+                    <q-spinner size="50px" color="primary" />
+                  </q-inner-loading>
+                </div>
+              </template>
+            </q-img>
+
+            <q-badge class="absolute-bottom-left" color="transparent">
+              <app-button
+                round
+                color="black"
+                icon="photo_camera"
+                size="xs"
+                @click="onImageUpload"
+              />
+            </q-badge>
+          </q-avatar>
+
+          <q-file
+            ref="imageRef"
+            v-show="false"
+            v-model="imagePath"
+            @update:model-value="uploadImage"
+          >
+          </q-file>
+        </q-btn>
+      </q-item>
+
+      <q-item>
         <q-item-section side top>
           <div class="text-grey-8 q-gutter-xs">
             <q-chip
@@ -36,6 +70,7 @@
               {{ $t("auth.login.button") }}
             </q-chip>
             <q-chip
+              v-if="!userStore.token"
               clickable
               @click="showLoginDialog('register')"
               color="primary"
@@ -88,6 +123,10 @@
   import { useUserStore } from "@/stores/user";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
+  import AppButton from "@/components/widgets/app-button.vue";
+  import { useContentInput } from "./content/use-content-input";
+
+  const { handleUpdateMemberAvatar } = useContentInput();
   const userStore = useUserStore();
 
   //Custom Components
@@ -96,6 +135,17 @@
   // const { locale } = useI18n({ useScope: "global" });
   // const locationPermission = ref(false);
   // const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
+
+  const imageRef = ref();
+  const imagePath = ref(null);
+
+  function onImageUpload() {
+    imageRef.value.pickFiles();
+  }
+
+  function uploadImage() {
+    handleUpdateMemberAvatar(imagePath.value);
+  }
 
   const menuItems = [
     { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
@@ -144,9 +194,10 @@
   };
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : PLACEHOLDER_AVATAR;
-  };
+
+  const computePath = computed(() => {
+    return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
+  });
 
   // watch(locale, (value: any) => {
   //   localStorage.setItem("locale", value);

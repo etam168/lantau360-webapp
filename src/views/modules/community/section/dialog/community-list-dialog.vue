@@ -14,7 +14,7 @@
       </q-header>
 
       <q-page-container>
-        <q-page>
+        <q-page class="relative-position">
           <q-list padding class="q-pa-md">
             <q-item
               clickable
@@ -45,8 +45,8 @@
               </q-item-section>
             </q-item>
           </q-list>
-          <q-page-sticky position="bottom-right" :offset="[18, 18]">
-            <q-btn fab icon="add" color="primary" @click="addPosting" />
+          <q-page-sticky class="absolute-bottom-right q-pa-md">
+            <q-btn fab icon="add" color="primary" @click="addPosting('login')" />
           </q-page-sticky>
         </q-page>
       </q-page-container>
@@ -104,18 +104,18 @@
     eventBus.emit("DialogStatus", status, "PostListDialog");
   }
 
-  function addPosting() {
+  function addPosting(tabValue: string) {
     if (!isLogon.value) {
-      $q.notify({
-        message: "Please login to procceed",
-        type: "info"
-      });
-
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+        component: defineAsyncComponent(() => import("./confirm-dialog.vue"))
       });
     } else {
-      //Open Page
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+        componentProps: {
+          tabValue: tabValue
+        }
+      });
     }
   }
 

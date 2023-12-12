@@ -34,12 +34,12 @@
     </q-card-section>
   </vee-form>
 
-  <q-card-actions class="q-px-md q-py-none justify-center">
+  <!-- <q-card-actions class="q-px-md q-py-none justify-center">
     {{ $t("auth.login.newAccount") }}
     <a href="#" @click="register" class="forgot-password-link">
       {{ $t("auth.login.register") }}
     </a>
-  </q-card-actions>
+  </q-card-actions> -->
 </template>
 
 <script setup lang="ts">
@@ -59,7 +59,7 @@
   import { STORAGE_KEYS } from "@/constants";
   import { ref } from "vue";
 
-  const emits = defineEmits(["close-dialog", "on-register", "on-forgotPassword"]);
+  const emits = defineEmits(["close-dialog", "on-forgotPassword"]);
 
   const $q = useQuasar();
 
@@ -78,9 +78,9 @@
     password: yup.string().required().min(4).label("Password")
   });
 
-  function register() {
-    emits("on-register");
-  }
+  // function register() {
+  //   emits("on-register");
+  // }
   async function handleForgotPassword() {
     if (userName.value == "") {
       $q.notify({
