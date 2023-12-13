@@ -25,13 +25,8 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>
-              {{ translate(item.title, item.meta, "title") }}
-            </q-item-label>
-
-            <q-item-label>
-              {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-            </q-item-label>
+            <q-item-label> {{ line1(item) }} </q-item-label>
+            <q-item-label> {{ line2(item) }} </q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -79,6 +74,14 @@
       item => item[key] as string | number // Make sure the key exists on the item
     );
   });
+
+  function line1(item: DirectoryTypes) {
+    return translate(item.title, item.meta, "title");
+  }
+
+  function line2(item: DirectoryTypes) {
+    return translate(item.subtitle1, item.meta, "subtitle1");
+  }
 
   function handleItemClick(item: DirectoryTypes) {
     emit("item-click", item);
