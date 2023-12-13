@@ -35,7 +35,9 @@
       if (response.status === 200) {
         if (item.directoryId == DIRECTORY_GROUPS.TIMETABLE) {
           $q.dialog({
-            component: defineAsyncComponent(() => import("./dialog/grouped-site-list-dialog.vue")),
+            component: defineAsyncComponent(
+              () => import("@/components/dialog/grouped-site-list-dialog.vue")
+            ),
             componentProps: {
               directory: item,
               directoryItemsList: response.data,
@@ -45,7 +47,9 @@
         } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
           $q.dialog({
             // component: defineAsyncComponent(() => import("./dialog/taxi-list-dialog.vue")),
-            component: defineAsyncComponent(() => import("./dialog/grouped-site-list-dialog.vue")),
+            component: defineAsyncComponent(
+              () => import("@/components/dialog/grouped-site-list-dialog.vue")
+            ),
             componentProps: {
               directory: item,
               directoryItemsList: response.data,
@@ -54,7 +58,9 @@
           });
         } else {
           $q.dialog({
-            component: defineAsyncComponent(() => import("./dialog/site-list-dialog.vue")),
+            component: defineAsyncComponent(
+              () => import("@/components/dialog/site-list-dialog.vue")
+            ),
             componentProps: {
               directory: item,
               directoryItemsList: response.data

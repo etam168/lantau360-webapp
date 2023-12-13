@@ -110,7 +110,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./site-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
       componentProps: {
         query: { siteId: item.siteId }
       }
