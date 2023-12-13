@@ -5,7 +5,7 @@
     </q-header>
 
     <q-page-container class="q-mx-md q-my-md">
-      <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
+      <app-search-bar v-model="filter" @on-search="onSearch" />
 
       <community-list-table
         v-model:pagination="pagination"
@@ -33,9 +33,7 @@
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
-  // import ListingGridTable from "@/components/table/listing-grid-table.vue";
   import CommunityListTable from "./community-list-table.vue";
-  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
   const props = defineProps({
     query: {

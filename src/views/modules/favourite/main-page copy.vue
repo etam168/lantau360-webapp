@@ -115,7 +115,7 @@
     switch (item.groupId) {
       case DIRECTORY_GROUPS.HOME:
         dialogComponent = defineAsyncComponent(
-          () => import("./section/dialog/site-detail-dialog.vue")
+          () => import("@/components/dialog/site-item-dialog.vue")
         );
         query = { siteId: item.itemId };
         break;

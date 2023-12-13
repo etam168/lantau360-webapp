@@ -5,7 +5,7 @@
     </q-header>
 
     <q-page-container class="q-mx-md q-my-md">
-      <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
+      <app-search-bar v-model="filter" @on-search="onSearch" />
 
       <site-list-table
         v-model:pagination="pagination"
@@ -33,9 +33,7 @@
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
-  // import ListingGridTable from "@/components/table/listing-grid-table.vue";
   import siteListTable from "./site-list-table.vue";
-  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
   const props = defineProps({
     query: {
@@ -60,16 +58,9 @@
     loadData({ pagination: pagination.value });
   }
 
-  // function handleDetail(rowData: any) {
-  //   router.push({
-  //     name: "site-detail",
-  //     query: { siteId: rowData.siteId }
-  //   });
-  // }
-
   async function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../section/dialog/site-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
       componentProps: {
         query: { siteId: item.siteId }
       }

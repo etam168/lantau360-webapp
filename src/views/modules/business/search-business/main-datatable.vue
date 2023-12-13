@@ -5,7 +5,7 @@
     </q-header>
 
     <q-page-container class="q-mx-md q-my-md">
-      <custom-search-input v-model="filter" @search="onSearch" class="q-my-md" />
+      <app-search-bar v-model="filter" @on-search="onSearch" />
 
       <business-list-table
         v-model:pagination="pagination"
@@ -30,7 +30,6 @@
 
   // Custom Components
   import BusinessListTable from "./business-list-table.vue";
-  import CustomSearchInput from "@/components/custom/custom-search-input.vue";
 
   const props = defineProps({
     query: {

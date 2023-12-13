@@ -27,12 +27,8 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
-
   // Other Import
   import { useDialogPluginComponent } from "quasar";
-  //import { ContentOption } from "@/constants";
   import eventBus from "@/utils/event-bus";
 
   const props = defineProps({
