@@ -32,11 +32,11 @@
 
   // Other Import
   import { useDialogPluginComponent } from "quasar";
-  import { ContentOption } from "@/constants";
+  //import { ContentOption } from "@/constants";
   import eventBus from "@/utils/event-bus";
 
   const props = defineProps({
-    name: {
+    contentNameValue: {
       type: String as PropType<any>,
       required: true
     }
@@ -52,13 +52,11 @@
 
   // Create a computed property for contentName
   const contentName = computed(() => {
-    switch (props.name) {
-      case ContentOption.ABOUT:
-        return "About";
-      case ContentOption.PRIVACY:
-        return "Privacy";
-      case ContentOption.TERMS:
-        return "Terms";
+    switch (props.contentNameValue) {
+      case "Terms":
+      case "Privacy":
+      case "About":
+        return props.contentNameValue;
       default:
         return "default";
     }

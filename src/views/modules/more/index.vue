@@ -242,25 +242,63 @@
   }
 
   function showContentDialog(item: any) {
-    switch (item.ResKey) {
-      case ContentOption.ABOUT:
-      case ContentOption.PRIVACY:
-      case ContentOption.TERMS:
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./content/index.vue")),
-          componentProps: {
-            contentNameValue: item.resKey
-          }
-        });
+    let contentKey;
 
+    switch (item.resKey) {
+      case ContentOption.ABOUT:
+        contentKey = "About";
+        break;
+      case ContentOption.PRIVACY:
+        contentKey = "Privacy";
+        break;
+      case ContentOption.TERMS:
+        contentKey = "Terms";
         break;
       case "login":
         showLoginDialog("login");
-        break;
+        return; // Exit the function for the "login" case
       default:
-        break;
+        return; // Exit the function for unknown cases
+    }
+
+    if (contentKey) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("./content/index.vue")),
+        componentProps: {
+          contentNameValue: contentKey
+        }
+      });
     }
   }
+
+  // function showContentDialog(item: any) {
+  //   switch (item.resKey) {
+  //     case ContentOption.ABOUT:
+  //       showContentDialogByName("About");
+  //       break;
+  //     case ContentOption.PRIVACY:
+  //       showContentDialogByName("Terms");
+  //       break;
+  //     case ContentOption.TERMS:
+  //       showContentDialogByName("Privacy");
+  //       break;
+  //     case "login":
+  //       showLoginDialog("login");
+  //       break; // Exit the function for the "login" case
+  //     default:
+  //       break; // Exit the function for unknown cases
+  //   }
+  // }
+
+  // function showContentDialogByName(contentName: string) {
+  //   alert(JSON.stringify(contentName));
+  //   $q.dialog({
+  //     component: defineAsyncComponent(() => import("./content/index.vue")),
+  //     componentProps: {
+  //       contentNameValue: contentName
+  //     }
+  //   });
+  // }
 
   function showLoginDialog(tabValue: string) {
     $q.dialog({
