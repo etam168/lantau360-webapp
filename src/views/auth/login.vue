@@ -9,8 +9,9 @@
         placeholder="user@example.com"
       />
 
-      <app-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
       <div>{{ setFormValues(values) }}</div>
+
       <q-item-label v-if="isEmailSent" class="text-red"
         >Please check your mails, If you havn't received an email then please contact the
         administrator</q-item-label
@@ -21,6 +22,7 @@
           {{ $t("auth.login.forgotPassword") }}
         </a>
       </q-card-actions>
+
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
           :label="$t('auth.login.button')"
@@ -33,37 +35,21 @@
       </q-card-actions>
     </q-card-section>
   </vee-form>
-
-  <!-- <q-card-actions class="q-px-md q-py-none justify-center">
-    {{ $t("auth.login.newAccount") }}
-    <a href="#" @click="register" class="forgot-password-link">
-      {{ $t("auth.login.register") }}
-    </a>
-  </q-card-actions> -->
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-
   // 3rd Party Import
-  import { useQuasar } from "quasar";
-  import { useUserStore } from "@/stores/user";
+  import { LocalStorage, useQuasar } from "quasar";
+  import axios from "axios";
   import * as yup from "yup";
 
-  // Custom Components
-  import AppButton from "@/components/widgets/app-button.vue";
-  import AppInputPassword from "@/components/widgets/app-input-password.vue";
-  import VeeInput from "@/components/vee-validate/vee-input.vue";
-  import axios from "axios";
-  import { LocalStorage } from "quasar";
+  import { useUserStore } from "@/stores/user";
   import { STORAGE_KEYS } from "@/constants";
-  import { ref } from "vue";
 
   const emits = defineEmits(["close-dialog", "on-forgotPassword"]);
 
   const $q = useQuasar();
 
-  // const route = useRoute();
   const userStore = useUserStore();
   const userName = ref("");
 
@@ -78,9 +64,6 @@
     password: yup.string().required().min(4).label("Password")
   });
 
-  // function register() {
-  //   emits("on-register");
-  // }
   async function handleForgotPassword() {
     if (userName.value == "") {
       $q.notify({
@@ -119,8 +102,6 @@
         color: "primary"
       });
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      // await router.push(prop.query.path || "/");
-      // await router.push({ name: prop.query.path });
       emits("close-dialog");
     } catch (e: any) {
       $q.notify({

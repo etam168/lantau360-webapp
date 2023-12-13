@@ -5,13 +5,10 @@
     v-model="value"
     stack-label
     standout="bg-grey-7 text-white"
-    :autogrow="autoGrow"
+    :dark="false"
     :error-message="errorMessage"
     :error="!!errorMessage"
   >
-    <template v-for="(value, slotName) in $slots" :key="slotName">
-      <slot :name="slotName" />
-    </template>
     <template v-slot:append>
       <q-icon
         :name="showPassword ? 'visibility_off' : 'visibility'"
@@ -23,28 +20,19 @@
 </template>
 
 <script setup lang="ts">
-  import { Ref, ref } from "vue";
   import { useField } from "vee-validate";
 
   const props = defineProps({
     name: {
       type: String,
       required: true
-    },
-    autoGrow: {
-      type: Boolean,
-      default: false
-    },
-    initialValue: {
-      type: [String, Number]
-    },
-    modelValue: {
-      type: [String, Number]
     }
   });
 
   const showPassword = ref(false);
 
-  const { errorMessage, value: untypedValue } = useField(() => props.name);
-  const value = untypedValue as Ref<string | number | null>;
+  const { errorMessage, value } = useField(props.name) as {
+    errorMessage: Ref<string>;
+    value: Ref<string | number | null | undefined>;
+  };
 </script>

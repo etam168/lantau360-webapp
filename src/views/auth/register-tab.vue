@@ -30,7 +30,7 @@
         placeholder="Phone"
       />
 
-      <app-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
       <div>{{ setFormValues(values) }}</div>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -55,27 +55,16 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-
   // 3rd Party Import
-  import { useQuasar } from "quasar";
+  import { LocalStorage, useQuasar } from "quasar";
+  import axios from "axios";
   import * as yup from "yup";
 
-  // Custom Components
-  import AppButton from "@/components/widgets/app-button.vue";
-  import AppInputPassword from "@/components/widgets/app-input-password.vue";
-  import VeeInput from "@/components/vee-validate/vee-input.vue";
-  // import axios from "axios";
-  import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { ref } from "vue";
-  import axios from "axios";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
-
   const $q = useQuasar();
 
-  // const route = useRoute();
   const email = ref("");
   const firstName = ref("");
   const lastName = ref("");
@@ -101,6 +90,7 @@
     password: any;
   }) => {
     loading.value = true;
+
     try {
       const response = await axios.post("MemberAuth/SingUp", {
         email: values.email,
@@ -129,6 +119,7 @@
 
     loading.value = false;
   };
+
   function setFormValues(values: any) {
     email.value = values.email;
     firstName.value = values.firstName;

@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar class="text-white bg-grey-3">
+  <q-toolbar class="text-white">
     <q-chip
       v-for="(tabItem, index) in tabItems"
       :key="index"

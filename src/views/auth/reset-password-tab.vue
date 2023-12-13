@@ -9,7 +9,7 @@
         placeholder="123 456"
       />
 
-      <app-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
       <div>{{ setFormValues(values) }}</div>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -34,21 +34,12 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-
   // 3rd Party Import
   import { useQuasar } from "quasar";
+  import axios from "axios";
   import * as yup from "yup";
 
-  // Custom Components
-  import AppButton from "@/components/widgets/app-button.vue";
-  import AppInputPassword from "@/components/widgets/app-input-password.vue";
-  import VeeInput from "@/components/vee-validate/vee-input.vue";
-  import { ref } from "vue";
-  import axios from "axios";
-
   const emits = defineEmits(["close-dialog", "on-login"]);
-
   const $q = useQuasar();
 
   const prop = defineProps({
@@ -58,8 +49,6 @@
     }
   });
 
-  // const route = useRoute();
-  // const email = ref("");
   const otp = ref("");
   const password = ref("");
 
@@ -82,6 +71,7 @@
         opt: values.otp
       });
       console.log("API response:", response.data);
+
       $q.notify({
         message: "Password reset successful",
         type: "positive",
@@ -99,6 +89,7 @@
 
     loading.value = false;
   };
+
   function setFormValues(values: any) {
     otp.value = values.phone;
     password.value = values.password;

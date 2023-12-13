@@ -20,10 +20,7 @@
   </q-input>
 </template>
 
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, Ref } from "vue";
   import { useField } from "vee-validate";
 
   const props = defineProps({
@@ -53,6 +50,9 @@
     }
   });
 
-  const { errorMessage, value } = useField(() => props.name);
-  //const value = untypedValue as Ref<string | number | null>;
+  // const { errorMessage, value } = useField(() => props.name);
+  const { errorMessage, value } = useField(props.name) as {
+    errorMessage: Ref<string>;
+    value: Ref<string | number | null | undefined>;
+  };
 </script>

@@ -3,7 +3,7 @@
     <carousel-section :data="carouselData" />
     <weather-section :data="weatherData" />
 
-    <q-separator size="2px" inset spaced color="primary" />
+    <!-- <q-separator size="2px" inset spaced color="primary" /> -->
 
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
@@ -46,8 +46,6 @@
   const $q = useQuasar();
 
   const carouselData = ref<any | null>(null);
-  const directoriesData = ref();
-  const infoData = ref();
   const weatherData = ref<any | null>(null);
   const dialogStack = ref<string[]>([]);
 
@@ -59,6 +57,20 @@
     { name: "all", label: t("home.allLocations") },
     { name: "info", label: t("home.info") }
   ]);
+
+  const homeDirectories = ref<Directory[]>([]);
+
+  const directoriesData = computed(() => {
+    return homeDirectories.value.filter((directory: Directory) => {
+      return isNthBitSet(directory.displayMask, 1);
+    });
+  });
+
+  const infoData = computed(() => {
+    return homeDirectories.value.filter((directory: Directory) => {
+      return isNthBitSet(directory.displayMask, 2);
+    });
+  });
 
   function handleSearchDialog(value: any) {
     $q.dialog({
@@ -92,7 +104,7 @@
   });
 
   try {
-    const [attractionResponse, weatherResponse, homeDirectories] = await Promise.all([
+    const [attractionResponse, weatherResponse, homeDirectoriesResponse] = await Promise.all([
       axios.get<Site[]>(URL.ATTRACTION_URL),
       axios.get<Weather>(URL.WEATHER_URL),
       axios.get<Directory[]>(`${URL.MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
@@ -100,14 +112,7 @@
 
     carouselData.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
-
-    directoriesData.value = homeDirectories.data.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 1);
-    });
-
-    infoData.value = homeDirectories.data.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 2);
-    });
+    homeDirectories.value = homeDirectoriesResponse.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

@@ -7,6 +7,7 @@ export {}
 
 declare module 'vue' {
   export interface GlobalComponents {
+    AppButton: typeof import('./components/global/app-button.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
     AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
@@ -21,5 +22,7 @@ declare module 'vue' {
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    VeeInput: typeof import('./components/global/vee-input.vue')['default']
+    VeeInputPassword: typeof import('./components/global/vee-input-password.vue')['default']
   }
 }

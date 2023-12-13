@@ -10,7 +10,6 @@
     <q-layout view="lHh lpr lFf" style="max-width: 1024px">
       <q-page-container>
         <q-page class="column items-center justify-center">
-          <!-- card section -->
           <q-card class="bg-secondary q-pt-none q-pa-lg" :style="authStyle">
             <q-btn icon="close" flat round dense v-close-popup />
             <q-card-section align="center" class="q-pa-none">

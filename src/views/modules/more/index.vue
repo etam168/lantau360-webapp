@@ -111,12 +111,10 @@
 </template>
 
 <script setup lang="ts">
-  import { useQuasar } from "quasar";
-  import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR } from "@/constants";
+  import { LocalStorage, useQuasar } from "quasar";
+
+  import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
   import { useUserStore } from "@/stores/user";
-  import { LocalStorage } from "quasar";
-  import { STORAGE_KEYS } from "@/constants";
-  import AppButton from "@/components/widgets/app-button.vue";
   import { useContentInput } from "./content/use-content-input";
 
   const { handleUpdateMemberAvatar } = useContentInput();

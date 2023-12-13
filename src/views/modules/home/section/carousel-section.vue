@@ -35,16 +35,14 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, defineAsyncComponent, ref } from "vue";
-  //import { useRouter } from "vue-router";
+  // Quasar Import
   import { useQuasar } from "quasar";
 
   // .ts file
   import { BLOB_URL } from "@/constants";
+  import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
   import imageNotFound from "@/assets/img/image_not_found.jpg";
-  import { Site } from "@/interfaces/site";
 
   const props = defineProps({
     data: {
@@ -56,19 +54,11 @@
 
   const { aspectRatio } = useUtilities();
 
-  //const router = useRouter();
   const $q = useQuasar();
   const slideInterval = 10000;
   const data = ref(props.data);
 
   const slide = ref(data.value?.[0]?.siteId ?? 0);
-
-  // const onImageClick = (item: Site) => {
-  //   router.push({
-  //     name: "site-detail",
-  //     query: { siteId: item.siteId }
-  //   });
-  // };
 
   function handleDialog(item: any) {
     $q.dialog({
