@@ -35,18 +35,21 @@
       if (response.status === 200) {
         if (item.directoryId == DIRECTORY_GROUPS.TIMETABLE) {
           $q.dialog({
-            component: defineAsyncComponent(() => import("./dialog/timetable-list-dialog.vue")),
+            component: defineAsyncComponent(() => import("./dialog/grouped-site-list-dialog.vue")),
             componentProps: {
               directory: item,
-              directoryItemsList: response.data
+              directoryItemsList: response.data,
+              groupBykey: "subtitle3"
             }
           });
         } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
           $q.dialog({
-            component: defineAsyncComponent(() => import("./dialog/taxi-list-dialog.vue")),
+            // component: defineAsyncComponent(() => import("./dialog/taxi-list-dialog.vue")),
+            component: defineAsyncComponent(() => import("./dialog/grouped-site-list-dialog.vue")),
             componentProps: {
               directory: item,
-              directoryItemsList: response.data
+              directoryItemsList: response.data,
+              groupBykey: "title"
             }
           });
         } else {
@@ -67,5 +70,5 @@
 
   // Throttle the handleDialog function
   // Here we're specifying a 500ms throttle period. Adjust as needed.
-  const throttledHandleDialog = throttle(handleDialog, 500);
+  const throttledHandleDialog = throttle(handleDialog, 1000);
 </script>
