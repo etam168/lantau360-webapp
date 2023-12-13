@@ -111,13 +111,7 @@
 </template>
 
 <script setup lang="ts">
-  import { defineAsyncComponent } from "vue";
-  // import { LocalStorage } from "quasar";
-
-  // 3rd Party Import
-  // import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
-  // import { STORAGE_KEYS } from "@/constants";
   import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { LocalStorage } from "quasar";
@@ -128,12 +122,7 @@
   const { handleUpdateMemberAvatar } = useContentInput();
   const userStore = useUserStore();
 
-  //Custom Components
-
   const $q = useQuasar();
-  // const { locale } = useI18n({ useScope: "global" });
-  // const locationPermission = ref(false);
-  // const IsLogOn = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || false);
 
   const imageRef = ref();
   const imagePath = ref(null);
@@ -187,35 +176,6 @@
     }
   }
 
-  // function showContentDialog(item: any) {
-  //   switch (item.resKey) {
-  //     case ContentOption.ABOUT:
-  //       showContentDialogByName("About");
-  //       break;
-  //     case ContentOption.PRIVACY:
-  //       showContentDialogByName("Terms");
-  //       break;
-  //     case ContentOption.TERMS:
-  //       showContentDialogByName("Privacy");
-  //       break;
-  //     case "login":
-  //       showLoginDialog("login");
-  //       break; // Exit the function for the "login" case
-  //     default:
-  //       break; // Exit the function for unknown cases
-  //   }
-  // }
-
-  // function showContentDialogByName(contentName: string) {
-  //   alert(JSON.stringify(contentName));
-  //   $q.dialog({
-  //     component: defineAsyncComponent(() => import("./content/index.vue")),
-  //     componentProps: {
-  //       contentNameValue: contentName
-  //     }
-  //   });
-  // }
-
   function showLoginDialog(tabValue: string) {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
@@ -235,8 +195,4 @@
   const computePath = computed(() => {
     return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
   });
-
-  // watch(locale, (value: any) => {
-  //   localStorage.setItem("locale", value);
-  // });
 </script>
