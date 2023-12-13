@@ -15,49 +15,17 @@
 
       <q-page-container>
         <q-page>
-          <div v-for="(items, groupName) in groupedItems" :key="groupName" class="q-pa-md">
-            <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
+          <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-            <q-list padding class="q-pa-md">
-              <q-item
-                clickable
-                v-for="item in directoryItems"
-                :key="item.siteId"
-                @click="onItemClick(item)"
-                class="shadow-1 q-pa-sm q-mb-md"
-              >
-                <q-item-section avatar>
-                  <q-avatar size="64px" square>
-                    <q-img :src="computePath(item.iconPath)">
-                      <template v-slot:error>
-                        <div class="absolute-full flex flex-center bg-negative text-white">
-                          Cannot load image
-                        </div>
-                      </template>
-                    </q-img>
-                  </q-avatar>
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label> {{ translate(item.title, item.meta, "title") }} </q-item-label>
-
-                  <q-item-label>
-                    {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-                  </q-item-label>
-                </q-item-section>
-
-                <q-item-section side>
-                  <q-icon
-                    v-if="isFavoriteItem(item.siteId)"
-                    name="favorite"
-                    size="2em"
-                    color="red"
-                    class="favorite-icon"
-                  />
-                </q-item-section>
-              </q-item>
-            </q-list>
-          </div>
+          <app-tab-panels v-model="tab">
+            <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.label">
+              <app-directory-item-list
+                @item-click="onItemClick"
+                :directoryItems="filterGroupedArray(item.name)"
+                :favoriteItems="favoriteItems"
+              />
+            </q-tab-panel>
+          </app-tab-panels>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -65,66 +33,74 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
+
+  import { STORAGE_KEYS } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
-  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
-  import { useDialogPluginComponent, useQuasar } from "quasar";
-  import { LocalStorage } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
+  import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
-  const { translate } = useUtilities();
+  const { groupBy, translate } = useUtilities();
 
-  const $q = useQuasar();
-  const isDialogVisible = ref();
-
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
-  const groupedItems = ref<Record<string, Site[]>>({});
+  // Define a type that includes all possible keys you want to group by
+  type GroupKeys = keyof Site;
 
   const props = defineProps({
     directoryItemsList: {
-      type: Array as () => Site[]
+      type: Array as PropType<Site[]>,
+      required: true
     },
     directory: {
       type: Object as PropType<Directory>,
       required: true
+    },
+    groupBykey: {
+      type: String,
+      default: "subtitle3"
     }
   });
 
-  const directoryItems = computed(() => {
-    return props.directoryItemsList;
-  });
+  const $q = useQuasar();
+  const isDialogVisible = ref();
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []);
 
   const dialogTitle = computed(() => {
     return translate(props.directory.directoryName, props.directory.meta, "directoryName");
   });
 
+  const groupedArray = computed(() => {
+    // Use the groupKey prop with a fallback to "directoryName"
+    const key: GroupKeys = props.groupBykey as GroupKeys;
+    return groupBy(
+      props.directoryItemsList.filter(item => item[key] !== undefined),
+      item => item[key] as string | number // Make sure the key exists on the item
+    );
+  });
+
+  // Function to filter groupedArray by group name
+  const filterGroupedArray = (groupName: string) => {
+    return groupedArray.value.filter(group => group.group === groupName).pop()?.items;
+  };
+
+  // Define tabItems as a computed property
+  const tabItems = computed(() => {
+    // Map over the groupedArray to create tabItems
+    return groupedArray.value.map(group => ({
+      name: group.group,
+      label: group.group
+    })) as TabItem[];
+  });
+
+  const tab = ref(tabItems.value[0].name);
+  const setTab = (val: string) => (tab.value = val);
+
   onMounted(() => {
-    groupItemsByDirectory();
     eventBus.on("SiteListDialog", () => {
       isDialogVisible.value = false;
     });
-  });
-
-  eventBus.on("favoriteUpdated", ({ itemId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.directoryId === itemId);
-
-    if (itemIndex !== -1) {
-      if (!isFavorite) {
-        // Remove the item if it's no longer a favorite
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-    } else {
-      if (isFavorite) {
-        // Add the item if it's newly favorited
-        favoriteItems.value.push({
-          directoryId: itemId
-          // other properties as needed
-        });
-      }
-    }
   });
 
   function updateDialogState(status: any) {
@@ -140,40 +116,4 @@
       }
     });
   }
-
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
-  };
-
-  const isFavoriteItem = (siteId: string | number): boolean => {
-    return favoriteItems.value.some((item: any) => item.directoryId === siteId);
-  };
-
-  function groupItemsByDirectory() {
-    groupedItems.value = (directoryItems.value ?? []).reduce(
-      (acc: any, item: any) => {
-        const { subtitle3 } = item;
-        if (!acc[subtitle3]) {
-          acc[subtitle3] = [];
-        }
-        acc[subtitle3].push(item);
-        return acc;
-      },
-      {} as Record<string, Site[]>
-    );
-  }
-
-  // function groupItemsByDirectory() {
-  //   groupedItems.value = (favoriteItems.value ?? []).reduce(
-  //     (acc: any, item: any) => {
-  //       const { directoryName } = item;
-  //       if (!acc[directoryName]) {
-  //         acc[directoryName] = [];
-  //       }
-  //       acc[directoryName].push(item);
-  //       return acc;
-  //     },
-  //     {} as Record<string, FavoriteItem[]>
-  //   );
-  // }
 </script>

@@ -24,13 +24,8 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { defineAsyncComponent, onMounted, ref } from "vue";
-  import { onBeforeRouteLeave } from "vue-router";
-
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
-  import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
 
   // .ts file
@@ -38,7 +33,6 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { useUtilities } from "@/composable/use-utilities";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 

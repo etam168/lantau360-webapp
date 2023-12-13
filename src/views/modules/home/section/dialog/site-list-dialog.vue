@@ -27,13 +27,11 @@
 </template>
 
 <script setup lang="ts">
+  import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
+
   import { STORAGE_KEYS } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
-  import { PropType, computed, defineAsyncComponent, onMounted, ref } from "vue";
-  import { useDialogPluginComponent, useQuasar } from "quasar";
-  import { LocalStorage } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
@@ -46,7 +44,8 @@
 
   const props = defineProps({
     directoryItemsList: {
-      type: Array as () => Site[]
+      type: Array as PropType<Site[]>,
+      required: true
     },
     directory: {
       type: Object as PropType<Directory>,
@@ -68,24 +67,24 @@
     });
   });
 
-  eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
+  // eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
+  //   const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
 
-    if (itemIndex !== -1) {
-      if (!isFavorite) {
-        // Remove the item if it's no longer a favorite
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-    } else {
-      if (isFavorite) {
-        // Add the item if it's newly favorited
-        favoriteItems.value.push({
-          siteId: siteId
-          // other properties as needed
-        });
-      }
-    }
-  });
+  //   if (itemIndex !== -1) {
+  //     if (!isFavorite) {
+  //       // Remove the item if it's no longer a favorite
+  //       favoriteItems.value.splice(itemIndex, 1);
+  //     }
+  //   } else {
+  //     if (isFavorite) {
+  //       // Add the item if it's newly favorited
+  //       favoriteItems.value.push({
+  //         siteId: siteId
+  //         // other properties as needed
+  //       });
+  //     }
+  //   }
+  // });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
