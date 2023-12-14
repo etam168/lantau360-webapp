@@ -21,7 +21,7 @@
   import { BLOB_URL, COMMUNITY_NEWS_GALLERY_URL } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
-  import { CommunityNews } from "@/interfaces/models/entities/communityNews";
+  import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { PropType, defineAsyncComponent, onMounted, ref } from "vue";
   import { date, useQuasar } from "quasar";
 

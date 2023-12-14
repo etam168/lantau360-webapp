@@ -187,3 +187,4 @@
     margin-right: 40px;
   }
 </style>
+@/interfaces/models/entities/community-news

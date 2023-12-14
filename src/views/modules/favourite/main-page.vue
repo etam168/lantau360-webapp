@@ -54,8 +54,8 @@
   }
 
   try {
-    const [respAdvertisement] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
-    advertisements.value = respAdvertisement.data;
+    const [advertisementResponse] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
+    advertisements.value = advertisementResponse.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

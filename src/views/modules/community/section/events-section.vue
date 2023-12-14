@@ -13,7 +13,7 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
+  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
 
   //Custom Components
   import EventsCard from "./components/events-card.vue";

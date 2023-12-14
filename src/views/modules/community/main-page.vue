@@ -1,20 +1,20 @@
 <template>
   <q-page>
     <app-page-title :title="$t('community.title')"></app-page-title>
-    <app-carousel-section :data="promotions" />
+    <app-carousel-section :data="advertisements" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
-        <news-section :data="newsData" />
+        <news-section :data="news" />
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
-        <events-section :events="eventData" />
+        <events-section :events="events" />
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <notice-section :data="notifications" />
+        <notice-section :data="notices" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -22,7 +22,7 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <directory-section :data="directoriesData" class="q-my-sm" />
+        <directory-section :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
@@ -36,9 +36,9 @@
 
   // .ts file
   import { URL } from "@/constants";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
-  import { CommunityNews } from "@/interfaces/models/entities/communityNews";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
+  import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 
@@ -51,11 +51,11 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
-  const promotions = ref<any | null>(null);
-  const directoriesData = ref();
-  const eventData = ref();
-  const newsData = ref();
-  const notifications = ref();
+  const advertisements = ref<any | null>(null);
+  const directories = ref();
+  const events = ref();
+  const news = ref();
+  const notices = ref();
   const dialogStack = ref<string[]>([]);
 
   const error = ref<string | null>(null);
@@ -101,19 +101,20 @@
   });
 
   try {
-    const [respPromotions, respEvent, respDirectories, respNews, respNotice] = await Promise.all([
-      axios.get(`${URL.ADVERTISEMENT}`),
-      axios.get<CommunityEvent>(`${URL.COMMUNITY_EVENT}`),
-      axios.get<Directory>(`${URL.COMMUNITY_DIRECTORY}`),
-      axios.get<CommunityNews>(`${URL.COMMUNITY_NEWS}`),
-      axios.get<CommunityNews>(`${URL.COMMUNITY_NOTICE}`)
-    ]);
+    const [advertisementResponse, eventResponse, directoryResponse, newsResponse, noticeResponse] =
+      await Promise.all([
+        axios.get(`${URL.ADVERTISEMENT}`),
+        axios.get<CommunityEvent>(`${URL.COMMUNITY_EVENT}`),
+        axios.get<CommunityDirectory>(`${URL.COMMUNITY_DIRECTORY}`),
+        axios.get<CommunityNews>(`${URL.COMMUNITY_NEWS}`),
+        axios.get<CommunityNews>(`${URL.COMMUNITY_NOTICE}`)
+      ]);
 
-    promotions.value = respPromotions.data;
-    eventData.value = respEvent.data;
-    directoriesData.value = respDirectories.data;
-    newsData.value = respNews.data;
-    notifications.value = respNotice.data;
+    advertisements.value = advertisementResponse.data;
+    events.value = eventResponse.data;
+    directories.value = directoryResponse.data;
+    news.value = newsResponse.data;
+    notices.value = noticeResponse.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

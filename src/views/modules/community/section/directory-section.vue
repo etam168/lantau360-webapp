@@ -16,7 +16,7 @@
 
   // .ts file
   import { DIRECTORY_POST_URL } from "@/constants";
-  import { CommunityDirectory } from "@/interfaces/models/entities/communityDirectory";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   defineProps({
     data: {

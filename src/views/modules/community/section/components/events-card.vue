@@ -25,7 +25,7 @@
   import axios, { AxiosError } from "axios";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { PropType, onMounted, ref } from "vue";
-  import { CommunityEvent } from "@/interfaces/models/entities/communityEvent";
+  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { date } from "quasar";
 
   import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";

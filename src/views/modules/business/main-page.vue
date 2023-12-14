@@ -37,7 +37,6 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  // const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
   const PromotionSection = defineAsyncComponent(() => import("./section/promotion-section.vue"));
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
