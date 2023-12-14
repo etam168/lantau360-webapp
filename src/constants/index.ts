@@ -177,7 +177,12 @@ export const STORAGE_KEYS = {
   // FAVOURITES: "favourites",
   BUSINESSFAVOURITES: "businessFavourites",
   SITEFAVOURITES: "siteFavourites",
-  IsLogOn: "IsLogin"
+  IsLogOn: "IsLogin",
+
+  SAVED: {
+    BUSINESS: "businessFavourites",
+    SITE: "siteFavourites"
+  }
 };
 
 export const PLACEHOLDER_AVATAR =

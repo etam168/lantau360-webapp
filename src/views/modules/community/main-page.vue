@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <app-page-title :title="$t('community.title')"></app-page-title>
-    <carousel-section :data="promotions" />
+    <app-carousel-section :data="promotions" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <app-tab-panels v-model="tab">
@@ -21,17 +21,14 @@
         <q-card-actions align="center">
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
-        <directories-section :data="directoriesData" class="q-mb-md" />
+
+        <directory-section :data="directoriesData" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { defineAsyncComponent, onMounted, ref } from "vue";
-  import { onBeforeRouteLeave } from "vue-router";
-
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
   import { useI18n } from "vue-i18n";
@@ -46,11 +43,10 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  import DirectoriesSection from "./section/directories-section.vue";
+  import DirectorySection from "./section/directory-section.vue";
   import EventsSection from "./section/events-section.vue";
   import NewsSection from "./section/news-section.vue";
   import NoticeSection from "./section/notice-section.vue";
-  import CarouselSection from "./section/carousel-section.vue";
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();

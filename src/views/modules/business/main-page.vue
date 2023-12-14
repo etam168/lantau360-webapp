@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <app-page-title :title="$t('business.title')"></app-page-title>
-    <carousel-section :data="advertisements" />
+    <app-carousel-section :data="advertisements" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <app-tab-panels v-model="tab">
@@ -25,10 +25,6 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { defineAsyncComponent, onMounted, ref } from "vue";
-  import { onBeforeRouteLeave } from "vue-router";
-
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
   import { useI18n } from "vue-i18n";
@@ -41,7 +37,7 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
+  // const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
   const PromotionSection = defineAsyncComponent(() => import("./section/promotion-section.vue"));
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));

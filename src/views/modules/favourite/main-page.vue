@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <app-page-title :title="$t('favourite.title')"></app-page-title>
-    <carousel-section :data="advertisements" />
+    <app-carousel-section :data="advertisements" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <app-tab-panels v-model="tab">
@@ -29,8 +29,6 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
   import { LocalStorage } from "quasar";
-
-  const CarouselSection = defineAsyncComponent(() => import("./section/carousel-section.vue"));
 
   const siteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) ?? []) as Site[];
