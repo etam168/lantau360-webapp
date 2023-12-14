@@ -10,7 +10,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="voucher" class="q-pa-sm">
-        <voucher-card-section :offers="businessVoucher" />
+        <app-card-item-list :items="businessVoucher" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -38,7 +38,6 @@
 
   // Custom Components
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
-  const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();

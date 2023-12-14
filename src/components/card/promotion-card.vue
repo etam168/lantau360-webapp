@@ -1,10 +1,11 @@
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <q-card class="my-card">
     <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
 
     <q-card-section class="q-pa-sm">
-      <app-item dense icon="location_on" :label="offers?.subtitle1" />
-      <app-item dense icon="schedule" :label="computeBusinessHours(offers)" />
+      <app-item dense icon="location_on" :label="item?.subtitle1" />
+      <!-- <app-item dense icon="schedule" :label="computeBusinessHours(item)" /> -->
     </q-card-section>
 
     <q-card-actions>
@@ -15,56 +16,38 @@
         color="primary"
         label="More Details"
         class="full-width"
-        @click="onItemClick()"
+        @click="onItemClick"
       />
     </q-card-actions>
   </q-card>
 </template>
 
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
-  // Vue Import
-  import axios, { AxiosError } from "axios";
+  import axios from "axios";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { PropType, onMounted, ref } from "vue";
-  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
-  import { BusinessVoucher } from "@/interfaces/models/entities/BusinessVoucher";
-  import { date } from "quasar";
-
+  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BLOB_URL, BUSINESS_PROMOTION_GALLERY_URL } from "@/constants";
-
   import AppItem from "@/components/widgets/app-item.vue";
 
-  type BusinessItem = BusinessPromotion | BusinessVoucher;
+  type CardItem = BusinessPromotion; // Since this component is specific to BusinessPromotion
 
   const props = defineProps({
-    offers: {
-      type: Object as PropType<BusinessItem>,
+    item: {
+      type: Object as PropType<BusinessPromotion>,
       required: true
     }
   });
 
-  // const emit = defineEmits(["click"]);
+  // const emit = defineEmits(["xclick"]);
 
   const error = ref<string | null>(null);
-  const itemImage = ref();
+  const itemImage = ref<string | null>(null);
 
-  const computeBusinessHours = (row: BusinessPromotion) => {
-    const datePart = date.formatDate(Date.now(), "YYYY-MM-DDT");
-
-    // Check if openTime and closeTime are undefined or null, provide default values
-    const openTime = row.openTime
-      ? Date.parse(datePart + row.openTime)
-      : Date.parse(datePart + "09:00");
-    const closeTime = row.closeTime
-      ? Date.parse(datePart + row.closeTime)
-      : Date.parse(datePart + "17:00");
-
-    return `${date.formatDate(openTime, "HH:mm")} - ${date.formatDate(closeTime, "HH:mm")}`;
+  const onItemClick = () => {
+    // Assuming `item` is the data you want to emit with the event
+    // emit("xclick", props.item);
   };
-
-  function onItemClick() {
-    emit("click", props.offers);
-  }
 
   onMounted(() => {
     loadData();
@@ -72,27 +55,21 @@
 
   const loadData = async () => {
     try {
-      const [galleryResponse] = await Promise.all([
-        axios.get<GalleryImage[]>(
-          `${BUSINESS_PROMOTION_GALLERY_URL}/${props?.offers?.businessPromotionId}`
-        )
-      ]);
+      const galleryResponse = await axios.get<GalleryImage[]>(
+        `${BUSINESS_PROMOTION_GALLERY_URL}/${props.item.businessPromotionId}`
+      );
 
-      itemImage.value = galleryResponse.data[0].imagePath;
+      itemImage.value = galleryResponse.data.length > 0 ? galleryResponse.data[0].imagePath : null;
     } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          error.value = "Not found";
-        } else {
-          error.value = "An error occurred";
-        }
+      if (axios.isAxiosError(err)) {
+        error.value = err.response?.status === 404 ? "Not found" : "An error occurred";
       } else {
         error.value = "An unexpected error occurred";
       }
     }
   };
 
-  function computeImagePath(imagePath: any) {
+  function computeImagePath(imagePath: string | null): string {
     return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
   }
 </script>

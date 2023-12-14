@@ -10,7 +10,8 @@
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
-        <events-section :events="events" />
+        <!-- <events-section :events="events" /> -->
+        <app-card-item-list :items="events" />
       </q-tab-panel>
 
       <q-tab-panel name="notice">
@@ -44,7 +45,7 @@
 
   // Custom Components
   import DirectorySection from "./section/directory-section.vue";
-  import EventsSection from "./section/events-section.vue";
+  // import EventsSection from "./section/events-section.vue";
   import NewsSection from "./section/news-section.vue";
   import NoticeSection from "./section/notice-section.vue";
 

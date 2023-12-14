@@ -1,12 +1,13 @@
 <template>
-  <q-card class="my-card">
+  <q-card>
     <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
+
     <q-card-section class="q-pa-sm">
-      <!-- <app-item dense icon="location_on" :label="offers?.businessName" /> -->
+      <!-- <app-item dense icon="schedule" :label="eventTime(offers)" />
+      <app-item dense icon="location_on" :label="offers?.subtitle1" /> -->
     </q-card-section>
 
     <q-card-actions>
-      <q-space />
       <q-btn
         outline
         dense
@@ -19,24 +20,20 @@
   </q-card>
 </template>
 
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   import axios from "axios";
+  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-  import { BLOB_URL, BUSINESS_VOUCHER_GALLERY_URL } from "@/constants";
-
-  // Assuming AppItem is a component you would use for displaying certain item properties
-  // import AppItem from "@/components/widgets/app-item.vue";
+  import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
 
   const props = defineProps({
     item: {
-      type: Object as PropType<BusinessVoucher>,
+      type: Object as PropType<CommunityEvent>,
       required: true
     }
   });
 
-  // const emit = defineEmits(["xclick"]);
+  //const emit = defineEmits(["xclick"]);
 
   const error = ref<string | null>(null);
   const itemImage = ref<string | null>(null);
@@ -53,7 +50,7 @@
   const loadData = async () => {
     try {
       const galleryResponse = await axios.get<GalleryImage[]>(
-        `${BUSINESS_VOUCHER_GALLERY_URL}/${props.item.businessVoucherId}`
+        `${COMMUNITY_EVENT_GALLERY_URL}/${props.item.communityEventId}`
       );
 
       itemImage.value = galleryResponse.data.length > 0 ? galleryResponse.data[0].imagePath : null;
@@ -66,7 +63,7 @@
     }
   };
 
-  function computeImagePath(imagePath: string | null): string {
+  function computeImagePath(imagePath: string | null) {
     return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
   }
 </script>
