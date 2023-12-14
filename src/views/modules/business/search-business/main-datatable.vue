@@ -55,7 +55,9 @@
 
   async function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../section/dialog/business-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/business-detail-dialog.vue")
+      ),
       componentProps: {
         query: { businessId: item.businessId }
       }
