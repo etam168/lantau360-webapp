@@ -67,25 +67,6 @@
     });
   });
 
-  // eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
-  //   const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
-
-  //   if (itemIndex !== -1) {
-  //     if (!isFavorite) {
-  //       // Remove the item if it's no longer a favorite
-  //       favoriteItems.value.splice(itemIndex, 1);
-  //     }
-  //   } else {
-  //     if (isFavorite) {
-  //       // Add the item if it's newly favorited
-  //       favoriteItems.value.push({
-  //         siteId: siteId
-  //         // other properties as needed
-  //       });
-  //     }
-  //   }
-  // });
-
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "SiteListDialog");

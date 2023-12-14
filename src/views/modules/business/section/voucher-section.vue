@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-sm">
     <div v-for="item in offers" :key="item.businessVoucherId" class="col-md-3 col-sm-4 col-6">
-      <voucher-card :offers="item" @on-click="onItemClick" />
+      <voucher-card :offers="item" @click="onItemClick" />
     </div>
   </div>
 </template>
@@ -11,12 +11,12 @@
   import { PropType, defineAsyncComponent } from "vue";
 
   //Custom Components
-  import VoucherCard from "./components/voucher-card.vue";
+  import VoucherCard from "@/components/card/voucher-card.vue";
 
   const $q = useQuasar();
 
   // .ts file
-  import { BusinessVoucher } from "@/interfaces/models/entities/businessVoucher";
+  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { useQuasar } from "quasar";
   defineProps({
     offers: {
@@ -27,7 +27,9 @@
 
   const onItemClick = (item: BusinessVoucher) => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./dialog/voucher-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/voucher-detail-dialog.vue")
+      ),
       componentProps: {
         query: { businessVoucherId: item.businessVoucherId }
       }

@@ -16,15 +16,15 @@
       >
         <q-carousel-slide
           v-for="row in data"
-          :key="row.businessId"
-          :name="row.businessId"
+          :key="getId(row)"
+          :name="getId(row)"
           class="q-pa-none"
           :img-src="getImageSrc(row)"
           @click="onImageClick(row)"
         >
-          <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
+          <!-- <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
             <strong>Advertisement Id:</strong> {{ row.advertisementId }}
-          </q-tooltip>
+          </q-tooltip> -->
         </q-carousel-slide>
 
         <template v-slot:control>
@@ -41,53 +41,79 @@
 </template>
 
 <script setup lang="ts">
+  // Quasar Import
+  import { useQuasar } from "quasar";
+
   // .ts file
   import { BLOB_URL } from "@/constants";
-  import { useUtilities } from "@/composable/use-utilities";
   import imageNotFound from "@/assets/img/image_not_found.jpg";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { Site } from "@/interfaces/models/entities/site";
 
-  import { useQuasar } from "quasar";
+  // Define a new type that is a union of Site and Advertisement
+  type DataItem = Site | Advertisement;
 
   const props = defineProps({
     data: {
-      type: Array as PropType<Advertisement[] | null>,
+      type: Array as PropType<DataItem[] | null>,
       required: false,
       default: null
     }
   });
+
   const $q = useQuasar();
-
   const { aspectRatio } = useUtilities();
-
-  const router = useRouter();
   const slideInterval = 10000;
-  const data = ref(props.data);
 
-  const slide = ref(data.value?.[0]?.businessId ?? 0);
+  // Initialize slide with the ID of the first item
+  const slide = ref(props.data && props.data.length > 0 ? getId(props.data[0]) : 0);
 
-  const onImageClick = (item: Advertisement) => {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/advertisement-dialog.vue")),
-      componentProps: {
-        query: { advertisementId: item.advertisementId }
-      }
-    });
-    router.push({
-      name: "business-directory-item-detail",
-      query: { directoryItemId: item.businessId }
-    });
+  // Function to extract ID from the item
+  function getId(item: DataItem): number {
+    if (isAdvertisement(item)) {
+      return item.advertisementId;
+    } else {
+      return item.siteId;
+    }
+  }
+
+  // Type guard to determine if the item is an Advertisement
+  function isAdvertisement(item: any): item is Advertisement {
+    return (item as Advertisement).advertisementId !== undefined;
+  }
+
+  // Updated onImageClick function to handle both Site and Advertisement
+  const onImageClick = (item: DataItem) => {
+    if (isAdvertisement(item)) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/advertisement-dialog.vue")
+        ),
+        componentProps: {
+          query: { advertisementId: item.advertisementId }
+        }
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+        componentProps: {
+          query: { siteId: item.siteId }
+        }
+      });
+    }
   };
 
-  function getImageSrc(row: Advertisement) {
-    return row.imagePath !== null && row.imagePath !== ""
-      ? `${BLOB_URL}/${row.imagePath}`
-      : imageNotFound;
+  // getImageSrc function to handle both Site and Advertisement
+  function getImageSrc(row: DataItem) {
+    if (isAdvertisement(row)) {
+      return row.imagePath !== null && row.imagePath !== ""
+        ? `${BLOB_URL}/${row.imagePath}`
+        : imageNotFound;
+    } else {
+      // Return the image path for a Site or a default image
+      return row.bannerPath !== null && row.bannerPath !== ""
+        ? `${BLOB_URL}/${row.bannerPath}`
+        : imageNotFound;
+    }
   }
 </script>
-
-<style>
-  .q-carousel__arrow .q-icon {
-    font-size: 46px;
-  }
-</style>

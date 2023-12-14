@@ -32,7 +32,9 @@
       // Assuming a successful response
       if (response.status === 200) {
         $q.dialog({
-          component: defineAsyncComponent(() => import("./dialog/business-list-dialog.vue")),
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/business-list-dialog.vue")
+          ),
           componentProps: {
             directory: item,
             directoryItemsList: response.data

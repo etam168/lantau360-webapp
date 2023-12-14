@@ -46,7 +46,6 @@
           });
         } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
           $q.dialog({
-            // component: defineAsyncComponent(() => import("./dialog/taxi-list-dialog.vue")),
             component: defineAsyncComponent(
               () => import("@/components/dialog/grouped-site-list-dialog.vue")
             ),

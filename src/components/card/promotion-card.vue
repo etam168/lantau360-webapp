@@ -27,20 +27,23 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { PropType, onMounted, ref } from "vue";
   import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
+  import { BusinessVoucher } from "@/interfaces/models/entities/BusinessVoucher";
   import { date } from "quasar";
 
   import { BLOB_URL, BUSINESS_PROMOTION_GALLERY_URL } from "@/constants";
 
   import AppItem from "@/components/widgets/app-item.vue";
 
+  type BusinessItem = BusinessPromotion | BusinessVoucher;
+
   const props = defineProps({
     offers: {
-      type: Object as PropType<BusinessPromotion>,
+      type: Object as PropType<BusinessItem>,
       required: true
     }
   });
 
-  const emit = defineEmits(["on-click"]);
+  // const emit = defineEmits(["click"]);
 
   const error = ref<string | null>(null);
   const itemImage = ref();
@@ -60,7 +63,7 @@
   };
 
   function onItemClick() {
-    emit("on-click", props.offers);
+    emit("click", props.offers);
   }
 
   onMounted(() => {

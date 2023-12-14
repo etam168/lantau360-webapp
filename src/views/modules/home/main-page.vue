@@ -1,10 +1,7 @@
 <template>
   <q-page>
-    <carousel-section :data="carouselData" />
+    <app-carousel-section :data="attractions" />
     <weather-section :data="weatherData" />
-
-    <!-- <q-separator size="2px" inset spaced color="primary" /> -->
-
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <q-card-actions align="center">
@@ -13,7 +10,7 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="all">
-        <directory-section :data="directoriesData" />
+        <directory-section :data="directoryData" />
       </q-tab-panel>
 
       <q-tab-panel name="info">
@@ -30,37 +27,34 @@
 
   // .ts file
   import { URL, DIRECTORY_GROUPS } from "@/constants";
-  import { Site } from "@/interfaces/models/entities/site";
-  import { Weather } from "@/interfaces/models/entities/weather";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
+  import { Weather } from "@/interfaces/models/entities/weather";
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
   import DirectorySection from "./section/directory-section.vue";
-  import CarouselSection from "./section/carousel-section.vue";
   import WeatherSection from "./section/weather-section.vue";
 
   const { isNthBitSet } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
-  const carouselData = ref<any | null>(null);
-  const weatherData = ref<any | null>(null);
+  const attractions = ref<Site[] | null>(null);
+  const homeDirectories = ref<Directory[]>([]);
+  const weatherData = ref<Weather | null>(null);
   const dialogStack = ref<string[]>([]);
-
   const error = ref<string | null>(null);
-
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
+
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t("home.allLocations") },
     { name: "info", label: t("home.info") }
   ]);
 
-  const homeDirectories = ref<Directory[]>([]);
-
-  const directoriesData = computed(() => {
+  const directoryData = computed(() => {
     return homeDirectories.value.filter((directory: Directory) => {
       return isNthBitSet(directory.displayMask, 1);
     });
@@ -104,15 +98,15 @@
   });
 
   try {
-    const [attractionResponse, weatherResponse, homeDirectoriesResponse] = await Promise.all([
+    const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
       axios.get<Site[]>(URL.ATTRACTION_URL),
       axios.get<Weather>(URL.WEATHER_URL),
       axios.get<Directory[]>(`${URL.MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
     ]);
 
-    carouselData.value = attractionResponse.data;
+    attractions.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
-    homeDirectories.value = homeDirectoriesResponse.data;
+    homeDirectories.value = homeDirectoryResponse.data;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

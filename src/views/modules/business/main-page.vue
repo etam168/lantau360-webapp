@@ -6,7 +6,7 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
-        <promotion-section :offers="businessPromotion" />
+        <app-card-item-list :items="businessPromotion" />
       </q-tab-panel>
 
       <q-tab-panel name="voucher" class="q-pa-sm">
@@ -38,7 +38,6 @@
 
   // Custom Components
   const DirectorySection = defineAsyncComponent(() => import("./section/directory-section.vue"));
-  const PromotionSection = defineAsyncComponent(() => import("./section/promotion-section.vue"));
   const VoucherCardSection = defineAsyncComponent(() => import("./section/voucher-section.vue"));
 
   const { t } = useI18n({ useScope: "global" });
