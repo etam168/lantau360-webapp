@@ -45,4 +45,3 @@
     emit("on-click", props.item);
   }
 </script>
-@/interfaces/models/entities/community-directory

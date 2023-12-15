@@ -36,16 +36,6 @@
   import { Site } from "@/interfaces/models/entities/site";
   import eventBus from "@/utils/event-bus";
 
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
-  const { translate } = useUtilities();
-
-  type CategoryTypes = Business | Site | Posting;
-
-  const $q = useQuasar();
-  const isDialogVisible = ref();
-
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []);
-
   const props = defineProps({
     directoryItemsList: {
       type: Array as PropType<CategoryTypes[]>,
@@ -56,6 +46,22 @@
       required: true
     }
   });
+
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { translate } = useUtilities();
+
+  type CategoryTypes = Business | Site | Posting;
+
+  const $q = useQuasar();
+  const isDialogVisible = ref();
+
+  const favoriteItems = ref<any>(
+    "siteId" in props.directory
+      ? LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []
+      : "businessId" in props.directory
+        ? LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []
+        : []
+  );
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;
