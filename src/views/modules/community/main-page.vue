@@ -6,16 +6,15 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
-        <news-section :data="news" />
+        <!-- <news-section :data="news" /> -->
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
-        <!-- <events-section :events="events" /> -->
         <app-card-item-list :items="events" />
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <notice-section :data="notices" />
+        <!-- <notice-section :data="notices" /> -->
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -29,6 +28,7 @@
   </q-page>
 </template>
 
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // 3rd Party Import
   import axios, { AxiosError } from "axios";

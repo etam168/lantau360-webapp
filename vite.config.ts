@@ -14,40 +14,44 @@ import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-// eslint-disable-next-line @typescript-eslint/no-unused-vars
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
   base: "/",
-  includeAssets: ["favicon.svg"],
+  registerType: "prompt",
+  injectRegister: "auto",
+  includeAssets: ["favicon.svg"], // Included assets
   manifest: {
     name: "Lantau360 App",
     short_name: "Lantau360",
     theme_color: "#ffffff",
     icons: [
       {
-        src: "pwa-192x192.png", // <== don't add slash, for testing
+        src: "pwa-192x192.png", // Path to the icon without leading slash
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "/pwa-512x512.png", // <== don't remove slash, for testing
+        src: "/pwa-512x512.png", // Path to the icon with leading slash
         sizes: "512x512",
         type: "image/png"
       },
       {
-        src: "pwa-512x512.png", // <== don't add slash, for testing
+        src: "pwa-512x512.png", // Path to the icon without leading slash
         sizes: "512x512",
         type: "image/png",
-        purpose: ["any", "maskable"] // testing new type declaration
+        purpose: ["any", "maskable"] // Purpose declaration for the icon
       }
     ]
   },
   devOptions: {
     enabled: process.env.SW_DEV === "true",
-    /* when using generateSW the PWA plugin will switch to classic */
     type: "module",
     navigateFallback: "index.html",
     suppressWarnings: true
+  },
+  workbox: {
+    cleanupOutdatedCaches: false,
+    globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
   }
 };
 
@@ -61,25 +65,13 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
     VueI18nPlugin({
-      include: resolve(__dirname, "./path/to/src/locales/**"),
+      include: resolve(__dirname, "src/locales/**"),
       runtimeOnly: false
     }),
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
     }),
-    VitePWA({
-      registerType: "prompt",
-      injectRegister: "auto",
-      devOptions: {
-        enabled: true,
-        type: "module"
-        /* other options */
-      },
-      workbox: {
-        cleanupOutdatedCaches: false,
-        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
-      }
-    }),
+    VitePWA(pwaOptions),
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: [

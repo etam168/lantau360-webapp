@@ -21,9 +21,12 @@
   type CardItem = BusinessPromotion | BusinessVoucher | CommunityEvent;
 
   // Define props for this component
-  defineProps<{
-    items: CardItem[];
-  }>();
+  defineProps({
+    items: {
+      type: Array as PropType<CardItem[]>,
+      required: true
+    }
+  });
 
   function getItemType(item: CardItem): "promotion" | "voucher" | "event" {
     if ("businessPromotionId" in item) return "promotion";
