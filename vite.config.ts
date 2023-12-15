@@ -65,9 +65,18 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
     VueI18nPlugin({
-      include: resolve(__dirname, "src/locales/**"),
+      include: resolve(__dirname, "./path/to/src/locales/**"),
+      //include: resolve(__dirname, "./src/locales/**"),
       runtimeOnly: false
     }),
+    // VueI18nPlugin({
+    //   include: resolve(__dirname, "src/locales/**"),
+    //   runtimeOnly: false
+    // }),
+    // VueI18nPlugin({
+    //   include: resolve(__dirname, "src/locales/**").replace(/\\/g, "/"),
+    //   runtimeOnly: false
+    // }),
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
     }),
