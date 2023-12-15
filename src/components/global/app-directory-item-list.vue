@@ -45,18 +45,19 @@
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
 
   const emit = defineEmits(["item-click"]);
-  type DirectoryTypes = Business | Site;
+  type CategoryTypes = Business | Site | Posting;
 
   const props = defineProps({
     directoryItems: {
-      type: Array as PropType<DirectoryTypes[]>,
+      type: Array as PropType<CategoryTypes[]>,
       required: false
     },
     favoriteItems: {
-      type: Array as PropType<DirectoryTypes[]>,
+      type: Array as PropType<CategoryTypes[]>,
       default: () => []
     }
   });
@@ -67,7 +68,7 @@
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
 
-  const isFavoriteItem = (item: DirectoryTypes): boolean => {
+  const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {
       case "businessId" in item:
         return props.favoriteItems.some(
@@ -75,13 +76,15 @@
         );
       case "siteId" in item:
         return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
+      // case "post" in item:
+      //   return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
       default:
         // No known type matched, or it's not a favorite item
         return false;
     }
   };
 
-  function handleItemClick(item: DirectoryTypes) {
+  function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
   }
 </script>

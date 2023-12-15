@@ -45,9 +45,6 @@
 
   // Custom Components
   import DirectorySection from "./section/directory-section.vue";
-  // import EventsSection from "./section/events-section.vue";
-  import NewsSection from "./section/news-section.vue";
-  import NoticeSection from "./section/notice-section.vue";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   const { t } = useI18n({ useScope: "global" });

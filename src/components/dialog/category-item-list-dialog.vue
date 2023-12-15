@@ -32,23 +32,23 @@
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { Directory } from "@/interfaces/models/entities/directory";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
   import eventBus from "@/utils/event-bus";
-  import { Posting } from "@/interfaces/models/entities/posting";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { translate } = useUtilities();
 
-  type DirectoryTypes = Business | Site | Posting;
+  type CategoryTypes = Business | Site | Posting;
 
   const $q = useQuasar();
   const isDialogVisible = ref();
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []);
 
   const props = defineProps({
     directoryItemsList: {
-      type: Array as PropType<DirectoryTypes[]>,
+      type: Array as PropType<CategoryTypes[]>,
       required: true
     },
     directory: {
@@ -75,7 +75,8 @@
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "SiteListDialog");
   }
-  function onItemClick(item: DirectoryTypes) {
+
+  function onItemClick(item: CategoryTypes) {
     debugger;
     if ("siteId" in item) {
       $q.dialog({
