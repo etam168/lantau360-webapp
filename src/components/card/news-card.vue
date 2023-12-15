@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="onItemClick(data)">
+  <q-item clickable @click="onItemClick(item)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
         <q-img ratio="1" :src="computePath(itemImage)" />
@@ -7,9 +7,9 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ newsTime(data) }}</q-item-label>
-      <q-item-label>{{ data?.communityNewsName }}</q-item-label>
-      <q-item-label caption lines="2"> <div v-html="data?.description"></div></q-item-label>
+      <q-item-label>{{ newsTime(item) }}</q-item-label>
+      <q-item-label>{{ item?.communityNewsName }}</q-item-label>
+      <q-item-label caption lines="2"> <div v-html="item?.description"></div></q-item-label>
     </q-item-section>
   </q-item>
 
@@ -26,7 +26,7 @@
   import { date, useQuasar } from "quasar";
 
   const props = defineProps({
-    data: {
+    item: {
       type: Object as PropType<CommunityNews>
     }
   });
@@ -46,7 +46,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../dialog/news-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("@/components/dialog/news-detail-dialog.vue")),
       componentProps: {
         query: { communityNewsId: item.communityNewsId }
       }
@@ -60,10 +60,10 @@
   const loadData = async () => {
     try {
       const [galleryResponse] = await Promise.all([
-        axios.get<GalleryImage[]>(`${COMMUNITY_NEWS_GALLERY_URL}/${props.data?.communityNewsId}`)
+        axios.get<GalleryImage[]>(`${COMMUNITY_NEWS_GALLERY_URL}/${props.item?.communityNewsId}`)
       ]);
 
-      itemImage.value = galleryResponse.data[0].imagePath;
+      itemImage.value = galleryResponse.item[0].imagePath;
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

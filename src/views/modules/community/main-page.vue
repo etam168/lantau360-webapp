@@ -6,7 +6,7 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
-        <news-section :data="news" />
+        <app-row-item-list :items="news" />
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
@@ -14,7 +14,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <notice-section :data="notices" />
+        <app-row-item-list :items="notices" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -48,6 +48,7 @@
   // import EventsSection from "./section/events-section.vue";
   import NewsSection from "./section/news-section.vue";
   import NoticeSection from "./section/notice-section.vue";
+  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
@@ -108,7 +109,7 @@
         axios.get<CommunityEvent>(`${URL.COMMUNITY_EVENT}`),
         axios.get<CommunityDirectory>(`${URL.COMMUNITY_DIRECTORY}`),
         axios.get<CommunityNews>(`${URL.COMMUNITY_NEWS}`),
-        axios.get<CommunityNews>(`${URL.COMMUNITY_NOTICE}`)
+        axios.get<CommunityNotice>(`${URL.COMMUNITY_NOTICE}`)
       ]);
 
     advertisements.value = advertisementResponse.data;

@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="onItemClick(data)">
+  <q-item clickable @click="onItemClick(item)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
         <q-img ratio="1" :src="computePath(itemImage)" />
@@ -7,11 +7,11 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ noticeTime(data) }}</q-item-label>
+      <q-item-label>{{ noticeTime(item) }}</q-item-label>
       <q-item-label
-        ><q-badge color="primary" class="text-white"> {{ data?.title }} </q-badge></q-item-label
+        ><q-badge color="primary" class="text-white"> {{ item?.title }} </q-badge></q-item-label
       >
-      <q-item-label caption lines="2">{{ data?.description }}</q-item-label>
+      <q-item-label caption lines="2">{{ item?.description }}</q-item-label>
     </q-item-section>
   </q-item>
 
@@ -29,7 +29,7 @@
   import { date, useQuasar } from "quasar";
 
   const props = defineProps({
-    data: {
+    item: {
       type: Object as PropType<CommunityNotice>,
       required: true
     }
@@ -55,7 +55,7 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../dialog/notice-detail-dialog.vue")),
+      component: defineAsyncComponent(() => import("@/components/dialog/notice-detail-dialog.vue")),
       componentProps: {
         query: { communityNoticeId: item.communityNoticeId }
       }
@@ -69,10 +69,10 @@
   const loadData = async () => {
     try {
       const [galleryResponse] = await Promise.all([
-        axios.get<GalleryImage[]>(`${COMMUNITY_NOTICE_GALLERY_URL}/${props.data.communityNoticeId}`)
+        axios.get<GalleryImage[]>(`${COMMUNITY_NOTICE_GALLERY_URL}/${props.item.communityNoticeId}`)
       ]);
 
-      itemImage.value = galleryResponse.data[0].imagePath;
+      itemImage.value = galleryResponse.item[0].imagePath;
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {
