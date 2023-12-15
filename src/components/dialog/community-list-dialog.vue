@@ -107,7 +107,7 @@
   function addPosting(tabValue: string) {
     if (!isLogon.value) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("./confirm-dialog.vue"))
+        component: defineAsyncComponent(() => import("@/components/dialog/confirm-dialog.vue"))
       });
     } else {
       $q.dialog({
@@ -121,7 +121,9 @@
 
   function onItemClick(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./community-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/community-detail-dialog.vue")
+      ),
       componentProps: {
         query: { postingId: item.postingId }
       }
