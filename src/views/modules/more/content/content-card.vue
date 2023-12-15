@@ -29,7 +29,7 @@
 
   import axios, { AxiosError } from "axios";
   import { Content } from "@/interfaces/models/entities/content";
-  import { useContentInput } from "./use-content-input";
+  import { useContentInput } from "./use-content";
 
   const tab = ref("en");
   const { setContentInput } = useContentInput();

@@ -80,14 +80,6 @@
   const $q = useQuasar();
   const isDialogVisible = ref();
 
-  // const favoriteItems = ref<CategoryTypes[]>(
-  //   "siteId" in props.directory
-  //     ? LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []
-  //     : "businessId" in props.directory
-  //       ? LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []
-  //       : []
-  // );
-
   const favoriteItems = computed(() => {
     const items = ref([...props.directoryItemsList]);
 
@@ -139,7 +131,7 @@
     })) as TabItem[];
   });
 
-  const tab = ref(tabItems.value.length > 0 ? tabItems.value[0].name : null);
+  const tab = ref(tabItems.value.length > 0 ? tabItems.value[0].name : "");
 
   const setTab = (val: string) => (tab.value = val);
 
