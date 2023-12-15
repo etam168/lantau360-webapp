@@ -36,7 +36,7 @@
         if (item.directoryId == DIRECTORY_GROUPS.TIMETABLE) {
           $q.dialog({
             component: defineAsyncComponent(
-              () => import("@/components/dialog/grouped-site-list-dialog.vue")
+              () => import("@/components/dialog/category-item-list-dialog.vue")
             ),
             componentProps: {
               directory: item,
@@ -47,7 +47,7 @@
         } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
           $q.dialog({
             component: defineAsyncComponent(
-              () => import("@/components/dialog/grouped-site-list-dialog.vue")
+              () => import("@/components/dialog/category-item-list-dialog.vue")
             ),
             componentProps: {
               directory: item,
