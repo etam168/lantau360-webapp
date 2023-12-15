@@ -95,9 +95,11 @@
       });
     } else {
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
         componentProps: {
-          query: { siteId: item.siteId }
+          item: item as Site
         }
       });
     }

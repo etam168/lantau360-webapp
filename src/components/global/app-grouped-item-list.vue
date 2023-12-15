@@ -88,9 +88,11 @@
   function handleItemClick(item: DirectoryTypes) {
     if ("siteId" in item) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
         componentProps: {
-          query: { siteId: (item as Site).siteId }
+          item: item as Site
         }
       });
     } else if ("businessId" in item) {

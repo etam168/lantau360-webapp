@@ -30,6 +30,7 @@
 
   // .ts file
   import eventBus from "@/utils/event-bus";
+  import { Site } from "@/interfaces/models/entities/site";
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
@@ -60,9 +61,11 @@
 
   async function handleDialog(item: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-detail-dialog.vue")
+      ),
       componentProps: {
-        query: { siteId: item.siteId }
+        item: item as Site
       }
     });
   }
