@@ -68,7 +68,7 @@
   async function handleDialog(item: any) {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("../section/dialog/community-detail-dialog.vue")
+        () => import("@/components/dialog/community-detail-dialog.vue")
       ),
       componentProps: {
         query: { directoryId: item.communityDirectoryId }

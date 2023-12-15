@@ -33,7 +33,7 @@
       if (response.status === 200) {
         $q.dialog({
           component: defineAsyncComponent(
-            () => import("@/components/dialog/community-list-dialog.vue")
+            () => import("@/components/dialog/category-item-list-dialog.vue")
           ),
           componentProps: {
             directory: item,

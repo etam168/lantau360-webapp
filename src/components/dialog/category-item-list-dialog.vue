@@ -34,11 +34,12 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
   import eventBus from "@/utils/event-bus";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { translate } = useUtilities();
 
-  type DirectoryTypes = Business | Site;
+  type DirectoryTypes = Business | Site | Posting;
 
   const $q = useQuasar();
   const isDialogVisible = ref();
@@ -75,6 +76,7 @@
     eventBus.emit("DialogStatus", status, "SiteListDialog");
   }
   function onItemClick(item: DirectoryTypes) {
+    debugger;
     if ("siteId" in item) {
       $q.dialog({
         component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
@@ -89,6 +91,15 @@
         ),
         componentProps: {
           query: { businessId: (item as Business).businessId }
+        }
+      });
+    } else if ("postingId" in item) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/community-detail-dialog.vue")
+        ),
+        componentProps: {
+          query: { postingId: (item as Posting).postingId }
         }
       });
     }
