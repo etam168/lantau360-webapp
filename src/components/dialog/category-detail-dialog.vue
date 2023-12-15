@@ -70,7 +70,16 @@
   import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
   import { useDialogPluginComponent, LocalStorage } from "quasar";
-  import { STORAGE_KEYS } from "@/constants";
+
+  import {
+    BUSINESS_GALLERY_URL,
+    BUSINESS_URL,
+    POSTING_GALLERY_URL,
+    POSTING_URL,
+    SITE_GALLERY_URL,
+    SITE_URL,
+    STORAGE_KEYS
+  } from "@/constants";
 
   import { Business } from "@/interfaces/models/entities/business";
   import { Site } from "@/interfaces/models/entities/site";
@@ -96,21 +105,31 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(
-    props.item?.siteId
-      ? LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []
-      : props.item.businessId
-        ? LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []
-        : []
-  );
+
+  const favoriteItems = computed(() => {
+    switch (true) {
+      case "siteId" in props.item:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+      case "businessId" in props.item:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+      default:
+        return [];
+    }
+  });
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = props.item.siteId
-      ? directoryItem.value.siteId
-      : props.item.businessId
-        ? directoryItem.value.businessId
-        : null;
+    let itemIdToMatch: any = null;
+    switch (true) {
+      case "siteId" in props.item:
+        itemIdToMatch = directoryItem.value.siteId;
+        break;
+      case "businessId" in props.item:
+        itemIdToMatch = directoryItem.value.businessId;
+        break;
+      default:
+        itemIdToMatch = null;
+    }
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
@@ -134,14 +153,20 @@
         favoriteItems.value.push(favItem);
       }
 
-      LocalStorage.set(
-        props.item.siteId
-          ? STORAGE_KEYS.SITEFAVOURITES
-          : props.item.businessId
-            ? STORAGE_KEYS.BUSINESSFAVOURITES
-            : "",
-        favoriteItems.value
-      );
+      let storageKey: string = "";
+
+      switch (true) {
+        case "siteId" in props.item:
+          storageKey = STORAGE_KEYS.SITEFAVOURITES;
+          break;
+        case "businessId" in props.item:
+          storageKey = STORAGE_KEYS.BUSINESSFAVOURITES;
+          break;
+        default:
+          storageKey = "";
+      }
+
+      LocalStorage.set(storageKey, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
         siteId: directoryItem.value.siteId || null,
@@ -157,9 +182,9 @@
 
   const dialogTitle = computed(() => {
     return translate(
-      props.item.siteName || props.item.businessName,
+      props.item.siteName || props.item.businessName || props.item.postingName,
       directoryItem.value.meta,
-      "siteName" || "businessName"
+      "siteName" || "businessName" || "postingName"
     );
   });
 
@@ -176,19 +201,32 @@
   }
 
   const loadData = async () => {
-    if (props.item?.siteId || props.item?.businessId) {
+    let apiUrl: string = "";
+    let galleryUrl: string = "";
+
+    switch (true) {
+      case "siteId" in props.item:
+        apiUrl = `${SITE_URL}/${props.item.siteId}`;
+        galleryUrl = `${SITE_GALLERY_URL}/${props.item.siteId}`;
+        break;
+      case "businessId" in props.item:
+        apiUrl = `${BUSINESS_URL}/${props.item.businessId}`;
+        galleryUrl = `${BUSINESS_GALLERY_URL}/${props.item.businessId}`;
+        break;
+      case "postingId" in props.item:
+        apiUrl = `${POSTING_URL}/${props.item.postingId}`;
+        galleryUrl = `${POSTING_GALLERY_URL}/${props.item.postingId}`;
+        break;
+      default:
+        apiUrl = "";
+        galleryUrl = "";
+    }
+
+    if (apiUrl && galleryUrl) {
       try {
         const [categoryResponse, galleryResponse] = await Promise.all([
-          axios.get(
-            `${props.item.siteId ? "/api/site" : "/api/business"}/${
-              props.item?.siteId || props.item?.businessId
-            }`
-          ),
-          axios.get<GalleryImage[]>(
-            `${props.item.siteId ? "/api/site-gallery" : "/api/business-gallery"}/${
-              props.item?.siteId || props.item?.businessId
-            }`
-          )
+          axios.get(apiUrl),
+          axios.get<GalleryImage[]>(galleryUrl)
         ]);
 
         directoryItem.value = categoryResponse.data;
@@ -198,7 +236,8 @@
           (favoriteItems?.value ?? []).find(
             (item: any) =>
               (props.item.siteId && item.siteId === directoryItem.value.siteId) ||
-              (props.item.businessId && item.businessId === directoryItem.value.businessId)
+              (props.item.businessId && item.businessId === directoryItem.value.businessId) ||
+              (props.item.postingId && item.postingId === directoryItem.value.postingId)
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
