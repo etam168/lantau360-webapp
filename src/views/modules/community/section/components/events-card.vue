@@ -3,8 +3,29 @@
     <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
 
     <q-card-section class="q-pa-sm">
-      <app-item dense icon="schedule" :label="eventTime(events)" />
-      <app-item dense icon="location_on" :label="events?.subtitle1" />
+      <q-item dense class="q-py-none">
+        <q-item-section thumbnail class="q-pr-sm">
+          <q-icon color="green" name="schedule" size="xs" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label style="font-family: Baloo; font-size: 1rem">{{
+            eventTime(events)
+          }}</q-item-label>
+        </q-item-section>
+      </q-item>
+
+      <q-item dense class="q-py-none">
+        <q-item-section thumbnail class="q-pr-sm">
+          <q-icon color="green" name="location_on" size="xs" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label style="font-family: Baloo; font-size: 1rem">{{
+            events?.subtitle1
+          }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-card-section>
 
     <q-card-actions>
@@ -29,8 +50,6 @@
   import { date } from "quasar";
 
   import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
-
-  import AppItem from "@/components/widgets/app-item.vue";
 
   const props = defineProps({
     events: {

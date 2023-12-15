@@ -7,7 +7,7 @@
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ noticeTime(data?.date) }}</q-item-label>
+      <q-item-label>{{ noticeTime(data) }}</q-item-label>
       <q-item-label
         ><q-badge color="primary" class="text-white"> {{ data?.title }} </q-badge></q-item-label
       >

@@ -4,8 +4,17 @@
     <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
 
     <q-card-section class="q-pa-sm">
-      <app-item dense icon="location_on" :label="item?.subtitle1" />
-      <!-- <app-item dense icon="schedule" :label="computeBusinessHours(item)" /> -->
+      <q-item dense class="q-py-none">
+        <q-item-section thumbnail class="q-pr-sm">
+          <q-icon color="green" name="location_on" size="xs" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label style="font-family: Baloo; font-size: 1rem">{{
+            item?.subtitle1
+          }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-card-section>
 
     <q-card-actions>
@@ -28,7 +37,6 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BLOB_URL, BUSINESS_PROMOTION_GALLERY_URL } from "@/constants";
-  import AppItem from "@/components/widgets/app-item.vue";
 
   type CardItem = BusinessPromotion; // Since this component is specific to BusinessPromotion
 

@@ -35,7 +35,7 @@
   const error = ref<string | null>(null);
   const itemImage = ref();
 
-  const newsTime = (row: CommunityNews) => {
+  const newsTime = (row: any) => {
     // Check if modifiedAt is undefined or null, provide a default value
     const modifiedAt = row.modifiedAt
       ? date.formatDate(row.modifiedAt, "YYYY-MM-DD")
