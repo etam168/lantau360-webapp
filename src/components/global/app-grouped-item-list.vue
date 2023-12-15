@@ -96,10 +96,10 @@
     } else if ("businessId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
-          () => import("@/components/dialog/business-detail-dialog.vue")
+          () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          query: { businessId: (item as Business).businessId }
+          item: item as Business
         }
       });
     }

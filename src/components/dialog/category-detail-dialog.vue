@@ -67,21 +67,26 @@
 
 <script setup lang="ts">
   import axios, { AxiosError } from "axios";
-
-  import { BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { LocalStorage, useDialogPluginComponent } from "quasar";
+  import { PropType, computed, onMounted } from "vue";
+  import { ref } from "vue";
+  import { useDialogPluginComponent, LocalStorage } from "quasar";
+  import { STORAGE_KEYS } from "@/constants";
 
   import { Business } from "@/interfaces/models/entities/business";
+  import { Site } from "@/interfaces/models/entities/site";
+
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  const directoryItem = ref<Business>({} as Business);
+  type CategoryTypes = Business | Site;
+
+  const directoryItem = ref<CategoryTypes>({} as CategoryTypes);
   const { translate } = useUtilities();
 
   const props = defineProps({
-    query: {
-      type: Object as PropType<Business>,
+    item: {
+      type: Object as PropType<CategoryTypes>,
       required: true
     }
   });
@@ -91,66 +96,59 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
-
-  const favoriteItems = ref<Business[]>(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[]
+  const favoriteItems = ref<any>(
+    props.item?.siteId
+      ? LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) || []
+      : props.item.businessId
+        ? LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []
+        : []
   );
 
   const isFavourite = ref<boolean>(false);
-
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
-    const isCurrentlyFavourite = isFavourite.value;
+    const itemIdToMatch = props.item.siteId
+      ? directoryItem.value.siteId
+      : props.item.businessId
+        ? directoryItem.value.businessId
+        : null;
 
-    if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex(
-        (item: any) => item.businessId === itemIdToMatch
-      );
-      if (itemIndex !== -1) {
-        favoriteItems.value.splice(itemIndex, 1);
+    if (itemIdToMatch) {
+      const isCurrentlyFavourite = isFavourite.value;
+
+      if (isCurrentlyFavourite) {
+        const itemIndex = favoriteItems.value.findIndex(
+          (item: any) => item.siteId === itemIdToMatch || item.businessId === itemIdToMatch
+        );
+
+        if (itemIndex !== -1) {
+          favoriteItems.value.splice(itemIndex, 1);
+        }
+
+        isFavourite.value = false;
+      } else {
+        const favItem: CategoryTypes = {
+          ...(props.item as CategoryTypes)
+        };
+
+        isFavourite.value = true;
+        favoriteItems.value.push(favItem);
       }
 
-      isFavourite.value = false;
-    } else {
-      const favItem: Business = {
-        businessId: directoryItem.value.businessId,
-        businessName: directoryItem.value.businessName,
-        directoryName: directoryItem.value.directoryName,
-        contactWhatsApp: directoryItem.value.contactWhatsApp,
-        contactPhone: directoryItem.value.contactPhone,
-        contactOther: directoryItem.value.contactOther,
-        buttonText: directoryItem.value.buttonText,
-        title: directoryItem.value.title,
-        subtitle1: directoryItem.value.subtitle1,
-        subtitle2: directoryItem.value.subtitle2,
-        subtitle3: directoryItem.value.subtitle3,
-        displayMask: directoryItem.value.displayMask,
-        description: directoryItem.value.description,
-        directoryId: directoryItem.value.directoryId,
-        imagePath: directoryItem.value.imagePath,
-        iconPath: directoryItem.value.iconPath,
-        bannerPath: directoryItem.value.bannerPath,
-        hashKey: directoryItem.value.hashKey,
-        latitude: directoryItem.value.latitude,
-        longitude: directoryItem.value.longitude,
-        openTime: directoryItem.value.openTime,
-        closeTime: directoryItem.value.closeTime,
-        status: directoryItem.value.status,
-        createdAt: directoryItem.value.createdAt,
-        createdBy: directoryItem.value.createdBy,
-        modifiedAt: directoryItem.value.modifiedAt,
-        modifiedBy: directoryItem.value.modifiedBy,
-        meta: directoryItem.value.meta
-      };
+      LocalStorage.set(
+        props.item.siteId
+          ? STORAGE_KEYS.SITEFAVOURITES
+          : props.item.businessId
+            ? STORAGE_KEYS.BUSINESSFAVOURITES
+            : "",
+        favoriteItems.value
+      );
 
-      isFavourite.value = true;
-      favoriteItems.value.push(favItem);
+      eventBus.emit("favoriteUpdated", {
+        siteId: directoryItem.value.siteId || null,
+        businessId: directoryItem.value.businessId || null,
+        isFavorite: isFavourite.value
+      });
     }
-    LocalStorage.set(STORAGE_KEYS.BUSINESSFAVOURITES, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", {
-      businessId: directoryItem.value.businessId,
-      isFavorite: isFavourite.value
-    });
   };
 
   const temp = () => {
@@ -158,34 +156,49 @@
   };
 
   const dialogTitle = computed(() => {
-    return translate(directoryItem.value.businessName, directoryItem.value.meta, "businessName");
+    return translate(
+      props.item.siteName || props.item.businessName,
+      directoryItem.value.meta,
+      "siteName" || "businessName"
+    );
   });
 
-  onMounted(async () => {
+  onMounted(() => {
     loadData();
-    eventBus.on("BusinessDetailDialog", () => {
+    eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "BusinessDetailDialog");
+    eventBus.emit("DialogStatus", status, "CategoryDetailDialog");
   }
 
   const loadData = async () => {
-    if (props.query?.businessId !== undefined) {
+    if (props.item?.siteId || props.item?.businessId) {
       try {
-        const [businessResponse, galleryResponse] = await Promise.all([
-          axios.get(`${BUSINESS_URL}/${props.query?.businessId}`),
-          axios.get<GalleryImage[]>(`${BUSINESS_GALLERY_URL}/${props.query?.businessId}`)
+        const [categoryResponse, galleryResponse] = await Promise.all([
+          axios.get(
+            `${props.item.siteId ? "/api/site" : "/api/business"}/${
+              props.item?.siteId || props.item?.businessId
+            }`
+          ),
+          axios.get<GalleryImage[]>(
+            `${props.item.siteId ? "/api/site-gallery" : "/api/business-gallery"}/${
+              props.item?.siteId || props.item?.businessId
+            }`
+          )
         ]);
-        directoryItem.value = businessResponse.data;
+
+        directoryItem.value = categoryResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.businessId == directoryItem.value.businessId
+            (item: any) =>
+              (props.item.siteId && item.siteId === directoryItem.value.siteId) ||
+              (props.item.businessId && item.businessId === directoryItem.value.businessId)
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

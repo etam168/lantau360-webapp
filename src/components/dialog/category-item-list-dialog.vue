@@ -55,13 +55,33 @@
   const $q = useQuasar();
   const isDialogVisible = ref();
 
-  const favoriteItems = ref<any>(
-    "siteId" in props.directory
-      ? LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []
-      : "businessId" in props.directory
-        ? LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []
-        : []
-  );
+  // const favoriteItems = ref<CategoryTypes[]>(
+  //   "siteId" in props.directory
+  //     ? LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []
+  //     : "businessId" in props.directory
+  //       ? LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []
+  //       : []
+  // );
+
+  const favoriteItems = computed(() => {
+    const items = ref([...props.directoryItemsList]);
+
+    const poppedItem = items.value.pop();
+
+    // Use if statement to handle 'undefined'
+    if (poppedItem !== undefined) {
+      switch (true) {
+        case "siteId" in poppedItem:
+          return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+        case "businessId" in poppedItem:
+          return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+        default:
+          return [];
+      }
+    } else {
+      return [];
+    }
+  });
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;
@@ -86,18 +106,20 @@
     debugger;
     if ("siteId" in item) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
         componentProps: {
-          query: { siteId: (item as Site).siteId }
+          item: item as Site
         }
       });
     } else if ("businessId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
-          () => import("@/components/dialog/business-detail-dialog.vue")
+          () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          query: { businessId: (item as Business).businessId }
+          item: item as Business
         }
       });
     } else if ("postingId" in item) {

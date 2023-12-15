@@ -25,6 +25,7 @@
   import { useQuasar } from "quasar";
 
   // .ts file
+  import { Business } from "@/interfaces/models/entities/business";
   import eventBus from "@/utils/event-bus";
   import useDataTable from "@/composable/use-data-table";
 
@@ -56,10 +57,10 @@
   async function handleDialog(item: any) {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/business-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog.vue")
       ),
       componentProps: {
-        query: { businessId: item.businessId }
+        item: item as Business
       }
     });
   }
