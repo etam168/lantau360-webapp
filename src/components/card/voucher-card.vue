@@ -25,9 +25,11 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { BLOB_URL, BUSINESS_VOUCHER_GALLERY_URL } from "@/constants";
+  import { useQuasar } from "quasar";
 
   // Assuming AppItem is a component you would use for displaying certain item properties
   // import AppItem from "@/components/widgets/app-item.vue";
+  const $q = useQuasar();
 
   const props = defineProps({
     item: {
@@ -42,8 +44,14 @@
   const itemImage = ref<string | null>(null);
 
   const onItemClick = () => {
-    // Assuming `item` is the data you want to emit with the event
-    // emit("xclick", props.item);
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/voucher-detail-dialog.vue")
+      ),
+      componentProps: {
+        query: { businessVoucherId: props.item.businessVoucherId }
+      }
+    });
   };
 
   onMounted(() => {

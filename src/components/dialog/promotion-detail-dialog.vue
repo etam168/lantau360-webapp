@@ -76,7 +76,7 @@
   //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { BusinessPromotion } from "@/interfaces/models/entities/businessPromotion";
+  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 

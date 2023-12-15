@@ -37,9 +37,11 @@
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BLOB_URL, BUSINESS_PROMOTION_GALLERY_URL } from "@/constants";
+  import { useQuasar } from "quasar";
 
   type CardItem = BusinessPromotion; // Since this component is specific to BusinessPromotion
 
+  const $q = useQuasar();
   const props = defineProps({
     item: {
       type: Object as PropType<BusinessPromotion>,
@@ -53,8 +55,14 @@
   const itemImage = ref<string | null>(null);
 
   const onItemClick = () => {
-    // Assuming `item` is the data you want to emit with the event
-    // emit("xclick", props.item);
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/promotion-detail-dialog.vue")
+      ),
+      componentProps: {
+        query: { businessPromotionId: props.item.businessPromotionId }
+      }
+    });
   };
 
   onMounted(() => {
