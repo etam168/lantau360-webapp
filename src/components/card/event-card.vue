@@ -25,6 +25,9 @@
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
+  import { useQuasar } from "quasar";
+
+  const $q = useQuasar();
 
   const props = defineProps({
     item: {
@@ -39,8 +42,12 @@
   const itemImage = ref<string | null>(null);
 
   const onItemClick = () => {
-    // Assuming `item` is the data you want to emit with the event
-    // emit("xclick", props.item);
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/event-detail-dialog.vue")),
+      componentProps: {
+        query: { communityEventId: props.item.communityEventId }
+      }
+    });
   };
 
   onMounted(() => {

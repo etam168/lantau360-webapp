@@ -42,8 +42,10 @@
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { Site } from "@/interfaces/models/entities/site";
+  import { useQuasar } from "quasar";
 
-  const emit = defineEmits(["item-click"]);
+  const $q = useQuasar();
+
   type DirectoryTypes = Business | Site;
 
   const props = defineProps({
@@ -84,6 +86,22 @@
   }
 
   function handleItemClick(item: DirectoryTypes) {
-    emit("item-click", item);
+    if ("siteId" in item) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/components/dialog/site-item-dialog.vue")),
+        componentProps: {
+          query: { siteId: (item as Site).siteId }
+        }
+      });
+    } else if ("businessId" in item) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/business-detail-dialog.vue")
+        ),
+        componentProps: {
+          query: { businessId: (item as Business).businessId }
+        }
+      });
+    }
   }
 </script>

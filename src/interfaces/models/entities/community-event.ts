@@ -1,6 +1,7 @@
 export interface CommunityEvent {
   communityEventId: number;
   communityEventName: string;
+  directoryName: string;
   contactWhatsApp: string;
   contactPhone: string;
   contactOther: string;
