@@ -58,7 +58,7 @@
         } else {
           $q.dialog({
             component: defineAsyncComponent(
-              () => import("@/components/dialog/site-list-dialog.vue")
+              () => import("@/components/dialog/category-item-list-dialog.vue")
             ),
             componentProps: {
               directory: item,
