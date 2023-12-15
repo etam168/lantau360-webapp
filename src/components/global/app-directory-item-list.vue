@@ -76,8 +76,6 @@
         );
       case "siteId" in item:
         return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
-      // case "post" in item:
-      //   return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
       default:
         // No known type matched, or it's not a favorite item
         return false;

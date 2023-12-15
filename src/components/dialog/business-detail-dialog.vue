@@ -27,7 +27,6 @@
             <q-item>
               <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
               <q-space />
-
               <q-btn color="primary" text-color="white" icon="phone" round />
               <q-space />
               <q-btn
@@ -38,7 +37,9 @@
                 @click="onBtnFavClick"
               />
             </q-item>
+
             <q-separator class="q-mt-sm" />
+
             <q-item>
               <q-item-section>
                 <q-item-label class="q-mt-sm"
@@ -65,26 +66,22 @@
 </template>
 
 <script setup lang="ts">
+  import axios, { AxiosError } from "axios";
+
   import { BUSINESS_GALLERY_URL, BUSINESS_URL, STORAGE_KEYS } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import axios, { AxiosError } from "axios";
-  import { useDialogPluginComponent } from "quasar";
-  import { PropType, computed, onMounted } from "vue";
-  import { ref } from "vue";
-  //import { useRouter } from "vue-router";
+  import { LocalStorage, useDialogPluginComponent } from "quasar";
 
-  import { LocalStorage } from "quasar";
   import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
   const directoryItem = ref<Business>({} as Business);
   const { translate } = useUtilities();
 
   const props = defineProps({
     query: {
-      type: Object as PropType<any>,
+      type: Object as PropType<Business>,
       required: true
     }
   });
@@ -93,11 +90,14 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []);
+
+  const favoriteItems = ref<Business[]>(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[]
+  );
 
   const isFavourite = ref<boolean>(false);
+
   const onBtnFavClick = () => {
     const itemIdToMatch = directoryItem.value.businessId;
     const isCurrentlyFavourite = isFavourite.value;
@@ -161,7 +161,7 @@
     return translate(directoryItem.value.businessName, directoryItem.value.meta, "businessName");
   });
 
-  onMounted(() => {
+  onMounted(async () => {
     loadData();
     eventBus.on("BusinessDetailDialog", () => {
       isDialogVisible.value = false;
@@ -201,8 +201,3 @@
     }
   };
 </script>
-<style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style>
