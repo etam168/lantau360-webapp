@@ -17,11 +17,15 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { DIRECTORY_SITES_URL } from "@/constants";
+  // import { DIRECTORY_SITES_URL } from "@/constants";
 
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object as PropType<Directory[]>,
+      required: true
+    },
+    directoryBaseUrl: {
+      type: String,
       required: true
     }
   });
@@ -30,7 +34,7 @@
 
   const handleDialog = async (item: Directory) => {
     try {
-      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`);
+      const response = await axios.get(`${props.directoryBaseUrl}/${item.directoryId}`);
       debugger;
       if (response.status === 200) {
         const groupByKey = item.meta?.groupByKey ?? null; // Default to null or undefined if not set
