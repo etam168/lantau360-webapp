@@ -42,7 +42,7 @@
   const isDialogVisible = ref();
 
   const ContentInput = defineAsyncComponent({
-    loader: () => import("./content-input.vue"),
+    loader: () => import("./content-card.vue"),
     delay: 500
   });
 

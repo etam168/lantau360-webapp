@@ -30,45 +30,29 @@
 
   const handleDialog = async (item: Directory) => {
     try {
-      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`); // Make API call using Axios
-      // Assuming a successful response
+      const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`);
+
       if (response.status === 200) {
-        if (item.directoryId == DIRECTORY_GROUPS.TIMETABLE) {
-          $q.dialog({
-            component: defineAsyncComponent(
-              () => import("@/components/dialog/category-item-list-dialog.vue")
-            ),
-            componentProps: {
-              directory: item,
-              directoryItemsList: response.data,
-              groupBykey: "subtitle3"
-            }
-          });
-        } else if (item.directoryId == DIRECTORY_GROUPS.TAXI) {
-          $q.dialog({
-            component: defineAsyncComponent(
-              () => import("@/components/dialog/category-item-list-dialog.vue")
-            ),
-            componentProps: {
-              directory: item,
-              directoryItemsList: response.data,
-              groupBykey: "title"
-            }
-          });
-        } else {
-          $q.dialog({
-            component: defineAsyncComponent(
-              () => import("@/components/dialog/category-item-list-dialog.vue")
-            ),
-            componentProps: {
-              directory: item,
-              directoryItemsList: response.data
-            }
-          });
+        let groupByKey = null; // Default to null or undefined if not set
+
+        if (item.directoryId === DIRECTORY_GROUPS.TIMETABLE) {
+          groupByKey = "subtitle3";
+        } else if (item.directoryId === DIRECTORY_GROUPS.TAXI) {
+          groupByKey = "title";
         }
+
+        $q.dialog({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/category-item-list-dialog.vue")
+          ),
+          componentProps: {
+            directory: item,
+            directoryItemsList: response.data,
+            groupByKey // This will be null if not set by the conditions above
+          }
+        });
       }
     } catch (error) {
-      // Handle error if the API call fails
       console.error("Error fetching data: ", error);
     }
   };

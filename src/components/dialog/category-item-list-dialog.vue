@@ -57,7 +57,7 @@
   import eventBus from "@/utils/event-bus";
 
   type CategoryTypes = Business | Site | Posting;
-  type GroupKeys = keyof Business | Site;
+  type GroupKeys = keyof CategoryTypes;
 
   const props = defineProps({
     directoryItemsList: {
@@ -81,22 +81,18 @@
   const isDialogVisible = ref();
 
   const favoriteItems = computed(() => {
-    const items = ref([...props.directoryItemsList]);
-
-    const poppedItem = items.value.pop();
-
-    // Use if statement to handle 'undefined'
-    if (poppedItem !== undefined) {
-      switch (true) {
-        case "siteId" in poppedItem:
-          return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
-        case "businessId" in poppedItem:
-          return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
-        default:
-          return [];
-      }
-    } else {
+    if (props.directoryItemsList.length === 0) {
       return [];
+    }
+
+    const firstItem = props.directoryItemsList[0];
+    switch (true) {
+      case "siteId" in firstItem:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+      case "businessId" in firstItem:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+      default:
+        return [];
     }
   });
 
@@ -147,7 +143,6 @@
   }
 
   function onItemClick(item: CategoryTypes) {
-    debugger;
     if ("siteId" in item) {
       $q.dialog({
         component: defineAsyncComponent(

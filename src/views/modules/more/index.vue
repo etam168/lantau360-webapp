@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <app-page-title :title="$t('more.title')"></app-page-title>
+
     <q-card-section class="q-pb-none">
       <q-item class="shadow-1 q-mb-md q-pl-sm">
         <q-item-section top avatar>
@@ -115,7 +116,7 @@
 
   import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
   import { useUserStore } from "@/stores/user";
-  import { useContentInput } from "./content/use-content-input";
+  import { useContentInput } from "./content/use-content";
 
   const { handleUpdateMemberAvatar } = useContentInput();
   const userStore = useUserStore();
@@ -187,8 +188,6 @@
     userStore.LogOut();
     LocalStorage.set(STORAGE_KEYS.IsLogOn, false);
   };
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const computePath = computed(() => {
     return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
