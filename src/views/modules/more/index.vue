@@ -41,7 +41,6 @@
   const $q = useQuasar();
 
   const data = ref<Content | null>(null);
-  //const error = ref<string | null>(null);
 
   const menuItems = [
     { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
