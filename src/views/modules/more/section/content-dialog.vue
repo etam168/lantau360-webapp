@@ -10,12 +10,25 @@
         :model-value="isDialogVisible"
         maximized
       >
-        <q-card style="max-width: 1024px">
-          <q-layout view="hHh lpR fFf">
-            <app-dialog-title>{{ $t(`content.title.${contentName}`) }}</app-dialog-title>
-            <content-input :contentName="contentName" />
-          </q-layout>
-        </q-card>
+        <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+          <q-header class="bg-transparent text-dark">
+            <app-dialog-title>{{
+              $t(`content.title.${contentDataValue.contentName}`)
+            }}</app-dialog-title>
+          </q-header>
+
+          <q-page-container>
+            <q-page>
+              <q-item>
+                <div
+                  v-html="
+                    translate(contentDataValue.contentData, contentDataValue.meta, 'contentData')
+                  "
+                ></div
+              ></q-item>
+            </q-page>
+          </q-page-container>
+        </q-layout>
       </q-dialog>
     </template>
     <template #fallback>
@@ -29,34 +42,18 @@
 <script setup lang="ts">
   // Other Import
   import { useDialogPluginComponent } from "quasar";
+  import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  const props = defineProps({
-    contentNameValue: {
-      type: String as PropType<any>,
-      required: true
+  defineProps({
+    contentDataValue: {
+      type: Object as PropType<any>
     }
   });
 
+  const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
-
-  const ContentInput = defineAsyncComponent({
-    loader: () => import("./content-card.vue"),
-    delay: 500
-  });
-
-  // Create a computed property for contentName
-  const contentName = computed(() => {
-    switch (props.contentNameValue) {
-      case "Terms":
-      case "Privacy":
-      case "About":
-        return props.contentNameValue;
-      default:
-        return "default";
-    }
-  });
 
   onMounted(() => {
     eventBus.on("ContentDialog", () => {

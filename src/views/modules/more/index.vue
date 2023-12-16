@@ -34,11 +34,14 @@
 
 <script setup lang="ts">
   import { useQuasar } from "quasar";
-
+  import { Content } from "@/interfaces/models/entities/content";
   import { ContentOption } from "@/constants";
   import LoginSignup from "./section/login-signup.vue";
 
   const $q = useQuasar();
+
+  const data = ref<Content | null>(null);
+  //const error = ref<string | null>(null);
 
   const menuItems = [
     { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
@@ -47,7 +50,7 @@
     { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY }
   ];
 
-  function showContentDialog(item: any) {
+  async function showContentDialog(item: any) {
     let contentKey;
 
     switch (item.resKey) {
@@ -66,14 +69,22 @@
       default:
         return; // Exit the function for unknown cases
     }
+    try {
+      const url = `/Content/ContentByName/${contentKey}`;
+      const response = await axios.get<Content>(url);
 
-    if (contentKey) {
-      $q.dialog({
-        component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
-        componentProps: {
-          contentNameValue: contentKey
-        }
-      });
+      data.value = response.data;
+      if (response.status === 200) {
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
+          componentProps: {
+            contentDataValue: data.value
+          }
+        });
+      }
+    } catch (error) {
+      // Handle error if the API call fails
+      console.error("Error fetching data: ", error);
     }
   }
 
