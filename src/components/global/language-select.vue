@@ -36,10 +36,6 @@
   import { computed, watch } from "vue";
   import { useI18n } from "vue-i18n";
 
-  const emit = defineEmits<{
-    (event: "on-language"): void;
-  }>();
-
   const { locale } = useI18n({ useScope: "global" });
 
   const languageOptions = [
@@ -55,7 +51,6 @@
 
   const changeLanguage = (language: string) => {
     locale.value = language;
-    emit("on-language");
   };
 
   watch(locale, (value: any) => {

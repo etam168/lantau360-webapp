@@ -1,47 +1,115 @@
 import { ref } from "vue";
-import { FetchStatus } from "@/constants";
-import { Content } from "@/interfaces/content";
+import axios, { AxiosError } from "axios";
+import { useUtilities } from "@/composable/use-utilities";
+import { Content } from "@/interfaces/models/entities/content";
+import { useUserStore } from "@/stores/user";
+import { BASE_URL } from "@/constants";
 
-import api from "@/api/crud";
+const { notify } = useUtilities();
+const userStore = useUserStore();
 
-export default function useContent() {
-  const status = ref(FetchStatus.IDLE);
-
-  async function createUpdateContent(data: any, name: string) {
-    try {
-      const url = `/Content/CreateOrUpdateContent/${name}`;
-      await api.update(url, data);
-    } catch (err) {
-      status.value = FetchStatus.ERROR;
-      throw new Error(err);
-    }
-  }
-
-  async function getContentByName(name: string) {
-    try {
-      const { data } = await api.get(`/Content/ContentByName/${name}`);
-      await new Promise(resolve => setTimeout(resolve, 300));
-
-      return data;
-    } catch (err) {
-      status.value = FetchStatus.ERROR;
-      throw { message: err.message, status: err.response.status };
-    }
-  }
-
-  function getMeta(content: Content) {
-    // Ensure content.value.meta is an object and not null
-    const empty = {} as Record<string, unknown>;
-    const meta = typeof content.meta == "object" ? content.meta ?? empty : empty;
-
-    return meta;
-  }
-
+const newInput = () => {
   return {
-    status,
+    modifiedAt: new Date()
+  } as Content;
+};
 
-    createUpdateContent,
-    getContentByName,
-    getMeta
+const error = ref<string | null>(null);
+
+export function useContentInput() {
+  const contentInput = ref<Content>(newInput());
+
+  function setContentInput(val: Content) {
+    //contentInput.value = extend(true, {}, val);
+    contentInput.value.contentId = val?.contentId;
+    contentInput.value.contentName = val?.contentName;
+    contentInput.value.contentData = val?.contentData;
+    contentInput.value.createdBy = val?.createdBy;
+    contentInput.value.createdAt = val?.createdAt;
+    contentInput.value.modifiedBy = val?.modifiedBy;
+    contentInput.value.modifiedAt = val?.modifiedAt;
+    contentInput.value.meta = val?.meta;
+  }
+
+  const loading = ref(false);
+  function successCallback(successMessage: string) {
+    notify(successMessage, "positive");
+    loading.value = false;
+  }
+
+  async function loadContentData(queryParam: string) {
+    try {
+      const response = await axios.get<Content>(`/Content/ContentByName/${queryParam}`);
+      contentInput.value = { ...response.data };
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          notify("Not found", "negative");
+        } else {
+          notify("An error occurred", "negative");
+        }
+      } else {
+        notify("An unexpected error occurred", "negative");
+      }
+    }
+  }
+
+  async function updateContent(): Promise<boolean> {
+    // Update Content record
+    contentInput.value.modifiedBy = parseInt(userStore.userId);
+    const url = `/Content/CreateOrUpdateContent/${encodeURIComponent(
+      contentInput.value.contentName
+    )}`;
+
+    return axios
+      .put(url, contentInput.value)
+      .then(() => {
+        const successMessage = "Submitted";
+        successCallback(successMessage);
+        return true;
+      })
+      .catch(errors => {
+        if (errors.message == "Network Error") {
+          notify("No Internet Connection", "negative");
+        } else {
+          notify(errors.message, "negative");
+        }
+        return false;
+      });
+  }
+
+  async function handleUpdateMemberAvatar(newAvatar: any) {
+    const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
+
+    const formData = new FormData();
+    formData.append("image", newAvatar);
+
+    await axios
+      .post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      .then(response => {
+        if (response.status == 200) {
+          userStore.avatar = response.data;
+        }
+      })
+      .catch(err => {
+        if (err instanceof AxiosError) {
+          if (err.response && err.response.status === 404) {
+            error.value = "Not found";
+          } else {
+            error.value = "An error occurred";
+          }
+        } else {
+          error.value = "An unexpected error occurred";
+        }
+      });
+  }
+  return {
+    contentInput,
+    loadContentData,
+    updateContent,
+    setContentInput,
+    handleUpdateMemberAvatar
   };
 }
