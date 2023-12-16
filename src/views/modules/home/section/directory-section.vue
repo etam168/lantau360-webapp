@@ -48,7 +48,7 @@
           componentProps: {
             directory: item,
             directoryItemsList: response.data,
-            groupByKey // This will be null if not set by the conditions above
+            groupBykey: groupByKey // This will be null if not set by the conditions above
           }
         });
       }

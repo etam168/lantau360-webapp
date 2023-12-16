@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
   // .ts file
-  import { CommunityDirectory } from "@/interfaces/models/entities/communityDirectory"; // import the CommunityDirectory
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory"; // import the CommunityDirectory
   import { Directory } from "@/interfaces/models/entities/directory";
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
