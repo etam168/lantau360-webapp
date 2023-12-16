@@ -17,7 +17,7 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { DIRECTORY_SITES_URL, DIRECTORY_GROUPS } from "@/constants";
+  import { DIRECTORY_SITES_URL } from "@/constants";
 
   defineProps({
     data: {
@@ -31,15 +31,15 @@
   const handleDialog = async (item: Directory) => {
     try {
       const response = await axios.get(`${DIRECTORY_SITES_URL}/${item.directoryId}`);
-
+      debugger;
       if (response.status === 200) {
-        let groupByKey = null; // Default to null or undefined if not set
+        const groupByKey = item.meta?.groupByKey ?? null; // Default to null or undefined if not set
 
-        if (item.directoryId === DIRECTORY_GROUPS.TIMETABLE) {
-          groupByKey = "subtitle3";
-        } else if (item.directoryId === DIRECTORY_GROUPS.TAXI) {
-          groupByKey = "title";
-        }
+        // if (item.directoryId === DIRECTORY_GROUPS.TIMETABLE) {
+        //   groupByKey = "subtitle3";
+        // } else if (item.directoryId === DIRECTORY_GROUPS.TAXI) {
+        //   groupByKey = "title";
+        // }
 
         $q.dialog({
           component: defineAsyncComponent(
