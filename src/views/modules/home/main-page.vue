@@ -10,11 +10,11 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="all">
-        <app-directory-section :data="directoryData" :directoryBaseUrl="DIRECTORY_SITES_URL" />
+        <app-directory-section :data="directoryData" />
       </q-tab-panel>
 
       <q-tab-panel name="info">
-        <app-directory-section :data="infoData" :directoryBaseUrl="DIRECTORY_SITES_URL" />
+        <app-directory-section :data="infoData" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
@@ -36,8 +36,6 @@
   // Custom Components
   // import DirectorySection from "./section/directory-section.vue";
   import WeatherSection from "./section/weather-section.vue";
-
-  import { DIRECTORY_SITES_URL } from "@/constants";
 
   const { isNthBitSet } = useUtilities();
   const { t } = useI18n({ useScope: "global" });

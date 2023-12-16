@@ -17,15 +17,12 @@
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  // import { DIRECTORY_SITES_URL } from "@/constants";
+  import { DIRECTORY_GROUPS } from "@/constants";
+  import { DIRECTORY_SITES_URL, DIRECTORY_BUSINESS_URL } from "@/constants";
 
-  const props = defineProps({
+  defineProps({
     data: {
       type: Object as PropType<Directory[]>,
-      required: true
-    },
-    directoryBaseUrl: {
-      type: String,
       required: true
     }
   });
@@ -34,16 +31,15 @@
 
   const handleDialog = async (item: Directory) => {
     try {
-      const response = await axios.get(`${props.directoryBaseUrl}/${item.directoryId}`);
-      debugger;
+      let directoryBaseUrl = null;
+      if (item.groupId == DIRECTORY_GROUPS.HOME) {
+        directoryBaseUrl = DIRECTORY_SITES_URL;
+      } else if (item.groupId == DIRECTORY_GROUPS.BUSINESS) {
+        directoryBaseUrl = DIRECTORY_BUSINESS_URL;
+      }
+      const response = await axios.get(`${directoryBaseUrl}/${item.directoryId}`);
       if (response.status === 200) {
         const groupByKey = item.meta?.groupByKey ?? null; // Default to null or undefined if not set
-
-        // if (item.directoryId === DIRECTORY_GROUPS.TIMETABLE) {
-        //   groupByKey = "subtitle3";
-        // } else if (item.directoryId === DIRECTORY_GROUPS.TAXI) {
-        //   groupByKey = "title";
-        // }
 
         $q.dialog({
           component: defineAsyncComponent(

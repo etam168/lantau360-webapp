@@ -18,11 +18,7 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <app-directory-section
-          :data="directoriesData"
-          :directoryBaseUrl="DIRECTORY_BUSINESS_URL"
-          class="q-my-sm"
-        />
+        <app-directory-section :data="directoriesData" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
@@ -39,7 +35,6 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
-  import { DIRECTORY_BUSINESS_URL } from "@/constants";
 
   // Custom Components
 
