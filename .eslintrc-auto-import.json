@@ -78,6 +78,7 @@
     "useEventBus": true,
     "useMember": true,
     "useShowCrudDialogs": true,
-    "useUtilities": true
+    "useUtilities": true,
+    "useContentInput": true
   }
 }

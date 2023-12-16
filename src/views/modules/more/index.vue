@@ -104,7 +104,7 @@
         </q-item-section>
 
         <q-item-section side v-if="item.resKey == 'language'">
-          <language-select @on-language="onLanguageChange" />
+          <language-select />
         </q-item-section>
       </q-item>
     </q-card-section>
@@ -116,7 +116,6 @@
 
   import { BLOB_URL, ContentOption, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
   import { useUserStore } from "@/stores/user";
-  import { useContentInput } from "./content/use-content";
 
   const { handleUpdateMemberAvatar } = useContentInput();
   const userStore = useUserStore();
@@ -141,10 +140,6 @@
     { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY }
   ];
 
-  function onLanguageChange() {
-    // emit("update-language", locale.value);
-  }
-
   function showContentDialog(item: any) {
     let contentKey;
 
@@ -167,7 +162,7 @@
 
     if (contentKey) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("./content/index.vue")),
+        component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
         componentProps: {
           contentNameValue: contentKey
         }
