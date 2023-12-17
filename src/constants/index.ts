@@ -1,7 +1,5 @@
 export const ageGroups = ["13-18", "19-29", "30-39", "40-49", "50-59", "51-60", "Above 60"];
 
-export const AppVersion = "1.0.0";
-
 export const FetchStatus = {
   IDLE: "IDLE",
   RUNNING: "RUNNING",
@@ -96,8 +94,8 @@ export const AREA_URL = `${BASE_URL}/Area/Area`;
 export const AVAILABLE_AREA_URL = `${BASE_URL}/Area/GetAvailableAreas`;
 
 export const DIRECTORY_GROUPS = {
-  HOME: 1,
-  BUSINESS: 2,
+  HOME: [1, 3],
+  BUSINESS: [2, 4],
   PROMOTIONS: 108,
   LATEST_OFFERS: 100,
   COMMUNITY: 7,
@@ -108,15 +106,21 @@ export const DIRECTORY_GROUPS = {
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
   ATTRACTION_URL: `${BASE_URL}/Site/ByDirectoryId/1`,
-  BUSINESS_DIRECTORY: `${BASE_URL}/Directory/DirectoryGroupsData/${DIRECTORY_GROUPS.BUSINESS}`,
+  BUSINESS_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/2`,
   BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`,
   COMMUNITY_DIRECTORY: `${BASE_URL}/CommunityDirectory`,
   COMMUNITY_EVENT: `${BASE_URL}/CommunityEvent`,
   COMMUNITY_NEWS: `${BASE_URL}/CommunityNews`,
   COMMUNITY_NOTICE: `${BASE_URL}/CommunityNotice`,
-  MAIN_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData`,
-  WEATHER_URL: `${BASE_URL}/Weather`
+  SITE_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/1`,
+  WEATHER_URL: `${BASE_URL}/Weather`,
+
+  DIRECTORY_LIST: {
+    BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
+    POSTING: `${BASE_URL}/Posting/ByDirectoryId`,
+    SITE: `${BASE_URL}/Site/ByDirectoryId`
+  }
 };
 
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
@@ -124,7 +128,6 @@ export const SITE_URL = `${BASE_URL}/Site/SiteById`;
 export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
 export const DIRECTORY_URL = `${BASE_URL}/Directory`;
 
-export const COMMUNITY_POSTING_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 export const POSTING_GALLERY_URL = `${BASE_URL}/PostingImage/GetPostingImages`;
 export const COMMUNITY_NEWS_GALLERY_URL = `${BASE_URL}/CommunityNewsImage/GetCommunityNewsImages`;
 export const COMMUNITY_NOTICE_GALLERY_URL = `${BASE_URL}/CommunityNoticeImage/GetCommunityNoticeImages`;

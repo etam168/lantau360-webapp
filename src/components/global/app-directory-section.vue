@@ -1,8 +1,8 @@
 <template>
   <div class="row q-gutter-y-md">
     <app-directory-item
-      v-for="item in data"
-      :key="item.directoryId"
+      v-for="(item, index) in data"
+      :key="index"
       :item="item"
       class="col-3"
       @on-click="throttledHandleDialog"
@@ -11,35 +11,43 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, defineAsyncComponent } from "vue";
+  // Quasar Import
   import { throttle, useQuasar } from "quasar";
 
   // .ts file
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { DIRECTORY_GROUPS } from "@/constants";
-  import { DIRECTORY_SITES_URL, DIRECTORY_BUSINESS_URL } from "@/constants";
+  import { DIRECTORY_GROUPS, URL } from "@/constants";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+
+  type DirectoryTypes = Directory | CommunityDirectory;
 
   defineProps({
     data: {
-      type: Object as PropType<Directory[]>,
+      type: Object as PropType<DirectoryTypes[]>,
       required: true
     }
   });
 
   const $q = useQuasar();
 
-  const handleDialog = async (item: Directory) => {
+  const handleDialog = async (item: DirectoryTypes) => {
     try {
-      let directoryBaseUrl = null;
-      if (item.groupId == DIRECTORY_GROUPS.HOME) {
-        directoryBaseUrl = DIRECTORY_SITES_URL;
-      } else if (item.groupId == DIRECTORY_GROUPS.BUSINESS) {
-        directoryBaseUrl = DIRECTORY_BUSINESS_URL;
-      }
-      const response = await axios.get(`${directoryBaseUrl}/${item.directoryId}`);
+      const directoryListUrl = (() => {
+        switch (true) {
+          case "communityDirectoryId" in item:
+            return `${URL.DIRECTORY_LIST.POSTING}/${item.communityDirectoryId}`;
+          case "groupId" in item && DIRECTORY_GROUPS.HOME.includes(item.groupId):
+            return `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
+          case "groupId" in item && DIRECTORY_GROUPS.BUSINESS.includes(item.groupId):
+            return `${URL.DIRECTORY_LIST.BUSINESS}/${item.directoryId}`;
+          default:
+            throw new Error("Unknown directory type");
+        }
+      })();
+
+      const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        const groupByKey = item.meta?.groupByKey ?? null; // Default to null or undefined if not set
+        const groupByKey = item.meta?.groupByKey ?? null;
 
         $q.dialog({
           component: defineAsyncComponent(
@@ -48,9 +56,11 @@
           componentProps: {
             directory: item,
             directoryItemsList: response.data,
-            groupBykey: groupByKey // This will be null if not set by the conditions above
+            groupByKey // Corrected the typo here
           }
         });
+      } else {
+        console.error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -58,6 +68,5 @@
   };
 
   // Throttle the handleDialog function
-  // Here we're specifying a 500ms throttle period. Adjust as needed.
-  const throttledHandleDialog = throttle(handleDialog, 1000);
+  const throttledHandleDialog = throttle(handleDialog, 2000);
 </script>

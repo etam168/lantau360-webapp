@@ -36,8 +36,6 @@
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 
-  // Custom Components
-
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
@@ -94,7 +92,7 @@
         axios.get(`${URL.ADVERTISEMENT}`),
         axios.get(`${URL.BUSINESS_PROMOTION}`),
         axios.get(`${URL.BUSINESS_VOUCHER}`),
-        axios.get<Directory>(`${URL.BUSINESS_DIRECTORY}`)
+        axios.get<Directory[]>(`${URL.BUSINESS_DIRECTORIES}`)
       ]);
 
     advertisements.value = respAdvertisement.data;

@@ -13,6 +13,7 @@ declare module 'vue' {
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
     AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
+    AppDirectorySection: typeof import('./components/global/app-directory-section.vue')['default']
     AppGroupedItemList: typeof import('./components/global/app-grouped-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     AppRowItemList: typeof import('./components/global/app-row-item-list.vue')['default']

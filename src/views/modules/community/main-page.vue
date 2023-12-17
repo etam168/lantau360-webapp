@@ -22,17 +22,15 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <directory-section :data="directories" class="q-my-sm" />
+        <app-directory-section :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
 </template>
 
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
-  import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
 
   // .ts file
@@ -40,12 +38,9 @@
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
+  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
-
-  // Custom Components
-  import DirectorySection from "./section/directory-section.vue";
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
@@ -56,7 +51,6 @@
   const news = ref();
   const notices = ref();
   const dialogStack = ref<string[]>([]);
-
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);

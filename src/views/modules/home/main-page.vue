@@ -26,7 +26,7 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { URL, DIRECTORY_GROUPS } from "@/constants";
+  import { URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
@@ -34,7 +34,6 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  // import DirectorySection from "./section/directory-section.vue";
   import WeatherSection from "./section/weather-section.vue";
 
   const { isNthBitSet } = useUtilities();
@@ -101,7 +100,7 @@
     const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
       axios.get<Site[]>(URL.ATTRACTION_URL),
       axios.get<Weather>(URL.WEATHER_URL),
-      axios.get<Directory[]>(`${URL.MAIN_DIRECTORIES}/${DIRECTORY_GROUPS.HOME}`)
+      axios.get<Directory[]>(`${URL.SITE_DIRECTORIES}`)
     ]);
 
     attractions.value = attractionResponse.data;
