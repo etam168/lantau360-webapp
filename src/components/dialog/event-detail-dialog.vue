@@ -15,14 +15,10 @@
 
       <q-page-container>
         <q-page>
+          <q-item class="q-items-center q-pa-none">
+            <gallery-carousel-image class="col-12 q-items-center" :gallery-images="galleryItems" />
+          </q-item>
           <q-list padding class="q-mx-sm q-pa-none">
-            <q-item class="q-items-center q-pa-xs">
-              <gallery-carousel-image
-                class="col-12 q-items-center"
-                :gallery-images="galleryItems"
-              />
-            </q-item>
-
             <q-item>
               <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
               <q-space />
