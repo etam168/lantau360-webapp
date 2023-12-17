@@ -23,62 +23,10 @@
           />
           <app-tab-panels v-model="tab">
             <q-tab-panel name="muiwo">
-              <q-item class="text-center">
-                <q-item-section>
-                  <q-item-label>From Mui Wo</q-item-label>
-                  <q-item-label caption lines="2">
-                    Mondays to Saturdays (Except Public Holidays)</q-item-label
-                  >
-                </q-item-section>
-              </q-item>
-              <q-item class="q-pa-none">
-                <q-item-section>
-                  <q-btn
-                    v-for="time in muiWoTocCentralTimeDeparture"
-                    :key="time"
-                    class="btn-fixed-width button-margin"
-                    :label="time"
-                  />
-                </q-item-section>
-                <q-item-section>
-                  <q-btn
-                    v-for="time in muiWoTocCentralTimeArrived"
-                    :key="time"
-                    class="btn-fixed-width button-margin"
-                    :label="time"
-                  />
-                </q-item-section>
-
-                <q-item-section>
-                  <q-btn
-                    v-for="time in muiWoTocCentralTimeReturn"
-                    :key="time"
-                    class="btn-fixed-width button-margin"
-                    :label="time"
-                  />
-                </q-item-section>
-              </q-item>
-
-              <q-item>
-                <q-item-section>
-                  <!-- Text -->
-                  <div>
-                    Ticket gates will be suspended according to the above schedule (except tickets
-                    sold out)
-                  </div>
-                </q-item-section>
-              </q-item>
-
-              <q-item dense v-for="routeTime in routeTimeDetail" :key="routeTime.text">
-                <q-item-section avatar>
-                  <q-icon color="primary" :name="routeTime.icon" />
-                </q-item-section>
-
-                <q-item-section>{{ routeTime.text }}</q-item-section>
-              </q-item>
+              <q-img :src="fromMuiWo" />
             </q-tab-panel>
 
-            <q-tab-panel name="central"> CENTRAL </q-tab-panel>
+            <q-tab-panel name="central"> <q-img :src="fromCentral" /> </q-tab-panel>
           </app-tab-panels>
         </q-page>
       </q-page-container>
@@ -92,6 +40,8 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useDialogPluginComponent } from "quasar";
   import eventBus from "@/utils/event-bus";
+  import fromMuiWo from "@/assets/img/from-mui-wo.png";
+  import fromCentral from "@/assets/img/from-central.png";
   import { TabItem } from "@/interfaces/tab-item";
 
   const props = defineProps({
@@ -100,67 +50,6 @@
       required: true
     }
   });
-
-  const muiWoTocCentralTimeDeparture = ref([
-    "03:40",
-    "6:30",
-    "7:20",
-    "8:30",
-    "10:00",
-    "12:10",
-    "14:10",
-    "16:10",
-    "18:10",
-    "20:30",
-    "23:30"
-  ]);
-
-  const muiWoTocCentralTimeArrived = ref([
-    "03:40",
-    "6:30",
-    "7:20",
-    "8:30",
-    "10:00",
-    "12:10",
-    "14:10",
-    "16:10",
-    "18:10",
-    "20:30",
-    "23:30"
-  ]);
-
-  const muiWoTocCentralTimeReturn = ref([
-    "03:40",
-    "6:30",
-    "7:20",
-    "8:30",
-    "10:00",
-    "12:10",
-    "14:10",
-    "16:10",
-    "18:10",
-    "20:30",
-    "23:30"
-  ]);
-
-  const routeTimeDetail = ref([
-    {
-      icon: "",
-      text: "Ordinary Ferry, Freight Service and Carriage of Pet are available"
-    },
-    {
-      icon: "alternate_email",
-      text: "Via Peng Chau"
-    },
-    {
-      icon: "arrow_forward_ios",
-      text: "Berth at Central Pier No.5"
-    },
-    {
-      icon: "add",
-      text: "Deploy by Fast Ferry, Fare of Ordinary Class of Ordinary Ferrry is applicable. With freight carriage restrictions"
-    }
-  ]);
 
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
