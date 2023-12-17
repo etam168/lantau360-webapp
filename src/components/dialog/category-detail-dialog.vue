@@ -23,7 +23,7 @@
             />
           </q-item>
           <q-list padding class="q-mx-sm q-pa-none">
-            <q-item>
+            <!-- <q-item>
               <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
               <q-space />
               <q-btn color="primary" text-color="white" icon="phone" round />
@@ -37,9 +37,12 @@
               />
             </q-item>
 
-            <q-separator class="q-mt-sm" />
+            <q-separator class="q-mt-sm" /> -->
 
             <q-item>
+              <q-item-section avatar>
+                <q-icon color="primary" name="location_on" />
+              </q-item-section>
               <q-item-section>
                 <q-item-label class="q-mt-sm"
                   >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
@@ -48,21 +51,49 @@
                   >{{ $t("community.subtitle1") }}
                 </q-item-label>
               </q-item-section>
+              <q-item-section side>
+                <q-item-label>
+                  <q-btn
+                    color="primary"
+                    :text-color="isFavourite ? 'red' : 'white'"
+                    icon="favorite"
+                    size="sm"
+                    round
+                    @click="onBtnFavClick"
+                    class="q-mr-md" />
+                  <q-btn
+                    color="primary"
+                    text-color="white"
+                    icon="phone"
+                    size="sm"
+                    round
+                    class="q-mr-md" />
+                  <q-btn
+                    color="primary"
+                    text-color="white"
+                    icon="fab fa-whatsapp"
+                    size="sm"
+                    round
+                    @click="temp"
+                /></q-item-label>
+              </q-item-section>
             </q-item>
 
             <q-item v-if="'businessId' in props.item">
-              <q-item-section>
-                <q-item-label class="q-mt-sm"
-                  >{{ formatTime(directoryItem.openTime) }}
-                </q-item-label>
-                <q-item-label class="q-mt-sm" caption>{{ $t("business.openTime") }} </q-item-label>
+              <q-item-section avatar>
+                <q-icon color="primary" name="schedule" />
               </q-item-section>
 
-              <q-item-section>
-                <q-item-label class="q-mt-sm"
-                  >{{ formatTime(directoryItem.closeTime) }}
+              <q-item-section class="row">
+                <q-item-label>
+                  <q-item-label class="q-mt-sm"
+                    >{{ formatTime(directoryItem.openTime) }} -
+                    {{ formatTime(directoryItem.closeTime) }}</q-item-label
+                  >
+                  <q-item-label class="q-mt-sm" caption
+                    >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
+                  >
                 </q-item-label>
-                <q-item-label class="q-mt-sm" caption>{{ $t("business.closeTime") }} </q-item-label>
               </q-item-section>
             </q-item>
 
