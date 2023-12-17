@@ -49,6 +49,23 @@
                 </q-item-label>
               </q-item-section>
             </q-item>
+
+            <q-item v-if="'businessId' in props.item">
+              <q-item-section>
+                <q-item-label class="q-mt-sm"
+                  >{{ formatTime(directoryItem.openTime) }}
+                </q-item-label>
+                <q-item-label class="q-mt-sm" caption>{{ $t("business.openTime") }} </q-item-label>
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label class="q-mt-sm"
+                  >{{ formatTime(directoryItem.closeTime) }}
+                </q-item-label>
+                <q-item-label class="q-mt-sm" caption>{{ $t("business.closeTime") }} </q-item-label>
+              </q-item-section>
+            </q-item>
+
             <q-separator class="q-mt-sm" />
 
             <q-item>
@@ -104,6 +121,14 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
+
+  const formatTime = (time: string | undefined) => {
+    if (!time) return "";
+
+    const parsedTime = new Date(`2000-01-01T${time}`);
+    const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return formattedTime;
+  };
 
   const favoriteItems = computed(() => {
     switch (true) {

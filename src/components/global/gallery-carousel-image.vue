@@ -1,19 +1,15 @@
 <template>
   <div v-if="galleryItems && galleryItems?.length > 0">
     <q-card bordered flat>
-      <q-responsive :ratio="16 / 9">
+      <q-responsive :ratio="aspectRatio()">
         <q-carousel v-model="slide" animated arrows>
           <q-carousel-slide
             v-for="(image, index) in galleryItems"
             :key="index"
             :name="image.imageId"
+            :img-src="getImageSrc(image.imagePath)"
             class="q-pa-none"
           >
-            <!-- :img-src="getImageSrc(image.imagePath)" -->
-            <!-- <div class="absolute-bottom custom-caption">
-              <div class="text-h6">{{ address }}</div>
-            </div> -->
-            <q-img :src="getImageSrc(image.imagePath)" :ratio="16 / 9" />
           </q-carousel-slide>
         </q-carousel>
       </q-responsive>
@@ -58,7 +54,7 @@
     </q-card>
   </div>
   <div v-else>
-    <q-img src="@/assets/img/no_image_available.jpeg" :ratio="16 / 9" />
+    <q-img src="@/assets/img/no_image_available.jpeg" :ratio="aspectRatio()" />
   </div>
 </template>
 
@@ -86,6 +82,7 @@
   });
 
   // const slide = ref(0);
+  const { aspectRatio } = useUtilities();
   const slide = ref(props.galleryImages[0]?.imageId);
 
   const galleryItems = ref<GalleryImage[]>([]);
