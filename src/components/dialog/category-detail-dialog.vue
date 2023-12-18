@@ -24,9 +24,9 @@
           </q-item>
 
           <site-content v-if="renderer === RENDERER.SITE" :item="item as Site" />
+          <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
           <div v-else-if="renderer === RENDERER.TAXI">Taxi</div>
           <div v-else-if="renderer === RENDERER.TIMETABLE">Timetable</div>
-          <div v-else-if="renderer === RENDERER.BUSINESS">Business</div>
           <div v-else-if="renderer === RENDERER.POSTING">Posting</div>
         </q-page>
       </q-page-container>
@@ -50,6 +50,8 @@
 
   // Custom Components
   import SiteContent from "@/components/dialog/renderer/site-content.vue";
+  import BusinessContent from "@/components/dialog/renderer/business-content.vue";
+  import { Business } from "@/interfaces/models/entities/business";
 
   const props = defineProps({
     item: {
