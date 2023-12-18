@@ -23,7 +23,7 @@
             />
           </q-item>
 
-          <div v-if="contentType === 'SITE'">Site</div>
+          <div v-if="contentType === 'SITE'"><site-content :item="item as Site" /></div>
           <div v-else-if="contentType === 'TAXI'">Taxi</div>
           <div v-else-if="contentType === 'TIMETABLE'">Timetable</div>
           <div v-else-if="contentType === 'BUSINESS'">Business</div>
@@ -49,6 +49,9 @@
   import { BUSINESS_GALLERY_URL, POSTING_GALLERY_URL, SITE_GALLERY_URL } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
+
+  //Custom components
+  import SiteContent from "./renderer/site-content.vue";
 
   type CategoryTypes = Business | Site | Posting;
 
