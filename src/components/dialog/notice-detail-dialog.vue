@@ -70,14 +70,12 @@
   import { useDialogPluginComponent } from "quasar";
   import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
-  //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
   const directoryItem = ref<CommunityNotice>({} as CommunityNotice);
   const { translate } = useUtilities();
 
@@ -92,7 +90,6 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 

@@ -70,14 +70,12 @@
   import { useDialogPluginComponent } from "quasar";
   import { PropType, computed, onMounted } from "vue";
   import { ref } from "vue";
-  //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { BusinessVoucher } from "@/interfaces/models/entities/businessVoucher";
+  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
   const directoryItem = ref<BusinessVoucher>({} as BusinessVoucher);
   const { translate } = useUtilities();
 
@@ -92,7 +90,6 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 

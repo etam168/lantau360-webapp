@@ -74,7 +74,7 @@
   //import { useRouter } from "vue-router";
 
   import { LocalStorage } from "quasar";
-  import { CommunityNews } from "@/interfaces/models/entities/communityNews";
+  import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
@@ -183,4 +183,3 @@
     margin-right: 40px;
   }
 </style>
-@/interfaces/models/entities/community-news
