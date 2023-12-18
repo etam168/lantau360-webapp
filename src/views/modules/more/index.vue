@@ -39,7 +39,6 @@
   import LoginSignup from "./section/login-signup.vue";
 
   const $q = useQuasar();
-
   const data = ref<Content | null>(null);
 
   const menuItems = [
@@ -83,7 +82,7 @@
       }
     } catch (error) {
       // Handle error if the API call fails
-      console.error("Error fetching data: ", error);
+      // console.error("Error fetching data: ", error);
     }
   }
 

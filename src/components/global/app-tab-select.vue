@@ -15,7 +15,6 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType } from "vue";
   import { TabItem } from "@/interfaces/tab-item"; // Ensure this path is correct
 
   // Define the props the component takes with types and required fields

@@ -5,6 +5,7 @@
     </div>
   </div>
 </template>
+
 <script setup lang="ts">
   // ts files
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
@@ -14,23 +15,23 @@
   import NoticeCard from "@/components/card/notice-card.vue";
   import NewsCard from "@/components/card/news-card.vue";
 
-  type CardItem = CommunityNotice | CommunityNews;
+  type BulletinType = CommunityNotice | CommunityNews;
 
   // Define props for this component
   defineProps({
     items: {
-      type: Array as PropType<CardItem[]>,
+      type: Array as PropType<BulletinType[]>,
       required: true
     }
   });
 
-  function getItemType(item: CardItem): "notice" | "news" {
+  function getItemType(item: BulletinType): "notice" | "news" {
     if ("communityNoticeId" in item) return "notice";
     if ("communityNewsId" in item) return "news";
     throw new Error("Unknown item type");
   }
 
-  function getComponentType(item: CardItem) {
+  function getComponentType(item: BulletinType) {
     switch (getItemType(item)) {
       case "notice":
         return NoticeCard;
@@ -41,7 +42,7 @@
     }
   }
 
-  function getItemKey(item: CardItem): number {
+  function getItemKey(item: BulletinType): number {
     switch (getItemType(item)) {
       case "notice":
         return (item as CommunityNotice).communityNoticeId;
@@ -52,7 +53,7 @@
     }
   }
 
-  function getComponentProps(item: CardItem) {
+  function getComponentProps(item: BulletinType) {
     if ("communityNoticeId" in item) {
       return { item: item as CommunityNotice };
     } else if ("communityNewsId" in item) {

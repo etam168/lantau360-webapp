@@ -60,10 +60,10 @@
           }
         });
       } else {
-        console.error(`Unexpected response status: ${response.status}`);
+        // console.error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      // console.error("Error fetching data: ", error);
     }
   };
 

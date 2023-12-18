@@ -26,10 +26,7 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, PropType } from "vue";
-
   // .ts files
-  // import { BLOB_URL } from "@/constants";
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   // import { PropertyListing } from "@/interfaces/models/entities/property-listing";

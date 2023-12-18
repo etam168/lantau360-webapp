@@ -59,9 +59,6 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, ref, watch } from "vue";
-
   // .ts file
   import { BLOB_URL } from "@/constants";
 

@@ -22,7 +22,7 @@
             <app-tab-panels v-model="tab">
               <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.label">
                 <!-- Pass filterGroupedArray(item.name) if groupBykey exists -->
-                <app-directory-item-list
+                <app-category-item-list
                   @item-click="onItemClick"
                   :directoryItems="filterGroupedArray(item.name)"
                   :favoriteItems="favoriteItems"
@@ -31,9 +31,9 @@
             </app-tab-panels>
           </template>
 
-          <!-- If groupBykey doesn't exist, show the linear app-directory-item-list -->
+          <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
           <template v-else>
-            <app-directory-item-list
+            <app-category-item-list
               @item-click="onItemClick"
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"

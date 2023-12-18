@@ -45,11 +45,10 @@
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
 
   const emit = defineEmits(["item-click"]);
-  type CategoryTypes = Business | Site | Posting;
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const props = defineProps({
     directoryItems: {

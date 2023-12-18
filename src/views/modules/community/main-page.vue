@@ -6,7 +6,7 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
-        <app-row-item-list :items="news" />
+        <app-bulletin-item-list :items="news" />
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
@@ -14,14 +14,10 @@
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <app-row-item-list :items="notices" />
+        <app-bulletin-item-list :items="notices" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <q-card-actions align="center">
-          <app-search-bar @on-search="handleSearchDialog" />
-        </q-card-actions>
-
         <app-directory-section :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
@@ -31,10 +27,10 @@
 <script setup lang="ts">
   // 3rd Party Import
   import axios, { AxiosError } from "axios";
-  import { useQuasar } from "quasar";
 
   // .ts file
   import { URL } from "@/constants";
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
@@ -43,10 +39,9 @@
   import eventBus from "@/utils/event-bus";
 
   const { t } = useI18n({ useScope: "global" });
-  const $q = useQuasar();
 
-  const advertisements = ref<any | null>(null);
-  const directories = ref<CommunityDirectory[]>();
+  const advertisements = ref<Advertisement[]>([]);
+  const directories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEvent[]>([]);
   const news = ref<CommunityNews[]>([]);
   const notices = ref<CommunityNotice[]>([]);
@@ -61,15 +56,6 @@
     { name: "notice", label: t("community.tabItems.notice") },
     { name: "directory", label: t("community.tabItems.directory") }
   ]);
-
-  function handleSearchDialog(value: any) {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("./search-community/index.vue")),
-      componentProps: {
-        query: { searchKeyword: value }
-      }
-    });
-  }
 
   onMounted(() => {
     eventBus.on("DialogStatus", (status, emitter) => {
@@ -104,8 +90,8 @@
       ]);
 
     advertisements.value = advertisementResponse.data;
-    events.value = eventResponse.data;
     directories.value = directoryResponse.data;
+    events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
   } catch (err) {

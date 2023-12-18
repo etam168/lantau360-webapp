@@ -28,11 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { ref } from "vue";
-
   const emit = defineEmits(["on-search"]);
-
   const keyword = ref("");
 
   function handleSearch() {

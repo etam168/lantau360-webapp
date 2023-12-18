@@ -15,8 +15,6 @@
 </template>
 
 <script setup lang="ts">
-  import { defineAsyncComponent } from "vue";
-
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500

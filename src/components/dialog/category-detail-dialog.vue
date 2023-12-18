@@ -27,7 +27,7 @@
           <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
           <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item as Site" />
           <posting-content v-else-if="renderer === RENDERER.POSTING" :item="item as Posting" />
-          <div v-else-if="renderer === RENDERER.TAXI">Taxi</div>
+          <taxi-content v-else-if="renderer === RENDERER.TAXI" :item="item as Site" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -41,8 +41,9 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
+  import { Posting } from "@/interfaces/models/entities/posting";
+  import { Site } from "@/interfaces/models/entities/site";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";
@@ -50,11 +51,11 @@
   import eventBus from "@/utils/event-bus";
 
   // Custom Components
-  import SiteContent from "@/components/dialog/renderer/site-content.vue";
   import BusinessContent from "@/components/dialog/renderer/business-content.vue";
-  import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
   import PostingContent from "@/components/dialog/renderer/posting-content.vue";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import SiteContent from "@/components/dialog/renderer/site-content.vue";
+  import TaxiContent from "@/components/dialog/renderer/taxi-content.vue";
+  import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
 
   const props = defineProps({
     item: {

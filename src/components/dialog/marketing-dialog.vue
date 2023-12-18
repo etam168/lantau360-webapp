@@ -15,10 +15,14 @@
 
       <q-page-container>
         <q-page>
-          <q-item class="q-items-center q-pa-none">
-            <gallery-carousel-image class="col-12 q-items-center" :gallery-images="galleryItems" />
-          </q-item>
           <q-list padding class="q-mx-sm q-pa-none">
+            <q-item class="q-items-center">
+              <gallery-carousel-image
+                class="col-12 q-items-center"
+                :gallery-images="galleryItems"
+              />
+            </q-item>
+
             <q-item>
               <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
               <q-space />
@@ -34,14 +38,13 @@
               />
             </q-item>
             <q-separator class="q-mt-sm" />
+
             <q-item>
               <q-item-section>
                 <q-item-label class="q-mt-sm"
                   >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
                 </q-item-label>
-                <q-item-label class="q-mt-sm" caption
-                  >{{ $t("community.subtitle1") }}
-                </q-item-label>
+                <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
               </q-item-section>
             </q-item>
             <q-separator class="q-mt-sm" />
@@ -60,21 +63,22 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, POSTING_GALLERY_URL, POSTING_URL, STORAGE_KEYS } from "@/constants";
+  import {
+    DIRECTORY_GROUPS,
+    ADVERTISEMENT_GALLERY_URL,
+    ADVERTISEMENT_DETAIL_URL,
+    STORAGE_KEYS
+  } from "@/constants";
+
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
-  import { useDialogPluginComponent } from "quasar";
-  import { computed, PropType, onMounted } from "vue";
-  import { ref } from "vue";
-  //import { useRouter } from "vue-router";
+  import { LocalStorage, useDialogPluginComponent } from "quasar";
 
-  import { LocalStorage } from "quasar";
-  import { Posting } from "@/interfaces/models/entities/posting";
   import { useUtilities } from "@/composable/use-utilities";
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
-  const directoryItem = ref<Posting>({} as Posting);
+  const directoryItem = ref<Advertisement>({} as Advertisement);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -88,13 +92,12 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []);
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.postingId;
+    const itemIdToMatch = directoryItem.value.advertisementId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -106,9 +109,9 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.postingId,
+        directoryId: props.query?.advertisementId,
         directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.postingName,
+        itemName: directoryItem.value.advertisementName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
         iconPath: directoryItem.value.iconPath,
@@ -118,7 +121,7 @@
       isFavourite.value = true;
       favoriteItems.value.push(favItem);
     }
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+    LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
   };
 
   const temp = () => {
@@ -126,34 +129,38 @@
   };
 
   const dialogTitle = computed(() => {
-    return translate(directoryItem.value.title, directoryItem.value.meta, "title");
+    return translate(
+      directoryItem.value.advertisementName,
+      directoryItem.value.meta,
+      "advertisementName"
+    );
   });
 
   onMounted(() => {
     loadData();
-    eventBus.on("CommunityDetailDialog", () => {
+    eventBus.on("BusinessAdsDialog", () => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "CommunityDetailDialog");
+    eventBus.emit("DialogStatus", status, "BusinessAdsDialog");
   }
 
   const loadData = async () => {
-    if (props.query?.postingId !== undefined) {
+    if (props.query?.advertisementId !== undefined) {
       try {
-        const [postingResponse, galleryResponse] = await Promise.all([
-          axios.get(`${POSTING_URL}/${props.query?.postingId}`),
-          axios.get<GalleryImage[]>(`${POSTING_GALLERY_URL}/${props.query?.postingId}`)
+        const [advertisementResponse, galleryResponse] = await Promise.all([
+          axios.get(`${ADVERTISEMENT_DETAIL_URL}/${props.query?.advertisementId}`),
+          axios.get<GalleryImage[]>(`${ADVERTISEMENT_GALLERY_URL}/${props.query?.advertisementId}`)
         ]);
-        directoryItem.value = postingResponse.data;
+        directoryItem.value = advertisementResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.postingId
+            (item: any) => item.itemId == directoryItem.value.advertisementId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

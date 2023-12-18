@@ -50,12 +50,12 @@
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { Site } from "@/interfaces/models/entities/site";
 
-  // Define a new type that is a union of Site and Advertisement
-  type DataItem = Site | Advertisement;
+  // Define type that is a union of Site and Advertisement
+  type CarouselItem = Site | Advertisement;
 
   const props = defineProps({
     data: {
-      type: Array as PropType<DataItem[] | null>,
+      type: Array as PropType<CarouselItem[] | null>,
       required: false,
       default: null
     }
@@ -69,7 +69,7 @@
   const slide = ref(props.data && props.data.length > 0 ? getId(props.data[0]) : 0);
 
   // Function to extract ID from the item
-  function getId(item: DataItem): number {
+  function getId(item: CarouselItem): number {
     if (isAdvertisement(item)) {
       return item.advertisementId;
     } else {
@@ -83,12 +83,10 @@
   }
 
   // Updated onImageClick function to handle both Site and Advertisement
-  const onImageClick = (item: DataItem) => {
+  const onImageClick = (item: CarouselItem) => {
     if (isAdvertisement(item)) {
       $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/advertisement-dialog.vue")
-        ),
+        component: defineAsyncComponent(() => import("@/components/dialog/marketing-dialog.vue")),
         componentProps: {
           query: { advertisementId: item.advertisementId }
         }
@@ -106,7 +104,7 @@
   };
 
   // getImageSrc function to handle both Site and Advertisement
-  function getImageSrc(row: DataItem) {
+  function getImageSrc(row: CarouselItem) {
     if (isAdvertisement(row)) {
       return row.imagePath !== null && row.imagePath !== ""
         ? `${BLOB_URL}/${row.imagePath}`
