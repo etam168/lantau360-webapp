@@ -15,7 +15,7 @@
 
       <q-page-container>
         <q-page>
-          <q-item class="q-items-center q-pa-none">
+          <q-item v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
             <gallery-carousel-image
               class="col-12 q-items-center"
               :gallery-images="galleryItems"
@@ -25,8 +25,8 @@
 
           <site-content v-if="renderer === RENDERER.SITE" :item="item as Site" />
           <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
+          <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item as Site" />
           <div v-else-if="renderer === RENDERER.TAXI">Taxi</div>
-          <div v-else-if="renderer === RENDERER.TIMETABLE">Timetable</div>
           <div v-else-if="renderer === RENDERER.POSTING">Posting</div>
         </q-page>
       </q-page-container>
@@ -42,6 +42,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { Site } from "@/interfaces/models/entities/site";
+  import { Business } from "@/interfaces/models/entities/business";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";
@@ -51,8 +52,7 @@
   // Custom Components
   import SiteContent from "@/components/dialog/renderer/site-content.vue";
   import BusinessContent from "@/components/dialog/renderer/business-content.vue";
-  import { Business } from "@/interfaces/models/entities/business";
-
+  import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
