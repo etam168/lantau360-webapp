@@ -26,8 +26,8 @@
           <site-content v-if="renderer === RENDERER.SITE" :item="item as Site" />
           <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
           <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item as Site" />
+          <posting-content v-else-if="renderer === RENDERER.POSTING" :item="item as Posting" />
           <div v-else-if="renderer === RENDERER.TAXI">Taxi</div>
-          <div v-else-if="renderer === RENDERER.POSTING">Posting</div>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -53,6 +53,9 @@
   import SiteContent from "@/components/dialog/renderer/site-content.vue";
   import BusinessContent from "@/components/dialog/renderer/business-content.vue";
   import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
+  import PostingContent from "@/components/dialog/renderer/posting-content.vue";
+  import { Posting } from "@/interfaces/models/entities/posting";
+
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,

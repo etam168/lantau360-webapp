@@ -26,24 +26,6 @@
       </q-item-section>
     </q-item>
 
-    <q-item>
-      <q-item-section avatar>
-        <q-icon color="primary" name="schedule" />
-      </q-item-section>
-
-      <q-item-section class="row">
-        <q-item-label>
-          <q-item-label class="q-mt-sm"
-            >{{ formatTime(directoryItem.openTime) }} -
-            {{ formatTime(directoryItem.closeTime) }}</q-item-label
-          >
-          <q-item-label class="q-mt-sm" caption
-            >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
-          >
-        </q-item-label>
-      </q-item-section>
-    </q-item>
-
     <q-separator class="q-mt-sm" />
 
     <q-item>
@@ -52,48 +34,38 @@
     <q-separator class="q-mt-sm" />
   </q-list>
 </template>
-
 <script setup lang="ts">
-  import { PropType, computed } from "vue";
-  import { ref } from "vue";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
-  const directoryItem = ref<Business>({} as Business);
+  const directoryItem = ref<Posting>({} as Posting);
   const { translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Business>,
+      type: Object as PropType<Posting>,
       required: true
     }
   });
 
-  const formatTime = (time: string | undefined) => {
-    if (!time) return "";
-
-    const parsedTime = new Date(`2000-01-01T${time}`);
-    const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-    return formattedTime;
-  };
+  const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Posting[];
   });
 
-  const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = directoryItem.value.postingId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
 
       if (isCurrentlyFavourite) {
         const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.businessId === itemIdToMatch
+          (item: any) => item.postingId === itemIdToMatch
         );
 
         if (itemIndex !== -1) {
@@ -106,10 +78,11 @@
         favoriteItems.value.push(props.item);
       }
 
-      LocalStorage.set(STORAGE_KEYS.BUSINESSFAVOURITES, favoriteItems.value);
+      const storageKey = STORAGE_KEYS.POSTINGFAVOURITES;
+      LocalStorage.set(storageKey, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
-        businessId: directoryItem.value.businessId
+        siteId: directoryItem.value.postingId || null
       });
     }
   };

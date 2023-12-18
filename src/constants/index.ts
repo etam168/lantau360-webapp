@@ -187,11 +187,13 @@ export const DMY = "DD/MM/YYYY";
 export const STORAGE_KEYS = {
   BUSINESSFAVOURITES: "businessFavourites",
   SITEFAVOURITES: "siteFavourites",
+  POSTINGFAVOURITES: "postingFavourites",
   IsLogOn: "IsLogin",
 
   SAVED: {
     BUSINESS: "businessFavourites",
-    SITE: "siteFavourites"
+    SITE: "siteFavourites",
+    POSTING: "postingFavourites"
   }
 };
 

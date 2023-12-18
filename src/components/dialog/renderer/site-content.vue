@@ -38,7 +38,6 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  // import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
@@ -66,7 +65,7 @@
 
       if (isCurrentlyFavourite) {
         const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.siteId === itemIdToMatch || item.businessId === itemIdToMatch
+          (item: any) => item.siteId === itemIdToMatch
         );
 
         if (itemIndex !== -1) {
@@ -87,29 +86,4 @@
       });
     }
   };
-
-  onMounted(async () => {
-    // try {
-    //   const [categoryResponse, galleryResponse] = await Promise.all([
-    //     axios.get(`${SITE_URL}/${props.item.siteId}`),
-    //     axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${props.item.siteId}`)
-    //   ]);
-    //   directoryItem.value = categoryResponse.data;
-    //   galleryItems.value = galleryResponse.data;
-    //   isFavourite.value =
-    //     (favoriteItems?.value ?? []).find(
-    //       (item: any) => props.item.siteId && item.siteId === directoryItem.value.siteId
-    //     ) != null;
-    // } catch (err) {
-    //   if (err instanceof AxiosError) {
-    //     if (err.response && err.response.status === 404) {
-    //       error.value = "Not found";
-    //     } else {
-    //       error.value = "An error occurred";
-    //     }
-    //   } else {
-    //     error.value = "An unexpected error occurred";
-    //   }
-    // }
-  });
 </script>
