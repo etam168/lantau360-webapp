@@ -41,8 +41,6 @@
   import { useDialogPluginComponent } from "quasar";
   import eventBus from "@/utils/event-bus";
   import { BLOB_URL } from "@/constants";
-  // import fromMuiWo from "@/assets/img/from-mui-wo.png";
-  // import fromCentral from "@/assets/img/from-central.png";
   import { TabItem } from "@/interfaces/tab-item";
 
   const props = defineProps({
