@@ -23,22 +23,6 @@
             />
           </q-item>
           <q-list padding class="q-mx-sm q-pa-none">
-            <!-- <q-item>
-              <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-              <q-space />
-              <q-btn color="primary" text-color="white" icon="phone" round />
-              <q-space />
-              <q-btn
-                color="primary"
-                :text-color="isFavourite ? 'red' : 'white'"
-                icon="favorite"
-                round
-                @click="onBtnFavClick"
-              />
-            </q-item>
-
-            <q-separator class="q-mt-sm" /> -->
-
             <q-item>
               <q-item-section avatar>
                 <q-icon color="primary" name="location_on" />
