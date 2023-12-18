@@ -31,7 +31,7 @@
             </app-tab-panels>
           </template>
 
-          <!-- If groupBykey doesn't exist, show the single app-directory-item-list -->
+          <!-- If groupBykey doesn't exist, show the linear app-directory-item-list -->
           <template v-else>
             <app-directory-item-list
               @item-click="onItemClick"
@@ -48,13 +48,16 @@
 <script setup lang="ts">
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
 
-  import { STORAGE_KEYS } from "@/constants";
+  // nterface files
   import { Business } from "@/interfaces/models/entities/business";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
+
+  // .ts file
+  import { STORAGE_KEYS } from "@/constants";
   import eventBus from "@/utils/event-bus";
 
   type DirectoryTypes = Directory | CommunityDirectory;
@@ -145,40 +148,32 @@
   }
 
   function onItemClick(item: CategoryTypes) {
-    if (props.directory.directoryName === "Timetable") {
+    if ("siteId" in item || "businessId" in item) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/components/dialog/timetable-dialog.vue")),
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
         componentProps: {
           item: item
-        }
-      });
-    } else if ("siteId" in item) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item as Site
-        }
-      });
-    } else if ("businessId" in item) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item as Business
         }
       });
     } else if ("postingId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
-          () => import("@/components/dialog/community-detail-dialog.vue")
+          () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          query: { postingId: (item as Posting).postingId }
+          item: item
         }
       });
+      // $q.dialog({
+      //   component: defineAsyncComponent(
+      //     () => import("@/components/dialog/community-detail-dialog.vue")
+      //   ),
+      //   componentProps: {
+      //     query: { postingId: (item as Posting).postingId }
+      //   }
+      // });
     }
   }
 </script>
