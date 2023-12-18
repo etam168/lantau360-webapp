@@ -43,11 +43,12 @@
   const attractions = ref<Site[] | null>(null);
   const homeDirectories = ref<Directory[]>([]);
   const weatherData = ref<Weather | null>(null);
+
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
+
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
-
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t("home.allLocations") },
     { name: "info", label: t("home.info") }
@@ -98,9 +99,9 @@
 
   try {
     const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
-      axios.get<Site[]>(URL.ATTRACTION_URL),
-      axios.get<Weather>(URL.WEATHER_URL),
-      axios.get<Directory[]>(`${URL.SITE_DIRECTORIES}`)
+      axios.get(URL.ATTRACTION_URL),
+      axios.get(URL.WEATHER_URL),
+      axios.get(URL.SITE_DIRECTORIES)
     ]);
 
     attractions.value = attractionResponse.data;

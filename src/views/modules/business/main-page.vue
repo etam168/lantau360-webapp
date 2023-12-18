@@ -25,13 +25,14 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
+  // 3rd Party
   import axios, { AxiosError } from "axios";
-  import { useI18n } from "vue-i18n";
   import { useQuasar } from "quasar";
 
   // .ts file
   import { URL } from "@/constants";
+  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
+  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
@@ -40,11 +41,11 @@
   const $q = useQuasar();
 
   const advertisements = ref<any | null>(null);
-  const directoriesData = ref();
-  const businessPromotion = ref();
-  const businessVoucher = ref();
-  const dialogStack = ref<string[]>([]);
+  const directoriesData = ref<Directory[]>([]);
+  const businessPromotion = ref<BusinessPromotion[]>([]);
+  const businessVoucher = ref<BusinessVoucher[]>([]);
 
+  const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
@@ -89,10 +90,10 @@
   try {
     const [respAdvertisement, respPromotions, respBusinessVoucher, respDirectories] =
       await Promise.all([
-        axios.get(`${URL.ADVERTISEMENT}`),
-        axios.get(`${URL.BUSINESS_PROMOTION}`),
-        axios.get(`${URL.BUSINESS_VOUCHER}`),
-        axios.get<Directory[]>(`${URL.BUSINESS_DIRECTORIES}`)
+        axios.get(URL.ADVERTISEMENT),
+        axios.get(URL.BUSINESS_PROMOTION),
+        axios.get(URL.BUSINESS_VOUCHER),
+        axios.get(URL.BUSINESS_DIRECTORIES)
       ]);
 
     advertisements.value = respAdvertisement.data;

@@ -50,12 +50,14 @@
 
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
   import eventBus from "@/utils/event-bus";
 
+  type DirectoryTypes = Directory | CommunityDirectory;
   type CategoryTypes = Business | Site | Posting;
   type GroupKeys = keyof CategoryTypes;
 
@@ -65,7 +67,7 @@
       required: true
     },
     directory: {
-      type: Object as PropType<Directory>,
+      type: Object as PropType<DirectoryTypes>,
       required: true
     },
     groupBykey: {

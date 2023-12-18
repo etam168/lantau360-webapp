@@ -46,10 +46,10 @@
   const $q = useQuasar();
 
   const advertisements = ref<any | null>(null);
-  const directories = ref();
-  const events = ref();
-  const news = ref();
-  const notices = ref();
+  const directories = ref<CommunityDirectory[]>();
+  const events = ref<CommunityEvent[]>([]);
+  const news = ref<CommunityNews[]>([]);
+  const notices = ref<CommunityNotice[]>([]);
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
@@ -96,11 +96,11 @@
   try {
     const [advertisementResponse, eventResponse, directoryResponse, newsResponse, noticeResponse] =
       await Promise.all([
-        axios.get(`${URL.ADVERTISEMENT}`),
-        axios.get<CommunityEvent>(`${URL.COMMUNITY_EVENT}`),
-        axios.get<CommunityDirectory>(`${URL.COMMUNITY_DIRECTORY}`),
-        axios.get<CommunityNews>(`${URL.COMMUNITY_NEWS}`),
-        axios.get<CommunityNotice>(`${URL.COMMUNITY_NOTICE}`)
+        axios.get(URL.ADVERTISEMENT),
+        axios.get(URL.COMMUNITY_EVENT),
+        axios.get(URL.COMMUNITY_DIRECTORY),
+        axios.get(URL.COMMUNITY_NEWS),
+        axios.get(URL.COMMUNITY_NOTICE)
       ]);
 
     advertisements.value = advertisementResponse.data;
