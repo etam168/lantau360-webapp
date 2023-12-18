@@ -23,10 +23,10 @@
           />
           <app-tab-panels v-model="tab">
             <q-tab-panel name="muiwo">
-              <q-img :src="fromMuiWo" />
+              <q-img :src="computePath(item.imagePath)" />
             </q-tab-panel>
 
-            <q-tab-panel name="central"> <q-img :src="fromCentral" /> </q-tab-panel>
+            <q-tab-panel name="central"><q-img :src="computePath(item.bannerPath)" /> </q-tab-panel>
           </app-tab-panels>
         </q-page>
       </q-page-container>
@@ -37,16 +37,17 @@
 <script setup lang="ts">
   import { onMounted, ref } from "vue";
 
-  import { Directory } from "@/interfaces/models/entities/directory";
+  import { Site } from "@/interfaces/models/entities/site";
   import { useDialogPluginComponent } from "quasar";
   import eventBus from "@/utils/event-bus";
-  import fromMuiWo from "@/assets/img/from-mui-wo.png";
-  import fromCentral from "@/assets/img/from-central.png";
+  import { BLOB_URL } from "@/constants";
+  // import fromMuiWo from "@/assets/img/from-mui-wo.png";
+  // import fromCentral from "@/assets/img/from-central.png";
   import { TabItem } from "@/interfaces/tab-item";
 
   const props = defineProps({
-    directory: {
-      type: Object as PropType<Directory>,
+    item: {
+      type: Object as PropType<Site>,
       required: true
     }
   });
@@ -63,8 +64,12 @@
     { name: "central", label: t("home.central") }
   ]);
 
+  const computePath = (path: string) => {
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+  };
+
   const dialogTitle = computed(() => {
-    return translate(props.directory.directoryName, props.directory.meta, "directoryName");
+    return translate(props.item.title, props.item.meta, "title");
   });
 
   onMounted(() => {

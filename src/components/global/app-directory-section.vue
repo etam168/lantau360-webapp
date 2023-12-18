@@ -32,17 +32,6 @@
 
   const handleDialog = async (item: DirectoryTypes) => {
     try {
-      if (item.directoryName === "Timetable") {
-        // Open a separate dialog for "Timetable"
-        $q.dialog({
-          component: defineAsyncComponent(() => import("@/components/dialog/timetable-dialog.vue")),
-          componentProps: {
-            directory: item
-          }
-        });
-        return;
-      }
-
       const directoryListUrl = (() => {
         switch (true) {
           case "communityDirectoryId" in item:

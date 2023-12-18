@@ -143,7 +143,14 @@
   }
 
   function onItemClick(item: CategoryTypes) {
-    if ("siteId" in item) {
+    if (props.directory.directoryName === "Timetable") {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/components/dialog/timetable-dialog.vue")),
+        componentProps: {
+          item: item
+        }
+      });
+    } else if ("siteId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/components/dialog/category-detail-dialog.vue")
