@@ -35,13 +35,10 @@
   </q-list>
 </template>
 <script setup lang="ts">
-  import axios, { AxiosError } from "axios";
-  import { PropType, computed, onMounted } from "vue";
-  import { ref } from "vue";
   import { LocalStorage } from "quasar";
-  import { SITE_GALLERY_URL, SITE_URL, STORAGE_KEYS } from "@/constants";
+  import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  // import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
@@ -55,8 +52,6 @@
     }
   });
 
-  const error = ref<string | null>(null);
-  const galleryItems = ref<GalleryImage[]>([]);
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {
@@ -94,29 +89,27 @@
   };
 
   onMounted(async () => {
-    try {
-      const [categoryResponse, galleryResponse] = await Promise.all([
-        axios.get(`${SITE_URL}/${props.item.siteId}`),
-        axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${props.item.siteId}`)
-      ]);
-
-      directoryItem.value = categoryResponse.data;
-      galleryItems.value = galleryResponse.data;
-
-      isFavourite.value =
-        (favoriteItems?.value ?? []).find(
-          (item: any) => props.item.siteId && item.siteId === directoryItem.value.siteId
-        ) != null;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          error.value = "Not found";
-        } else {
-          error.value = "An error occurred";
-        }
-      } else {
-        error.value = "An unexpected error occurred";
-      }
-    }
+    // try {
+    //   const [categoryResponse, galleryResponse] = await Promise.all([
+    //     axios.get(`${SITE_URL}/${props.item.siteId}`),
+    //     axios.get<GalleryImage[]>(`${SITE_GALLERY_URL}/${props.item.siteId}`)
+    //   ]);
+    //   directoryItem.value = categoryResponse.data;
+    //   galleryItems.value = galleryResponse.data;
+    //   isFavourite.value =
+    //     (favoriteItems?.value ?? []).find(
+    //       (item: any) => props.item.siteId && item.siteId === directoryItem.value.siteId
+    //     ) != null;
+    // } catch (err) {
+    //   if (err instanceof AxiosError) {
+    //     if (err.response && err.response.status === 404) {
+    //       error.value = "Not found";
+    //     } else {
+    //       error.value = "An error occurred";
+    //     }
+    //   } else {
+    //     error.value = "An unexpected error occurred";
+    //   }
+    // }
   });
 </script>

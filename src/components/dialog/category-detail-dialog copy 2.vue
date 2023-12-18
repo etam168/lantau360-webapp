@@ -23,7 +23,7 @@
             />
           </q-item>
 
-          <site-content v-if="renderer === RENDERER.SITE" :item="item as Site" />
+          <div v-if="renderer === RENDERER.SITE">Site</div>
           <div v-else-if="renderer === RENDERER.TAXI">Taxi</div>
           <div v-else-if="renderer === RENDERER.TIMETABLE">Timetable</div>
           <div v-else-if="renderer === RENDERER.BUSINESS">Business</div>
@@ -40,16 +40,19 @@
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  // import { Business } from "@/interfaces/models/entities/business";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { Site } from "@/interfaces/models/entities/site";
+  // import { Posting } from "@/interfaces/models/entities/posting";
+  // import { Site } from "@/interfaces/models/entities/site";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  // Custom Components
-  import SiteContent from "@/components/dialog/renderer/site-content.vue";
+  // type CategoryTypes = Business | Site | Posting;
+
+  const { translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -58,7 +61,6 @@
     }
   });
 
-  const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 

@@ -103,17 +103,28 @@ export const DIRECTORY_GROUPS = {
   TAXI: 26
 };
 
+export const RENDERER = {
+  SITE: "Site",
+  TAXI: "Taxi",
+  TIMETABLE: "Timetable",
+  BUSINESS: "business",
+  POSTING: "posting"
+};
+
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
   ATTRACTION_URL: `${BASE_URL}/Site/ByDirectoryId/1`,
   BUSINESS_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/2`,
+  BUSINESS_GALLERY: `${BASE_URL}/BusinessImage/GetBusinessImages`,
   BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`,
   COMMUNITY_DIRECTORY: `${BASE_URL}/CommunityDirectory`,
   COMMUNITY_EVENT: `${BASE_URL}/CommunityEvent`,
   COMMUNITY_NEWS: `${BASE_URL}/CommunityNews`,
   COMMUNITY_NOTICE: `${BASE_URL}/CommunityNotice`,
+  POSTING_GALLERY: `${BASE_URL}/PostingImage/GetPostingImages`,
   SITE_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/1`,
+  SITE_GALLERY: `${BASE_URL}/SiteImage/GetSiteImages`,
   WEATHER_URL: `${BASE_URL}/Weather`,
 
   DIRECTORY_LIST: {
@@ -125,10 +136,8 @@ export const URL = {
 
 export const DIRECTORY_SITES_URL = `${BASE_URL}/Site/ByDirectoryId`;
 export const SITE_URL = `${BASE_URL}/Site/SiteById`;
-export const SITE_GALLERY_URL = `${BASE_URL}/SiteImage/GetSiteImages`;
 export const DIRECTORY_URL = `${BASE_URL}/Directory`;
 
-export const POSTING_GALLERY_URL = `${BASE_URL}/PostingImage/GetPostingImages`;
 export const COMMUNITY_NEWS_GALLERY_URL = `${BASE_URL}/CommunityNewsImage/GetCommunityNewsImages`;
 export const COMMUNITY_NOTICE_GALLERY_URL = `${BASE_URL}/CommunityNoticeImage/GetCommunityNoticeImages`;
 export const POSTING_URL = `${BASE_URL}/Posting/PostingById`;
@@ -141,7 +150,6 @@ export const ADVERTISEMENT_GALLERY_URL = `${BASE_URL}/AdvertisementImage/GetAdve
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_PROMOTION_URL_BY_ID = `${BASE_URL}/BusinessPromotion/BusinessPromotionById`;
 export const BUSINESS_VOUCHER_URL_BY_ID = `${BASE_URL}/BusinessVoucher/BusinessVoucherById`;
-export const BUSINESS_GALLERY_URL = `${BASE_URL}/BusinessImage/GetBusinessImages`;
 export const DIRECTORY_POST_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
@@ -177,7 +185,6 @@ export const COLOR_PATTERN = ["#546bfa", "#3a9688", "#546bfa", "#3a9688"];
 export const DMY = "DD/MM/YYYY";
 
 export const STORAGE_KEYS = {
-  // FAVOURITES: "favourites",
   BUSINESSFAVOURITES: "businessFavourites",
   SITEFAVOURITES: "siteFavourites",
   IsLogOn: "IsLogin",
