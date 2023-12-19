@@ -1,5 +1,5 @@
 <template>
-  <div class="column q-gutter-y-md">
+  <div :class="containerClass" class="q-gutter-y-md">
     <div v-for="(item, index) in itemsWithType" :key="index" :class="itemClass(item.type)">
       <news-card v-if="item.type === BULLETIN.NEWS" :item="item.value" />
       <notice-card v-else-if="item.type === BULLETIN.NOTICE" :item="item.value" />
@@ -57,6 +57,12 @@
         return "";
     }
   };
+
+  const containerClass = computed(() => ({
+    row: itemsWithType.value.some(item => item.type === BULLETIN.EVENT),
+    column: !itemsWithType.value.some(item => item.type === BULLETIN.EVENT),
+    "q-col-gutter-sm": itemsWithType.value.some(item => item.type === BULLETIN.EVENT)
+  }));
 
   // Computed property to transform items into key/value pairs
   const itemsWithType = computed(() => {

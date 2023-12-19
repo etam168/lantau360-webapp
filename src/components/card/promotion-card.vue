@@ -1,7 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computeImagePath" />
+    <q-img :ratio="1" :src="computeImagePath" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">

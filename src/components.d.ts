@@ -8,7 +8,6 @@ export {}
 declare module 'vue' {
   export interface GlobalComponents {
     AppBulletinItemList: typeof import('./components/global/app-bulletin-item-list.vue')['default']
-    'AppBulletinItemList copy': typeof import('./components/global/app-bulletin-item-list copy.vue')['default']
     AppButton: typeof import('./components/global/app-button.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
     AppCategoryItemList: typeof import('./components/global/app-category-item-list.vue')['default']

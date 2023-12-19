@@ -15,7 +15,7 @@ export function useUtilities() {
       case "md":
         return 16 / 9;
       case "lg":
-        return 2 / 1;
+        return 16 / 9;
       default:
         return 2 / 1;
     }

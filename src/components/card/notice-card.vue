@@ -2,7 +2,7 @@
   <q-item clickable @click="onItemClick(noticeItem)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img :ratio="16 / 9" :src="computeImagePath" />
+        <q-img :ratio="1" :src="computeImagePath" />
       </q-avatar>
     </q-item-section>
 
