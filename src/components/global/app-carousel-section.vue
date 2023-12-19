@@ -12,7 +12,6 @@
         transition-next="fade"
         transition-duration="1200"
         :autoplay="slideInterval"
-        class="bg-primary"
       >
         <q-carousel-slide
           v-for="row in data"
@@ -88,7 +87,7 @@
       $q.dialog({
         component: defineAsyncComponent(() => import("@/components/dialog/marketing-dialog.vue")),
         componentProps: {
-          query: { advertisementId: item.advertisementId }
+          item: item as Advertisement
         }
       });
     } else {

@@ -15,44 +15,71 @@
 
       <q-page-container>
         <q-page>
+          <q-item class="q-items-center q-pa-none">
+            <gallery-carousel-image
+              class="col-12 q-items-center"
+              :gallery-images="galleryItems"
+              :address="translate(item.subtitle1, item.meta, 'subtitle1')"
+            />
+          </q-item>
+
           <q-list padding class="q-mx-sm q-pa-none">
-            <q-item class="q-items-center">
-              <gallery-carousel-image
-                class="col-12 q-items-center"
-                :gallery-images="galleryItems"
-              />
-            </q-item>
-
             <q-item>
-              <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-              <q-space />
-
-              <q-btn color="primary" text-color="white" icon="phone" round />
-              <q-space />
-              <q-btn
-                color="primary"
-                :text-color="isFavourite ? 'red' : 'white'"
-                icon="favorite"
-                round
-                @click="onBtnFavClick"
-              />
-            </q-item>
-            <q-separator class="q-mt-sm" />
-
-            <q-item>
+              <q-item-section avatar>
+                <q-icon color="primary" name="location_on" />
+              </q-item-section>
               <q-item-section>
                 <q-item-label class="q-mt-sm"
-                  >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+                  >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
                 </q-item-label>
-                <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
+                <q-item-label class="q-mt-sm" caption
+                  >{{ $t("community.subtitle1") }}
+                </q-item-label>
+              </q-item-section>
+              <q-item-section side>
+                <q-item-label>
+                  <q-btn
+                    color="primary"
+                    :text-color="isFavourite ? 'red' : 'white'"
+                    icon="favorite"
+                    size="sm"
+                    round
+                    @click="onBtnFavClick"
+                    class="q-mr-md" />
+                  <q-btn
+                    color="primary"
+                    text-color="white"
+                    icon="phone"
+                    size="sm"
+                    round
+                    class="q-mr-md" />
+                  <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round
+                /></q-item-label>
               </q-item-section>
             </q-item>
+
+            <q-item>
+              <q-item-section avatar>
+                <q-icon color="primary" name="schedule" />
+              </q-item-section>
+
+              <q-item-section class="row">
+                <q-item-label>
+                  <q-item-label class="q-mt-sm"
+                    >{{ formatTime(item.openTime) }} -
+                    {{ formatTime(item.closeTime) }}</q-item-label
+                  >
+                  <q-item-label class="q-mt-sm" caption
+                    >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
+                  >
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+
             <q-separator class="q-mt-sm" />
 
             <q-item>
-              <div
-                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-              ></div>
+              <div v-html="translate(item.description, item.meta, 'description')"></div>
             </q-item>
             <q-separator class="q-mt-sm" />
           </q-list>
@@ -63,105 +90,83 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    DIRECTORY_GROUPS,
-    ADVERTISEMENT_GALLERY_URL,
-    ADVERTISEMENT_DETAIL_URL,
-    STORAGE_KEYS
-  } from "@/constants";
-
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import axios, { AxiosError } from "axios";
-  import { LocalStorage, useDialogPluginComponent } from "quasar";
+  import { useDialogPluginComponent } from "quasar";
 
+  // .ts files
+  import { URL } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import eventBus from "@/utils/event-bus";
 
-  const directoryItem = ref<Advertisement>({} as Advertisement);
-  const { translate } = useUtilities();
+  // Custom Components
+  //import BusinessContent from "@/components/dialog/renderer/business-content.vue";
+
+  // Interface files
+  //import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   const props = defineProps({
-    query: {
-      type: Object as PropType<any>,
+    item: {
+      type: Object as PropType<CategoryTypes>,
       required: true
     }
   });
 
+  const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []);
-
-  const isFavourite = ref<boolean>(false);
-  const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.advertisementId;
-    const isCurrentlyFavourite = isFavourite.value;
-
-    if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
-      if (itemIndex !== -1) {
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-
-      isFavourite.value = false;
-    } else {
-      const favItem = {
-        directoryId: props.query?.advertisementId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.advertisementName,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
-      };
-
-      isFavourite.value = true;
-      favoriteItems.value.push(favItem);
-    }
-    LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-  };
-
-  const temp = () => {
-    alert(JSON.stringify(favoriteItems.value));
-  };
 
   const dialogTitle = computed(() => {
-    return translate(
-      directoryItem.value.advertisementName,
-      directoryItem.value.meta,
-      "advertisementName"
-    );
+    switch (true) {
+      case "siteId" in props.item:
+        return translate(props.item.siteName, props.item.meta, "siteName");
+      case "businessId" in props.item:
+        return translate(props.item.businessName, props.item.meta, "businessName");
+      case "postingId" in props.item:
+        return translate(props.item.title, props.item.meta, "title");
+      default:
+        return "";
+    }
+  });
+
+  const formatTime = (time: string | undefined) => {
+    if (!time) return "";
+
+    const parsedTime = new Date(`2000-01-01T${time}`);
+    const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
+    return formattedTime;
+  };
+
+  const galleryUrl = computed(() => {
+    switch (true) {
+      case "advertisementId" in props.item:
+        return `${URL.ADVERTISEMENT_GALLERY}/${props.item.advertisementId}`;
+      default:
+        return "";
+    }
   });
 
   onMounted(() => {
     loadData();
-    eventBus.on("BusinessAdsDialog", () => {
+    eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "BusinessAdsDialog");
+    eventBus.emit("DialogStatus", status, "CategoryDetailDialog");
   }
 
   const loadData = async () => {
-    if (props.query?.advertisementId !== undefined) {
+    if (galleryUrl.value) {
       try {
-        const [advertisementResponse, galleryResponse] = await Promise.all([
-          axios.get(`${ADVERTISEMENT_DETAIL_URL}/${props.query?.advertisementId}`),
-          axios.get<GalleryImage[]>(`${ADVERTISEMENT_GALLERY_URL}/${props.query?.advertisementId}`)
-        ]);
-        directoryItem.value = advertisementResponse.data;
+        const [galleryResponse] = await Promise.all([axios.get<GalleryImage[]>(galleryUrl.value)]);
         galleryItems.value = galleryResponse.data;
-
-        isFavourite.value =
-          (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.advertisementId
-          ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {

@@ -108,7 +108,9 @@ export const RENDERER = {
   TAXI: "Taxi",
   TIMETABLE: "Timetable",
   BUSINESS: "business",
-  POSTING: "posting"
+  POSTING: "posting",
+  ADVERTISEMENT: "advertisement",
+  ATTRACTION: "attraction"
 };
 
 export const URL = {
@@ -126,6 +128,7 @@ export const URL = {
   SITE_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/1`,
   SITE_GALLERY: `${BASE_URL}/SiteImage/GetSiteImages`,
   WEATHER_URL: `${BASE_URL}/Weather`,
+  ADVERTISEMENT_GALLERY: `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`,
 
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
@@ -146,7 +149,7 @@ export const COMMUNITY_NOTICE_URL = `${BASE_URL}/CommunityNotice/CommunityNotice
 
 export const DIRECTORY_BUSINESS_URL = `${BASE_URL}/Business/ByDirectoryId`;
 export const ADVERTISEMENT_DETAIL_URL = `${BASE_URL}/Advertisement/AdvertisementById`;
-export const ADVERTISEMENT_GALLERY_URL = `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`;
+
 export const BUSINESS_URL = `${BASE_URL}/Business/BusinessById`;
 export const BUSINESS_PROMOTION_URL_BY_ID = `${BASE_URL}/BusinessPromotion/BusinessPromotionById`;
 export const BUSINESS_VOUCHER_URL_BY_ID = `${BASE_URL}/BusinessVoucher/BusinessVoucherById`;
