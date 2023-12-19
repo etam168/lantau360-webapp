@@ -1,7 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computeImagePath(promotionItem.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">
@@ -59,7 +59,9 @@
     });
   };
 
-  function computeImagePath(imagePath: string | null): string {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
-  }
+  const computeImagePath = computed(() => {
+    return props.item.bannerPath
+      ? `${BLOB_URL}/${props.item.bannerPath}`
+      : "/no_image_available.jpeg";
+  });
 </script>

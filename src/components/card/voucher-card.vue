@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computePath(voucherItem.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath" />
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="location_on" :label="offers?.businessName" /> -->
     </q-card-section>
@@ -51,10 +51,9 @@
     });
   };
 
-  // function computeImagePath(imagePath: string | null): string {
-  //   return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
-  // }
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
-  };
+  const computeImagePath = computed(() => {
+    return props.item.bannerPath
+      ? `${BLOB_URL}/${props.item.bannerPath}`
+      : "/no_image_available.jpeg";
+  });
 </script>
