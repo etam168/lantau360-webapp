@@ -16,6 +16,7 @@
   // Custom Components
   import NoticeCard from "@/components/card/notice-card.vue";
   import NewsCard from "@/components/card/news-card.vue";
+  import EventCard from "@/components/card/event-card.vue";
 
   type BulletinTypes = CommunityEvent | CommunityNotice | CommunityNews;
 
@@ -34,9 +35,10 @@
     NOTICE: "Notice"
   };
 
-  function getItemType(item: BulletinTypes): "notice" | "news" {
+  function getItemType(item: BulletinTypes): "notice" | "news" | "event" {
     if ("communityNoticeId" in item) return "notice";
     if ("communityNewsId" in item) return "news";
+    if ("communityEventId" in item) return "event";
     throw new Error("Unknown item type");
   }
 
@@ -46,6 +48,8 @@
         return NoticeCard;
       case "news":
         return NewsCard;
+      case "event":
+        return EventCard;
       default:
         throw new Error("Unknown item type");
     }
@@ -80,6 +84,8 @@
       return { item: item as CommunityNotice };
     } else if ("communityNewsId" in item) {
       return { item: item as CommunityNews };
+    } else if ("communityEventId" in item) {
+      return { item: item as CommunityEvent };
     }
     throw new Error("Unknown item type");
   }

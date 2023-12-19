@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-img :ratio="16 / 9" :src="computeImagePath(itemImage)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath(item.bannerPath)" />
 
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="schedule" :label="eventTime(offers)" />
@@ -21,10 +21,8 @@
 </template>
 
 <script setup lang="ts">
-  import axios from "axios";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { BLOB_URL, COMMUNITY_EVENT_GALLERY_URL } from "@/constants";
+  import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
 
   const $q = useQuasar();
@@ -36,9 +34,6 @@
     }
   });
 
-  const error = ref<string | null>(null);
-  const itemImage = ref<string | null>(null);
-
   const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/event-detail-dialog.vue")),
@@ -46,26 +41,6 @@
         query: { communityEventId: props.item.communityEventId }
       }
     });
-  };
-
-  onMounted(() => {
-    loadData();
-  });
-
-  const loadData = async () => {
-    try {
-      const galleryResponse = await axios.get<GalleryImage[]>(
-        `${COMMUNITY_EVENT_GALLERY_URL}/${props.item.communityEventId}`
-      );
-
-      itemImage.value = galleryResponse.data.length > 0 ? galleryResponse.data[0].imagePath : null;
-    } catch (err) {
-      if (axios.isAxiosError(err)) {
-        error.value = err.response?.status === 404 ? "Not found" : "An error occurred";
-      } else {
-        error.value = "An unexpected error occurred";
-      }
-    }
   };
 
   function computeImagePath(imagePath: string | null) {

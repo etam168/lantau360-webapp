@@ -10,7 +10,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="events" class="q-pa-sm">
-        <app-card-item-list :items="events" />
+        <app-bulletin-item-list :items="events" />
       </q-tab-panel>
 
       <q-tab-panel name="notice">

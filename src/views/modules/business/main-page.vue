@@ -6,11 +6,11 @@
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
-        <app-card-item-list :items="businessPromotion" />
+        <app-marketing-item-list :items="businessPromotion" />
       </q-tab-panel>
 
       <q-tab-panel name="voucher" class="q-pa-sm">
-        <app-card-item-list :items="businessVoucher" />
+        <app-marketing-item-list :items="businessVoucher" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
