@@ -106,8 +106,8 @@
   // getImageSrc function to handle both Site and Advertisement
   function getImageSrc(row: CarouselItem) {
     if (isAdvertisement(row)) {
-      return row.imagePath !== null && row.imagePath !== ""
-        ? `${BLOB_URL}/${row.imagePath}`
+      return row.bannerPath !== null && row.bannerPath !== ""
+        ? `${BLOB_URL}/${row.bannerPath}`
         : imageNotFound;
     } else {
       // Return the image path for a Site or a default image
