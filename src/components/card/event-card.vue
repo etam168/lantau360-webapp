@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-img :ratio="16 / 9" :src="computeImagePath(eventItem.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath" />
 
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="schedule" :label="eventTime(offers)" />
@@ -46,7 +46,9 @@
     });
   };
 
-  function computeImagePath(imagePath: string | null) {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
-  }
+  const computeImagePath = computed(() => {
+    return props.item.bannerPath
+      ? `${BLOB_URL}/${props.item.bannerPath}`
+      : "/no_image_available.jpeg";
+  });
 </script>

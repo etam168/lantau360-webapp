@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computeImagePath(item.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computePath(voucherItem.bannerPath)" />
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="location_on" :label="offers?.businessName" /> -->
     </q-card-section>
@@ -13,13 +13,14 @@
         color="primary"
         label="More Details"
         class="full-width"
-        @click="onItemClick()"
+        @click="onItemClick(voucherItem)"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
+  import { PromotionType } from "@/interfaces/types/promotion-types";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
@@ -30,25 +31,30 @@
 
   const props = defineProps({
     item: {
-      type: Object as PropType<BusinessVoucher>,
+      type: Object as PropType<PromotionType>,
       required: true
     }
   });
 
+  const voucherItem = computed(() => props.item as BusinessVoucher);
+
   // const emit = defineEmits(["xclick"]);
 
-  const onItemClick = () => {
+  const onItemClick = (item: BusinessVoucher) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/voucher-detail-dialog.vue")
       ),
       componentProps: {
-        query: { businessVoucherId: props.item.businessVoucherId }
+        query: { businessVoucherId: item.businessVoucherId }
       }
     });
   };
 
-  function computeImagePath(imagePath: string | null): string {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
-  }
+  // function computeImagePath(imagePath: string | null): string {
+  //   return imagePath ? `${BLOB_URL}/${imagePath}` : "/no_image_available.jpeg";
+  // }
+  const computePath = (path: string) => {
+    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+  };
 </script>

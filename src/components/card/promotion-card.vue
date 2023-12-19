@@ -1,7 +1,7 @@
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="computeImagePath(item.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath(promotionItem.bannerPath)" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">
@@ -11,7 +11,7 @@
 
         <q-item-section>
           <q-item-label style="font-family: Baloo; font-size: 1rem">{{
-            item?.subtitle1
+            promotionItem?.subtitle1
           }}</q-item-label>
         </q-item-section>
       </q-item>
@@ -25,33 +25,36 @@
         color="primary"
         label="More Details"
         class="full-width"
-        @click="onItemClick"
+        @click="onItemClick(promotionItem)"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
-  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
+  import { PromotionType } from "@/interfaces/types/promotion-types";
+  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
 
   const $q = useQuasar();
   const props = defineProps({
     item: {
-      type: Object as PropType<BusinessPromotion>,
+      type: Object as PropType<PromotionType>,
       required: true
     }
   });
 
+  const promotionItem = computed(() => props.item as BusinessPromotion);
+
   // const emit = defineEmits(["xclick"]);
-  const onItemClick = () => {
+  const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/promotion-detail-dialog.vue")
       ),
       componentProps: {
-        query: { businessPromotionId: props.item.businessPromotionId }
+        query: { businessPromotionId: item.businessPromotionId }
       }
     });
   };
