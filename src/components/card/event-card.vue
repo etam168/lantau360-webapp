@@ -36,8 +36,6 @@
     }
   });
 
-  //const emit = defineEmits(["xclick"]);
-
   const error = ref<string | null>(null);
   const itemImage = ref<string | null>(null);
 
