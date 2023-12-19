@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-img :ratio="16 / 9" :src="computeImagePath(item.bannerPath)" />
+    <q-img :ratio="16 / 9" :src="computeImagePath(eventItem.bannerPath)" />
 
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="schedule" :label="eventTime(offers)" />
@@ -21,24 +21,27 @@
 </template>
 
 <script setup lang="ts">
+  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
+
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
 
-  const $q = useQuasar();
-
   const props = defineProps({
     item: {
-      type: Object as PropType<CommunityEvent>,
+      type: Object as PropType<BulletinTypes>,
       required: true
     }
   });
+
+  const eventItem = computed(() => props.item as CommunityEvent);
+  const $q = useQuasar();
 
   const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/event-detail-dialog.vue")),
       componentProps: {
-        query: { communityEventId: props.item.communityEventId }
+        query: { communityEventId: eventItem.value.communityEventId }
       }
     });
   };

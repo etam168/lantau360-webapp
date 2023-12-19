@@ -1,17 +1,19 @@
 <template>
-  <q-item clickable @click="onItemClick(item)">
+  <q-item clickable @click="onItemClick(noticeItem)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img ratio="1" :src="computePath(item.iconPath)" />
+        <q-img ratio="1" :src="computePath(noticeItem.iconPath)" />
       </q-avatar>
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ noticeTime(item) }}</q-item-label>
+      <q-item-label>{{ noticeTime(noticeItem) }}</q-item-label>
       <q-item-label
-        ><q-badge color="primary" class="text-white"> {{ item?.title }} </q-badge></q-item-label
+        ><q-badge color="primary" class="text-white">
+          {{ noticeItem?.title }}
+        </q-badge></q-item-label
       >
-      <q-item-label caption lines="2">{{ item?.description }}</q-item-label>
+      <q-item-label caption lines="2">{{ noticeItem?.description }}</q-item-label>
     </q-item-section>
   </q-item>
 
@@ -19,18 +21,20 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
+  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   import { BLOB_URL } from "@/constants";
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
-  import { PropType, defineAsyncComponent } from "vue";
   import { date, useQuasar } from "quasar";
-  defineProps({
+
+  const props = defineProps({
     item: {
-      type: Object as PropType<CommunityNotice>,
+      type: Object as PropType<BulletinTypes>,
       required: true
     }
   });
+
+  const noticeItem = computed(() => props.item as CommunityNotice);
 
   const $q = useQuasar();
 
