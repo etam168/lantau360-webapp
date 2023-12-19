@@ -2,7 +2,7 @@
   <q-item clickable @click="onItemClick(item)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img ratio="1" :src="computePath(itemImage)" />
+        <q-img ratio="1" :src="computePath(item.iconPath)" />
       </q-avatar>
     </q-item-section>
 
@@ -21,14 +21,11 @@
 <script setup lang="ts">
   // Vue Import
 
-  import { BLOB_URL, COMMUNITY_NOTICE_GALLERY_URL } from "@/constants";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import axios, { AxiosError } from "axios";
+  import { BLOB_URL } from "@/constants";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
-  import { PropType, defineAsyncComponent, onMounted, ref } from "vue";
+  import { PropType, defineAsyncComponent } from "vue";
   import { date, useQuasar } from "quasar";
-
-  const props = defineProps({
+  defineProps({
     item: {
       type: Object as PropType<CommunityNotice>,
       required: true
@@ -36,8 +33,6 @@
   });
 
   const $q = useQuasar();
-  const error = ref<string | null>(null);
-  const itemImage = ref();
 
   const noticeTime = (row: any) => {
     // Check if row is null or undefined
@@ -61,30 +56,6 @@
       }
     });
   }
-
-  onMounted(() => {
-    loadData();
-  });
-
-  const loadData = async () => {
-    try {
-      const [galleryResponse] = await Promise.all([
-        axios.get<GalleryImage[]>(`${COMMUNITY_NOTICE_GALLERY_URL}/${props.item.communityNoticeId}`)
-      ]);
-
-      itemImage.value = galleryResponse.item[0].imagePath;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          error.value = "Not found";
-        } else {
-          error.value = "An error occurred";
-        }
-      } else {
-        error.value = "An unexpected error occurred";
-      }
-    }
-  };
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
