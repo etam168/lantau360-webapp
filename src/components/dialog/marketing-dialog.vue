@@ -53,7 +53,8 @@
                     icon="phone"
                     size="sm"
                     round
-                    class="q-mr-md" />
+                    class="q-mr-md"
+                    @click="navigateToPhone" />
                   <q-btn
                     color="primary"
                     text-color="white"
@@ -101,10 +102,10 @@
 
 <script setup lang="ts">
   import axios, { AxiosError } from "axios";
-  import { useDialogPluginComponent } from "quasar";
+  import { useDialogPluginComponent, LocalStorage } from "quasar";
 
   // .ts files
-  import { URL } from "@/constants";
+  import { URL, STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
@@ -121,6 +122,8 @@
       required: true
     }
   });
+
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []);
 
   // const data =
   //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
@@ -155,6 +158,35 @@
         return "";
     }
   });
+
+  const onBtnFavClick = () => {
+    const itemIdToMatch = props.item.businessId;
+
+    if (itemIdToMatch) {
+      const isCurrentlyFavourite = isFavourite.value;
+
+      if (isCurrentlyFavourite) {
+        const itemIndex = favoriteItems.value.findIndex(
+          (item: any) => item.businessId === itemIdToMatch
+        );
+
+        if (itemIndex !== -1) {
+          favoriteItems.value.splice(itemIndex, 1);
+        }
+
+        isFavourite.value = false;
+      } else {
+        isFavourite.value = true;
+        favoriteItems.value.push(props.item);
+      }
+
+      LocalStorage.set(STORAGE_KEYS.BUSINESSFAVOURITES, favoriteItems.value);
+
+      eventBus.emit("favoriteUpdated", {
+        businessId: props.item.businessId
+      });
+    }
+  };
 
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
@@ -209,6 +241,14 @@
       }
     }
   };
+
+  function navigateToPhone() {
+    const formattedPhoneNumber = encodeURIComponent(
+      (props.item?.contactPhone ?? "").replace(/\D/g, "")
+    );
+    const phoneURL = `tel:${formattedPhoneNumber}`;
+    window.open(phoneURL, "_blank");
+  }
 
   function navigateToWhatsApp() {
     const formattedPhoneNumber = encodeURIComponent(
