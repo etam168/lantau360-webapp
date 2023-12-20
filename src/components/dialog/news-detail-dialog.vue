@@ -37,7 +37,7 @@
             <q-item>
               <q-item-section>
                 <q-item-label class="q-mt-sm"
-                  >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+                  >{{ translate(newsItem.subtitle1, newsItem.meta, "subtitle1") }}
                 </q-item-label>
                 <q-item-label class="q-mt-sm" caption
                   >{{ $t("community.subtitle1") }}
@@ -47,9 +47,10 @@
             <q-separator class="q-mt-sm" />
 
             <q-item>
-              <div
-                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-              ></div>
+              <!-- <div
+                v-html="translate(newsItem.description, newsItem.meta, 'description')"
+              ></div> -->
+              <editor-content :editable="isEditable" :editor="editor"></editor-content>
             </q-item>
             <q-separator class="q-mt-sm" />
           </q-list>
@@ -78,28 +79,38 @@
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  //const router = useRouter();
-  const directoryItem = ref<CommunityNews>({} as CommunityNews);
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
+
   const { translate } = useUtilities();
 
   const props = defineProps({
-    query: {
+    item: {
       type: Object as PropType<any>,
       required: true
     }
   });
 
+  const newsItem = ref<CommunityNews>({} as CommunityNews);
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
+  const isEditable = ref(false);
+
+  const editor = useEditor({
+    content: "",
+    extensions: [StarterKit, Link]
+  });
+
   const error = ref<string | null>(null);
-  // const { query } = router.currentRoute.value;
+  // const { item } = router.currentRoute.value;
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.communityNewsId;
+    const itemIdToMatch = newsItem.value.communityNewsId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -111,13 +122,13 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.communityNewsId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.communityNewsName,
+        directoryId: props.item?.communityNewsId,
+        directoryName: newsItem?.value?.directoryName,
+        itemName: newsItem.value.communityNewsName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        iconPath: newsItem.value.iconPath,
+        subTitle: newsItem.value.subtitle1
       };
 
       isFavourite.value = true;
@@ -131,11 +142,7 @@
   };
 
   const dialogTitle = computed(() => {
-    return translate(
-      directoryItem.value.communityNewsName,
-      directoryItem.value.meta,
-      "communityNewsName"
-    );
+    return translate(newsItem.value.communityNewsName, newsItem.value.meta, "communityNewsName");
   });
 
   onMounted(() => {
@@ -143,6 +150,14 @@
     eventBus.on("NewsDetailDialog", () => {
       isDialogVisible.value = false;
     });
+
+    alert(JSON.stringify(props.item.description));
+
+    editor?.value?.setEditable(isEditable.value);
+
+    // const data =
+    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
+    editor.value?.commands.setContent(props.item.description, false);
   });
 
   function updateDialogState(status: any) {
@@ -151,18 +166,18 @@
   }
 
   const loadData = async () => {
-    if (props.query?.communityNewsId !== undefined) {
+    if (props.item?.communityNewsId !== undefined) {
       try {
         const [communityNewsResponse, galleryResponse] = await Promise.all([
-          axios.get(`${COMMUNITY_NEWS_URL}/${props.query?.communityNewsId}`),
-          axios.get<GalleryImage[]>(`${COMMUNITY_NEWS_GALLERY_URL}/${props.query?.communityNewsId}`)
+          axios.get(`${COMMUNITY_NEWS_URL}/${props.item?.communityNewsId}`),
+          axios.get<GalleryImage[]>(`${COMMUNITY_NEWS_GALLERY_URL}/${props.item?.communityNewsId}`)
         ]);
-        directoryItem.value = communityNewsResponse.data;
+        newsItem.value = communityNewsResponse.data;
         galleryItems.value = galleryResponse.data;
 
         isFavourite.value =
           (favoriteItems?.value ?? []).find(
-            (item: any) => item.itemId == directoryItem.value.communityNewsId
+            (item: any) => item.itemId == newsItem.value.communityNewsId
           ) != null;
       } catch (err) {
         if (err instanceof AxiosError) {

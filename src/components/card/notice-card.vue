@@ -13,7 +13,7 @@
           {{ noticeItem?.title }}
         </q-badge></q-item-label
       >
-      <q-item-label caption lines="2">{{ noticeItem?.description }}</q-item-label>
+      <q-item-label caption lines="2"> <div v-html="noticeItem?.description"></div></q-item-label>
     </q-item-section>
   </q-item>
 
@@ -52,11 +52,11 @@
     return modifiedAt;
   };
 
-  function onItemClick(item: any) {
+  function onItemClick(item: CommunityNotice) {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/notice-detail-dialog.vue")),
       componentProps: {
-        query: { communityNoticeId: item.communityNoticeId }
+        item: item
       }
     });
   }

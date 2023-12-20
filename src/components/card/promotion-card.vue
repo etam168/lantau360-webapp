@@ -52,7 +52,7 @@
         () => import("@/components/dialog/promotion-detail-dialog.vue")
       ),
       componentProps: {
-        query: { businessPromotionId: item.businessPromotionId }
+        item: item
       }
     });
   };

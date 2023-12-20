@@ -46,7 +46,7 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/news-detail-dialog.vue")),
       componentProps: {
-        query: { communityNewsId: item.communityNewsId }
+        item: item
       }
     });
   }

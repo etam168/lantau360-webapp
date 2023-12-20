@@ -47,9 +47,11 @@
             <q-separator class="q-mt-sm" />
 
             <q-item>
-              <div
+              <!-- <div
                 v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
-              ></div>
+              ></div> -->
+
+              <editor-content :editable="isEditable" :editor="editor"></editor-content>
             </q-item>
             <q-separator class="q-mt-sm" />
           </q-list>
@@ -77,12 +79,16 @@
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
+
   //const router = useRouter();
   const directoryItem = ref<CommunityEvent>({} as CommunityEvent);
   const { translate } = useUtilities();
 
   const props = defineProps({
-    query: {
+    item: {
       type: Object as PropType<any>,
       required: true
     }
@@ -94,6 +100,13 @@
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+
+  const isEditable = ref(false);
+
+  const editor = useEditor({
+    content: "",
+    extensions: [StarterKit, Link]
+  });
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
@@ -109,7 +122,7 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.query?.communityEventId,
+        directoryId: props.item?.communityEventId,
         directoryName: directoryItem?.value?.directoryName,
         itemName: directoryItem.value.communityEventName,
         itemId: itemIdToMatch,
@@ -141,6 +154,12 @@
     eventBus.on("EventDetailDialog", () => {
       isDialogVisible.value = false;
     });
+
+    editor?.value?.setEditable(isEditable.value);
+
+    // const data =
+    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
+    editor.value?.commands.setContent(props.item.description, false);
   });
 
   function updateDialogState(status: any) {
@@ -149,13 +168,11 @@
   }
 
   const loadData = async () => {
-    if (props.query?.communityEventId !== undefined) {
+    if (props.item?.communityEventId !== undefined) {
       try {
         const [communityEventResponse, galleryResponse] = await Promise.all([
-          axios.get(`${COMMUNITY_NEWS_URL}/${props.query?.communityEventId}`),
-          axios.get<GalleryImage[]>(
-            `${COMMUNITY_NEWS_GALLERY_URL}/${props.query?.communityEventId}`
-          )
+          axios.get(`${COMMUNITY_NEWS_URL}/${props.item?.communityEventId}`),
+          axios.get<GalleryImage[]>(`${COMMUNITY_NEWS_GALLERY_URL}/${props.item?.communityEventId}`)
         ]);
         directoryItem.value = communityEventResponse.data;
         galleryItems.value = galleryResponse.data;

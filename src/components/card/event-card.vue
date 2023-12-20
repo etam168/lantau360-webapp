@@ -34,14 +34,13 @@
     }
   });
 
-  const eventItem = computed(() => props.item as CommunityEvent);
   const $q = useQuasar();
 
-  const onItemClick = () => {
+  const onItemClick = (item: CommunityEvent) => {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/event-detail-dialog.vue")),
       componentProps: {
-        query: { communityEventId: eventItem.value.communityEventId }
+        item: item
       }
     });
   };
