@@ -61,6 +61,7 @@
                     icon="fab fa-whatsapp"
                     size="sm"
                     round
+                    @click="navigateToWhatsApp"
                 /></q-item-label>
               </q-item-section>
             </q-item>
@@ -86,7 +87,9 @@
             <q-separator class="q-mt-sm" />
 
             <q-item>
-              <div v-html="translate(item.description, item.meta, 'description')"></div>
+              <!-- <div v-html="translate(item.description, item.meta, 'description')"></div> -->
+
+              <editor-content :editable="isEditable" :editor="editor"></editor-content>
             </q-item>
             <q-separator class="q-mt-sm" />
           </q-list>
@@ -108,6 +111,10 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
+
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
@@ -115,9 +122,20 @@
     }
   });
 
+  // const data =
+  //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
+
+  const editor = useEditor({
+    content: "",
+    extensions: [StarterKit, Link]
+  });
+
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
+  const isEditable = ref(false);
+  const isFavourite = ref<boolean>(false);
+  //const setIsEditable = ref(false);
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImage[]>([]);
@@ -160,6 +178,12 @@
     eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;
     });
+
+    editor?.value?.setEditable(isEditable.value);
+
+    // const data =
+    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
+    editor.value?.commands.setContent(props.item.description, false);
   });
 
   function updateDialogState(status: any) {
@@ -185,6 +209,20 @@
       }
     }
   };
+
+  function navigateToWhatsApp() {
+    const formattedPhoneNumber = encodeURIComponent(
+      (props.item?.contactWhatsApp ?? "").replace(/\D/g, "")
+    );
+    const message = "Hi, Can you guide me for my visit to lantau?";
+    const propertyLink = `https://app.lantau360.com/`;
+
+    const whatsappURL = `https://wa.me/${formattedPhoneNumber}?text=${encodeURIComponent(
+      `${message} \n${propertyLink} `
+    )}`;
+
+    window.open(whatsappURL, "_blank");
+  }
 </script>
 <style scoped>
   .button-margin {
