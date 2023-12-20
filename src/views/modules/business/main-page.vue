@@ -1,8 +1,13 @@
 <template>
   <q-page>
-    <app-page-title :title="$t('business.title')"></app-page-title>
     <app-carousel-section :data="advertisements" />
-    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
+    <q-toolbar>
+      <q-toolbar-title>{{ $t("business.title") }}</q-toolbar-title>
+      <div>
+        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+      </div>
+    </q-toolbar>
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
@@ -52,7 +57,7 @@
   const tab = ref("promotion");
   const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t("business.tabItems.promotion") },
-    { name: "voucher", label: t("business.tabItems.voucher") },
+    // { name: "voucher", label: t("business.tabItems.voucher") },
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
