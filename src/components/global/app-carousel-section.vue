@@ -27,8 +27,12 @@
         </q-carousel-slide>
 
         <template v-slot:control>
-          <q-carousel-control position="top-left" :offset="[10, 10]">
-            <q-badge color="primary" class="text-white"> Sponsored </q-badge>
+          <q-carousel-control
+            position="top-left"
+            :offset="[10, 10]"
+            v-if="isAdvertisement(data[0])"
+          >
+            <q-badge color="primary" class="text-white"> Advertisement </q-badge>
           </q-carousel-control>
         </template>
       </q-carousel>

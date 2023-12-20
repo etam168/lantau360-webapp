@@ -47,13 +47,20 @@
                     @click="onBtnFavClick"
                     class="q-mr-md" />
                   <q-btn
+                    :disable="item.contactPhone == ''"
                     color="primary"
                     text-color="white"
                     icon="phone"
                     size="sm"
                     round
                     class="q-mr-md" />
-                  <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round
+                  <q-btn
+                    color="primary"
+                    text-color="white"
+                    :disable="item.contactWhatsApp == ''"
+                    icon="fab fa-whatsapp"
+                    size="sm"
+                    round
                 /></q-item-label>
               </q-item-section>
             </q-item>
@@ -116,9 +123,12 @@
   const galleryItems = ref<GalleryImage[]>([]);
 
   const dialogTitle = computed(() => {
+    debugger;
     switch (true) {
       case "siteId" in props.item:
         return translate(props.item.siteName, props.item.meta, "siteName");
+      case "advertisementId" in props.item:
+        return translate(props.item.advertisementName, props.item.meta, "advertisementName");
       case "businessId" in props.item:
         return translate(props.item.businessName, props.item.meta, "businessName");
       case "postingId" in props.item:
