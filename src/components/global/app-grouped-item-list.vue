@@ -1,5 +1,4 @@
 <template>
-  <!-- <pre>{{ groupedArray }}</pre> -->
   <div class="q-pa-md">
     <div v-for="group in groupedArray" :key="group.group" class="q-mb-md">
       <div class="text-h6">{{ group.group }}</div>

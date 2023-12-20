@@ -98,11 +98,6 @@
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
-  // Custom Components
-  //import BusinessContent from "@/components/dialog/renderer/business-content.vue";
-
-  // Interface files
-  //import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
 

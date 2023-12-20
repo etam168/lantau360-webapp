@@ -2,7 +2,7 @@
   <q-item clickable @click="onItemClick(noticeItem)">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img :ratio="1" :src="computeImagePath" />
+        <q-img :ratio="1" :src="imagePath" />
       </q-avatar>
     </q-item-section>
 
@@ -61,7 +61,7 @@
     });
   }
 
-  const computeImagePath = computed(() => {
+  const imagePath = computed(() => {
     return props.item.iconPath ? `${BLOB_URL}/${props.item.iconPath}` : "/no_image_available.jpeg";
   });
 </script>

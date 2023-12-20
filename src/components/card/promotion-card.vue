@@ -1,7 +1,6 @@
-<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <template>
   <q-card class="my-card">
-    <q-img :ratio="1" :src="computeImagePath" />
+    <q-img :ratio="1" :src="imagePath" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">
@@ -47,7 +46,6 @@
 
   const promotionItem = computed(() => props.item as BusinessPromotion);
 
-  // const emit = defineEmits(["xclick"]);
   const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
       component: defineAsyncComponent(
@@ -59,7 +57,7 @@
     });
   };
 
-  const computeImagePath = computed(() => {
+  const imagePath = computed(() => {
     return props.item.bannerPath
       ? `${BLOB_URL}/${props.item.bannerPath}`
       : "/no_image_available.jpeg";

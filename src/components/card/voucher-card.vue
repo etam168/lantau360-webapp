@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="1" :src="computeImagePath" />
+    <q-img :ratio="1" :src="imagePath" />
     <q-card-section class="q-pa-sm">
       <!-- <app-item dense icon="location_on" :label="offers?.businessName" /> -->
     </q-card-section>
@@ -25,8 +25,6 @@
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
 
-  // Assuming AppItem is a component you would use for displaying certain item properties
-  // import AppItem from "@/components/widgets/app-item.vue";
   const $q = useQuasar();
 
   const props = defineProps({
@@ -37,8 +35,6 @@
   });
 
   const voucherItem = computed(() => props.item as BusinessVoucher);
-
-  // const emit = defineEmits(["xclick"]);
 
   const onItemClick = (item: BusinessVoucher) => {
     $q.dialog({
@@ -51,7 +47,7 @@
     });
   };
 
-  const computeImagePath = computed(() => {
+  const imagePath = computed(() => {
     return props.item.bannerPath
       ? `${BLOB_URL}/${props.item.bannerPath}`
       : "/no_image_available.jpeg";
