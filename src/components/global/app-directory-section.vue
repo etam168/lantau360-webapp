@@ -4,7 +4,7 @@
       v-for="(item, index) in data"
       :key="index"
       :item="item"
-      class="col-3"
+      :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
       @on-click="throttledHandleDialog"
     />
   </div>

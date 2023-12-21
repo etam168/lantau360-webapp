@@ -3,7 +3,19 @@
     <!-- <app-page-title :title="$t('community.title')"></app-page-title> -->
     <app-carousel-section :data="advertisements" />
 
-    <q-toolbar class="q-mt-sm">
+    <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
+      <div class="q-gutter-xs row items-center">
+        <q-toolbar-title class="text-center text-h6">{{ $t("community.title") }}</q-toolbar-title>
+        <app-tab-select
+          class="q-ml-sm justify-center"
+          :tab-items="tabItems"
+          :current-tab="tab"
+          @update:currentTab="setTab"
+        />
+      </div>
+    </q-toolbar>
+
+    <q-toolbar class="q-mt-sm" v-else>
       <q-toolbar-title>{{ $t("community.title") }}</q-toolbar-title>
       <div>
         <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
