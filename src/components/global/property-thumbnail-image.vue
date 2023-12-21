@@ -28,12 +28,11 @@
 <script setup lang="ts">
   // .ts files
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  // import { PropertyListing } from "@/interfaces/models/entities/property-listing";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     rowData: {
-      type: Object as PropType<GalleryImage>,
+      type: Object as PropType<GalleryImageType>,
       required: true
     }
   });

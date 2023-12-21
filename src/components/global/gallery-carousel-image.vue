@@ -64,7 +64,6 @@
 
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
@@ -83,7 +82,7 @@
   const { aspectRatio } = useUtilities();
   const slide = ref(props.galleryImages[0]?.imageId);
 
-  const galleryItems = ref<GalleryImage[]>([]);
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const virtualScroll = ref(null);
   const virtualScrollIndex = ref(0);
