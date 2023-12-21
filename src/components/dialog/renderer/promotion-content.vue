@@ -44,7 +44,7 @@
   import { LocalStorage } from "quasar";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
@@ -60,6 +60,8 @@
       required: true
     }
   });
+
+  const eventBus = new EventBus();
 
   const promotionItem = computed(() => {
     return props.item as BusinessPromotion;

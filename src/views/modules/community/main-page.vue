@@ -56,9 +56,10 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   const { t } = useI18n({ useScope: "global" });
+  const eventBus = new EventBus();
 
   const advertisements = ref<Advertisement[]>([]);
   const directories = ref<CommunityDirectory[]>([]);

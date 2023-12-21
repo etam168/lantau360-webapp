@@ -58,7 +58,7 @@
 
   // .ts file
   import { STORAGE_KEYS } from "@/constants";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   type DirectoryTypes = Directory | CommunityDirectory;
   type CategoryTypes = Business | Site | Posting;
@@ -79,6 +79,7 @@
     }
   });
 
+  const eventBus = new EventBus();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { groupBy, translate } = useUtilities();
 

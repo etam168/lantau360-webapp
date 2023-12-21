@@ -26,7 +26,7 @@
 
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
@@ -38,6 +38,8 @@
       required: true
     }
   });
+
+  const eventBus = new EventBus();
 
   const url = "/Business/Datatable";
   const key = "businessId";

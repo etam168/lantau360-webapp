@@ -60,7 +60,7 @@
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   const directoryItem = ref<Business>({} as Business);
   const { translate } = useUtilities();
@@ -72,6 +72,7 @@
     }
   });
 
+  const eventBus = new EventBus();
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
 

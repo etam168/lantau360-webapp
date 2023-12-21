@@ -40,7 +40,7 @@
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   const directoryItem = ref<Site>({} as Site);
   const { translate } = useUtilities();
@@ -52,6 +52,7 @@
     }
   });
 
+  const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {

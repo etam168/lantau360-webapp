@@ -39,7 +39,7 @@
   // .ts files
   import { URL, RENDERER } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   // Custom Components
   import AdvertisementContent from "@/components/dialog/renderer/advertisement-content.vue";
@@ -54,6 +54,7 @@
     }
   });
 
+  const eventBus = new EventBus();
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();

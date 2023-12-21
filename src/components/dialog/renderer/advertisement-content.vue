@@ -76,7 +76,7 @@
   // .ts files
   import { STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   //   import { MarketingType } from "@/interfaces/types/marketing-types";
 
@@ -93,13 +93,11 @@
     }
   });
 
+  const eventBus = new EventBus();
   const advertisementItem = computed(() => {
     return props.item as Advertisement;
   });
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []);
-
-  // const data =
-  //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
 
   const editor = useEditor({
     content: "",

@@ -27,9 +27,9 @@
 
   // 3rd Party Import
   import { useQuasar } from "quasar";
+  import { EventBus } from "quasar";
 
   // .ts file
-  import eventBus from "@/utils/event-bus";
   import { Site } from "@/interfaces/models/entities/site";
   import useDataTable from "@/composable/use-data-table";
 
@@ -45,6 +45,8 @@
 
   const url = "/Site/Datatable";
   const key = "siteId";
+
+  const eventBus = new EventBus();
 
   const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
     url,

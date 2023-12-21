@@ -45,14 +45,14 @@
   import { LocalStorage } from "quasar";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
 
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  // const voucherItem = ref<BusinessVoucher>({} as BusinessVoucher);
+  const eventBus = new EventBus();
   const { translate } = useUtilities();
 
   const props = defineProps({

@@ -38,7 +38,7 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
   import { Posting } from "@/interfaces/models/entities/posting";
 
   const directoryItem = ref<Posting>({} as Posting);
@@ -51,6 +51,7 @@
     }
   });
 
+  const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {

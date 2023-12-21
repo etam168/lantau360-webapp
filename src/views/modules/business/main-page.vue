@@ -52,7 +52,9 @@
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
-  import eventBus from "@/utils/event-bus";
+  import { EventBus } from "quasar";
+
+  const eventBus = new EventBus();
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
