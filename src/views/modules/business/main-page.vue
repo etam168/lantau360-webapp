@@ -2,7 +2,7 @@
   <q-page>
     <app-carousel-section :data="advertisements" />
 
-    <q-toolbar>
+    <q-toolbar class="q-mt-sm">
       <q-toolbar-title>{{ $t("business.title") }}</q-toolbar-title>
       <div>
         <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />

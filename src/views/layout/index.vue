@@ -6,8 +6,6 @@
       style="height: 100vh; max-width: 1024px"
       class="shadow-2 rounded-borders"
     >
-      <!-- <header-component /> -->
-
       <q-page-container style="min-height: calc(100vh - 163px)">
         <router-view :key="$route.fullPath"></router-view>
       </q-page-container>

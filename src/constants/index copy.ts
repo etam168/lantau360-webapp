@@ -108,11 +108,12 @@ export const RENDERER = {
   TAXI: "Taxi",
   TIMETABLE: "Timetable",
   BUSINESS: "business",
+  EVENT: "event",
+  NEWS: "news",
+  NOTICE: "notice",
   POSTING: "posting",
   ADVERTISEMENT: "advertisement",
-  ATTRACTION: "attraction",
-  PROMOTION: "promotion",
-  VOUCHER: "voucher"
+  ATTRACTION: "attraction"
 };
 
 export const URL = {

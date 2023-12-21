@@ -1,8 +1,16 @@
 <template>
   <q-page>
-    <app-page-title :title="$t('community.title')"></app-page-title>
+    <!-- <app-page-title :title="$t('community.title')"></app-page-title> -->
     <app-carousel-section :data="advertisements" />
-    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
+    <q-toolbar class="q-mt-sm">
+      <q-toolbar-title>{{ $t("community.title") }}</q-toolbar-title>
+      <div>
+        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+      </div>
+    </q-toolbar>
+
+    <!-- <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" /> -->
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
@@ -51,7 +59,7 @@
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("news");
   const tabItems = ref<TabItem[]>([
-    { name: "news", label: t("community.tabItems.news") },
+    // { name: "news", label: t("community.tabItems.news") },
     { name: "events", label: t("community.tabItems.events") },
     { name: "notice", label: t("community.tabItems.notice") },
     { name: "directory", label: t("community.tabItems.directory") }

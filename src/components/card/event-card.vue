@@ -14,7 +14,7 @@
         color="primary"
         label="More Details"
         class="full-width"
-        @click="onItemClick()"
+        @click="onItemClick"
       />
     </q-card-actions>
   </q-card>
@@ -22,7 +22,6 @@
 
 <script setup lang="ts">
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
-  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
 
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
@@ -36,11 +35,13 @@
 
   const $q = useQuasar();
 
-  const onItemClick = (item: CommunityEvent) => {
+  const onItemClick = () => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/event-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+      ),
       componentProps: {
-        item: item
+        item: props.item
       }
     });
   };

@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="onItemClick(noticeItem)">
+  <q-item clickable @click="onItemClick">
     <q-item-section avatar>
       <q-avatar size="64px" square>
         <q-img :ratio="1" :src="imagePath" />
@@ -52,11 +52,13 @@
     return modifiedAt;
   };
 
-  function onItemClick(item: CommunityNotice) {
+  function onItemClick() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/notice-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+      ),
       componentProps: {
-        item: item
+        item: props.item
       }
     });
   }

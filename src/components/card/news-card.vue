@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="onItemClick(newsItem)">
+  <q-item clickable @click="onItemClick">
     <q-item-section avatar>
       <q-avatar size="64px" square>
         <q-img :ratio="1" :src="imagePath" />
@@ -12,7 +12,7 @@
       <q-item-label caption lines="2"> <div v-html="newsItem?.description"></div></q-item-label>
     </q-item-section>
   </q-item>
-
+  ``
   <q-separator spaced inset />
 </template>
 
@@ -42,11 +42,13 @@
     return modifiedAt;
   };
 
-  function onItemClick(item: CommunityNews) {
+  function onItemClick() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/news-detail-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+      ),
       componentProps: {
-        item: item
+        item: props.item
       }
     });
   }

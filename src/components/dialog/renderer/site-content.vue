@@ -34,6 +34,7 @@
     <q-separator class="q-mt-sm" />
   </q-list>
 </template>
+
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";

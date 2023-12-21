@@ -1,8 +1,13 @@
 <template>
   <q-page>
-    <app-page-title :title="$t('favourite.title')"></app-page-title>
     <app-carousel-section :data="advertisements" />
-    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
+    <q-toolbar class="q-mt-sm">
+      <q-toolbar-title>{{ $t("favourite.title") }}</q-toolbar-title>
+      <div>
+        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+      </div>
+    </q-toolbar>
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="location" class="q-pa-sm">
@@ -42,16 +47,14 @@
   const error = ref<string | null>(null);
 
   const { t } = useI18n({ useScope: "global" });
+
+  const setTab = (val: string) => (tab.value = val);
   const tab = ref("location");
   const tabItems = ref([
     { name: "location", label: t("favourite.tabItems.location") },
     { name: "business", label: t("favourite.tabItems.business") },
     { name: "coupon", label: t("favourite.tabItems.coupon") }
   ]);
-
-  function setTab(val: string) {
-    tab.value = val;
-  }
 
   try {
     const [advertisementResponse] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
