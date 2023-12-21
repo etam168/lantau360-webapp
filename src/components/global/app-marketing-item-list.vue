@@ -9,7 +9,7 @@
 
 <script setup lang="ts">
   // ts files
-  import { PromotionType } from "@/interfaces/types/promotion-types";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // Custom Components
   import PromotionCard from "@/components/card/promotion-card.vue";
@@ -18,7 +18,7 @@
   // Define props for this component
   const props = defineProps({
     items: {
-      type: Array as PropType<PromotionType[]>,
+      type: Array as PropType<MarketingType[]>,
       required: true
     }
   });
@@ -28,7 +28,7 @@
     VOUCHER: "Voucher"
   };
 
-  function getItemType(item: PromotionType) {
+  function getItemType(item: MarketingType) {
     switch (true) {
       case "businessPromotionId" in item:
         return PROMOTION.PROMOTION;

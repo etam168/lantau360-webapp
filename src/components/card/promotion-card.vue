@@ -33,13 +33,13 @@
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
-  import { PromotionType } from "@/interfaces/types/promotion-types";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
 
   const $q = useQuasar();
   const props = defineProps({
     item: {
-      type: Object as PropType<PromotionType>,
+      type: Object as PropType<MarketingType>,
       required: true
     }
   });
@@ -49,7 +49,7 @@
   const onItemClick = (item: BusinessPromotion) => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/promotion-detail-dialog.vue")
+        () => import("@/components/dialog/marketing-detail-dialog.vue")
       ),
       componentProps: {
         item: item

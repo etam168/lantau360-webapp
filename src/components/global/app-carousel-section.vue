@@ -89,7 +89,9 @@
   const onImageClick = (item: CarouselItem) => {
     if (isAdvertisement(item)) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/components/dialog/marketing-dialog.vue")),
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/marketing-detail-dialog.vue")
+        ),
         componentProps: {
           item: item as Advertisement
         }

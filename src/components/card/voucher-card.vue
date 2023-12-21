@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PromotionType } from "@/interfaces/types/promotion-types";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { BLOB_URL } from "@/constants";
   import { useQuasar } from "quasar";
@@ -29,7 +29,7 @@
 
   const props = defineProps({
     item: {
-      type: Object as PropType<PromotionType>,
+      type: Object as PropType<MarketingType>,
       required: true
     }
   });
@@ -39,7 +39,7 @@
   const onItemClick = (item: BusinessVoucher) => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/voucher-detail-dialog.vue")
+        () => import("@/components/dialog/marketing-detail-dialog.vue")
       ),
       componentProps: {
         query: { businessVoucherId: item.businessVoucherId }

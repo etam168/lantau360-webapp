@@ -110,7 +110,9 @@ export const RENDERER = {
   BUSINESS: "business",
   POSTING: "posting",
   ADVERTISEMENT: "advertisement",
-  ATTRACTION: "attraction"
+  ATTRACTION: "attraction",
+  PROMOTION: "promotion",
+  VOUCHER: "voucher"
 };
 
 export const URL = {
