@@ -1,5 +1,5 @@
 export interface SiteImage {
-  imageId: number;
+  imageId?: number;
   siteId: number;
   ranking: number;
   imagePath: string;

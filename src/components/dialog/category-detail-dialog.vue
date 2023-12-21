@@ -40,7 +40,7 @@
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { Business } from "@/interfaces/models/entities/business";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
@@ -69,7 +69,7 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  const galleryItems = ref<GalleryImage[]>([]);
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const dialogTitle = computed(() => {
     switch (true) {
@@ -129,7 +129,9 @@
   const loadData = async () => {
     if (galleryUrl.value) {
       try {
-        const [galleryResponse] = await Promise.all([axios.get<GalleryImage[]>(galleryUrl.value)]);
+        const [galleryResponse] = await Promise.all([
+          axios.get<GalleryImageType[]>(galleryUrl.value)
+        ]);
         galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {
