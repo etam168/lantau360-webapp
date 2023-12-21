@@ -29,7 +29,7 @@
   import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []);
 
   const emits = defineEmits(["on-detail"]);
 

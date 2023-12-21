@@ -24,12 +24,12 @@
 
 <script setup lang="ts">
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { Site } from "@/interfaces/site";
+  import { Site } from "@/interfaces/models/entities/site";
   import { PropType, ref } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []);
 
   const emits = defineEmits(["on-detail"]);
 

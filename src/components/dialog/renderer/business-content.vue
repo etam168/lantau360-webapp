@@ -6,7 +6,7 @@
       </q-item-section>
       <q-item-section>
         <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
         </q-item-label>
         <q-item-label class="q-mt-sm" caption>{{ $t("community.subtitle1") }} </q-item-label>
       </q-item-section>
@@ -34,8 +34,7 @@
       <q-item-section class="row">
         <q-item-label>
           <q-item-label class="q-mt-sm"
-            >{{ formatTime(directoryItem.openTime) }} -
-            {{ formatTime(directoryItem.closeTime) }}</q-item-label
+            >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
           >
           <q-item-label class="q-mt-sm" caption
             >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
@@ -47,7 +46,7 @@
     <q-separator class="q-mt-sm" />
 
     <q-item>
-      <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
+      <div v-html="translate(item.description, item.meta, 'description')"></div>
     </q-item>
     <q-separator class="q-mt-sm" />
   </q-list>
@@ -62,7 +61,7 @@
   import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
 
-  const directoryItem = ref<Business>({} as Business);
+  //const directoryItem = ref<Business>({} as Business);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -87,7 +86,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessId;
+    const itemIdToMatch = props.item.businessId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
@@ -107,10 +106,12 @@
         favoriteItems.value.push(props.item);
       }
 
-      LocalStorage.set(STORAGE_KEYS.BUSINESSFAVOURITES, favoriteItems.value);
+      LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
-        businessId: directoryItem.value.businessId
+        itemId: props.item.businessId,
+        isFavorite: isFavourite.value,
+        moduleType: "business"
       });
     }
   };

@@ -45,14 +45,16 @@
   import { URL, STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
-  import { LocalStorage } from "quasar";
+  import { EventBus, LocalStorage } from "quasar";
+
+  const eventBus = new EventBus();
 
   const siteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SITEFAVOURITES) ?? []) as Site[];
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as Site[];
   });
 
   const businessItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) ?? []) as Business[];
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []) as Business[];
   });
 
   const advertisements = ref<any | null>(null);
@@ -67,6 +69,46 @@
     { name: "business", label: t("favourite.tabItems.business") },
     { name: "coupon", label: t("favourite.tabItems.coupon") }
   ]);
+
+  eventBus.on("favoriteUpdated", ({ itemId, isFavorite, moduleType }) => {
+    alert("ITEM ID" + itemId);
+    alert("Is Favorite" + isFavorite);
+    alert("Module Type" + moduleType);
+
+    let itemsArray;
+
+    switch (moduleType) {
+      case "business":
+        itemsArray = businessItems;
+        break;
+      case "site":
+        itemsArray = siteItems;
+        break;
+      // Add more cases if needed for other modules
+
+      default:
+        // Handle default case if necessary
+        break;
+    }
+
+    // Check if itemsArray is defined before accessing its value property
+    const itemIndex = itemsArray?.value?.findIndex((item: any) => item.directoryId === itemId);
+
+    if (itemIndex !== undefined && itemIndex !== -1) {
+      if (!isFavorite) {
+        // Remove the item if it's no longer a favorite
+        itemsArray?.value.splice(itemIndex, 1);
+      }
+    } else {
+      if (isFavorite) {
+        const newItem = {
+          directoryId: itemId
+        } as Site & Business;
+
+        itemsArray?.value.push(newItem);
+      }
+    }
+  });
 
   try {
     const [advertisementResponse] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
