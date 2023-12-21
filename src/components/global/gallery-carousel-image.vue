@@ -65,10 +65,11 @@
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     galleryImages: {
-      type: Object as PropType<GalleryImage[]>,
+      type: Object as PropType<GalleryImageType[]>,
       required: true
     },
     address: {

@@ -44,19 +44,13 @@
 
   // Interface files
   import { MarketingType } from "@/interfaces/types/marketing-types";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
 
   // .ts files
-  import {
-    URL,
-    RENDERER,
-    BUSINESS_PROMOTION_GALLERY_URL,
-    BUSINESS_VOUCHER_GALLERY_URL
-  } from "@/constants";
+  import { URL, RENDERER } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
   import eventBus from "@/utils/event-bus";
 
@@ -64,6 +58,7 @@
   import AdvertisementContent from "@/components/dialog/renderer/advertisement-content.vue";
   import VoucherContent from "@/components/dialog/renderer/voucher-content.vue";
   import PromotionContent from "@/components/dialog/renderer/promotion-content.vue";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     item: {
@@ -77,7 +72,7 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  const galleryItems = ref<GalleryImage[]>([]);
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const dialogTitle = computed(() => {
     switch (true) {
@@ -97,9 +92,9 @@
       case "advertisementId" in props.item:
         return `${URL.ADVERTISEMENT_GALLERY}/${props.item.advertisementId}`;
       case "businessVoucherId" in props.item:
-        return `${BUSINESS_VOUCHER_GALLERY_URL}/${props.item.businessVoucherId}`;
+        return `${URL.BUSINESS_VOUCHER_GALLERY_URL}/${props.item.businessVoucherId}`;
       case "businessPromotionId" in props.item:
-        return `${BUSINESS_PROMOTION_GALLERY_URL}/${props.item?.businessPromotionId}`;
+        return `${URL.BUSINESS_PROMOTION_GALLERY_URL}/${props.item?.businessPromotionId}`;
       default:
         return "";
     }
@@ -133,7 +128,7 @@
   const loadData = async () => {
     if (galleryUrl.value) {
       try {
-        const [galleryResponse] = await Promise.all([axios.get<GalleryImage[]>(galleryUrl.value)]);
+        const [galleryResponse] = await Promise.all([axios.get(galleryUrl.value)]);
         galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {

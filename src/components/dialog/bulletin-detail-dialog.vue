@@ -38,7 +38,6 @@
 
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";
@@ -49,6 +48,7 @@
   import EventContent from "@/components/dialog/renderer/event-content.vue";
   import NewsContent from "@/components/dialog/renderer/news-content.vue";
   import NoticeContent from "@/components/dialog/renderer/notice-content.vue";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     item: {
@@ -62,7 +62,7 @@
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);
-  const galleryItems = ref<GalleryImage[]>([]);
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const dialogTitle = computed(() => {
     switch (true) {
@@ -119,7 +119,7 @@
   const loadData = async () => {
     if (galleryUrl.value) {
       try {
-        const [galleryResponse] = await Promise.all([axios.get<GalleryImage[]>(galleryUrl.value)]);
+        const [galleryResponse] = await Promise.all([axios.get(galleryUrl.value)]);
         galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {

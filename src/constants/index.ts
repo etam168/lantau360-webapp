@@ -112,7 +112,10 @@ export const RENDERER = {
   ADVERTISEMENT: "advertisement",
   ATTRACTION: "attraction",
   PROMOTION: "promotion",
-  VOUCHER: "voucher"
+  VOUCHER: "voucher",
+  EVENT: "event",
+  NEWS: "news",
+  NOTICE: "notice"
 };
 
 export const URL = {
@@ -134,6 +137,8 @@ export const URL = {
   SITE_GALLERY: `${BASE_URL}/SiteImage/GetSiteImages`,
   WEATHER_URL: `${BASE_URL}/Weather`,
   ADVERTISEMENT_GALLERY: `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`,
+  BUSINESS_VOUCHER_GALLERY_URL: `${BASE_URL}/BusinessVoucherImage/GetBusinessVoucherImages`,
+  BUSINESS_PROMOTION_GALLERY_URL: `${BASE_URL}/BusinessPromotionImage/GetBusinessPromotionImages`,
 
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
@@ -162,10 +167,6 @@ export const DIRECTORY_POST_URL = `${BASE_URL}/Posting/ByDirectoryId`;
 
 export const COMMUNITY_EVENT_URL = `${BASE_URL}/CommunityEvent/CommunityEventById`;
 export const COMMUNITY_EVENT_GALLERY_URL = `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`;
-
-export const BUSINESS_PROMOTION_GALLERY_URL = `${BASE_URL}/BusinessPromotionImage/GetBusinessPromotionImages`;
-
-export const BUSINESS_VOUCHER_GALLERY_URL = `${BASE_URL}/BusinessVoucherImage/GetBusinessVoucherImages`;
 
 export const ADVERTISEMENT_URL = `${BASE_URL}/Advertisement`;
 

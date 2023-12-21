@@ -57,7 +57,7 @@
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
-  const tab = ref("news");
+  const tab = ref("events");
   const tabItems = ref<TabItem[]>([
     // { name: "news", label: t("community.tabItems.news") },
     { name: "events", label: t("community.tabItems.events") },
