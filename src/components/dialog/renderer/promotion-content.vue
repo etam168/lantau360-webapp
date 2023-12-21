@@ -18,7 +18,7 @@
     <q-item>
       <q-item-section>
         <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+          >{{ translate(promotionItem.subtitle1, promotionItem.meta, "subtitle1") }}
         </q-item-label>
         <q-item-label class="q-mt-sm" caption>{{ $t("buiness.subtitle1") }} </q-item-label>
       </q-item-section>
@@ -27,7 +27,7 @@
 
     <q-item>
       <!-- <div
-                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
+                v-html="translate(promotionItem.description, promotionItem.meta, 'description')"
               ></div> -->
 
       <editor-content :editable="isEditable" :editor="editor"></editor-content>
@@ -49,17 +49,21 @@
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const directoryItem = ref<BusinessPromotion>({} as BusinessPromotion);
+  // const promotionItem = ref<BusinessPromotion>({} as BusinessPromotion);
   const { translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<any>,
+      type: Object as PropType<MarketingType>,
       required: true
     }
   });
 
+  const promotionItem = computed(() => {
+    return props.item as BusinessPromotion;
+  });
   const isDialogVisible = ref();
 
   const isEditable = ref(false);
@@ -73,7 +77,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessPromotionId;
+    const itemIdToMatch = promotionItem.value.businessPromotionId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -85,13 +89,13 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.item?.businessPromotionId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
+        directoryId: promotionItem.value.businessPromotionId,
+        directoryName: promotionItem?.value?.directoryName,
+        itemName: promotionItem.value.businessName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        iconPath: promotionItem.value.iconPath,
+        subTitle: promotionItem.value.subtitle1
       };
 
       isFavourite.value = true;

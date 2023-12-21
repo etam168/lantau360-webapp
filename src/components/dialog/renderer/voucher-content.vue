@@ -19,7 +19,7 @@
     <q-item>
       <q-item-section>
         <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+          >{{ translate(voucherItem.subtitle1, voucherItem.meta, "subtitle1") }}
         </q-item-label>
         <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
       </q-item-section>
@@ -28,7 +28,7 @@
 
     <q-item>
       <!-- <div
-                v-html="translate(directoryItem.description, directoryItem.meta, 'description')"
+                v-html="translate(voucherItem.description, voucherItem.meta, 'description')"
               ></div> -->
 
       <editor-content :editable="isEditable" :editor="editor"></editor-content>
@@ -50,15 +50,20 @@
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const directoryItem = ref<BusinessVoucher>({} as BusinessVoucher);
+  // const voucherItem = ref<BusinessVoucher>({} as BusinessVoucher);
   const { translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<BusinessVoucher>,
+      type: Object as PropType<MarketingType>,
       required: true
     }
+  });
+
+  const voucherItem = computed(() => {
+    return props.item as BusinessVoucher;
   });
 
   const isDialogVisible = ref();
@@ -74,7 +79,7 @@
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.businessVoucherId;
+    const itemIdToMatch = voucherItem.value.businessVoucherId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -86,13 +91,13 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: props.item?.businessVoucherId,
-        directoryName: directoryItem?.value?.directoryName,
-        itemName: directoryItem.value.businessName,
+        directoryId: voucherItem.value.businessVoucherId,
+        directoryName: voucherItem?.value?.directoryName,
+        itemName: voucherItem.value.businessName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: directoryItem.value.iconPath,
-        subTitle: directoryItem.value.subtitle1
+        iconPath: voucherItem.value.iconPath,
+        subTitle: voucherItem.value.subtitle1
       };
 
       isFavourite.value = true;

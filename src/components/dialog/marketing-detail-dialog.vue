@@ -20,18 +20,9 @@
             :gallery-images="galleryItems"
             :address="translate(item.subtitle1, item.meta, 'subtitle1')"
           />
-          <advertisement-content
-            v-if="renderer === RENDERER.ADVERTISEMENT"
-            :item="item as Advertisement"
-          />
-          <promotion-content
-            v-else-if="renderer === RENDERER.PROMOTION"
-            :item="item as BusinessPromotion"
-          />
-          <voucher-content
-            v-else-if="renderer === RENDERER.VOUCHER"
-            :item="item as BusinessVoucher"
-          />
+          <advertisement-content v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
+          <promotion-content v-else-if="renderer === RENDERER.PROMOTION" :item="item" />
+          <voucher-content v-else-if="renderer === RENDERER.VOUCHER" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -44,10 +35,6 @@
 
   // Interface files
   import { MarketingType } from "@/interfaces/types/marketing-types";
-
-  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";

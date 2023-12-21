@@ -6,7 +6,7 @@
       </q-item-section>
       <q-item-section>
         <q-item-label class="q-mt-sm"
-          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          >{{ translate(advertisementItem.subtitle1, advertisementItem.meta, "subtitle1") }}
         </q-item-label>
         <q-item-label class="q-mt-sm" caption>{{ $t("community.subtitle1") }} </q-item-label>
       </q-item-section>
@@ -21,7 +21,7 @@
             @click="onBtnFavClick"
             class="q-mr-md" />
           <q-btn
-            :disable="item.contactPhone == ''"
+            :disable="advertisementItem.contactPhone == ''"
             color="primary"
             text-color="white"
             icon="phone"
@@ -32,7 +32,7 @@
           <q-btn
             color="primary"
             text-color="white"
-            :disable="item.contactWhatsApp == ''"
+            :disable="advertisementItem.contactWhatsApp == ''"
             icon="fab fa-whatsapp"
             size="sm"
             round
@@ -49,7 +49,8 @@
       <q-item-section class="row">
         <q-item-label>
           <q-item-label class="q-mt-sm"
-            >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
+            >{{ formatTime(advertisementItem.openTime) }} -
+            {{ formatTime(advertisementItem.closeTime) }}</q-item-label
           >
           <q-item-label class="q-mt-sm" caption
             >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
@@ -83,14 +84,18 @@
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Advertisement>,
+      type: Object as PropType<MarketingType>,
       required: true
     }
   });
 
+  const advertisementItem = computed(() => {
+    return props.item as Advertisement;
+  });
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.BUSINESSFAVOURITES) || []);
 
   // const data =
@@ -108,7 +113,7 @@
   //const setIsEditable = ref(false);
 
   const onBtnFavClick = () => {
-    const itemIdToMatch = props.item.businessId;
+    const itemIdToMatch = advertisementItem.value.businessId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
@@ -125,13 +130,13 @@
         isFavourite.value = false;
       } else {
         isFavourite.value = true;
-        favoriteItems.value.push(props.item);
+        favoriteItems.value.push(advertisementItem);
       }
 
       LocalStorage.set(STORAGE_KEYS.BUSINESSFAVOURITES, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
-        businessId: props.item.businessId
+        businessId: advertisementItem.value.businessId
       });
     }
   };
@@ -153,12 +158,12 @@
 
     // const data =
     //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
-    editor.value?.commands.setContent(props.item.description, false);
+    editor.value?.commands.setContent(advertisementItem.value.description, false);
   });
 
   function navigateToPhone() {
     const formattedPhoneNumber = encodeURIComponent(
-      (props.item?.contactPhone ?? "").replace(/\D/g, "")
+      (advertisementItem?.value.contactPhone ?? "").replace(/\D/g, "")
     );
     const phoneURL = `tel:${formattedPhoneNumber}`;
     window.open(phoneURL, "_blank");
@@ -166,7 +171,7 @@
 
   function navigateToWhatsApp() {
     const formattedPhoneNumber = encodeURIComponent(
-      (props.item?.contactWhatsApp ?? "").replace(/\D/g, "")
+      (advertisementItem?.value.contactWhatsApp ?? "").replace(/\D/g, "")
     );
     const message = "Hi, Can you guide me for my visit to lantau?";
     const propertyLink = `https://app.lantau360.com/`;
