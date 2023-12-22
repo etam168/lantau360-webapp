@@ -1,18 +1,28 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
-    <div>taxi</div>
     <q-item>
-      <q-item-section avatar>
-        <q-icon color="primary" name="location_on" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-        </q-item-label>
-        <q-item-label class="q-mt-sm" caption>{{ $t("community.subtitle1") }} </q-item-label>
-      </q-item-section>
+      <q-item-section> </q-item-section>
       <q-item-section side>
         <q-item-label>
+          <q-btn
+            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            color="primary"
+            text-color="white"
+            icon="phone"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+
+          <q-btn
+            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            color="primary"
+            text-color="white"
+            icon="fab fa-whatsapp"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
           <q-btn
             color="primary"
             :text-color="isFavourite ? 'red' : 'white'"
@@ -20,19 +30,14 @@
             size="sm"
             round
             @click="onBtnFavClick"
-            class="q-mr-md" />
-          <q-btn color="primary" text-color="white" icon="phone" size="sm" round class="q-mr-md" />
-          <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round
-        /></q-item-label>
+          />
+        </q-item-label>
       </q-item-section>
     </q-item>
-
-    <q-separator class="q-mt-sm" />
 
     <q-item>
       <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
     </q-item>
-    <q-separator class="q-mt-sm" />
   </q-list>
 </template>
 <script setup lang="ts">
