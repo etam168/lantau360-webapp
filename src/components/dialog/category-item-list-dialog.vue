@@ -26,6 +26,7 @@
                   @item-click="onItemClick"
                   :directoryItems="filterGroupedArray(item.name)"
                   :favoriteItems="favoriteItems"
+                  :template="template"
                 />
               </q-tab-panel>
             </app-tab-panels>
@@ -103,6 +104,11 @@
   //       return [];
   //   }
   // });
+
+  const template = computed(() => {
+    const temp = props.directory.meta?.template;
+    return temp;
+  });
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;

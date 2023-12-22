@@ -19,7 +19,27 @@
         </q-avatar>
       </q-item-section>
 
-      <q-item-section>
+      <q-item-section v-if="template === 'Timetable'">
+        <q-item-label>
+          {{ translate(item.siteName, item.meta, "siteName") }}
+        </q-item-label>
+
+        <q-item-label>
+          {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section v-else-if="template === 'Lantau Taxi'">
+        <q-item-label>
+          {{ translate(item.siteName, item.meta, "siteName") }}
+        </q-item-label>
+
+        <q-item-label>
+          {{ translate(item.title, item.meta, "title") }}
+        </q-item-label>
+      </q-item-section>
+
+      <q-item-section v-else>
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
@@ -53,11 +73,16 @@
   const props = defineProps({
     directoryItems: {
       type: Array as PropType<CategoryTypes[]>,
-      required: false
+      required: true,
+      default: () => []
     },
     favoriteItems: {
       type: Array as PropType<CategoryTypes[]>,
       default: () => []
+    },
+    template: {
+      type: String,
+      required: false
     }
   });
 
