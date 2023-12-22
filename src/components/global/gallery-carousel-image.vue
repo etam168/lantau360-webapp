@@ -2,7 +2,7 @@
   <div v-if="galleryItems && galleryItems?.length > 0">
     <q-card bordered flat>
       <q-responsive :ratio="aspectRatio()">
-        <q-carousel v-model="slide" animated arrows>
+        <q-carousel v-model="slide" animated>
           <q-carousel-slide
             v-for="(image, index) in galleryItems"
             :key="index"
