@@ -1,29 +1,29 @@
 <template>
-  <q-card-section>
+  <q-card-section class="q-pa-none">
     <q-item class="q-py-none">
       <q-item-section>
-        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+        <app-tab-select
+          :tab-items="tabItems"
+          :current-tab="tab"
+          @update:currentTab="setTab"
+          class="q-px-none"
+        />
       </q-item-section>
 
       <q-item-section side>
         <div class="q-gutter-sm">
           <q-btn color="primary" text-color="white" icon="phone" size="sm" round />
           <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round />
-          <q-btn
-            color="primary"
-            text-color="white"
-            icon="favorite"
-            size="sm"
-            round
-            class="q-mr-md"
-          />
+          <q-btn color="primary" text-color="white" icon="favorite" size="sm" round />
         </div>
       </q-item-section>
     </q-item>
 
     <app-tab-panels v-model="tab">
       <q-tab-panel :name="item.subtitle1" class="q-pa-none">
-        <q-img class="bg-blue" :src="computePath(item.imagePath)" />
+        <q-scroll-area style="height: calc(100vh - 110px)">
+          <q-img :src="computePath(item.imagePath)" />
+        </q-scroll-area>
       </q-tab-panel>
 
       <q-tab-panel :name="item.subtitle2" class="q-pa-none"

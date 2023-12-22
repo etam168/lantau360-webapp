@@ -1,5 +1,5 @@
 <template>
-  <q-list padding class="q-pa-md">
+  <q-list padding class="q-px-md q-py-none">
     <q-item
       clickable
       v-for="item in directoryItems"
@@ -25,7 +25,7 @@
         </q-item-label>
 
         <q-item-label>
-          {{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
       </q-item-section>
 
