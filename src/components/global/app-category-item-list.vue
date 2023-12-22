@@ -1,5 +1,5 @@
 <template>
-  <q-list padding class="q-px-md q-py-none">
+  <q-list>
     <q-item
       clickable
       v-for="item in directoryItems"

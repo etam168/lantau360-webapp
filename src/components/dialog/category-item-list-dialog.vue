@@ -37,6 +37,7 @@
                   :directoryItems="filterGroupedArray(item.name)"
                   :favoriteItems="favoriteItems"
                   :template="template"
+                  class="q-px-md q-py-none"
                 />
               </q-tab-panel>
             </app-tab-panels>
@@ -49,6 +50,8 @@
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"
               :template="template"
+              class="q-pa-md"
+              padding
             />
           </template>
         </q-page>
