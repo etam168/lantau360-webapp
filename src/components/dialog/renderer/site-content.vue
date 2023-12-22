@@ -82,7 +82,6 @@
   });
 
   function onBtnFavClick() {
-    debugger;
     const itemIdToMatch = siteItem.value.siteId;
 
     if (itemIdToMatch) {

@@ -17,10 +17,20 @@
         <q-page>
           <!-- Check if groupBykey exists -->
           <template v-if="groupBykey">
-            <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+            <app-tab-select
+              :tab-items="tabItems"
+              :current-tab="tab"
+              @update:currentTab="setTab"
+              :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
+            />
 
             <app-tab-panels v-model="tab">
-              <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.label">
+              <q-tab-panel
+                v-for="(item, index) in tabItems"
+                :key="index"
+                :name="item.label"
+                class="q-pa-none"
+              >
                 <!-- Pass filterGroupedArray(item.name) if groupBykey exists -->
                 <app-category-item-list
                   @item-click="onItemClick"
@@ -38,6 +48,7 @@
               @item-click="onItemClick"
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"
+              :template="template"
             />
           </template>
         </q-page>
@@ -152,7 +163,6 @@
   });
 
   eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
-    debugger;
     const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
     if (itemIndex !== -1) {
       if (!isFavorite) {
@@ -175,7 +185,6 @@
   }
 
   function onItemClick(item: CategoryTypes) {
-    debugger;
     if ("siteId" in item || "businessId" in item) {
       $q.dialog({
         component: defineAsyncComponent(

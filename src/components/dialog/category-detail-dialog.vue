@@ -135,7 +135,6 @@
   });
 
   function handleFavUpdate(data: any) {
-    debugger;
     console.log(data);
     eventBus.emit("favoriteUpdated", {
       siteId: data.siteId,

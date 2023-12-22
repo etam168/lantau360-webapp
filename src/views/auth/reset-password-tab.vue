@@ -79,7 +79,6 @@
       });
       emits("close-dialog");
     } catch (e: any) {
-      debugger;
       $q.notify({
         message: e.message,
         type: "negative"
