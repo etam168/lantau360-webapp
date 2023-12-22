@@ -88,7 +88,6 @@ export const URL = {
 
 export const STORAGE_KEYS = {
   BUSINESSFAVOURITES: "businessFavourites",
-  SITEFAVOURITES: "siteFavourites",
   POSTINGFAVOURITES: "postingFavourites",
   IsLogOn: "IsLogin",
 

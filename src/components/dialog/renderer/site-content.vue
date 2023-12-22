@@ -6,7 +6,7 @@
       </q-item-section>
       <q-item-section>
         <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
+          >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
         </q-item-label>
         <q-item-label class="q-mt-sm" caption>{{ $t("community.subtitle1") }} </q-item-label>
       </q-item-section>
@@ -18,7 +18,7 @@
             icon="favorite"
             size="sm"
             round
-            @click="onBtnFavClick"
+            @click="onBtnFavClick()"
             class="q-mr-md" />
           <q-btn color="primary" text-color="white" icon="phone" size="sm" round class="q-mr-md" />
           <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round
@@ -29,7 +29,7 @@
     <q-separator class="q-mt-sm" />
 
     <q-item>
-      <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
+      <div v-html="translate(siteItem.description, siteItem.meta, 'description')"></div>
     </q-item>
     <q-separator class="q-mt-sm" />
   </q-list>
@@ -40,27 +40,50 @@
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
-  import { EventBus } from "quasar";
+  import { Directory } from "@/interfaces/models/entities/directory";
+  // import { EventBus } from "quasar";
 
-  const directoryItem = ref<Site>({} as Site);
+  // const siteItem = ref<Site>({} as siteItem);
   const { translate } = useUtilities();
+  const emits = defineEmits(["favorite"]);
 
   const props = defineProps({
     item: {
       type: Object as PropType<Site>,
       required: true
+    },
+    directory: {
+      type: Object as PropType<Directory>,
+      required: true
     }
   });
 
-  const eventBus = new EventBus();
+  // Check if  siteId exists in favoriteItems on component mount
+  onMounted(() => {
+    const itemIdToMatch = siteItem.value.siteId;
+
+    if (itemIdToMatch) {
+      const isItemFavorited = favoriteItems.value.some(
+        (item: Site) => item.siteId === itemIdToMatch
+      );
+
+      isFavourite.value = isItemFavorited;
+    }
+  });
+
+  const siteItem = computed(() => {
+    return props.item as Site;
+  });
+  // const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
   });
 
-  const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.siteId;
+  function onBtnFavClick() {
+    debugger;
+    const itemIdToMatch = siteItem.value.siteId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
@@ -76,16 +99,18 @@
 
         isFavourite.value = false;
       } else {
+        siteItem.value.directoryName = props.directory.directoryName;
         isFavourite.value = true;
-        favoriteItems.value.push(props.item);
+        favoriteItems.value.push(siteItem.value);
       }
 
-      const storageKey = STORAGE_KEYS.SITEFAVOURITES;
+      const storageKey = STORAGE_KEYS.SAVED.SITE;
       LocalStorage.set(storageKey, favoriteItems.value);
 
-      eventBus.emit("favoriteUpdated", {
-        siteId: directoryItem.value.siteId || null
+      emits("favorite", {
+        siteId: siteItem.value.siteId,
+        isFavorite: isFavourite.value
       });
     }
-  };
+  }
 </script>

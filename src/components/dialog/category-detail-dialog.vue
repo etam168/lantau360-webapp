@@ -23,7 +23,12 @@
             />
           </q-item>
 
-          <site-content v-if="renderer === RENDERER.SITE" :item="item as Site" />
+          <site-content
+            v-if="renderer === RENDERER.SITE"
+            :item="item as Site"
+            :directory="directory as Directory"
+            @favorite="handleFavUpdate"
+          />
           <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
           <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item as Site" />
           <posting-content v-else-if="renderer === RENDERER.POSTING" :item="item as Posting" />
@@ -48,7 +53,7 @@
   // .ts files
   import { URL, RENDERER } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import { EventBus } from "quasar";
+  import eventBus from "@/utils/event-bus";
 
   // Custom Components
   import BusinessContent from "@/components/dialog/renderer/business-content.vue";
@@ -56,15 +61,22 @@
   import SiteContent from "@/components/dialog/renderer/site-content.vue";
   import TaxiContent from "@/components/dialog/renderer/taxi-content.vue";
   import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { Directory } from "@/interfaces/models/entities/directory";
+
+  type DirectoryTypes = Directory | CommunityDirectory;
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    directory: {
+      type: Object as PropType<DirectoryTypes>,
+      required: true
     }
   });
 
-  const eventBus = new EventBus();
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
@@ -121,6 +133,15 @@
       isDialogVisible.value = false;
     });
   });
+
+  function handleFavUpdate(data: any) {
+    debugger;
+    console.log(data);
+    eventBus.emit("favoriteUpdated", {
+      siteId: data.siteId,
+      isFavorite: data.isFavorite
+    });
+  }
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;

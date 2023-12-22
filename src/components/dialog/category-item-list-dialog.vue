@@ -58,7 +58,8 @@
 
   // .ts file
   import { STORAGE_KEYS } from "@/constants";
-  import { EventBus } from "quasar";
+  // import { EventBus } from "quasar";
+  import eventBus from "@/utils/event-bus";
 
   type DirectoryTypes = Directory | CommunityDirectory;
   type CategoryTypes = Business | Site | Posting;
@@ -79,28 +80,29 @@
     }
   });
 
-  const eventBus = new EventBus();
+  // const eventBus = new EventBus();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { groupBy, translate } = useUtilities();
 
   const $q = useQuasar();
   const isDialogVisible = ref();
 
-  const favoriteItems = computed(() => {
-    if (props.directoryItemsList.length === 0) {
-      return [];
-    }
+  const favoriteItems = ref<any>(getFavItem() || []);
 
-    const firstItem = props.directoryItemsList[0];
-    switch (true) {
-      case "siteId" in firstItem:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
-      case "businessId" in firstItem:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
-      default:
-        return [];
-    }
-  });
+  // const favoriteItems = computed(() => {
+  //   if (props.directoryItemsList.length === 0) {
+  //     return [];
+  //   }
+  //   const firstItem = props.directoryItemsList[0];
+  //   switch (true) {
+  //     case "siteId" in firstItem:
+  //       return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+  //     case "businessId" in firstItem:
+  //       return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+  //     default:
+  //       return [];
+  //   }
+  // });
 
   const directoryItems = computed(() => {
     return props.directoryItemsList;
@@ -143,19 +145,39 @@
     });
   });
 
+  eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
+    debugger;
+    const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
+    if (itemIndex !== -1) {
+      if (!isFavorite) {
+        // Remove the item if it's no longer a favorite
+        favoriteItems.value.splice(itemIndex, 1);
+      }
+    } else {
+      if (isFavorite) {
+        // Add the item if it's newly favorited
+        favoriteItems.value.push({
+          siteId: siteId
+          // other properties as needed
+        });
+      }
+    }
+  });
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CategoryItemListDialog");
   }
 
   function onItemClick(item: CategoryTypes) {
+    debugger;
     if ("siteId" in item || "businessId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          item: item
+          item: item,
+          directory: props.directory
         }
       });
     } else if ("postingId" in item) {
@@ -175,6 +197,22 @@
       //     query: { postingId: (item as Posting).postingId }
       //   }
       // });
+    }
+  }
+
+  function getFavItem() {
+    if (props.directoryItemsList.length === 0) {
+      return [];
+    }
+    const firstItem = props.directoryItemsList[0];
+
+    switch (true) {
+      case "siteId" in firstItem:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+      case "businessId" in firstItem:
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+      default:
+        return [];
     }
   }
 </script>

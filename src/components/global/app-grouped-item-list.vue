@@ -1,35 +1,39 @@
 <template>
   <div class="q-pa-md">
-    <q-list padding>
-      <q-item
-        clickable
-        v-for="item in listItems"
-        :key="item.directoryId"
-        @click="handleItemClick(item)"
-        class="shadow-1 q-pa-sm q-mb-md"
-      >
-        <q-item-section avatar>
-          <q-avatar size="64px" square>
-            <q-img ratio="1" :src="computePath(item.iconPath)">
-              <template v-slot:error>
-                <div class="absolute-full flex flex-center bg-negative text-white">
-                  Cannot load image
-                </div>
-              </template>
-            </q-img>
-          </q-avatar>
-        </q-item-section>
+    <div v-for="(items, groupName) in groupedItems" :key="groupName">
+      <!-- Display group name -->
+      <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
+      <q-list padding>
+        <q-item
+          clickable
+          v-for="item in items"
+          :key="item.directoryId"
+          @click="handleItemClick(item)"
+          class="shadow-1 q-pa-sm q-mb-md"
+        >
+          <q-item-section avatar>
+            <q-avatar size="64px" square>
+              <q-img ratio="1" :src="computePath(item.iconPath)">
+                <template v-slot:error>
+                  <div class="absolute-full flex flex-center bg-negative text-white">
+                    Cannot load image
+                  </div>
+                </template>
+              </q-img>
+            </q-avatar>
+          </q-item-section>
 
-        <q-item-section>
-          <q-item-label> {{ line1(item) }} </q-item-label>
-          <q-item-label> {{ line2(item) }} </q-item-label>
-        </q-item-section>
+          <q-item-section>
+            <q-item-label> {{ line1(item) }} </q-item-label>
+            <q-item-label> {{ line2(item) }} </q-item-label>
+          </q-item-section>
 
-        <q-item-section side>
-          <q-icon name="favorite" size="2em" color="red" class="favorite-icon" />
-        </q-item-section>
-      </q-item>
-    </q-list>
+          <q-item-section side>
+            <q-icon name="favorite" size="2em" color="red" class="favorite-icon" />
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </div>
   </div>
 </template>
 
@@ -43,7 +47,7 @@
 
   type DirectoryTypes = Business | Site;
 
-  defineProps({
+  const props = defineProps({
     listItems: {
       type: Array as PropType<DirectoryTypes[]>,
       default: () => [] as DirectoryTypes[]
@@ -56,21 +60,25 @@
 
   const { translate } = useUtilities();
 
+  const groupedItems = computed(() => {
+    const groups: Record<string, DirectoryTypes[]> = {};
+
+    props.listItems.forEach((item: DirectoryTypes) => {
+      const directoryName = item.directoryName || "Other"; // Set default group name if directoryName is null or undefined
+
+      if (!groups[directoryName]) {
+        groups[directoryName] = [];
+      }
+
+      groups[directoryName].push(item);
+    });
+
+    return groups;
+  });
+
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
-
-  // Define a type that includes all possible keys you want to group by
-  //type GroupKeys = keyof DirectoryTypes;
-
-  // const groupedArray = computed(() => {
-  //   // Use the groupKey prop with a fallback to "directoryName"
-  //   const key: GroupKeys = props.groupKey || "directoryName";
-  //   return groupBy(
-  //     props.listItems.filter(item => item[key] !== undefined),
-  //     item => item[key] as string | number // Make sure the key exists on the item
-  //   );
-  // });
 
   function line1(item: DirectoryTypes) {
     return translate(item.title, item.meta, "title");
