@@ -1,18 +1,48 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-      <q-space />
+      <q-item-section>
+        <q-btn
+          color="primary"
+          text-color="white"
+          icon="location_on"
+          round
+          size="sm"
+          @click="temp"
+        />
+      </q-item-section>
 
-      <q-btn color="primary" text-color="white" icon="phone" round />
-      <q-space />
-      <q-btn
-        color="primary"
-        :text-color="isFavourite ? 'red' : 'white'"
-        icon="favorite"
-        round
-        @click="onBtnFavClick"
-      />
+      <q-item-section side>
+        <q-item-label>
+          <q-btn
+            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            color="primary"
+            text-color="white"
+            icon="phone"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+          <q-btn
+            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            color="primary"
+            text-color="white"
+            icon="fab fa-whatsapp"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+
+          <q-btn
+            color="primary"
+            :text-color="isFavourite ? 'red' : 'white'"
+            icon="favorite"
+            round
+            size="sm"
+            @click="onBtnFavClick"
+          />
+        </q-item-label>
+      </q-item-section>
     </q-item>
     <q-separator class="q-mt-sm" />
     <q-item>
@@ -26,10 +56,6 @@
     <q-separator class="q-mt-sm" />
 
     <q-item>
-      <!-- <div
-                v-html="translate(promotionItem.description, promotionItem.meta, 'description')"
-              ></div> -->
-
       <editor-content :editable="isEditable" :editor="editor"></editor-content>
     </q-item>
     <q-separator class="q-mt-sm" />

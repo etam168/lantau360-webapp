@@ -1,18 +1,49 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-btn color="primary" text-color="white" icon="location_on" round @click="temp" />
-      <q-space />
+      <q-item-section>
+        <q-btn
+          color="primary"
+          text-color="white"
+          icon="location_on"
+          size="sm"
+          round
+          @click="temp"
+        />
+      </q-item-section>
 
-      <q-btn color="primary" text-color="white" icon="phone" round />
-      <q-space />
-      <q-btn
-        color="primary"
-        :text-color="isFavourite ? 'red' : 'white'"
-        icon="favorite"
-        round
-        @click="onBtnFavClick"
-      />
+      <q-item-section side>
+        <q-item-label>
+          <q-btn
+            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            color="primary"
+            text-color="white"
+            icon="phone"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+
+          <q-btn
+            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            color="primary"
+            text-color="white"
+            icon="phone"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+
+          <q-btn
+            color="primary"
+            :text-color="isFavourite ? 'red' : 'white'"
+            icon="favorite"
+            size="sm"
+            round
+            @click="onBtnFavClick()"
+          />
+        </q-item-label>
+      </q-item-section>
     </q-item>
     <q-separator class="q-mt-sm" />
 
@@ -27,10 +58,6 @@
     <q-separator class="q-mt-sm" />
 
     <q-item>
-      <!-- <div
-                v-html="translate(voucherItem.description, voucherItem.meta, 'description')"
-              ></div> -->
-
       <editor-content :editable="isEditable" :editor="editor"></editor-content>
     </q-item>
     <q-separator class="q-mt-sm" />

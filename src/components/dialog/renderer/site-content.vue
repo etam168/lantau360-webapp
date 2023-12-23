@@ -13,16 +13,32 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
+            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            color="primary"
+            text-color="white"
+            icon="phone"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+          <q-btn
+            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            color="primary"
+            text-color="white"
+            icon="fab fa-whatsapp"
+            size="sm"
+            round
+            class="q-mr-md"
+          />
+          <q-btn
             color="primary"
             :text-color="isFavourite ? 'red' : 'white'"
             icon="favorite"
             size="sm"
             round
             @click="onBtnFavClick()"
-            class="q-mr-md" />
-          <q-btn color="primary" text-color="white" icon="phone" size="sm" round class="q-mr-md" />
-          <q-btn color="primary" text-color="white" icon="fab fa-whatsapp" size="sm" round
-        /></q-item-label>
+          />
+        </q-item-label>
       </q-item-section>
     </q-item>
 
