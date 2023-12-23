@@ -11,6 +11,7 @@
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
+  import { useUtilities } from "@/composable/use-utilities";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
@@ -25,6 +26,8 @@
   const advertisementItem = computed(() => {
     return props.item as Advertisement;
   });
+
+  const { translate } = useUtilities();
 
   const editor = useEditor({
     content: "",
@@ -42,9 +45,15 @@
 
     editor?.value?.setEditable(isEditable.value);
 
+    const translatedContent = translate(
+      advertisementItem.value.description,
+      advertisementItem.value.meta,
+      "description"
+    );
+
     // const data =
     //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
-    editor.value?.commands.setContent(advertisementItem.value.description, false);
+    editor.value?.commands.setContent(translatedContent, false);
   });
 </script>
 <style scoped>
