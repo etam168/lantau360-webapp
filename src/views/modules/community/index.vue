@@ -7,9 +7,7 @@
 
     <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
-      <div class="row justify-center items-center" style="height: 500px">
-        <app-spinner size="10em" />
-      </div>
+      <div class="row justify-center items-center" style="height: 500px"></div>
     </template>
   </suspense>
 </template>

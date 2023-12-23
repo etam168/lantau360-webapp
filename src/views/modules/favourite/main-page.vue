@@ -24,11 +24,11 @@
     </q-toolbar>
 
     <app-tab-panels v-model="tab">
-      <q-tab-panel name="location" class="q-pa-sm">
+      <q-tab-panel name="location" class="q-pa-none">
         <app-grouped-item-list :list-items="siteItems" />
       </q-tab-panel>
 
-      <q-tab-panel name="business" class="q-pa-sm">
+      <q-tab-panel name="business" class="q-pa-none">
         <app-grouped-item-list :list-items="businessItems" />
       </q-tab-panel>
 

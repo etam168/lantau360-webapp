@@ -36,7 +36,7 @@
     </q-item>
 
     <q-item>
-      <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
+      <div v-html="translate(item.description, item.meta, 'description')"></div>
     </q-item>
   </q-list>
 </template>
