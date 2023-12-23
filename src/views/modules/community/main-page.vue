@@ -4,10 +4,13 @@
     <app-carousel-section :data="advertisements" />
 
     <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
-      <div class="q-gutter-xs row items-center">
-        <q-toolbar-title class="text-center text-h6">{{ $t("community.title") }}</q-toolbar-title>
+      <div class="row items-center">
+        <q-toolbar-title class="text-center text-h6" :class="$q.screen.lt.sm ? 'q-pa-none' : ''">{{
+          $t("community.title")
+        }}</q-toolbar-title>
         <app-tab-select
           class="q-ml-sm justify-center"
+          :class="$q.screen.lt.sm ? 'q-ma-none' : ''"
           :tab-items="tabItems"
           :current-tab="tab"
           @update:currentTab="setTab"
