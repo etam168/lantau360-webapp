@@ -1,5 +1,5 @@
 import dns from "dns";
-import eslintPlugin from "vite-plugin-eslint";
+import eslint from "vite-plugin-eslint";
 import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
@@ -60,23 +60,14 @@ export default defineConfig({
     chunkSizeWarningLimit: 600
   },
   plugins: [
-    eslintPlugin(),
     vue({
       template: { transformAssetUrls }
     }),
+    eslint(),
     VueI18nPlugin({
       include: resolve(__dirname, "./path/to/src/locales/**"),
-      //include: resolve(__dirname, "./src/locales/**"),
       runtimeOnly: false
     }),
-    // VueI18nPlugin({
-    //   include: resolve(__dirname, "src/locales/**"),
-    //   runtimeOnly: false
-    // }),
-    // VueI18nPlugin({
-    //   include: resolve(__dirname, "src/locales/**").replace(/\\/g, "/"),
-    //   runtimeOnly: false
-    // }),
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
     }),
