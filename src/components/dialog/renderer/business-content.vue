@@ -1,20 +1,23 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section avatar>
-        <q-icon color="primary" name="schedule" />
-      </q-item-section>
+      <template
+        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+      >
+        <q-item-section avatar>
+          <q-icon color="primary" name="location_on" />
+        </q-item-section>
 
-      <q-item-section>
-        <q-item-label>
+        <q-item-section>
           <q-item-label class="q-mt-sm"
-            >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
-          >
-          <q-item-label class="q-mt-sm" caption
-            >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
-          >
-        </q-item-label>
-      </q-item-section>
+            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          </q-item-label>
+          <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
+        </q-item-section>
+      </template>
+
+      <q-item-section v-else></q-item-section>
+
       <q-item-section side>
         <q-item-label>
           <q-btn
@@ -53,6 +56,23 @@
             round
             @click="onBtnFavClick"
           />
+        </q-item-label>
+      </q-item-section>
+    </q-item>
+
+    <q-item v-if="shouldShowItem">
+      <q-item-section avatar>
+        <q-icon color="primary" name="schedule" />
+      </q-item-section>
+
+      <q-item-section>
+        <q-item-label>
+          <q-item-label class="q-mt-sm"
+            >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
+          >
+          <q-item-label class="q-mt-sm" caption
+            >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
+          >
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -106,6 +126,18 @@
     const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
     window.open(whatsappURL, "_blank");
   }
+
+  const shouldShowItem = computed(() => {
+    // Check if openTime and closeTime are not null, undefined, or empty array
+    return (
+      props?.item.openTime !== null &&
+      props?.item.openTime !== undefined &&
+      props?.item.openTime !== "" &&
+      props?.item.closeTime !== null &&
+      props?.item.closeTime !== undefined &&
+      props?.item.closeTime !== ""
+    );
+  });
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
