@@ -56,18 +56,18 @@
     </q-item>
 
     <q-item v-if="shouldShowItem">
-      <q-item-section avatar>
-        <q-icon color="primary" name="schedule" />
-      </q-item-section>
-
       <q-item-section>
-        <q-item-label>
-          <q-item-label class="q-mt-sm"
-            >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
+        <q-item-label class="q-mt-sm">
+          <span
+            class="text-subtitle1"
+            :style="{
+              color: isCurrentTimeInRange(item.openTime, item.closeTime) ? '#478d45' : 'red'
+            }"
           >
-          <!-- <q-item-label class="q-mt-sm" caption
-            >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
-          > -->
+            {{ isCurrentTimeInRange(item.openTime, item.closeTime) ? "Open now" : "Close now" }}
+          </span>
+          <q-icon size="0.9em" name="fiber_manual_record" />
+          {{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -105,6 +105,42 @@
     const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     return formattedTime;
   };
+
+  const isCurrentTimeInRange = (
+    startTime: string | undefined,
+    endTime: string | undefined
+  ): boolean => {
+    if (!startTime || !endTime) return false;
+
+    const now = new Date();
+    const startHour = parseInt(startTime.split(":")[0]);
+    const startMinute = parseInt(startTime.split(":")[1]);
+    const endHour = parseInt(endTime.split(":")[0]);
+    const endMinute = parseInt(endTime.split(":")[1]);
+
+    const startTimeToday = new Date();
+    startTimeToday.setHours(startHour, startMinute, 0);
+
+    const endTimeToday = new Date();
+    endTimeToday.setHours(endHour, endMinute, 0);
+
+    // If the end time is earlier than the start time, assume it's for the next day
+    if (endTimeToday < startTimeToday) {
+      endTimeToday.setDate(endTimeToday.getDate() + 1);
+    }
+
+    return now >= startTimeToday && now <= endTimeToday;
+  };
+
+  // Usage:
+  const openTime = props.item.openTime; // Replace with your actual openTime
+  const closeTime = props.item.closeTime; // Replace with your actual closeTime
+
+  if (isCurrentTimeInRange(openTime, closeTime)) {
+    console.log("Open now");
+  } else {
+    console.log("Close now");
+  }
 
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
