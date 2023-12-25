@@ -1,7 +1,17 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section> </q-item-section>
+      <template
+        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+      >
+        <q-item-section top>
+          <q-item-label class="text-caption text-weight-light"
+            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          </q-item-label>
+        </q-item-section>
+      </template>
+
+      <q-item-section v-else></q-item-section>
       <q-item-section side>
         <q-item-label>
           <q-btn
@@ -44,12 +54,9 @@
       </q-item-section>
     </q-item>
 
-    <q-separator class="q-mt-sm" />
-
     <q-item>
       <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
     </q-item>
-    <q-separator class="q-mt-sm" />
   </q-list>
 </template>
 <script setup lang="ts">

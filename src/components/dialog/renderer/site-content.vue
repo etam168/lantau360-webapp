@@ -1,7 +1,18 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section> </q-item-section>
+      <template
+        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+      >
+        <q-item-section top>
+          <q-item-label class="text-caption text-weight-light"
+            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          </q-item-label>
+        </q-item-section>
+      </template>
+
+      <q-item-section v-else></q-item-section>
+
       <q-item-section side>
         <q-item-label>
           <q-btn
@@ -45,7 +56,7 @@
     </q-item>
 
     <q-item>
-      <div v-html="translate(siteItem.description, siteItem.meta, 'description')"></div>
+      <editor-content :editable="isEditable" :editor="editor"></editor-content>
     </q-item>
   </q-list>
 </template>
@@ -56,7 +67,10 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { useUtilities } from "@/composable/use-utilities";
   import { Directory } from "@/interfaces/models/entities/directory";
-  // import { EventBus } from "quasar";
+
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
 
   // const siteItem = ref<Site>({} as siteItem);
   const { translate } = useUtilities();
@@ -73,6 +87,13 @@
     }
   });
 
+  const editor = useEditor({
+    content: "",
+    extensions: [StarterKit, Link]
+  });
+
+  const isEditable = ref(false);
+
   // Check if  siteId exists in favoriteItems on component mount
   onMounted(() => {
     const itemIdToMatch = siteItem.value.siteId;
@@ -84,6 +105,12 @@
 
       isFavourite.value = isItemFavorited;
     }
+
+    editor?.value?.setEditable(isEditable.value);
+
+    const translatedContent = translate(props?.item.description, props?.item.meta, "description");
+
+    editor.value?.commands.setContent(translatedContent, false);
   });
 
   const siteItem = computed(() => {

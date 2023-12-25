@@ -4,15 +4,10 @@
       <template
         v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
       >
-        <q-item-section avatar>
-          <q-icon color="primary" name="location_on" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label class="q-mt-sm"
+        <q-item-section top>
+          <q-item-label class="text-caption text-weight-light"
             >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
           </q-item-label>
-          <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
         </q-item-section>
       </template>
 
@@ -70,9 +65,9 @@
           <q-item-label class="q-mt-sm"
             >{{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}</q-item-label
           >
-          <q-item-label class="q-mt-sm" caption
+          <!-- <q-item-label class="q-mt-sm" caption
             >{{ $t("business.openTime") }} - {{ $t("business.closeTime") }}</q-item-label
-          >
+          > -->
         </q-item-label>
       </q-item-section>
     </q-item>

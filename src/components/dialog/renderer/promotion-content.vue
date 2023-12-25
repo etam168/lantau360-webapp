@@ -1,16 +1,17 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section>
-        <q-btn
-          color="primary"
-          text-color="white"
-          icon="location_on"
-          round
-          size="sm"
-          @click="temp"
-        />
-      </q-item-section>
+      <template
+        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+      >
+        <q-item-section top>
+          <q-item-label class="text-caption text-weight-light"
+            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          </q-item-label>
+        </q-item-section>
+      </template>
+
+      <q-item-section v-else></q-item-section>
 
       <q-item-section side>
         <q-item-label>
@@ -54,21 +55,10 @@
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-separator class="q-mt-sm" />
-    <q-item>
-      <q-item-section>
-        <q-item-label class="q-mt-sm"
-          >{{ translate(promotionItem.subtitle1, promotionItem.meta, "subtitle1") }}
-        </q-item-label>
-        <q-item-label class="q-mt-sm" caption>{{ $t("buiness.subtitle1") }} </q-item-label>
-      </q-item-section>
-    </q-item>
-    <q-separator class="q-mt-sm" />
 
     <q-item>
       <editor-content :editable="isEditable" :editor="editor"></editor-content>
     </q-item>
-    <q-separator class="q-mt-sm" />
   </q-list>
 </template>
 
@@ -152,10 +142,6 @@
       favoriteItems.value.push(favItem);
     }
     LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
-  };
-
-  const temp = () => {
-    alert(JSON.stringify(favoriteItems.value));
   };
 
   onMounted(() => {
