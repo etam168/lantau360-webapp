@@ -7,7 +7,19 @@
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
-      <q-item-section avatar>
+      <q-item-section v-if="item.postingId" avatar>
+        <q-avatar size="64px">
+          <q-img ratio="1" :src="memberImage">
+            <template v-slot:error>
+              <div class="absolute-full flex flex-center bg-negative text-white">
+                Cannot load image
+              </div>
+            </template>
+          </q-img>
+        </q-avatar>
+      </q-item-section>
+
+      <q-item-section avatar v-else>
         <q-avatar size="64px" square>
           <q-img ratio="1" :src="computePath(item.iconPath)">
             <template v-slot:error>
@@ -66,6 +78,7 @@
   import { BLOB_URL } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { Site } from "@/interfaces/models/entities/site";
+  import { URL } from "@/constants";
 
   const emit = defineEmits(["item-click"]);
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -88,6 +101,8 @@
 
   const { translate } = useUtilities();
 
+  const memberImage = ref();
+
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
@@ -109,4 +124,31 @@
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
   }
+
+  const fetchMemberImage = async (memberId: number) => {
+    try {
+      if (!memberId) {
+        throw new Error(`Invalid memberId: ${memberId}`);
+      }
+
+      const apiUrl = `${URL.MEMBER_IMAGE_URL}/${memberId}`;
+
+      const response = await axios.get(apiUrl);
+
+      if (response.status !== 200) {
+        throw new Error(`Error fetching member image for member ID ${memberId}`);
+      }
+
+      memberImage.value = response.data;
+      return memberImage.value;
+    } catch (error) {
+      return error;
+    }
+  };
+
+  onMounted(async () => {
+    for (const item of props.directoryItems) {
+      await fetchMemberImage(item?.memberId);
+    }
+  });
 </script>
