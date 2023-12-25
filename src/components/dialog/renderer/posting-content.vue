@@ -1,34 +1,36 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section avatar>
-        <q-icon color="primary" name="location_on" />
-      </q-item-section>
-      <q-item-section>
-        <q-item-label class="q-mt-sm"
-          >{{ translate(directoryItem.subtitle1, directoryItem.meta, "subtitle1") }}
-        </q-item-label>
-        <q-item-label class="q-mt-sm" caption>{{ $t("community.subtitle1") }} </q-item-label>
-      </q-item-section>
+      <q-item-section> </q-item-section>
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            v-if="
+              item.contactPhone !== null &&
+              item.contactPhone !== undefined &&
+              item.contactPhone !== ''
+            "
             color="primary"
             text-color="white"
             icon="phone"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToPhone"
           />
           <q-btn
-            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            v-if="
+              item.contactWhatsApp !== null &&
+              item.contactWhatsApp !== undefined &&
+              item.contactWhatsApp !== ''
+            "
             color="primary"
             text-color="white"
             icon="fab fa-whatsapp"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToWhatsApp"
           />
           <q-btn
             color="primary"
@@ -73,6 +75,18 @@
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Posting[];
   });
+
+  const navigateToPhone = () => {
+    if (props?.item.contactPhone) {
+      const phoneURL = `tel:${props?.item.contactPhone}`;
+      window.location.href = phoneURL;
+    }
+  };
+
+  function navigateToWhatsApp() {
+    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
+    window.open(whatsappURL, "_blank");
+  }
 
   const onBtnFavClick = () => {
     const itemIdToMatch = directoryItem.value.postingId;

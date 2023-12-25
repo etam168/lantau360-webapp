@@ -15,17 +15,26 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            v-if="
+              item.contactPhone !== null &&
+              item.contactPhone !== undefined &&
+              item.contactPhone !== ''
+            "
             color="primary"
             text-color="white"
             icon="phone"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToPhone"
           />
 
           <q-btn
-            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            v-if="
+              item.contactWhatsApp !== null &&
+              item.contactWhatsApp !== undefined &&
+              item.contactWhatsApp !== ''
+            "
             color="primary"
             text-color="white"
             icon="phone"

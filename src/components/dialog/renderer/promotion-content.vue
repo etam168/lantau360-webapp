@@ -15,22 +15,32 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            v-if="
+              item.contactPhone !== null &&
+              item.contactPhone !== undefined &&
+              item.contactPhone !== ''
+            "
             color="primary"
             text-color="white"
             icon="phone"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToPhone"
           />
           <q-btn
-            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            v-if="
+              item.contactWhatsApp !== null &&
+              item.contactWhatsApp !== undefined &&
+              item.contactWhatsApp !== ''
+            "
             color="primary"
             text-color="white"
             icon="fab fa-whatsapp"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToWhatsApp"
           />
 
           <q-btn
@@ -102,6 +112,18 @@
   });
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+
+  const navigateToPhone = () => {
+    if (props?.item.contactPhone) {
+      const phoneURL = `tel:${props?.item.contactPhone}`;
+      window.location.href = phoneURL;
+    }
+  };
+
+  function navigateToWhatsApp() {
+    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
+    window.open(whatsappURL, "_blank");
+  }
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {

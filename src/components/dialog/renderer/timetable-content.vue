@@ -13,22 +13,33 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="item.contactPhone !== null && item.contactPhone !== undefined"
+            v-if="
+              item.contactPhone !== null &&
+              item.contactPhone !== undefined &&
+              item.contactPhone !== ''
+            "
             color="primary"
             text-color="white"
             icon="phone"
             size="sm"
             round
             class="q-mr-sm"
+            @click="navigateToPhone"
           />
+
           <q-btn
-            v-if="item.contactWhatsApp !== null && item.contactWhatsApp !== undefined"
+            v-if="
+              item.contactWhatsApp !== null &&
+              item.contactWhatsApp !== undefined &&
+              item.contactWhatsApp !== ''
+            "
             color="primary"
             text-color="white"
             icon="fab fa-whatsapp"
             size="sm"
             round
             class="q-mr-sm"
+            @click="navigateToWhatsApp"
           />
           <q-btn color="primary" text-color="white" icon="favorite" size="sm" round />
         </q-item-label>
@@ -84,4 +95,16 @@
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
+
+  const navigateToPhone = () => {
+    if (props?.item.contactPhone) {
+      const phoneURL = `tel:${props?.item.contactPhone}`;
+      window.location.href = phoneURL;
+    }
+  };
+
+  function navigateToWhatsApp() {
+    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
+    window.open(whatsappURL, "_blank");
+  }
 </script>
