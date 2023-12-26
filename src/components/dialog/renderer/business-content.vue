@@ -131,16 +131,6 @@
     return now >= startTimeToday && now <= endTimeToday;
   };
 
-  // Usage:
-  const openTime = props.item.openTime; // Replace with your actual openTime
-  const closeTime = props.item.closeTime; // Replace with your actual closeTime
-
-  if (isCurrentTimeInRange(openTime, closeTime)) {
-    console.log("Open now");
-  } else {
-    console.log("Close now");
-  }
-
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
   });
