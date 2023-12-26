@@ -34,15 +34,11 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, computed } from "vue";
-
   // 3rd party
   import { date, useQuasar } from "quasar";
 
   // .ts file
   import { Weather } from "@/interfaces/models/entities/weather";
-  import { useUtilities } from "@/composable/use-utilities";
 
   const $q = useQuasar();
   const { translate } = useUtilities();

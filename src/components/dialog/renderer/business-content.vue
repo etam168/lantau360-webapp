@@ -87,7 +87,6 @@
   import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
 
-  //const directoryItem = ref<Business>({} as Business);
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -159,7 +158,6 @@
   }
 
   const shouldShowItem = computed(() => {
-    // Check if openTime and closeTime are not null, undefined, or empty array
     return (
       props?.item.openTime !== null &&
       props?.item.openTime !== undefined &&

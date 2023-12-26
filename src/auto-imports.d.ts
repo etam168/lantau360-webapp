@@ -86,7 +86,6 @@ import { UnwrapRef } from 'vue'
 declare module 'vue' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly Status: UnwrapRef<typeof import('./composable/use-member')['Status']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -138,15 +137,10 @@ declare module 'vue' {
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useDataTable: UnwrapRef<typeof import('./composable/use-data-table')['default']>
-    readonly useDirectory: UnwrapRef<typeof import('./composable/use-directory')['default']>
-    readonly useEditor: UnwrapRef<typeof import('./composable/use-editor')['default']>
-    readonly useEventBus: UnwrapRef<typeof import('./composable/use-event-bus')['default']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
-    readonly useMember: UnwrapRef<typeof import('./composable/use-member')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
-    readonly useShowCrudDialogs: UnwrapRef<typeof import('./composable/use-show-crud-dialogs')['default']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useUtilities: UnwrapRef<typeof import('./composable/use-utilities')['useUtilities']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>
@@ -158,7 +152,6 @@ declare module 'vue' {
 declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly Status: UnwrapRef<typeof import('./composable/use-member')['Status']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
     readonly computed: UnwrapRef<typeof import('vue')['computed']>
     readonly createApp: UnwrapRef<typeof import('vue')['createApp']>
@@ -210,15 +203,10 @@ declare module '@vue/runtime-core' {
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
     readonly useDataTable: UnwrapRef<typeof import('./composable/use-data-table')['default']>
-    readonly useDirectory: UnwrapRef<typeof import('./composable/use-directory')['default']>
-    readonly useEditor: UnwrapRef<typeof import('./composable/use-editor')['default']>
-    readonly useEventBus: UnwrapRef<typeof import('./composable/use-event-bus')['default']>
     readonly useI18n: UnwrapRef<typeof import('vue-i18n')['useI18n']>
     readonly useLink: UnwrapRef<typeof import('vue-router')['useLink']>
-    readonly useMember: UnwrapRef<typeof import('./composable/use-member')['default']>
     readonly useRoute: UnwrapRef<typeof import('vue-router')['useRoute']>
     readonly useRouter: UnwrapRef<typeof import('vue-router')['useRouter']>
-    readonly useShowCrudDialogs: UnwrapRef<typeof import('./composable/use-show-crud-dialogs')['default']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
     readonly useUtilities: UnwrapRef<typeof import('./composable/use-utilities')['useUtilities']>
     readonly watch: UnwrapRef<typeof import('vue')['watch']>

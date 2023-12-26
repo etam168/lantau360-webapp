@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <!-- <app-page-title :title="$t('community.title')"></app-page-title> -->
     <app-carousel-section :data="advertisements" />
 
     <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
@@ -23,8 +22,6 @@
         <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
       </div>
     </q-toolbar>
-
-    <!-- <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" /> -->
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">

@@ -21,10 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { PropType, defineAsyncComponent, onBeforeUnmount, onMounted } from "vue";
-  //import { useRouter } from "vue-router";
-
   // 3rd Party Import
   import { useQuasar } from "quasar";
   import { EventBus } from "quasar";

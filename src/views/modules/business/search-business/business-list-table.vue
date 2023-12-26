@@ -34,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-  // import ListingCard from "@/components/cards/for-sale.vue";
   import businessItem from "./business-item.vue";
   import { QTable } from "quasar";
   import { ref } from "vue";

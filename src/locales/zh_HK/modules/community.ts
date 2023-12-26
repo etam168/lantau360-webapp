@@ -1,5 +1,5 @@
 export default {
-  title: "大嶼山社區",
+  title: "大嶼社區",
 
   tabItems: {
     events: "活動",

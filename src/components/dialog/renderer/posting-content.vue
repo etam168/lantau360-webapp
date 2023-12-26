@@ -116,8 +116,8 @@
         favoriteItems.value.push(props.item);
       }
 
-      const storageKey = STORAGE_KEYS.POSTINGFAVOURITES;
-      LocalStorage.set(storageKey, favoriteItems.value);
+      //const storageKey = STORAGE_KEYS.POSTINGFAVOURITES;
+      //LocalStorage.set(storageKey, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
         siteId: directoryItem.value.postingId || null

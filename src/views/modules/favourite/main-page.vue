@@ -73,10 +73,6 @@
   ]);
 
   eventBus.on("favoriteUpdated", ({ itemId, isFavorite, moduleType }) => {
-    alert("ITEM ID" + itemId);
-    alert("Is Favorite" + isFavorite);
-    alert("Module Type" + moduleType);
-
     let itemsArray;
 
     switch (moduleType) {

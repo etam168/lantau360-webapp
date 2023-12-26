@@ -12,14 +12,6 @@
   >
     <template #item="props">
       <site-item class="col-12" :row="props.row" @on-detail="handleDetail(props.row)" />
-
-      <!-- <div>
-        <site-item
-          :row="props.row"
-          @on-contact="handleContact(props.row)"
-          @on-detail="handleDetail(props.row)"
-        />
-      </div> -->
     </template>
 
     <template v-slot:bottom="scope">
@@ -42,7 +34,6 @@
 </template>
 
 <script setup lang="ts">
-  // import ListingCard from "@/components/cards/for-sale.vue";
   import SiteItem from "./site-item.vue";
   import { QTable } from "quasar";
   import { ref } from "vue";
@@ -74,7 +65,6 @@
         });
       }
     }
-    //emits("on-pagination", val);
   }
 </script>
 

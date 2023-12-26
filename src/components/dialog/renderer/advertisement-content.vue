@@ -36,7 +36,6 @@
 
   const isDialogVisible = ref();
   const isEditable = ref(false);
-  //const setIsEditable = ref(false);
 
   onMounted(() => {
     eventBus.on("CategoryDetailDialog", () => {
@@ -46,13 +45,11 @@
     editor?.value?.setEditable(isEditable.value);
 
     const translatedContent = translate(
-      advertisementItem.value.description,
+      advertisementItem.value["description"],
       advertisementItem.value.meta,
       "description"
     );
 
-    // const data =
-    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
     editor.value?.commands.setContent(translatedContent, false);
   });
 </script>

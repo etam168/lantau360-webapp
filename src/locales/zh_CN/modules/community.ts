@@ -1,5 +1,5 @@
 export default {
-  title: "大屿山社区",
+  title: "大屿社区",
 
   tabItems: {
     events: "活动",

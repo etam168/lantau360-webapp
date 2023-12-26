@@ -2,11 +2,6 @@
   <q-card>
     <q-img :ratio="16 / 9" :src="imagePath" />
 
-    <q-card-section class="q-pa-sm">
-      <!-- <app-item dense icon="schedule" :label="eventTime(offers)" />
-      <app-item dense icon="location_on" :label="offers?.subtitle1" /> -->
-    </q-card-section>
-
     <q-card-actions>
       <q-btn
         outline

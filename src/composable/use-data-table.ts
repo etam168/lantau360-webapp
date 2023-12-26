@@ -4,7 +4,7 @@ import { useUtilities } from "@/composable/use-utilities";
 
 const { notify } = useUtilities();
 
-export default function useDataTable(url: string, key: string, opt?: any) {
+export default function useDataTable(url: string, key: string) {
   const filter = ref("");
   const loading = ref(false);
   const columnFilter = ref<Record<string, unknown>>();
@@ -45,11 +45,6 @@ export default function useDataTable(url: string, key: string, opt?: any) {
       filter: filter.value,
       column_filter: columnFilter.value
     };
-
-    if (opt) {
-      if (opt.isSite) params["siteId"] = opt.siteId;
-      else params["businessId"] = opt.businessId;
-    }
 
     const data = await getDataTable(params);
 

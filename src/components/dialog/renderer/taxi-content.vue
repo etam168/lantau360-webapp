@@ -60,6 +60,7 @@
     </q-item>
   </q-list>
 </template>
+
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
@@ -117,7 +118,7 @@
         favoriteItems.value.push(props.item);
       }
 
-      const storageKey = STORAGE_KEYS.SITEFAVOURITES;
+      const storageKey = STORAGE_KEYS.SAVED.SITE;
       LocalStorage.set(storageKey, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {

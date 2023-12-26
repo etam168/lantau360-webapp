@@ -12,7 +12,7 @@
       <q-item-label caption lines="2"> <div v-html="newsItem?.description"></div></q-item-label>
     </q-item-section>
   </q-item>
-  ``
+
   <q-separator spaced inset />
 </template>
 

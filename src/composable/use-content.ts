@@ -1,6 +1,4 @@
-import { ref } from "vue";
 import axios, { AxiosError } from "axios";
-import { useUtilities } from "@/composable/use-utilities";
 import { Content } from "@/interfaces/models/entities/content";
 import { useUserStore } from "@/stores/user";
 import { BASE_URL } from "@/constants";
@@ -20,7 +18,6 @@ export function useContentInput() {
   const contentInput = ref<Content>(newInput());
 
   function setContentInput(val: Content) {
-    //contentInput.value = extend(true, {}, val);
     contentInput.value.contentId = val?.contentId;
     contentInput.value.contentName = val?.contentName;
     contentInput.value.contentData = val?.contentData;

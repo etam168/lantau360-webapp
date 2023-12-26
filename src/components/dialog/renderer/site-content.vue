@@ -72,7 +72,6 @@
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
 
-  // const siteItem = ref<Site>({} as siteItem);
   const { translate } = useUtilities();
   const emits = defineEmits(["favorite"]);
 
@@ -116,7 +115,6 @@
   const siteItem = computed(() => {
     return props.item as Site;
   });
-  // const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {

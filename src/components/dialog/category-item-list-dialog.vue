@@ -104,21 +104,6 @@
 
   const favoriteItems = ref<any>(getFavItem() || []);
 
-  // const favoriteItems = computed(() => {
-  //   if (props.directoryItemsList.length === 0) {
-  //     return [];
-  //   }
-  //   const firstItem = props.directoryItemsList[0];
-  //   switch (true) {
-  //     case "siteId" in firstItem:
-  //       return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
-  //     case "businessId" in firstItem:
-  //       return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
-  //     default:
-  //       return [];
-  //   }
-  // });
-
   const template = computed(() => {
     const temp = props.directory.meta?.template;
     return temp;
@@ -207,14 +192,6 @@
           item: item
         }
       });
-      // $q.dialog({
-      //   component: defineAsyncComponent(
-      //     () => import("@/components/dialog/community-detail-dialog.vue")
-      //   ),
-      //   componentProps: {
-      //     query: { postingId: (item as Posting).postingId }
-      //   }
-      // });
     }
   }
 
