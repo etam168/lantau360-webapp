@@ -1,7 +1,13 @@
 export interface Posting {
   postingId: number;
   postingName: string;
-  memberId: string;
+  memberId: number;
+  memberFirstName: string;
+  memberLastName: string;
+  memberAlias: string;
+  memberPhone: string;
+  memberEmail: string;
+  memberImage: string;
   contactWhatsApp: string;
   contactPhone: string;
   contactOther: string;
@@ -17,9 +23,10 @@ export interface Posting {
   iconPath: string;
   bannerPath: string;
   hashKey: string;
+  status?: number;
   latitude: number;
   longitude: number;
-  status: number;
+  rank: number;
   createdAt: Date;
   createdBy: number;
   modifiedAt: Date;

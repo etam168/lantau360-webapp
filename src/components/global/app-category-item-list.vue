@@ -9,7 +9,7 @@
     >
       <q-item-section v-if="item.postingId" avatar>
         <q-avatar size="64px">
-          <q-img ratio="1" :src="memberImage">
+          <q-img ratio="1" :src="item?.memberImage ? item?.memberImage : PLACEHOLDER_AVATAR">
             <template v-slot:error>
               <div class="absolute-full flex flex-center bg-negative text-white">
                 Cannot load image
@@ -51,6 +51,16 @@
         </q-item-label>
       </q-item-section>
 
+      <q-item-section v-else-if="item.postingId">
+        <q-item-label>
+          {{ item.memberFirstName + " " + item.memberLastName }}
+        </q-item-label>
+
+        <q-item-label>
+          {{ item.memberEmail }}
+        </q-item-label>
+      </q-item-section>
+
       <q-item-section v-else>
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
@@ -75,10 +85,9 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL } from "@/constants";
+  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
   import { Site } from "@/interfaces/models/entities/site";
-  import { URL } from "@/constants";
 
   const emit = defineEmits(["item-click"]);
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -101,8 +110,6 @@
 
   const { translate } = useUtilities();
 
-  const memberImage = ref();
-
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
@@ -124,31 +131,4 @@
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
   }
-
-  const fetchMemberImage = async (memberId: number) => {
-    try {
-      if (!memberId) {
-        throw new Error(`Invalid memberId: ${memberId}`);
-      }
-
-      const apiUrl = `${URL.MEMBER_IMAGE_URL}/${memberId}`;
-
-      const response = await axios.get(apiUrl);
-
-      if (response.status !== 200) {
-        throw new Error(`Error fetching member image for member ID ${memberId}`);
-      }
-
-      memberImage.value = response.data;
-      return memberImage.value;
-    } catch (error) {
-      return error;
-    }
-  };
-
-  onMounted(async () => {
-    for (const item of props.directoryItems) {
-      await fetchMemberImage(item?.memberId);
-    }
-  });
 </script>
