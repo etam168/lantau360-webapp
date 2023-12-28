@@ -69,6 +69,9 @@
   import { Directory } from "@/interfaces/models/entities/directory";
 
   import { useEditor, EditorContent } from "@tiptap/vue-3";
+
+  import { TipTapIcon } from "@/components/extensions";
+
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
 
@@ -88,7 +91,7 @@
 
   const editor = useEditor({
     content: "",
-    extensions: [StarterKit, Link]
+    extensions: [StarterKit, Link, TipTapIcon]
   });
 
   const isEditable = ref(false);
