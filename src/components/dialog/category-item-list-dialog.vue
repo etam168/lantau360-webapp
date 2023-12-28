@@ -10,7 +10,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title :rightSlotAction="rightSlotAction">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -92,6 +92,10 @@
     groupBykey: {
       type: String,
       required: false
+    },
+    rightSlotAction: {
+      type: Number,
+      default: 0
     }
   });
 

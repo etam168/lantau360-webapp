@@ -21,10 +21,14 @@
 
   type DirectoryTypes = Directory | CommunityDirectory;
 
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object as PropType<DirectoryTypes[]>,
       required: true
+    },
+    rightSlotAction: {
+      type: Number,
+      default: 0
     }
   });
 
@@ -56,7 +60,8 @@
           componentProps: {
             directoryItemsList: response.data,
             directory: item,
-            groupBykey: groupBy
+            groupBykey: groupBy,
+            rightSlotAction: props.rightSlotAction
           }
         });
       } else {

@@ -8,12 +8,16 @@
         <!-- Default slot for content -->
       </q-toolbar-title>
 
-      <!-- Invisible button to balance the actual button -->
-      <q-btn dense flat icon="arrow_back" style="opacity: 0; pointer-events: none"></q-btn>
+      <q-btn v-if="rightSlotAction == 1" dense flat icon="add"></q-btn>
     </q-toolbar>
   </q-card-actions>
 </template>
 
 <script setup lang="ts">
-  // No need for additional Composition API setup since we're only using v-close-popup
+  defineProps({
+    rightSlotAction: {
+      type: Number,
+      default: 0
+    }
+  });
 </script>

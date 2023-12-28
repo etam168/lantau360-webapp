@@ -7,9 +7,14 @@
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
-      <q-item-section v-if="item.postingId" avatar>
+      <q-item-section v-if="(item as Posting).postingId" avatar>
         <q-avatar size="64px">
-          <q-img ratio="1" :src="item?.memberImage ? item?.memberImage : PLACEHOLDER_AVATAR">
+          <q-img
+            ratio="1"
+            :src="
+              (item as Posting)?.memberImage ? (item as Posting)?.memberImage : PLACEHOLDER_AVATAR
+            "
+          >
             <template v-slot:error>
               <div class="absolute-full flex flex-center bg-negative text-white">
                 Cannot load image
@@ -33,7 +38,7 @@
 
       <q-item-section v-if="template === 'Timetable'">
         <q-item-label>
-          {{ translate(item.siteName, item.meta, "siteName") }}
+          {{ translate((item as Site).siteName, item.meta, "siteName") }}
         </q-item-label>
 
         <q-item-label>
@@ -43,7 +48,7 @@
 
       <q-item-section v-else-if="template === 'Lantau Taxi'">
         <q-item-label>
-          {{ translate(item.siteName, item.meta, "siteName") }}
+          {{ translate((item as Site).siteName, item.meta, "siteName") }}
         </q-item-label>
 
         <q-item-label>
@@ -51,13 +56,13 @@
         </q-item-label>
       </q-item-section>
 
-      <q-item-section v-else-if="item.postingId">
+      <q-item-section v-else-if="(item as Posting).postingId">
         <q-item-label>
-          {{ item.memberFirstName + " " + item.memberLastName }}
+          {{ (item as Posting).memberFirstName + " " + (item as Posting).memberLastName }}
         </q-item-label>
 
         <q-item-label>
-          {{ item.memberEmail }}
+          {{ (item as Posting).memberEmail }}
         </q-item-label>
       </q-item-section>
 
@@ -87,6 +92,7 @@
 <script setup lang="ts">
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
 
   const emit = defineEmits(["item-click"]);

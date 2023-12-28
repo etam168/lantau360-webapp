@@ -37,7 +37,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <app-directory-section :data="directories" class="q-my-sm" />
+        <app-directory-section :rightSlotAction="1" :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </app-tab-panels>
   </q-page>
