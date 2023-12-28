@@ -21,12 +21,18 @@ declare module 'vue' {
     AppSpinner: typeof import('./components/global/app-spinner.vue')['default']
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
+    copy: typeof import('./components/global/app-button copy.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
+    ToggleStatus: typeof import('./components/global/toggle-status.vue')['default']
     VeeInput: typeof import('./components/global/vee-input.vue')['default']
     VeeInputPassword: typeof import('./components/global/vee-input-password.vue')['default']
+    VeeInputWhatsapp: typeof import('./components/global/vee-input-whatsapp.vue')['default']
+    VeeSelectWithId: typeof import('./components/global/vee-select-with-id.vue')['default']
+    VeeTelInput: typeof import('./components/global/vee-tel-input.vue')['default']
+    VeeToggle: typeof import('./components/global/vee-toggle.vue')['default']
   }
 }

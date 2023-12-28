@@ -8,16 +8,22 @@
         <!-- Default slot for content -->
       </q-toolbar-title>
 
-      <q-btn v-if="rightSlotAction == 1" dense flat icon="add"></q-btn>
+      <q-btn v-if="rightSlotAction == 1" dense flat icon="add" @click="createPost"></q-btn>
     </q-toolbar>
   </q-card-actions>
 </template>
 
 <script setup lang="ts">
+  import eventBus from "@/utils/event-bus";
+
   defineProps({
     rightSlotAction: {
       type: Number,
       default: 0
     }
   });
+
+  const createPost = () => {
+    eventBus.emit("createPost");
+  };
 </script>

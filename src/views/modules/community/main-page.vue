@@ -55,10 +55,10 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
-  import { EventBus } from "quasar";
+  import { useQuasar } from "quasar";
+  import eventBus from "@/utils/event-bus";
 
   const { t } = useI18n({ useScope: "global" });
-  const eventBus = new EventBus();
 
   const advertisements = ref<Advertisement[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
@@ -67,6 +67,7 @@
   const notices = ref<CommunityNotice[]>([]);
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
+  const $q = useQuasar();
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("events");
@@ -84,6 +85,12 @@
       } else {
         dialogStack.value = dialogStack.value.filter(item => item != emitter);
       }
+    });
+
+    eventBus.on("createPost", () => {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("./input-dialog/index.vue"))
+      });
     });
   });
 
