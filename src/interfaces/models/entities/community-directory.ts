@@ -4,6 +4,7 @@ export interface CommunityDirectory {
   shortName: string;
   directoryNameAlt: string;
   shortNameAlt: string;
+  rank: number;
   imagePath: string;
   description: string;
   groupId: number;

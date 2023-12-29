@@ -121,6 +121,9 @@
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
+    directories.value.sort((a, b) => {
+      return a.rank - b.rank; // Assuming 'rank' is a numeric property
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
