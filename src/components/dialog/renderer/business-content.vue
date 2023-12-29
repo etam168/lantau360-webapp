@@ -79,12 +79,9 @@
 </template>
 
 <script setup lang="ts">
-  import { PropType, computed } from "vue";
-  import { ref } from "vue";
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
 
   const { translate } = useUtilities();

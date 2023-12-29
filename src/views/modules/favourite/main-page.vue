@@ -1,6 +1,10 @@
 <template>
   <q-page>
+    <q-bar dense class="bg-primary text-white flex-center">
+      <div>Advertisement</div>
+    </q-bar>
     <app-carousel-section :data="advertisements" />
+    <q-separator size="8px" color="primary" />
 
     <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
       <div class="column items-center" style="width: 100%">
@@ -48,6 +52,7 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
   import { EventBus, LocalStorage } from "quasar";
+  // import { Advertisement } from "@/interfaces/models/entities/advertisement";
 
   const eventBus = new EventBus();
 

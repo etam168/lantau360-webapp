@@ -8,19 +8,19 @@
   // .ts files
   import { EventBus } from "quasar";
 
-  import { useUtilities } from "@/composable/use-utilities";
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
-  import { MarketingType } from "@/interfaces/types/marketing-types";
-  import Link from "@tiptap/extension-link";
-  import StarterKit from "@tiptap/starter-kit";
-  import TextAlign from "@tiptap/extension-text-align";
-  import Underline from "@tiptap/extension-underline";
-  import Subscript from "@tiptap/extension-subscript";
-  import Superscript from "@tiptap/extension-superscript";
   import CharacterCount from "@tiptap/extension-character-count";
   import Image from "@tiptap/extension-image";
-  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
+  import Subscript from "@tiptap/extension-subscript";
+  import Superscript from "@tiptap/extension-superscript";
+  import TextAlign from "@tiptap/extension-text-align";
+  import Underline from "@tiptap/extension-underline";
+
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { EmojiReplacer, IconReplacer } from "@/components/global/editor/extensions";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
 
   const props = defineProps({
     item: {
@@ -73,8 +73,3 @@
     editor.value?.commands.setContent(translatedContent, false);
   });
 </script>
-<style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style>

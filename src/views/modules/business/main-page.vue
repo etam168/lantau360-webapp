@@ -1,6 +1,10 @@
 <template>
   <q-page>
+    <q-bar dense class="bg-primary text-white">
+      <div>Advertisement</div>
+    </q-bar>
     <app-carousel-section :data="advertisements" />
+    <q-separator size="8px" color="primary" />
 
     <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
       <div class="column items-center" style="width: 100%">

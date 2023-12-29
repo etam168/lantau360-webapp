@@ -21,12 +21,9 @@
           :img-src="getImageSrc(row)"
           @click="onImageClick(row)"
         >
-          <!-- <q-tooltip anchor="top middle" self="bottom middle" :offset="[10, 10]">
-            <strong>Advertisement Id:</strong> {{ row.advertisementId }}
-          </q-tooltip> -->
         </q-carousel-slide>
 
-        <template v-slot:control>
+        <!-- <template v-slot:control>
           <q-carousel-control
             position="top-left"
             :offset="[10, 10]"
@@ -34,7 +31,7 @@
           >
             <q-badge color="primary" class="text-white"> Advertisement </q-badge>
           </q-carousel-control>
-        </template>
+        </template> -->
       </q-carousel>
     </q-responsive>
   </div>
@@ -48,8 +45,8 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { BLOB_URL } from "@/constants";
   import imageNotFound from "@/assets/img/image_not_found.jpg";
+  import { BLOB_URL } from "@/constants";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { Site } from "@/interfaces/models/entities/site";
 
