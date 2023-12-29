@@ -8,12 +8,19 @@
   // .ts files
   import { EventBus } from "quasar";
 
-  import { useEditor, EditorContent } from "@tiptap/vue-3";
-  import Link from "@tiptap/extension-link";
-  import StarterKit from "@tiptap/starter-kit";
   import { useUtilities } from "@/composable/use-utilities";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { MarketingType } from "@/interfaces/types/marketing-types";
+  import Link from "@tiptap/extension-link";
+  import StarterKit from "@tiptap/starter-kit";
+  import TextAlign from "@tiptap/extension-text-align";
+  import Underline from "@tiptap/extension-underline";
+  import Subscript from "@tiptap/extension-subscript";
+  import Superscript from "@tiptap/extension-superscript";
+  import CharacterCount from "@tiptap/extension-character-count";
+  import Image from "@tiptap/extension-image";
+  import { useEditor, EditorContent } from "@tiptap/vue-3";
+  import { EmojiReplacer, IconReplacer } from "@/components/global/editor/extensions";
 
   const props = defineProps({
     item: {
@@ -31,7 +38,20 @@
 
   const editor = useEditor({
     content: "",
-    extensions: [StarterKit, Link]
+    extensions: [
+      StarterKit,
+      Underline,
+      Subscript,
+      Superscript,
+      Link,
+      Image.configure({ inline: true }),
+      CharacterCount.configure({}),
+      TextAlign.configure({
+        types: ["heading", "paragraph"]
+      }),
+      EmojiReplacer,
+      IconReplacer
+    ]
   });
 
   const isDialogVisible = ref();

@@ -14,6 +14,7 @@ declare module 'vue' {
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
     AppDirectorySection: typeof import('./components/global/app-directory-section.vue')['default']
+    AppEditor: typeof import('./components/global/editor/app-editor.vue')['default']
     AppGroupedItemList: typeof import('./components/global/app-grouped-item-list.vue')['default']
     AppMarketingItemList: typeof import('./components/global/app-marketing-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
