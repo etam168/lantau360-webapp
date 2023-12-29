@@ -1,8 +1,8 @@
 <template>
   <q-card-section class="q-pb-none">
     <q-item class="shadow-1 q-mb-md q-pl-sm">
-      <q-item-section top avatar>
-        <q-btn outline round color="black" class="q-mx-auto">
+      <q-item-section top avatar :style="!userStore.token ? 'height: 76px;' : ''">
+        <q-btn outline round color="black" class="q-mx-auto" v-if="userStore.token">
           <q-avatar size="76px">
             <q-img :src="computePath">
               <template v-slot:error>
@@ -17,25 +17,7 @@
                 </div>
               </template>
             </q-img>
-
-            <q-badge class="absolute-bottom-left" color="transparent" v-if="userStore.token">
-              <app-button
-                round
-                color="black"
-                icon="photo_camera"
-                size="xs"
-                @click="onImageUpload"
-              />
-            </q-badge>
           </q-avatar>
-
-          <q-file
-            ref="imageRef"
-            v-show="false"
-            v-model="imagePath"
-            @update:model-value="uploadImage"
-          >
-          </q-file>
         </q-btn>
       </q-item-section>
 
@@ -88,20 +70,7 @@
   import { BLOB_URL, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
   const userStore = useUserStore();
 
-  const { handleUpdateMemberAvatar } = useContentInput();
-
   const emit = defineEmits(["on-dialog"]);
-
-  const imageRef = ref();
-  const imagePath = ref(null);
-
-  function onImageUpload() {
-    imageRef.value.pickFiles();
-  }
-
-  function uploadImage() {
-    handleUpdateMemberAvatar(imagePath.value);
-  }
 
   const computePath = computed(() => {
     return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;

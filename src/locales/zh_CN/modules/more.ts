@@ -8,5 +8,6 @@ export default {
   login: "登录",
   profile: "个人资料",
   logout: "登出",
-  loginName: "登录名"
+  loginName: "登录名",
+  profileSetting: "Profile Setting"
 };

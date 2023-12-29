@@ -8,5 +8,10 @@ export default {
   login: "Login",
   profile: "Profile",
   logout: "Logout",
-  loginName: "Login Name"
+  loginName: "Login Name",
+
+  profileSetting: {
+    title: "Profile Setting",
+    subtitle: "Choose how you appear in the app"
+  }
 };

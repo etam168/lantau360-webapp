@@ -6,7 +6,7 @@
 
     <q-card-section class="q-pt-none">
       <q-item
-        v-for="item in menuItems"
+        v-for="item in filteredMenuItems"
         :key="item.resKey"
         clickable
         @click="showContentDialog(item)"
@@ -34,10 +34,13 @@
 
 <script setup lang="ts">
   import { useQuasar } from "quasar";
+  import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
   import { ContentOption } from "@/constants";
   import LoginSignup from "./section/login-signup.vue";
 
+  const userStore = useUserStore();
+  userStore;
   const $q = useQuasar();
   const data = ref<Content | null>(null);
 
@@ -45,7 +48,8 @@
     { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
     { icon: "ic_inbox.svg", title: "more.aboutUs", resKey: ContentOption.ABOUT },
     { icon: "ic_terms_conditions.svg", title: "more.termsConditions", resKey: ContentOption.TERMS },
-    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY }
+    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY },
+    { icon: "ic_privacy.svg", title: "more.profileSetting.title", resKey: "profileSetting" }
   ];
 
   async function showContentDialog(item: any) {
@@ -64,6 +68,9 @@
       case "login":
         showLoginDialog("login");
         return; // Exit the function for the "login" case
+      case "profileSetting":
+        showProfileSetting();
+        return; // Exit the function for the "profileSetting" case
       default:
         return; // Exit the function for unknown cases
     }
@@ -86,12 +93,23 @@
     }
   }
 
+  const filteredMenuItems = computed(() => {
+    // Filter out the "profileSetting" item if userStore.token does not exist
+    return userStore.token ? menuItems : menuItems.filter(item => item.resKey !== "profileSetting");
+  });
+
   function showLoginDialog(tabValue: string) {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
         tabValue: tabValue
       }
+    });
+  }
+
+  function showProfileSetting() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue"))
     });
   }
 </script>
