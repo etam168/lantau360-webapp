@@ -9,5 +9,10 @@ export default {
   profile: "个人资料",
   logout: "登出",
   loginName: "登录名",
-  profileSetting: "Profile Setting"
+
+  profileSetting: {
+    title: "Profile",
+    subtitle: "Choose how you appear in the app",
+    save: "Save"
+  }
 };

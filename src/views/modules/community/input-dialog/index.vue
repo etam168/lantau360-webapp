@@ -85,7 +85,6 @@
   };
 
   onMounted(() => {
-    console.log("");
     // eventBus.on("CloseDilaog", () => {
     //   isDialogVisible.value = false;
     // });

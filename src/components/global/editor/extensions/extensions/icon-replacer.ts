@@ -43,7 +43,6 @@ const IconReplacer = Node.create({
     ];
   },
   renderHTML({ HTMLAttributes }) {
-    console.log(HTMLAttributes);
     const { data } = HTMLAttributes;
 
     const aTagAttributes: { class: string; href?: string; target?: string; style: string } = {

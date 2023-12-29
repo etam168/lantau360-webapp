@@ -15,6 +15,7 @@
 
       <q-page-container>
         <q-page>
+          <div>{{ galleryItems }}</div>
           <gallery-carousel-image
             class="col-12 q-items-center"
             :gallery-images="galleryItems"
@@ -117,6 +118,7 @@
     if (galleryUrl.value) {
       try {
         const [galleryResponse] = await Promise.all([axios.get(galleryUrl.value)]);
+
         galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {

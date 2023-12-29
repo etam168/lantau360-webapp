@@ -11,6 +11,9 @@ export interface Member {
   otherInfo: string;
   verifiedBy: number;
   verifiedTimestamp: Date;
+  otp: string;
+  points: number;
+  imagePath: string;
   status?: number;
   createdAt: Date;
   createdBy: number;

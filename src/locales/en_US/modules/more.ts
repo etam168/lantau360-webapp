@@ -11,7 +11,8 @@ export default {
   loginName: "Login Name",
 
   profileSetting: {
-    title: "Profile Setting",
-    subtitle: "Choose how you appear in the app"
+    title: "Profile",
+    subtitle: "Choose how you appear in the app",
+    save: "Save"
   }
 };

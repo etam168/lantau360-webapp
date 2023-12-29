@@ -1,9 +1,5 @@
 <template>
-  <q-card
-    flat
-    :style="$q.screen.gt.sm ? Screen.laptopMaxWidth : Screen.tabletMaxWidth"
-    class="q-mt-md q-ml-md"
-  >
+  <q-card flat class="q-mt-md q-ml-md">
     <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
       <q-space />
       <q-tabs v-model="tab" shrink stretch>
@@ -18,7 +14,7 @@
 
     <q-tab-panels v-model="tab" animated>
       <q-tab-panel v-for="item in expansionItems" :key="item.name" :name="item.name">
-        <app-text-editor v-model="item.content" :contentHeight="contentHeight" />
+        <app-editor v-model="item.content" :contentHeight="contentHeight" />
       </q-tab-panel>
     </q-tab-panels>
   </q-card>
@@ -26,11 +22,8 @@
 
 <script setup lang="ts">
   import { ref, watch, reactive, Ref, inject, onMounted } from "vue";
-  import "vue-json-pretty/lib/styles.css";
-  import { Screen } from "@/constants";
 
   // Composable
-  import AppTextEditor from "@/components/widgets/app-text-editor.vue";
   import { Description } from "@/interfaces/models/description";
 
   const contentHeight = ref("calc(100vh - 450px)");

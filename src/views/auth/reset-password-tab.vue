@@ -70,7 +70,7 @@
         password: values.password,
         opt: values.otp
       });
-      console.log("API response:", response.data);
+      response.data;
 
       $q.notify({
         message: "Password reset successful",

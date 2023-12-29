@@ -101,7 +101,7 @@
         userName: values.email,
         status: 1
       });
-      console.log("API response:", response.data);
+      response;
       $q.notify({
         message: "Register successful",
         type: "positive",

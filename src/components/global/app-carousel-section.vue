@@ -102,7 +102,7 @@
   };
 
   // getImageSrc function to handle both Site and Advertisement
-  function getImageSrc(row: CarouselItem) {
+  function getImageSrc(row: 852) {
     if (isAdvertisement(row)) {
       return row.bannerPath !== null && row.bannerPath !== ""
         ? `${BLOB_URL}/${row.bannerPath}`
