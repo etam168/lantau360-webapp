@@ -21,7 +21,6 @@ declare module 'vue' {
     AppSpinner: typeof import('./components/global/app-spinner.vue')['default']
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
-    copy: typeof import('./components/global/app-button copy.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']

@@ -121,6 +121,9 @@
     businessPromotion.value = respPromotions.data.data;
     businessVoucher.value = respBusinessVoucher.data.data;
     directoriesData.value = respDirectories.data;
+    directoriesData.value.sort((a, b) => {
+      return a.rank - b.rank; // Assuming 'rank' is a numeric property
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

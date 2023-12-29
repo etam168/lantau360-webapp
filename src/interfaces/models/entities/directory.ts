@@ -2,6 +2,7 @@ export interface Directory {
   directoryId: number;
   directoryName: string;
   shortName: string;
+  rank: number;
   imagePath: string;
   description: string;
   displayMask: number;
