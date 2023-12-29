@@ -53,9 +53,6 @@
       </q-card-section>
     </q-card>
   </div>
-  <div v-else>
-    <q-img src="@/assets/img/no_image_available.jpeg" :ratio="aspectRatio()" />
-  </div>
 </template>
 
 <script setup lang="ts">

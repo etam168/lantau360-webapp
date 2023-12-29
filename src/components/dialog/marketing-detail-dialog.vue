@@ -15,7 +15,6 @@
 
       <q-page-container>
         <q-page>
-          <div>{{ galleryItems }}</div>
           <gallery-carousel-image
             class="col-12 q-items-center"
             :gallery-images="galleryItems"
