@@ -1,5 +1,9 @@
 <template>
   <div v-if="data && data?.length > 0">
+    <q-bar v-if="isAdvertisement(data[0])" dense class="bg-primary text-white flex-center">
+      <div>Advertisement</div>
+    </q-bar>
+
     <q-responsive :ratio="aspectRatio()">
       <q-carousel
         v-model="slide"
@@ -22,22 +26,14 @@
           @click="onImageClick(row)"
         >
         </q-carousel-slide>
-
-        <!-- <template v-slot:control>
-          <q-carousel-control
-            position="top-left"
-            :offset="[10, 10]"
-            v-if="isAdvertisement(data[0])"
-          >
-            <q-badge color="primary" class="text-white"> Advertisement </q-badge>
-          </q-carousel-control>
-        </template> -->
       </q-carousel>
     </q-responsive>
   </div>
   <div v-else>
     <q-img src="@/assets/img/home-bg.webp" :ratio="aspectRatio()" />
   </div>
+
+  <q-separator size="8px" color="primary" />
 </template>
 
 <script setup lang="ts">
