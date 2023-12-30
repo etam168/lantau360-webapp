@@ -5,7 +5,6 @@ import { userAdmin, userEditor } from "@/api/mock";
 import { ILoginRequest } from "@/interfaces/requests";
 import { ILoginResponse } from "@/interfaces/responses";
 import { IChangePasswordRequest } from "@/interfaces/requests";
-import Axios from "axios";
 
 // const newInput = () => {
 //   return {
@@ -15,14 +14,14 @@ import Axios from "axios";
 
 // const error = ref<string | null>(null);
 
-export function useMemberInput() {
+export function useMember() {
   //   const contentInput = ref<Content>(newInput());
 
   const loginByUserName = async (
     loginRequest: ILoginRequest
   ): Promise<ILoginResponse | undefined> => {
     let response;
-    await Axios({
+    await axios({
       url: "/MemberAuth/SignIn",
       method: "POST",
       data: { login: loginRequest.userName, password: loginRequest.password }

@@ -1,7 +1,7 @@
-import { useMemberInput } from "@/composable/use-member";
+import { useMember } from "@/composable/use-member";
 
 const { changeUserPassword, getUserInfo, loginByPhone, loginByUserName, updateUserInfo } =
-  useMemberInput();
+  useMember();
 
 import { IChangePasswordRequest, ILoginRequest } from "@/interfaces/requests";
 import { defineStore } from "pinia";
