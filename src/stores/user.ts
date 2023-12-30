@@ -1,15 +1,11 @@
-import {
-  changeUserPassword,
-  getUserInfo,
-  loginByPhone,
-  loginByUserName,
-  updateUserInfo
-} from "@/api/login";
+import { useMemberInput } from "@/composable/use-member";
+
+const { changeUserPassword, getUserInfo, loginByPhone, loginByUserName, updateUserInfo } =
+  useMemberInput();
 
 import { IChangePasswordRequest, ILoginRequest } from "@/interfaces/requests";
 import { defineStore } from "pinia";
 import { usePermissionStore } from "./permission";
-import { useUserPictureStore } from "./userPicture";
 
 export const useUserStore = defineStore("user", {
   state: () => {
@@ -81,8 +77,8 @@ export const useUserStore = defineStore("user", {
     async LogOut() {
       try {
         this.SetUserInfo({ logout: true });
-        const userPictureStore = useUserPictureStore();
-        userPictureStore.ClearUserProfilePicture();
+        // const userPictureStore = useUserPictureStore();
+        // userPictureStore.ClearUserProfilePicture();
       } catch (err) {
         //console.warn("[pinia.user] LogOut", err);
       }
