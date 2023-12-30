@@ -2,7 +2,12 @@
 import { date, EventBus, Notify, useQuasar } from "quasar";
 
 const eventBus = new EventBus();
-
+const httpMethods = {
+  get: async (path: any, options?: any) => axios.get(path, { params: options }),
+  create: (path: any, item: any, config = {}) => axios.post(path, item, config),
+  update: (path: any, item: any, config?: any) => axios.put(path, item, config),
+  delete: (path: any) => axios.delete(path)
+};
 export function useUtilities() {
   const $q = useQuasar();
 
@@ -106,6 +111,7 @@ export function useUtilities() {
     sleep,
     translate,
     formatPrice,
-    translateAltName
+    translateAltName,
+    httpMethods
   };
 }

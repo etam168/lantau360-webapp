@@ -23,7 +23,6 @@
 <script setup lang="ts">
   // 3rd Party Import
   import { useQuasar } from "quasar";
-  import { EventBus } from "quasar";
 
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
@@ -31,6 +30,8 @@
 
   // Custom Components
   import siteListTable from "./site-list-table.vue";
+
+  const { eventBus } = useUtilities();
 
   const props = defineProps({
     query: {
@@ -41,8 +42,6 @@
 
   const url = "/Site/Datatable";
   const key = "siteId";
-
-  const eventBus = new EventBus();
 
   const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
     url,

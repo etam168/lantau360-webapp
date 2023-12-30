@@ -44,9 +44,9 @@
   import { URL, STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
-  import { EventBus, LocalStorage } from "quasar";
+  import { LocalStorage } from "quasar";
 
-  const eventBus = new EventBus();
+  const { eventBus } = useUtilities();
 
   const siteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as Site[];

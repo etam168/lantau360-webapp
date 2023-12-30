@@ -63,11 +63,10 @@
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { EventBus } from "quasar";
   import { Posting } from "@/interfaces/models/entities/posting";
 
   const directoryItem = ref<Posting>({} as Posting);
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -76,7 +75,6 @@
     }
   });
 
-  const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {

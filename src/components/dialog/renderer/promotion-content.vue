@@ -65,11 +65,11 @@
 <script setup lang="ts">
   import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
 
-  import { EventBus, LocalStorage } from "quasar";
+  import { LocalStorage } from "quasar";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -77,8 +77,6 @@
       required: true
     }
   });
-
-  const eventBus = new EventBus();
 
   const promotionItem = computed(() => {
     return props.item as BusinessPromotion;

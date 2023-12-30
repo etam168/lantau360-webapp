@@ -26,11 +26,13 @@
 
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
-  import { EventBus } from "quasar";
+
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components
   import BusinessListTable from "./business-list-table.vue";
+
+  const { eventBus } = useUtilities();
 
   const props = defineProps({
     query: {
@@ -38,8 +40,6 @@
       required: true
     }
   });
-
-  const eventBus = new EventBus();
 
   const url = "/Business/Datatable";
   const key = "businessId";

@@ -6,7 +6,6 @@
 
 <script setup lang="ts">
   // .ts files
-  import { EventBus } from "quasar";
 
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { MarketingType } from "@/interfaces/types/marketing-types";
@@ -18,12 +17,11 @@
     }
   });
 
-  const eventBus = new EventBus();
   const advertisementItem = computed(() => {
     return props.item as Advertisement;
   });
 
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const isDialogVisible = ref();
   const translatedContent: any = computed(() => {

@@ -41,7 +41,7 @@
   // Other Import
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
-  import { EventBus } from "quasar";
+  const { eventBus } = useUtilities();
 
   defineProps({
     contentDataValue: {
@@ -49,7 +49,6 @@
     }
   });
 
-  const eventBus = new EventBus();
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();

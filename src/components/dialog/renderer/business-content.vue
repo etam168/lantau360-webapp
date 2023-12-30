@@ -82,9 +82,8 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
-  import { EventBus } from "quasar";
 
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -93,7 +92,6 @@
     }
   });
 
-  const eventBus = new EventBus();
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
 

@@ -25,7 +25,8 @@
   // Custom Components
   import { useDialogPluginComponent } from "quasar";
   import MainDatatable from "./main-datatable.vue";
-  import { EventBus } from "quasar";
+
+  const { eventBus } = useUtilities();
 
   defineProps({
     query: {
@@ -34,7 +35,7 @@
     }
   });
 
-  const eventBus = new EventBus();
+
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 

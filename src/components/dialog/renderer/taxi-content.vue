@@ -65,10 +65,9 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  import { EventBus } from "quasar";
 
   const directoryItem = ref<Site>({} as Site);
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -77,7 +76,6 @@
     }
   });
 
-  const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
   const translatedContent: any = computed(() => {

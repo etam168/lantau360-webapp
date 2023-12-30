@@ -77,12 +77,10 @@
   import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
   import { LocalStorage } from "quasar";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-  import { EventBus } from "quasar";
 
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const eventBus = new EventBus();
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
 
   const props = defineProps({
     item: {

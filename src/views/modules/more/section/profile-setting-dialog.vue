@@ -124,14 +124,16 @@
   // Other Import
   // import { useDialogPluginComponent } from "quasar";
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
-  import { EventBus } from "quasar";
+
   import { useUserStore } from "@/stores/user";
   import { useMoreInput } from "../use-more-input";
+
+  const { eventBus } = useUtilities();
 
   const { handleUpdateMemberAvatar } = useContentInput();
 
   const userStore = useUserStore();
-  const eventBus = new EventBus();
+
   const { updateMember, getMember, memberInput } = useMoreInput();
 
   const imageRef = ref();

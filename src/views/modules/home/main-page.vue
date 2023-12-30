@@ -27,14 +27,11 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
   import { Weather } from "@/interfaces/models/entities/weather";
-  import { EventBus } from "quasar";
 
   // Custom Components
   import WeatherSection from "./section/weather-section.vue";
 
-  const eventBus = new EventBus();
-
-  const { isNthBitSet } = useUtilities();
+  const { isNthBitSet, eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 

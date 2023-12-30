@@ -1,18 +1,35 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /**
  */
-import { userAdmin, userEditor } from "@/api/mock";
 import { ILoginRequest } from "@/interfaces/requests";
 import { ILoginResponse } from "@/interfaces/responses";
 import { IChangePasswordRequest } from "@/interfaces/requests";
 
-// const newInput = () => {
-//   return {
-//     modifiedAt: new Date()
-//   } as Content;
-// };
+const userAdmin = {
+  email: "admin@vvadmin.io",
+  phone: "43777102",
+  password: "abcd1234#",
+  user: "NelsonEAX",
+  status: "admin",
+  code: "",
+  token: "3b759a9ca80234563d87672350659b2b",
+  name: "Nikolaev Nikolay",
+  avatar: "https://avatars.githubusercontent.com/u/13101802",
+  roles: ["admin", "editor"]
+};
 
-// const error = ref<string | null>(null);
+const userEditor = {
+  email: "editor@vvadmin.io",
+  phone: "87654321",
+  password: "abcd1234",
+  user: "Editor",
+  status: "",
+  code: "",
+  token: "09d0a5b30b267c2504fadd43348fbba3",
+  name: "Editor Name",
+  avatar: "",
+  roles: ["editor"]
+};
 
 export function useMember() {
   //   const contentInput = ref<Content>(newInput());
@@ -40,7 +57,7 @@ export function useMember() {
 
   const loginByPhone = async (phone: any, password: any) => {
     let user = {};
-    await Axios({
+    await axios({
       url: "/api/referloauth/signin",
       method: "POST",
       data: { login: phone, password }
@@ -74,7 +91,7 @@ export function useMember() {
     return { user };
   };
   const updateUserInfo = async (userId: any, data: any) => {
-    const res = await Axios.put(`/Referlo/${userId}`, data).catch(res => ({ data: null }));
+    const res = await axios.put(`/Referlo/${userId}`, data).catch(res => ({ data: null }));
 
     return res.data;
   };
@@ -97,7 +114,7 @@ export function useMember() {
     changePasswordRequest: IChangePasswordRequest
   ): Promise<ILoginResponse | undefined> => {
     let response;
-    await Axios({
+    await axios({
       url: "/api/MemberAuth/UpdatePasword",
       method: "PUT",
       data: {
