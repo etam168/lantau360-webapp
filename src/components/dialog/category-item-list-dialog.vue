@@ -74,7 +74,7 @@
   // .ts file
   import { STORAGE_KEYS } from "@/constants";
   // import { EventBus } from "quasar";
-  import eventBus from "@/utils/event-bus";
+  // import eventBus from "@/utils/event-bus";
 
   type DirectoryTypes = Directory | CommunityDirectory;
   type CategoryTypes = Business | Site | Posting;
@@ -101,7 +101,7 @@
 
   // const eventBus = new EventBus();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
-  const { groupBy, translate } = useUtilities();
+  const { groupBy, translate, eventBus } = useUtilities();
 
   const $q = useQuasar();
   const isDialogVisible = ref();

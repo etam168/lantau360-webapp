@@ -52,7 +52,8 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
-  import eventBus from "@/utils/event-bus";
+  //import eventBus from "@/utils/event-bus";
+  const { eventBus } = useUtilities();
 
   const { t } = useI18n({ useScope: "global" });
 

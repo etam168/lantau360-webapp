@@ -53,7 +53,6 @@
   // .ts files
   import { URL, RENDERER } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import eventBus from "@/utils/event-bus";
 
   // Custom Components
   import BusinessContent from "@/components/dialog/renderer/business-content.vue";
@@ -77,7 +76,7 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { translate, eventBus } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 

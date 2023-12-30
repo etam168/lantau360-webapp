@@ -9,10 +9,9 @@ import { useUtilities } from "@/composable/use-utilities";
 import { PostingImages } from "@/interfaces/models/gallery";
 import { PostingImage } from "@/interfaces/models/entities/posting-image";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-import eventBus from "@/utils/event-bus";
 import { Description } from "@/interfaces/models/description";
 
-const { notify } = useUtilities();
+const { notify, eventBus } = useUtilities();
 const userStore = useUserStore();
 
 const newInput = () => {

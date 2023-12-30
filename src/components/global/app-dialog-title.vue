@@ -14,8 +14,7 @@
 </template>
 
 <script setup lang="ts">
-  import eventBus from "@/utils/event-bus";
-
+  const { eventBus } = useUtilities();
   defineProps({
     rightSlotAction: {
       type: Number,
