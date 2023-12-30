@@ -38,7 +38,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
-  const attractions = ref<Site[] | null>(null);
+  const attractions = ref<Site[]>([]);
   const homeDirectories = ref<Directory[]>([]);
   const weatherData = ref<Weather | null>(null);
 
@@ -104,10 +104,7 @@
 
     attractions.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
-    homeDirectories.value = homeDirectoryResponse.data;
-    homeDirectories.value.sort((a, b) => {
-      return a.rank - b.rank; // Assuming 'rank' is a numeric property
-    });
+    homeDirectories.value = useSorted(homeDirectoryResponse.data, (a, b) => a.rank - b.rank).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

@@ -46,6 +46,7 @@
 <script setup lang="ts">
   // .ts file
   import { URL } from "@/constants";
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -57,7 +58,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
-  const advertisements = ref<any | null>(null);
+  const advertisements = ref<Advertisement[]>([]);
   const directoriesData = ref<Directory[]>([]);
   const businessPromotion = ref<BusinessPromotion[]>([]);
   const businessVoucher = ref<BusinessVoucher[]>([]);
@@ -69,7 +70,6 @@
   const tab = ref("promotion");
   const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t("business.tabItems.promotion") },
-    // { name: "voucher", label: t("business.tabItems.voucher") },
     { name: "directory", label: t("business.tabItems.directory") }
   ]);
 
@@ -116,10 +116,7 @@
     advertisements.value = respAdvertisement.data;
     businessPromotion.value = respPromotions.data.data;
     businessVoucher.value = respBusinessVoucher.data.data;
-    directoriesData.value = respDirectories.data;
-    directoriesData.value.sort((a, b) => {
-      return a.rank - b.rank; // Assuming 'rank' is a numeric property
-    });
+    directoriesData.value = useSorted(respDirectories.data, (a, b) => a.rank - b.rank).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

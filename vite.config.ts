@@ -79,6 +79,7 @@ export default defineConfig({
         "vue",
         "vue-router",
         "vue-i18n",
+        "@vueuse/core",
         // Auto-import vue-i18n functions
         // {
         //   "vue-i18n": [

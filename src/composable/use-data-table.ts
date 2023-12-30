@@ -32,8 +32,8 @@ export default function useDataTable(url: string, key: string) {
 
   const loadData = async (props: any) => {
     loading.value = true;
-    const { page, rowsPerPage, sortBy, descending } = props.pagination;
 
+    const { page, rowsPerPage, sortBy, descending } = props.pagination;
     const sort = descending ? sortBy + "|desc" : sortBy;
 
     const params = {
