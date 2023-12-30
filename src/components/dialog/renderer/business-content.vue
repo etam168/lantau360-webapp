@@ -73,7 +73,7 @@
     </q-item>
 
     <q-item>
-      <div v-html="translate(item.description, item.meta, 'description')"></div>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -101,7 +101,9 @@
     const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     return formattedTime;
   };
-
+  const translatedContent: any = computed(() => {
+    return translate(props.item.description, props.item.meta, "description");
+  });
   const isCurrentTimeInRange = (
     startTime: string | undefined,
     endTime: string | undefined

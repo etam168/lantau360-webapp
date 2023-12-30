@@ -57,7 +57,7 @@
     </q-item>
 
     <q-item>
-      <editor-content :editable="isEditable" :editor="editor"></editor-content>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -68,10 +68,6 @@
   import { EventBus, LocalStorage } from "quasar";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { MarketingType } from "@/interfaces/types/marketing-types";
-
-  import { useEditor, EditorContent } from "@tiptap/vue-3";
-  import Link from "@tiptap/extension-link";
-  import StarterKit from "@tiptap/starter-kit";
 
   const { translate } = useUtilities();
 
@@ -88,13 +84,6 @@
     return props.item as BusinessPromotion;
   });
   const isDialogVisible = ref();
-
-  const isEditable = ref(false);
-
-  const editor = useEditor({
-    content: "",
-    extensions: [StarterKit, Link]
-  });
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -143,12 +132,9 @@
     eventBus.on("BusinessPromotionDialog", () => {
       isDialogVisible.value = false;
     });
-
-    editor?.value?.setEditable(isEditable.value);
-
-    // const data =
-    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
-    editor.value?.commands.setContent(props.item.description, false);
+  });
+  const translatedContent: any = computed(() => {
+    return props.item.description;
   });
 </script>
 <style scoped>

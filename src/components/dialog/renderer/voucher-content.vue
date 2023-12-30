@@ -67,7 +67,7 @@
     <q-separator class="q-mt-sm" />
 
     <q-item>
-      <editor-content :editable="isEditable" :editor="editor"></editor-content>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
     <q-separator class="q-mt-sm" />
   </q-list>
@@ -79,9 +79,6 @@
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { EventBus } from "quasar";
 
-  import { useEditor, EditorContent } from "@tiptap/vue-3";
-  import Link from "@tiptap/extension-link";
-  import StarterKit from "@tiptap/starter-kit";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const eventBus = new EventBus();
@@ -99,13 +96,6 @@
   });
 
   const isDialogVisible = ref();
-
-  const isEditable = ref(false);
-
-  const editor = useEditor({
-    content: "",
-    extensions: [StarterKit, Link]
-  });
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
@@ -146,12 +136,10 @@
     eventBus.on("BusinessVoucherDialog", () => {
       isDialogVisible.value = false;
     });
+  });
 
-    editor?.value?.setEditable(isEditable.value);
-
-    // const data =
-    //   '<p><a target="_blank" rel="noopener noreferrer nofollow" href="http://google.com">google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="http://www.google.com">www.google.com</a></p><p><a target="_blank" rel="noopener noreferrer nofollow" href="https://test.com">http://test.com</a></p>';
-    editor.value?.commands.setContent(props.item.description, false);
+  const translatedContent: any = computed(() => {
+    return props.item.description;
   });
 </script>
 <style scoped>

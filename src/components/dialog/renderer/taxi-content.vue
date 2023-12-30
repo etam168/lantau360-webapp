@@ -56,7 +56,7 @@
     </q-item>
 
     <q-item>
-      <div v-html="translate(item.description, item.meta, 'description')"></div>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -80,6 +80,9 @@
   const eventBus = new EventBus();
   const isFavourite = ref<boolean>(false);
 
+  const translatedContent: any = computed(() => {
+    return translate(props.item.description, props.item.meta, "description");
+  });
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
   });

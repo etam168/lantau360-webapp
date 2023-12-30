@@ -56,20 +56,15 @@
     </q-item>
 
     <q-item>
-      <editor-content :editable="isEditable" :editor="editor"></editor-content>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
-
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { useEditor, EditorContent } from "@tiptap/vue-3";
-  import { TipTapIcon } from "@/components/extensions";
-  import Link from "@tiptap/extension-link";
-  import StarterKit from "@tiptap/starter-kit";
 
   const { translate } = useUtilities();
   const emits = defineEmits(["favorite"]);
@@ -85,13 +80,9 @@
     }
   });
 
-  const editor = useEditor({
-    content: "",
-    extensions: [StarterKit, Link, TipTapIcon]
+  const translatedContent: any = computed(() => {
+    return translate(props?.item.description, props?.item.meta, "description");
   });
-
-  const isEditable = ref(false);
-
   // Check if  siteId exists in favoriteItems on component mount
   onMounted(() => {
     const itemIdToMatch = siteItem.value.siteId;
@@ -103,12 +94,6 @@
 
       isFavourite.value = isItemFavorited;
     }
-
-    editor?.value?.setEditable(isEditable.value);
-
-    const translatedContent = translate(props?.item.description, props?.item.meta, "description");
-
-    editor.value?.commands.setContent(translatedContent, false);
   });
 
   const siteItem = computed(() => {

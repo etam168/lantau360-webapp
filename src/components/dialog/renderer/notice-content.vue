@@ -1,7 +1,7 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <div v-html="translate(noticeItem.description, noticeItem.meta, 'description')"></div>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -20,6 +20,9 @@
     }
   });
 
+  const translatedContent: any = computed(() => {
+    return translate(noticeItem.value.description, noticeItem.value.meta, "description");
+  });
   const noticeItem = computed(() => {
     return props.item as CommunityNotice;
   });

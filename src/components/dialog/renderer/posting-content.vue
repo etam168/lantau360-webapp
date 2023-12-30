@@ -55,7 +55,7 @@
     </q-item>
 
     <q-item>
-      <div v-html="translate(directoryItem.description, directoryItem.meta, 'description')"></div>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -83,6 +83,9 @@
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Posting[];
   });
 
+  const translatedContent: any = computed(() => {
+    return translate(directoryItem.value.description, directoryItem.value.meta, "description");
+  });
   const navigateToPhone = () => {
     if (props?.item.contactPhone) {
       const phoneURL = `tel:${props?.item.contactPhone}`;

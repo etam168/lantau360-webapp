@@ -1,7 +1,7 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <div v-html="translate(eventItem.description, eventItem.meta, 'description')"></div>
+      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -19,7 +19,9 @@
       required: true
     }
   });
-
+  const translatedContent: any = computed(() => {
+    return translate(eventItem.value.description, eventItem.value.meta, "description");
+  });
   const eventItem = computed(() => {
     return props.item as CommunityEvent;
   });
