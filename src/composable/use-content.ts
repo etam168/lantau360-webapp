@@ -1,4 +1,3 @@
-import axios, { AxiosError } from "axios";
 import { Content } from "@/interfaces/models/entities/content";
 import { useUserStore } from "@/stores/user";
 import { BASE_URL } from "@/constants";

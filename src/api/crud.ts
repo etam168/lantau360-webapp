@@ -1,6 +1,3 @@
-import axios from "axios";
-// import "@/plugins/axios";
-
 export default {
   get: async (path: any, options?: any) => axios.get(path, { params: options }),
   create: (path: any, item: any, config = {}) => axios.post(path, item, config),

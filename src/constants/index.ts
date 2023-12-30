@@ -1,10 +1,3 @@
-export const FetchStatus = {
-  IDLE: "IDLE",
-  RUNNING: "RUNNING",
-  SUCCESS: "SUCCESS",
-  ERROR: "ERROR"
-};
-
 export const ActionButton = {
   EDIT: 1,
   GALLERY: 2,
@@ -98,5 +91,4 @@ export const STORAGE_KEYS = {
 };
 
 export const PLACEHOLDER_AVATAR = "/avatar.png";
-
 export const PLACEHOLDER_THUMBNAIL = "/no_image_available.jpeg";

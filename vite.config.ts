@@ -75,17 +75,19 @@ export default defineConfig({
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: [
+        "quasar",
         "vue",
         "vue-router",
+        "vue-i18n",
         // Auto-import vue-i18n functions
+        // {
+        //   "vue-i18n": [
+        //     // import { useI18n } from "vue-i18n"
+        //     "useI18n" // if you're using Composition API
+        //   ]
+        // },
         {
-          "vue-i18n": [
-            // import { useI18n } from "vue-i18n"
-            "useI18n" // if you're using Composition API
-          ]
-        },
-        {
-          axios: [["default", "axios"]]
+          axios: [["default", "axios"], "AxiosError"]
         }
       ],
       dirs: ["src/composable/**"],

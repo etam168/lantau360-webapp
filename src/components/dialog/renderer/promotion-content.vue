@@ -64,20 +64,15 @@
 
 <script setup lang="ts">
   import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
-  import { PropType, onMounted } from "vue";
-  import { ref } from "vue";
 
-  import { LocalStorage } from "quasar";
+  import { EventBus, LocalStorage } from "quasar";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
-  import { useUtilities } from "@/composable/use-utilities";
-  import { EventBus } from "quasar";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
 
   import { useEditor, EditorContent } from "@tiptap/vue-3";
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
-  import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  // const promotionItem = ref<BusinessPromotion>({} as BusinessPromotion);
   const { translate } = useUtilities();
 
   const props = defineProps({

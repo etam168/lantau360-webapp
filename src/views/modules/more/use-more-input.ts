@@ -1,11 +1,7 @@
-import axios from "axios";
-import { ref } from "vue";
-import { Member } from "@/interfaces/models/entities/member";
-
 import i18n from "@/plugins/i18n/i18n";
-import { useUserStore } from "@/stores/user";
 
-import { useUtilities } from "@/composable/use-utilities";
+import { Member } from "@/interfaces/models/entities/member";
+import { useUserStore } from "@/stores/user";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -33,7 +29,6 @@ export function useMoreInput() {
 
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
-    // loading.value = false;
   }
 
   function getMember() {
@@ -82,6 +77,5 @@ export function useMoreInput() {
     lang,
     useMoreInput,
     getMember
-    // setMemberInput
   };
 }

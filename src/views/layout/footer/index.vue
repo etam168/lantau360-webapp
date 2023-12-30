@@ -23,29 +23,18 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { computed, onMounted, ref } from "vue";
-  import { useRouter } from "vue-router";
-
-  // 3rd Party
-  import { useI18n } from "vue-i18n";
-
   const { t } = useI18n();
   const router = useRouter();
-  // const tab = ref("home");
   const ACTIVE_TAB_KEY = "activeTab"; // Define a key for storing in localStorage
 
   const tab = ref(localStorage.getItem(ACTIVE_TAB_KEY) || "home");
-
-  // const navigateTo = (route: string) => {
-  //   router.push(route);
-  // };
 
   const navigateTo = (route: string, tabName: string) => {
     router.push(route);
     tab.value = tabName;
     localStorage.setItem(ACTIVE_TAB_KEY, tabName); // Save active tab to localStorage
   };
+
   onMounted(() => {
     const storedTab = localStorage.getItem(ACTIVE_TAB_KEY);
     if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {

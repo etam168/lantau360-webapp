@@ -48,11 +48,8 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { computed, ref } from "vue";
-
-  // 3rd Party Import
-  import { useDialogPluginComponent, useQuasar } from "quasar";
+  // // 3rd Party Import
+  // import { useDialogPluginComponent, useQuasar } from "quasar";
 
   //Custom Components
   import Login from "./login.vue";

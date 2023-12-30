@@ -25,7 +25,7 @@
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   import { BLOB_URL } from "@/constants";
-  import { date, useQuasar } from "quasar";
+  import { date } from "quasar";
 
   const props = defineProps({
     item: {

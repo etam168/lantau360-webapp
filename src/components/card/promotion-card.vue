@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
-  import { useQuasar } from "quasar";
   import { MarketingType } from "@/interfaces/types/marketing-types";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
 

@@ -20,7 +20,6 @@
   import { MarketingType } from "@/interfaces/types/marketing-types";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { BLOB_URL } from "@/constants";
-  import { useQuasar } from "quasar";
 
   const $q = useQuasar();
 

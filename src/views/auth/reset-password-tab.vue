@@ -35,8 +35,6 @@
 
 <script setup lang="ts">
   // 3rd Party Import
-  import { useQuasar } from "quasar";
-  import axios from "axios";
   import * as yup from "yup";
 
   const emits = defineEmits(["close-dialog", "on-login"]);

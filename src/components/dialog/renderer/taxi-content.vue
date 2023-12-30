@@ -65,7 +65,6 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
 
   const directoryItem = ref<Site>({} as Site);

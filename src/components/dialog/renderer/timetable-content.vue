@@ -61,7 +61,6 @@
 </template>
 
 <script setup lang="ts">
-  import { ref } from "vue";
   import { Site } from "@/interfaces/models/entities/site";
   import { BLOB_URL } from "@/constants";
   import { TabItem } from "@/interfaces/tab-item";

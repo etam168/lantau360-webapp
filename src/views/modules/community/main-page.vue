@@ -44,9 +44,6 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
-  import axios, { AxiosError } from "axios";
-
   // .ts file
   import { URL } from "@/constants";
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
@@ -55,7 +52,6 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
-  import { useQuasar } from "quasar";
   import eventBus from "@/utils/event-bus";
 
   const { t } = useI18n({ useScope: "global" });

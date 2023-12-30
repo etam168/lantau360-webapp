@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
   import { BLOB_URL } from "@/constants";
-  import { date, useQuasar } from "quasar";
+  import { date } from "quasar";
 
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";

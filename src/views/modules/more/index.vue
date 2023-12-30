@@ -33,7 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useQuasar } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
   import { ContentOption } from "@/constants";
@@ -74,6 +73,7 @@
       default:
         return; // Exit the function for unknown cases
     }
+
     try {
       const url = `/Content/ContentByName/${contentKey}`;
       const response = await axios.get<Content>(url);

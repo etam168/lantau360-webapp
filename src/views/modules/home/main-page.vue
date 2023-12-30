@@ -21,10 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
-  import axios, { AxiosError } from "axios";
-  import { useQuasar } from "quasar";
-
   // .ts file
   import { URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";

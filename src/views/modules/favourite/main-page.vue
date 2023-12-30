@@ -40,15 +40,11 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
-  import axios, { AxiosError } from "axios";
-
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
   import { Business } from "@/interfaces/models/entities/business";
   import { EventBus, LocalStorage } from "quasar";
-  // import { Advertisement } from "@/interfaces/models/entities/advertisement";
 
   const eventBus = new EventBus();
 

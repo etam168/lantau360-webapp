@@ -1,9 +1,9 @@
 // useUtilities.ts
 import { date, EventBus, Notify, useQuasar } from "quasar";
-import { useI18n } from "vue-i18n";
+
+const eventBus = new EventBus();
 
 export function useUtilities() {
-  const eventBus = new EventBus();
   const $q = useQuasar();
 
   function aspectRatio() {
@@ -42,35 +42,6 @@ export function useUtilities() {
 
   function sleep(ms: number) {
     return new Promise(resolve => setTimeout(resolve, ms));
-  }
-
-  function resizeImage(file: File, maxWidth: number): Promise<Blob> {
-    return new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.onload = function (event) {
-        const img = new Image();
-        img.src = event.target?.result;
-
-        img.onload = function () {
-          const canvas = document.createElement("canvas");
-          const scale = maxWidth / img.width;
-          canvas.width = maxWidth;
-          canvas.height = img.height * scale;
-
-          const ctx = canvas.getContext("2d");
-          ctx?.drawImage(img, 0, 0, canvas.width, canvas.height);
-
-          canvas.toBlob(blob => {
-            if (blob) {
-              resolve(blob);
-            } else {
-              reject(new Error("Error while resizing image."));
-            }
-          }, "image/jpeg");
-        };
-      };
-      reader.readAsDataURL(file);
-    });
   }
 
   function groupBy<T, K extends string | number>(
@@ -133,7 +104,6 @@ export function useUtilities() {
     isNthBitSet,
     notify,
     sleep,
-    resizeImage,
     translate,
     formatPrice,
     translateAltName

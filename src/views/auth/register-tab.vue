@@ -57,10 +57,8 @@
 <script setup lang="ts">
   // 3rd Party Import
   import { LocalStorage, useQuasar } from "quasar";
-  import axios from "axios";
-  import * as yup from "yup";
-
   import { STORAGE_KEYS } from "@/constants";
+  import * as yup from "yup";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
   const $q = useQuasar();

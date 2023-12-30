@@ -79,6 +79,11 @@
     "useMember": true,
     "useShowCrudDialogs": true,
     "useUtilities": true,
-    "useContentInput": true
+    "useContentInput": true,
+    "useDialogPluginComponent": true,
+    "useFormChild": true,
+    "useMeta": true,
+    "useQuasar": true,
+    "AxiosError": true
   }
 }

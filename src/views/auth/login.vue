@@ -40,7 +40,7 @@
 <script setup lang="ts">
   // 3rd Party Import
   import { LocalStorage, useQuasar } from "quasar";
-  import axios from "axios";
+  // import axios from "axios";
   import * as yup from "yup";
 
   import { useUserStore } from "@/stores/user";

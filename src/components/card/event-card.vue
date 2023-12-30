@@ -17,9 +17,7 @@
 
 <script setup lang="ts">
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
-
   import { BLOB_URL } from "@/constants";
-  import { useQuasar } from "quasar";
 
   const props = defineProps({
     item: {

@@ -20,20 +20,15 @@
 </template>
 
 <script setup lang="ts">
-  import { computed, inject, provide, Ref, watch } from "vue";
-  import ImageInput from "./image-input.vue";
   import { PostingImages } from "@/interfaces/models/gallery";
 
   // Custom Components
   import AnimatedGrid from "./animated-grid.vue";
+  import ImageInput from "./image-input.vue";
 
   const emits = defineEmits(["delete-image", "upload-image", "handle-drag-drop"]);
 
   const postingImages = inject("images") as Ref<PostingImages>;
-
-  function handleDrapDrop() {
-    emits("handle-drag-drop");
-  }
 
   const addGalleryImage = (images: any) => {
     for (let i = 0; i < images.length; i++) {
@@ -48,7 +43,7 @@
       // If there is an object with isAddCard: true, insert before it; otherwise, insert at the end
       if (insertIndex !== -1) {
         imageList.value.splice(insertIndex, 0, newImage);
-        console.log(imageList.value.length);
+        // console.log(imageList.value.length);
         emits("upload-image", imageList.value.length - 1, newImage.image);
       } else {
         imageList.value.push(newImage);
@@ -57,8 +52,12 @@
     }
   };
 
+  function handleDrapDrop() {
+    emits("handle-drag-drop");
+  }
+
   function handleDelete(value: any) {
-    console.log(value);
+    // console.log(value);
     const index = imageList.value.findIndex(image => image.index === value.index);
 
     if (index !== -1) {
@@ -68,6 +67,7 @@
       }
     }
   }
+
   const imageList = computed(
     () =>
       postingImages?.value.galleryImages ?? [

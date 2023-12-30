@@ -53,15 +53,7 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
-  import { Ref, inject, ref } from "vue";
-  import { useUtilities } from "@/composable/use-utilities";
-
-  const { notify } = useUtilities();
-
-  //const { resizeImage } = useUtilities();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const prop = defineProps({
@@ -80,19 +72,20 @@
   });
   const emits = defineEmits(["uploadCallback"]);
 
+  const { notify } = useUtilities();
   const imagePath = ref();
   const imageRef = ref();
+  const galleryImages = inject("imageList") as Ref<GalleryImage[]>;
+
   function onImageUpload() {
     imageRef.value.pickFiles();
   }
-  const galleryImages = inject("imageList") as Ref<GalleryImage[]>;
 
   async function onUploadImage() {
     try {
       emits("uploadCallback", imagePath.value);
     } catch (error) {
-      // await updateProfileImage(imagePath.value);
-      console.error("Error uploading image:", error);
+      // console.error("Error uploading image:", error);
     }
   }
 
@@ -100,6 +93,7 @@
     notify("Total number images should not be greater then 10", "negative");
   }
 </script>
+
 <style scoped>
   .center-badge {
     display: flex;

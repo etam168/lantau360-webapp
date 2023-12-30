@@ -65,13 +65,9 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Site } from "@/interfaces/models/entities/site";
-  import { useUtilities } from "@/composable/use-utilities";
   import { Directory } from "@/interfaces/models/entities/directory";
-
   import { useEditor, EditorContent } from "@tiptap/vue-3";
-
   import { TipTapIcon } from "@/components/extensions";
-
   import Link from "@tiptap/extension-link";
   import StarterKit from "@tiptap/starter-kit";
 
@@ -118,6 +114,7 @@
   const siteItem = computed(() => {
     return props.item as Site;
   });
+
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {

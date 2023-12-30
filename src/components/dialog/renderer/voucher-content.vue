@@ -75,12 +75,8 @@
 
 <script setup lang="ts">
   import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
-  import { PropType, onMounted } from "vue";
-  import { ref } from "vue";
-
   import { LocalStorage } from "quasar";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-  import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
 
   import { useEditor, EditorContent } from "@tiptap/vue-3";

@@ -59,10 +59,10 @@
     </q-item>
   </q-list>
 </template>
+
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { useUtilities } from "@/composable/use-utilities";
   import { EventBus } from "quasar";
   import { Posting } from "@/interfaces/models/entities/posting";
 

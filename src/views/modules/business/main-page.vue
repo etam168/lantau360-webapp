@@ -44,10 +44,6 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party
-  import axios, { AxiosError } from "axios";
-  import { useQuasar } from "quasar";
-
   // .ts file
   import { URL } from "@/constants";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
