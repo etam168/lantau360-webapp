@@ -41,7 +41,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
 
           <q-btn
@@ -69,7 +69,7 @@
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const { translate, eventBus } = useUtilities();
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -91,11 +91,6 @@
       window.location.href = phoneURL;
     }
   };
-
-  function navigateToWhatsApp() {
-    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
 
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {

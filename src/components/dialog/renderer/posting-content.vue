@@ -40,7 +40,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
           <q-btn
             color="primary"
@@ -66,7 +66,7 @@
   import { Posting } from "@/interfaces/models/entities/posting";
 
   const directoryItem = ref<Posting>({} as Posting);
-  const { translate, eventBus } = useUtilities();
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -84,17 +84,13 @@
   const translatedContent: any = computed(() => {
     return translate(directoryItem.value.description, directoryItem.value.meta, "description");
   });
+
   const navigateToPhone = () => {
     if (props?.item.contactPhone) {
       const phoneURL = `tel:${props?.item.contactPhone}`;
       window.location.href = phoneURL;
     }
   };
-
-  function navigateToWhatsApp() {
-    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
 
   const onBtnFavClick = () => {
     const itemIdToMatch = directoryItem.value.postingId;
@@ -116,9 +112,6 @@
         isFavourite.value = true;
         favoriteItems.value.push(props.item);
       }
-
-      //const storageKey = STORAGE_KEYS.POSTINGFAVOURITES;
-      //LocalStorage.set(storageKey, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
         siteId: directoryItem.value.postingId || null

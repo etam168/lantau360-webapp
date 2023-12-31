@@ -35,7 +35,6 @@
     }
   });
 
-
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 

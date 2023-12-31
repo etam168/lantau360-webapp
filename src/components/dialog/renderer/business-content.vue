@@ -41,7 +41,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
           <q-btn
             color="primary"
@@ -83,7 +83,7 @@
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
 
-  const { translate, eventBus } = useUtilities();
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -99,9 +99,11 @@
     const formattedTime = parsedTime.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
     return formattedTime;
   };
+
   const translatedContent: any = computed(() => {
     return translate(props.item.description, props.item.meta, "description");
   });
+
   const isCurrentTimeInRange = (
     startTime: string | undefined,
     endTime: string | undefined
@@ -138,11 +140,6 @@
       window.location.href = phoneURL;
     }
   };
-
-  function navigateToWhatsApp() {
-    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
 
   const shouldShowItem = computed(() => {
     return (

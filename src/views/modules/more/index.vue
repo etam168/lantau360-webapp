@@ -6,8 +6,8 @@
 
     <q-card-section class="q-pt-none">
       <q-item
-        v-for="item in filteredMenuItems"
-        :key="item.resKey"
+        v-for="(item, index) in filteredMenuItems"
+        :key="index"
         clickable
         @click="showContentDialog(item)"
         class="shadow-1 q-mb-md q-pl-sm"
@@ -24,7 +24,7 @@
           >
         </q-item-section>
 
-        <q-item-section side v-if="item.resKey == 'language'">
+        <q-item-section side v-if="item.name == Menu.LANGUAGE">
           <language-select />
         </q-item-section>
       </q-item>
@@ -35,67 +35,57 @@
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
-  import { ContentOption } from "@/constants";
   import LoginSignup from "./section/login-signup.vue";
 
   const userStore = useUserStore();
-  userStore;
   const $q = useQuasar();
   const data = ref<Content | null>(null);
 
+  const Menu = {
+    LANGUAGE: "language",
+    ABOUT: "aboutUs",
+    PRIVACY: "privacy",
+    TERMS: "terms",
+    PROFILE: "profileSetting"
+  };
+
   const menuItems = [
-    { icon: "ic_language_setting.svg", title: "more.language", resKey: "language" },
-    { icon: "ic_inbox.svg", title: "more.aboutUs", resKey: ContentOption.ABOUT },
-    { icon: "ic_terms_conditions.svg", title: "more.termsConditions", resKey: ContentOption.TERMS },
-    { icon: "ic_privacy.svg", title: "more.privacyPolicy", resKey: ContentOption.PRIVACY },
-    { icon: "ic_privacy.svg", title: "more.profileSetting.title", resKey: "profileSetting" }
+    { name: Menu.LANGUAGE, icon: "ic_language_setting.svg", title: "more.language" },
+    { name: Menu.ABOUT, icon: "ic_inbox.svg", title: "more.aboutUs", contentKey: "About" },
+    { name: Menu.TERMS, icon: "ic_terms_conditions.svg", title: "more.terms", contentKey: "Terms" },
+    { name: Menu.PRIVACY, icon: "ic_privacy.svg", title: "more.privacy", contentKey: "Privacy" },
+    { name: Menu.PROFILE, icon: "ic_privacy.svg", title: "more.profileSetting.title" }
   ];
 
   async function showContentDialog(item: any) {
-    let contentKey;
+    if (item.contentKey) {
+      // This will be true if contentKey is not undefined
+      try {
+        const url = `/Content/ContentByName/${item.contentKey}`;
+        const response = await axios.get<Content>(url);
 
-    switch (item.resKey) {
-      case ContentOption.ABOUT:
-        contentKey = "About";
-        break;
-      case ContentOption.PRIVACY:
-        contentKey = "Privacy";
-        break;
-      case ContentOption.TERMS:
-        contentKey = "Terms";
-        break;
-      case "login":
-        showLoginDialog("login");
-        return; // Exit the function for the "login" case
-      case "profileSetting":
-        showProfileSetting();
-        return; // Exit the function for the "profileSetting" case
-      default:
-        return; // Exit the function for unknown cases
-    }
-
-    try {
-      const url = `/Content/ContentByName/${contentKey}`;
-      const response = await axios.get<Content>(url);
-
-      data.value = response.data;
-      if (response.status === 200) {
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
-          componentProps: {
-            contentDataValue: data.value
-          }
-        });
+        data.value = response.data;
+        if (response.status === 200) {
+          $q.dialog({
+            component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
+            componentProps: {
+              contentDataValue: data.value
+            }
+          });
+        }
+      } catch (error) {
+        // Handle error if the API call fails
       }
-    } catch (error) {
-      // Handle error if the API call fails
-      // console.error("Error fetching data: ", error);
+    } else if (item.name == Menu.PROFILE) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue"))
+      });
     }
   }
 
   const filteredMenuItems = computed(() => {
     // Filter out the "profileSetting" item if userStore.token does not exist
-    return userStore.token ? menuItems : menuItems.filter(item => item.resKey !== "profileSetting");
+    return userStore.token ? menuItems : menuItems.filter(item => item.name !== Menu.PROFILE);
   });
 
   function showLoginDialog(tabValue: string) {
@@ -104,12 +94,6 @@
       componentProps: {
         tabValue: tabValue
       }
-    });
-  }
-
-  function showProfileSetting() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue"))
     });
   }
 </script>

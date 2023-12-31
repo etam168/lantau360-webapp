@@ -19,9 +19,11 @@
       required: true
     }
   });
+
   const translatedContent: any = computed(() => {
     return translate(newsItem.value.description, newsItem.value.meta, "description");
   });
+
   const newsItem = computed(() => {
     return props.item as CommunityNews;
   });

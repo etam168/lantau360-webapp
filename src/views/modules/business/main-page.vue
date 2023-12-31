@@ -103,7 +103,7 @@
   });
 
   try {
-    const [respAdvertisement, respPromotions, respBusinessVoucher, respDirectories] =
+    const [advertisementResponse, promotionsResponse, voucherResponse, directoriesResponse] =
       await Promise.all([
         axios.get(URL.ADVERTISEMENT),
         axios.get(URL.BUSINESS_PROMOTION),
@@ -111,10 +111,10 @@
         axios.get(URL.BUSINESS_DIRECTORIES)
       ]);
 
-    advertisements.value = respAdvertisement.data;
-    businessPromotion.value = respPromotions.data.data;
-    businessVoucher.value = respBusinessVoucher.data.data;
-    directoriesData.value = useSorted(respDirectories.data, (a, b) => a.rank - b.rank).value;
+    advertisements.value = advertisementResponse.data;
+    businessPromotion.value = promotionsResponse.data.data;
+    businessVoucher.value = voucherResponse.data.data;
+    directoriesData.value = useSorted(directoriesResponse.data, (a, b) => a.rank - b.rank).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

@@ -100,6 +100,11 @@ export function useUtilities() {
     }
   }
 
+  function navigateToWhatsApp(whatsAppNumber: string) {
+    const whatsappURL = `https://wa.me/${whatsAppNumber}?text=Hello,%20Welcome%20to%20Lantau360.`;
+    window.open(whatsappURL, "_blank");
+  }
+
   return {
     aspectRatio,
     dateFormatter,
@@ -107,6 +112,7 @@ export function useUtilities() {
     groupBy,
     isNotEmptyArray,
     isNthBitSet,
+    navigateToWhatsApp,
     notify,
     sleep,
     translate,

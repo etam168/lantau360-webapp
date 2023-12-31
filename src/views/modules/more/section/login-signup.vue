@@ -1,9 +1,9 @@
 <template>
   <q-card-section class="q-pb-none">
     <q-item class="q-mb-md q-pl-sm">
-      <q-item-section top avatar :style="!userStore.token ? 'height: 76px;' : ''">
+      <q-item-section top avatar :style="!userStore.token ? 'height: 72px;' : ''">
         <q-btn outline round color="black" class="q-mx-auto" v-if="userStore.token">
-          <q-avatar size="76px">
+          <q-avatar size="72px">
             <q-img :src="computePath">
               <template v-slot:error>
                 <q-img :src="PLACEHOLDER_AVATAR" />

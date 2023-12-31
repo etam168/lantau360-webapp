@@ -41,7 +41,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
           <q-btn
             color="primary"
@@ -66,7 +66,7 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { Directory } from "@/interfaces/models/entities/directory";
 
-  const { translate } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
   const emits = defineEmits(["favorite"]);
 
   const props = defineProps({
@@ -83,6 +83,7 @@
   const translatedContent: any = computed(() => {
     return translate(props?.item.description, props?.item.meta, "description");
   });
+
   // Check if  siteId exists in favoriteItems on component mount
   onMounted(() => {
     const itemIdToMatch = siteItem.value.siteId;
@@ -112,11 +113,6 @@
       window.location.href = phoneURL;
     }
   };
-
-  function navigateToWhatsApp() {
-    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
 
   function onBtnFavClick() {
     const itemIdToMatch = siteItem.value.siteId;

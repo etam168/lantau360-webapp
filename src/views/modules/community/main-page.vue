@@ -52,8 +52,8 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { TabItem } from "@/interfaces/tab-item";
-  const { eventBus } = useUtilities();
 
+  const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
   const advertisements = ref<Advertisement[]>([]);
@@ -68,7 +68,6 @@
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("events");
   const tabItems = ref<TabItem[]>([
-    // { name: "news", label: t("community.tabItems.news") },
     { name: "events", label: t("community.tabItems.events") },
     { name: "notice", label: t("community.tabItems.notice") },
     { name: "directory", label: t("community.tabItems.directory") }
@@ -113,13 +112,10 @@
       ]);
 
     advertisements.value = advertisementResponse.data;
-    directories.value = directoryResponse.data;
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
-    directories.value.sort((a, b) => {
-      return a.rank - b.rank; // Assuming 'rank' is a numeric property
-    });
+    directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

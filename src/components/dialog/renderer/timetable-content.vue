@@ -39,7 +39,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
           <q-btn color="primary" text-color="white" icon="favorite" size="sm" round />
         </q-item-label>
@@ -72,9 +72,8 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
-  // const { t } = useI18n({ useScope: "global" });
   const setTab = (val: string) => (tab.value = val);
   const tab = ref(props.item.subtitle1);
 
@@ -89,8 +88,6 @@
     }
   ]);
 
-  // :address="translate(item.subtitle1, item.meta, 'subtitle1')"
-
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
@@ -101,9 +98,4 @@
       window.location.href = phoneURL;
     }
   };
-
-  function navigateToWhatsApp() {
-    const whatsappURL = `https://wa.me/${props?.item.contactWhatsApp}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
 </script>
