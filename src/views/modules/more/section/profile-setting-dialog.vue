@@ -63,50 +63,46 @@
                 </q-card-actions>
 
                 <q-card-section>
-                  <vee-input
-                    v-model="memberInput.email"
-                    :label="$t('auth.register.email')"
-                    :value="memberInput.email"
-                    icon="mdi-account"
-                    name="email"
-                    disable
-                    placeholder="user@example.com"
-                  />
+                  <Form
+                    ref="form"
+                    class="full-height"
+                    :initial-values="initialValues"
+                    :validation-schema="schema"
+                    @submit="onSubmit"
+                    v-slot="{ meta }"
+                  >
+                    <vee-input
+                      :label="$t('auth.register.email')"
+                      icon="mdi-account"
+                      name="email"
+                      disable
+                      placeholder="user@example.com"
+                    />
+                    <vee-input
+                      :label="$t('auth.register.firstName')"
+                      icon="mdi-account"
+                      name="firstName"
+                      placeholder="First Name"
+                    />
+                    <vee-input
+                      :label="$t('auth.register.lastName')"
+                      icon="mdi-account"
+                      name="lastName"
+                      placeholder="Last Name"
+                    />
 
-                  <vee-input
-                    v-model="memberInput.firstName"
-                    :label="$t('auth.register.firstName')"
-                    :value="memberInput.firstName"
-                    icon="mdi-account"
-                    name="firstName"
-                    placeholder="First Name"
-                  />
-                  <vee-input
-                    v-model="memberInput.lastName"
-                    :label="$t('auth.register.lastName')"
-                    :value="memberInput.lastName"
-                    icon="mdi-account"
-                    name="lastName"
-                    placeholder="Last Name"
-                  />
-
-                  <vee-input
-                    v-model="memberInput.phone"
-                    :label="$t('auth.register.phone')"
-                    :value="memberInput.phone"
-                    icon="mdi-account"
-                    name="phone"
-                    placeholder="Phone"
-                  />
-
-                  <app-button
-                    :label="$t('more.profileSetting.save')"
-                    class="full-width"
-                    color="primary"
-                    type="submit"
-                    size="lg"
-                    @click="updateProfile"
-                  />
+                    <vee-input
+                      :label="$t('auth.register.phone')"
+                      icon="mdi-account"
+                      name="phone"
+                      placeholder="Phone"
+                    />
+                    <app-button
+                      class="full-width"
+                      :label="$t('more.profileSetting.save')"
+                      type="submit"
+                    />
+                  </Form>
                 </q-card-section>
               </q-card>
             </q-page>
@@ -121,22 +117,39 @@
 </template>
 
 <script setup lang="ts">
+  import { Form } from "vee-validate";
+  import * as yup from "yup";
+
   // Other Import
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
 
   import { useUserStore } from "@/stores/user";
   import { useMoreInput } from "../use-more-input";
+  import { Member } from "@/interfaces/models/entities/member";
 
+  const props = defineProps({
+    member: {
+      type: Object as PropType<Member>,
+      required: true
+    }
+  });
   const { eventBus } = useUtilities();
 
   const { handleUpdateMemberAvatar } = useContentInput();
 
   const userStore = useUserStore();
+  const { t } = useI18n({ useScope: "global" });
 
-  const { updateMember, getMember, memberInput } = useMoreInput();
+  const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
 
   const imageRef = ref();
   const imagePath = ref(null);
+
+  const form = ref();
+  const initialValues = ref({});
+  const schema = yup.object({
+    email: yup.string().min(3).required().label(t("area.columns.areaName"))
+  });
 
   const { onDialogCancel, dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
@@ -158,11 +171,23 @@
       isDialogVisible.value = false;
     });
 
-    getMember();
+    setMemberInput(props?.member);
+    memberInput.value.memberId = props.member.memberId;
+    initialValues.value = {
+      email: props.member.email,
+      firstName: props.member.firstName,
+      lastName: props.member.lastName,
+      phone: props.member.phone
+    };
   });
 
-  function updateProfile() {
-    updateMember(onDialogCancel);
+  function onSubmit(values: any) {
+    form.value.validate().then(async (isValid: any) => {
+      if (isValid) {
+        setValidatedInput(values);
+        updateMember(onDialogCancel);
+      }
+    });
   }
 
   function updateDialogState(status: any) {

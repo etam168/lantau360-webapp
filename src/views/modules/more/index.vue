@@ -40,6 +40,7 @@
   const userStore = useUserStore();
   const $q = useQuasar();
   const data = ref<Content | null>(null);
+  const memberData = ref();
 
   const Menu = {
     LANGUAGE: "language",
@@ -77,9 +78,7 @@
         // Handle error if the API call fails
       }
     } else if (item.name == Menu.PROFILE) {
-      $q.dialog({
-        component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue"))
-      });
+      OpenProfileDialog();
     }
   }
 
@@ -95,5 +94,23 @@
         tabValue: tabValue
       }
     });
+  }
+
+  function OpenProfileDialog() {
+    axios
+      .get(`/Member/${userStore.userId}`)
+      .then(response => {
+        memberData.value = response.data;
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue")),
+          componentProps: {
+            member: memberData.value
+          }
+        });
+      })
+      .catch(errors => {
+        // notify(errors.message, "negative");
+        console.log(errors);
+      });
   }
 </script>

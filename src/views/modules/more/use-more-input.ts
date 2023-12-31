@@ -27,6 +27,20 @@ const lang = ref("hk");
 export function useMoreInput() {
   const memberInput = ref<Member>(newInput());
 
+  function setMemberInput(val: Member) {
+    //areaInput.value = extend(true, {}, val);
+    memberInput.value.email = val.email;
+    memberInput.value.firstName = val.firstName;
+    memberInput.value.lastName = val.lastName;
+    memberInput.value.phone = val.phone;
+  }
+  function setValidatedInput(values: any) {
+    memberInput.value.email = values.email;
+    memberInput.value.firstName = values.firstName;
+    memberInput.value.lastName = values.lastName;
+    memberInput.value.phone = values.phone;
+  }
+
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
   }
@@ -76,6 +90,8 @@ export function useMoreInput() {
     locale,
     lang,
     useMoreInput,
-    getMember
+    getMember,
+    setValidatedInput,
+    setMemberInput
   };
 }
