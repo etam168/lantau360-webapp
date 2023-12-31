@@ -1,15 +1,21 @@
 <template>
-  <vee-form :validation-schema="schema" @submit="onSubmit" v-slot="{ meta, values }">
+  <Form
+    ref="form"
+    class="full-height"
+    :initial-values="initialValues"
+    :validation-schema="schema"
+    @submit="onSubmit"
+    v-slot="{ meta, values }"
+  >
     <q-card-section>
       <vee-input
         :label="$t('auth.login.userName')"
-        :value="userName"
         icon="mdi-account"
         name="userName"
         placeholder="user@example.com"
       />
 
-      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" name="password" />
       <div>{{ setFormValues(values) }}</div>
 
       <q-item-label v-if="isEmailSent" class="text-red"
@@ -34,11 +40,12 @@
         />
       </q-card-actions>
     </q-card-section>
-  </vee-form>
+  </Form>
 </template>
 
 <script setup lang="ts">
   // 3rd Party Import
+  import { Form } from "vee-validate";
   import { LocalStorage, useQuasar } from "quasar";
   // import axios from "axios";
   import * as yup from "yup";
@@ -53,15 +60,22 @@
   const userStore = useUserStore();
   const userName = ref("");
 
-  const password = ref("");
-
   const loading = ref(false);
 
   const isEmailSent = ref(false);
 
+  const form = ref();
+  const initialValues = ref({});
   const schema = yup.object({
     userName: yup.string().required().label("user name"),
     password: yup.string().required().min(4).label("Password")
+  });
+
+  onMounted(() => {
+    initialValues.value = {
+      userName: "",
+      password: ""
+    };
   });
 
   async function handleForgotPassword() {
@@ -82,6 +96,7 @@
         type: "positive"
       });
     } catch (e: any) {
+      debugger;
       $q.notify({
         message: e.message,
         type: "negative"
@@ -89,30 +104,34 @@
     }
     loading.value = false;
   }
-  const onSubmit = async (values: { userName: any; password: any }) => {
-    loading.value = true;
-    try {
-      await userStore.loginByUserName({
-        userName: values.userName,
-        password: values.password
-      });
-      $q.notify({
-        message: "Login successful",
-        type: "positive",
-        color: "primary"
-      });
-      LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      emits("close-dialog");
-    } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
-      loading.value = false;
-    }
 
-    loading.value = false;
-  };
+  function onSubmit(values: any) {
+    form.value.validate().then(async (isValid: any) => {
+      if (isValid) {
+        loading.value = true;
+        try {
+          await userStore.loginByUserName({
+            userName: values.userName,
+            password: values.password
+          });
+          $q.notify({
+            message: "Login successful",
+            type: "positive",
+            color: "primary"
+          });
+          LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
+          emits("close-dialog");
+        } catch (e: any) {
+          $q.notify({
+            message: e.message,
+            type: "negative"
+          });
+          loading.value = false;
+        }
+      }
+    });
+  }
+
   function setFormValues(values: any) {
     userName.value = values.userName;
   }

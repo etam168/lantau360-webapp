@@ -1,36 +1,39 @@
 <template>
-  <vee-form :validation-schema="schema" @submit="onSubmit" v-slot="{ meta, values }">
+  <Form
+    ref="form"
+    class="full-height"
+    :initial-values="initialValues"
+    :validation-schema="schema"
+    @submit="onSubmit"
+    v-slot="{ meta, values }"
+  >
     <q-card-section>
       <vee-input
         :label="$t('auth.register.email')"
-        :value="email"
         icon="mdi-account"
         name="email"
         placeholder="user@example.com"
       />
       <vee-input
         :label="$t('auth.register.firstName')"
-        :value="firstName"
         icon="mdi-account"
         name="firstName"
         placeholder="First Name"
       />
       <vee-input
         :label="$t('auth.register.lastName')"
-        :value="lastName"
         icon="mdi-account"
         name="lastName"
         placeholder="Last Name"
       />
       <vee-input
         :label="$t('auth.register.phone')"
-        :value="phone"
         icon="mdi-account"
         name="phone"
         placeholder="Phone"
       />
 
-      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" name="password" />
       <div>{{ setFormValues(values) }}</div>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -43,7 +46,7 @@
         />
       </q-card-actions>
     </q-card-section>
-  </vee-form>
+  </Form>
 
   <q-card-actions class="q-px-md q-py-none justify-center">
     {{ $t("auth.register.haveAccount") }}
@@ -56,6 +59,7 @@
 
 <script setup lang="ts">
   // 3rd Party Import
+  import { Form } from "vee-validate";
   import { LocalStorage, useQuasar } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import * as yup from "yup";
@@ -70,53 +74,59 @@
   const password = ref("");
 
   const loading = ref(false);
-
+  const form = ref();
+  const initialValues = ref({});
   const schema = yup.object({
     email: yup.string().email().required(),
     password: yup.string().required().min(4).label("Password")
   });
 
+  onMounted(() => {
+    initialValues.value = {
+      email: "",
+      firstName: "",
+      lastName: "",
+      phone: "",
+      password: ""
+    };
+  });
   function login() {
     emits("on-login");
   }
+  function onSubmit(values: any) {
+    form.value.validate().then(async (isValid: any) => {
+      if (isValid) {
+        loading.value = true;
+        try {
+          const response = await axios.post("MemberAuth/SingUp", {
+            email: values.email,
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phone: values.phone,
+            password: values.password,
+            userName: values.email,
+            status: 1
+          });
+          response;
+          $q.notify({
+            message: "Register successful",
+            type: "positive",
+            color: "primary"
+          });
+          LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
+          emits("close-dialog");
+        } catch (e: any) {
+          $q.notify({
+            message: e.message,
+            type: "negative"
+          });
+          loading.value = false;
+        }
 
-  const onSubmit = async (values: {
-    email: any;
-    firstName: any;
-    lastName: any;
-    phone: any;
-    password: any;
-  }) => {
-    loading.value = true;
-
-    try {
-      const response = await axios.post("MemberAuth/SingUp", {
-        email: values.email,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: values.phone,
-        password: values.password,
-        userName: values.email,
-        status: 1
-      });
-      response;
-      $q.notify({
-        message: "Register successful",
-        type: "positive",
-        color: "primary"
-      });
-      LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      emits("close-dialog");
-    } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
-      loading.value = false;
-    }
-
-    loading.value = false;
-  };
+        loading.value = false;
+      }
+    });
+  }
 
   function setFormValues(values: any) {
     email.value = values.email;

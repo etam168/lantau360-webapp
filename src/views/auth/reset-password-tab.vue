@@ -1,15 +1,21 @@
 <template>
-  <vee-form :validation-schema="schema" @submit="onSubmit" v-slot="{ meta, values }">
+  <Form
+    ref="form"
+    class="full-height"
+    :initial-values="initialValues"
+    :validation-schema="schema"
+    @submit="onSubmit"
+    v-slot="{ meta, values }"
+  >
     <q-card-section>
       <vee-input
         :label="$t('auth.forgotPassword.otp')"
-        :value="otp"
         icon="mdi-account"
         name="otp"
         placeholder="123 456"
       />
 
-      <vee-input-password :label="$t('auth.login.password')" :value="password" name="password" />
+      <vee-input-password :label="$t('auth.login.password')" name="password" />
       <div>{{ setFormValues(values) }}</div>
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -22,7 +28,7 @@
         />
       </q-card-actions>
     </q-card-section>
-  </vee-form>
+  </Form>
 
   <q-card-actions class="q-px-md q-py-none justify-center">
     {{ $t("auth.register.haveAccount") }}
@@ -35,6 +41,7 @@
 
 <script setup lang="ts">
   // 3rd Party Import
+  import { Form } from "vee-validate";
   import * as yup from "yup";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
@@ -51,41 +58,52 @@
   const password = ref("");
 
   const loading = ref(false);
-
+  const form = ref();
+  const initialValues = ref({});
   const schema = yup.object({
     password: yup.string().required().min(4).label("Password")
   });
 
+  onMounted(() => {
+    initialValues.value = {
+      otp: "",
+      password: ""
+    };
+  });
   function login() {
     emits("on-login");
   }
 
-  const onSubmit = async (values: { otp: any; password: any }) => {
-    loading.value = true;
-    try {
-      const response = await axios.post("MemberAuth/RecoverPassword", {
-        email: prop.email,
-        password: values.password,
-        opt: values.otp
-      });
-      response.data;
+  function onSubmit(values: any) {
+    form.value.validate().then(async (isValid: any) => {
+      if (isValid) {
+        loading.value = true;
+        try {
+          const response = await axios.post("MemberAuth/RecoverPassword", {
+            email: prop.email,
+            password: values.password,
+            opt: values.otp
+          });
+          response.data;
 
-      $q.notify({
-        message: "Password reset successful",
-        type: "positive",
-        color: "primary"
-      });
-      emits("close-dialog");
-    } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
-      loading.value = false;
-    }
+          $q.notify({
+            message: "Password reset successful",
+            type: "positive",
+            color: "primary"
+          });
+          emits("close-dialog");
+        } catch (e: any) {
+          $q.notify({
+            message: e.message,
+            type: "negative"
+          });
+          loading.value = false;
+        }
 
-    loading.value = false;
-  };
+        loading.value = false;
+      }
+    });
+  }
 
   function setFormValues(values: any) {
     otp.value = values.phone;
