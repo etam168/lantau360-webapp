@@ -14,11 +14,6 @@ const newInput = () => {
 
 const { t } = i18n.global;
 
-const [bannerPath, imagePath, iconPath] = [ref(), ref(), ref()];
-
-const bannerRef = ref(null);
-const iconRef = ref(null);
-const imageRef = ref(null);
 const toolTipCreate = ref("member.gallery.uploadNewImage");
 
 const locale = ref("hk");
@@ -45,17 +40,6 @@ export function useMoreInput() {
     notify(successMessage, "positive");
   }
 
-  function getMember() {
-    axios
-      .get(`/Member/${userStore.userId}`)
-      .then(response => {
-        memberInput.value = response.data;
-      })
-      .catch(errors => {
-        notify(errors.message, "negative");
-      });
-  }
-
   function updateMember(onDialogCancel: any) {
     memberInput.value.modifiedBy = parseInt(userStore.userId);
     axios
@@ -77,20 +61,10 @@ export function useMoreInput() {
   return {
     memberInput,
     updateMember,
-    bannerPath,
-    iconPath,
-    imagePath,
-
-    bannerRef,
-    iconRef,
-    imageRef,
-
     toolTipCreate,
-
     locale,
     lang,
     useMoreInput,
-    getMember,
     setValidatedInput,
     setMemberInput
   };

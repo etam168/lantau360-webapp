@@ -120,6 +120,9 @@ export const useUserStore = defineStore("user", {
     },
     SetRefreshToken(refreshToken: any) {
       this.refreshToken = refreshToken;
+    },
+    isUserLogon() {
+      return this.token ? true : false;
     }
   },
   persist: true

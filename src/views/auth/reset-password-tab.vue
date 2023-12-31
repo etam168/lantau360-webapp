@@ -59,17 +59,14 @@
 
   const loading = ref(false);
   const form = ref();
-  const initialValues = ref({});
+  const initialValues = ref({
+    otp: "",
+    password: ""
+  });
   const schema = yup.object({
     password: yup.string().required().min(4).label("Password")
   });
 
-  onMounted(() => {
-    initialValues.value = {
-      otp: "",
-      password: ""
-    };
-  });
   function login() {
     emits("on-login");
   }

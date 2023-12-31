@@ -84,7 +84,9 @@
 
   const filteredMenuItems = computed(() => {
     // Filter out the "profileSetting" item if userStore.token does not exist
-    return userStore.token ? menuItems : menuItems.filter(item => item.name !== Menu.PROFILE);
+    return userStore.isUserLogon()
+      ? menuItems
+      : menuItems.filter(item => item.name !== Menu.PROFILE);
   });
 
   function showLoginDialog(tabValue: string) {

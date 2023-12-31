@@ -65,17 +65,13 @@
   const isEmailSent = ref(false);
 
   const form = ref();
-  const initialValues = ref({});
+  const initialValues = ref({
+    userName: "",
+    password: ""
+  });
   const schema = yup.object({
     userName: yup.string().required().label("user name"),
     password: yup.string().required().min(4).label("Password")
-  });
-
-  onMounted(() => {
-    initialValues.value = {
-      userName: "",
-      password: ""
-    };
   });
 
   async function handleForgotPassword() {
