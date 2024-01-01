@@ -30,13 +30,5 @@
     <div id="app"></div>
     <!-- built files will be auto injected -->
     <script type="module" src="/src/main.ts"></script>
-    <script>
-      if ("serviceWorker" in navigator) {
-        window.addEventListener("load", () => {
-          navigator.serviceWorker.register("/sw.js", { scope: "/" });
-        });
-      }
-    </script>
-    <script src="/registerSW.js"></script>
   </body>
 </html>
