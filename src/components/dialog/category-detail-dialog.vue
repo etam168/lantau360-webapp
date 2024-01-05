@@ -115,9 +115,11 @@
         return RENDERER.TIMETABLE;
       case props.directory.meta.template == Template.TAXI:
         return RENDERER.TAXI;
-      case props.directory.meta.template == Template.DEFAULT:
+      case [1, 3].includes(props.directory.groupId) &&
+        props.directory.meta.template == Template.DEFAULT:
         return RENDERER.SITE;
-      case "businessId" in props.item:
+      case [2, 4].includes(props.directory.groupId) &&
+        props.directory.meta.template == Template.DEFAULT:
         return RENDERER.BUSINESS;
       case "postingId" in props.item:
         return RENDERER.POSTING;
