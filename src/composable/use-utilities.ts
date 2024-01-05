@@ -61,9 +61,8 @@ export function useUtilities() {
       }
       grouped[key].push(item);
     });
-
     return Object.keys(grouped).map(key => ({
-      group: key as K,
+      group: (key === "null" ? "Other" : key) as K,
       items: grouped[key as K] // Type assertion here
     }));
   }

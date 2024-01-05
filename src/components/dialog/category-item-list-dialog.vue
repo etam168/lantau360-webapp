@@ -16,7 +16,7 @@
       <q-page-container>
         <q-page>
           <!-- Check if groupBykey exists -->
-          <template v-if="groupBykey">
+          <template v-if="groupMenuStatus">
             <app-tab-select
               :tab-items="tabItems"
               :current-tab="tab"
@@ -72,7 +72,7 @@
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
-  import { STORAGE_KEYS } from "@/constants";
+  import { NONE, STORAGE_KEYS } from "@/constants";
   // import { EventBus } from "quasar";
   // import eventBus from "@/utils/event-bus";
 
@@ -107,6 +107,10 @@
   const isDialogVisible = ref();
 
   const favoriteItems = ref<any>(getFavItem() || []);
+
+  const groupMenuStatus = computed(() => {
+    return props.groupBykey != NONE && props.groupBykey != null;
+  });
 
   const template = computed(() => {
     const temp = props.directory.meta?.template;

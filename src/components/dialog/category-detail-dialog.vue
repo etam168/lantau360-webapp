@@ -51,7 +51,7 @@
   import { Site } from "@/interfaces/models/entities/site";
 
   // .ts files
-  import { URL, RENDERER } from "@/constants";
+  import { URL, RENDERER, Template } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
@@ -111,11 +111,11 @@
 
   const renderer = computed(() => {
     switch (true) {
-      case "siteId" in props.item && props.item.directoryId == 24:
+      case props.directory.meta.template == Template.TIMETABLE:
         return RENDERER.TIMETABLE;
-      case "siteId" in props.item && props.item.directoryId == 26:
+      case props.directory.meta.template == Template.TAXI:
         return RENDERER.TAXI;
-      case "siteId" in props.item:
+      case props.directory.meta.template == Template.DEFAULT:
         return RENDERER.SITE;
       case "businessId" in props.item:
         return RENDERER.BUSINESS;

@@ -50,6 +50,8 @@ export const RENDERER = {
   NOTICE: "notice"
 };
 
+export const NONE = "none";
+
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
   ATTRACTION_URL: `${BASE_URL}/Site/ByDirectoryId/1`,
@@ -88,6 +90,12 @@ export const STORAGE_KEYS = {
     SITE: "siteFavourites",
     POSTING: "postingFavourites"
   }
+};
+
+export const Template = {
+  DEFAULT: 1,
+  TAXI: 2,
+  TIMETABLE: 3
 };
 
 export const PLACEHOLDER_AVATAR = "/avatar.png";
