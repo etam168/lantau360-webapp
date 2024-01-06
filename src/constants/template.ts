@@ -1,7 +1,7 @@
 const Template = {
-  DEFAULT: { value: 1, mask: 3 },
-  TAXI: { value: 2, mask: 0 },
-  TIMETABLE: { value: 3, mask: 0 }
+  DEFAULT: { value: 1, mask: 7 },
+  TAXI: { value: 2, mask: 7 },
+  TIMETABLE: { value: 3, mask: 7 }
 };
 
 export default Template;

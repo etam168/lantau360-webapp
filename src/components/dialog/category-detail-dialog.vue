@@ -16,11 +16,7 @@
       <q-page-container>
         <q-page>
           <q-item v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
-            <gallery-carousel-image
-              class="col-12 q-items-center"
-              :gallery-images="galleryItems"
-              :address="translate(item.subtitle1, item.meta, 'subtitle1')"
-            />
+            <gallery-carousel-image :gallery-images="galleryItems" />
           </q-item>
 
           <site-content
@@ -155,7 +151,7 @@
         ]);
 
         const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
-        galleryItems.value = galleryResponse.data.filter(gi => gi.ranking > maskValue);
+        galleryItems.value = maskedGalleryImages(galleryResponse.data, maskValue);
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
@@ -177,5 +173,15 @@
       }
     }
     return null as any;
+  }
+
+  function maskedGalleryImages(list: any, binaryNumber: number) {
+    const binaryString = binaryNumber.toString(2);
+    const setBits = binaryString
+      .split("")
+      .reverse()
+      .map((bit, index) => (bit === "1" ? index + 1 : null))
+      .filter(bit => bit !== null);
+    return list.filter((element: any) => !setBits.includes(element.ranking));
   }
 </script>

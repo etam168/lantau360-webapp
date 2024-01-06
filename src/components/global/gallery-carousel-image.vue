@@ -1,5 +1,5 @@
 <template>
-  <div v-if="galleryItems && galleryItems?.length > 0">
+  <div v-if="galleryItems && galleryItems?.length > 0" class="col-12 q-items-center">
     <q-card bordered flat>
       <q-responsive :ratio="aspectRatio()">
         <q-carousel v-model="slide" animated>
@@ -67,11 +67,6 @@
     galleryImages: {
       type: Object as PropType<GalleryImageType[]>,
       required: true
-    },
-    address: {
-      type: String,
-      required: false,
-      default: ""
     }
   });
 
