@@ -5,6 +5,7 @@ export interface Site {
   contactPhone: string;
   contactOther: string;
   buttonText: string;
+  areaName: string;
   title: string;
   subtitle1: string;
   subtitle2: string;

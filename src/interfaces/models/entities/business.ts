@@ -3,6 +3,7 @@ export interface Business {
   businessName: string;
   directoryName: string;
   contactWhatsApp: string;
+  areaName: string;
   contactPhone: string;
   contactOther: string;
   buttonText: string;
