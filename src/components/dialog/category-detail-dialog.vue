@@ -51,7 +51,7 @@
   import { Site } from "@/interfaces/models/entities/site";
 
   // .ts files
-  import { URL, RENDERER, Template } from "@/constants";
+  import { URL, RENDERER, TEMPLATE } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
@@ -111,15 +111,15 @@
 
   const renderer = computed(() => {
     switch (true) {
-      case props.directory.meta.template == Template.TIMETABLE:
+      case props.directory.meta.template == TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
-      case props.directory.meta.template == Template.TAXI:
+      case props.directory.meta.template == TEMPLATE.TAXI.value:
         return RENDERER.TAXI;
       case [1, 3].includes(props.directory.groupId) &&
-        props.directory.meta.template == Template.DEFAULT:
+        props.directory.meta.template == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
       case [2, 4].includes(props.directory.groupId) &&
-        props.directory.meta.template == Template.DEFAULT:
+        props.directory.meta.template == TEMPLATE.DEFAULT.value:
         return RENDERER.BUSINESS;
       case "postingId" in props.item:
         return RENDERER.POSTING;
@@ -153,7 +153,9 @@
         const [galleryResponse] = await Promise.all([
           axios.get<GalleryImageType[]>(galleryUrl.value)
         ]);
-        galleryItems.value = galleryResponse.data;
+
+        const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
+        galleryItems.value = galleryResponse.data.filter(gi => gi.ranking > maskValue);
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
@@ -167,4 +169,13 @@
       }
     }
   };
+
+  function getMaskValue(templateValue: number) {
+    for (const make in TEMPLATE) {
+      if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
+        return TEMPLATE[make as keyof typeof TEMPLATE].mask;
+      }
+    }
+    return null as any;
+  }
 </script>

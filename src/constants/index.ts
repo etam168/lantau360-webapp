@@ -92,11 +92,7 @@ export const STORAGE_KEYS = {
   }
 };
 
-export const Template = {
-  DEFAULT: 1,
-  TAXI: 2,
-  TIMETABLE: 3
-};
-
 export const PLACEHOLDER_AVATAR = "/avatar.png";
 export const PLACEHOLDER_THUMBNAIL = "/no_image_available.jpeg";
+
+export { default as TEMPLATE } from "./template";
