@@ -23,7 +23,6 @@ declare module 'vue' {
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
-    copy: typeof import('./components/global/app-button copy.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']

@@ -51,6 +51,7 @@
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
   const { eventBus } = useUtilities();
@@ -115,7 +116,10 @@
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
-    directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value;
+    const sortedDirectories = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value;
+    directories.value = sortedDirectories.filter((directory: Directory) => {
+      return directory.status === 1;
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

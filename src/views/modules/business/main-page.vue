@@ -114,7 +114,10 @@
     advertisements.value = advertisementResponse.data;
     businessPromotion.value = promotionsResponse.data.data;
     businessVoucher.value = voucherResponse.data.data;
-    directoriesData.value = useSorted(directoriesResponse.data, (a, b) => a.rank - b.rank).value;
+    const sortedDirectories = useSorted(directoriesResponse.data, (a, b) => a.rank - b.rank).value;
+    directoriesData.value = sortedDirectories.filter((directory: Directory) => {
+      return directory.status === 1;
+    });
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

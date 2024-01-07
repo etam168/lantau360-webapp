@@ -52,13 +52,13 @@
 
   const directoryData = computed(() => {
     return homeDirectories.value.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 1);
+      return isNthBitSet(directory.displayMask, 1) && directory.status === 1;
     });
   });
 
   const infoData = computed(() => {
     return homeDirectories.value.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 2);
+      return isNthBitSet(directory.displayMask, 2) && directory.status === 1;
     });
   });
 
