@@ -116,10 +116,11 @@
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
-    const sortedDirectories = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value;
-    directories.value = sortedDirectories.filter((directory: Directory) => {
-      return directory.status === 1;
-    });
+    directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
+      (directory: Directory) => {
+        return directory.status === 1;
+      }
+    );
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

@@ -135,7 +135,10 @@
         ]);
 
         const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
-        galleryItems.value = maskedGalleryImages(galleryResponse.data, maskValue);
+        // galleryItems.value = maskedGalleryImages(galleryResponse.data, maskValue);
+        galleryItems.value = galleryResponse.data.filter(
+          element => !(maskValue & (1 << (element.ranking - 1)))
+        );
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
@@ -159,13 +162,13 @@
     return null as any;
   }
 
-  function maskedGalleryImages(list: any, binaryNumber: number) {
-    const binaryString = binaryNumber.toString(2);
-    const setBits = binaryString
-      .split("")
-      .reverse()
-      .map((bit, index) => (bit === "1" ? index + 1 : null))
-      .filter(bit => bit !== null);
-    return list.filter((element: any) => !setBits.includes(element.ranking));
-  }
+  // function maskedGalleryImages(list: any, binaryNumber: number) {
+  //   const binaryString = binaryNumber.toString(2);
+  //   const setBits = binaryString
+  //     .split("")
+  //     .reverse()
+  //     .map((bit, index) => (bit === "1" ? index + 1 : null))
+  //     .filter(bit => bit !== null);
+  //   return list.filter((element: any) => !setBits.includes(element.ranking));
+  // }
 </script>
