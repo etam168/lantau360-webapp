@@ -21,11 +21,14 @@
 </template>
 
 <script setup lang="ts">
+  import { date } from "quasar";
+
+  // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
+  // .ts files
   import { BLOB_URL } from "@/constants";
-  import { date } from "quasar";
 
   const props = defineProps({
     item: {

@@ -63,21 +63,16 @@
 <script setup lang="ts">
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
 
-  // nterface files
+  // interface files
   import { Business } from "@/interfaces/models/entities/business";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
   import { NONE, STORAGE_KEYS } from "@/constants";
-  // import { EventBus } from "quasar";
-  // import eventBus from "@/utils/event-bus";
 
-  type DirectoryTypes = Directory | CommunityDirectory;
-  type CategoryTypes = Business | Site | Posting;
   type GroupKeys = keyof CategoryTypes;
 
   const props = defineProps({
@@ -99,7 +94,6 @@
     }
   });
 
-  // const eventBus = new EventBus();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
 

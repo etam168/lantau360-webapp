@@ -1,6 +1,8 @@
 import i18n from "@/plugins/i18n/i18n";
-
+// Interface files
 import { Member } from "@/interfaces/models/entities/member";
+
+// .ts files
 import { useUserStore } from "@/stores/user";
 
 const { notify } = useUtilities();

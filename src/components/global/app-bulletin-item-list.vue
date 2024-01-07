@@ -9,7 +9,7 @@
 </template>
 
 <script setup lang="ts">
-  // ts files
+  // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 
   // Custom Components

@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Posting } from "@/interfaces/models/entities/posting";
 

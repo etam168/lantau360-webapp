@@ -44,8 +44,7 @@
 </template>
 
 <script setup lang="ts">
-  // .ts file
-  import { URL } from "@/constants";
+  // Interface files
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
@@ -53,6 +52,9 @@
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
+
+  // .ts file
+  import { URL } from "@/constants";
 
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });

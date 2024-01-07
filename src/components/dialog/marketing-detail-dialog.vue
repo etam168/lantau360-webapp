@@ -30,10 +30,10 @@
 </template>
 
 <script setup lang="ts">
-  import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
@@ -44,7 +44,6 @@
   import AdvertisementRenderer from "@/components/dialog/renderer/advertisement-renderer.vue";
   import VoucherRenderer from "@/components/dialog/renderer/voucher-renderer.vue";
   import PromotionRenderer from "@/components/dialog/renderer/promotion-renderer.vue";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     item: {

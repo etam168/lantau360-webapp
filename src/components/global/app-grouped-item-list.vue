@@ -38,24 +38,24 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL } from "@/constants";
-  import { Business } from "@/interfaces/models/entities/business";
-  import { Site } from "@/interfaces/models/entities/site";
+  // Quasar Import
   import { useQuasar } from "quasar";
 
-  const $q = useQuasar();
+  // interface files
+  import { Business } from "@/interfaces/models/entities/business";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import { Site } from "@/interfaces/models/entities/site";
 
-  type DirectoryTypes = Business | Site;
+  // .ts file
+  import { BLOB_URL } from "@/constants";
+
+  const $q = useQuasar();
 
   const props = defineProps({
     listItems: {
       type: Array as PropType<DirectoryTypes[]>,
       default: () => [] as DirectoryTypes[]
     }
-    // groupKey: {
-    //   type: String as PropType<GroupKeys>,
-    //   default: "directoryName"
-    // }
   });
 
   const { translate } = useUtilities();

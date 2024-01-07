@@ -10,14 +10,15 @@
 </template>
 
 <script setup lang="ts">
+  // interface files
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
+
   // .ts file
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory"; // import the CommunityDirectory
-  import { Directory } from "@/interfaces/models/entities/directory";
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
-  type DirectoryTypes = Directory | CommunityDirectory;
-
   const emit = defineEmits(["on-click"]);
+
   const props = defineProps({
     item: {
       type: Object as PropType<DirectoryTypes>,

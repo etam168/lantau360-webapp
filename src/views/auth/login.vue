@@ -49,6 +49,7 @@
   import { LocalStorage, useQuasar } from "quasar";
   import * as yup from "yup";
 
+  // .ts files
   import { useUserStore } from "@/stores/user";
   import { STORAGE_KEYS } from "@/constants";
 

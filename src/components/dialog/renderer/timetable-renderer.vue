@@ -40,10 +40,14 @@
 
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
-  import { Site } from "@/interfaces/models/entities/site";
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { TabItem } from "@/interfaces/tab-item";
+
+  // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { Site } from "@/interfaces/models/entities/site";
+  import { TabItem } from "@/interfaces/tab-item";
+
+  // .ts files
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
 
   const props = defineProps({
     item: {

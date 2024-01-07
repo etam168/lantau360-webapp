@@ -66,8 +66,10 @@
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
 
-  import { useUserStore } from "@/stores/user";
+  // .ts file
   import { BLOB_URL, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
+  import { useUserStore } from "@/stores/user";
+
   const userStore = useUserStore();
 
   const emit = defineEmits(["on-dialog"]);

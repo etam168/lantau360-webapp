@@ -33,8 +33,8 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const { translate, eventBus } = useUtilities();

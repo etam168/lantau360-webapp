@@ -34,10 +34,9 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd party
   import { date, useQuasar } from "quasar";
 
-  // .ts file
+  // Interface files
   import { Weather } from "@/interfaces/models/entities/weather";
 
   const $q = useQuasar();

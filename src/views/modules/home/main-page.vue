@@ -21,16 +21,17 @@
 </template>
 
 <script setup lang="ts">
-  // .ts file
-  import { URL } from "@/constants";
+  // Interface files
   import { Directory } from "@/interfaces/models/entities/directory";
   import { Site } from "@/interfaces/models/entities/site";
   import { TabItem } from "@/interfaces/tab-item";
   import { Weather } from "@/interfaces/models/entities/weather";
 
+  // .ts file
+  import { URL } from "@/constants";
+
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
-  //import WeatherSection from "./section/weather-section.vue";
 
   const { isNthBitSet, eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });

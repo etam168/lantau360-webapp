@@ -58,11 +58,12 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
   import { Form } from "vee-validate";
   import { LocalStorage, useQuasar } from "quasar";
-  import { STORAGE_KEYS } from "@/constants";
   import * as yup from "yup";
+
+  // .ts files
+  import { STORAGE_KEYS } from "@/constants";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
   const $q = useQuasar();

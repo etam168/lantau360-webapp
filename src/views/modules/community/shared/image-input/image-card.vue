@@ -27,14 +27,14 @@
 </template>
 
 <script setup lang="ts">
-  // Custom Components
+  // Interface files
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
-  import ImageInput from "./image-input.vue";
-
-  import { PropType } from "vue";
-
+  // .ts files
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+
+  // Custom Components
+  import ImageInput from "./image-input.vue";
 
   const props = defineProps({
     row: {

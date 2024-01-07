@@ -90,13 +90,16 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  // Interface files
   import { Business } from "@/interfaces/models/entities/business";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
 
+  // .ts files
+  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+
   const emit = defineEmits(["item-click"]);
-  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const props = defineProps({
     directoryItems: {

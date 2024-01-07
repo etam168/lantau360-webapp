@@ -8,7 +8,7 @@
 </template>
 
 <script setup lang="ts">
-  // ts files
+  // Interface files
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // Custom Components

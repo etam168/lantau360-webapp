@@ -24,22 +24,21 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { Ref, inject, ref, onMounted, provide } from "vue";
-
-  // 3rd Party Import
   import * as yup from "yup";
   import { useI18n } from "vue-i18n";
   import { Form } from "vee-validate";
 
+  // Interface files
+  import { Description } from "@/interfaces/models/description";
+  import { Posting } from "@/interfaces/models/entities/posting";
+  import { PostingImages } from "@/interfaces/models/gallery";
+
+  // .ts files
+  import { usePostingInput } from "../shared/use-posting-input";
+
   // Custom Components
   import ImagesSection from "../shared/image-input/index.vue";
-
   import InputContent from "../shared/input-content/index.vue";
-  import { usePostingInput } from "../shared/use-posting-input";
-  import { PostingImages } from "@/interfaces/models/gallery";
-  import { Posting } from "@/interfaces/models/entities/posting";
-  import { Description } from "@/interfaces/models/description";
 
   const { postingImages, setValidateInput, createPosting } = usePostingInput();
 

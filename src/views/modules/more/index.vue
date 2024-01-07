@@ -33,8 +33,13 @@
 </template>
 
 <script setup lang="ts">
-  import { useUserStore } from "@/stores/user";
+  // Interface files
   import { Content } from "@/interfaces/models/entities/content";
+
+  // .ts files
+  import { useUserStore } from "@/stores/user";
+
+  // Custom Components
   import LoginSignup from "./section/login-signup.vue";
 
   const userStore = useUserStore();

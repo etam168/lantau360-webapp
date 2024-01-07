@@ -44,13 +44,15 @@
 </template>
 
 <script setup lang="ts">
-  // .ts file
-  import { URL } from "@/constants";
+  // Interface files
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
+
+  // .ts file
+  import { URL } from "@/constants";
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();

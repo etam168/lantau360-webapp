@@ -7,7 +7,7 @@
 </template>
 
 <script setup lang="ts">
-  // Interface and Type
+  // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
 

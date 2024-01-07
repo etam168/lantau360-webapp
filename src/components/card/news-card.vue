@@ -17,11 +17,14 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL } from "@/constants";
   import { date } from "quasar";
 
+  // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
+
+  // .ts files
+  import { BLOB_URL } from "@/constants";
 
   const props = defineProps({
     item: {

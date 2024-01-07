@@ -29,13 +29,10 @@
 </template>
 
 <script setup lang="ts">
-  import { Ref, inject, onMounted } from "vue";
-
-  //.ts
+  // Interface files
   import { PostingImages } from "@/interfaces/models/gallery";
 
   //Custom Components
-  //import ImageInput from "@/components/custom/image-input.vue";
   import GalleryImage from "./gallery-images.vue";
 
   const props = defineProps({

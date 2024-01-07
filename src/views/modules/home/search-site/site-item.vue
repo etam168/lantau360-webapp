@@ -23,14 +23,16 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { Site } from "@/interfaces/models/entities/site";
-  import { PropType, ref } from "vue";
-  import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []);
+  // Interface files
+  import { Site } from "@/interfaces/models/entities/site";
 
+  // .ts files
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { useUtilities } from "@/composable/use-utilities";
+
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
   const emits = defineEmits(["on-detail"]);
 
   const computePath = (path: string) => {

@@ -17,8 +17,11 @@
 </template>
 
 <script setup lang="ts">
-  import { MarketingType } from "@/interfaces/types/marketing-types";
+  // Interface file
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
+
+  // .ts files
   import { BLOB_URL } from "@/constants";
 
   const $q = useQuasar();

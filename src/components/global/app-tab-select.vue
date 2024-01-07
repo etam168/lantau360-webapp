@@ -15,6 +15,7 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { TabItem } from "@/interfaces/tab-item"; // Ensure this path is correct
 
   // Define the props the component takes with types and required fields

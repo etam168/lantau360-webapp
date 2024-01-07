@@ -14,12 +14,11 @@
   // Quasar Import
   import { throttle, useQuasar } from "quasar";
 
-  // .ts file
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { DIRECTORY_GROUPS, URL } from "@/constants";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  // interface files
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
-  type DirectoryTypes = Directory | CommunityDirectory;
+  // .ts file
+  import { DIRECTORY_GROUPS, URL } from "@/constants";
 
   const props = defineProps({
     data: {

@@ -16,7 +16,10 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+
+  // .ts files
   import { BLOB_URL } from "@/constants";
 
   const props = defineProps({

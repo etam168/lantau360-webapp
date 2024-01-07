@@ -56,12 +56,14 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+
   // .ts file
   import { BLOB_URL } from "@/constants";
 
   // Custom Components
   import PropertyThumbnailImage from "./property-thumbnail-image.vue";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     galleryImages: {

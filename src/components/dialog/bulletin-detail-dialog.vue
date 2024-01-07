@@ -33,11 +33,11 @@
 </template>
 
 <script setup lang="ts">
-  import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
   import { URL, RENDERER } from "@/constants";
@@ -47,7 +47,6 @@
   import EventContent from "@/components/dialog/renderer/event-content.vue";
   import NewsContent from "@/components/dialog/renderer/news-content.vue";
   import NoticeContent from "@/components/dialog/renderer/notice-content.vue";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     item: {

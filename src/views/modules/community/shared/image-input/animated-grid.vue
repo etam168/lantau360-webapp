@@ -36,13 +36,13 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { inject, ref } from "vue";
   import { VueDraggableNext } from "vue-draggable-next";
+
+  // Interface files
+  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   // Custom Components
   import ImageCard from "./image-card.vue";
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   const emits = defineEmits(["on-delete", "on-detail", "on-add-image", "on-drag-drop"]);
 

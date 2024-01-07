@@ -1,15 +1,17 @@
 import axios from "axios";
-import { ref } from "vue";
+
+// Interface files
+import { Description } from "@/interfaces/models/description";
 import { Posting } from "@/interfaces/models/entities/posting";
-
-import i18n from "@/plugins/i18n/i18n";
-import { useUserStore } from "@/stores/user";
-
-import { useUtilities } from "@/composable/use-utilities";
 import { PostingImages } from "@/interfaces/models/gallery";
 import { PostingImage } from "@/interfaces/models/entities/posting-image";
+
+import i18n from "@/plugins/i18n/i18n";
+
+// .ts files
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-import { Description } from "@/interfaces/models/description";
+import { useUserStore } from "@/stores/user";
+import { useUtilities } from "@/composable/use-utilities";
 
 const { notify, eventBus } = useUtilities();
 const userStore = useUserStore();

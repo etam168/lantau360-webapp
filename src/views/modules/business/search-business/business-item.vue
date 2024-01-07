@@ -23,11 +23,14 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
-  import { Business } from "@/interfaces/models/entities/business";
-  import { PropType, ref } from "vue";
-  import { useUtilities } from "@/composable/use-utilities";
   import { LocalStorage } from "quasar";
+
+  // Interface files
+  import { Business } from "@/interfaces/models/entities/business";
+
+  // .ts files
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { useUtilities } from "@/composable/use-utilities";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []);
 

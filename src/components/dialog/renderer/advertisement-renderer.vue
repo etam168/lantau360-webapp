@@ -5,8 +5,7 @@
 </template>
 
 <script setup lang="ts">
-  // .ts files
-
+  // Interface files
   import { Advertisement } from "@/interfaces/models/entities/advertisement";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 

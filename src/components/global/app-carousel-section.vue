@@ -40,11 +40,13 @@
   // Quasar Import
   import { useQuasar } from "quasar";
 
+  // Interface files
+  import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { Site } from "@/interfaces/models/entities/site";
+
   // .ts file
   import imageNotFound from "@/assets/img/image_not_found.jpg";
   import { BLOB_URL } from "@/constants";
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
-  import { Site } from "@/interfaces/models/entities/site";
 
   // Define type that is a union of Site and Advertisement
   type CarouselItem = Site | Advertisement;

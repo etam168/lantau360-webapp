@@ -40,11 +40,14 @@
 </template>
 
 <script setup lang="ts">
+  import { LocalStorage } from "quasar";
+
+  // Interface files
+  import { Business } from "@/interfaces/models/entities/business";
+  import { Site } from "@/interfaces/models/entities/site";
+
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
-  import { Site } from "@/interfaces/models/entities/site";
-  import { Business } from "@/interfaces/models/entities/business";
-  import { LocalStorage } from "quasar";
 
   const { eventBus } = useUtilities();
 

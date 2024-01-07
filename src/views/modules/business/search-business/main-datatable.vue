@@ -21,9 +21,10 @@
 </template>
 
 <script setup lang="ts">
-  // .ts file
+  // Interface files
   import { Business } from "@/interfaces/models/entities/business";
 
+  // .ts files
   import useDataTable from "@/composable/use-data-table";
 
   // Custom Components

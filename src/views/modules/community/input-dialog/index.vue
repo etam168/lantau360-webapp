@@ -44,22 +44,15 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { ref, provide, onMounted } from "vue";
-
-  // 3rd Party Import
   import { useDialogPluginComponent } from "quasar";
 
-  // .ts files
-  // import eventBus from "@/utils/event-bus";
+  // Interface files
+  import { Description } from "@/interfaces/models/description";
+  import { Posting } from "@/interfaces/models/entities/posting";
+  import { PostingImages } from "@/interfaces/models/gallery";
 
   // Custom Components
   import InputStep from "./input-step.vue";
-
-  import { Posting } from "@/interfaces/models/entities/posting";
-
-  import { PostingImages } from "@/interfaces/models/gallery";
-  import { Description } from "@/interfaces/models/description";
 
   defineEmits([...useDialogPluginComponent.emits]);
 

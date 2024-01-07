@@ -100,12 +100,13 @@
   import { Form } from "vee-validate";
   import * as yup from "yup";
 
-  // Other Import
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
-
-  import { useUserStore } from "@/stores/user";
-  import { useMoreInput } from "../use-more-input";
+  // Interface files
   import { Member } from "@/interfaces/models/entities/member";
+
+  // .ts files
+  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  import { useMoreInput } from "../use-more-input";
+  import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
     member: {

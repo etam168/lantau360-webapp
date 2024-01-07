@@ -26,6 +26,7 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();

@@ -9,8 +9,5 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
-  import { computed, useSlots } from "vue";
-
   const parentSlots = computed(() => Object.keys(useSlots));
 </script>

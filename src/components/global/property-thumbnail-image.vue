@@ -26,9 +26,11 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+
   // .ts files
   import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({
     rowData: {

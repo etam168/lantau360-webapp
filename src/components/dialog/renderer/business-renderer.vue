@@ -59,9 +59,13 @@
 
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
-  import { STORAGE_KEYS } from "@/constants";
+
+  // Interface files
   import { Business } from "@/interfaces/models/entities/business";
   import { CategoryTypes } from "@/interfaces/types/category-types";
+
+  // .ts files
+  import { STORAGE_KEYS } from "@/constants";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 

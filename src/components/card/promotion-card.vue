@@ -31,9 +31,12 @@
 </template>
 
 <script setup lang="ts">
-  import { BLOB_URL } from "@/constants";
-  import { MarketingType } from "@/interfaces/types/marketing-types";
+  // Interface files
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
+  import { MarketingType } from "@/interfaces/types/marketing-types";
+
+  // .ts files
+  import { BLOB_URL } from "@/constants";
 
   const $q = useQuasar();
   const props = defineProps({

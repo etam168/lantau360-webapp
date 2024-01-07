@@ -53,10 +53,11 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { GalleryImage } from "@/interfaces/models/entities/image-list";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const prop = defineProps({
+  defineProps({
     label: {
       type: String,
       default: "Add Photos"
