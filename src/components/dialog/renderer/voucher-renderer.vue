@@ -2,48 +2,15 @@
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <q-item-section>
-        <q-btn
-          color="primary"
-          text-color="white"
-          icon="location_on"
-          size="sm"
-          round
-          @click="temp"
-        />
+        <app-button-rounded icon="location_on" />
       </q-item-section>
 
       <q-item-section side>
-        <q-item-label>
-          <q-btn
-            v-if="item.contactPhone"
-            color="primary"
-            text-color="white"
-            icon="phone"
-            size="sm"
-            round
-            class="q-mr-sm"
-            @click="navigateToPhone"
-          />
+        <div class="q-gutter-md">
+          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
 
-          <q-btn
-            v-if="item.contactWhatsApp"
-            color="primary"
-            text-color="white"
-            icon="phone"
-            size="sm"
-            round
-            class="q-mr-md"
-          />
-
-          <q-btn
-            color="primary"
-            :text-color="isFavourite ? 'red' : 'white'"
-            icon="favorite"
-            size="sm"
-            round
-            @click="onBtnFavClick()"
-          />
-        </q-item-label>
+          <app-button-rounded v-if="item.contactWhatsApp" icon="phone" />
+        </div>
       </q-item-section>
     </q-item>
     <q-separator class="q-mt-sm" />
@@ -66,8 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
-  import { LocalStorage } from "quasar";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
 
   import { MarketingType } from "@/interfaces/types/marketing-types";
@@ -84,41 +49,6 @@
   const voucherItem = computed(() => props.item as BusinessVoucher);
 
   const isDialogVisible = ref();
-
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
-
-  const isFavourite = ref<boolean>(false);
-  const onBtnFavClick = () => {
-    const itemIdToMatch = voucherItem.value.businessVoucherId;
-    const isCurrentlyFavourite = isFavourite.value;
-
-    if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
-      if (itemIndex !== -1) {
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-
-      isFavourite.value = false;
-    } else {
-      const favItem = {
-        directoryId: voucherItem.value.businessVoucherId,
-        directoryName: voucherItem?.value?.directoryName,
-        itemName: voucherItem.value.businessName,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: voucherItem.value.iconPath,
-        subTitle: voucherItem.value.subtitle1
-      };
-
-      isFavourite.value = true;
-      favoriteItems.value.push(favItem);
-    }
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
-  };
-
-  const temp = () => {
-    alert(JSON.stringify(favoriteItems.value));
-  };
 
   onMounted(() => {
     eventBus.on("BusinessVoucherDialog", () => {

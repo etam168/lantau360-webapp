@@ -1,50 +1,21 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <template
-        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
-      >
-        <q-item-section top>
-          <q-item-label class="text-caption text-weight-light"
-            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
-          </q-item-label>
-        </q-item-section>
-      </template>
-
-      <q-item-section v-else></q-item-section>
+      <q-item-section top>
+        <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"
+          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+        </q-item-label>
+      </q-item-section>
 
       <q-item-section side>
-        <q-item-label>
-          <q-btn
-            v-if="item.contactPhone"
-            color="primary"
-            text-color="white"
-            icon="phone"
-            size="sm"
-            round
-            class="q-mr-sm"
-            @click="navigateToPhone"
-          />
-          <q-btn
+        <div class="q-gutter-md">
+          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
+          <app-button-rounded
             v-if="item.contactWhatsApp"
-            color="primary"
-            text-color="white"
             icon="fab fa-whatsapp"
-            size="sm"
-            round
-            class="q-mr-sm"
             @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
-
-          <q-btn
-            color="primary"
-            :text-color="isFavourite ? 'red' : 'white'"
-            icon="favorite"
-            round
-            size="sm"
-            @click="onBtnFavClick"
-          />
-        </q-item-label>
+        </div>
       </q-item-section>
     </q-item>
 
@@ -55,10 +26,6 @@
 </template>
 
 <script setup lang="ts">
-  import { STORAGE_KEYS } from "@/constants";
-
-  import { LocalStorage } from "quasar";
-  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
@@ -70,20 +37,7 @@
     }
   });
 
-  const promotionItem = computed(() => props.item as BusinessPromotion);
   const isDialogVisible = ref();
-
-  const favoriteItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessPromotion[]
-  );
-
-  const isFavourite = computed(() => {
-    const favItem = favoriteItems.value;
-    return useArraySome(
-      favItem,
-      fav => fav.businessPromotionId == promotionItem.value.businessPromotionId
-    ).value;
-  });
 
   const navigateToPhone = () => {
     if (props?.item.contactPhone) {
@@ -92,53 +46,6 @@
     }
   };
 
-  // const onBtnFavClick = () => {
-  //   const itemIdToMatch = promotionItem.value.businessPromotionId;
-  //   const isCurrentlyFavourite = isFavourite.value;
-
-  //   if (isCurrentlyFavourite) {
-  //     const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
-  //     if (itemIndex !== -1) {
-  //       favoriteItems.value.splice(itemIndex, 1);
-  //     }
-
-  //     isFavourite.value = false;
-  //   } else {
-  //     const favItem = {
-  //       directoryId: promotionItem.value.businessPromotionId,
-  //       directoryName: promotionItem?.value?.directoryName,
-  //       itemName: promotionItem.value.businessName,
-  //       itemId: itemIdToMatch,
-  //       groupId: DIRECTORY_GROUPS.HOME,
-  //       iconPath: promotionItem.value.iconPath,
-  //       subTitle: promotionItem.value.subtitle1
-  //     };
-
-  //     isFavourite.value = true;
-  //     favoriteItems.value.push(favItem);
-  //   }
-  //   LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
-  // };
-
-  const onBtnFavClick = () => {
-    const localFavItem = favoriteItems.value;
-    if (isFavourite.value) {
-      const itemIndex = localFavItem.findIndex(
-        (item: any) => item.businessPromotionId === promotionItem.value.businessPromotionId
-      );
-
-      if (itemIndex !== -1) {
-        localFavItem.splice(itemIndex, 1);
-        favoriteItems.value = localFavItem;
-      }
-    } else {
-      localFavItem.push(promotionItem.value);
-      favoriteItems.value = localFavItem;
-    }
-    eventBus.emit("favoriteUpdated", {
-      siteId: promotionItem.value.businessPromotionId || null
-    });
-  };
   onMounted(() => {
     eventBus.on("BusinessPromotionDialog", () => {
       isDialogVisible.value = false;

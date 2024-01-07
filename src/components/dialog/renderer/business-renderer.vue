@@ -1,53 +1,30 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <template
-        v-if="
-          businessItem.subtitle1 !== null &&
-          businessItem.subtitle1 !== undefined &&
-          businessItem.subtitle1 !== ''
-        "
-      >
-        <q-item-section top>
-          <q-item-label class="text-caption text-weight-light"
-            >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-          </q-item-label>
-        </q-item-section>
-      </template>
-
-      <q-item-section v-else></q-item-section>
+      <q-item-section top>
+        <q-item-label v-if="businessItem.subtitle1" class="text-caption text-weight-light"
+          >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
+        </q-item-label>
+      </q-item-section>
 
       <q-item-section side>
-        <q-item-label>
-          <q-btn
+        <div class="q-gutter-md">
+          <app-button-rounded
             v-if="businessItem.contactPhone"
-            color="primary"
-            text-color="white"
             icon="phone"
-            size="sm"
-            round
-            class="q-mr-sm"
             @click="navigateToPhone"
           />
-          <q-btn
+          <app-button-rounded
             v-if="businessItem.contactWhatsApp"
-            color="primary"
-            text-color="white"
             icon="fab fa-whatsapp"
-            size="sm"
-            round
-            class="q-mr-sm"
             @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
           />
-          <q-btn
-            color="primary"
+          <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
             icon="favorite"
-            size="sm"
-            round
             @click="onBtnFavClick"
           />
-        </q-item-label>
+        </div>
       </q-item-section>
     </q-item>
 
@@ -96,7 +73,7 @@
     }
   });
 
-  const businessItem = computed(() => props.item as Business);
+  const businessItem = computed(() => props?.item as Business);
 
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
@@ -163,36 +140,6 @@
     );
   });
 
-  // const onBtnFavClick = () => {
-  //   const itemIdToMatch = businessItem.value.businessId;
-
-  //   if (itemIdToMatch) {
-  //     const isCurrentlyFavourite = isFavourite.value;
-
-  //     if (isCurrentlyFavourite) {
-  //       const itemIndex = favoriteItems.value.findIndex(
-  //         (item: any) => item.businessId === itemIdToMatch
-  //       );
-
-  //       if (itemIndex !== -1) {
-  //         favoriteItems.value.splice(itemIndex, 1);
-  //       }
-
-  //       isFavourite.value = false;
-  //     } else {
-  //       isFavourite.value = true;
-  //       favoriteItems.value.push(businessItem.value);
-  //     }
-
-  //     LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-
-  //     eventBus.emit("favoriteUpdated", {
-  //       itemId: businessItem.value.businessId,
-  //       isFavorite: isFavourite.value,
-  //       moduleType: "business"
-  //     });
-  //   }
-  // };
   const onBtnFavClick = () => {
     const localFavItem = favoriteItems.value;
     if (isFavourite.value) {
@@ -208,6 +155,7 @@
       localFavItem.push(businessItem.value);
       favoriteItems.value = localFavItem;
     }
+    LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
     eventBus.emit("favoriteUpdated", {
       itemId: businessItem.value.businessId,
       isFavorite: isFavourite.value,
