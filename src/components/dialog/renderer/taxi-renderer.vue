@@ -84,14 +84,21 @@
   });
 
   const siteItem = computed(() => props.item as Site);
-  const isFavourite = ref<boolean>(false);
 
   const translatedContent: any = computed(() => {
     return translate(siteItem.value.description, siteItem.value.meta, "description");
   });
 
-  const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+  const favoriteItems = computed({
+    get: () => {
+      return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+    },
+    set: (newFavoriteItems: Site[]) => {
+      LocalStorage.set(STORAGE_KEYS.SAVED.SITE, newFavoriteItems);
+    }
+  });
+  const isFavourite = computed(() => {
+    return useArraySome(favoriteItems, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
   const navigateToPhone = () => {
@@ -102,32 +109,22 @@
   };
 
   const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.siteId;
+    const localFavItem = favoriteItems.value;
+    if (isFavourite.value) {
+      const itemIndex = localFavItem.findIndex(
+        (item: any) => item.siteId === siteItem.value.siteId
+      );
 
-    if (itemIdToMatch) {
-      const isCurrentlyFavourite = isFavourite.value;
-
-      if (isCurrentlyFavourite) {
-        const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.siteId === itemIdToMatch
-        );
-
-        if (itemIndex !== -1) {
-          favoriteItems.value.splice(itemIndex, 1);
-        }
-
-        isFavourite.value = false;
-      } else {
-        isFavourite.value = true;
-        favoriteItems.value.push(siteItem.value);
+      if (itemIndex !== -1) {
+        localFavItem.splice(itemIndex, 1);
+        favoriteItems.value = localFavItem;
       }
-
-      const storageKey = STORAGE_KEYS.SAVED.SITE;
-      LocalStorage.set(storageKey, favoriteItems.value);
-
-      eventBus.emit("favoriteUpdated", {
-        siteId: directoryItem.value.siteId || null
-      });
+    } else {
+      localFavItem.push(siteItem.value);
+      favoriteItems.value = localFavItem;
     }
+    eventBus.emit("favoriteUpdated", {
+      siteId: directoryItem.value.siteId || null
+    });
   };
 </script>
