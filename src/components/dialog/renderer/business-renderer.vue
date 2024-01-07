@@ -136,8 +136,13 @@
     return now >= startTimeToday && now <= endTimeToday;
   };
 
-  const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+  const favoriteItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[]
+  );
+
+  const isFavourite = computed(() => {
+    const favItem = favoriteItems.value;
+    return useArraySome(favItem, fav => fav.businessId == businessItem.value.businessId).value;
   });
 
   const navigateToPhone = () => {
@@ -158,36 +163,55 @@
     );
   });
 
-  const isFavourite = ref<boolean>(false);
+  // const onBtnFavClick = () => {
+  //   const itemIdToMatch = businessItem.value.businessId;
 
+  //   if (itemIdToMatch) {
+  //     const isCurrentlyFavourite = isFavourite.value;
+
+  //     if (isCurrentlyFavourite) {
+  //       const itemIndex = favoriteItems.value.findIndex(
+  //         (item: any) => item.businessId === itemIdToMatch
+  //       );
+
+  //       if (itemIndex !== -1) {
+  //         favoriteItems.value.splice(itemIndex, 1);
+  //       }
+
+  //       isFavourite.value = false;
+  //     } else {
+  //       isFavourite.value = true;
+  //       favoriteItems.value.push(businessItem.value);
+  //     }
+
+  //     LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
+
+  //     eventBus.emit("favoriteUpdated", {
+  //       itemId: businessItem.value.businessId,
+  //       isFavorite: isFavourite.value,
+  //       moduleType: "business"
+  //     });
+  //   }
+  // };
   const onBtnFavClick = () => {
-    const itemIdToMatch = businessItem.value.businessId;
+    const localFavItem = favoriteItems.value;
+    if (isFavourite.value) {
+      const itemIndex = localFavItem.findIndex(
+        (item: any) => item.businessId === businessItem.value.businessId
+      );
 
-    if (itemIdToMatch) {
-      const isCurrentlyFavourite = isFavourite.value;
-
-      if (isCurrentlyFavourite) {
-        const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.businessId === itemIdToMatch
-        );
-
-        if (itemIndex !== -1) {
-          favoriteItems.value.splice(itemIndex, 1);
-        }
-
-        isFavourite.value = false;
-      } else {
-        isFavourite.value = true;
-        favoriteItems.value.push(businessItem.value);
+      if (itemIndex !== -1) {
+        localFavItem.splice(itemIndex, 1);
+        favoriteItems.value = localFavItem;
       }
-
-      LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-
-      eventBus.emit("favoriteUpdated", {
-        itemId: businessItem.value.businessId,
-        isFavorite: isFavourite.value,
-        moduleType: "business"
-      });
+    } else {
+      localFavItem.push(businessItem.value);
+      favoriteItems.value = localFavItem;
     }
+    eventBus.emit("favoriteUpdated", {
+      itemId: businessItem.value.businessId,
+      isFavorite: isFavourite.value,
+      moduleType: "business"
+    });
   };
 </script>

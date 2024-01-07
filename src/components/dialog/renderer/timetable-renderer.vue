@@ -33,7 +33,14 @@
             class="q-mr-sm"
             @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
-          <q-btn color="primary" text-color="white" icon="favorite" size="sm" round />
+          <q-btn
+            color="primary"
+            text-color="white"
+            icon="favorite"
+            size="sm"
+            round
+            @click="onBtnFavClick"
+          />
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -53,8 +60,9 @@
 </template>
 
 <script setup lang="ts">
+  import { LocalStorage } from "quasar";
   import { Site } from "@/interfaces/models/entities/site";
-  import { BLOB_URL } from "@/constants";
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
   import { TabItem } from "@/interfaces/tab-item";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
@@ -66,8 +74,9 @@
   });
 
   const siteItem = computed(() => props.item as Site);
+  const directoryItem = ref<Site>({} as Site);
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref(siteItem.value.subtitle1);
@@ -86,11 +95,37 @@
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
   };
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+
+  const isFavourite = computed(() => {
+    const favItem = favoriteItems.value;
+    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
+  });
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
       const phoneURL = `tel:${siteItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
+  };
+
+  const onBtnFavClick = () => {
+    const localFavItem = favoriteItems.value;
+    if (isFavourite.value) {
+      const itemIndex = localFavItem.findIndex(
+        (item: any) => item.siteId === siteItem.value.siteId
+      );
+
+      if (itemIndex !== -1) {
+        localFavItem.splice(itemIndex, 1);
+        favoriteItems.value = localFavItem;
+      }
+    } else {
+      localFavItem.push(siteItem.value);
+      favoriteItems.value = localFavItem;
+    }
+    eventBus.emit("favoriteUpdated", {
+      siteId: directoryItem.value.siteId || null
+    });
   };
 </script>

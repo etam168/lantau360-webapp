@@ -47,8 +47,6 @@
             round
             @click="onBtnFavClick"
           />
-          {{ isFavourite }}
-          {{ favoriteItems.length }}
         </q-item-label>
       </q-item-section>
     </q-item>

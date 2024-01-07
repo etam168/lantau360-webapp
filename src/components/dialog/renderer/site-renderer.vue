@@ -41,6 +41,7 @@
             icon="favorite"
             size="sm"
             round
+            @click="onBtnFavClick"
           />
         </q-item-label>
       </q-item-section>
@@ -58,8 +59,8 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Site } from "@/interfaces/models/entities/site";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
-
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const directoryItem = ref<Site>({} as Site);
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
@@ -73,23 +74,11 @@
     return translate(props?.item.description, props?.item.meta, "description");
   });
 
-  // Check if  siteId exists in favoriteItems on component mount
-  onMounted(() => {
-    const itemIdToMatch = siteItem.value.siteId;
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
 
-    if (itemIdToMatch) {
-      const isItemFavorited = favoriteItems.value.some(
-        (item: Site) => item.siteId === itemIdToMatch
-      );
-
-      isFavourite.value = isItemFavorited;
-    }
-  });
-
-  const isFavourite = ref<boolean>(false);
-
-  const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+  const isFavourite = computed(() => {
+    const favItem = favoriteItems.value;
+    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
   const navigateToPhone = () => {
@@ -99,35 +88,23 @@
     }
   };
 
-  // function onBtnFavClick() {
-  //   const itemIdToMatch = siteItem.value.siteId;
+  const onBtnFavClick = () => {
+    const localFavItem = favoriteItems.value;
+    if (isFavourite.value) {
+      const itemIndex = localFavItem.findIndex(
+        (item: any) => item.siteId === siteItem.value.siteId
+      );
 
-  //   if (itemIdToMatch) {
-  //     const isCurrentlyFavourite = isFavourite.value;
-
-  //     if (isCurrentlyFavourite) {
-  //       const itemIndex = favoriteItems.value.findIndex(
-  //         (item: any) => item.siteId === itemIdToMatch
-  //       );
-
-  //       if (itemIndex !== -1) {
-  //         favoriteItems.value.splice(itemIndex, 1);
-  //       }
-
-  //       isFavourite.value = false;
-  //     } else {
-  //       siteItem.value.directoryName = directoryItem.value.directoryName;
-  //       isFavourite.value = true;
-  //       favoriteItems.value.push(siteItem.value);
-  //     }
-
-  //     const storageKey = STORAGE_KEYS.SAVED.SITE;
-  //     LocalStorage.set(storageKey, favoriteItems.value);
-
-  //     emits("favorite", {
-  //       siteId: siteItem.value.siteId,
-  //       isFavorite: isFavourite.value
-  //     });
-  //   }
-  // }
+      if (itemIndex !== -1) {
+        localFavItem.splice(itemIndex, 1);
+        favoriteItems.value = localFavItem;
+      }
+    } else {
+      localFavItem.push(siteItem.value);
+      favoriteItems.value = localFavItem;
+    }
+    eventBus.emit("favoriteUpdated", {
+      siteId: directoryItem.value.siteId || null
+    });
+  };
 </script>
