@@ -29,7 +29,8 @@
   import { Weather } from "@/interfaces/models/entities/weather";
 
   // Custom Components
-  import WeatherSection from "./section/weather-section.vue";
+  const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
+  //import WeatherSection from "./section/weather-section.vue";
 
   const { isNthBitSet, eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });

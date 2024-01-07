@@ -48,9 +48,6 @@
 </template>
 
 <script setup lang="ts">
-  // // 3rd Party Import
-  // import { useDialogPluginComponent, useQuasar } from "quasar";
-
   //Custom Components
   import Login from "./login.vue";
   import Register from "./register-tab.vue";

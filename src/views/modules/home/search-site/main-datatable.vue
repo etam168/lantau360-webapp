@@ -21,9 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
-  import { useQuasar } from "quasar";
-
   // .ts file
   import { Site } from "@/interfaces/models/entities/site";
   import useDataTable from "@/composable/use-data-table";
@@ -48,7 +45,6 @@
     key
   );
 
-  //const router = useRouter();
   const $q = useQuasar();
 
   function updatePagination(val: any) {
@@ -77,7 +73,6 @@
       onRefresh();
     });
 
-    //const { query } = router.currentRoute.value;
     // Check if the route query is an object and contains the key searchKeyword
     if (props.query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value
@@ -87,8 +82,3 @@
     loadData({ pagination: pagination.value });
   });
 </script>
-<style scoped>
-  .button-margin {
-    margin-right: 40px;
-  }
-</style>

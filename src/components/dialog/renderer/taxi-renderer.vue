@@ -2,11 +2,15 @@
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <template
-        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+        v-if="
+          siteItem.subtitle1 !== null &&
+          siteItem.subtitle1 !== undefined &&
+          siteItem.subtitle1 !== ''
+        "
       >
         <q-item-section top>
           <q-item-label class="text-caption text-weight-light"
-            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+            >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
           </q-item-label>
         </q-item-section>
       </template>
@@ -16,9 +20,9 @@
         <q-item-label>
           <q-btn
             v-if="
-              item.contactPhone !== null &&
-              item.contactPhone !== undefined &&
-              item.contactPhone !== ''
+              siteItem.contactPhone !== null &&
+              siteItem.contactPhone !== undefined &&
+              siteItem.contactPhone !== ''
             "
             color="primary"
             text-color="white"
@@ -31,9 +35,9 @@
 
           <q-btn
             v-if="
-              item.contactWhatsApp !== null &&
-              item.contactWhatsApp !== undefined &&
-              item.contactWhatsApp !== ''
+              siteItem.contactWhatsApp !== null &&
+              siteItem.contactWhatsApp !== undefined &&
+              siteItem.contactWhatsApp !== ''
             "
             color="primary"
             text-color="white"
@@ -41,7 +45,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
+            @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
           <q-btn
             color="primary"
@@ -63,7 +67,10 @@
 
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
+  //import { useArraySome } from '@vueuse/core'
+
   import { STORAGE_KEYS } from "@/constants";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Site } from "@/interfaces/models/entities/site";
 
   const directoryItem = ref<Site>({} as Site);
@@ -71,23 +78,25 @@
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Site>,
+      type: Object as PropType<CategoryTypes>,
       required: true
     }
   });
 
+  const siteItem = computed(() => props.item as Site);
   const isFavourite = ref<boolean>(false);
 
   const translatedContent: any = computed(() => {
-    return translate(props.item.description, props.item.meta, "description");
+    return translate(siteItem.value.description, siteItem.value.meta, "description");
   });
+
   const favoriteItems = computed(() => {
     return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
   });
 
   const navigateToPhone = () => {
-    if (props?.item.contactPhone) {
-      const phoneURL = `tel:${props?.item.contactPhone}`;
+    if (siteItem.value.contactPhone) {
+      const phoneURL = `tel:${siteItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
   };
@@ -110,7 +119,7 @@
         isFavourite.value = false;
       } else {
         isFavourite.value = true;
-        favoriteItems.value.push(props.item);
+        favoriteItems.value.push(siteItem.value);
       }
 
       const storageKey = STORAGE_KEYS.SAVED.SITE;

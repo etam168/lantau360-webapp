@@ -47,7 +47,6 @@
   // 3rd Party Import
   import { Form } from "vee-validate";
   import { LocalStorage, useQuasar } from "quasar";
-  // import axios from "axios";
   import * as yup from "yup";
 
   import { useUserStore } from "@/stores/user";
@@ -92,7 +91,6 @@
         type: "positive"
       });
     } catch (e: any) {
-      debugger;
       $q.notify({
         message: e.message,
         type: "negative"

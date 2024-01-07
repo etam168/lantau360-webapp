@@ -81,6 +81,7 @@
                     />
                   </q-item-section>
                 </q-item>
+
                 <app-button
                   class="full-width"
                   :label="$t('more.profileSetting.save')"
@@ -112,13 +113,11 @@
       required: true
     }
   });
-  const { eventBus } = useUtilities();
-
-  const { handleUpdateMemberAvatar } = useContentInput();
 
   const userStore = useUserStore();
+  const { eventBus } = useUtilities();
+  const { handleUpdateMemberAvatar } = useContentInput();
   const { t } = useI18n({ useScope: "global" });
-
   const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
 
   const imageRef = ref();
@@ -175,23 +174,9 @@
   }
 
   const fields = [
-    {
-      name: "email",
-      maxlength: 20,
-      label: "auth.register.email",
-      disable: true
-    },
-    {
-      name: "firstName",
-      label: "auth.register.firstName"
-    },
-    {
-      name: "lastName",
-      label: "auth.register.lastName"
-    },
-    {
-      name: "phone",
-      label: "auth.register.phone"
-    }
+    { name: "email", maxlength: 20, label: "auth.register.email", disable: true },
+    { name: "firstName", label: "auth.register.firstName" },
+    { name: "lastName", label: "auth.register.lastName" },
+    { name: "phone", label: "auth.register.phone" }
   ];
 </script>

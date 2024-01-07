@@ -21,9 +21,6 @@
 </template>
 
 <script setup lang="ts">
-  // 3rd Party Import
-  import { useQuasar } from "quasar";
-
   // .ts file
   import { Business } from "@/interfaces/models/entities/business";
 

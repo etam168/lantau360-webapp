@@ -35,7 +35,6 @@
   const $q = useQuasar();
 
   const handleDialog = async (item: DirectoryTypes) => {
-    debugger;
     try {
       const directoryListUrl = (() => {
         switch (true) {

@@ -25,10 +25,10 @@
             :directory="directory as Directory"
             @favorite="handleFavUpdate"
           />
-          <business-content v-else-if="renderer === RENDERER.BUSINESS" :item="item as Business" />
-          <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item as Site" />
+          <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
+          <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
           <posting-content v-else-if="renderer === RENDERER.POSTING" :item="item as Posting" />
-          <taxi-content v-else-if="renderer === RENDERER.TAXI" :item="item as Site" />
+          <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -42,22 +42,21 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  import { Business } from "@/interfaces/models/entities/business";
-  import { Posting } from "@/interfaces/models/entities/posting";
   import { Site } from "@/interfaces/models/entities/site";
+  import { Directory } from "@/interfaces/models/entities/directory";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
   // .ts files
   import { URL, RENDERER, TEMPLATE } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
-  import BusinessContent from "@/components/dialog/renderer/business-content.vue";
+  import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
   import PostingContent from "@/components/dialog/renderer/posting-content.vue";
   import SiteContent from "@/components/dialog/renderer/site-content.vue";
-  import TaxiContent from "@/components/dialog/renderer/taxi-content.vue";
+  import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import { Directory } from "@/interfaces/models/entities/directory";
 
   type DirectoryTypes = Directory | CommunityDirectory;
 

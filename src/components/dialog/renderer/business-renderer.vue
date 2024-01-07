@@ -2,11 +2,15 @@
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <template
-        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+        v-if="
+          businessItem.subtitle1 !== null &&
+          businessItem.subtitle1 !== undefined &&
+          businessItem.subtitle1 !== ''
+        "
       >
         <q-item-section top>
           <q-item-label class="text-caption text-weight-light"
-            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+            >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
           </q-item-label>
         </q-item-section>
       </template>
@@ -17,9 +21,9 @@
         <q-item-label>
           <q-btn
             v-if="
-              item.contactPhone !== null &&
-              item.contactPhone !== undefined &&
-              item.contactPhone !== ''
+              businessItem.contactPhone !== null &&
+              businessItem.contactPhone !== undefined &&
+              businessItem.contactPhone !== ''
             "
             color="primary"
             text-color="white"
@@ -31,9 +35,9 @@
           />
           <q-btn
             v-if="
-              item.contactWhatsApp !== null &&
-              item.contactWhatsApp !== undefined &&
-              item.contactWhatsApp !== ''
+              businessItem.contactWhatsApp !== null &&
+              businessItem.contactWhatsApp !== undefined &&
+              businessItem.contactWhatsApp !== ''
             "
             color="primary"
             text-color="white"
@@ -41,7 +45,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
+            @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
           />
           <q-btn
             color="primary"
@@ -61,13 +65,19 @@
           <span
             class="text-subtitle1"
             :style="{
-              color: isCurrentTimeInRange(item.openTime, item.closeTime) ? '#478d45' : 'red'
+              color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                ? '#478d45'
+                : 'red'
             }"
           >
-            {{ isCurrentTimeInRange(item.openTime, item.closeTime) ? "Open now" : "Close now" }}
+            {{
+              isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                ? "Open now"
+                : "Close now"
+            }}
           </span>
           <q-icon size="0.9em" name="fiber_manual_record" />
-          {{ formatTime(item.openTime) }} - {{ formatTime(item.closeTime) }}
+          {{ formatTime(businessItem.openTime) }} - {{ formatTime(businessItem.closeTime) }}
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -82,15 +92,19 @@
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
   import { Business } from "@/interfaces/models/entities/business";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Business>,
+      type: Object as PropType<CategoryTypes>,
+
       required: true
     }
   });
+
+  const businessItem = computed(() => props.item as Business);
 
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
@@ -101,7 +115,7 @@
   };
 
   const translatedContent: any = computed(() => {
-    return translate(props.item.description, props.item.meta, "description");
+    return translate(businessItem.value.description, businessItem.value.meta, "description");
   });
 
   const isCurrentTimeInRange = (
@@ -135,26 +149,27 @@
   });
 
   const navigateToPhone = () => {
-    if (props?.item.contactPhone) {
-      const phoneURL = `tel:${props?.item.contactPhone}`;
+    if (businessItem.value.contactPhone) {
+      const phoneURL = `tel:${businessItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
   };
 
   const shouldShowItem = computed(() => {
     return (
-      props?.item.openTime !== null &&
-      props?.item.openTime !== undefined &&
-      props?.item.openTime !== "" &&
-      props?.item.closeTime !== null &&
-      props?.item.closeTime !== undefined &&
-      props?.item.closeTime !== ""
+      businessItem.value.openTime !== null &&
+      businessItem.value.openTime !== undefined &&
+      businessItem.value.openTime !== "" &&
+      businessItem.value.closeTime !== null &&
+      businessItem.value.closeTime !== undefined &&
+      businessItem.value.closeTime !== ""
     );
   });
 
   const isFavourite = ref<boolean>(false);
+
   const onBtnFavClick = () => {
-    const itemIdToMatch = props.item.businessId;
+    const itemIdToMatch = businessItem.value.businessId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
@@ -171,13 +186,13 @@
         isFavourite.value = false;
       } else {
         isFavourite.value = true;
-        favoriteItems.value.push(props.item);
+        favoriteItems.value.push(businessItem.value);
       }
 
       LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
 
       eventBus.emit("favoriteUpdated", {
-        itemId: props.item.businessId,
+        itemId: businessItem.value.businessId,
         isFavorite: isFavourite.value,
         moduleType: "business"
       });

@@ -14,9 +14,9 @@
         <q-item-label>
           <q-btn
             v-if="
-              item.contactPhone !== null &&
-              item.contactPhone !== undefined &&
-              item.contactPhone !== ''
+              siteItem.contactPhone !== null &&
+              siteItem.contactPhone !== undefined &&
+              siteItem.contactPhone !== ''
             "
             color="primary"
             text-color="white"
@@ -29,9 +29,9 @@
 
           <q-btn
             v-if="
-              item.contactWhatsApp !== null &&
-              item.contactWhatsApp !== undefined &&
-              item.contactWhatsApp !== ''
+              siteItem.contactWhatsApp !== null &&
+              siteItem.contactWhatsApp !== undefined &&
+              siteItem.contactWhatsApp !== ''
             "
             color="primary"
             text-color="white"
@@ -39,7 +39,7 @@
             size="sm"
             round
             class="q-mr-sm"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
+            @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
           <q-btn color="primary" text-color="white" icon="favorite" size="sm" round />
         </q-item-label>
@@ -47,14 +47,14 @@
     </q-item>
 
     <app-tab-panels v-model="tab">
-      <q-tab-panel :name="item.subtitle1" class="q-pa-none">
+      <q-tab-panel :name="siteItem.subtitle1" class="q-pa-none">
         <q-scroll-area style="height: calc(100vh - 110px)">
-          <q-img :src="computePath(item.imagePath)" />
+          <q-img :src="computePath(siteItem.imagePath)" />
         </q-scroll-area>
       </q-tab-panel>
 
-      <q-tab-panel :name="item.subtitle2" class="q-pa-none"
-        ><q-img :src="computePath(item.bannerPath)" />
+      <q-tab-panel :name="siteItem.subtitle2" class="q-pa-none"
+        ><q-img :src="computePath(siteItem.bannerPath)" />
       </q-tab-panel>
     </app-tab-panels>
   </q-card-section>
@@ -64,27 +64,30 @@
   import { Site } from "@/interfaces/models/entities/site";
   import { BLOB_URL } from "@/constants";
   import { TabItem } from "@/interfaces/tab-item";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Site>,
+      type: Object as PropType<CategoryTypes>,
       required: true
     }
   });
 
+  const siteItem = computed(() => props.item as Site);
+
   const { navigateToWhatsApp, translate } = useUtilities();
 
   const setTab = (val: string) => (tab.value = val);
-  const tab = ref(props.item.subtitle1);
+  const tab = ref(siteItem.value.subtitle1);
 
   const tabItems = ref<TabItem[]>([
     {
-      name: props.item.subtitle1,
-      label: translate(props.item.subtitle1, props.item.meta, "subtitle1")
+      name: siteItem.value.subtitle1,
+      label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1")
     },
     {
-      name: props.item.subtitle2,
-      label: translate(props.item.subtitle2, props.item.meta, "subtitle2")
+      name: siteItem.value.subtitle2,
+      label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2")
     }
   ]);
 
@@ -93,8 +96,8 @@
   };
 
   const navigateToPhone = () => {
-    if (props?.item.contactPhone) {
-      const phoneURL = `tel:${props?.item.contactPhone}`;
+    if (siteItem.value.contactPhone) {
+      const phoneURL = `tel:${siteItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
   };
