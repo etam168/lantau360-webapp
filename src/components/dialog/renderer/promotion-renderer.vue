@@ -55,7 +55,7 @@
 </template>
 
 <script setup lang="ts">
-  import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
+  import { STORAGE_KEYS } from "@/constants";
 
   import { LocalStorage } from "quasar";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
@@ -73,7 +73,17 @@
   const promotionItem = computed(() => props.item as BusinessPromotion);
   const isDialogVisible = ref();
 
-  const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
+  const favoriteItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessPromotion[]
+  );
+
+  const isFavourite = computed(() => {
+    const favItem = favoriteItems.value;
+    return useArraySome(
+      favItem,
+      fav => fav.businessPromotionId == promotionItem.value.businessPromotionId
+    ).value;
+  });
 
   const navigateToPhone = () => {
     if (props?.item.contactPhone) {
@@ -82,35 +92,53 @@
     }
   };
 
-  const isFavourite = ref<boolean>(false);
+  // const onBtnFavClick = () => {
+  //   const itemIdToMatch = promotionItem.value.businessPromotionId;
+  //   const isCurrentlyFavourite = isFavourite.value;
+
+  //   if (isCurrentlyFavourite) {
+  //     const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
+  //     if (itemIndex !== -1) {
+  //       favoriteItems.value.splice(itemIndex, 1);
+  //     }
+
+  //     isFavourite.value = false;
+  //   } else {
+  //     const favItem = {
+  //       directoryId: promotionItem.value.businessPromotionId,
+  //       directoryName: promotionItem?.value?.directoryName,
+  //       itemName: promotionItem.value.businessName,
+  //       itemId: itemIdToMatch,
+  //       groupId: DIRECTORY_GROUPS.HOME,
+  //       iconPath: promotionItem.value.iconPath,
+  //       subTitle: promotionItem.value.subtitle1
+  //     };
+
+  //     isFavourite.value = true;
+  //     favoriteItems.value.push(favItem);
+  //   }
+  //   LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+  // };
+
   const onBtnFavClick = () => {
-    const itemIdToMatch = promotionItem.value.businessPromotionId;
-    const isCurrentlyFavourite = isFavourite.value;
+    const localFavItem = favoriteItems.value;
+    if (isFavourite.value) {
+      const itemIndex = localFavItem.findIndex(
+        (item: any) => item.businessPromotionId === promotionItem.value.businessPromotionId
+      );
 
-    if (isCurrentlyFavourite) {
-      const itemIndex = favoriteItems.value.findIndex((item: any) => item.itemId === itemIdToMatch);
       if (itemIndex !== -1) {
-        favoriteItems.value.splice(itemIndex, 1);
+        localFavItem.splice(itemIndex, 1);
+        favoriteItems.value = localFavItem;
       }
-
-      isFavourite.value = false;
     } else {
-      const favItem = {
-        directoryId: promotionItem.value.businessPromotionId,
-        directoryName: promotionItem?.value?.directoryName,
-        itemName: promotionItem.value.businessName,
-        itemId: itemIdToMatch,
-        groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: promotionItem.value.iconPath,
-        subTitle: promotionItem.value.subtitle1
-      };
-
-      isFavourite.value = true;
-      favoriteItems.value.push(favItem);
+      localFavItem.push(promotionItem.value);
+      favoriteItems.value = localFavItem;
     }
-    LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
+    eventBus.emit("favoriteUpdated", {
+      siteId: promotionItem.value.businessPromotionId || null
+    });
   };
-
   onMounted(() => {
     eventBus.on("BusinessPromotionDialog", () => {
       isDialogVisible.value = false;
