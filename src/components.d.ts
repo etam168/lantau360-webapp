@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppBulletinItemList: typeof import('./components/global/app-bulletin-item-list.vue')['default']
     AppButton: typeof import('./components/global/app-button.vue')['default']
+    AppButtonRounded: typeof import('./components/global/app-button-rounded.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
     AppCategoryItemList: typeof import('./components/global/app-category-item-list.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
@@ -22,6 +23,7 @@ declare module 'vue' {
     AppTabPanels: typeof import('./components/global/app-tab-panels.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
+    copy: typeof import('./components/global/app-button copy.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']

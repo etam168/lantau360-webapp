@@ -1,58 +1,32 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <template
-        v-if="
-          siteItem.subtitle1 !== null &&
-          siteItem.subtitle1 !== undefined &&
-          siteItem.subtitle1 !== ''
-        "
-      >
-        <q-item-section top>
-          <q-item-label class="text-caption text-weight-light"
-            >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
-          </q-item-label>
-        </q-item-section>
-      </template>
+      <q-item-section top>
+        <q-item-label v-if="siteItem.subtitle1" class="text-caption text-weight-light"
+          >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
+        </q-item-label>
+      </q-item-section>
 
-      <q-item-section v-else></q-item-section>
       <q-item-section side>
-        <q-item-label>
-          <q-btn
-            v-if="siteItem.contactPhone"
-            color="primary"
-            text-color="white"
-            icon="phone"
-            size="sm"
-            round
-            class="q-mr-sm"
-            @click="navigateToPhone"
-          />
+        <div class="q-gutter-md">
+          <app-button-rounded v-if="siteItem.contactPhone" icon="phone" @click="navigateToPhone" />
 
-          <q-btn
+          <app-button-rounded
             v-if="siteItem.contactWhatsApp"
-            color="primary"
-            text-color="white"
             icon="fab fa-whatsapp"
-            size="sm"
-            round
-            class="q-mr-sm"
             @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
-          <q-btn
-            color="primary"
+          <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
             icon="favorite"
-            size="sm"
-            round
             @click="onBtnFavClick"
           />
-        </q-item-label>
+        </div>
       </q-item-section>
     </q-item>
 
     <q-item>
-      <app-text-editor v-model="translatedContent" />
+      <app-text-editor style="width: 100%" v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>
@@ -63,8 +37,8 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Site } from "@/interfaces/models/entities/site";
 
-  const directoryItem = ref<Site>({} as Site);
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const directoryItem = ref<Site>({} as Site);
 
   const props = defineProps({
     item: {
@@ -108,6 +82,8 @@
       localFavItem.push(siteItem.value);
       favoriteItems.value = localFavItem;
     }
+    LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
+
     eventBus.emit("favoriteUpdated", {
       siteId: directoryItem.value.siteId || null
     });

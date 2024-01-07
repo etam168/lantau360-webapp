@@ -10,17 +10,12 @@
       <q-item-section side>
         <div class="q-gutter-md">
           <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
-
           <app-button-rounded
             v-if="item.contactWhatsApp"
             icon="fab fa-whatsapp"
             @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
-          <app-button-rounded
-            :text-color="isFavourite ? 'red' : 'white'"
-            icon="favorite"
-            @click="onBtnFavClick"
-          />
+          <app-button-rounded :text-color="isFavourite ? 'red' : 'white'" icon="favorite" />
         </div>
       </q-item-section>
     </q-item>
@@ -37,8 +32,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Site } from "@/interfaces/models/entities/site";
 
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
-  const directoryItem = ref<Site>({} as Site);
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -50,41 +44,32 @@
   const siteItem = computed(() => props?.item as Site);
 
   const translatedContent: any = computed(() => {
-    return translate(siteItem.value.description, siteItem.value.meta, "description");
+    return translate(props?.item.description, props?.item.meta, "description");
   });
 
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+  // Check if  siteId exists in favoriteItems on component mount
+  onMounted(() => {
+    const itemIdToMatch = siteItem.value.siteId;
 
-  const isFavourite = computed(() => {
-    const favItem = favoriteItems.value;
-    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
+    if (itemIdToMatch) {
+      const isItemFavorited = favoriteItems.value.some(
+        (item: Site) => item.siteId === itemIdToMatch
+      );
+
+      isFavourite.value = isItemFavorited;
+    }
+  });
+
+  const isFavourite = ref<boolean>(false);
+
+  const favoriteItems = computed(() => {
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
   });
 
   const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
+    if (props?.item.contactPhone) {
+      const phoneURL = `tel:${props?.item.contactPhone}`;
       window.location.href = phoneURL;
     }
-  };
-
-  const onBtnFavClick = () => {
-    const localFavItem = favoriteItems.value;
-    if (isFavourite.value) {
-      const itemIndex = localFavItem.findIndex(
-        (item: any) => item.siteId === siteItem.value.siteId
-      );
-
-      if (itemIndex !== -1) {
-        localFavItem.splice(itemIndex, 1);
-        favoriteItems.value = localFavItem;
-      }
-    } else {
-      localFavItem.push(siteItem.value);
-      favoriteItems.value = localFavItem;
-    }
-    LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", {
-      siteId: directoryItem.value.siteId || null
-    });
   };
 </script>

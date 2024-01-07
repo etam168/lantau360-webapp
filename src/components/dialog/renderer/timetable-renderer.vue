@@ -1,7 +1,7 @@
 <template>
-  <q-card-section class="q-pa-none">
-    <q-item class="q-py-none">
-      <q-item-section>
+  <q-list padding class="q-mx-sm q-pa-none">
+    <q-item>
+      <q-item-section top>
         <app-tab-select
           :tab-items="tabItems"
           :current-tab="tab"
@@ -11,37 +11,16 @@
       </q-item-section>
 
       <q-item-section side>
-        <q-item-label>
-          <q-btn
-            v-if="siteItem.contactPhone"
-            color="primary"
-            text-color="white"
-            icon="phone"
-            size="sm"
-            round
-            class="q-mr-sm"
-            @click="navigateToPhone"
-          />
+        <div class="q-gutter-md">
+          <app-button-rounded v-if="siteItem.contactPhone" icon="phone" @click="navigateToPhone" />
 
-          <q-btn
+          <app-button-rounded
             v-if="siteItem.contactWhatsApp"
-            color="primary"
-            text-color="white"
             icon="fab fa-whatsapp"
-            size="sm"
-            round
-            class="q-mr-sm"
             @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
-          <q-btn
-            color="primary"
-            text-color="white"
-            icon="favorite"
-            size="sm"
-            round
-            @click="onBtnFavClick"
-          />
-        </q-item-label>
+          <app-button-rounded icon="favorite" @click="onBtnFavClick" />
+        </div>
       </q-item-section>
     </q-item>
 
@@ -56,7 +35,7 @@
         ><q-img :src="computePath(siteItem.bannerPath)" />
       </q-tab-panel>
     </app-tab-panels>
-  </q-card-section>
+  </q-list>
 </template>
 
 <script setup lang="ts">
@@ -124,6 +103,7 @@
       localFavItem.push(siteItem.value);
       favoriteItems.value = localFavItem;
     }
+    LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
     eventBus.emit("favoriteUpdated", {
       siteId: directoryItem.value.siteId || null
     });
