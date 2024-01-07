@@ -1,16 +1,17 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section>
-        <q-btn
-          color="primary"
-          text-color="white"
-          icon="location_on"
-          size="sm"
-          round
-          @click="temp"
-        />
-      </q-item-section>
+      <template
+        v-if="item.subtitle1 !== null && item.subtitle1 !== undefined && item.subtitle1 !== ''"
+      >
+        <q-item-section top>
+          <q-item-label class="text-caption text-weight-light"
+            >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          </q-item-label>
+        </q-item-section>
+      </template>
+
+      <q-item-section v-else></q-item-section>
 
       <q-item-section side>
         <q-item-label>
@@ -28,7 +29,6 @@
             class="q-mr-sm"
             @click="navigateToPhone"
           />
-
           <q-btn
             v-if="
               item.contactWhatsApp !== null &&
@@ -37,50 +37,39 @@
             "
             color="primary"
             text-color="white"
-            icon="phone"
+            icon="fab fa-whatsapp"
             size="sm"
             round
-            class="q-mr-md"
+            class="q-mr-sm"
+            @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
 
           <q-btn
             color="primary"
             :text-color="isFavourite ? 'red' : 'white'"
             icon="favorite"
-            size="sm"
             round
-            @click="onBtnFavClick()"
+            size="sm"
+            @click="onBtnFavClick"
           />
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-separator class="q-mt-sm" />
-
-    <q-item>
-      <q-item-section>
-        <q-item-label class="q-mt-sm"
-          >{{ translate(voucherItem.subtitle1, voucherItem.meta, "subtitle1") }}
-        </q-item-label>
-        <q-item-label class="q-mt-sm" caption>{{ $t("business.subtitle1") }} </q-item-label>
-      </q-item-section>
-    </q-item>
-    <q-separator class="q-mt-sm" />
 
     <q-item>
       <app-text-editor v-model="translatedContent" />
     </q-item>
-    <q-separator class="q-mt-sm" />
   </q-list>
 </template>
 
 <script setup lang="ts">
   import { DIRECTORY_GROUPS, STORAGE_KEYS } from "@/constants";
-  import { LocalStorage } from "quasar";
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
 
+  import { LocalStorage } from "quasar";
+  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const { translate, eventBus } = useUtilities();
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -89,17 +78,21 @@
     }
   });
 
-  const voucherItem = computed(() => {
-    return props.item as BusinessVoucher;
-  });
-
+  const promotionItem = computed(() => props.item as BusinessPromotion);
   const isDialogVisible = ref();
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.FAVOURITES) || []);
 
+  const navigateToPhone = () => {
+    if (props?.item.contactPhone) {
+      const phoneURL = `tel:${props?.item.contactPhone}`;
+      window.location.href = phoneURL;
+    }
+  };
+
   const isFavourite = ref<boolean>(false);
   const onBtnFavClick = () => {
-    const itemIdToMatch = voucherItem.value.businessVoucherId;
+    const itemIdToMatch = promotionItem.value.businessPromotionId;
     const isCurrentlyFavourite = isFavourite.value;
 
     if (isCurrentlyFavourite) {
@@ -111,13 +104,13 @@
       isFavourite.value = false;
     } else {
       const favItem = {
-        directoryId: voucherItem.value.businessVoucherId,
-        directoryName: voucherItem?.value?.directoryName,
-        itemName: voucherItem.value.businessName,
+        directoryId: promotionItem.value.businessPromotionId,
+        directoryName: promotionItem?.value?.directoryName,
+        itemName: promotionItem.value.businessName,
         itemId: itemIdToMatch,
         groupId: DIRECTORY_GROUPS.HOME,
-        iconPath: voucherItem.value.iconPath,
-        subTitle: voucherItem.value.subtitle1
+        iconPath: promotionItem.value.iconPath,
+        subTitle: promotionItem.value.subtitle1
       };
 
       isFavourite.value = true;
@@ -126,16 +119,11 @@
     LocalStorage.set(STORAGE_KEYS.FAVOURITES, favoriteItems.value);
   };
 
-  const temp = () => {
-    alert(JSON.stringify(favoriteItems.value));
-  };
-
   onMounted(() => {
-    eventBus.on("BusinessVoucherDialog", () => {
+    eventBus.on("BusinessPromotionDialog", () => {
       isDialogVisible.value = false;
     });
   });
-
   const translatedContent: any = computed(() => {
     return props.item.description;
   });

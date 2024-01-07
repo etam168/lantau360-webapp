@@ -19,15 +19,10 @@
             <gallery-carousel-image :gallery-images="galleryItems" />
           </q-item>
 
-          <site-content
-            v-if="renderer === RENDERER.SITE"
-            :item="item as Site"
-            :directory="directory as Directory"
-            @favorite="handleFavUpdate"
-          />
+          <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
           <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
-          <timetable-content v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
-          <posting-content v-else-if="renderer === RENDERER.POSTING" :item="item as Posting" />
+          <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
+          <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
         </q-page>
       </q-page-container>
@@ -36,15 +31,12 @@
 </template>
 
 <script setup lang="ts">
-  import axios, { AxiosError } from "axios";
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  import { Site } from "@/interfaces/models/entities/site";
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { Posting } from "@/interfaces/models/entities/posting";
 
   // .ts files
   import { URL, RENDERER, TEMPLATE } from "@/constants";
@@ -52,10 +44,10 @@
 
   // Custom Components
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
-  import PostingContent from "@/components/dialog/renderer/posting-content.vue";
-  import SiteContent from "@/components/dialog/renderer/site-content.vue";
+  import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
+  import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
-  import TimetableContent from "@/components/dialog/renderer/timetable-content.vue";
+  import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   type DirectoryTypes = Directory | CommunityDirectory;
@@ -129,13 +121,6 @@
       isDialogVisible.value = false;
     });
   });
-
-  function handleFavUpdate(data: any) {
-    eventBus.emit("favoriteUpdated", {
-      siteId: data.siteId,
-      isFavorite: data.isFavorite
-    });
-  }
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;

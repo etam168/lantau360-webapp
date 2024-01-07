@@ -20,9 +20,9 @@
             :gallery-images="galleryItems"
             :address="translate(item.subtitle1, item.meta, 'subtitle1')"
           />
-          <advertisement-content v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
-          <promotion-content v-else-if="renderer === RENDERER.PROMOTION" :item="item" />
-          <voucher-content v-else-if="renderer === RENDERER.VOUCHER" :item="item" />
+          <advertisement-renderer v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
+          <promotion-renderer v-else-if="renderer === RENDERER.PROMOTION" :item="item" />
+          <voucher-renderer v-else-if="renderer === RENDERER.VOUCHER" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -41,9 +41,9 @@
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
-  import AdvertisementContent from "@/components/dialog/renderer/advertisement-content.vue";
-  import VoucherContent from "@/components/dialog/renderer/voucher-content.vue";
-  import PromotionContent from "@/components/dialog/renderer/promotion-content.vue";
+  import AdvertisementRenderer from "@/components/dialog/renderer/advertisement-renderer.vue";
+  import VoucherRenderer from "@/components/dialog/renderer/voucher-renderer.vue";
+  import PromotionRenderer from "@/components/dialog/renderer/promotion-renderer.vue";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const props = defineProps({

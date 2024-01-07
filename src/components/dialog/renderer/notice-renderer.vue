@@ -20,10 +20,9 @@
     }
   });
 
+  const noticeItem = computed(() => props.item as CommunityNotice);
+
   const translatedContent: any = computed(() => {
     return translate(noticeItem.value.description, noticeItem.value.meta, "description");
-  });
-  const noticeItem = computed(() => {
-    return props.item as CommunityNotice;
   });
 </script>

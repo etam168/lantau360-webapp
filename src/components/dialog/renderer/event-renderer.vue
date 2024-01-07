@@ -19,10 +19,10 @@
       required: true
     }
   });
+
+  const eventItem = computed(() => props.item as CommunityEvent);
+
   const translatedContent: any = computed(() => {
     return translate(eventItem.value.description, eventItem.value.meta, "description");
-  });
-  const eventItem = computed(() => {
-    return props.item as CommunityEvent;
   });
 </script>

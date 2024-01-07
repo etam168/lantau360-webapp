@@ -12,6 +12,7 @@
       </template>
 
       <q-item-section v-else></q-item-section>
+
       <q-item-section side>
         <q-item-label>
           <q-btn
@@ -48,7 +49,7 @@
             icon="favorite"
             size="sm"
             round
-            @click="onBtnFavClick"
+            @click="onBtnFavClick()"
           />
         </q-item-label>
       </q-item-section>
@@ -63,26 +64,41 @@
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { Site } from "@/interfaces/models/entities/site";
 
-  const directoryItem = ref<Posting>({} as Posting);
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Posting>,
+      type: Object as PropType<CategoryTypes>,
       required: true
+    }
+  });
+
+  const siteItem = computed(() => props?.item as Site);
+
+  const translatedContent: any = computed(() => {
+    return translate(props?.item.description, props?.item.meta, "description");
+  });
+
+  // Check if  siteId exists in favoriteItems on component mount
+  onMounted(() => {
+    const itemIdToMatch = siteItem.value.siteId;
+
+    if (itemIdToMatch) {
+      const isItemFavorited = favoriteItems.value.some(
+        (item: Site) => item.siteId === itemIdToMatch
+      );
+
+      isFavourite.value = isItemFavorited;
     }
   });
 
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Posting[];
-  });
-
-  const translatedContent: any = computed(() => {
-    return translate(directoryItem.value.description, directoryItem.value.meta, "description");
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
   });
 
   const navigateToPhone = () => {
@@ -92,30 +108,35 @@
     }
   };
 
-  const onBtnFavClick = () => {
-    const itemIdToMatch = directoryItem.value.postingId;
+  // function onBtnFavClick() {
+  //   const itemIdToMatch = siteItem.value.siteId;
 
-    if (itemIdToMatch) {
-      const isCurrentlyFavourite = isFavourite.value;
+  //   if (itemIdToMatch) {
+  //     const isCurrentlyFavourite = isFavourite.value;
 
-      if (isCurrentlyFavourite) {
-        const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.postingId === itemIdToMatch
-        );
+  //     if (isCurrentlyFavourite) {
+  //       const itemIndex = favoriteItems.value.findIndex(
+  //         (item: any) => item.siteId === itemIdToMatch
+  //       );
 
-        if (itemIndex !== -1) {
-          favoriteItems.value.splice(itemIndex, 1);
-        }
+  //       if (itemIndex !== -1) {
+  //         favoriteItems.value.splice(itemIndex, 1);
+  //       }
 
-        isFavourite.value = false;
-      } else {
-        isFavourite.value = true;
-        favoriteItems.value.push(props.item);
-      }
+  //       isFavourite.value = false;
+  //     } else {
+  //       siteItem.value.directoryName = directoryItem.value.directoryName;
+  //       isFavourite.value = true;
+  //       favoriteItems.value.push(siteItem.value);
+  //     }
 
-      eventBus.emit("favoriteUpdated", {
-        siteId: directoryItem.value.postingId || null
-      });
-    }
-  };
+  //     const storageKey = STORAGE_KEYS.SAVED.SITE;
+  //     LocalStorage.set(storageKey, favoriteItems.value);
+
+  //     emits("favorite", {
+  //       siteId: siteItem.value.siteId,
+  //       isFavorite: isFavourite.value
+  //     });
+  //   }
+  // }
 </script>
