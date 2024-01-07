@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppBulletinItemList: typeof import('./components/global/app-bulletin-item-list.vue')['default']
     AppButton: typeof import('./components/global/app-button.vue')['default']
+    AppButtonLocalization: typeof import('./components/global/app-button-localization.vue')['default']
     AppButtonRounded: typeof import('./components/global/app-button-rounded.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
     AppCategoryItemList: typeof import('./components/global/app-category-item-list.vue')['default']
@@ -32,6 +33,7 @@ declare module 'vue' {
     VeeInput: typeof import('./components/global/vee-input.vue')['default']
     VeeInputPassword: typeof import('./components/global/vee-input-password.vue')['default']
     VeeInputWhatsapp: typeof import('./components/global/vee-input-whatsapp.vue')['default']
+    VeeQTelInput: typeof import('./components/global/vee-q-tel-input.vue')['default']
     VeeSelectWithId: typeof import('./components/global/vee-select-with-id.vue')['default']
     VeeTelInput: typeof import('./components/global/vee-tel-input.vue')['default']
     VeeToggle: typeof import('./components/global/vee-toggle.vue')['default']

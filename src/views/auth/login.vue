@@ -7,7 +7,7 @@
     @submit="onSubmit"
     v-slot="{ meta, values }"
   >
-    <q-card-section>
+    <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.login.userName')"
         icon="mdi-account"
@@ -22,12 +22,6 @@
         >Please check your mails, If you havn't received an email then please contact the
         administrator</q-item-label
       >
-      <q-card-actions class="q-px-none q-py-none">
-        <q-space />
-        <a href="#" @click="handleForgotPassword" class="forgot-password-link">
-          {{ $t("auth.login.forgotPassword") }}
-        </a>
-      </q-card-actions>
 
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -36,10 +30,18 @@
           class="full-width"
           color="primary"
           type="submit"
-          size="lg"
+          size="md"
         />
       </q-card-actions>
     </q-card-section>
+
+    <q-card-actions class="q-px-md q-py-none bg-secondary">
+      <a href="#" @click="handleForgotPassword" class="forgot-password-link">
+        {{ $t("auth.login.forgotPassword") }}
+      </a>
+      <q-space />
+      <app-button-localization dense color="dark" />
+    </q-card-actions>
   </Form>
 </template>
 

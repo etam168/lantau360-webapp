@@ -23,9 +23,9 @@
             />
           </q-item>
 
-          <event-content v-if="renderer === RENDERER.EVENT" :item="item" />
-          <news-content v-else-if="renderer === RENDERER.NEWS" :item="item" />
-          <notice-content v-else-if="renderer === RENDERER.NOTICE" :item="item" />
+          <event-renderer v-if="renderer === RENDERER.EVENT" :item="item" />
+          <news-renderer v-else-if="renderer === RENDERER.NEWS" :item="item" />
+          <notice-renderer v-else-if="renderer === RENDERER.NOTICE" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -44,9 +44,9 @@
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
-  import EventContent from "@/components/dialog/renderer/event-renderer.vue";
-  import NewsContent from "@/components/dialog/renderer/news-renderer.vue";
-  import NoticeContent from "@/components/dialog/renderer/notice-renderer.vue";
+  import EventRenderer from "@/components/dialog/renderer/event-renderer.vue";
+  import NewsRenderer from "@/components/dialog/renderer/news-renderer.vue";
+  import NoticeRenderer from "@/components/dialog/renderer/notice-renderer.vue";
 
   const props = defineProps({
     item: {

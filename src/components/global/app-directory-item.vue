@@ -30,11 +30,23 @@
     return (item as CommunityDirectory).imagePath !== undefined;
   }
 
-  const directoryIcon = computed(() =>
-    isCommunityDirectory(props.item)
-      ? `${BLOB_URL}/${props.item.imagePath}`
-      : props.item.meta?.["file-path"] || PLACEHOLDER_THUMBNAIL
-  );
+  const directoryIcon = computed(() => {
+    const imagePath = props.item.imagePath;
+    const filePath = props.item.meta?.["file-path"];
+
+    const icon = isCommunityDirectory(props.item)
+      ? imagePath != null
+        ? imagePath.includes("http")
+          ? imagePath
+          : `${BLOB_URL}/${imagePath}`
+        : null
+      : filePath != null
+        ? filePath
+        : null;
+
+    // If icon is not null, return it; otherwise, return the placeholder URL
+    return icon || PLACEHOLDER_THUMBNAIL;
+  });
 
   const { translate } = useUtilities();
 

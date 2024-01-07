@@ -56,11 +56,26 @@
   };
 
   const menuItems = [
-    { name: Menu.LANGUAGE, icon: "ic_language_setting.svg", title: "more.language" },
-    { name: Menu.ABOUT, icon: "ic_inbox.svg", title: "more.aboutUs", contentKey: "About" },
-    { name: Menu.TERMS, icon: "ic_terms_conditions.svg", title: "more.terms", contentKey: "Terms" },
-    { name: Menu.PRIVACY, icon: "ic_privacy.svg", title: "more.privacy", contentKey: "Privacy" },
-    { name: Menu.PROFILE, icon: "ic_privacy.svg", title: "more.profileSetting.title" }
+    { name: Menu.LANGUAGE, icon: "./img/icons/ic_language_setting.svg", title: "more.language" },
+    {
+      name: Menu.ABOUT,
+      icon: "./img/icons/ic_inbox.svg",
+      title: "more.aboutUs",
+      contentKey: "About"
+    },
+    {
+      name: Menu.TERMS,
+      icon: "./img/icons/ic_terms_conditions.svg",
+      title: "more.terms",
+      contentKey: "Terms"
+    },
+    {
+      name: Menu.PRIVACY,
+      icon: "./img/icons/ic_privacy.svg",
+      title: "more.privacy",
+      contentKey: "Privacy"
+    },
+    { name: Menu.PROFILE, icon: "./img/icons/ic_privacy.svg", title: "more.profileSetting.title" }
   ];
 
   async function showContentDialog(item: any) {
@@ -116,8 +131,8 @@
         });
       })
       .catch(errors => {
+        errors;
         // notify(errors.message, "negative");
-        console.log(errors);
       });
   }
 </script>

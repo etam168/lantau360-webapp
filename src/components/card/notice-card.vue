@@ -67,6 +67,8 @@
   }
 
   const imagePath = computed(() => {
-    return props.item.iconPath ? `${BLOB_URL}/${props.item.iconPath}` : "/no_image_available.jpeg";
+    return props.item.iconPath
+      ? `${BLOB_URL}/${props.item.iconPath}`
+      : "./img/icons/no_image_available.jpeg";
   });
 </script>

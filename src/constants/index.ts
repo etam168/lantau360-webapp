@@ -1,7 +1,7 @@
 export const NONE = "none";
 
-export const PLACEHOLDER_AVATAR = "/avatar.png";
-export const PLACEHOLDER_THUMBNAIL = "/no_image_available.jpeg";
+export const PLACEHOLDER_AVATAR = "./img/icons/avatar.png";
+export const PLACEHOLDER_THUMBNAIL = "./img/icons/no_image_available.jpeg";
 
 export { default as TEMPLATE } from "./template";
 

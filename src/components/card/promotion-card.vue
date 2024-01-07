@@ -62,6 +62,6 @@
   const imagePath = computed(() => {
     return props.item.bannerPath
       ? `${BLOB_URL}/${props.item.bannerPath}`
-      : "/no_image_available.jpeg";
+      : "./img/icons/no_image_available.jpeg";
   });
 </script>

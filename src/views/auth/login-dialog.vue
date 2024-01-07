@@ -11,9 +11,15 @@
       <q-page-container>
         <q-page class="column items-center justify-center">
           <q-card class="bg-secondary q-pt-none q-pa-lg" :style="authStyle">
-            <q-btn icon="close" flat round dense v-close-popup />
+            <q-btn icon="close" flat round dense v-close-popup class="q-mr-md" />
+
             <q-card-section align="center" class="q-pa-none">
-              <q-avatar size="128px" square> <q-img :src="logo" /></q-avatar>
+              <!-- Move the avatar to the center -->
+              <div class="q-mb-md text-h6 q-gutter-md">
+                <q-avatar size="128px" square>
+                  <q-img :src="logo" />
+                </q-avatar>
+              </div>
             </q-card-section>
 
             <q-tabs v-model="tab" class="text-transparent hidden">
@@ -21,15 +27,15 @@
               <q-tab name="register" />
             </q-tabs>
 
-            <q-tab-panels v-model="tab" animated>
-              <q-tab-panel name="login">
+            <q-tab-panels v-model="tab" animated class="q-pa-none">
+              <q-tab-panel name="login" class="q-pa-none">
                 <Login
                   @close-dialog="closeDialog"
                   @on-register="showRegister"
                   @on-forgot-password="handleForgotPassword"
                 />
               </q-tab-panel>
-              <q-tab-panel name="register">
+              <q-tab-panel name="register" class="q-pa-none">
                 <Register @close-dialog="closeDialog" @on-login="showlogin" />
               </q-tab-panel>
               <q-tab-panel name="reset">

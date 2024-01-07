@@ -2,21 +2,9 @@
   <q-card-section class="q-pb-none">
     <q-item class="q-mb-md q-pl-sm">
       <q-item-section top avatar :style="!userStore.token ? 'height: 72px;' : ''">
-        <q-btn outline round color="black" class="q-mx-auto" v-if="userStore.token">
-          <q-avatar size="72px">
-            <q-img :src="computePath">
-              <template v-slot:error>
-                <q-img :src="PLACEHOLDER_AVATAR" />
-              </template>
-
-              <template v-slot:loading>
-                <div class="absolute-full flex flex-center bg-gray text-white">
-                  <q-inner-loading showing class="spinner-card row justify-center items-center">
-                    <q-spinner size="50px" color="primary" />
-                  </q-inner-loading>
-                </div>
-              </template>
-            </q-img>
+        <q-btn round padding="1px" color="black" style="cursor: auto" v-if="userStore.token">
+          <q-avatar size="72px" font-size="36px">
+            <q-img :src="avatar"> </q-img>
           </q-avatar>
         </q-btn>
       </q-item-section>
@@ -74,9 +62,18 @@
 
   const emit = defineEmits(["on-dialog"]);
 
-  const computePath = computed(() => {
+  const avatar = computed(() => {
+    if (userStore.avatar != null) {
+      return userStore.avatar.includes("http")
+        ? userStore.avatar
+        : `${BLOB_URL}/${userStore.avatar}`;
+    }
     return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
   });
+
+  // const computePath = computed(() => {
+  //   return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
+  // });
 
   const logout = () => {
     userStore.LogOut();

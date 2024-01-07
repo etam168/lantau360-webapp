@@ -76,7 +76,7 @@
   ]);
 
   const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "/no_image_available.jpeg";
+    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
 
