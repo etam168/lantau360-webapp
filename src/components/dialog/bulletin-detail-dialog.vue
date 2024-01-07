@@ -44,9 +44,9 @@
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
-  import EventContent from "@/components/dialog/renderer/event-content.vue";
-  import NewsContent from "@/components/dialog/renderer/news-content.vue";
-  import NoticeContent from "@/components/dialog/renderer/notice-content.vue";
+  import EventContent from "@/components/dialog/renderer/event-renderer.vue";
+  import NewsContent from "@/components/dialog/renderer/news-renderer.vue";
+  import NoticeContent from "@/components/dialog/renderer/notice-renderer.vue";
 
   const props = defineProps({
     item: {
