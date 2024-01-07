@@ -20,11 +20,7 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="
-              businessItem.contactPhone !== null &&
-              businessItem.contactPhone !== undefined &&
-              businessItem.contactPhone !== ''
-            "
+            v-if="businessItem.contactPhone"
             color="primary"
             text-color="white"
             icon="phone"
@@ -34,11 +30,7 @@
             @click="navigateToPhone"
           />
           <q-btn
-            v-if="
-              businessItem.contactWhatsApp !== null &&
-              businessItem.contactWhatsApp !== undefined &&
-              businessItem.contactWhatsApp !== ''
-            "
+            v-if="businessItem.contactWhatsApp"
             color="primary"
             text-color="white"
             icon="fab fa-whatsapp"

@@ -13,11 +13,7 @@
       <q-item-section side>
         <q-item-label>
           <q-btn
-            v-if="
-              siteItem.contactPhone !== null &&
-              siteItem.contactPhone !== undefined &&
-              siteItem.contactPhone !== ''
-            "
+            v-if="siteItem.contactPhone"
             color="primary"
             text-color="white"
             icon="phone"
@@ -28,11 +24,7 @@
           />
 
           <q-btn
-            v-if="
-              siteItem.contactWhatsApp !== null &&
-              siteItem.contactWhatsApp !== undefined &&
-              siteItem.contactWhatsApp !== ''
-            "
+            v-if="siteItem.contactWhatsApp"
             color="primary"
             text-color="white"
             icon="fab fa-whatsapp"
