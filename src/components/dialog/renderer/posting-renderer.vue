@@ -12,7 +12,6 @@
       </template>
 
       <q-item-section v-else></q-item-section>
-
       <q-item-section side>
         <q-item-label>
           <q-btn
@@ -49,7 +48,7 @@
             icon="favorite"
             size="sm"
             round
-            @click="onBtnFavClick()"
+            @click="onBtnFavClick"
           />
         </q-item-label>
       </q-item-section>
@@ -60,69 +59,51 @@
     </q-item>
   </q-list>
 </template>
+
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
   import { STORAGE_KEYS } from "@/constants";
-  import { Site } from "@/interfaces/models/entities/site";
-  import { Directory } from "@/interfaces/models/entities/directory";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
-  const emits = defineEmits(["favorite"]);
+  const directoryItem = ref<Posting>({} as Posting);
+  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
-      type: Object as PropType<Site>,
-      required: true
-    },
-    directory: {
-      type: Object as PropType<Directory>,
+      type: Object as PropType<CategoryTypes>,
       required: true
     }
   });
 
-  const translatedContent: any = computed(() => {
-    return translate(props?.item.description, props?.item.meta, "description");
-  });
-
-  // Check if  siteId exists in favoriteItems on component mount
-  onMounted(() => {
-    const itemIdToMatch = siteItem.value.siteId;
-
-    if (itemIdToMatch) {
-      const isItemFavorited = favoriteItems.value.some(
-        (item: Site) => item.siteId === itemIdToMatch
-      );
-
-      isFavourite.value = isItemFavorited;
-    }
-  });
-
-  const siteItem = computed(() => {
-    return props.item as Site;
-  });
+  const postingItem = computed(() => props?.item as Posting);
 
   const isFavourite = ref<boolean>(false);
 
   const favoriteItems = computed(() => {
-    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+    return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Posting[];
+  });
+
+  const translatedContent: any = computed(() => {
+    return translate(directoryItem.value.description, directoryItem.value.meta, "description");
   });
 
   const navigateToPhone = () => {
-    if (props?.item.contactPhone) {
-      const phoneURL = `tel:${props?.item.contactPhone}`;
+    if (postingItem?.value.contactPhone) {
+      const phoneURL = `tel:${postingItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
   };
 
-  function onBtnFavClick() {
-    const itemIdToMatch = siteItem.value.siteId;
+  const onBtnFavClick = () => {
+    const itemIdToMatch = directoryItem.value.postingId;
 
     if (itemIdToMatch) {
       const isCurrentlyFavourite = isFavourite.value;
 
       if (isCurrentlyFavourite) {
         const itemIndex = favoriteItems.value.findIndex(
-          (item: any) => item.siteId === itemIdToMatch
+          (item: any) => item.postingId === itemIdToMatch
         );
 
         if (itemIndex !== -1) {
@@ -131,18 +112,13 @@
 
         isFavourite.value = false;
       } else {
-        siteItem.value.directoryName = props.directory.directoryName;
         isFavourite.value = true;
-        favoriteItems.value.push(siteItem.value);
+        favoriteItems.value.push(postingItem.value);
       }
 
-      const storageKey = STORAGE_KEYS.SAVED.SITE;
-      LocalStorage.set(storageKey, favoriteItems.value);
-
-      emits("favorite", {
-        siteId: siteItem.value.siteId,
-        isFavorite: isFavourite.value
+      eventBus.emit("favoriteUpdated", {
+        siteId: directoryItem.value.postingId || null
       });
     }
-  }
+  };
 </script>

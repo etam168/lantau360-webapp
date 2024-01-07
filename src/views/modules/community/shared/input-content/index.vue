@@ -40,7 +40,7 @@
             <vee-tel-input
               class="q-mb-sm"
               :name="contact.name"
-              :defaultIso="contact.defaultIso"
+              :default-country="contact.defaultIso"
               :labelText="$t(contact.label)" /></q-item-section
         ></q-item>
 

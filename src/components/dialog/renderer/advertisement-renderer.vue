@@ -17,9 +17,7 @@
     }
   });
 
-  const advertisementItem = computed(() => {
-    return props.item as Advertisement;
-  });
+  const advertisementItem = computed(() => props.item as Advertisement);
 
   const { translate, eventBus } = useUtilities();
 
