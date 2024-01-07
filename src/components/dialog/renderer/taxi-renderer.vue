@@ -55,6 +55,8 @@
             round
             @click="onBtnFavClick"
           />
+          {{ isFavourite }}
+          {{ favoriteItems.length }}
         </q-item-label>
       </q-item-section>
     </q-item>
@@ -67,8 +69,6 @@
 
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
-  //import { useArraySome } from '@vueuse/core'
-
   import { STORAGE_KEYS } from "@/constants";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Site } from "@/interfaces/models/entities/site";
@@ -89,16 +89,11 @@
     return translate(siteItem.value.description, siteItem.value.meta, "description");
   });
 
-  const favoriteItems = computed({
-    get: () => {
-      return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
-    },
-    set: (newFavoriteItems: Site[]) => {
-      LocalStorage.set(STORAGE_KEYS.SAVED.SITE, newFavoriteItems);
-    }
-  });
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+
   const isFavourite = computed(() => {
-    return useArraySome(favoriteItems, fav => fav.siteId == siteItem.value.siteId).value;
+    const favItem = favoriteItems.value;
+    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
   const navigateToPhone = () => {
