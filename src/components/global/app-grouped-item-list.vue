@@ -42,10 +42,6 @@
   import { useQuasar } from "quasar";
 
   // interface files
-  import { Business } from "@/interfaces/models/entities/business";
-  import { DirectoryTypes } from "@/interfaces/types/directory-types";
-  import { Site } from "@/interfaces/models/entities/site";
-
   // .ts file
   import { BLOB_URL } from "@/constants";
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -81,22 +77,36 @@
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
 
-  function line1(item: DirectoryTypes) {
+  function line1(item: CategoryTypes) {
     return translate(item.title, item.meta, "title");
   }
 
-  function line2(item: DirectoryTypes) {
+  function line2(item: CategoryTypes) {
     return translate(item.subtitle1, item.meta, "subtitle1");
   }
 
-  function handleItemClick(item: DirectoryTypes) {
+  async function handleItemClick(item: CategoryTypes) {
+    debugger;
+    let directoryData;
+
+    try {
+      // Make an API call to fetch data based on item's directoryId
+      const response = await axios.get(`Directory/${item.directoryId}`);
+      directoryData = response.data; // Assuming the API response contains the data you need
+    } catch (error) {
+      console.error("Error fetching directory data:", error);
+      // Handle error scenarios here
+      return;
+    }
+
     if ("siteId" in item) {
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          item: item as Site
+          item: item,
+          directory: directoryData
         }
       });
     } else if ("businessId" in item) {
@@ -105,7 +115,7 @@
           () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          item: item as Business
+          item: item
         }
       });
     }
