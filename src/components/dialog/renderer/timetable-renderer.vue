@@ -57,7 +57,6 @@
   });
 
   const siteItem = computed(() => props.item as SiteView);
-  const directoryItem = ref<SiteView>({} as SiteView);
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
@@ -108,8 +107,6 @@
       favoriteItems.value = localFavItem;
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", {
-      siteId: directoryItem.value.siteId || null
-    });
+    eventBus.emit("favoriteUpdated");
   };
 </script>

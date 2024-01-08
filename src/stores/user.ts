@@ -47,6 +47,9 @@ export const useUserStore = defineStore("user", {
       }
 
       usePermissionStore().GenerateRoutes(payload);
+    },
+    isUserLogon() {
+      return this.token ? true : false;
     }
   },
 
