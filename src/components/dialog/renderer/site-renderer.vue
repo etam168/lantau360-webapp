@@ -42,7 +42,6 @@
   import { STORAGE_KEYS } from "@/constants";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
-  const directoryItem = ref<Site>({} as Site);
 
   const props = defineProps({
     item: {
@@ -87,8 +86,6 @@
       favoriteItems.value = localFavItem;
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", {
-      siteId: directoryItem.value.siteId || null
-    });
+    eventBus.emit("favoriteUpdated");
   };
 </script>

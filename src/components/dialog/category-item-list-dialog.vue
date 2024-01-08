@@ -10,7 +10,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title :rightSlotAction="rightSlotAction">{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -87,10 +87,6 @@
     groupBykey: {
       type: String,
       required: false
-    },
-    rightSlotAction: {
-      type: Number,
-      default: 0
     }
   });
 
@@ -152,22 +148,8 @@
     });
   });
 
-  eventBus.on("favoriteUpdated", ({ siteId, isFavorite }) => {
-    const itemIndex = favoriteItems.value.findIndex((item: any) => item.siteId === siteId);
-    if (itemIndex !== -1) {
-      if (!isFavorite) {
-        // Remove the item if it's no longer a favorite
-        favoriteItems.value.splice(itemIndex, 1);
-      }
-    } else {
-      if (isFavorite) {
-        // Add the item if it's newly favorited
-        favoriteItems.value.push({
-          siteId: siteId
-          // other properties as needed
-        });
-      }
-    }
+  eventBus.on("favoriteUpdated", () => {
+    favoriteItems.value = getFavItem();
   });
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
