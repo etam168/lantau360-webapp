@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
   import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -58,7 +58,7 @@
   const $q = useQuasar();
   const { eventBus } = useUtilities();
 
-  const advertisements = ref<Advertisement[]>([]);
+  const advertisements = ref<AdvertisementView[]>([]);
   const directoriesData = ref<Directory[]>([]);
   const businessPromotion = ref<BusinessPromotion[]>([]);
   const businessVoucher = ref<BusinessVoucher[]>([]);

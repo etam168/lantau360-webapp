@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
@@ -59,7 +59,7 @@
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
-  const advertisements = ref<Advertisement[]>([]);
+  const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEvent[]>([]);
   const news = ref<CommunityNews[]>([]);

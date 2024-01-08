@@ -41,15 +41,15 @@
   import { useQuasar } from "quasar";
 
   // Interface files
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts file
   import imageNotFound from "@/assets/img/image_not_found.jpg";
   import { BLOB_URL } from "@/constants";
 
   // Define type that is a union of Site and Advertisement
-  type CarouselItem = Site | Advertisement;
+  type CarouselItem = SiteView | AdvertisementView;
 
   const props = defineProps({
     data: {
@@ -76,8 +76,8 @@
   }
 
   // Type guard to determine if the item is an Advertisement
-  function isAdvertisement(item: any): item is Advertisement {
-    return (item as Advertisement).advertisementId !== undefined;
+  function isAdvertisement(item: any): item is AdvertisementView {
+    return (item as AdvertisementView).advertisementId !== undefined;
   }
 
   // Updated onImageClick function to handle both Site and Advertisement
@@ -88,7 +88,7 @@
           () => import("@/components/dialog/marketing-detail-dialog.vue")
         ),
         componentProps: {
-          item: item as Advertisement
+          item: item as AdvertisementView
         }
       });
     } else {
@@ -97,14 +97,14 @@
           () => import("@/components/dialog/category-detail-dialog.vue")
         ),
         componentProps: {
-          item: item as Site
+          item: item as SiteView
         }
       });
     }
   };
 
   // getImageSrc function to handle both Site and Advertisement
-  function getImageSrc(row: 852) {
+  function getImageSrc(row: CarouselItem) {
     if (isAdvertisement(row)) {
       return row.bannerPath !== null && row.bannerPath !== ""
         ? `${BLOB_URL}/${row.bannerPath}`

@@ -6,7 +6,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Advertisement } from "@/interfaces/models/entities/advertisement";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const props = defineProps({
@@ -16,7 +16,7 @@
     }
   });
 
-  const advertisementItem = computed(() => props.item as Advertisement);
+  const advertisementItem = computed(() => props.item as AdvertisementView);
 
   const { translate, eventBus } = useUtilities();
 

@@ -1,5 +1,5 @@
 import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
 import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
-import { Advertisement } from "../models/entities/advertisement";
+import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 
-export type MarketingType = BusinessPromotion | BusinessVoucher | Advertisement;
+export type MarketingType = BusinessPromotion | BusinessVoucher | AdvertisementView;

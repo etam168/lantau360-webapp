@@ -1,6 +1,6 @@
 import { BusinessView } from "@/interfaces/models/views/business-view";
 import { Posting } from "@/interfaces/models/entities/posting";
 import { SiteView } from "@/interfaces/models/views/site-view";
-import { Advertisement } from "@/interfaces/models/entities/advertisement";
+import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 
-export type CategoryTypes = Advertisement | BusinessView | SiteView | Posting;
+export type CategoryTypes = AdvertisementView | BusinessView | SiteView | Posting;
