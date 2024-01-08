@@ -34,7 +34,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
+  import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   const { translate, eventBus } = useUtilities();
@@ -46,7 +46,7 @@
     }
   });
 
-  const voucherItem = computed(() => props.item as BusinessVoucher);
+  const voucherItem = computed(() => props.item as BusinessVoucherView);
 
   const isDialogVisible = ref();
 

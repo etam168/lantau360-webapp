@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
+  import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
@@ -46,9 +46,9 @@
     }
   });
 
-  const promotionItem = computed(() => props.item as BusinessPromotion);
+  const promotionItem = computed(() => props.item as BusinessPromotionView);
 
-  const onItemClick = (item: BusinessPromotion) => {
+  const onItemClick = (item: BusinessPromotionView) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/marketing-detail-dialog.vue")

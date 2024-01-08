@@ -46,8 +46,8 @@
 <script setup lang="ts">
   // Interface files
   import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-  import { BusinessPromotion } from "@/interfaces/models/entities/business-promotion";
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
+  import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
+  import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
@@ -60,8 +60,8 @@
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directoriesData = ref<Directory[]>([]);
-  const businessPromotion = ref<BusinessPromotion[]>([]);
-  const businessVoucher = ref<BusinessVoucher[]>([]);
+  const businessPromotion = ref<BusinessPromotionView[]>([]);
+  const businessVoucher = ref<BusinessVoucherView[]>([]);
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);

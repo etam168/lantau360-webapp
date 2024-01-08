@@ -18,7 +18,7 @@
 
 <script setup lang="ts">
   // Interface file
-  import { BusinessVoucher } from "@/interfaces/models/entities/business-voucher";
+  import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
@@ -33,9 +33,9 @@
     }
   });
 
-  const voucherItem = computed(() => props.item as BusinessVoucher);
+  const voucherItem = computed(() => props.item as BusinessVoucherView);
 
-  const onItemClick = (item: BusinessVoucher) => {
+  const onItemClick = (item: BusinessVoucherView) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/marketing-detail-dialog.vue")
