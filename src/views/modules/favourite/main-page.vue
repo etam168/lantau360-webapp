@@ -51,14 +51,6 @@
 
   const { eventBus } = useUtilities();
 
-  // const siteItems = computed(() => {
-  //   return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as Site[];
-  // });
-
-  // const businessItems = computed(() => {
-  //   return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []) as Business[];
-  // });
-
   const siteItems = ref<Site[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<Business[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []);
 
@@ -71,17 +63,14 @@
   const tab = ref("location");
   const tabItems = ref([
     { name: "location", label: t("favourite.tabItems.location") },
-    { name: "business", label: t("favourite.tabItems.business") },
-    { name: "coupon", label: t("favourite.tabItems.coupon") }
+    { name: "business", label: t("favourite.tabItems.business") }
   ]);
 
   eventBus.on("favoriteUpdated", () => {
-    refreshItemsFromLocalStorage();
-  });
-  const refreshItemsFromLocalStorage = () => {
     siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as Site[];
     businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []) as Business[];
-  };
+  });
+
   try {
     const [advertisementResponse] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
     advertisements.value = advertisementResponse.data;

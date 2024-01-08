@@ -1,12 +1,12 @@
 <template>
   <div class="q-pa-md">
-    <div v-for="(items, groupName) in groupedItems" :key="groupName">
+    <div v-for="(items, groupName) in groupedArray" :key="groupName">
       <!-- Display group name -->
-      <q-item-label class="text-weight-medium text-h6">{{ groupName }}</q-item-label>
+      <q-item-label class="text-weight-medium text-h6">{{ items.group }}</q-item-label>
       <q-list padding>
         <q-item
           clickable
-          v-for="item in items"
+          v-for="item in items.items"
           :key="item.directoryId"
           @click="handleItemClick(item)"
           class="shadow-1 q-pa-sm q-mb-md"
@@ -52,25 +52,22 @@
     listItems: {
       type: Array as PropType<CategoryTypes[]>,
       default: () => [] as CategoryTypes[]
+    },
+    groupBykey: {
+      type: String,
+      required: false
     }
   });
+  // type GroupKeys = keyof CategoryTypes;
 
-  const { translate } = useUtilities();
+  const { groupBy, translate } = useUtilities();
 
-  const groupedItems = computed(() => {
-    const groups: Record<string, CategoryTypes[]> = {};
-
-    props.listItems.forEach((item: CategoryTypes) => {
-      const directoryName = item.directoryName || "Other"; // Set default group name if directoryName is null or undefined
-
-      if (!groups[directoryName]) {
-        groups[directoryName] = [];
-      }
-
-      groups[directoryName].push(item);
-    });
-
-    return groups;
+  const groupedArray = computed(() => {
+    const key = "directoryName";
+    return groupBy(
+      props.listItems.filter(item => item[key] !== undefined),
+      (item: any) => item[key] as string | number // Make sure the key exists on the item
+    );
   });
 
   const computePath = (path: string) => {
@@ -86,7 +83,6 @@
   }
 
   async function handleItemClick(item: CategoryTypes) {
-    debugger;
     let directoryData;
 
     try {

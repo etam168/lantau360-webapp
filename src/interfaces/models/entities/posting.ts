@@ -19,6 +19,7 @@ export interface Posting {
   displayMask: number;
   description: string;
   directoryId: number;
+  directoryName: string;
   imagePath: string;
   iconPath: string;
   bannerPath: string;
