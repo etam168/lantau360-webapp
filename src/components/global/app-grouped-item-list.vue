@@ -98,26 +98,34 @@
       // Handle error scenarios here
       return;
     }
-
-    if ("siteId" in item) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item,
-          directory: directoryData
-        }
-      });
-    } else if ("businessId" in item) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item
-        }
-      });
-    }
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-detail-dialog.vue")
+      ),
+      componentProps: {
+        item: item,
+        directory: directoryData
+      }
+    });
+    // if ("siteId" in item) {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("@/components/dialog/category-detail-dialog.vue")
+    //     ),
+    //     componentProps: {
+    //       item: item,
+    //       directory: directoryData
+    //     }
+    //   });
+    // } else if ("businessId" in item) {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("@/components/dialog/category-detail-dialog.vue")
+    //     ),
+    //     componentProps: {
+    //       item: item
+    //     }
+    //   });
+    // }
   }
 </script>
