@@ -128,7 +128,6 @@
   }
 
   const loadData = async () => {
-    debugger;
     if (galleryUrl.value) {
       try {
         const [galleryResponse] = await Promise.all([

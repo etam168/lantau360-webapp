@@ -38,7 +38,7 @@
         </q-avatar>
       </q-item-section>
 
-      <q-item-section v-if="template === 'Timetable'">
+      <q-item-section v-if="template === TEMPLATE.TIMETABLE.value">
         <q-item-label>
           {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
         </q-item-label>
@@ -48,7 +48,7 @@
         </q-item-label>
       </q-item-section>
 
-      <q-item-section v-else-if="template === 'Lantau Taxi'">
+      <q-item-section v-else-if="template === TEMPLATE.TAXI.value">
         <q-item-label>
           {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
         </q-item-label>
@@ -99,7 +99,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  import { BLOB_URL, PLACEHOLDER_AVATAR, TEMPLATE } from "@/constants";
 
   const emit = defineEmits(["item-click"]);
 
@@ -114,7 +114,7 @@
       default: () => []
     },
     template: {
-      type: String,
+      type: Number,
       required: false
     }
   });
