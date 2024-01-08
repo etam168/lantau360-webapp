@@ -48,22 +48,23 @@
 
   // .ts file
   import { BLOB_URL } from "@/constants";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const $q = useQuasar();
 
   const props = defineProps({
     listItems: {
-      type: Array as PropType<DirectoryTypes[]>,
-      default: () => [] as DirectoryTypes[]
+      type: Array as PropType<CategoryTypes[]>,
+      default: () => [] as CategoryTypes[]
     }
   });
 
   const { translate } = useUtilities();
 
   const groupedItems = computed(() => {
-    const groups: Record<string, DirectoryTypes[]> = {};
+    const groups: Record<string, CategoryTypes[]> = {};
 
-    props.listItems.forEach((item: DirectoryTypes) => {
+    props.listItems.forEach((item: CategoryTypes) => {
       const directoryName = item.directoryName || "Other"; // Set default group name if directoryName is null or undefined
 
       if (!groups[directoryName]) {

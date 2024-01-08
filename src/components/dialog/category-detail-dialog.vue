@@ -135,7 +135,6 @@
         ]);
 
         const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
-        // galleryItems.value = maskedGalleryImages(galleryResponse.data, maskValue);
         galleryItems.value = galleryResponse.data.filter(
           element => !(maskValue & (1 << (element.ranking - 1)))
         );
@@ -159,16 +158,6 @@
         return TEMPLATE[make as keyof typeof TEMPLATE].mask;
       }
     }
-    return null as any;
+    return 0;
   }
-
-  // function maskedGalleryImages(list: any, binaryNumber: number) {
-  //   const binaryString = binaryNumber.toString(2);
-  //   const setBits = binaryString
-  //     .split("")
-  //     .reverse()
-  //     .map((bit, index) => (bit === "1" ? index + 1 : null))
-  //     .filter(bit => bit !== null);
-  //   return list.filter((element: any) => !setBits.includes(element.ranking));
-  // }
 </script>
