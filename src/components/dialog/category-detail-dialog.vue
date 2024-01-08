@@ -128,6 +128,7 @@
   }
 
   const loadData = async () => {
+    debugger;
     if (galleryUrl.value) {
       try {
         const [galleryResponse] = await Promise.all([
@@ -135,8 +136,11 @@
         ]);
 
         const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
+        // galleryItems.value = galleryResponse.data.filter(
+        //   element => !(maskValue & (1 << (element.ranking - 1)))
+        // );
         galleryItems.value = galleryResponse.data.filter(
-          element => !(maskValue & (1 << (element.ranking - 1)))
+          element => !((maskValue >> (element.ranking - 1)) & 1)
         );
       } catch (err) {
         if (err instanceof AxiosError) {
