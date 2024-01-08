@@ -1,9 +1,9 @@
 import axios from "axios";
 
 // Interface files
-import { Description } from "@/interfaces/models/description";
+import { Description } from "@/interfaces/models/custom-models/description";
 import { Posting } from "@/interfaces/models/entities/posting";
-import { PostingImages } from "@/interfaces/models/gallery";
+import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 import { PostingImage } from "@/interfaces/models/entities/posting-image";
 
 import i18n from "@/plugins/i18n/i18n";

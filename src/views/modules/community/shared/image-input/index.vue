@@ -30,7 +30,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { PostingImages } from "@/interfaces/models/gallery";
+  import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
   //Custom Components
   import GalleryImage from "./gallery-images.vue";

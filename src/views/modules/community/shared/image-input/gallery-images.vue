@@ -20,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PostingImages } from "@/interfaces/models/gallery";
+  import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
   // Custom Components
   import AnimatedGrid from "./animated-grid.vue";

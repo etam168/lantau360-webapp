@@ -29,9 +29,9 @@
   import { Form } from "vee-validate";
 
   // Interface files
-  import { Description } from "@/interfaces/models/description";
+  import { Description } from "@/interfaces/models/custom-models/description";
   import { Posting } from "@/interfaces/models/entities/posting";
-  import { PostingImages } from "@/interfaces/models/gallery";
+  import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
   // .ts files
   import { usePostingInput } from "../shared/use-posting-input";

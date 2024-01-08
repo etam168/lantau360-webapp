@@ -1,4 +1,4 @@
-import { IMember } from "@/interfaces/models";
+import { IMember } from "@/interfaces/models/custom-models";
 
 export interface ILoginResponse extends IMember {
   token: string;

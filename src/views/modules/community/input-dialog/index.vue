@@ -47,9 +47,9 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
-  import { Description } from "@/interfaces/models/description";
+  import { Description } from "@/interfaces/models/custom-models/description";
   import { PostingView } from "@/interfaces/models/views/posting-view";
-  import { PostingImages } from "@/interfaces/models/gallery";
+  import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
   // Custom Components
   import InputStep from "./input-step.vue";
