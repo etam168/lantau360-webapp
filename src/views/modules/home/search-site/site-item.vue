@@ -26,13 +26,13 @@
   import { LocalStorage } from "quasar";
 
   // Interface files
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
   const emits = defineEmits(["on-detail"]);
 
   const computePath = (path: string) => {
@@ -46,7 +46,7 @@
 
   defineProps({
     row: {
-      type: Object as PropType<Site>,
+      type: Object as PropType<SiteView>,
       required: true
     }
   });

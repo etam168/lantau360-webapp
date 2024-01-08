@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
   import useDataTable from "@/composable/use-data-table";
@@ -60,7 +60,7 @@
         () => import("@/components/dialog/category-detail-dialog.vue")
       ),
       componentProps: {
-        item: item as Site
+        item: item as SiteView
       }
     });
   }

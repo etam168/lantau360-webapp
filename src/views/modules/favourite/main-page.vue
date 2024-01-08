@@ -43,16 +43,18 @@
   import { LocalStorage } from "quasar";
 
   // Interface files
-  import { Business } from "@/interfaces/models/entities/business";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
 
   const { eventBus } = useUtilities();
 
-  const siteItems = ref<Site[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
-  const businessItems = ref<Business[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []);
+  const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
+  const businessItems = ref<BusinessView[]>(
+    LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []
+  );
 
   const advertisements = ref<any | null>(null);
   const error = ref<string | null>(null);
@@ -67,8 +69,9 @@
   ]);
 
   eventBus.on("favoriteUpdated", () => {
-    siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as Site[];
-    businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []) as Business[];
+    siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as SiteView[];
+    businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ??
+      []) as BusinessView[];
   });
 
   try {

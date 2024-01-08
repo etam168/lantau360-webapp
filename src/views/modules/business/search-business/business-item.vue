@@ -26,7 +26,7 @@
   import { LocalStorage } from "quasar";
 
   // Interface files
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // .ts files
   import { BLOB_URL, STORAGE_KEYS } from "@/constants";
@@ -43,7 +43,7 @@
 
   defineProps({
     row: {
-      type: Object as PropType<Business>,
+      type: Object as PropType<BusinessView>,
       required: true
     }
   });

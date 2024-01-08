@@ -36,13 +36,13 @@
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
   import { STORAGE_KEYS } from "@/constants";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
-  const directoryItem = ref<Site>({} as Site);
+  const directoryItem = ref<SiteView>({} as SiteView);
 
   const props = defineProps({
     item: {
@@ -51,13 +51,13 @@
     }
   });
 
-  const siteItem = computed(() => props.item as Site);
+  const siteItem = computed(() => props.item as SiteView);
 
   const translatedContent: any = computed(() => {
     return translate(siteItem.value.description, siteItem.value.meta, "description");
   });
 
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 
   const isFavourite = computed(() => {
     const favItem = favoriteItems.value;

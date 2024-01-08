@@ -43,7 +43,7 @@
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts files
@@ -56,8 +56,8 @@
     }
   });
 
-  const siteItem = computed(() => props.item as Site);
-  const directoryItem = ref<Site>({} as Site);
+  const siteItem = computed(() => props.item as SiteView);
+  const directoryItem = ref<SiteView>({} as SiteView);
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
@@ -78,7 +78,7 @@
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[]);
+  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 
   const isFavourite = computed(() => {
     const favItem = favoriteItems.value;

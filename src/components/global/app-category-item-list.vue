@@ -38,7 +38,7 @@
 
       <q-item-section v-if="template === 'Timetable'">
         <q-item-label>
-          {{ translate((item as Site).siteName, item.meta, "siteName") }}
+          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
         </q-item-label>
 
         <q-item-label>
@@ -48,7 +48,7 @@
 
       <q-item-section v-else-if="template === 'Lantau Taxi'">
         <q-item-label>
-          {{ translate((item as Site).siteName, item.meta, "siteName") }}
+          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
         </q-item-label>
 
         <q-item-label>
@@ -91,10 +91,10 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { Posting } from "@/interfaces/models/entities/posting";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
@@ -127,10 +127,10 @@
     switch (true) {
       case "businessId" in item:
         return props.favoriteItems.some(
-          favItem => (favItem as Business).businessId === item.businessId
+          favItem => (favItem as BusinessView).businessId === item.businessId
         );
       case "siteId" in item:
-        return props.favoriteItems.some(favItem => (favItem as Site).siteId === item.siteId);
+        return props.favoriteItems.some(favItem => (favItem as SiteView).siteId === item.siteId);
       default:
         // No known type matched, or it's not a favorite item
         return false;

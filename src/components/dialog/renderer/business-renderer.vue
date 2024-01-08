@@ -61,7 +61,7 @@
   import { LocalStorage } from "quasar";
 
   // Interface files
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
@@ -77,7 +77,7 @@
     }
   });
 
-  const businessItem = computed(() => props?.item as Business);
+  const businessItem = computed(() => props?.item as BusinessView);
 
   const formatTime = (time: string | undefined) => {
     if (!time) return "";
@@ -118,7 +118,7 @@
   };
 
   const favoriteItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[]
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
   );
 
   const isFavourite = computed(() => {

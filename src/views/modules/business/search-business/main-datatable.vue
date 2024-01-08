@@ -22,7 +22,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Business } from "@/interfaces/models/entities/business";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // .ts files
   import useDataTable from "@/composable/use-data-table";
@@ -60,7 +60,7 @@
         () => import("@/components/dialog/category-detail-dialog.vue")
       ),
       componentProps: {
-        item: item as Business
+        item: item as BusinessView
       }
     });
   }

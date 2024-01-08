@@ -64,10 +64,10 @@
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
 
   // interface files
-  import { Business } from "@/interfaces/models/entities/business";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
@@ -187,9 +187,9 @@
 
     switch (true) {
       case "siteId" in firstItem:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as Site[];
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
       case "businessId" in firstItem:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as Business[];
+        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
       default:
         return [];
     }

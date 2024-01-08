@@ -23,7 +23,7 @@
 <script setup lang="ts">
   // Interface files
   import { Directory } from "@/interfaces/models/entities/directory";
-  import { Site } from "@/interfaces/models/entities/site";
+  import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
   import { Weather } from "@/interfaces/models/entities/weather";
 
@@ -37,7 +37,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
-  const attractions = ref<Site[]>([]);
+  const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);
   const weatherData = ref<Weather | null>(null);
 
