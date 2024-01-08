@@ -66,7 +66,8 @@
     const key = "directoryName";
     return groupBy(
       props.listItems.filter(item => item[key] !== undefined),
-      (item: any) => item[key] as string | number // Make sure the key exists on the item
+      (item: any) =>
+        translate(item.directoryName, item.directoryMeta, "directoryName") as string | number // Make sure the key exists on the item
     );
   });
 
