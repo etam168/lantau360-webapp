@@ -1,16 +1,7 @@
-export interface Directory {
+import { BaseDirectory } from "../base-entities/base-directory";
+
+export interface Directory extends BaseDirectory {
   directoryId: number;
-  directoryName: string;
-  shortName: string;
   rank: number;
-  imagePath: string;
-  description: string;
   displayMask: number;
-  groupId: number;
-  status: number;
-  createdAt: Date;
-  createdBy: number;
-  modifiedBy?: number | null;
-  modifiedAt?: Date | null;
-  meta: Record<string, any>;
 }

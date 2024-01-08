@@ -85,10 +85,9 @@
                   <q-item class="q-pr-none">
                     <q-item-section>
                       <vee-input
-                        :name="'email'"
-                        :maxlength="'20'"
+                        name="email"
+                        :maxlength="20"
                         disable
-                        stack-label
                         icon="email"
                         :label="$t('auth.register.email')"
                       />
@@ -98,8 +97,8 @@
                   <q-item class="q-pr-none">
                     <q-item-section>
                       <vee-q-tel-input
-                        :name="'phone'"
-                        :defaultIso="'HK'"
+                        name="phone"
+                        defaultIso="HK"
                         :labelText="$t('auth.register.phone')"
                         :label="$t('auth.register.phone')"
                         use-icon

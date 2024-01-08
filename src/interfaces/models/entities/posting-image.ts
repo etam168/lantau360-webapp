@@ -1,11 +1,5 @@
-export interface PostingImage {
-  imageId: number;
+import { BaseImage } from "../base-entities/base-image";
+
+export interface PostingImage extends BaseImage {
   postingId: number;
-  ranking: number;
-  imagePath: string;
-  meta: Record<string, unknown>;
-  createdAt: Date;
-  createdBy: number;
-  modifiedAt: Date;
-  modifiedBy: number;
 }

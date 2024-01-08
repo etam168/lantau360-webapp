@@ -7,12 +7,14 @@
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
-      <q-item-section v-if="(item as Posting).postingId" avatar>
+      <q-item-section v-if="(item as PostingView).postingId" avatar>
         <q-avatar size="64px">
           <q-img
             ratio="1"
             :src="
-              (item as Posting)?.memberImage ? (item as Posting)?.memberImage : PLACEHOLDER_AVATAR
+              (item as PostingView)?.memberImage
+                ? (item as PostingView)?.memberImage
+                : PLACEHOLDER_AVATAR
             "
           >
             <template v-slot:error>
@@ -56,13 +58,13 @@
         </q-item-label>
       </q-item-section>
 
-      <q-item-section v-else-if="(item as Posting).postingId">
+      <q-item-section v-else-if="(item as PostingView).postingId">
         <q-item-label>
-          {{ (item as Posting).memberFirstName + " " + (item as Posting).memberLastName }}
+          {{ (item as PostingView).memberFirstName + " " + (item as PostingView).memberLastName }}
         </q-item-label>
 
         <q-item-label>
-          {{ (item as Posting).memberEmail }}
+          {{ (item as PostingView).memberEmail }}
         </q-item-label>
       </q-item-section>
 
@@ -93,7 +95,7 @@
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { PostingView } from "@/interfaces/models/views/posting-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files

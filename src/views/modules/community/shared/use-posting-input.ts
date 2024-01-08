@@ -45,7 +45,6 @@ export function usePostingInput() {
     postingInput.value.contactWhatsApp = values.contactWhatsApp;
     postingInput.value.contactPhone = values.contactPhone;
     postingInput.value.contactOther = values.contactOther;
-    postingInput.value.rank = values.rank;
     postingInput.value.buttonText = values.buttonText;
 
     postingInput.value.title = values.title;

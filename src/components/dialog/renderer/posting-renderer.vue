@@ -28,9 +28,9 @@
 <script setup lang="ts">
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { PostingView } from "@/interfaces/models/views/posting-view";
 
-  const directoryItem = ref<Posting>({} as Posting);
+  const directoryItem = ref<PostingView>({} as PostingView);
   const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
@@ -40,7 +40,7 @@
     }
   });
 
-  const postingItem = computed(() => props?.item as Posting);
+  const postingItem = computed(() => props?.item as PostingView);
 
   const translatedContent: any = computed(() => {
     return translate(directoryItem.value.description, directoryItem.value.meta, "description");

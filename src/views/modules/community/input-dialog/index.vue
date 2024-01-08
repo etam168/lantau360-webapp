@@ -48,7 +48,7 @@
 
   // Interface files
   import { Description } from "@/interfaces/models/description";
-  import { Posting } from "@/interfaces/models/entities/posting";
+  import { PostingView } from "@/interfaces/models/views/posting-view";
   import { PostingImages } from "@/interfaces/models/gallery";
 
   // Custom Components
@@ -63,7 +63,7 @@
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
-  const previewData = ref<Posting>({} as Posting);
+  const previewData = ref<PostingView>({} as PostingView);
   const postingImages = ref<PostingImages>({} as PostingImages);
   const description = ref<Description>({} as Description);
 

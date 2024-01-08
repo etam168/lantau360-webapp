@@ -1,11 +1,5 @@
-export interface BusinessImage {
-  imageId?: number;
+import { BaseImage } from "../base-entities/base-image";
+
+export interface BusinessImage extends BaseImage {
   businessId: number;
-  ranking: number;
-  imagePath: string;
-  meta: Record<string, unknown>;
-  createdAt: Date;
-  createdBy: number;
-  modifiedAt: Date;
-  modifiedBy: number;
 }

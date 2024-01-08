@@ -1,31 +1,9 @@
-export interface CommunityNews {
+import { BaseDirectoryItem } from "../base-entities/base-directory-item";
+
+export interface CommunityNews extends BaseDirectoryItem {
   communityNewsId: number;
   communityNewsName: string;
-  contactWhatsApp: string;
-  contactPhone: string;
-  contactOther: string;
-  buttonText: string;
-  title: string;
-  subtitle1: string;
-  subtitle2: string;
-  subtitle3: string;
-  displayMask: number;
-  description: string;
-  directoryId: number;
-  imagePath: string;
-  iconPath: string;
-  bannerPath: string;
-  hashKey: string;
-  status: number;
-  latitude: number;
-  longitude: number;
-  rank: number;
   openTime: string;
   closeTime: string;
   expiryDate: Date;
-  meta: Record<string, any>;
-  createdBy: number;
-  createdAt: Date;
-  modifiedBy: number;
-  modifiedAt: Date;
 }

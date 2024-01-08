@@ -1,11 +1,5 @@
-export interface CommunityNoticeImage {
-  imageId?: number;
+import { BaseImage } from "../base-entities/base-image";
+
+export interface CommunityNoticeImage extends BaseImage {
   communityNoticeId: number;
-  ranking: number;
-  imagePath: string;
-  meta: Record<string, any>;
-  createdBy: number;
-  createdAt: Date;
-  modifiedBy: number;
-  modifiedAt: Date;
 }

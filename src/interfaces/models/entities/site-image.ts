@@ -1,11 +1,5 @@
-export interface SiteImage {
-  imageId?: number;
+import { BaseImage } from "../base-entities/base-image";
+
+export interface SiteImage extends BaseImage {
   siteId: number;
-  ranking: number;
-  imagePath: string;
-  meta: Record<string, unknown>;
-  createdAt: Date;
-  createdBy: number;
-  modifiedAt: Date;
-  modifiedBy: number;
 }
