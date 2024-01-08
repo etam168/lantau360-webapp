@@ -9,7 +9,7 @@
 <script setup lang="ts">
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
-  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
+  import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
 
   const { translate } = useUtilities();
 
@@ -20,7 +20,7 @@
     }
   });
 
-  const eventItem = computed(() => props.item as CommunityEvent);
+  const eventItem = computed(() => props.item as CommunityEventView);
 
   const translatedContent: any = computed(() => {
     return translate(eventItem.value.description, eventItem.value.meta, "description");

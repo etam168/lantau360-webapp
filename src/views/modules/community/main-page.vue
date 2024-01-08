@@ -47,7 +47,7 @@
   // Interface files
   import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
+  import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Directory } from "@/interfaces/models/entities/directory";
@@ -61,7 +61,7 @@
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
-  const events = ref<CommunityEvent[]>([]);
+  const events = ref<CommunityEventView[]>([]);
   const news = ref<CommunityNews[]>([]);
   const notices = ref<CommunityNotice[]>([]);
   const dialogStack = ref<string[]>([]);
