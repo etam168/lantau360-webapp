@@ -160,10 +160,6 @@
       favoriteItems.value = localFavItem;
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", {
-      itemId: businessItem.value.businessId,
-      isFavorite: isFavourite.value,
-      moduleType: "business"
-    });
+    eventBus.emit("favoriteUpdated");
   };
 </script>

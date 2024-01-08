@@ -8,7 +8,7 @@
         <!-- Default slot for content -->
       </q-toolbar-title>
 
-      <q-btn></q-btn>
+      <q-btn flat></q-btn>
     </q-toolbar>
   </q-card-actions>
 </template>
