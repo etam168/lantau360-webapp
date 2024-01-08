@@ -39,7 +39,7 @@
   import { VueDraggableNext } from "vue-draggable-next";
 
   // Interface files
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
 
   // Custom Components
   import ImageCard from "./image-card.vue";

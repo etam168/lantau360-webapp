@@ -21,6 +21,7 @@
 
   // .ts files
   import { BLOB_URL } from "@/constants";
+  import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
 
   const props = defineProps({
     item: {
@@ -30,7 +31,7 @@
   });
 
   const $q = useQuasar();
-
+  const eventItem = computed(() => props.item as CommunityEventView);
   const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(
@@ -43,8 +44,8 @@
   };
 
   const imagePath = computed(() => {
-    return props.item.bannerPath
-      ? `${BLOB_URL}/${props.item.bannerPath}`
+    return eventItem.value.bannerPath
+      ? `${BLOB_URL}/${eventItem.value.bannerPath}`
       : "./img/icons/no_image_available.jpeg";
   });
 </script>

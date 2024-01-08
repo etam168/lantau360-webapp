@@ -28,7 +28,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
 
   // .ts files
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";

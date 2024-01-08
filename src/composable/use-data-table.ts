@@ -21,7 +21,7 @@ export default function useDataTable(url: string, key: string) {
     try {
       const { data } = await httpMethods.get(url, params);
       return data || [];
-    } catch (err) {
+    } catch (err: any) {
       if ((err as Error).message == "Network Error") {
         notify("No Internet Connection", "negative");
       } else {

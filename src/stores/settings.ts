@@ -8,11 +8,11 @@ export const useSettingsStore = defineStore("settings", {
   state: () => getDefaultSettings(),
 
   actions: {
-    SetLocale(payload) {
+    SetLocale(payload: any) {
       this.locale = payload.locale;
       // await setLocale(payload.locale);
     },
-    ThemeToggle(payload) {
+    ThemeToggle(payload: any) {
       this.theme.index = payload.index;
     },
     ThemeDarkToggle() {
@@ -30,13 +30,13 @@ export const useSettingsStore = defineStore("settings", {
     NavbarToggle() {
       this.navbar.show = !this.navbar.show;
     },
-    NavbarState(payload) {
+    NavbarState(payload: any) {
       this.navbar.show = payload.state;
     },
-    FullscreenToggle(payload) {
+    FullscreenToggle(payload: any) {
       this.fullscreen.show = payload.state;
     },
-    FullscreenBtn(payload) {
+    FullscreenBtn(payload: any) {
       this.fullscreen.btn = payload.state;
     },
     SettingsPanelBtnToggle() {
@@ -45,7 +45,7 @@ export const useSettingsStore = defineStore("settings", {
     SettingsPanelToggle() {
       this.settingsPanel.show = !this.settingsPanel.show;
     },
-    SettingsPanelState(payload) {
+    SettingsPanelState(payload: any) {
       this.settingsPanel.show = payload.state;
     },
     SettingsPanelDefault() {
@@ -54,7 +54,7 @@ export const useSettingsStore = defineStore("settings", {
     FooterToggle() {
       this.footer = !this.footer;
     },
-    SetSettings(payload) {
+    SetSettings(payload: any) {
       this.locale = payload.locale || this.locale;
       this.dense = typeof payload.dense === "boolean" ? payload.dense : this.dense;
       this.footer = typeof payload.dense === "boolean" ? payload.footer : this.footer;

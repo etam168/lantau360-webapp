@@ -15,11 +15,7 @@
 
       <q-page-container>
         <q-page>
-          <gallery-carousel-image
-            class="col-12 q-items-center"
-            :gallery-images="galleryItems"
-            :address="translate(item.subtitle1, item.meta, 'subtitle1')"
-          />
+          <gallery-carousel-image :gallery-images="galleryItems" />
           <advertisement-renderer v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
           <promotion-renderer v-else-if="renderer === RENDERER.PROMOTION" :item="item" />
           <voucher-renderer v-else-if="renderer === RENDERER.VOUCHER" :item="item" />

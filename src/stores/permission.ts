@@ -1,14 +1,15 @@
 import { defineStore } from "pinia";
 import router, { asyncRoutes } from "@/router";
+import { RouteRecordRaw } from "vue-router";
 
 /**
  * Through meta.role determines whether the current user rights match
  * @param roles
  * @param route
  */
-const hasPermission = (roles, route) => {
+const hasPermission = (roles: any, route: any) => {
   if (route.meta && route.meta.roles) {
-    return roles.some(role => route.meta.roles.includes(role));
+    return roles.some((role: any) => route.meta.roles.includes(role));
   }
   return false;
 };
@@ -19,9 +20,9 @@ const hasPermission = (roles, route) => {
  * @param roles
  * @param routes asyncRoutes
  */
-export const filterAsyncRoutes = (roles, routes) => {
-  const res = [];
-  routes.forEach(route => {
+export const filterAsyncRoutes = (roles: any, routes: Array<RouteRecordRaw>) => {
+  const res = <any>[];
+  routes.forEach((route: any) => {
     const tmp = { ...route };
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
@@ -35,19 +36,21 @@ export const filterAsyncRoutes = (roles, routes) => {
 
 export const usePermissionStore = defineStore("permission", {
   state: () => {
-    return { routes: [], addRoutes: [] };
+    return { routes: [], addRoutes: <any>[] };
   },
   getters: {
     permissionRoutes: state => state.routes
   },
 
   actions: {
-    GenerateRoutes({ roles }) {
+    GenerateRoutes(userData: any) {
       try {
-        const accessedRoutes = filterAsyncRoutes(roles, asyncRoutes);
+        const { roles } = userData;
+
+        const accessedRoutes: Array<RouteRecordRaw> = filterAsyncRoutes(roles, asyncRoutes);
 
         this.addRoutes = accessedRoutes[0].children;
-        this.routes = constantRoutes.concat(accessedRoutes[0].children);
+        //this.routes = constantRoutes.concat(accessedRoutes[0].children);
         // Apply selected allowed routes
         accessedRoutes.forEach(asyncRoute => {
           router.addRoute(asyncRoute);

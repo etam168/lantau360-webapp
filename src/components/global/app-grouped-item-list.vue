@@ -45,6 +45,8 @@
   // .ts file
   import { BLOB_URL } from "@/constants";
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   const $q = useQuasar();
 
@@ -61,11 +63,12 @@
   // type GroupKeys = keyof CategoryTypes;
 
   const { groupBy, translate } = useUtilities();
+  const favItems = computed(() => props.listItems as BusinessView[] | SiteView[]);
 
   const groupedArray = computed(() => {
     const key = "directoryName";
     return groupBy(
-      props.listItems.filter(item => item[key] !== undefined),
+      favItems.value.filter(item => item[key] !== undefined),
       (item: any) =>
         translate(item.directoryName, item.directoryMeta, "directoryName") as string | number // Make sure the key exists on the item
     );

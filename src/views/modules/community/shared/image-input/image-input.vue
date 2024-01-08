@@ -54,7 +54,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { GalleryImage } from "@/interfaces/models/entities/image-list";
+  import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   defineProps({

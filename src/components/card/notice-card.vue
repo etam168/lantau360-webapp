@@ -40,7 +40,6 @@
   const noticeItem = computed(() => props.item as CommunityNotice);
 
   const $q = useQuasar();
-
   const noticeTime = (row: any) => {
     // Check if row is null or undefined
     if (row === null || row === undefined) {
@@ -67,8 +66,8 @@
   }
 
   const imagePath = computed(() => {
-    return props.item.iconPath
-      ? `${BLOB_URL}/${props.item.iconPath}`
+    return noticeItem.value.iconPath
+      ? `${BLOB_URL}/${noticeItem.value.iconPath}`
       : "./img/icons/no_image_available.jpeg";
   });
 </script>

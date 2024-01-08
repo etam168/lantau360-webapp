@@ -16,11 +16,7 @@
       <q-page-container>
         <q-page>
           <q-item class="q-items-center q-pa-none">
-            <gallery-carousel-image
-              class="col-12 q-items-center"
-              :gallery-images="galleryItems"
-              :address="translate(item.subtitle1, item.meta, 'subtitle1')"
-            />
+            <gallery-carousel-image :gallery-images="galleryItems" />
           </q-item>
 
           <event-renderer v-if="renderer === RENDERER.EVENT" :item="item" />

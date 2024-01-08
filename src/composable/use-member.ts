@@ -56,7 +56,7 @@ export function useMember() {
   };
 
   const loginByPhone = async (phone: any, password: any) => {
-    let user = {};
+    let user: { token?: string } = {};
     await axios({
       url: "/api/referloauth/signin",
       method: "POST",
