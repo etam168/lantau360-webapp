@@ -52,9 +52,7 @@
       isDialogVisible.value = false;
     });
   });
-  const translatedContent: any = computed(() => {
-    return props.item.description;
-  });
+  const translatedContent: any = ref(props.item.description);
 </script>
 <style scoped>
   .button-margin {

@@ -87,9 +87,9 @@
     return formattedTime;
   };
 
-  const translatedContent: any = computed(() => {
-    return translate(businessItem.value.description, businessItem.value.meta, "description");
-  });
+  const translatedContent: any = ref(
+    translate(businessItem.value.description, businessItem.value.meta, "description")
+  );
 
   const isCurrentTimeInRange = (
     startTime: string | undefined,

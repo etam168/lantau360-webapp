@@ -22,7 +22,7 @@
 
   const eventItem = computed(() => props.item as CommunityEventView);
 
-  const translatedContent: any = computed(() => {
-    return translate(eventItem.value.description, eventItem.value.meta, "description");
-  });
+  const translatedContent: any = ref(
+    translate(eventItem.value.description, eventItem.value.meta, "description")
+  );
 </script>

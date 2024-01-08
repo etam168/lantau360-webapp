@@ -42,9 +42,9 @@
 
   const postingItem = computed(() => props?.item as PostingView);
 
-  const translatedContent: any = computed(() => {
-    return translate(directoryItem.value.description, directoryItem.value.meta, "description");
-  });
+  const translatedContent: any = ref(
+    translate(directoryItem.value.description, directoryItem.value.meta, "description")
+  );
 
   const navigateToPhone = () => {
     if (postingItem?.value.contactPhone) {

@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
@@ -90,7 +89,7 @@
     }
   });
 
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
 
   const $q = useQuasar();
@@ -151,7 +150,8 @@
   eventBus.on("favoriteUpdated", () => {
     favoriteItems.value = getFavItem();
   });
-  function updateDialogState(status: any) {
+
+  function updateDialogState(status: boolean) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CategoryItemListDialog");
   }

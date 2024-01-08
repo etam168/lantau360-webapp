@@ -56,9 +56,7 @@
     });
   });
 
-  const translatedContent: any = computed(() => {
-    return voucherItem.value.description;
-  });
+  const translatedContent: any = ref(voucherItem.value.description);
   const navigateToPhone = () => {
     if (voucherItem.value.contactPhone) {
       const phoneURL = `tel:${voucherItem.value.contactPhone}`;

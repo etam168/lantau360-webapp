@@ -21,13 +21,9 @@
   const { translate, eventBus } = useUtilities();
 
   const isDialogVisible = ref();
-  const translatedContent: any = computed(() => {
-    return translate(
-      advertisementItem.value["description"],
-      advertisementItem.value.meta,
-      "description"
-    );
-  });
+  const translatedContent: any = ref(
+    translate(advertisementItem.value["description"], advertisementItem.value.meta, "description")
+  );
   onMounted(() => {
     eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;

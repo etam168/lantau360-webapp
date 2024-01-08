@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
@@ -52,7 +51,7 @@
   });
 
   const { translate, eventBus } = useUtilities();
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
   const error = ref<string | null>(null);

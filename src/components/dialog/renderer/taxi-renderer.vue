@@ -53,9 +53,9 @@
 
   const siteItem = computed(() => props.item as SiteView);
 
-  const translatedContent: any = computed(() => {
-    return translate(siteItem.value.description, siteItem.value.meta, "description");
-  });
+  const translatedContent: any = ref(
+    translate(siteItem.value.description, siteItem.value.meta, "description")
+  );
 
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 
