@@ -50,11 +50,26 @@
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-item> Hello how are you </q-item>
-    <!-- 
     <q-item>
-      <app-text-editor v-model="translatedContent" />
-    </q-item> -->
+      <app-tab-select
+        class="justify-center"
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+      />
+    </q-item>
+
+    <q-item>
+      <app-tab-panels v-model="tab">
+        <q-tab-panel name="aboutUs" class="q-pa-none">
+          <app-text-editor v-model="translatedContent" />
+        </q-tab-panel>
+
+        <q-tab-panel name="map" class="q-pa-none">
+          <q-img class="q-ml-lg" :ratio="16 / 9" width="900px" src="img/img_map.png"></q-img>
+        </q-tab-panel>
+      </app-tab-panels>
+    </q-item>
   </q-list>
 </template>
 
@@ -78,6 +93,15 @@
     }
   });
 
+  const { t } = useI18n({ useScope: "global" });
+
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("aboutUs");
+  const tabItems = ref([
+    { name: "aboutUs", label: t("business.tabItems.aboutUs") },
+    { name: "map", label: t("business.tabItems.map") }
+  ]);
+
   const businessItem = computed(() => props?.item as BusinessView);
 
   const formatTime = (time: string | undefined) => {
@@ -88,9 +112,9 @@
     return formattedTime;
   };
 
-  // const translatedContent: any = ref(
-  //   translate(businessItem.value.description, businessItem.value.meta, "description")
-  // );
+  const translatedContent: any = computed(() =>
+    translate(businessItem.value.description, businessItem.value.meta, "description")
+  );
 
   const isCurrentTimeInRange = (
     startTime: string | undefined,
