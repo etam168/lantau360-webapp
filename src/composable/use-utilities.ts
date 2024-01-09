@@ -1,5 +1,6 @@
 // useUtilities.ts
 import { date, EventBus, Notify, useQuasar } from "quasar";
+import i18n from "@/plugins/i18n/i18n";
 
 const eventBus = new EventBus();
 const httpMethods = {
@@ -11,6 +12,7 @@ const httpMethods = {
 
 export function useUtilities() {
   const $q = useQuasar();
+  const { t } = i18n.global;
 
   function aspectRatio() {
     switch ($q.screen.name) {
@@ -63,7 +65,7 @@ export function useUtilities() {
       grouped[key].push(item);
     });
     return Object.keys(grouped).map(key => ({
-      group: (key === "null" ? "Other" : key) as K,
+      group: (key === "null" ? t("home.other") : key) as K,
       items: grouped[key as K] // Type assertion here
     }));
   }

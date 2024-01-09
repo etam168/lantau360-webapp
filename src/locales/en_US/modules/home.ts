@@ -5,6 +5,7 @@ export default {
   searchBar: {
     placeholder: "Enter Keyword"
   },
+  other: "Other",
   subtitle1: "Address 1",
   subtitle2: "Address 2",
   subtitle3: "Address 3",

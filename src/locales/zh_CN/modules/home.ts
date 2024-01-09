@@ -2,6 +2,7 @@ export default {
   title: "Home",
   allLocations: "地点",
   info: "其他信息",
+  other: "其他",
   searchBar: {
     placeholder: "Enter Keyword"
   },
