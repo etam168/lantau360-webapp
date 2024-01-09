@@ -16,57 +16,7 @@
       <q-page-container>
         <q-page>
           <q-card flat>
-            <q-card-section horizontal class="q-ma-lg col-12">
-              <div class="col-3"></div>
-              <q-card-section
-                class="bg-secondary text-center col-6 item-center"
-                style="border-radius: 10px"
-              >
-                <q-btn round padding="1px" color="black">
-                  <q-avatar size="108px">
-                    <q-img :ratio="1" :src="avatar">
-                      <template v-slot:error>
-                        <q-img :src="PLACEHOLDER_AVATAR" />
-                      </template>
-
-                      <template v-slot:loading>
-                        <div class="absolute-full flex flex-center bg-gray text-white">
-                          <q-inner-loading
-                            showing
-                            class="spinner-card row justify-center items-center"
-                          >
-                            <q-spinner size="50px" color="primary" />
-                          </q-inner-loading>
-                        </div>
-                      </template>
-                    </q-img>
-
-                    <q-badge class="absolute-bottom-left" color="transparent">
-                      <app-button
-                        round
-                        color="black"
-                        icon="photo_camera"
-                        size="xs"
-                        @click="onImageUpload"
-                      />
-                    </q-badge>
-                  </q-avatar>
-
-                  <q-file
-                    ref="imageRef"
-                    v-show="false"
-                    v-model="imagePath"
-                    @update:model-value="uploadImage"
-                  >
-                  </q-file>
-                </q-btn>
-
-                <div class="text-subtitle1 text-weight-medium">
-                  {{ $t("more.profileSetting.subtitle") }}
-                </div>
-              </q-card-section>
-            </q-card-section>
-
+            <profile-setting-image />
             <q-card-section class="q-ma-none q-pa-none">
               <Form
                 ref="form"
@@ -127,7 +77,6 @@
     </q-layout>
   </q-dialog>
 </template>
-
 <script setup lang="ts">
   import { Form } from "vee-validate";
   import * as yup from "yup";
@@ -136,9 +85,10 @@
   import { Member } from "@/interfaces/models/entities/member";
 
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  // import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { useMoreInput } from "../use-more-input";
-  import { useUserStore } from "@/stores/user";
+  // import { useUserStore } from "@/stores/user";
+  import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({
     member: {
@@ -147,14 +97,14 @@
     }
   });
 
-  const userStore = useUserStore();
+  // const userStore = useUserStore();
   const { eventBus } = useUtilities();
-  const { handleUpdateMemberAvatar } = useContentInput();
+  // const { handleUpdateMemberAvatar } = useContentInput();
   const { t } = useI18n({ useScope: "global" });
   const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
 
-  const imageRef = ref();
-  const imagePath = ref(null);
+  // const imageRef = ref();
+  // const imagePath = ref(null);
 
   const form = ref();
   const initialValues = ref({});
@@ -165,17 +115,17 @@
   const { onDialogCancel, dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
-  function onImageUpload() {
-    imageRef.value.pickFiles();
-  }
+  // function onImageUpload() {
+  //   imageRef.value.pickFiles();
+  // }
 
-  function uploadImage() {
-    handleUpdateMemberAvatar(imagePath.value);
-  }
+  // function uploadImage() {
+  //   handleUpdateMemberAvatar(imagePath.value);
+  // }
 
-  const avatar = computed(() => {
-    return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
-  });
+  // const avatar = computed(() => {
+  //   return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
+  // });
 
   onMounted(() => {
     eventBus.on("ProfileSettingDialog", () => {
