@@ -71,10 +71,6 @@
     return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
   });
 
-  // const computePath = computed(() => {
-  //   return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
-  // });
-
   const logout = () => {
     userStore.LogOut();
     LocalStorage.set(STORAGE_KEYS.IsLogOn, false);

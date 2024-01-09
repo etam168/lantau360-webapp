@@ -51,17 +51,17 @@
     { name: "info", label: t("home.info") }
   ]);
 
-  const directoryData = computed(() => {
-    return homeDirectories.value.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 1) && directory.status === 1;
-    });
-  });
+  const directoryData = computed(() =>
+    homeDirectories.value.filter(
+      (dir: Directory) => isNthBitSet(dir.displayMask, 1) && dir.status === 1
+    )
+  );
 
-  const infoData = computed(() => {
-    return homeDirectories.value.filter((directory: Directory) => {
-      return isNthBitSet(directory.displayMask, 2) && directory.status === 1;
-    });
-  });
+  const infoData = computed(() =>
+    homeDirectories.value.filter(
+      (dir: Directory) => isNthBitSet(dir.displayMask, 2) && dir.status === 1
+    )
+  );
 
   function handleSearchDialog(value: any) {
     $q.dialog({

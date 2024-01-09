@@ -41,7 +41,6 @@
   // Quasar Import
   import { useQuasar } from "quasar";
 
-  // interface files
   // .ts file
   import { BLOB_URL } from "@/constants";
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -60,7 +59,6 @@
       required: false
     }
   });
-  // type GroupKeys = keyof CategoryTypes;
 
   const { groupBy, translate } = useUtilities();
   const favItems = computed(() => props.listItems as BusinessView[] | SiteView[]);
@@ -94,7 +92,7 @@
       const response = await axios.get(`Directory/${item.directoryId}`);
       directoryData = response.data; // Assuming the API response contains the data you need
     } catch (error) {
-      console.error("Error fetching directory data:", error);
+      // console.error("Error fetching directory data:", error);
       // Handle error scenarios here
       return;
     }

@@ -8,6 +8,7 @@ const httpMethods = {
   update: (path: any, item: any, config?: any) => axios.put(path, item, config),
   delete: (path: any) => axios.delete(path)
 };
+
 export function useUtilities() {
   const $q = useQuasar();
 
@@ -83,22 +84,6 @@ export function useUtilities() {
     }
   }
 
-  function formatPrice(price: number) {
-    if (price <= 0) {
-      return "0";
-    } else if (price >= 1e8) {
-      return (price / 1e6).toFixed(0).replace(/\.0$/, "") + " M";
-    } else if (price >= 1e7) {
-      return (price / 1e6).toFixed(1).replace(/\.0$/, "") + " M";
-    } else if (price >= 1e6 && price < 1e7) {
-      return (price / 1e6).toFixed(2).replace(/\.0$/, "") + " M";
-    } else if (price >= 1e3) {
-      return (price / 1e3).toFixed(1).replace(/\.0$/, "") + " K";
-    } else {
-      return price.toFixed(2).replace(/\.0$/, "");
-    }
-  }
-
   function navigateToWhatsApp(whatsAppNumber: string) {
     const whatsappURL = `https://wa.me/${whatsAppNumber}?text=Hello,%20Welcome%20to%20Lantau360.`;
     window.open(whatsappURL, "_blank");
@@ -115,7 +100,6 @@ export function useUtilities() {
     notify,
     sleep,
     translate,
-    formatPrice,
     translateAltName,
     httpMethods
   };
