@@ -17,11 +17,13 @@ import pinia from "@/stores";
 import router from "@/router";
 import veeValidate from "./vee-validate/index";
 
+import Vue3QTelInput from "vue3-q-tel-input";
+import "vue3-q-tel-input/dist/vue3-q-tel-input.esm.css";
 // Types
 import type { App } from "vue";
 
 export function registerPlugins(app: App) {
-  app.use(i18n).use(Quasar, quasarUserOptions).use(pinia).use(veeValidate);
+  app.use(i18n).use(Quasar, quasarUserOptions).use(pinia).use(veeValidate).use(Vue3QTelInput);
 
   // const userStore = useUserStore(pinia);
   // if (userStore.token) {

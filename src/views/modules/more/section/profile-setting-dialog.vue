@@ -17,7 +17,11 @@
         <q-page>
           <q-card flat>
             <q-card-section horizontal class="q-ma-lg col-12">
-              <q-card-section class="bg-secondary text-center col-4" style="border-radius: 10px">
+              <div class="col-4"></div>
+              <q-card-section
+                class="bg-secondary text-center col-4 item-center"
+                style="border-radius: 10px"
+              >
                 <q-btn round padding="1px" color="black">
                   <q-avatar size="128px">
                     <q-img :ratio="1" :src="avatar">
@@ -61,62 +65,60 @@
                   {{ $t("more.profileSetting.subtitle") }}
                 </div>
               </q-card-section>
-
-              <q-card-section class="col-8 q-pa-none">
-                <Form
-                  ref="form"
-                  class="full-height"
-                  :initial-values="initialValues"
-                  :validation-schema="schema"
-                  @submit="onSubmit"
-                  v-slot="{ meta }"
-                >
-                  <q-item class="q-pr-none">
-                    <q-item-section v-for="(field, index) in fullNameFields" :key="index">
-                      <vee-input
-                        :name="field.name"
-                        :maxlength="field.maxlength"
-                        stack-label
-                        :label="$t(field.label)"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item class="q-pr-none">
-                    <q-item-section>
-                      <vee-input
-                        name="email"
-                        :maxlength="20"
-                        disable
-                        icon="email"
-                        :label="$t('auth.register.email')"
-                      />
-                    </q-item-section>
-                  </q-item>
-
-                  <q-item class="q-pr-none">
-                    <q-item-section>
-                      <vee-q-tel-input
-                        name="phone"
-                        defaultIso="HK"
-                        :labelText="$t('auth.register.phone')"
-                        :label="$t('auth.register.phone')"
-                        use-icon
-                    /></q-item-section>
-                  </q-item>
-
-                  <q-card-actions class="q-pl-md q-pr-none">
-                    <q-space />
-                    <app-button
-                      class="full-width"
-                      :label="$t('more.profileSetting.save')"
-                      color="primary"
-                      type="submit"
-                      size="md"
+            </q-card-section>
+            <q-card-section class="q-ma-lg col-12">
+              <Form
+                ref="form"
+                class="full-height"
+                :initial-values="initialValues"
+                :validation-schema="schema"
+                @submit="onSubmit"
+                v-slot="{ meta }"
+              >
+                <q-item class="q-pr-none">
+                  <q-item-section v-for="(field, index) in fullNameFields" :key="index">
+                    <vee-input
+                      :name="field.name"
+                      :maxlength="field.maxlength"
+                      stack-label
+                      :label="$t(field.label)"
                     />
-                  </q-card-actions>
-                </Form>
-              </q-card-section>
+                  </q-item-section>
+                </q-item>
+
+                <q-item class="q-pr-none">
+                  <q-item-section>
+                    <vee-input
+                      name="email"
+                      :maxlength="20"
+                      disable
+                      icon="email"
+                      :label="$t('auth.register.email')"
+                    />
+                  </q-item-section>
+                </q-item>
+
+                <q-item class="q-pr-none">
+                  <q-item-section>
+                    <vee-q-tel-input
+                      name="phone"
+                      defaultIso="HK"
+                      :labelText="$t('auth.register.phone')"
+                      :label="$t('auth.register.phone')"
+                  /></q-item-section>
+                </q-item>
+
+                <q-card-actions class="q-pl-md q-pr-none">
+                  <q-space />
+                  <app-button
+                    class="full-width"
+                    :label="$t('more.profileSetting.save')"
+                    color="primary"
+                    type="submit"
+                    size="md"
+                  />
+                </q-card-actions>
+              </Form>
             </q-card-section>
           </q-card>
         </q-page>

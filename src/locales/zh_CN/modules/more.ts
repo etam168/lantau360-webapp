@@ -11,8 +11,8 @@ export default {
   loginName: "登录名",
 
   profileSetting: {
-    title: "Profile",
-    subtitle: "Choose how you appear in the app",
+    title: "轮廓",
+    subtitle: "选择您在应用程序中的显示方式",
     save: "Save"
   }
 };

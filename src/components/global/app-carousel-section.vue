@@ -33,7 +33,7 @@
     <q-img src="@/assets/img/home-bg.webp" :ratio="aspectRatio()" />
   </div>
 
-  <q-separator size="8px" color="primary" />
+  <!-- <q-separator size="8px" color="primary" /> -->
 </template>
 
 <script setup lang="ts">
