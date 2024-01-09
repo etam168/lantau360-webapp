@@ -70,7 +70,7 @@
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
-  import { NONE, STORAGE_KEYS } from "@/constants";
+  import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
 
   type GroupKeys = keyof CategoryTypes;
 
@@ -119,7 +119,10 @@
     const key: GroupKeys = props.groupBykey as GroupKeys;
     return groupBy(
       props.directoryItemsList.filter(item => item[key] !== undefined),
-      (item: any) => item[key] as string | number // Make sure the key exists on the item
+      (item: any) =>
+        translate(item[key], props.groupBykey == AREA_NAME ? item.areaNameAlt : item.meta, key) as
+          | string
+          | number // Make sure the key exists on the item
     );
   });
 

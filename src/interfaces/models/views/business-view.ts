@@ -4,4 +4,5 @@ export interface BusinessView extends Business {
   areaName: string;
   directoryName: string;
   directoryMeta: Record<string, any>;
+  areaNameAlt: Record<string, any>;
 }
