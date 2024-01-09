@@ -10,7 +10,8 @@ const Renderer = {
   VOUCHER: "voucher",
   EVENT: "event",
   NEWS: "news",
-  NOTICE: "notice"
+  NOTICE: "notice",
+  RESTAURANT: "restaurant"
 };
 
 export default Renderer;

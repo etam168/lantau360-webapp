@@ -106,25 +106,26 @@
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
         loading.value = true;
-        try {
-          await userStore.loginByUserName({
-            userName: values.userName,
-            password: values.password
+
+        await axios
+          .post("/MemberAuth/SignIn", { login: values.userName, password: values.password })
+          .then(async response => {
+            userStore.SetUserInfo(response.data);
+            $q.notify({
+              message: "Login successful",
+              type: "positive",
+              color: "primary"
+            });
+            LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
+            emits("close-dialog");
+          })
+          .catch(err => {
+            $q.notify({
+              message: err.message,
+              type: "negative"
+            });
+            loading.value = false;
           });
-          $q.notify({
-            message: "Login successful",
-            type: "positive",
-            color: "primary"
-          });
-          LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-          emits("close-dialog");
-        } catch (e: any) {
-          $q.notify({
-            message: e.message,
-            type: "negative"
-          });
-          loading.value = false;
-        }
       }
     });
   }

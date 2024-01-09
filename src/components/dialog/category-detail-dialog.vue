@@ -23,6 +23,7 @@
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
           <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
+          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -47,6 +48,8 @@
   import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
+  import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
+
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   type DirectoryTypes = Directory | CommunityDirectory;
@@ -101,6 +104,8 @@
         return RENDERER.TIMETABLE;
       case props.directory.meta.template == TEMPLATE.TAXI.value:
         return RENDERER.TAXI;
+      case props.directory.meta.template == TEMPLATE.RESTAURANT.value:
+        return RENDERER.RESTAURANT;
       case [1, 3].includes(props.directory.groupId) &&
         props.directory.meta.template == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
