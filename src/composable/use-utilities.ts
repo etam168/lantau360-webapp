@@ -64,7 +64,14 @@ export function useUtilities() {
       }
       grouped[key].push(item);
     });
-    return Object.keys(grouped).map(key => ({
+
+    const sortedGroups = Object.keys(grouped).sort((a, b) => {
+      if (a === "null") return 1;
+      if (b === "null") return -1;
+      return a.localeCompare(b);
+    });
+
+    return sortedGroups.map(key => ({
       group: (key === "null" ? t("home.other") : key) as K,
       items: grouped[key as K] // Type assertion here
     }));
