@@ -160,6 +160,6 @@
       favoriteItems.value = localFavItem;
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-    eventBus.emit("favoriteUpdated");
+    eventBus.emit("favoriteUpdated", props.item);
   };
 </script>

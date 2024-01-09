@@ -68,10 +68,13 @@
     { name: "business", label: t("favourite.tabItems.business") }
   ]);
 
-  eventBus.on("favoriteUpdated", () => {
-    siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as SiteView[];
-    businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ??
-      []) as BusinessView[];
+  eventBus.on("favoriteUpdated", item => {
+    if ("siteId" in item) {
+      siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as SiteView[];
+    } else if ("businessId" in item) {
+      businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ??
+        []) as BusinessView[];
+    }
   });
 
   try {

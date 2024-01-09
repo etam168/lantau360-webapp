@@ -87,6 +87,6 @@
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
 
-    eventBus.emit("favoriteUpdated");
+    eventBus.emit("favoriteUpdated", props.item);
   };
 </script>

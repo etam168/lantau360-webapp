@@ -148,6 +148,7 @@
   });
 
   eventBus.on("favoriteUpdated", () => {
+    debugger;
     favoriteItems.value = getFavItem();
   });
 
