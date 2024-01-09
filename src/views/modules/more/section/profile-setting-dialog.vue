@@ -17,13 +17,13 @@
         <q-page>
           <q-card flat>
             <q-card-section horizontal class="q-ma-lg col-12">
-              <div class="col-4"></div>
+              <div class="col-3"></div>
               <q-card-section
-                class="bg-secondary text-center col-4 item-center"
+                class="bg-secondary text-center col-6 item-center"
                 style="border-radius: 10px"
               >
                 <q-btn round padding="1px" color="black">
-                  <q-avatar size="128px">
+                  <q-avatar size="108px">
                     <q-img :ratio="1" :src="avatar">
                       <template v-slot:error>
                         <q-img :src="PLACEHOLDER_AVATAR" />
@@ -66,7 +66,8 @@
                 </div>
               </q-card-section>
             </q-card-section>
-            <q-card-section class="q-ma-lg col-12">
+
+            <q-card-section class="q-ma-none q-pa-none">
               <Form
                 ref="form"
                 class="full-height"
@@ -75,7 +76,7 @@
                 @submit="onSubmit"
                 v-slot="{ meta }"
               >
-                <q-item class="q-pr-none">
+                <q-item>
                   <q-item-section v-for="(field, index) in fullNameFields" :key="index">
                     <vee-input
                       :name="field.name"
@@ -86,7 +87,7 @@
                   </q-item-section>
                 </q-item>
 
-                <q-item class="q-pr-none">
+                <q-item>
                   <q-item-section>
                     <vee-input
                       name="email"
@@ -98,7 +99,7 @@
                   </q-item-section>
                 </q-item>
 
-                <q-item class="q-pr-none">
+                <q-item>
                   <q-item-section>
                     <vee-q-tel-input
                       name="phone"
@@ -108,7 +109,7 @@
                   /></q-item-section>
                 </q-item>
 
-                <q-card-actions class="q-pl-md q-pr-none">
+                <q-card-actions>
                   <q-space />
                   <app-button
                     class="full-width"
