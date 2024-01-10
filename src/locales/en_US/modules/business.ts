@@ -6,7 +6,7 @@ export default {
     voucher: "Vouchers",
     directory: "Business Directory",
     aboutUs: "About Us",
-    map: "Map"
+    info: "info"
   },
   subtitle1: "Address",
   openTime: "Open Time",

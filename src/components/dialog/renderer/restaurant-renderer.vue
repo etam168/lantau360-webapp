@@ -2,9 +2,15 @@
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <q-item-section top>
-        <q-item-label v-if="businessItem.subtitle1" class="text-caption text-weight-light"
+        <!-- <q-item-label v-if="businessItem.subtitle1" class="text-caption text-weight-light"
           >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-        </q-item-label>
+        </q-item-label> -->
+        <app-tab-select
+          :tab-items="tabItems"
+          :current-tab="tab"
+          @update:currentTab="setTab"
+          class="q-pl-none"
+        />
       </q-item-section>
 
       <q-item-section side>
@@ -50,14 +56,6 @@
         </q-item-label>
       </q-item-section>
     </q-item>
-    <q-item>
-      <app-tab-select
-        class="justify-center"
-        :tab-items="tabItems"
-        :current-tab="tab"
-        @update:currentTab="setTab"
-      />
-    </q-item>
 
     <q-item>
       <app-tab-panels v-model="tab">
@@ -65,7 +63,7 @@
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
 
-        <q-tab-panel name="map" class="q-pa-none">
+        <q-tab-panel name="info" class="q-pa-none">
           <div>
             <q-img
               class="q-ml-lg"
@@ -125,7 +123,7 @@
   const tab = ref("aboutUs");
   const tabItems = ref([
     { name: "aboutUs", label: t("business.tabItems.aboutUs") },
-    { name: "map", label: t("business.tabItems.map") }
+    { name: "info", label: t("business.tabItems.info") }
   ]);
 
   const businessItem = computed(() => props?.item as BusinessView);

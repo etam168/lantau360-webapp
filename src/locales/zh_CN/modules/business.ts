@@ -6,7 +6,7 @@ export default {
     voucher: "优惠券",
     directory: "商务指南",
     aboutUs: "关于我们",
-    map: "地图"
+    info: "信息"
   },
   subtitle1: "地址"
 };
