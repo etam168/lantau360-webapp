@@ -69,7 +69,7 @@
               class="q-ml-lg"
               :ratio="16 / 9"
               width="900px"
-              src="img/img_map.png"
+              :src="imagePath()"
               @click="openGoogleMaps"
             ></q-img>
             <q-item class="q-ma-md">
@@ -105,7 +105,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
@@ -169,6 +169,10 @@
   const favoriteItems = ref(
     (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
   );
+
+  const imagePath = (path: string) => {
+    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
+  };
 
   const isFavourite = computed(() => {
     const favItem = favoriteItems.value;
