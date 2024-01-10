@@ -40,7 +40,6 @@
         {{ $t("auth.login.forgotPassword") }}
       </a>
       <q-space />
-      <app-button-localization dense color="dark" />
     </q-card-actions>
   </Form>
 </template>

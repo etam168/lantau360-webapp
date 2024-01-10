@@ -17,7 +17,10 @@
         <q-page>
           <q-card flat>
             <profile-setting-image />
-            <q-card-section class="q-ma-none q-pa-none">
+            <q-card-section
+              class="q-ma-none q-pa-none"
+              style="display: flex; justify-content: center; align-items: center"
+            >
               <Form
                 ref="form"
                 class="full-height"
@@ -25,6 +28,7 @@
                 :validation-schema="schema"
                 @submit="onSubmit"
                 v-slot="{ meta }"
+                :style="authStyle"
               >
                 <q-item>
                   <q-item-section v-for="(field, index) in fullNameFields" :key="index">
@@ -80,14 +84,13 @@
 <script setup lang="ts">
   import { Form } from "vee-validate";
   import * as yup from "yup";
+  const $q = useQuasar();
 
   // Interface files
   import { Member } from "@/interfaces/models/entities/member";
 
   // .ts files
-  // import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { useMoreInput } from "../use-more-input";
-  // import { useUserStore } from "@/stores/user";
   import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({
@@ -97,14 +100,11 @@
     }
   });
 
-  // const userStore = useUserStore();
+  const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
+
   const { eventBus } = useUtilities();
-  // const { handleUpdateMemberAvatar } = useContentInput();
   const { t } = useI18n({ useScope: "global" });
   const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
-
-  // const imageRef = ref();
-  // const imagePath = ref(null);
 
   const form = ref();
   const initialValues = ref({});
@@ -114,18 +114,6 @@
 
   const { onDialogCancel, dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
-
-  // function onImageUpload() {
-  //   imageRef.value.pickFiles();
-  // }
-
-  // function uploadImage() {
-  //   handleUpdateMemberAvatar(imagePath.value);
-  // }
-
-  // const avatar = computed(() => {
-  //   return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
-  // });
 
   onMounted(() => {
     eventBus.on("ProfileSettingDialog", () => {

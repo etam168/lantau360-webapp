@@ -6,11 +6,12 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    full-width
   >
-    <q-layout view="lHh lpr lFf" style="max-width: 1024px">
+    <q-layout view="lHh lpr lFf">
       <q-page-container>
-        <q-page class="column items-center justify-center">
-          <q-card class="bg-secondary q-pt-none q-pa-lg" :style="authStyle">
+        <q-page class="column justify-center q-pa-none q-ma-none">
+          <q-card class="bg-secondary q-pt-none q-pa-sm">
             <q-btn icon="close" flat round dense v-close-popup class="q-mr-md" />
 
             <q-card-section align="center" class="q-pa-none">
@@ -67,14 +68,10 @@
 
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
 
-  const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
   const isDialogVisible = ref();
   const tab = ref(props.tabValue);
   const userName = ref();
-  const authStyle = computed(() =>
-    $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "90%" }
-  );
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
