@@ -69,7 +69,7 @@
               class="q-ml-lg"
               :ratio="16 / 9"
               width="900px"
-              :src="imagePath()"
+              :src="imagePath(businessItem.imagePath)"
               @click="openGoogleMaps"
             ></q-img>
             <q-item class="q-ma-md">
