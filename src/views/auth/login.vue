@@ -7,7 +7,7 @@
     @submit="onSubmit"
     v-slot="{ meta, values }"
   >
-    <q-card-section class="bg-secondary">
+    <q-card-section class="bg-secondary q-ma-none q-pa-xs">
       <vee-input
         :label="$t('auth.login.userName')"
         icon="mdi-account"
