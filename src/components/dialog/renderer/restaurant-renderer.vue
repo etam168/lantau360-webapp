@@ -66,7 +66,33 @@
         </q-tab-panel>
 
         <q-tab-panel name="map" class="q-pa-none">
-          <q-img class="q-ml-lg" :ratio="16 / 9" width="900px" src="img/img_map.png"></q-img>
+          <div>
+            <q-img
+              class="q-ml-lg"
+              :ratio="16 / 9"
+              width="900px"
+              src="img/img_map.png"
+              @click="openGoogleMaps"
+            ></q-img>
+            <q-item class="q-ma-md">
+              <q-item-section>
+                <q-item-label class="text-weight-medium text-h6">Address</q-item-label>
+                <q-item-label class="text-caption"
+                  >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+            <q-item class="q-mx-md">
+              <q-item-section>
+                <q-item-label class="text-weight-medium text-h6">Phone</q-item-label>
+                <q-item-label class="text-caption"
+                  >{{
+                    businessItem.contactWhatsApp == undefined ? "N/A" : businessItem.contactWhatsApp
+                  }}
+                </q-item-label>
+              </q-item-section>
+            </q-item>
+          </div>
         </q-tab-panel>
       </app-tab-panels>
     </q-item>
@@ -186,5 +212,22 @@
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
     eventBus.emit("favoriteUpdated", props.item);
+  };
+
+  const openGoogleMaps = () => {
+    // Check if the business has an address
+    if (businessItem.value.subtitle1) {
+      // Replace spaces in the address with '+'
+      const address = encodeURIComponent(businessItem.value.subtitle1);
+
+      // Construct the Google Maps URL with the address
+      const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
+
+      // Open a new tab or window with the Google Maps URL
+      window.open(mapsURL, "_blank");
+    } else {
+      // Handle cases where the business address is not available
+      console.error("Address not available");
+    }
   };
 </script>
