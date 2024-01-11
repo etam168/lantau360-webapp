@@ -86,7 +86,6 @@
       favoriteItems.value = localFavItem;
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    debugger;
     eventBus.emit("favoriteUpdated", props.item);
   };
 </script>

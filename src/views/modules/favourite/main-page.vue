@@ -41,7 +41,7 @@
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
 
-  const { eventBus } = useUtilities();
+  const { eventBus, isSmallScreen } = useUtilities();
 
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<BusinessView[]>(
@@ -52,9 +52,8 @@
   const error = ref<string | null>(null);
 
   const { t } = useI18n({ useScope: "global" });
-  const isSmallScreen = computed(() => $q.screen.lt.sm);
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
-  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs" : ""));
+  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("location");

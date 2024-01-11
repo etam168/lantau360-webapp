@@ -13,6 +13,7 @@ const httpMethods = {
 export function useUtilities() {
   const $q = useQuasar();
   const { t } = i18n.global;
+  const isSmallScreen = computed(() => $q.screen.lt.sm);
 
   function aspectRatio() {
     switch ($q.screen.name) {
@@ -105,6 +106,7 @@ export function useUtilities() {
     groupBy,
     isNotEmptyArray,
     isNthBitSet,
+    isSmallScreen,
     navigateToWhatsApp,
     notify,
     sleep,

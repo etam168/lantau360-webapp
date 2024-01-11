@@ -52,7 +52,6 @@
   }
 
   function uploadImage() {
-    debugger;
     handleUpdateMemberAvatar(imagePath.value);
   }
 

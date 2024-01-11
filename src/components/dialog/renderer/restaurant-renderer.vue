@@ -229,7 +229,7 @@
       window.open(mapsURL, "_blank");
     } else {
       // Handle cases where the business address is not available
-      console.error("Address not available");
+      // console.error("Address not available");
     }
   };
 </script>

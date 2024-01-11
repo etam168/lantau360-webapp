@@ -44,11 +44,10 @@
 
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
-  const { eventBus } = useUtilities();
+  const { eventBus, isSmallScreen } = useUtilities();
 
-  const isSmallScreen = computed(() => $q.screen.lt.sm);
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
-  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs" : ""));
+  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directoriesData = ref<Directory[]>([]);
