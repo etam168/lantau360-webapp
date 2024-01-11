@@ -35,7 +35,6 @@
                     <vee-input
                       :name="field.name"
                       :maxlength="field.maxlength"
-                      stack-label
                       :label="$t(field.label)"
                     />
                   </q-item-section>
@@ -81,6 +80,7 @@
     </q-layout>
   </q-dialog>
 </template>
+
 <script setup lang="ts">
   import { Form } from "vee-validate";
   import * as yup from "yup";

@@ -25,12 +25,12 @@ export function useMoreInput() {
   const memberInput = ref<Member>(newInput());
 
   function setMemberInput(val: Member) {
-    //areaInput.value = extend(true, {}, val);
     memberInput.value.email = val.email;
     memberInput.value.firstName = val.firstName;
     memberInput.value.lastName = val.lastName;
     memberInput.value.phone = val.phone;
   }
+
   function setValidatedInput(values: any) {
     memberInput.value.email = values.email;
     memberInput.value.firstName = values.firstName;

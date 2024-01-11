@@ -2,34 +2,22 @@
   <q-page>
     <app-carousel-section :data="advertisements" />
 
-    <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
-      <div class="column items-center" style="width: 100%">
-        <q-toolbar-title class="text-center text-h6 q-pa-none">{{
-          $t("business.title")
-        }}</q-toolbar-title>
+    <q-banner :inline-actions="!isSmallScreen">
+      <q-toolbar-title :class="titleClass">{{ $t("business.title") }}</q-toolbar-title>
+
+      <template v-slot:action>
         <app-tab-select
-          class="justify-center"
+          :class="tabSelectClass"
           :tab-items="tabItems"
           :current-tab="tab"
           @update:currentTab="setTab"
         />
-      </div>
-    </q-toolbar>
-
-    <q-toolbar class="q-mt-sm" v-else>
-      <q-toolbar-title>{{ $t("business.title") }}</q-toolbar-title>
-      <div>
-        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
-      </div>
-    </q-toolbar>
+      </template>
+    </q-banner>
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
         <app-marketing-item-list :items="businessPromotion" />
-      </q-tab-panel>
-
-      <q-tab-panel name="voucher" class="q-pa-sm">
-        <app-marketing-item-list :items="businessVoucher" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -57,6 +45,10 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { eventBus } = useUtilities();
+
+  const isSmallScreen = computed(() => $q.screen.lt.sm);
+  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
+  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs" : ""));
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directoriesData = ref<Directory[]>([]);
@@ -116,10 +108,10 @@
     advertisements.value = advertisementResponse.data;
     businessPromotion.value = promotionsResponse.data.data;
     businessVoucher.value = voucherResponse.data.data;
-    const sortedDirectories = useSorted(directoriesResponse.data, (a, b) => a.rank - b.rank).value;
-    directoriesData.value = sortedDirectories.filter((directory: Directory) => {
-      return directory.status === 1;
-    });
+    directoriesData.value = useSorted(
+      directoriesResponse.data,
+      (a, b) => a.rank - b.rank
+    ).value.filter((dir: Directory) => dir.status === 1);
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

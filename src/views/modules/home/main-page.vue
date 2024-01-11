@@ -52,15 +52,11 @@
   ]);
 
   const directoryData = computed(() =>
-    homeDirectories.value.filter(
-      (dir: Directory) => isNthBitSet(dir.displayMask, 1) && dir.status === 1
-    )
+    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 1))
   );
 
   const infoData = computed(() =>
-    homeDirectories.value.filter(
-      (dir: Directory) => isNthBitSet(dir.displayMask, 2) && dir.status === 1
-    )
+    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
   );
 
   function handleSearchDialog(value: any) {
@@ -103,7 +99,10 @@
 
     attractions.value = attractionResponse.data;
     weatherData.value = weatherResponse.data;
-    homeDirectories.value = useSorted(homeDirectoryResponse.data, (a, b) => a.rank - b.rank).value;
+    homeDirectories.value = useSorted(
+      homeDirectoryResponse.data,
+      (a, b) => a.rank - b.rank
+    ).value.filter((dir: Directory) => dir.status === 1);
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
