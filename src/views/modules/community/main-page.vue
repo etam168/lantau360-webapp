@@ -2,26 +2,18 @@
   <q-page>
     <app-carousel-section :data="advertisements" />
 
-    <q-toolbar class="q-mt-sm" v-if="$q.screen.lt.sm">
-      <div class="column items-center" style="width: 100%">
-        <q-toolbar-title class="text-center text-h6 q-pa-none">{{
-          $t("community.title")
-        }}</q-toolbar-title>
+    <q-banner :inline-actions="!isSmallScreen">
+      <q-toolbar-title :class="titleClass">{{ $t("community.title") }}</q-toolbar-title>
+
+      <template v-slot:action>
         <app-tab-select
-          class="justify-center"
+          :class="tabSelectClass"
           :tab-items="tabItems"
           :current-tab="tab"
           @update:currentTab="setTab"
         />
-      </div>
-    </q-toolbar>
-
-    <q-toolbar class="q-mt-sm" v-else>
-      <q-toolbar-title>{{ $t("community.title") }}</q-toolbar-title>
-      <div>
-        <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
-      </div>
-    </q-toolbar>
+      </template>
+    </q-banner>
 
     <app-tab-panels v-model="tab">
       <q-tab-panel name="news">
@@ -67,6 +59,10 @@
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
   const $q = useQuasar();
+
+  const isSmallScreen = computed(() => $q.screen.lt.sm);
+  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
+  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs" : ""));
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("events");
