@@ -22,4 +22,5 @@ export interface BaseDirectoryItem {
   modifiedAt: Date;
   modifiedBy: number;
   meta: Record<string, any>;
+  rank: number;
 }

@@ -6,7 +6,6 @@ export interface Advertisement extends BaseDirectoryItem {
   advertisementName: string;
   openTime: string;
   closeTime: string;
-  rank: number;
   titleAlt: Record<string, any>;
   expiryDate: Date;
 }

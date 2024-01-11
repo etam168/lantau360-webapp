@@ -128,7 +128,22 @@
 
   // Function to filter groupedArray by group name
   const filterGroupedArray = (groupName: string) => {
-    return groupedArray.value.filter(group => group.group === groupName).pop()?.items;
+    const groupItems = groupedArray.value
+      .filter(group => group.group === groupName)
+      .pop()
+      ?.items?.sort((a, b) => a.rank - b.rank);
+
+    const shouldSort =
+      groupItems &&
+      groupItems.length > 0 &&
+      groupItems[0]?.rank !== undefined &&
+      groupItems[0]?.rank !== null;
+
+    if (shouldSort) {
+      groupItems.sort((a, b) => a.rank - b.rank);
+    }
+
+    return groupItems;
   };
 
   // Define tabItems as a computed property
