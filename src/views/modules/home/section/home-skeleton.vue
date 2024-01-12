@@ -1,6 +1,8 @@
 <template>
   <div>
-    <q-skeleton height="566.55px" width="100%" />
+    <q-responsive :ratio="aspectRatio()">
+      <q-skeleton height="566.55px" width="100%" />
+    </q-responsive>
     <q-item class="q-ma-md q-pa-none">
       <q-skeleton height="125.6px" width="100%" />
     </q-item>
@@ -27,4 +29,6 @@
   </div>
 </template>
 
-<script setup lang="ts"></script>
+<script setup lang="ts">
+  const { aspectRatio } = useUtilities();
+</script>

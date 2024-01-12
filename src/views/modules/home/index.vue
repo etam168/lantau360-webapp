@@ -7,7 +7,7 @@
 
     <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
-      <div><home-skeleton /></div>
+      <home-skeleton />
     </template>
   </suspense>
 </template>
