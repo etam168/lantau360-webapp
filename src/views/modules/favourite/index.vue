@@ -7,12 +7,13 @@
 
     <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
-      <div class="row justify-center items-center" style="height: 500px"></div>
+      <favourite-skeleton />
     </template>
   </suspense>
 </template>
 
 <script setup lang="ts">
+  import favouriteSkeleton from "./favourite-skeleton.vue";
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500

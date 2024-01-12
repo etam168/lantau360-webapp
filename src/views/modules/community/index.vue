@@ -2,7 +2,7 @@
   <suspense>
     <!-- "default" slot belongs to Suspense -->
     <template #default>
-      <community-skeleton />
+      <main-page />
     </template>
 
     <!-- "fallback" slot belongs to Suspense -->
@@ -14,8 +14,8 @@
 
 <script setup lang="ts">
   import communitySkeleton from "./community-skeleton.vue";
-  // const MainPage = defineAsyncComponent({
-  //   loader: () => import("./main-page.vue"),
-  //   delay: 500
-  // });
+  const MainPage = defineAsyncComponent({
+    loader: () => import("./main-page.vue"),
+    delay: 500
+  });
 </script>
