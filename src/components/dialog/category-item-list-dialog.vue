@@ -15,7 +15,7 @@
       <q-page-container>
         <q-page>
           <!-- Check if groupBykey exists -->
-          <template v-if="groupMenuStatus">
+          <template v-if="groupBykey">
             <app-tab-select
               :tab-items="tabItems"
               :current-tab="tab"
@@ -52,8 +52,6 @@
 </template>
 
 <script setup lang="ts">
-  import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
-
   // interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
@@ -61,10 +59,9 @@
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { TabItem } from "@/interfaces/tab-item";
 
-  // .ts file
+  // others import
+  import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
-
-  type GroupKeys = keyof CategoryTypes;
 
   const props = defineProps({
     directoryItemsList: {
@@ -85,22 +82,19 @@
 
   const favoriteItems = ref<any>(getFavItem() || []);
 
-  const template = computed(() => props.directory.meta?.template);
-  const directoryItems = computed(() => props.directoryItemsList);
-
   const dialogTitle = computed(() =>
     translate(props.directory.directoryName, props.directory.meta, "directoryName")
   );
 
-  const groupBykey = computed(() => {
-    return props.directory.meta?.groupByKey ?? null;
-  });
-
-  const groupMenuStatus = computed(() => groupBykey.value != NONE && groupBykey.value != null);
+  const template = computed(() => props.directory.meta?.template);
+  const directoryItems = computed(() => props.directoryItemsList);
+  const groupBykey = computed(() =>
+    props.directory.meta?.groupByKey !== NONE ? props.directory.meta?.groupByKey : null
+  );
 
   const groupedArray = computed(() => {
     // Use the groupKey prop with a fallback to "directoryName"
-    const key: GroupKeys = groupBykey.value as GroupKeys;
+    const key = groupBykey.value as keyof CategoryTypes;
     return groupBy(
       props.directoryItemsList.filter(item => item[key] !== undefined),
       (item: any) =>
@@ -159,15 +153,12 @@
   }
 
   function getFavItem() {
-    if (props.directoryItemsList.length === 0) {
-      return [];
-    }
-
-    const firstItem = props.directoryItemsList[0];
     switch (true) {
-      case "siteId" in firstItem:
+      case props.directoryItemsList.length === 0:
+        return [];
+      case "siteId" in props.directoryItemsList[0]:
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      case "businessId" in firstItem:
+      case "businessId" in props.directoryItemsList[0]:
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
       default:
         return [];

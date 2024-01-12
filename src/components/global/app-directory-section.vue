@@ -46,8 +46,6 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        // const groupBy: string | null = item.meta?.groupByKey ?? null;
-
         $q.dialog({
           component: defineAsyncComponent(
             () => import("@/components/dialog/category-item-list-dialog.vue")
