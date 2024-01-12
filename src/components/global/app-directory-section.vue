@@ -20,14 +20,10 @@
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
 
-  const props = defineProps({
+  defineProps({
     data: {
       type: Object as PropType<DirectoryTypes[]>,
       required: true
-    },
-    rightSlotAction: {
-      type: Number,
-      default: 0
     }
   });
 
@@ -50,7 +46,7 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        const groupBy: string | null = item.meta?.groupByKey ?? null;
+        // const groupBy: string | null = item.meta?.groupByKey ?? null;
 
         $q.dialog({
           component: defineAsyncComponent(
@@ -58,9 +54,8 @@
           ),
           componentProps: {
             directoryItemsList: response.data,
-            directory: item,
-            groupBykey: groupBy,
-            rightSlotAction: props.rightSlotAction
+            directory: item
+            // groupBykey: groupBy
           }
         });
       } else {
