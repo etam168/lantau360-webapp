@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-  import homeSkeleton from "./section/home-skeleton.vue";
+  import HomeSkeleton from "./section/home-skeleton.vue";
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500
