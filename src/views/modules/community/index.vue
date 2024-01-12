@@ -2,19 +2,20 @@
   <suspense>
     <!-- "default" slot belongs to Suspense -->
     <template #default>
-      <main-page />
+      <community-skeleton />
     </template>
 
     <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
-      <div class="row justify-center items-center" style="height: 500px"></div>
+      <community-skeleton />
     </template>
   </suspense>
 </template>
 
 <script setup lang="ts">
-  const MainPage = defineAsyncComponent({
-    loader: () => import("./main-page.vue"),
-    delay: 500
-  });
+  import communitySkeleton from "./community-skeleton.vue";
+  // const MainPage = defineAsyncComponent({
+  //   loader: () => import("./main-page.vue"),
+  //   delay: 500
+  // });
 </script>

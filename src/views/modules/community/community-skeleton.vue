@@ -14,6 +14,7 @@
         <q-toolbar v-bind="$attrs" class="q-gutter-x-sm" :class="tabSelectClass">
           <q-skeleton type="QChip" />
           <q-skeleton type="QChip" />
+          <q-skeleton type="QChip" />
         </q-toolbar>
       </template>
     </q-banner>
@@ -25,11 +26,6 @@
             <q-responsive :ratio="aspectRatio()">
               <q-skeleton height="170px" square animation="fade" />
             </q-responsive>
-
-            <div class="row items-center q-pa-sm">
-              <q-icon name="location_on" color="grey-4" class="q-mr-sm" size="xs" />
-              <q-skeleton type="text" width="40%" />
-            </div>
 
             <div class="q-pa-sm"><q-skeleton type="QBtn" bordered width="100%" /></div>
           </q-card>
