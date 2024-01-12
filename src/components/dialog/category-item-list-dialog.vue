@@ -75,10 +75,6 @@
       type: Object as PropType<DirectoryTypes>,
       required: true
     }
-    // groupBykey: {
-    //   type: String,
-    //   required: false
-    // }
   });
 
   const { dialogRef } = useDialogPluginComponent();
@@ -100,15 +96,15 @@
     return props.directory.meta?.groupByKey ?? null;
   });
 
-  const groupMenuStatus = computed(() => props.groupBykey != NONE && props.groupBykey != null);
+  const groupMenuStatus = computed(() => groupBykey.value != NONE && groupBykey.value != null);
 
   const groupedArray = computed(() => {
     // Use the groupKey prop with a fallback to "directoryName"
-    const key: GroupKeys = groupBykey as GroupKeys;
+    const key: GroupKeys = groupBykey.value as GroupKeys;
     return groupBy(
       props.directoryItemsList.filter(item => item[key] !== undefined),
       (item: any) =>
-        translate(item[key], groupBykey == AREA_NAME ? item.areaNameAlt : item.meta, key) as
+        translate(item[key], groupBykey.value == AREA_NAME ? item.areaNameAlt : item.meta, key) as
           | string
           | number // Make sure the key exists on the item
     );
