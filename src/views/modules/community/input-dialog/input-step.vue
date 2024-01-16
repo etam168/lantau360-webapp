@@ -93,9 +93,6 @@
   function onOKClick(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
-        alert(
-          JSON.stringify(`Memeber Id = ${values.memberId}   Directory id  ${values.directoryId}`)
-        );
         setValidateInput(values, description.value);
         await createPosting();
         emits("close-dialog");

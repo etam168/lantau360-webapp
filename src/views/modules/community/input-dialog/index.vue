@@ -9,8 +9,6 @@
     :model-value="isDialogVisible"
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-      <app-dialog-bar :barTitle="$t('posting.dialoge.create')" />
-
       <q-page-container>
         <q-card class="bg-transparent">
           <!--  Input content -->

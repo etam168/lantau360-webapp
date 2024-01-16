@@ -5,8 +5,6 @@
     v-model="value"
     stack-label
     standout="bg-grey-7 text-white"
-    :error="!!errorMessage"
-    :error-message="errorMessage"
     :default-country="defaultIso"
     :dropdown-options="options"
     @country="selectedCountry"
@@ -36,7 +34,7 @@
     }
   });
 
-  const { errorMessage, value: untypedValue } = useField(() => props.name);
+  const { value: untypedValue } = useField(() => props.name);
   const value = untypedValue as Ref<string | number | null>;
   const country = ref();
 

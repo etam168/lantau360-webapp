@@ -105,6 +105,8 @@
 
   const renderer = computed(() => {
     switch (true) {
+      case "postingId" in props.item:
+        return RENDERER.POSTING;
       case props.directory.meta.template == TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
       case props.directory.meta.template == TEMPLATE.TAXI.value:
@@ -117,8 +119,6 @@
       case [2, 4].includes(props.directory.groupId) &&
         props.directory.meta.template == TEMPLATE.DEFAULT.value:
         return RENDERER.BUSINESS;
-      case "postingId" in props.item:
-        return RENDERER.POSTING;
       default:
         return "";
     }

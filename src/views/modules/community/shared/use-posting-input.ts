@@ -155,6 +155,8 @@ export function usePostingInput() {
 
   async function uploadImages() {
     const images = [];
+    if (postingImages?.value?.galleryImages == null || postingImages.value.galleryImages.length < 1)
+      return;
 
     for (const [index, gImage] of postingImages.value.galleryImages.entries()) {
       if (gImage.image != null)

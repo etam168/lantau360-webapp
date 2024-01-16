@@ -47,7 +47,7 @@
           </template>
         </q-page>
       </q-page-container>
-      <div style="position: relative">
+      <div v-if="directory?.communityDirectoryId == 2" style="position: relative">
         <q-btn
           fab
           icon="add"
