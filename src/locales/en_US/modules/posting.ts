@@ -61,7 +61,8 @@ export default {
 
   dialoge: {
     edit: "Edit Post Dialogue",
-    create: "Create Post Dialogue"
+    create: "Create Post Dialogue",
+    save: "Save"
   },
   message: {
     created: "New Post Created.",

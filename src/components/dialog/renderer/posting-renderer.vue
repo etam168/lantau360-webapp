@@ -30,7 +30,6 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
-  const directoryItem = ref<PostingView>({} as PostingView);
   const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
@@ -43,7 +42,7 @@
   const postingItem = computed(() => props?.item as PostingView);
 
   const translatedContent: any = ref(
-    translate(directoryItem.value.description, directoryItem.value.meta, "description")
+    translate(postingItem.value.description, postingItem.value.meta, "description")
   );
 
   const navigateToPhone = () => {

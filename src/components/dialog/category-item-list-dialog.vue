@@ -47,7 +47,7 @@
           </template>
         </q-page>
       </q-page-container>
-      <div v-if="directory?.communityDirectoryId == 2" style="position: relative">
+      <div v-if="fabVisibleStatus" style="position: relative">
         <q-btn
           fab
           icon="add"
@@ -89,9 +89,12 @@
 
   const $q = useQuasar();
   const isDialogVisible = ref();
-
   const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
   const favoriteItems = ref<any>(getFavItem() || []);
+
+  const fabVisibleStatus = computed(() => {
+    return (props.directory as CommunityDirectory)?.communityDirectoryId == 2;
+  });
 
   const dialogTitle = computed(() =>
     translate(props.directory.directoryName, props.directory.meta, "directoryName")

@@ -7,17 +7,30 @@
     @submit="onOKClick"
     v-slot="{ meta, values }"
   >
-    <q-card class="full-height" style="display: grid; grid-template-rows: 1fr auto">
+    <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         {{ setFormValues(values) }}
         <q-card-section>
-          <images-section />
+          <q-item>
+            <q-item-section>
+              <images-section />
+            </q-item-section>
+
+            <q-item-section>
+              <toggle-status name="status" />
+            </q-item-section>
+          </q-item>
           <input-content />
         </q-card-section>
       </q-scroll-area>
 
       <q-card-actions class="q-pa-md">
-        <app-button class="full-width" :label="$t('action.save')" type="submit" />
+        <app-button
+          color="primary"
+          class="full-width"
+          :label="$t('posting.dialoge.save')"
+          type="submit"
+        />
       </q-card-actions>
     </q-card>
   </Form>

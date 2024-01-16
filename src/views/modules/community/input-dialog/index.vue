@@ -10,30 +10,10 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-page-container>
-        <q-card class="bg-transparent">
-          <!--  Input content -->
-          <q-splitter
-            v-model="splitterModel"
-            unit="px"
-            :limits="[INPUT_PANE_WIDTH, INPUT_PANE_WIDTH]"
-            class="bg-transparent"
-            style="height: calc(100vh - 32px)"
-            v-if="$q.screen.gt.sm"
-          >
-            <template v-slot:before>
-              <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
-            </template>
-
-            <template v-slot:after>
-              <!-- <app-editor /> -->
-            </template>
-          </q-splitter>
-
-          <q-card-section v-else style="height: calc(100vh - 32px)">
-            <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
-          </q-card-section>
-          <!-- End of input content -->
-        </q-card>
+        <q-card-section style="height: calc(100vh - 32px)">
+          <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
+        </q-card-section>
+        <!-- End of input content -->
       </q-page-container>
     </q-layout>
   </q-dialog>
@@ -58,10 +38,6 @@
       required: true
     }
   });
-
-  const INPUT_PANE_WIDTH = 480;
-
-  const splitterModel = ref(INPUT_PANE_WIDTH);
 
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
