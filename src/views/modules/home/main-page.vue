@@ -92,16 +92,16 @@
 
   try {
     const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
-      axios.get(URL.ATTRACTION_URL),
+      axios.get<SiteView[]>(URL.ATTRACTION_URL),
       axios.get(URL.WEATHER_URL),
-      axios.get(URL.SITE_DIRECTORIES)
+      axios.get<Directory[]>(URL.SITE_DIRECTORIES)
     ]);
 
-    attractions.value = attractionResponse.data;
+    attractions.value = attractionResponse.data.sort((a, b) => a.siteId - b.siteId);
     weatherData.value = weatherResponse.data;
     homeDirectories.value = useSorted(
       homeDirectoryResponse.data,
-      (a, b) => a.rank - b.rank
+      (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
     ).value.filter((dir: Directory) => dir.status === 1);
   } catch (err) {
     if (err instanceof AxiosError) {

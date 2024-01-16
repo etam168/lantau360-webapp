@@ -101,7 +101,7 @@
         axios.get(URL.ADVERTISEMENT),
         axios.get(URL.BUSINESS_PROMOTION),
         axios.get(URL.BUSINESS_VOUCHER),
-        axios.get(URL.BUSINESS_DIRECTORIES)
+        axios.get<Directory[]>(URL.BUSINESS_DIRECTORIES)
       ]);
 
     advertisements.value = advertisementResponse.data;
@@ -109,9 +109,12 @@
     businessVoucher.value = voucherResponse.data.data;
     directoriesData.value = useSorted(
       directoriesResponse.data,
-      (a, b) => a.rank - b.rank
+      (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
     ).value.filter((dir: Directory) => dir.status === 1);
-    businessPromotion.value = useSorted(businessPromotion.value, (a, b) => a.rank - b.rank).value;
+    businessPromotion.value = useSorted(
+      businessPromotion.value,
+      (a, b) => a.rank - b.rank || a.businessPromotionId - b.businessPromotionId
+    ).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
