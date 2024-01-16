@@ -111,6 +111,7 @@
       directoriesResponse.data,
       (a, b) => a.rank - b.rank
     ).value.filter((dir: Directory) => dir.status === 1);
+    businessPromotion.value = useSorted(businessPromotion.value, (a, b) => a.rank - b.rank).value;
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
