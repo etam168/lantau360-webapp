@@ -14,7 +14,12 @@
 
       <q-page-container>
         <q-page>
-          <gallery-carousel-image :gallery-images="galleryItems" />
+          <div v-if="galleryItems && galleryItems?.length > 0">
+            <gallery-carousel-image :gallery-images="galleryItems" />
+          </div>
+          <div v-else>
+            <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />
+          </div>
           <advertisement-renderer v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
           <promotion-renderer v-else-if="renderer === RENDERER.PROMOTION" :item="item" />
           <voucher-renderer v-else-if="renderer === RENDERER.VOUCHER" :item="item" />
@@ -32,7 +37,7 @@
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
-  import { URL, RENDERER } from "@/constants";
+  import { URL, RENDERER, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

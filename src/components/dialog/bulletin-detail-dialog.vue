@@ -14,9 +14,12 @@
 
       <q-page-container>
         <q-page>
-          <q-item class="q-items-center q-pa-none">
+          <div v-if="galleryItems && galleryItems?.length > 0">
             <gallery-carousel-image :gallery-images="galleryItems" />
-          </q-item>
+          </div>
+          <div v-else>
+            <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />
+          </div>
 
           <event-renderer v-if="renderer === RENDERER.EVENT" :item="item" />
           <news-renderer v-else-if="renderer === RENDERER.NEWS" :item="item" />
@@ -35,7 +38,7 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { URL, RENDERER } from "@/constants";
+  import { URL, RENDERER, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

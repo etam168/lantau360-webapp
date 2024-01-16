@@ -1,6 +1,7 @@
 // useUtilities.ts
 import { date, EventBus, Notify, useQuasar } from "quasar";
 import i18n from "@/plugins/i18n/i18n";
+import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
 const eventBus = new EventBus();
 const httpMethods = {
@@ -99,6 +100,10 @@ export function useUtilities() {
     window.open(whatsappURL, "_blank");
   }
 
+  function getImageURL(relativePath: any) {
+    return relativePath ? `${BLOB_URL}/${relativePath}` : PLACEHOLDER_THUMBNAIL;
+  }
+
   return {
     aspectRatio,
     dateFormatter,
@@ -112,6 +117,7 @@ export function useUtilities() {
     sleep,
     translate,
     translateAltName,
-    httpMethods
+    httpMethods,
+    getImageURL
   };
 }

@@ -14,9 +14,14 @@
 
       <q-page-container>
         <q-page>
-          <q-item v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
-            <gallery-carousel-image :gallery-images="galleryItems" />
-          </q-item>
+          <div v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
+            <div v-if="galleryItems && galleryItems?.length > 0">
+              <gallery-carousel-image :gallery-images="galleryItems" />
+            </div>
+            <div v-else>
+              <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />
+            </div>
+          </div>
 
           <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
           <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
@@ -39,7 +44,7 @@
   import { Directory } from "@/interfaces/models/entities/directory";
 
   // .ts files
-  import { URL, RENDERER, TEMPLATE } from "@/constants";
+  import { URL, RENDERER, TEMPLATE, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

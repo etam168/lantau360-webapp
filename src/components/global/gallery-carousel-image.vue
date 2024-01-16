@@ -1,69 +1,66 @@
 <template>
-  <div v-if="galleryItems && galleryItems?.length > 0" class="col-12 q-items-center">
-    <q-card bordered flat>
-      <q-responsive :ratio="aspectRatio()">
-        <q-carousel v-model="slide" animated>
-          <q-carousel-slide
-            v-for="(image, index) in galleryItems"
-            :key="index"
-            :name="image.imageId"
-            :img-src="getImageSrc(image.imagePath)"
-            class="q-pa-none"
-          >
-          </q-carousel-slide>
-        </q-carousel>
-      </q-responsive>
-    </q-card>
+  <q-card bordered flat>
+    <q-responsive :ratio="16 / 9">
+      <q-carousel v-model="slide" animated class="bg-thumbnail">
+        <q-carousel-slide
+          v-for="(item, index) in galleryImages"
+          :key="index"
+          :name="item.imageId"
+          :img-src="getImageURL(item.imagePath)"
+        >
+        </q-carousel-slide>
+      </q-carousel>
+    </q-responsive>
 
-    <q-card flat>
-      <q-card-section horizontal class="q-py-none">
-        <q-btn
-          size="lg"
-          square
-          padding="none"
-          icon="chevron_left"
-          @click="scrollLeft"
-          color="grey-9"
-          text-color="white"
-        />
+    <q-card-actions class="bg-grey-4">
+      <q-btn class="q-mr-sm" round dense icon="chevron_left" color="grey-9" @click="scrollLeft" />
+      <q-separator vertical color="white" />
 
+      <q-toolbar-title class="q-pa-none q-ma-none">
         <q-virtual-scroll
           ref="virtualScroll"
-          class="bg-grey-4 full-width justify-center"
-          :items="galleryItems"
-          :virtual-scroll-item-size="84"
+          class="bg-grey-4 justify-center"
+          :items="galleryImages"
+          virtual-scroll-slice-size="6"
+          virtual-scroll-item-size="84"
           virtual-scroll-horizontal
           @virtual-scroll="onVirtualScroll"
           v-slot="{ item: row }"
         >
-          <div class="q-pa-none" style="width: 84px">
-            <property-thumbnail-image :rowData="row" @on-image="showImage(row)" />
-          </div>
-        </q-virtual-scroll>
+          <q-avatar square size="96px">
+            <q-img
+              fit="cover"
+              :ratio="1"
+              class="cursor-pointer"
+              :placeholder-src="PLACEHOLDER_THUMBNAIL"
+              :src="getImageSrc(row.imagePath)"
+              @click="showImage(row)"
+            >
+              <template #error>
+                <q-img :src="PLACEHOLDER_THUMBNAIL" />
+              </template>
 
-        <q-btn
-          size="lg"
-          square
-          padding="none"
-          icon="chevron_right"
-          @click="scrollRight"
-          color="grey-9"
-          text-color="white"
-        />
-      </q-card-section>
-    </q-card>
-  </div>
+              <template #loading>
+                <div class="absolute-full flex flex-center bg-gray text-white">
+                  <q-inner-loading showing class="spinner-card row justify-center items-center">
+                    <q-spinner size="50px" color="primary" />
+                  </q-inner-loading>
+                </div>
+              </template>
+            </q-img>
+          </q-avatar>
+        </q-virtual-scroll>
+      </q-toolbar-title>
+
+      <q-separator vertical color="white" />
+      <q-btn class="q-ml-sm" round dense icon="chevron_right" color="grey-9" @click="scrollRight" />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-
-  // .ts file
-  import { BLOB_URL } from "@/constants";
-
-  // Custom Components
-  import PropertyThumbnailImage from "./property-thumbnail-image.vue";
 
   const props = defineProps({
     galleryImages: {
@@ -72,42 +69,26 @@
     }
   });
 
-  // const slide = ref(0);
-  const { aspectRatio } = useUtilities();
-  const slide = ref(props.galleryImages[0]?.imageId);
+  const { getImageURL } = useUtilities();
+  const galleryImages = computed(() => props.galleryImages);
 
-  const galleryItems = ref<GalleryImageType[]>([]);
+  const slide = ref(galleryImages.value[0]?.imageId);
 
-  const virtualScroll = ref(null);
+  const virtualScroll = ref();
   const virtualScrollIndex = ref(0);
+  const testArray: GalleryImageType[] = [];
 
-  const computePath = (path: string) => {
-    return `${BLOB_URL}/${path}`;
-  };
-  watch(
-    () => props.galleryImages,
-    () => {
-      galleryItems.value = props.galleryImages;
-      slide.value = props.galleryImages[0]?.imageId ?? 0;
-    },
-    { deep: true }
-  );
+  for (let i = 0; i < galleryImages.value.length; i++) {
+    testArray.push(galleryImages.value[i]);
+  }
 
-  const getImageSrc = (path: string) => {
-    const baseURL = "https://lantau360storage.blob.core.windows.net";
-
-    // Check if the image path starts with the specified URL
-    if (path.startsWith(baseURL)) {
-      // If it does, use the image path directly
-      return path;
-    } else {
-      // If it doesn't, compute the path using the computePath function
-      return computePath(path);
-    }
-  };
+  function getImageSrc(imagePath: any) {
+    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
+  }
 
   function showImage(row: any) {
     slide.value = row.imageId;
+    virtualScrollIndex.value = galleryImages.value.findIndex(i => i.imageId == row.imageId);
   }
 
   function onVirtualScroll(details: any) {
@@ -117,32 +98,37 @@
   function scrollLeft() {
     if (virtualScroll.value && virtualScrollIndex.value > 0) {
       virtualScrollIndex.value -= 1;
-
-      (virtualScroll.value as any).scrollTo(virtualScrollIndex.value, "end-force");
-      slide.value = galleryItems.value[virtualScrollIndex.value].imageId ?? 0;
+      virtualScroll.value.scrollTo(virtualScrollIndex.value, "end-force");
+      slide.value = galleryImages.value[virtualScrollIndex.value]?.imageId ?? 0;
     }
   }
 
   function scrollRight() {
-    if (virtualScroll.value && virtualScrollIndex.value < galleryItems.value.length - 1) {
+    if (virtualScroll.value && virtualScrollIndex.value < galleryImages.value.length - 1) {
       virtualScrollIndex.value += 1;
-      (virtualScroll.value as any).scrollTo(virtualScrollIndex.value, "start-force");
+      virtualScroll.value.scrollTo(virtualScrollIndex.value, "start-force");
 
-      slide.value = galleryItems.value[virtualScrollIndex.value].imageId ?? 0;
+      slide.value = galleryImages.value[virtualScrollIndex.value].imageId ?? 0;
     }
   }
-</script>
 
-<style scoped>
-  .bg-thumbnail {
-    background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAJYAAACWBAMAAADOL2zRAAAAG1BMVEXMzMyWlpaqqqq3t7fFxcW+vr6xsbGjo6OcnJyLKnDGAAAACXBIWXMAAA7EAAAOxAGVKw4bAAABAElEQVRoge3SMW+DMBiE4YsxJqMJtHOTITPeOsLQnaodGImEUMZEkZhRUqn92f0MaTubtfeMh/QGHANEREREREREREREtIJJ0xbH299kp8l8FaGtLdTQ19HjofxZlJ0m1+eBKZcikd9PWtXC5DoDotRO04B9YOvFIXmXLy2jEbiqE6Df7DTleA5socLqvEFVxtJyrpZFWz/pHM2CVte0lS8g2eDe6prOyqPglhzROL+Xye4tmT4WvRcQ2/m81p+/rdguOi8Hc5L/8Qk4vhZzy08DduGt9eVQyP2qoTM1zi0/uf4hvBWf5c77e69Gf798y08L7j0RERERERERERH9P99ZpSVRivB/rgAAAABJRU5ErkJggg==");
-    background-size: cover;
-    background-position: center center;
+  onMounted(() => {
+    initvirtualScroll();
+  });
+
+  onUpdated(() => {
+    initvirtualScroll();
+  });
+
+  function initvirtualScroll() {
+    virtualScroll.value.reset();
+
+    testArray.splice(0, testArray.length);
+    props.galleryImages.forEach(e => {
+      testArray.push(e);
+    });
+
+    virtualScroll.value.refresh(0);
+    virtualScroll.value.scrollTo(0, "start-force");
   }
-  .custom-caption {
-    text-align: left;
-    padding: 12px;
-    color: white;
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-</style>
+</script>
