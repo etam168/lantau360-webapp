@@ -8,38 +8,36 @@
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
   >
-    <q-card class="bg-grey-4">
-      <q-layout view="hHh lpR fFf">
-        <app-dialog-bar :barTitle="$t('posting.dialoge.create')" />
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <app-dialog-bar :barTitle="$t('posting.dialoge.create')" />
 
-        <q-page-container>
-          <q-card class="bg-transparent">
-            <!--  Input content -->
-            <q-splitter
-              v-model="splitterModel"
-              unit="px"
-              :limits="[INPUT_PANE_WIDTH, INPUT_PANE_WIDTH]"
-              class="bg-transparent"
-              style="height: calc(100vh - 32px)"
-              v-if="$q.screen.gt.sm"
-            >
-              <template v-slot:before>
-                <input-step @close-dialog="closeDialog" />
-              </template>
+      <q-page-container>
+        <q-card class="bg-transparent">
+          <!--  Input content -->
+          <q-splitter
+            v-model="splitterModel"
+            unit="px"
+            :limits="[INPUT_PANE_WIDTH, INPUT_PANE_WIDTH]"
+            class="bg-transparent"
+            style="height: calc(100vh - 32px)"
+            v-if="$q.screen.gt.sm"
+          >
+            <template v-slot:before>
+              <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
+            </template>
 
-              <template v-slot:after>
-                <app-editor />
-              </template>
-            </q-splitter>
+            <template v-slot:after>
+              <!-- <app-editor /> -->
+            </template>
+          </q-splitter>
 
-            <q-card-section v-else style="height: calc(100vh - 32px)">
-              <input-step @close-dialog="closeDialog" />
-            </q-card-section>
-            <!-- End of input content -->
-          </q-card>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+          <q-card-section v-else style="height: calc(100vh - 32px)">
+            <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
+          </q-card-section>
+          <!-- End of input content -->
+        </q-card>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -55,6 +53,13 @@
   import InputStep from "./input-step.vue";
 
   defineEmits([...useDialogPluginComponent.emits]);
+
+  defineProps({
+    directoryId: {
+      type: Number,
+      required: true
+    }
+  });
 
   const INPUT_PANE_WIDTH = 480;
 

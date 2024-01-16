@@ -44,6 +44,8 @@
 
   const { t } = useI18n({ useScope: "global" });
 
+  const props = defineProps({ directoryId: { type: Number, required: true } });
+
   const form = ref();
   const initialValues = ref({});
   const formValues = ref();
@@ -91,6 +93,9 @@
   function onOKClick(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
+        alert(
+          JSON.stringify(`Memeber Id = ${values.memberId}   Directory id  ${values.directoryId}`)
+        );
         setValidateInput(values, description.value);
         await createPosting();
         emits("close-dialog");
@@ -98,10 +103,11 @@
     });
   }
 
-  onMounted(() => {
+  onBeforeMount(() => {
     postingImage.value = postingImages.value;
 
     initialValues.value = {
+      directoryId: props.directoryId,
       postingId: 0,
       title: "",
       status: 1,
@@ -112,7 +118,6 @@
       subtitle2: "",
       subtitle3: "",
       description: "",
-      directoryId: 0,
       latitude: 22,
       longitude: 112,
       contactWhatsApp: "",

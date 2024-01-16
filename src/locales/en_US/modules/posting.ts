@@ -21,16 +21,22 @@ export default {
   columns: {
     id: "ID.",
     postingName: "Post Name",
+    postingNameHk: "Posting Name (HK)",
+    postingNameCn: "Posting Name (CN)",
     whatsApp: "WhatsApp",
     phone: "Phone",
     contactOther: "Contact Other",
     locationName: "Location Name",
     buttonText: "Button Text",
-    title: "Title",
+    titleHk: "Title (繁)",
+    titleCn: "Title (简)",
+    subtitle1Hk: "Subtitle1 (繁)",
+    subtitle2Hk: "Subtitle2 (繁)",
+    subtitle3Hk: "Subtitle3 (繁)",
+    subtitle1Cn: "Subtitle1 (简)",
+    subtitle2Cn: "Subtitle1 (简)",
+    subtitle3Cn: "Subtitle1 (简)",
     numberPlate: "Number Plate",
-    subtitle1: "Address 1",
-    subtitle2: "Address 2",
-    subtitle3: "Address 3",
     selectLanguage: "Select Language",
     displayMask: "Display Mask",
     description: "Description",
@@ -45,7 +51,8 @@ export default {
     createdAt: "Created At",
     createdBy: "Created By",
     modifiedAt: "Modified At",
-    modifiedBy: "Modified By"
+    modifiedBy: "Modified By",
+    rank: "Rank"
   },
 
   dialoge: {

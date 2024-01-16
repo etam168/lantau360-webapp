@@ -60,11 +60,11 @@
 
       <q-item-section v-else-if="(item as PostingView).postingId">
         <q-item-label>
-          {{ (item as PostingView).memberFirstName + " " + (item as PostingView).memberLastName }}
+          {{ translate((item as PostingView).postingName, item.meta, "postingName") }}
         </q-item-label>
 
         <q-item-label>
-          {{ (item as PostingView).memberEmail }}
+          {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
       </q-item-section>
 

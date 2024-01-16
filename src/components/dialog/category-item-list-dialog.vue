@@ -47,6 +47,15 @@
           </template>
         </q-page>
       </q-page-container>
+      <div style="position: relative">
+        <q-btn
+          fab
+          icon="add"
+          color="primary"
+          style="position: absolute; bottom: 18px; right: 18px"
+          @click="createPosting"
+        />
+      </div>
     </q-layout>
   </q-dialog>
 </template>
@@ -62,6 +71,7 @@
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   const props = defineProps({
     directoryItemsList: {
@@ -80,6 +90,7 @@
   const $q = useQuasar();
   const isDialogVisible = ref();
 
+  const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
   const favoriteItems = ref<any>(getFavItem() || []);
 
   const dialogTitle = computed(() =>
@@ -87,7 +98,6 @@
   );
 
   const template = computed(() => props.directory.meta?.template);
-  const directoryItems = computed(() => props.directoryItemsList);
   const groupBykey = computed(() =>
     props.directory.meta?.groupByKey !== NONE ? props.directory.meta?.groupByKey : null
   );
@@ -96,7 +106,7 @@
     // Use the groupKey prop with a fallback to "directoryName"
     const key = groupBykey.value as keyof CategoryTypes;
     return groupBy(
-      props.directoryItemsList.filter(item => item[key] !== undefined),
+      directoryItems.value.filter(item => item[key] !== undefined),
       (item: any) =>
         translate(item[key], groupBykey.value == AREA_NAME ? item.areaNameAlt : item.meta, key) as
           | string
@@ -128,6 +138,10 @@
     eventBus.on("CategoryItemListDialog", () => {
       isDialogVisible.value = false;
     });
+
+    eventBus.on("ItemListUpdate", (updatedList: CategoryTypes[]) => {
+      directoryItems.value = updatedList;
+    });
   });
 
   eventBus.on("favoriteUpdated", () => {
@@ -152,13 +166,24 @@
     });
   }
 
+  function createPosting() {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/views/modules/community/input-dialog/index.vue")
+      ),
+      componentProps: {
+        directoryId: (props.directory as CommunityDirectory).communityDirectoryId
+      }
+    });
+  }
+
   function getFavItem() {
     switch (true) {
-      case props.directoryItemsList.length === 0:
+      case directoryItems.value.length === 0:
         return [];
-      case "siteId" in props.directoryItemsList[0]:
+      case "siteId" in directoryItems.value[0]:
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      case "businessId" in props.directoryItemsList[0]:
+      case "businessId" in directoryItems.value[0]:
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
       default:
         return [];

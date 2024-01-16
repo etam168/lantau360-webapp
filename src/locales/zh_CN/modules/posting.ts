@@ -34,6 +34,10 @@ export default {
     subtitle1: "地址",
     subtitle2: "標題2",
     subtitle3: "標題3",
+
+    subtitle1Hk: "地址（繁体）",
+    subtitle1Cn: "地址（简体）",
+
     displayMask: "顯示暗碼",
     description: "簡介",
     directoryId: "目錄編號",

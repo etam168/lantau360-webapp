@@ -9,7 +9,7 @@ import { PostingImage } from "@/interfaces/models/entities/posting-image";
 import i18n from "@/plugins/i18n/i18n";
 
 // .ts files
-import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+import { BLOB_URL, PLACEHOLDER_THUMBNAIL, URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { useUtilities } from "@/composable/use-utilities";
 
@@ -57,6 +57,7 @@ export function usePostingInput() {
     postingInput.value.longitude = values.longitude;
 
     postingInput.value.status = values.status;
+    postingInput.value.memberId = values.memberId;
 
     postingInput.value.meta ??= {};
     postingInput.value.meta.i18n ??= {};
@@ -128,6 +129,7 @@ export function usePostingInput() {
         const postingId = response.data.postingId;
         postingInput.value.postingId = postingId;
         await uploadImages();
+        getPostingsByDirectoryId();
         const successMessage = t("posting.message.updated");
         successCallback(successMessage);
       })
@@ -135,6 +137,21 @@ export function usePostingInput() {
         notify(errors.message, "negative");
       });
   }
+
+  const getPostingsByDirectoryId = async () => {
+    try {
+      const directoryListUrl = `${URL.DIRECTORY_LIST.POSTING}/${postingInput.value.directoryId}`;
+
+      const response = await axios.get(directoryListUrl);
+      if (response.status === 200) {
+        eventBus.emit("ItemListUpdate", response.data);
+      } else {
+        // console.error(`Unexpected response status: ${response.status}`);
+      }
+    } catch (error) {
+      // console.error("Error fetching data: ", error);
+    }
+  };
 
   async function uploadImages() {
     const images = [];
