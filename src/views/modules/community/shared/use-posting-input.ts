@@ -1,7 +1,6 @@
 import axios from "axios";
 
 // Interface files
-import { Description } from "@/interfaces/models/custom-models/description";
 import { Posting } from "@/interfaces/models/entities/posting";
 import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 import { PostingImage } from "@/interfaces/models/entities/posting-image";
@@ -40,42 +39,12 @@ export function usePostingInput() {
   const postingInput = ref<Posting>(newInput());
   const postingImages = ref<PostingImages>({} as PostingImages);
 
-  function setValidateInput(values: any, description: Description) {
-    postingInput.value.postingName = values.postingName;
-    postingInput.value.contactWhatsApp = values.contactWhatsApp;
-    postingInput.value.contactPhone = values.contactPhone;
-    postingInput.value.contactOther = values.contactOther;
-    postingInput.value.buttonText = values.buttonText;
-
+  function setValidateInput(values: any) {
     postingInput.value.title = values.title;
-    postingInput.value.subtitle1 = values.subtitle1;
-    postingInput.value.subtitle2 = values.subtitle2;
-    postingInput.value.subtitle3 = values.subtitle3;
-    postingInput.value.displayMask = values.displayMask;
-    postingInput.value.directoryId = values.directoryId;
-    postingInput.value.latitude = values.latitude;
-    postingInput.value.longitude = values.longitude;
-
     postingInput.value.status = values.status;
     postingInput.value.memberId = values.memberId;
-
-    postingInput.value.meta ??= {};
-    postingInput.value.meta.i18n ??= {};
-
-    postingInput.value.meta.i18n["hk"] ??= {};
-    postingInput.value.meta.i18n["cn"] ??= {};
-    postingInput.value.meta.i18n["hk"]["postingName"] = values.postingNameHk;
-    postingInput.value.meta.i18n["cn"]["postingName"] = values.postingNameCn;
-
-    postingInput.value.meta.i18n["hk"]["title"] = values.titleHk;
-    postingInput.value.meta.i18n["cn"]["title"] = values.titleCn;
-
-    postingInput.value.meta.i18n["hk"]["subtitle1"] = values.subtitle1Hk;
-    postingInput.value.meta.i18n["cn"]["subtitle1"] = values.subtitle1Cn;
-
-    postingInput.value.description = description.enDescription;
-    postingInput.value.meta.i18n["hk"]["description"] = description?.hkDescription ?? "";
-    postingInput.value.meta.i18n["cn"]["description"] = description?.cnDescription ?? "";
+    postingInput.value.description = values.description;
+    postingInput.value.directoryId = values.directoryId;
   }
 
   function successCallback(successMessage: string) {

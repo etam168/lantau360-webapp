@@ -2,23 +2,24 @@
   <q-dialog
     ref="dialogRef"
     @hide="onDialogHide"
-    maximized
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
   >
-    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-      <q-header class="bg-transparent text-dark">
-        <app-dialog-title> {{ item.directoryName }} </app-dialog-title>
-      </q-header>
-      <q-page-container>
-        <q-card-section style="height: calc(100vh - 32px)">
+    <q-card>
+      <q-list dense>
+        <q-item>
+          <q-item-label class="text-h6 q-py-sm"> {{ item.directoryName }}</q-item-label>
+        </q-item>
+        <q-separator style="height: 3px" />
+
+        <q-card-section class="bg-red q-pa-none" style="height: 500px; width: 520px">
           <input-step @close-dialog="closeDialog" :directory-id="item.communityDirectoryId" />
         </q-card-section>
-        <!-- End of input content -->
-      </q-page-container>
-    </q-layout>
+      </q-list>
+    </q-card>
+    <!-- End of input content -->
   </q-dialog>
 </template>
 

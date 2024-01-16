@@ -1,5 +1,5 @@
 <template>
-  <q-card-section class="q-px-none" v-if="imageList.length <= 1">
+  <q-card-section class="q-pa-none" v-if="imageList.length <= 1">
     <image-input @uploadCallback="addGalleryImage" />
   </q-card-section>
 
