@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="16 / 9" :src="imagePath" />
+    <q-img :ratio="11 / 8" :src="imagePath" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">

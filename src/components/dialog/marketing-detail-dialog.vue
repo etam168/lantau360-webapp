@@ -15,7 +15,7 @@
       <q-page-container>
         <q-page>
           <div v-if="galleryItems && galleryItems?.length > 0">
-            <gallery-carousel-image :gallery-images="galleryItems" />
+            <gallery-image-list :image-list="galleryItems" />
           </div>
           <div v-else>
             <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />

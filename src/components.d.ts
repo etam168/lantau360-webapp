@@ -23,6 +23,7 @@ declare module 'vue' {
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
     GalleryCarouselImage: typeof import('./components/global/gallery-carousel-image.vue')['default']
+    GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     PropertyThumbnailImage: typeof import('./components/global/property-thumbnail-image.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
