@@ -19,7 +19,11 @@
             icon="fab fa-whatsapp"
             @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
           />
-          <app-button-rounded icon="favorite" @click="onBtnFavClick" />
+          <app-button-rounded
+            icon="favorite"
+            :text-color="isFavourite ? 'red' : 'white'"
+            @click="onBtnFavClick"
+          />
         </div>
       </q-item-section>
     </q-item>
