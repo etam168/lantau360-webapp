@@ -3,7 +3,7 @@
     <q-item>
       <q-item-section top>
         <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"
-          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
+          >{{ translate(item.title, item.meta, "title") }}
         </q-item-label>
       </q-item-section>
 
