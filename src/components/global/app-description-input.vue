@@ -1,10 +1,7 @@
 <template>
-  <q-card
-    flat
-    :style="$q.screen.gt.sm ? Screen.laptopMaxWidth : Screen.tabletMaxWidth"
-    class="q-mt-md q-ml-md"
-  >
+  <q-card flat>
     <q-toolbar class="bg-primary text-white shadow-2 rounded-borders">
+      Description
       <q-space />
       <q-tabs v-model="tab" shrink stretch>
         <q-tab
@@ -25,7 +22,6 @@
 </template>
 
 <script setup lang="ts">
-  import { Screen } from "@/constants";
   import { Description } from "@/interfaces/models/custom-models/description";
 
   defineProps({

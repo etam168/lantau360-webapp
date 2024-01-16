@@ -155,7 +155,7 @@
   </q-item>
 
   <q-item>
-    <q-item-section>
+    <q-item-section class="bg-red">
       <app-description-input :content-height="contentHeight" />
     </q-item-section>
   </q-item>

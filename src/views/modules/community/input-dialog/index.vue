@@ -9,9 +9,12 @@
     :model-value="isDialogVisible"
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title> {{ item.directoryName }} </app-dialog-title>
+      </q-header>
       <q-page-container>
         <q-card-section style="height: calc(100vh - 32px)">
-          <input-step @close-dialog="closeDialog" :directory-id="directoryId" />
+          <input-step @close-dialog="closeDialog" :directory-id="item.communityDirectoryId" />
         </q-card-section>
         <!-- End of input content -->
       </q-page-container>
@@ -29,12 +32,13 @@
 
   // Custom Components
   import InputStep from "./input-step.vue";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   defineEmits([...useDialogPluginComponent.emits]);
 
   defineProps({
-    directoryId: {
-      type: Number,
+    item: {
+      type: Object as PropType<CommunityDirectory>,
       required: true
     }
   });

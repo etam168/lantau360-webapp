@@ -175,7 +175,7 @@
         () => import("@/views/modules/community/input-dialog/index.vue")
       ),
       componentProps: {
-        directoryId: (props.directory as CommunityDirectory).communityDirectoryId
+        item: props.directory as CommunityDirectory
       }
     });
   }

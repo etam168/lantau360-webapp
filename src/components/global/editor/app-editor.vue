@@ -35,7 +35,7 @@
     <q-separator />
 
     <q-scroll-area :style="{ height: contentHeight }">
-      <editor-content :editor="editor" class="q-pa-sm" />
+      <editor-content :editor="editor" />
     </q-scroll-area>
 
     <q-card-section
@@ -48,7 +48,7 @@
       {{ wordsCount }} words
     </q-card-section>
   </q-card>
-  <editor-content v-else :editor="editor" class="q-pa-sm" />
+  <editor-content v-else :editor="editor" />
 
   <q-file
     ref="imageRef"
