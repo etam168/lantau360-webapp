@@ -1,8 +1,10 @@
 <template>
   <div class="row q-col-gutter-sm">
     <div v-for="(item, index) in itemsWithType" :key="index" class="col-md-3 col-sm-4 col-6">
-      <promotion-card v-if="item.type === PROMOTION.PROMOTION" :item="item.value" />
-      <voucher-card v-else-if="item.type === PROMOTION.VOUCHER" :item="item.value" />
+      <div v-if="item.value.status !== 0">
+        <promotion-card v-if="item.type === PROMOTION.PROMOTION" :item="item.value" />
+        <voucher-card v-else-if="item.type === PROMOTION.VOUCHER" :item="item.value" />
+      </div>
     </div>
   </div>
 </template>

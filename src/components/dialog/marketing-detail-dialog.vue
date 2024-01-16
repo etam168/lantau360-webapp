@@ -116,6 +116,20 @@
         const [galleryResponse] = await Promise.all([axios.get(galleryUrl.value)]);
 
         galleryItems.value = galleryResponse.data;
+
+        let maskValue = 0; // Default maskValue for advertisement
+
+        if ("businessVoucherId" in props.item) {
+          maskValue = 0; // Set maskValue to 2 for businessVoucher
+        } else if ("businessPromotionId" in props.item) {
+          maskValue = 1; // Set maskValue to 3 for businessPromotion
+        } else if ("advertisementId" in props.item) {
+          maskValue = 0; // Set maskValue to 3 for businessPromotion
+        }
+
+        galleryItems.value = galleryItems.value
+          .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
+          .sort((a, b) => a.ranking - b.ranking);
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {

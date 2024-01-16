@@ -111,8 +111,9 @@
       directoriesResponse.data,
       (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
     ).value.filter((dir: Directory) => dir.status === 1);
+
     businessPromotion.value = useSorted(
-      businessPromotion.value,
+      businessPromotion.value.filter((promo: BusinessPromotionView) => promo.status === 1),
       (a, b) => a.rank - b.rank || a.businessPromotionId - b.businessPromotionId
     ).value;
   } catch (err) {

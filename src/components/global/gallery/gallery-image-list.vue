@@ -19,7 +19,7 @@
       <q-toolbar-title class="q-pa-none q-ma-none">
         <q-virtual-scroll
           ref="virtualScroll"
-          class="bg-grey-4 justify-center"
+          class="bg-grey-4"
           :items="imageList"
           virtual-scroll-slice-size="6"
           virtual-scroll-item-size="84"
@@ -28,8 +28,8 @@
           v-slot="{ index, item: row }"
         >
           <q-btn
-            padding="2px"
-            :color="index === virtualScrollIndex ? 'primary' : ''"
+            padding="1px"
+            :color="index === virtualScrollIndex ? 'white' : ''"
             style="cursor: auto"
           >
             <q-avatar square size="84px">
