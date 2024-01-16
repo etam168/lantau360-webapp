@@ -36,6 +36,9 @@
     rowData: {
       type: Object as PropType<GalleryImageType>,
       required: true
+    },
+    index: {
+      type: Number
     }
   });
 

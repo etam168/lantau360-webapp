@@ -25,30 +25,43 @@
           virtual-scroll-item-size="84"
           virtual-scroll-horizontal
           @virtual-scroll="onVirtualScroll"
-          v-slot="{ item: row }"
+          v-slot="{ index, item: row }"
         >
-          <q-avatar square size="96px">
-            <q-img
-              fit="cover"
-              :ratio="1"
-              class="cursor-pointer"
-              :placeholder-src="PLACEHOLDER_THUMBNAIL"
-              :src="getImageURL(row.imagePath)"
-              @click="showImage(row)"
-            >
-              <template #error>
-                <q-img :src="PLACEHOLDER_THUMBNAIL" />
-              </template>
+          <q-btn
+            padding="2px"
+            :color="index === virtualScrollIndex ? 'primary' : ''"
+            style="cursor: auto"
+          >
+            <q-avatar square size="84px">
+              <q-img
+                fit="cover"
+                :ratio="1"
+                class="cursor-pointer"
+                :placeholder-src="PLACEHOLDER_THUMBNAIL"
+                :src="getImageURL(row.imagePath)"
+                @click="showImage(row)"
+                :style="getImgStyle(index)"
+              >
+                <div
+                  v-if="index === virtualScrollIndex"
+                  class="absolute-full text-subtitle2 flex flex-center"
+                  style="background: rgba(0, 0, 0, 0.3)"
+                ></div>
 
-              <template #loading>
-                <div class="absolute-full flex flex-center bg-gray text-white">
-                  <q-inner-loading showing class="spinner-card row justify-center items-center">
-                    <q-spinner size="50px" color="primary" />
-                  </q-inner-loading>
-                </div>
-              </template>
-            </q-img>
-          </q-avatar>
+                <template #error>
+                  <q-img :src="PLACEHOLDER_THUMBNAIL" />
+                </template>
+
+                <template #loading>
+                  <div class="absolute-full flex flex-center bg-gray text-white">
+                    <q-inner-loading showing class="spinner-card row justify-center items-center">
+                      <q-spinner size="50px" color="primary" />
+                    </q-inner-loading>
+                  </div>
+                </template>
+              </q-img>
+            </q-avatar>
+          </q-btn>
         </q-virtual-scroll>
       </q-toolbar-title>
 
@@ -80,6 +93,12 @@
   function showImage(row: any) {
     slide.value = row.imageId;
     virtualScrollIndex.value = imageList.value.findIndex(i => i.imageId == row.imageId);
+  }
+
+  function getImgStyle(index: number) {
+    return index === virtualScrollIndex.value
+      ? "transform: scale(1.3) rotate(3deg); background-color: #888; background-blend-mode: multiply; transition: all 0.7s ease;"
+      : "transition: none;";
   }
 
   function onVirtualScroll(details: any) {
