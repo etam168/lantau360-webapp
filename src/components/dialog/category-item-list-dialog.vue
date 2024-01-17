@@ -73,6 +73,7 @@
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
     directoryItemsList: {
@@ -87,7 +88,7 @@
 
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
-
+  const userStore = useUserStore();
   const $q = useQuasar();
   const isDialogVisible = ref();
   const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
@@ -170,15 +171,37 @@
     });
   }
 
+  // function createPosting() {
+  //   $q.dialog({
+  //     component: defineAsyncComponent(
+  //       () => import("@/views/modules/community/input-dialog/index.vue")
+  //     ),
+  //     componentProps: {
+  //       item: props.directory as CommunityDirectory
+  //     }
+  //   });
+  // }
+
   function createPosting() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/views/modules/community/input-dialog/index.vue")
-      ),
-      componentProps: {
-        item: props.directory as CommunityDirectory
-      }
-    });
+    if (!userStore.isUserLogon()) {
+      // User is not logged in, open the login dialog
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+        componentProps: {
+          tabValue: "login"
+        }
+      });
+    } else {
+      // User is logged in, continue with the regular flow
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/views/modules/community/input-dialog/index.vue")
+        ),
+        componentProps: {
+          item: props.directory as CommunityDirectory
+        }
+      });
+    }
   }
 
   function getFavItem() {
