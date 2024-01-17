@@ -94,7 +94,7 @@
   const favoriteItems = ref<any>(getFavItem() || []);
 
   const fabVisibleStatus = computed(() => {
-    return (props.directory as CommunityDirectory)?.communityDirectoryId == 2;
+    return "communityDirectoryId" in props.directory ? true : false;
   });
 
   const dialogTitle = computed(() =>
