@@ -159,16 +159,29 @@
   }
 
   function onItemClick(item: CategoryTypes) {
+    debugger;
     const directory = "siteId" in item || "businessId" in item ? props.directory : undefined;
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog.vue")
-      ),
-      componentProps: {
-        item: item,
-        directory: directory
-      }
-    });
+    if ("postingId" in item) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/community-detail-dialog.vue")
+        ),
+        componentProps: {
+          item: item,
+          directory: directory
+        }
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
+        componentProps: {
+          item: item,
+          directory: directory
+        }
+      });
+    }
   }
 
   // function createPosting() {
