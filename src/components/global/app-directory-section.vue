@@ -28,6 +28,8 @@
   });
 
   const $q = useQuasar();
+  const { eventBus } = useUtilities();
+  const router = useRouter();
 
   const handleDialog = async (item: DirectoryTypes) => {
     try {
@@ -79,4 +81,9 @@
 
   // Throttle the handleDialog function
   const throttledHandleDialog = throttle(handleDialog, 2000);
+
+  eventBus.on("navigateToMore", () => {
+    // Navigate to "/more" when the event is received
+    router.push("/more");
+  });
 </script>

@@ -16,20 +16,19 @@
 
       <q-card-actions align="right">
         <q-btn flat label="Cancel" color="primary" v-close-popup />
-        <q-btn flat label="OK" color="primary" @click="navigateToMore" />
+        <q-btn flat label="OK" color="primary" @click="handleOk" />
       </q-card-actions>
     </q-card>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-  import { useDialogPluginComponent, useQuasar } from "quasar";
+  import { useDialogPluginComponent } from "quasar";
 
   // .ts files
 
   import { useUtilities } from "@/composable/use-utilities";
 
-  const $q = useQuasar();
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
@@ -45,13 +44,10 @@
     eventBus.emit("DialogStatus", status, "LoginAlertDialog");
   }
 
-  function navigateToMore() {
+  function handleOk() {
     onDialogCancel();
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
-      componentProps: {
-        tabValue: "login"
-      }
-    });
+    setTimeout(() => {
+      eventBus.emit("navigateToMore");
+    }, 1200);
   }
 </script>
