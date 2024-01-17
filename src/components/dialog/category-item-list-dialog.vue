@@ -7,7 +7,7 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px; position: relative">
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -43,16 +43,17 @@
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"
               :template="template"
+              style="position: relative"
             />
           </template>
         </q-page>
       </q-page-container>
-      <div v-if="fabVisibleStatus" style="position: relative">
+      <div v-if="fabVisibleStatus">
         <q-btn
           fab
           icon="add"
           color="primary"
-          style="position: absolute; bottom: 18px; right: 18px"
+          style="position: fixed; bottom: 18px; right: 10px"
           @click="createPosting"
         />
       </div>
