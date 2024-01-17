@@ -97,18 +97,14 @@
     switch (true) {
       case "postingId" in props.item:
         return RENDERER.POSTING;
-      // case props.directory.meta.template == TEMPLATE.TIMETABLE.value:
+      // case props.directory.meta.template == TEMPLATE.NEWS.value:
       //   return RENDERER.TIMETABLE;
-      // case props.directory.meta.template == TEMPLATE.TAXI.value:
+      // case props.directory.meta.template == TEMPLATE.NOTICE.value:
       //   return RENDERER.TAXI;
-      // case props.directory.meta.template == TEMPLATE.RESTAURANT.value:
+      // case props.directory.meta.template == TEMPLATE.EVENT.value:
       //   return RENDERER.RESTAURANT;
       // case [1, 3].includes(props.directory.groupId) &&
       //   props.directory.meta.template == TEMPLATE.DEFAULT.value:
-      //   return RENDERER.SITE;
-      // case [2, 4].includes(props.directory.groupId) &&
-      //   props.directory.meta.template == TEMPLATE.DEFAULT.value:
-      //   return RENDERER.BUSINESS;
       default:
         return "";
     }
