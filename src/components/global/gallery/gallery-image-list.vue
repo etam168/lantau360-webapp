@@ -3,7 +3,7 @@
     <q-responsive :ratio="16 / 9">
       <q-carousel v-model="slide" animated class="bg-thumbnail">
         <q-carousel-slide
-          v-for="(item, index) in imageList"
+          v-for="(item, index) in galleryImages"
           :key="index"
           :name="item.imageId"
           :img-src="getImageURL(item.imagePath)"
@@ -12,27 +12,34 @@
       </q-carousel>
     </q-responsive>
 
-    <q-card-actions class="bg-grey-4">
-      <q-btn class="q-mr-sm" round dense icon="chevron_left" color="grey-9" @click="scrollLeft" />
-      <q-separator vertical color="white" />
+    <q-separator color="white" />
 
-      <q-toolbar-title class="q-pa-none q-ma-none">
+    <q-card-actions class="bg-grey-4 q-py-none">
+      <q-btn
+        v-show="virtualScrollIndex > 0"
+        round
+        dense
+        icon="chevron_left"
+        color="grey-9"
+        @click="scrollLeft"
+      />
+
+      <q-toolbar-title class="q-pa-none q-mx-sm">
         <q-virtual-scroll
           ref="virtualScroll"
           class="bg-grey-4"
-          :items="imageList"
+          :items="galleryImages"
           virtual-scroll-slice-size="6"
           virtual-scroll-item-size="84"
           virtual-scroll-horizontal
           @virtual-scroll="onVirtualScroll"
-          v-slot="{ index, item: row }"
         >
-          <q-btn
-            padding="1px"
-            :color="index === virtualScrollIndex ? 'white' : ''"
-            style="cursor: auto"
-          >
-            <q-avatar square size="84px">
+          <template v-slot:before>
+            <q-separator vertical color="white" />
+          </template>
+
+          <template v-slot="{ item: row, index }">
+            <q-avatar square size="84px" :style="getImgStyle(index)">
               <q-img
                 fit="cover"
                 :ratio="1"
@@ -40,13 +47,8 @@
                 :placeholder-src="PLACEHOLDER_THUMBNAIL"
                 :src="getImageURL(row.imagePath)"
                 @click="showImage(row)"
-                :style="getImgStyle(index)"
               >
-                <div
-                  v-if="index === virtualScrollIndex"
-                  class="absolute-full text-subtitle2 flex flex-center"
-                  style="background: rgba(0, 0, 0, 0.3)"
-                ></div>
+                <div v-if="index === virtualScrollIndex" class="absolute-full flex flex-center" />
 
                 <template #error>
                   <q-img :src="PLACEHOLDER_THUMBNAIL" />
@@ -61,13 +63,23 @@
                 </template>
               </q-img>
             </q-avatar>
-          </q-btn>
+
+            <q-separator vertical color="white" />
+          </template>
         </q-virtual-scroll>
       </q-toolbar-title>
 
-      <q-separator vertical color="white" />
-      <q-btn class="q-ml-sm" round dense icon="chevron_right" color="grey-9" @click="scrollRight" />
+      <q-btn
+        v-show="virtualScrollIndex < galleryImages.length - 1"
+        round
+        dense
+        icon="chevron_right"
+        color="grey-9"
+        @click="scrollRight"
+      />
     </q-card-actions>
+
+    <q-separator color="white" />
   </q-card>
 </template>
 
@@ -75,6 +87,7 @@
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
+  const { getImageURL } = useUtilities();
   const props = defineProps({
     imageList: {
       type: Object as PropType<GalleryImageType[]>,
@@ -82,22 +95,15 @@
     }
   });
 
-  const { getImageURL } = useUtilities();
-  const imageList = computed(() => props.imageList);
-
-  const slide = ref(imageList.value[0]?.imageId);
+  const galleryImages = computed(() => props.imageList);
+  const slide = ref(galleryImages.value[0]?.imageId);
 
   const virtualScroll = ref();
   const virtualScrollIndex = ref(0);
 
-  function showImage(row: any) {
-    slide.value = row.imageId;
-    virtualScrollIndex.value = imageList.value.findIndex(i => i.imageId == row.imageId);
-  }
-
   function getImgStyle(index: number) {
     return index === virtualScrollIndex.value
-      ? "transform: scale(1.3) rotate(3deg); background-color: #888; background-blend-mode: multiply; transition: all 0.7s ease;"
+      ? "transform: scale(1.08); background-color: #888; background-blend-mode: multiply; transition: all 0.7s ease;"
       : "transition: none;";
   }
 
@@ -109,17 +115,22 @@
     if (virtualScroll.value && virtualScrollIndex.value > 0) {
       virtualScrollIndex.value -= 1;
       virtualScroll.value.scrollTo(virtualScrollIndex.value, "end-force");
-      slide.value = imageList.value[virtualScrollIndex.value]?.imageId ?? 0;
+      slide.value = galleryImages.value[virtualScrollIndex.value]?.imageId ?? 0;
     }
   }
 
   function scrollRight() {
-    if (virtualScroll.value && virtualScrollIndex.value < imageList.value.length - 1) {
+    if (virtualScroll.value && virtualScrollIndex.value < galleryImages.value.length - 1) {
       virtualScrollIndex.value += 1;
       virtualScroll.value.scrollTo(virtualScrollIndex.value, "start-force");
 
-      slide.value = imageList.value[virtualScrollIndex.value].imageId ?? 0;
+      slide.value = galleryImages.value[virtualScrollIndex.value].imageId ?? 0;
     }
+  }
+
+  function showImage(row: any) {
+    slide.value = row.imageId;
+    virtualScrollIndex.value = galleryImages.value.findIndex(i => i.imageId == row.imageId);
   }
 
   onMounted(() => {
