@@ -46,13 +46,9 @@
           </template>
         </q-page>
       </q-page-container>
-      <q-btn
-        fab
-        icon="add"
-        color="primary"
-        style="position: fixed; bottom: 18px; right: 10px"
-        @click="createPosting"
-      />
+      <q-page-sticky position="bottom-right" :offset="[300, 20]">
+        <q-btn round color="primary" icon="add" @click="createPosting" />
+      </q-page-sticky>
     </q-layout>
   </q-dialog>
 </template>
@@ -159,11 +155,11 @@
   function createPosting() {
     if (!userStore.isUserLogon()) {
       // User is not logged in, open the login dialog
+
       $q.dialog({
-        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
-        componentProps: {
-          tabValue: "login"
-        }
+        component: defineAsyncComponent(
+          () => import("@/views/modules/community/login-alert-dialog.vue")
+        )
       });
     } else {
       // User is logged in, continue with the regular flow
