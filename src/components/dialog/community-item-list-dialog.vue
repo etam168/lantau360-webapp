@@ -29,7 +29,6 @@
                 <app-category-item-list
                   @item-click="onItemClick"
                   :directoryItems="filterGroupedArray(item.name)"
-                  :favoriteItems="favoriteItems"
                   :template="template"
                 />
               </q-tab-panel>
@@ -41,13 +40,19 @@
             <app-category-item-list
               @item-click="onItemClick"
               :directoryItems="directoryItems"
-              :favoriteItems="favoriteItems"
               :template="template"
               style="position: relative"
             />
           </template>
         </q-page>
       </q-page-container>
+      <q-btn
+        fab
+        icon="add"
+        color="primary"
+        style="position: fixed; bottom: 18px; right: 10px"
+        @click="createPosting"
+      />
     </q-layout>
   </q-dialog>
 </template>
@@ -56,13 +61,13 @@
   // interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { TabItem } from "@/interfaces/tab-item";
 
   // others import
-  import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
-  import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
+  import { useDialogPluginComponent, useQuasar } from "quasar";
+  import { NONE, AREA_NAME } from "@/constants";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
     directoryItemsList: {
@@ -77,10 +82,10 @@
 
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
+  const userStore = useUserStore();
   const $q = useQuasar();
   const isDialogVisible = ref();
   const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
-  const favoriteItems = ref<any>(getFavItem() || []);
 
   const dialogTitle = computed(() =>
     translate(props.directory.directoryName, props.directory.meta, "directoryName")
@@ -133,21 +138,16 @@
     });
   });
 
-  eventBus.on("favoriteUpdated", () => {
-    favoriteItems.value = getFavItem();
-  });
-
   function updateDialogState(status: boolean) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CategoryItemListDialog");
   }
 
   function onItemClick(item: CategoryTypes) {
-    debugger;
-    const directory = "siteId" in item || "businessId" in item ? props.directory : undefined;
+    const directory = props.directory;
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog.vue")
+        () => import("@/components/dialog/community-detail-dialog.vue")
       ),
       componentProps: {
         item: item,
@@ -156,16 +156,25 @@
     });
   }
 
-  function getFavItem() {
-    switch (true) {
-      case directoryItems.value.length === 0:
-        return [];
-      case "siteId" in directoryItems.value[0]:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      case "businessId" in directoryItems.value[0]:
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
-      default:
-        return [];
+  function createPosting() {
+    if (!userStore.isUserLogon()) {
+      // User is not logged in, open the login dialog
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+        componentProps: {
+          tabValue: "login"
+        }
+      });
+    } else {
+      // User is logged in, continue with the regular flow
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/views/modules/community/input-dialog/index.vue")
+        ),
+        componentProps: {
+          item: props.directory as CommunityDirectory
+        }
+      });
     }
   }
 </script>

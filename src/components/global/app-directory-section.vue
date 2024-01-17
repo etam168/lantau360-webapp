@@ -46,16 +46,29 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        $q.dialog({
-          component: defineAsyncComponent(
-            () => import("@/components/dialog/category-item-list-dialog.vue")
-          ),
-          componentProps: {
-            directoryItemsList: response.data,
-            directory: item
-            // groupBykey: groupBy
-          }
-        });
+        if ("communityDirectoryId" in item) {
+          $q.dialog({
+            component: defineAsyncComponent(
+              () => import("@/components/dialog/community-item-list-dialog.vue")
+            ),
+            componentProps: {
+              directoryItemsList: response.data,
+              directory: item
+              // groupBykey: groupBy
+            }
+          });
+        } else {
+          $q.dialog({
+            component: defineAsyncComponent(
+              () => import("@/components/dialog/category-item-list-dialog.vue")
+            ),
+            componentProps: {
+              directoryItemsList: response.data,
+              directory: item
+              // groupBykey: groupBy
+            }
+          });
+        }
       } else {
         // console.error(`Unexpected response status: ${response.status}`);
       }
