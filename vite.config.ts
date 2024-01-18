@@ -21,7 +21,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   injectRegister: "auto",
   includeAssets: ["favicon.svg"], // Included assets
   manifest: {
-    name: "Lantau360 App",
+    name: "Lantau360 Lite",
     short_name: "Lantau360",
     theme_color: "#ffffff",
     icons: [

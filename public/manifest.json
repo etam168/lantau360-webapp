@@ -1,6 +1,6 @@
 {
   "name": "Lantau360 Web Application",
-  "short_name": "Lantau360 App",
+  "short_name": "Lantau360 Lite",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#141414",
