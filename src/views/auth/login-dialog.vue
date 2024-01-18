@@ -16,7 +16,7 @@
       <q-page-container>
         <q-page class="column items-center justify-center q-pa-none">
           <q-card
-            class="bg-secondary q-pt-none q-pa-sm q-ma-none"
+            class="bg-secondary q-pt-none q-pa-md q-ma-none"
             :style="authStyle"
             :flat="$q.screen.lt.sm"
           >
