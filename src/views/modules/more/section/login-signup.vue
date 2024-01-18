@@ -11,7 +11,6 @@
 
       <q-item-section>
         <q-item-label v-if="userStore.token">{{ userStore.user }}</q-item-label>
-        <q-item-label caption v-if="userStore.token"> {{ $t("more.loginName") }} </q-item-label>
       </q-item-section>
 
       <q-item-section side>
@@ -63,12 +62,12 @@
   const emit = defineEmits(["on-dialog"]);
 
   const avatar = computed(() => {
-    if (userStore.avatar != null) {
-      return userStore.avatar.includes("http")
-        ? userStore.avatar
-        : `${BLOB_URL}/${userStore.avatar}`;
+    if (userStore.profilePic != null) {
+      return userStore.profilePic.includes("http")
+        ? userStore.profilePic
+        : `${BLOB_URL}/${userStore.profilePic}`;
     }
-    return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
+    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
   });
 
   const logout = () => {

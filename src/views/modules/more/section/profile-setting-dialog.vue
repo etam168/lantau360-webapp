@@ -31,16 +31,6 @@
                 :style="authStyle"
               >
                 <q-item>
-                  <q-item-section v-for="(field, index) in fullNameFields" :key="index">
-                    <vee-input
-                      :name="field.name"
-                      :maxlength="field.maxlength"
-                      :label="$t(field.label)"
-                    />
-                  </q-item-section>
-                </q-item>
-
-                <q-item>
                   <q-item-section>
                     <vee-input
                       name="email"
@@ -48,6 +38,16 @@
                       disable
                       icon="email"
                       :label="$t('auth.register.email')"
+                    />
+                  </q-item-section>
+                </q-item>
+
+                <q-item>
+                  <q-item-section v-for="(field, index) in fullNameFields" :key="index">
+                    <vee-input
+                      :name="field.name"
+                      :maxlength="field.maxlength"
+                      :label="$t(field.label)"
                     />
                   </q-item-section>
                 </q-item>

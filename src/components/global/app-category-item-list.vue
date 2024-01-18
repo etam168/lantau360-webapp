@@ -60,8 +60,8 @@
 
       <q-item v-else-if="(item as PostingView).postingId" class="q-pa-none" style="width: 100%">
         <q-item-section>
+          <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
           <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
-          <q-item-label> {{ item.title }} </q-item-label>
         </q-item-section>
         <q-space />
         <q-item-section side top
@@ -132,8 +132,13 @@
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
 
-  const memberTitle = (postItem: PostingView) =>
+  const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
+
+  const memberTitle = (postItem: PostingView) =>
+    postItem.title !== null && postItem.title !== undefined && postItem.title !== ""
+      ? postItem.title
+      : postItem.memberEmail;
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {

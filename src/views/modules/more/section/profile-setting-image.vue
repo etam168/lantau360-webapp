@@ -56,6 +56,6 @@
   }
 
   const avatar = computed(() => {
-    return userStore.avatar ? `${BLOB_URL}/${userStore.avatar}` : PLACEHOLDER_AVATAR;
+    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
   });
 </script>
