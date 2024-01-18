@@ -35,7 +35,7 @@
       </q-card-actions>
     </q-card-section>
 
-    <q-card-actions class="q-px-md q-py-none bg-secondary">
+    <q-card-actions class="q-px-md q-py-sm bg-secondary">
       <a href="#" @click="handleForgotPassword" class="forgot-password-link">
         {{ $t("auth.login.forgotPassword") }}
       </a>

@@ -25,6 +25,7 @@
 <script setup lang="ts">
   const { t } = useI18n();
   const router = useRouter();
+  const { eventBus } = useUtilities();
   const ACTIVE_TAB_KEY = "activeTab"; // Define a key for storing in localStorage
 
   const tab = ref(localStorage.getItem(ACTIVE_TAB_KEY) || "home");
@@ -64,6 +65,10 @@
     },
     { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
+  eventBus.on("navigateToMore", () => {
+    // Navigate to "/more" when the event is received
+    navigateTo("/more", "more");
+  });
 </script>
 
 <style scoped>

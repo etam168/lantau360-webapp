@@ -6,12 +6,29 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    :maximized="$q.screen.lt.sm"
   >
-    <q-layout view="lHh lpr lFf" style="max-width: 1024px">
+    <q-layout
+      view="lHh lpr lFf"
+      style="max-width: 1024px"
+      :class="{ 'bg-secondary': $q.screen.lt.sm }"
+    >
       <q-page-container>
         <q-page class="column items-center justify-center q-pa-none">
-          <q-card class="bg-secondary q-pt-none q-pa-sm q-ma-none" :style="authStyle">
-            <q-btn icon="close" flat round dense v-close-popup class="q-mr-md" />
+          <q-card
+            class="bg-secondary q-pt-none q-pa-sm q-ma-none"
+            :style="authStyle"
+            :flat="$q.screen.lt.sm"
+          >
+            <q-btn
+              icon="close"
+              flat
+              round
+              dense
+              v-close-popup
+              class="q-mr-md"
+              v-if="$q.screen.gt.xs"
+            />
 
             <q-card-section align="center" class="q-pa-none">
               <!-- Move the avatar to the center -->
