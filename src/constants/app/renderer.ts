@@ -11,7 +11,9 @@ const Renderer = {
   EVENT: "event",
   NEWS: "news",
   NOTICE: "notice",
-  RESTAURANT: "restaurant"
+  RESTAURANT: "restaurant",
+  TUITION: "tuition",
+  PROPERTY: "property"
 };
 
 export default Renderer;
