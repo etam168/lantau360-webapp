@@ -58,15 +58,16 @@
         </q-item-label>
       </q-item-section>
 
-      <q-item-section v-else-if="(item as PostingView).postingId">
-        <q-item-label>
-          {{ translate((item as PostingView).postingName, item.meta, "postingName") }}
-        </q-item-label>
-
-        <q-item-label>
-          {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-      </q-item-section>
+      <q-item v-else-if="(item as PostingView).postingId" class="q-pa-none" style="width: 100%">
+        <q-item-section>
+          <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
+          <q-item-label> {{ item.title }} </q-item-label>
+        </q-item-section>
+        <q-space />
+        <q-item-section side top
+          ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
+        </q-item-section>
+      </q-item>
 
       <q-item-section v-else>
         <q-item-label>
@@ -119,11 +120,14 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { translate, getTimeAgo } = useUtilities();
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
+
+  const memberTitle = (postItem: PostingView) =>
+    postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {
