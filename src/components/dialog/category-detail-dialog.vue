@@ -26,7 +26,6 @@
           <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
           <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
-          <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
           <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
         </q-page>
@@ -49,15 +48,10 @@
 
   // Custom Components
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
-  import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
-
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-
-  type DirectoryTypes = Directory | CommunityDirectory;
 
   const props = defineProps({
     item: {
@@ -65,7 +59,7 @@
       required: true
     },
     directory: {
-      type: Object as PropType<DirectoryTypes>,
+      type: Object as PropType<Directory>,
       required: true
     }
   });
@@ -83,8 +77,6 @@
         return translate(props.item.siteName, props.item.meta, "siteName");
       case "businessId" in props.item:
         return translate(props.item.businessName, props.item.meta, "businessName");
-      case "postingId" in props.item:
-        return translate(props.item.title, props.item.meta, "title");
       default:
         return "";
     }
@@ -96,8 +88,6 @@
         return `${URL.SITE_GALLERY}/${props.item.siteId}`;
       case "businessId" in props.item:
         return `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
-      case "postingId" in props.item:
-        return `${URL.POSTING_GALLERY}/${props.item.postingId}`;
       default:
         return "";
     }
@@ -105,8 +95,6 @@
 
   const renderer = computed(() => {
     switch (true) {
-      case "postingId" in props.item:
-        return RENDERER.POSTING;
       case props.directory.meta.template == TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
       case props.directory.meta.template == TEMPLATE.TAXI.value:

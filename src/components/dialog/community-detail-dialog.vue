@@ -9,7 +9,9 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title>{{
+          translate(props.item.title, props.item.meta, "title")
+        }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -34,9 +36,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  import { Directory } from "@/interfaces/models/entities/directory";
 
   // .ts files
   import { URL, RENDERER, TEMPLATE, PLACEHOLDER_THUMBNAIL } from "@/constants";
@@ -48,16 +48,15 @@
   import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
 
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-
-  type DirectoryTypes = Directory | CommunityDirectory;
+  import { PostingView } from "@/interfaces/models/views/posting-view";
 
   const props = defineProps({
     item: {
-      type: Object as PropType<CategoryTypes>,
+      type: Object as PropType<PostingView>,
       required: true
     },
     directory: {
-      type: Object as PropType<DirectoryTypes>,
+      type: Object as PropType<CommunityDirectory>,
       required: true
     }
   });
@@ -68,32 +67,6 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImageType[]>([]);
-
-  const dialogTitle = computed(() => {
-    switch (true) {
-      case "siteId" in props.item:
-        return translate(props.item.siteName, props.item.meta, "siteName");
-      case "businessId" in props.item:
-        return translate(props.item.businessName, props.item.meta, "businessName");
-      case "postingId" in props.item:
-        return translate(props.item.title, props.item.meta, "title");
-      default:
-        return "";
-    }
-  });
-
-  const galleryUrl = computed(() => {
-    switch (true) {
-      case "siteId" in props.item:
-        return `${URL.SITE_GALLERY}/${props.item.siteId}`;
-      case "businessId" in props.item:
-        return `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
-      case "postingId" in props.item:
-        return `${URL.POSTING_GALLERY}/${props.item.postingId}`;
-      default:
-        return "";
-    }
-  });
 
   const renderer = computed(() => {
     const template = props.directory?.meta?.template ?? 0;
@@ -121,29 +94,27 @@
   }
 
   const loadData = async () => {
-    if (galleryUrl.value) {
-      try {
-        const [galleryResponse] = await Promise.all([
-          axios.get<GalleryImageType[]>(galleryUrl.value)
-        ]);
+    try {
+      const [galleryResponse] = await Promise.all([
+        axios.get<GalleryImageType[]>(`${URL.POSTING_GALLERY}/${props.item.postingId}`)
+      ]);
 
-        const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
-        // galleryItems.value = galleryResponse.data.filter(
-        //   element => !(maskValue & (1 << (element.ranking - 1)))
-        // );
-        galleryItems.value = galleryResponse.data.filter(
-          element => !((maskValue >> (element.ranking - 1)) & 1)
-        );
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          if (err.response && err.response.status === 404) {
-            error.value = "Not found";
-          } else {
-            error.value = "An error occurred";
-          }
+      const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
+      // galleryItems.value = galleryResponse.data.filter(
+      //   element => !(maskValue & (1 << (element.ranking - 1)))
+      // );
+      galleryItems.value = galleryResponse.data.filter(
+        element => !((maskValue >> (element.ranking - 1)) & 1)
+      );
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = "Not found";
         } else {
-          error.value = "An unexpected error occurred";
+          error.value = "An error occurred";
         }
+      } else {
+        error.value = "An unexpected error occurred";
       }
     }
   };

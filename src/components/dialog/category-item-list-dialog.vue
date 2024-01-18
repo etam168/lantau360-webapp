@@ -127,10 +127,6 @@
     eventBus.on("CategoryItemListDialog", () => {
       isDialogVisible.value = false;
     });
-
-    eventBus.on("ItemListUpdate", (updatedList: CategoryTypes[]) => {
-      directoryItems.value = updatedList;
-    });
   });
 
   eventBus.on("favoriteUpdated", () => {
