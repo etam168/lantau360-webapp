@@ -15,7 +15,7 @@
       </template>
     </q-banner>
 
-    <app-tab-panels v-model="tab">
+    <q-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
         <app-marketing-item-list :items="businessPromotion" />
       </q-tab-panel>
@@ -27,7 +27,7 @@
 
         <app-directory-section :data="directoriesData" class="q-my-sm" />
       </q-tab-panel>
-    </app-tab-panels>
+    </q-tab-panels>
   </q-page>
 </template>
 

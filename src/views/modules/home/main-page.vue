@@ -8,7 +8,7 @@
       <app-search-bar @on-search="handleSearchDialog" />
     </q-card-actions>
 
-    <app-tab-panels v-model="tab">
+    <q-tab-panels v-model="tab">
       <q-tab-panel name="all">
         <app-directory-section :data="directoryData" />
       </q-tab-panel>
@@ -16,7 +16,7 @@
       <q-tab-panel name="info">
         <app-directory-section :data="infoData" />
       </q-tab-panel>
-    </app-tab-panels>
+    </q-tab-panels>
   </q-page>
 </template>
 

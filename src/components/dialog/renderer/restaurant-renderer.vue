@@ -58,7 +58,7 @@
     </q-item>
 
     <q-item>
-      <app-tab-panels v-model="tab">
+      <q-tab-panels v-model="tab">
         <q-tab-panel name="aboutUs" class="q-pa-none">
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
@@ -92,7 +92,7 @@
             </q-item>
           </div>
         </q-tab-panel>
-      </app-tab-panels>
+      </q-tab-panels>
     </q-item>
   </q-list>
 </template>

@@ -28,7 +28,7 @@
       </q-item-section>
     </q-item>
 
-    <app-tab-panels v-model="tab">
+    <q-tab-panels v-model="tab">
       <q-tab-panel :name="siteItem.subtitle1" class="q-pa-none">
         <q-scroll-area style="height: calc(100vh - 110px)">
           <q-img :src="computePath(siteItem.imagePath)" />
@@ -38,7 +38,7 @@
       <q-tab-panel :name="siteItem.subtitle2" class="q-pa-none"
         ><q-img :src="computePath(siteItem.bannerPath)" />
       </q-tab-panel>
-    </app-tab-panels>
+    </q-tab-panels>
   </q-list>
 </template>
 

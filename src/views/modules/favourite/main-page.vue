@@ -15,7 +15,7 @@
       </template>
     </q-banner>
 
-    <app-tab-panels v-model="tab">
+    <q-tab-panels v-model="tab">
       <q-tab-panel name="location" class="q-pa-none">
         <app-grouped-item-list :list-items="siteItems" />
       </q-tab-panel>
@@ -27,7 +27,7 @@
       <q-tab-panel name="coupon">
         <div>Coupon</div>
       </q-tab-panel>
-    </app-tab-panels>
+    </q-tab-panels>
   </q-page>
 </template>
 

@@ -15,7 +15,7 @@
       </template>
     </q-banner>
 
-    <app-tab-panels v-model="tab">
+    <q-tab-panels v-model="tab">
       <q-tab-panel name="news">
         <app-bulletin-item-list :items="news" />
       </q-tab-panel>
@@ -31,7 +31,7 @@
       <q-tab-panel name="directory">
         <app-directory-section :rightSlotAction="1" :data="directories" class="q-my-sm" />
       </q-tab-panel>
-    </app-tab-panels>
+    </q-tab-panels>
   </q-page>
 </template>
 

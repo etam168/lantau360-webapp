@@ -23,7 +23,7 @@
               :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
             />
 
-            <app-tab-panels v-model="tab">
+            <q-tab-panels v-model="tab">
               <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.label">
                 <!-- Pass filterGroupedArray(item.name) if groupBykey exists -->
                 <app-category-item-list
@@ -33,7 +33,7 @@
                   :template="template"
                 />
               </q-tab-panel>
-            </app-tab-panels>
+            </q-tab-panels>
           </template>
 
           <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
