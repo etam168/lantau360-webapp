@@ -37,11 +37,19 @@
   };
 
   onMounted(() => {
+    localStorage.setItem(ACTIVE_TAB_KEY, "home"); // Save active tab to localStorage
     const storedTab = localStorage.getItem(ACTIVE_TAB_KEY);
     if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
       tab.value = storedTab;
     }
   });
+
+  // onUpdated(() => {
+  //   const storedTab = localStorage.getItem(ACTIVE_TAB_KEY);
+  //   if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
+  //     tab.value = storedTab;
+  //   }
+  // });
 
   const tabs = computed(() => [
     { name: "home", icon: "fas fa-home", label: t("footer.home"), route: "/home" },
