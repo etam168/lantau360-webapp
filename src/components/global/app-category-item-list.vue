@@ -13,7 +13,7 @@
             ratio="1"
             :src="
               (item as PostingView)?.memberImage
-                ? (item as PostingView)?.memberImage
+                ? computePath((item as PostingView)?.memberImage)
                 : PLACEHOLDER_AVATAR
             "
           >

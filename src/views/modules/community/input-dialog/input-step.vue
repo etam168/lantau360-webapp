@@ -76,7 +76,6 @@
       directoryId: props.directoryId,
       title: "",
       status: 1,
-      memberId: 25,
       description: ""
     };
   });
