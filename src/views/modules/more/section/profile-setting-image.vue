@@ -1,7 +1,7 @@
 <template>
   <q-card-section horizontal class="q-ma-lg col-12">
     <div class="col-3"></div>
-    <q-card-section class="bg-secondary text-center col-6 item-center" style="border-radius: 10px">
+    <q-card-section class="text-center col-6 item-center" style="border-radius: 10px">
       <q-btn round padding="1px" color="black">
         <q-avatar size="108px">
           <q-img :ratio="1" :src="avatar">
@@ -28,7 +28,7 @@
       </q-btn>
 
       <div class="text-subtitle1 text-weight-medium">
-        {{ $t("more.profileSetting.subtitle") }}
+        {{ userStore.email }}
       </div>
     </q-card-section>
   </q-card-section>

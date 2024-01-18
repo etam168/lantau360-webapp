@@ -9,9 +9,13 @@
     :dropdown-options="options"
     @country="selectedCountry"
   >
-    <!-- <template v-slot:before>
-      <q-item-label>{{ country.emoji }}</q-item-label>
+    <!-- <template v-slot:prepend>
+      <q-icon name="phone" />
     </template> -->
+
+    <template v-slot:append>
+      <q-icon name="phone" />
+    </template>
   </q-tel-input>
 </template>
 

@@ -33,11 +33,10 @@
                 <q-item>
                   <q-item-section>
                     <vee-input
-                      name="email"
+                      name="alias"
                       :maxlength="20"
-                      disable
                       icon="email"
-                      :label="$t('auth.register.email')"
+                      :label="$t('auth.register.alias')"
                     />
                   </q-item-section>
                 </q-item>
@@ -53,25 +52,19 @@
                 </q-item>
 
                 <q-item>
-                  <q-item-section>
-                    <vee-q-tel-input
-                      name="phone"
-                      defaultIso="HK"
-                      :labelText="$t('auth.register.phone')"
-                      :label="$t('auth.register.phone')"
-                  /></q-item-section>
+                  <q-item-section> <vee-q-tel-input name="phone" defaultIso="HK" /></q-item-section>
                 </q-item>
 
-                <q-card-actions>
-                  <q-space />
-                  <app-button
-                    class="full-width"
-                    :label="$t('more.profileSetting.save')"
-                    color="primary"
-                    type="submit"
-                    size="md"
-                  />
-                </q-card-actions>
+                <q-item>
+                  <q-item-section>
+                    <app-button
+                      :label="$t('more.profileSetting.save')"
+                      color="primary"
+                      type="submit"
+                      class="q-mx-xl"
+                    />
+                  </q-item-section>
+                </q-item>
               </Form>
             </q-card-section>
           </q-card>

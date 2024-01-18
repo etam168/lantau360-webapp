@@ -15,6 +15,7 @@ export default {
   register: {
     login: "登入",
     joinNow: "立即加入",
+    alias: "Alias",
     firstName: "名字",
     lastName: "姓氏",
     name: "名稱",
