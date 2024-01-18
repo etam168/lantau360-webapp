@@ -20,7 +20,7 @@
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
 
-  defineProps({
+  const props = defineProps({
     data: {
       type: Object as PropType<DirectoryTypes[]>,
       required: true
@@ -30,6 +30,12 @@
   const $q = useQuasar();
   const { eventBus } = useUtilities();
   const router = useRouter();
+
+  const items = ref(props.data);
+
+  items.value.sort((a, b) =>
+    a.directoryName.localeCompare(b.directoryName, undefined, { sensitivity: "base" })
+  );
 
   const handleDialog = async (item: DirectoryTypes) => {
     try {

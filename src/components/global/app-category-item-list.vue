@@ -128,6 +128,10 @@
       .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
   });
 
+  sortedItems.value.sort((a, b) =>
+    a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+  );
+
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };

@@ -1,6 +1,6 @@
 <template>
   <div :class="containerClass" class="q-gutter-y-md">
-    <div v-for="(item, index) in itemsWithType" :key="index" :class="itemClass(item.type)">
+    <div v-for="(item, index) in sortedItemsWithType" :key="index" :class="itemClass(item.type)">
       <news-card v-if="item.type === BULLETIN.NEWS" :item="item.value" />
       <notice-card v-else-if="item.type === BULLETIN.NOTICE" :item="item.value" />
       <event-card v-else-if="item.type === BULLETIN.EVENT" :item="item.value" />
@@ -70,5 +70,29 @@
       value: item,
       type: getItemType(item)
     }));
+  });
+
+  const getSortingKey = (item: BulletinTypes) => {
+    if ("communityNoticeName" in item) {
+      return item.communityNoticeName?.toLowerCase() || "";
+    } else if ("communityEventName" in item) {
+      return item.communityEventName?.toLowerCase() || "";
+    } else if ("communityNewsName" in item) {
+      return item.communityNewsName?.toLowerCase() || "";
+    }
+
+    // default case, or handle other types as needed
+    return "";
+  };
+
+  const sortedItemsWithType = computed(() => {
+    const sortedArray = itemsWithType.value.slice().sort((a, b) => {
+      const keyA = getSortingKey(a.value);
+      const keyB = getSortingKey(b.value);
+
+      return keyA.localeCompare(keyB, undefined, { sensitivity: "base" });
+    });
+
+    return sortedArray;
   });
 </script>
