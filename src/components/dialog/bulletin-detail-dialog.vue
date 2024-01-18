@@ -18,7 +18,9 @@
             <gallery-image-list :image-list="galleryItems" />
           </div>
           <div v-else>
-            <q-img :src="PLACEHOLDER_THUMBNAIL" :ratio="3 / 1" style="height: 380px" />
+            <q-responsive :ratio="16 / 9">
+              <q-img :src="PLACEHOLDER_THUMBNAIL" />
+            </q-responsive>
           </div>
 
           <event-renderer v-if="renderer === RENDERER.EVENT" :item="item" />

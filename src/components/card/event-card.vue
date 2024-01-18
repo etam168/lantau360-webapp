@@ -1,6 +1,6 @@
 <template>
   <q-card>
-    <q-img :ratio="16 / 9" :src="imagePath" />
+    <q-img :ratio="11 / 8" :src="imagePath" />
 
     <q-card-actions>
       <q-btn
