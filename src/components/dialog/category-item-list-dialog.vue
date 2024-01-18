@@ -143,7 +143,6 @@
   }
 
   function onItemClick(item: CategoryTypes) {
-    debugger;
     const directory = "siteId" in item || "businessId" in item ? props.directory : undefined;
     $q.dialog({
       component: defineAsyncComponent(
