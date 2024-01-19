@@ -54,13 +54,20 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
+        let directoryItems = null;
+        const sortByKey = item.meta.sortByKey;
+        directoryItems = useSorted(
+          response.data,
+          (a, b) => a.rank - b.rank || a[sortByKey] - b[sortByKey]
+        );
+
         if ("communityDirectoryId" in item) {
           $q.dialog({
             component: defineAsyncComponent(
               () => import("@/components/dialog/community-item-list-dialog.vue")
             ),
             componentProps: {
-              directoryItemsList: response.data,
+              directoryItemsList: directoryItems,
               directory: item
               // groupBykey: groupBy
             }
@@ -71,7 +78,7 @@
               () => import("@/components/dialog/category-item-list-dialog.vue")
             ),
             componentProps: {
-              directoryItemsList: response.data,
+              directoryItemsList: directoryItems,
               directory: item
               // groupBykey: groupBy
             }

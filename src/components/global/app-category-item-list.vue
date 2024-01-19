@@ -2,7 +2,7 @@
   <q-list>
     <q-item
       clickable
-      v-for="item in sortedItems"
+      v-for="item in directoryItems"
       :key="item.directoryId"
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
@@ -122,15 +122,15 @@
 
   const { translate, getTimeAgo } = useUtilities();
 
-  const sortedItems = computed(() => {
-    return props.directoryItems
-      .slice()
-      .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
-  });
+  // const sortedItems = computed(() => {
+  //   return props.directoryItems
+  //     .slice()
+  //     .sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+  // });
 
-  sortedItems.value.sort((a, b) =>
-    a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
-  );
+  // sortedItems.value.sort((a, b) =>
+  //   a.title.localeCompare(b.title, undefined, { sensitivity: "base" })
+  // );
 
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
