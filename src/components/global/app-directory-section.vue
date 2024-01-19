@@ -54,13 +54,31 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        let directoryItems = null;
+        debugger;
+        // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
-        directoryItems = useSorted(
-          response.data,
-          (a, b) => a.rank - b.rank || a[sortByKey] - b[sortByKey]
-        );
+        // directoryItems = useSorted(
+        //   response.data,
+        //   (a, b) =>
+        //     a.rank - b.rank ||
+        //     a[sortByKey].localeCompare(b[sortByKey], undefined, { sensitivity: "base" })
+        // );
 
+        const directoryItems = useSorted(response.data, (a, b) => {
+          const rankingDifference = a.rank - b.rank;
+          debugger;
+
+          // Check if sortByKey exists in the first object
+          const hasSortByKey = sortByKey in response.data[0];
+
+          // If sortByKey exists, use it for comparison
+          if (hasSortByKey) {
+            return rankingDifference || String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+          }
+
+          // If sortByKey doesn't exist, fall back to ranking difference
+          return rankingDifference;
+        });
         if ("communityDirectoryId" in item) {
           $q.dialog({
             component: defineAsyncComponent(
