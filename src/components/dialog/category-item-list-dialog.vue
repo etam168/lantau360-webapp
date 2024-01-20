@@ -39,6 +39,7 @@
           <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
           <template v-else>
             <app-category-item-list
+              class="q-px-md q-pt-md q-pb-none"
               @item-click="onItemClick"
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"

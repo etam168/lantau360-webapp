@@ -38,6 +38,7 @@
           <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
           <template v-else>
             <app-category-item-list
+              class="q-px-md q-pt-md q-pb-none"
               @item-click="onItemClick"
               :directoryItems="directoryItems"
               :template="template"
@@ -46,7 +47,7 @@
           </template>
         </q-page>
       </q-page-container>
-      <q-page-sticky position="bottom-right" :offset="[300, 20]">
+      <q-page-sticky position="bottom-right" :offset="[500, 20]">
         <q-btn round color="primary" icon="add" @click="createPosting" />
       </q-page-sticky>
     </q-layout>
