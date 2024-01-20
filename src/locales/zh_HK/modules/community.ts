@@ -5,7 +5,7 @@ export default {
     events: "活動",
     news: "新聞",
     notice: "告示",
-    directory: "Directory"
+    directory: "目錄"
   },
   subtitle1: "地址",
   subtitle2: "標題2",
