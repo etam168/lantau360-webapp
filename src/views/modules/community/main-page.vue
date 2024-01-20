@@ -106,7 +106,7 @@
         axios.get(URL.COMMUNITY_EVENT),
         axios.get(URL.COMMUNITY_DIRECTORY),
         axios.get(URL.COMMUNITY_NEWS),
-        axios.get(URL.COMMUNITY_NOTICE)
+        axios.get(URL.COMMUNITY_NOTICE_CURRENT)
       ]);
 
     advertisements.value = advertisementResponse.data;

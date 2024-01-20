@@ -15,6 +15,7 @@ export const URL = {
   COMMUNITY_NEWS: `${BASE_URL}/CommunityNews`,
   COMMUNITY_NEWS_GALLERY: `${BASE_URL}/CommunityNewsImage/GetCommunityNewsImages`,
   COMMUNITY_NOTICE: `${BASE_URL}/CommunityNotice`,
+  COMMUNITY_NOTICE_CURRENT: `${BASE_URL}/CommunityNotice/CommunityNoticeCurrent`,
   COMMUNITY_NOTICE_GALLERY: `${BASE_URL}/CommunityNoticeImage/GetCommunityNoticeImages`,
   POSTING_GALLERY: `${BASE_URL}/PostingImage/GetPostingImages`,
   SITE_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/1`,
