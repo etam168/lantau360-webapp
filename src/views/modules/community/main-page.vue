@@ -103,9 +103,9 @@
     const [advertisementResponse, eventResponse, directoryResponse, newsResponse, noticeResponse] =
       await Promise.all([
         axios.get(URL.ADVERTISEMENT),
-        axios.get(URL.COMMUNITY_EVENT),
+        axios.get(URL.COMMUNITY_EVENT_CURRENT),
         axios.get(URL.COMMUNITY_DIRECTORY),
-        axios.get(URL.COMMUNITY_NEWS),
+        axios.get(URL.COMMUNITY_NEWS_CURRENT),
         axios.get(URL.COMMUNITY_NOTICE_CURRENT)
       ]);
 
