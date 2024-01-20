@@ -48,10 +48,14 @@
     return icon || PLACEHOLDER_THUMBNAIL;
   });
 
-  const { translate } = useUtilities();
+  const { translateAlt } = useUtilities();
 
   const directoryTitle = computed(() => {
-    return translate(props.item.directoryName, props.item.meta, "directoryName");
+    return translateAlt(
+      props.item.directoryName,
+      (props.item as CommunityDirectory)?.directoryNameAlt,
+      "directoryName"
+    );
   });
 
   function onItemClick() {

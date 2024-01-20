@@ -84,6 +84,11 @@ export function useUtilities() {
     return meta?.i18n?.[locale.value]?.[key] || label;
   }
 
+  function translateAlt(label: string, altName: any, key: string) {
+    const { locale } = useI18n({ useScope: "global" });
+    return altName?.i18n?.[locale.value]?.[key] || label;
+  }
+
   function translateAltName(locale: string, meta: any, key: string) {
     switch (locale) {
       case "hk":
@@ -142,6 +147,7 @@ export function useUtilities() {
     notify,
     sleep,
     translate,
+    translateAlt,
     translateAltName,
     httpMethods,
     getImageURL,
