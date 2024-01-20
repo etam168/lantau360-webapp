@@ -54,7 +54,6 @@
 
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        debugger;
         // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
         // directoryItems = useSorted(
@@ -66,7 +65,6 @@
 
         const directoryItems = useSorted(response.data, (a, b) => {
           const rankingDifference = a.rank - b.rank;
-          debugger;
 
           // Check if sortByKey exists in the first object
           const hasSortByKey = sortByKey in response.data[0];
@@ -79,7 +77,8 @@
           // If sortByKey doesn't exist, fall back to ranking difference
           return rankingDifference;
         });
-        if ("communityDirectoryId" in item) {
+
+        const createCommunityDialog = (item: DirectoryTypes) => {
           $q.dialog({
             component: defineAsyncComponent(
               () => import("@/components/dialog/community-item-list-dialog.vue")
@@ -90,7 +89,9 @@
               // groupBykey: groupBy
             }
           });
-        } else {
+        };
+
+        const createCategoryDialog = (item: DirectoryTypes) => {
           $q.dialog({
             component: defineAsyncComponent(
               () => import("@/components/dialog/category-item-list-dialog.vue")
@@ -101,9 +102,18 @@
               // groupBykey: groupBy
             }
           });
+        };
+
+        // Throttle the createDialog functions
+        const throttledCreateCommunityDialog = throttle(createCommunityDialog, 2000);
+        const throttledCreateCategoryDialog = throttle(createCategoryDialog, 2000);
+
+        // Call the throttled functions to create the dialogs
+        if ("communityDirectoryId" in item) {
+          throttledCreateCommunityDialog(item);
+        } else {
+          throttledCreateCategoryDialog(item);
         }
-      } else {
-        // console.error(`Unexpected response status: ${response.status}`);
       }
     } catch (error) {
       // console.error("Error fetching data: ", error);
