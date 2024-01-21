@@ -12,9 +12,7 @@
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
           <q-header class="bg-transparent text-dark">
-            <app-dialog-title>{{
-              $t(`content.title.${contentDataValue.contentName}`)
-            }}</app-dialog-title>
+            <app-dialog-title>{{ title }}</app-dialog-title>
           </q-header>
 
           <q-page-container>
@@ -46,6 +44,10 @@
   defineProps({
     contentDataValue: {
       type: Object as PropType<any>
+    },
+    title: {
+      type: String,
+      required: true
     }
   });
 

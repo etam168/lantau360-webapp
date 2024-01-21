@@ -6,12 +6,12 @@ export default {
   privacy: "隱私政策",
   locationPermission: "地理位置權限",
   login: "登入",
-  profile: "個人資料",
+  profile: "用戶資料",
   logout: "登出",
   loginName: "登入名稱",
 
   profileSetting: {
-    title: "輪廓",
+    title: "用戶資料",
     subtitle: "選擇您在應用程式中的顯示方式",
     save: "Save"
   }

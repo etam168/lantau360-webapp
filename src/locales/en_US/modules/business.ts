@@ -8,7 +8,5 @@ export default {
     aboutUs: "About Us",
     info: "info"
   },
-  subtitle1: "Address",
-  openTime: "Open Time",
-  closeTime: "Close Time"
+  subtitle1: "Address"
 };

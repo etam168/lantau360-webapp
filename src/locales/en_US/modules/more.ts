@@ -14,5 +14,13 @@ export default {
     title: "Profile",
     subtitle: "Choose how you appear in the app",
     save: "Save"
+  },
+
+  contentDialog: {
+    title: {
+      privacy: "Privacy Policy",
+      terms: "Terms & Conditions",
+      aboutUs: "About Us"
+    }
   }
 };

@@ -42,8 +42,10 @@
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
 
+  const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
   const $q = useQuasar();
+
   const data = ref<Content | null>(null);
   const memberData = ref();
 
@@ -75,7 +77,7 @@
       title: "more.privacy",
       contentKey: "Privacy"
     },
-    { name: Menu.PROFILE, icon: "./img/icons/ic_privacy.svg", title: "more.profileSetting.title" }
+    { name: Menu.PROFILE, icon: "./img/icons/ic_privacy.svg", title: "more.profile" }
   ];
 
   async function showContentDialog(item: any) {
@@ -90,7 +92,8 @@
           $q.dialog({
             component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
             componentProps: {
-              contentDataValue: data.value
+              contentDataValue: data.value,
+              title: t(item.title)
             }
           });
         }

@@ -6,8 +6,5 @@ export default {
     news: "新聞",
     notice: "告示",
     directory: "目錄"
-  },
-  subtitle1: "地址",
-  subtitle2: "標題2",
-  subtitle3: "標題3"
+  }
 };
