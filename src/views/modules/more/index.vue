@@ -2,14 +2,14 @@
   <q-page>
     <app-page-title :title="$t('more.title')"></app-page-title>
 
-    <login-signup @on-dialog="showLoginDialog" />
+    <login-signup @on-dialog="throttledHandleLoginDialog" />
 
     <q-card-section class="q-pt-none">
       <q-item
         v-for="(item, index) in filteredMenuItems"
         :key="index"
         clickable
-        @click="showContentDialog(item)"
+        @click="throttledHandleContentDialog(item)"
         class="shadow-1 q-mb-md q-pl-sm"
       >
         <q-item-section avatar>
@@ -35,6 +35,7 @@
 <script setup lang="ts">
   // Interface files
   import { Content } from "@/interfaces/models/entities/content";
+  import { throttle } from "quasar";
 
   // .ts files
   import { useUserStore } from "@/stores/user";
@@ -111,6 +112,9 @@
       ? menuItems
       : menuItems.filter(item => item.name !== Menu.PROFILE);
   });
+
+  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
+  const throttledHandleContentDialog = throttle(showContentDialog, 2000);
 
   function showLoginDialog(tabValue: string) {
     $q.dialog({
