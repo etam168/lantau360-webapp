@@ -20,13 +20,16 @@
         color="primary"
         :label="$t('business.moreDetail')"
         class="full-width"
-        @click="onItemClick(promotionItem)"
+        @click="throttledHandleDialog(promotionItem)"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
+  // Quasar Import
+  import { throttle, useQuasar } from "quasar";
+
   // Interface files
   import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
@@ -60,4 +63,6 @@
       ? `${BLOB_URL}/${props.item.bannerPath}`
       : "./img/icons/no_image_available.jpeg";
   });
+
+  const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

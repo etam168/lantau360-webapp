@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="onItemClick">
+  <q-item clickable @click="throttledHandleDialog">
     <q-item-section avatar>
       <q-avatar size="64px" square>
         <q-img :ratio="1" :src="imagePath" />
@@ -17,7 +17,8 @@
 </template>
 
 <script setup lang="ts">
-  import { date } from "quasar";
+  // Quasar Import
+  import { date, throttle, useQuasar } from "quasar";
 
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
@@ -61,4 +62,6 @@
       ? `${BLOB_URL}/${newsItem.value.iconPath}`
       : "./img/icons/no_image_available.jpeg";
   });
+
+  const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

@@ -9,13 +9,13 @@ export default {
     newPassword: "新密码",
     forgotPassword: "忘记密码",
     submit: "提交",
-    logout: "Logout"
+    logout: "登出"
   },
 
   register: {
     login: "登录",
     joinNow: "立即加入",
-    alias: "Alias",
+    alias: "别名",
     firstName: "名字",
     lastName: "姓氏",
     name: "名称",

@@ -9,13 +9,16 @@
         color="primary"
         :label="$t('business.moreDetail')"
         class="full-width"
-        @click="onItemClick"
+        @click="throttledHandleDialog"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
+  // Quasar Import
+  import { throttle, useQuasar } from "quasar";
+
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 
@@ -48,4 +51,6 @@
       ? `${BLOB_URL}/${eventItem.value.bannerPath}`
       : "./img/icons/no_image_available.jpeg";
   });
+
+  const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>
