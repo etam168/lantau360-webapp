@@ -1,5 +1,7 @@
 export default {
   title: "大嶼商戶",
+  advertisement: "广告",
+  moreDetail: "更多细节",
 
   tabItems: {
     promotion: "市場推廣",

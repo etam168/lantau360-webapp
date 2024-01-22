@@ -1,5 +1,7 @@
 export default {
   title: "大屿商户",
+  advertisement: "广告",
+  moreDetail: "更多细节",
 
   tabItems: {
     promotion: "市场推广",

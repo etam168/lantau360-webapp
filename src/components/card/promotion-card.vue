@@ -18,7 +18,7 @@
         outline
         dense
         color="primary"
-        label="More Details"
+        :label="$t('business.moreDetail')"
         class="full-width"
         @click="onItemClick(promotionItem)"
       />

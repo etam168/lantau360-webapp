@@ -1,8 +1,8 @@
 <template>
   <div v-if="data && data?.length > 0">
-    <q-bar v-if="isAdvertisement(data[0])" dense class="bg-primary text-white flex-center">
+    <!-- <q-bar v-if="isAdvertisement(data[0])" dense class="bg-primary text-white flex-center">
       <div>Advertisement</div>
-    </q-bar>
+    </q-bar> -->
 
     <q-responsive :ratio="aspectRatio()">
       <q-carousel

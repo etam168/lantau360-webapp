@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-bar dense class="bg-primary text-white">
-      <div class="col text-center">Advertisement</div>
+      <div class="col text-center">{{ $t("business.advertisement") }}</div>
     </q-bar>
 
     <app-carousel-section :data="advertisements" />
