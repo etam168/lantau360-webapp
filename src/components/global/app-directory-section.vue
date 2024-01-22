@@ -71,11 +71,16 @@
 
           // If sortByKey exists, use it for comparison
           if (hasSortByKey) {
-            return rankingDifference || String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+            const sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+
+            // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+            return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
           }
 
           // If sortByKey doesn't exist, fall back to ranking difference
-          return rankingDifference;
+          return (
+            rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
         });
 
         const createCommunityDialog = (item: DirectoryTypes) => {
