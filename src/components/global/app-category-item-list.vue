@@ -8,13 +8,6 @@
       class="shadow-1 q-pa-sm q-mb-md"
     >
       <q-item-section v-if="(item as PostingView).postingId" avatar>
-        <div>
-          {{
-            (item as PostingView)?.memberImage
-              ? computePath((item as PostingView)?.memberImage)
-              : PLACEHOLDER_AVATAR
-          }}
-        </div>
         <q-avatar size="64px">
           <q-img
             ratio="1"
