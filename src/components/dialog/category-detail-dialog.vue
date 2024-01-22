@@ -42,7 +42,6 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  import { Directory } from "@/interfaces/models/entities/directory";
 
   // .ts files
   import { URL, RENDERER, TEMPLATE, PLACEHOLDER_THUMBNAIL } from "@/constants";
@@ -58,10 +57,6 @@
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
-      required: true
-    },
-    directory: {
-      type: Object as PropType<Directory>,
       required: true
     }
   });
@@ -97,17 +92,15 @@
 
   const renderer = computed(() => {
     switch (true) {
-      case props.directory.meta.template == TEMPLATE.TIMETABLE.value:
+      case props.item.directoryTemplate == TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
-      case props.directory.meta.template == TEMPLATE.TAXI.value:
+      case props.item.directoryTemplate == TEMPLATE.TAXI.value:
         return RENDERER.TAXI;
-      case props.directory.meta.template == TEMPLATE.RESTAURANT.value:
+      case props.item.directoryTemplate == TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
-      case [1, 3].includes(props.directory.groupId) &&
-        props.directory.meta.template == TEMPLATE.DEFAULT.value:
+      case "siteId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
-      case [2, 4].includes(props.directory.groupId) &&
-        props.directory.meta.template == TEMPLATE.DEFAULT.value:
+      case "businessId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
         return RENDERER.BUSINESS;
       default:
         return "";
@@ -133,7 +126,7 @@
           axios.get<GalleryImageType[]>(galleryUrl.value)
         ]);
 
-        const maskValue = getMaskValue(props.directory?.meta?.template ?? 0) ?? 0;
+        const maskValue = getMaskValue(props.item.directoryTemplate ?? 0) ?? 0;
         // galleryItems.value = galleryResponse.data.filter(
         //   element => !(maskValue & (1 << (element.ranking - 1)))
         // );

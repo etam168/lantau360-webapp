@@ -5,4 +5,5 @@ export interface SiteView extends Site {
   directoryName: string;
   directoryMeta: Record<string, any>;
   areaNameAlt: Record<string, any>;
+  directoryTemplate: number;
 }

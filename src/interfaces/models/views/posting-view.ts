@@ -7,4 +7,5 @@ export interface PostingView extends Posting {
   memberPhone: string;
   memberEmail: string;
   memberImage: string;
+  directoryTemplate: number;
 }
