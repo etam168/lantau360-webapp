@@ -1,12 +1,11 @@
 <template>
   <q-item clickable @click="throttledHandleDialog">
     <q-item-section>
-      <q-item-label
-        ><q-badge color="primary" class="text-white">
-          {{ noticeItem?.title }}
-        </q-badge></q-item-label
-      >
-      <q-item-label caption lines="2"> <div v-html="noticeItem?.description"></div></q-item-label>
+      <q-item-label class="text-subtitle1">
+        {{ noticeItem?.title }}
+      </q-item-label>
+
+      <q-item-label caption lines="2"> <div v-html="translatedContent"></div></q-item-label>
     </q-item-section>
 
     <q-item-section side>
@@ -32,8 +31,12 @@
   });
 
   const noticeItem = computed(() => props.item as CommunityNotice);
-  const { getTimeAgo } = useUtilities();
+  const { getTimeAgo, translate } = useUtilities();
   const $q = useQuasar();
+
+  const translatedContent: any = ref(
+    translate(noticeItem.value.description, noticeItem.value.meta, "description")
+  );
 
   function onItemClick() {
     $q.dialog({

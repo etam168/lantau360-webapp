@@ -73,26 +73,27 @@
   });
 
   const getSortingKey = (item: BulletinTypes) => {
-    if ("communityNoticeName" in item) {
-      return item.communityNoticeName?.toLowerCase() || "";
-    } else if ("communityEventName" in item) {
-      return item.communityEventName?.toLowerCase() || "";
-    } else if ("communityNewsName" in item) {
-      return item.communityNewsName?.toLowerCase() || "";
+    switch (getItemType(item)) {
+      case BULLETIN.NOTICE:
+        return new Date(item.createdAt).getTime();
+      case BULLETIN.EVENT:
+        return new Date(item.createdAt).getTime();
+      case BULLETIN.NEWS:
+        return new Date(item.createdAt).getTime();
+      default:
+        return 0; // Default value or handle other types as needed
     }
-
-    // default case, or handle other types as needed
-    return "";
   };
 
+  // Modify the sortedItemsWithType computation
   const sortedItemsWithType = computed(() => {
     const sortedArray = itemsWithType.value.slice().sort((a, b) => {
       const keyA = getSortingKey(a.value);
       const keyB = getSortingKey(b.value);
 
-      return keyA.localeCompare(keyB, undefined, { sensitivity: "base" });
+      return keyB - keyA; // Descending order, latest date first
     });
 
-    return sortedArray;
+    return sortedArray || [];
   });
 </script>

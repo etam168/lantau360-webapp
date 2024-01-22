@@ -1,6 +1,16 @@
 <template>
-  <q-card>
+  <q-card class="my-card">
     <q-img :ratio="11 / 8" :src="imagePath" />
+
+    <q-card-section class="q-pa-sm">
+      <q-item dense class="q-py-none">
+        <q-item-section>
+          <q-item-label style="font-family: Baloo; font-size: 1rem">{{
+            eventItem?.title
+          }}</q-item-label>
+        </q-item-section>
+      </q-item>
+    </q-card-section>
 
     <q-card-actions>
       <q-btn

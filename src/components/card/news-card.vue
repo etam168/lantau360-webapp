@@ -9,7 +9,7 @@
     <q-item-section>
       <q-item-label>{{ newsTime(newsItem) }}</q-item-label>
       <q-item-label>{{ newsItem?.communityNewsName }}</q-item-label>
-      <q-item-label caption lines="2"> <div v-html="newsItem?.description"></div></q-item-label>
+      <q-item-label caption lines="2"> <div v-html="translatedContent"></div></q-item-label>
     </q-item-section>
   </q-item>
 
@@ -35,7 +35,12 @@
   });
 
   const $q = useQuasar();
+  const { translate } = useUtilities();
   const newsItem = computed(() => props.item as CommunityNews);
+
+  const translatedContent: any = ref(
+    translate(newsItem.value.description, newsItem.value.meta, "description")
+  );
 
   const newsTime = (row: CommunityNews) => {
     // Check if modifiedAt is undefined or null, provide a default value
