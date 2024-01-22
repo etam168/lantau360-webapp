@@ -106,7 +106,11 @@ export function useUtilities() {
   }
 
   function getImageURL(relativePath: any) {
-    return relativePath ? `${BLOB_URL}/${relativePath}` : PLACEHOLDER_THUMBNAIL;
+    if (relativePath != null) {
+      return relativePath.includes("http") ? relativePath : `${BLOB_URL}/${relativePath}`;
+    } else {
+      return PLACEHOLDER_THUMBNAIL;
+    }
   }
 
   const getTimeAgo = (dateTime: Date) => {

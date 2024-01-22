@@ -27,7 +27,7 @@
 
           <property-renderer v-if="renderer === RENDERER.PROPERTY" :item="item" />
           <tuition-renderer v-else-if="renderer === RENDERER.TUITION" :item="item" />
-          <posting-renderer v-if="renderer === RENDERER.POSTING" :item="item" />
+          <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
