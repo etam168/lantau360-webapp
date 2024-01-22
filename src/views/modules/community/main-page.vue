@@ -1,6 +1,11 @@
 <template>
   <q-page>
+    <q-bar dense class="bg-primary text-white">
+      <div class="col text-center">{{ $t("community.advertisement") }}</div>
+    </q-bar>
+
     <app-carousel-section :data="advertisements" />
+    <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t("community.title") }}</q-toolbar-title>

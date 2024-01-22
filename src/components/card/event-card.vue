@@ -6,7 +6,7 @@
       <q-item dense class="q-py-none">
         <q-item-section>
           <q-item-label style="font-family: Baloo; font-size: 1rem">{{
-            eventItem?.title
+            translatedTitle
           }}</q-item-label>
         </q-item-section>
       </q-item>
@@ -44,7 +44,12 @@
   });
 
   const $q = useQuasar();
+  const { translate } = useUtilities();
+
   const eventItem = computed(() => props.item as CommunityEventView);
+
+  const translatedTitle: any = ref(translate(eventItem.value.title, eventItem.value.meta, "title"));
+
   const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(

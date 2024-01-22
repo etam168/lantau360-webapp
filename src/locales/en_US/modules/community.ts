@@ -1,5 +1,6 @@
 export default {
   title: "Lantau Community",
+  advertisement: "Advertisement",
 
   tabItems: {
     events: "Events",

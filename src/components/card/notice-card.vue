@@ -2,7 +2,7 @@
   <q-item clickable @click="throttledHandleDialog">
     <q-item-section>
       <q-item-label class="text-subtitle1">
-        {{ noticeItem?.title }}
+        {{ translatedTitle }}
       </q-item-label>
 
       <q-item-label caption lines="2"> <div v-html="translatedContent"></div></q-item-label>
@@ -36,6 +36,10 @@
 
   const translatedContent: any = ref(
     translate(noticeItem.value.description, noticeItem.value.meta, "description")
+  );
+
+  const translatedTitle: any = ref(
+    translate(noticeItem.value.title, noticeItem.value.meta, "title")
   );
 
   function onItemClick() {
