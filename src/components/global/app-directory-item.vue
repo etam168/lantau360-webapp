@@ -50,13 +50,13 @@
 
   const { translateAlt, translate } = useUtilities();
   const directoryTitle = computed(() => {
-    const { directoryName, directoryNameAlt } = props.item as CommunityDirectory;
+    const { shortName, shortNameAlt } = props.item as CommunityDirectory;
 
     // Check if directoryNameAlt exists and is not null
-    if (directoryNameAlt !== undefined && directoryNameAlt !== null) {
-      return translateAlt(directoryName, directoryNameAlt, "directoryName");
+    if (shortNameAlt !== undefined && shortNameAlt !== null) {
+      return translateAlt(shortName, shortNameAlt, "shortName");
     } else {
-      return translate(directoryName, props.item.meta, "directoryName");
+      return translate(shortName, props.item.meta, "shortName");
     }
   });
 
