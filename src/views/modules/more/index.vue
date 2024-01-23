@@ -37,6 +37,15 @@
         </q-item-section>
       </q-item>
     </q-card-section>
+
+    <q-card flat class="text-center justify-center absolute-bottom">
+      <q-card-section class="text-center text-subtitle2 q-pa-xs q-py-md">
+        <div>{{ appVersion }}</div>
+        <div class="text-caption text-grey">
+          {{ $t("more.footer.copyRightText", { currentYear: currentYear }) }}
+        </div>
+      </q-card-section>
+    </q-card>
   </q-page>
 </template>
 
@@ -57,7 +66,8 @@
 
   const data = ref<Content | null>(null);
   const memberData = ref();
-
+  const appVersion = __APP_VERSION__;
+  const currentYear = new Date().getFullYear();
   const Menu = {
     LANGUAGE: "language",
     ABOUT: "aboutUs",

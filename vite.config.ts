@@ -10,6 +10,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+import { version } from "./package.json";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -111,6 +112,9 @@ export default defineConfig({
       dts: "src/components.d.ts" // enabled by default if `typescript` is installed
     })
   ],
+  define: {
+    __APP_VERSION__: JSON.stringify(version)
+  },
   resolve: {
     alias: {
       "@": fileURLToPath(new URL("./src", import.meta.url))

@@ -22,5 +22,9 @@ export default {
       terms: "Terms & Conditions",
       aboutUs: "About"
     }
+  },
+
+  footer: {
+    copyRightText: "© {currentYear} Lantau360.com"
   }
 };
