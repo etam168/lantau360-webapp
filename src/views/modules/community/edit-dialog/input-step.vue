@@ -10,7 +10,11 @@
     <q-card flat class="full-height q-pa-none" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         <q-card-section class="q-py-none">
-          <images-section />
+          <images-section
+            @on-upload="uplaodImageToServer"
+            @update-ranking="updateRanking"
+            @delete-image="deleteImage"
+          />
           <input-content />
         </q-card-section>
       </q-scroll-area>
@@ -43,8 +47,16 @@
   import InputContent from "../shared/input-content/index.vue";
   import { Posting } from "@/interfaces/models/entities/posting";
 
-  const { postingImages, setValidateInput, setPostingInput, updatePosting, loadGalleryImages } =
-    usePostingInput();
+  const {
+    postingImages,
+    setValidateInput,
+    setPostingInput,
+    updatePosting,
+    loadGalleryImages,
+    uploadImage,
+    updateRanking,
+    deleteImage
+  } = usePostingInput();
 
   const { t } = useI18n({ useScope: "global" });
 
@@ -68,6 +80,10 @@
   const schema = yup.object({
     title: yup.string().required().label(t("posting.columns.title"))
   });
+
+  async function uplaodImageToServer(ranking: number, imageFile: any) {
+    await uploadImage(ranking - 1, ranking, imageFile);
+  }
 
   function onOKClick(values: any) {
     form.value.validate().then(async (isValid: any) => {
