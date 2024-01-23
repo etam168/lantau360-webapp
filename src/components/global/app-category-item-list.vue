@@ -66,6 +66,20 @@
         <q-space />
         <q-item-section side top
           ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
+          <q-item class="q-pa-none">
+            <q-item-section class="q-pa-none">
+              <q-btn outline rounded color="primary" class="q-la-none" label="Detail" />
+            </q-item-section>
+            <q-item-section class="q-pa-none" side>
+              <q-btn
+                outline
+                rounded
+                color="primary"
+                label="Edit"
+                v-if="userStore.userId == (item as PostingView).memberId"
+              />
+            </q-item-section>
+          </q-item>
         </q-item-section>
       </q-item>
 
@@ -98,6 +112,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { PostingView } from "@/interfaces/models/views/posting-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
+  import { useUserStore } from "@/stores/user";
 
   // .ts files
   import { BLOB_URL, PLACEHOLDER_AVATAR, TEMPLATE } from "@/constants";
@@ -122,6 +137,7 @@
 
   const { translate, getTimeAgo } = useUtilities();
 
+  const userStore = useUserStore();
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
