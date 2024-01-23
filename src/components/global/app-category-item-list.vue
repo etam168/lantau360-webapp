@@ -7,26 +7,7 @@
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
-      <q-item-section v-if="(item as PostingView).postingId" avatar>
-        <q-avatar size="64px">
-          <q-img
-            ratio="1"
-            :src="
-              (item as PostingView)?.memberImage
-                ? computePath((item as PostingView)?.memberImage)
-                : PLACEHOLDER_AVATAR
-            "
-          >
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                Cannot load image
-              </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
-
-      <q-item-section avatar v-else>
+      <q-item-section avatar>
         <q-avatar size="64px" square>
           <q-img ratio="1" :src="computePath(item.iconPath)">
             <template v-slot:error>
@@ -57,32 +38,6 @@
           {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
       </q-item-section>
-
-      <q-item v-else-if="(item as PostingView).postingId" class="q-pa-none" style="width: 100%">
-        <q-item-section>
-          <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
-          <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
-        </q-item-section>
-        <q-space />
-        <q-item-section side top
-          ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
-          <q-item class="q-pa-none">
-            <q-item-section class="q-pa-none">
-              <q-btn outline rounded color="primary" class="q-la-none" label="Detail" />
-            </q-item-section>
-            <q-item-section class="q-pa-none" side>
-              <q-btn
-                outline
-                rounded
-                color="primary"
-                label="Edit"
-                v-if="userStore.userId == (item as PostingView).memberId"
-              />
-            </q-item-section>
-          </q-item>
-        </q-item-section>
-      </q-item>
-
       <q-item-section v-else>
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
@@ -110,12 +65,10 @@
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { PostingView } from "@/interfaces/models/views/posting-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
-  import { useUserStore } from "@/stores/user";
 
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR, TEMPLATE } from "@/constants";
+  import { BLOB_URL, TEMPLATE } from "@/constants";
 
   const emit = defineEmits(["item-click"]);
 
@@ -135,20 +88,11 @@
     }
   });
 
-  const { translate, getTimeAgo } = useUtilities();
+  const { translate } = useUtilities();
 
-  const userStore = useUserStore();
   const computePath = (path: string) => {
     return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
   };
-
-  const memberName = (postItem: PostingView) =>
-    postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
-
-  const memberTitle = (postItem: PostingView) =>
-    postItem.title !== null && postItem.title !== undefined && postItem.title !== ""
-      ? postItem.title
-      : postItem.memberEmail;
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {

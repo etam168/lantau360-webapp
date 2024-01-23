@@ -39,12 +39,60 @@ export function usePostingInput() {
   const postingInput = ref<Posting>(newInput());
   const postingImages = ref<PostingImages>({} as PostingImages);
 
-  function setValidateInput(values: any) {
-    postingInput.value.title = values.title;
-    postingInput.value.status = values.status;
-    postingInput.value.memberId = values.memberId;
-    postingInput.value.description = values.description;
-    postingInput.value.directoryId = values.directoryId;
+  function setPostingInput(val: Posting) {
+    postingInput.value.postingId = val.postingId;
+    postingInput.value.postingName = val.postingName;
+    postingInput.value.buttonText = val.buttonText;
+    postingInput.value.title = val.title;
+    postingInput.value.subtitle1 = val.subtitle1;
+    postingInput.value.subtitle2 = val.subtitle2;
+    postingInput.value.subtitle3 = val.subtitle3;
+    postingInput.value.displayMask = val.displayMask;
+    postingInput.value.description = val.description;
+    postingInput.value.directoryId = val.directoryId;
+    postingInput.value.imagePath = val.imagePath;
+    postingInput.value.iconPath = val.iconPath;
+    postingInput.value.bannerPath = val.bannerPath;
+    postingInput.value.hashKey = val.hashKey;
+    postingInput.value.latitude = val.latitude;
+    postingInput.value.longitude = val.longitude;
+    postingInput.value.status = val.status;
+    postingInput.value.createdAt = val.createdAt;
+    postingInput.value.createdBy = val.createdBy;
+    postingInput.value.modifiedAt = val.modifiedAt;
+    postingInput.value.modifiedBy = val.modifiedBy;
+    postingInput.value.meta = val.meta;
+    postingInput.value.rank = val.rank;
+    postingInput.value.contactWhatsApp = val.contactWhatsApp;
+    postingInput.value.contactPhone = val.contactPhone;
+    postingInput.value.contactOther = val.contactOther;
+  }
+  function setValidateInput(val: any) {
+    postingInput.value.postingName = val.postingName;
+    postingInput.value.buttonText = val.buttonText;
+    postingInput.value.title = val.title;
+    postingInput.value.subtitle1 = val.subtitle1;
+    postingInput.value.subtitle2 = val.subtitle2;
+    postingInput.value.subtitle3 = val.subtitle3;
+    postingInput.value.displayMask = val.displayMask;
+    postingInput.value.description = val.description;
+    postingInput.value.directoryId = val.directoryId;
+    postingInput.value.imagePath = val.imagePath;
+    postingInput.value.iconPath = val.iconPath;
+    postingInput.value.bannerPath = val.bannerPath;
+    postingInput.value.hashKey = val.hashKey;
+    postingInput.value.latitude = val.latitude;
+    postingInput.value.longitude = val.longitude;
+    postingInput.value.status = val.status;
+    postingInput.value.createdAt = val.createdAt;
+    postingInput.value.createdBy = val.createdBy;
+    postingInput.value.modifiedAt = val.modifiedAt;
+    postingInput.value.modifiedBy = val.modifiedBy;
+    postingInput.value.meta = val.meta;
+    postingInput.value.rank = val.rank;
+    postingInput.value.contactWhatsApp = val.contactWhatsApp;
+    postingInput.value.contactPhone = val.contactPhone;
+    postingInput.value.contactOther = val.contactOther;
   }
 
   function successCallback(successMessage: string) {
@@ -66,6 +114,7 @@ export function usePostingInput() {
   }
 
   function updatePosting() {
+    debugger;
     postingInput.value.bannerPath = postingInput.value.iconPath = postingInput.value.imagePath = "";
 
     postingInput.value.modifiedBy = parseInt(userStore.userId);
@@ -73,12 +122,13 @@ export function usePostingInput() {
       .put(`/Posting/${postingInput.value.postingId}`, postingInput.value)
       .then(async () => {
         // onRefresh();
-
+        debugger;
         const successMessage = t("posting.message.updated");
 
         successCallback(successMessage);
       })
       .catch(errors => {
+        debugger;
         notify(errors.message, "negative");
       });
   }
@@ -253,6 +303,7 @@ export function usePostingInput() {
     loadDescription,
     postingImages,
     loadGalleryImages,
-    setValidateInput
+    setValidateInput,
+    setPostingInput
   };
 }
