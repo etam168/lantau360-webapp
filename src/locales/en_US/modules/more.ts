@@ -1,7 +1,7 @@
 export default {
   title: "More",
   language: "Language",
-  aboutUs: "About Us",
+  aboutUs: "About",
   terms: "Terms & Conditions",
   privacy: "Privacy Policy",
   locationPermission: "Location Permission",
@@ -20,7 +20,7 @@ export default {
     title: {
       privacy: "Privacy Policy",
       terms: "Terms & Conditions",
-      aboutUs: "About Us"
+      aboutUs: "About"
     }
   }
 };

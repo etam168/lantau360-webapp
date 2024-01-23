@@ -8,8 +8,6 @@
       <q-item
         v-for="(item, index) in filteredMenuItems"
         :key="index"
-        clickable
-        @click="throttledHandleContentDialog(item)"
         class="shadow-1 q-mb-md q-pl-sm"
       >
         <q-item-section avatar>
@@ -26,6 +24,16 @@
 
         <q-item-section side v-if="item.name == Menu.LANGUAGE">
           <language-select />
+        </q-item-section>
+        <q-item-section side v-else>
+          <q-btn
+            dense
+            flat
+            round
+            icon="arrow_forward"
+            v-close-popup
+            @click="throttledHandleContentDialog(item)"
+          ></q-btn>
         </q-item-section>
       </q-item>
     </q-card-section>
