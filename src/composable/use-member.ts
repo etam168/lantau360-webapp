@@ -32,8 +32,6 @@ const userEditor = {
 };
 
 export function useMember() {
-  //   const contentInput = ref<Content>(newInput());
-
   const loginByUserName = async (
     loginRequest: ILoginRequest
   ): Promise<ILoginResponse | undefined> => {

@@ -85,17 +85,6 @@
   }
 
   async function handleItemClick(item: CategoryTypes) {
-    // let directoryData;
-
-    // try {
-    //   // Make an API call to fetch data based on item's directoryId
-    //   const response = await axios.get(`Directory/${item.directoryId}`);
-    //   directoryData = response.data; // Assuming the API response contains the data you need
-    // } catch (error) {
-    //   // console.error("Error fetching directory data:", error);
-    //   // Handle error scenarios here
-    //   return;
-    // }
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog.vue")

@@ -1,39 +1,29 @@
 <template>
-  <div v-if="data && data?.length > 0">
-    <!-- <q-bar v-if="isAdvertisement(data[0])" dense class="bg-primary text-white flex-center">
-      <div>Advertisement</div>
-    </q-bar> -->
-
-    <q-responsive :ratio="aspectRatio()">
-      <q-carousel
-        v-model="slide"
-        animated
-        control-color="white"
-        swipeable
-        padding
-        infinite
-        transition-prev="fade"
-        transition-next="fade"
-        transition-duration="1200"
-        :autoplay="slideInterval"
+  <q-responsive v-if="data && data?.length > 0" :ratio="aspectRatio()">
+    <q-carousel
+      v-model="slide"
+      animated
+      control-color="white"
+      swipeable
+      padding
+      infinite
+      transition-prev="fade"
+      transition-next="fade"
+      transition-duration="1200"
+      :autoplay="slideInterval"
+    >
+      <q-carousel-slide
+        v-for="(row, index) in data"
+        :key="index"
+        :name="getId(row)"
+        class="q-pa-none"
+        :img-src="getImageSrc(row)"
+        @click="onImageClick(row)"
       >
-        <q-carousel-slide
-          v-for="row in data"
-          :key="getId(row)"
-          :name="getId(row)"
-          class="q-pa-none"
-          :img-src="getImageSrc(row)"
-          @click="onImageClick(row)"
-        >
-        </q-carousel-slide>
-      </q-carousel>
-    </q-responsive>
-  </div>
-  <div v-else>
-    <q-img src="@/assets/img/home-bg.webp" :ratio="aspectRatio()" />
-  </div>
-
-  <!-- <q-separator size="8px" color="primary" /> -->
+      </q-carousel-slide>
+    </q-carousel>
+  </q-responsive>
+  <q-img v-else :src="CAROUSEL_BACKGROUND" :ratio="aspectRatio()" />
 </template>
 
 <script setup lang="ts">
@@ -46,16 +36,15 @@
 
   // .ts file
   import imageNotFound from "@/assets/img/image_not_found.jpg";
-  import { BLOB_URL } from "@/constants";
+  import { CAROUSEL_BACKGROUND, BLOB_URL } from "@/constants";
 
   // Define type that is a union of Site and Advertisement
   type CarouselItem = SiteView | AdvertisementView;
 
   const props = defineProps({
     data: {
-      type: Array as PropType<CarouselItem[] | null>,
-      required: false,
-      default: null
+      type: Array as PropType<CarouselItem[]>,
+      required: true
     }
   });
 
@@ -105,15 +94,6 @@
 
   // getImageSrc function to handle both Site and Advertisement
   function getImageSrc(row: CarouselItem) {
-    if (isAdvertisement(row)) {
-      return row.bannerPath !== null && row.bannerPath !== ""
-        ? `${BLOB_URL}/${row.bannerPath}`
-        : imageNotFound;
-    } else {
-      // Return the image path for a Site or a default image
-      return row.bannerPath !== null && row.bannerPath !== ""
-        ? `${BLOB_URL}/${row.bannerPath}`
-        : imageNotFound;
-    }
+    return row.bannerPath ? `${BLOB_URL}/${row.bannerPath}` : imageNotFound;
   }
 </script>

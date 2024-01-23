@@ -47,8 +47,8 @@
   // .ts file
   import { URL } from "@/constants";
 
-  const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
+  const { t } = useI18n({ useScope: "global" });
   const { eventBus, isSmallScreen } = useUtilities();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
@@ -113,9 +113,9 @@
     businessPromotion.value = promotionsResponse.data.data;
     businessVoucher.value = voucherResponse.data.data;
     directoriesData.value = useSorted(
-      directoriesResponse.data,
+      directoriesResponse.data.filter((dir: Directory) => dir.status === 1),
       (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
-    ).value.filter((dir: Directory) => dir.status === 1);
+    ).value;
 
     businessPromotion.value = useSorted(
       businessPromotion.value.filter((promo: BusinessPromotionView) => promo.status === 1),

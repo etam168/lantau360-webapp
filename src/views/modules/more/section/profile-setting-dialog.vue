@@ -83,7 +83,7 @@
   import { Member } from "@/interfaces/models/entities/member";
 
   // .ts files
-  import { useMoreInput } from "../use-more-input";
+  import { useMoreInput } from "../use-member-input";
   import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({

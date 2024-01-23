@@ -4,6 +4,7 @@ import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
 const eventBus = new EventBus();
+
 const httpMethods = {
   get: async (path: any, options?: any) => axios.get(path, { params: options }),
   create: (path: any, item: any, config = {}) => axios.post(path, item, config),
@@ -34,6 +35,40 @@ export function useUtilities() {
   function dateFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD");
   }
+
+  function getImageURL(relativePath: any) {
+    if (relativePath != null) {
+      return relativePath.includes("http") ? relativePath : `${BLOB_URL}/${relativePath}`;
+    } else {
+      return PLACEHOLDER_THUMBNAIL;
+    }
+  }
+
+  const getTimeAgo = (dateTime: Date) => {
+    const currentDate = new Date();
+    const postDate = new Date(dateTime);
+    const timeDifference = currentDate.getTime() - postDate.getTime();
+    const seconds = Math.floor(timeDifference / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+    const months = Math.floor(days / 30); // assuming 30 days per month
+    const years = Math.floor(days / 365); // assuming 365 days per year
+
+    if (years > 0) {
+      return `${years} ${years === 1 ? "year" : "years"} ago`;
+    } else if (months > 0) {
+      return `${months} ${months === 1 ? "month" : "months"} ago`;
+    } else if (days > 0) {
+      return `${days} ${days === 1 ? "day" : "days"} ago`;
+    } else if (hours > 0) {
+      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+    } else if (minutes > 0) {
+      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+    } else {
+      return "Just now";
+    }
+  };
 
   function isNotEmptyArray(arr: any) {
     return Array.isArray(arr) && arr.length > 0;
@@ -105,45 +140,14 @@ export function useUtilities() {
     window.open(whatsappURL, "_blank");
   }
 
-  function getImageURL(relativePath: any) {
-    if (relativePath != null) {
-      return relativePath.includes("http") ? relativePath : `${BLOB_URL}/${relativePath}`;
-    } else {
-      return PLACEHOLDER_THUMBNAIL;
-    }
-  }
-
-  const getTimeAgo = (dateTime: Date) => {
-    const currentDate = new Date();
-    const postDate = new Date(dateTime);
-    const timeDifference = currentDate.getTime() - postDate.getTime();
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30); // assuming 30 days per month
-    const years = Math.floor(days / 365); // assuming 365 days per year
-
-    if (years > 0) {
-      return `${years} ${years === 1 ? "year" : "years"} ago`;
-    } else if (months > 0) {
-      return `${months} ${months === 1 ? "month" : "months"} ago`;
-    } else if (days > 0) {
-      return `${days} ${days === 1 ? "day" : "days"} ago`;
-    } else if (hours > 0) {
-      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
-    } else {
-      return "Just now";
-    }
-  };
-
   return {
     aspectRatio,
     dateFormatter,
     eventBus,
+    getImageURL,
+    getTimeAgo,
     groupBy,
+    httpMethods,
     isNotEmptyArray,
     isNthBitSet,
     isSmallScreen,
@@ -152,9 +156,6 @@ export function useUtilities() {
     sleep,
     translate,
     translateAlt,
-    translateAltName,
-    httpMethods,
-    getImageURL,
-    getTimeAgo
+    translateAltName
   };
 }
