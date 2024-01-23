@@ -43,7 +43,8 @@
   import InputContent from "../shared/input-content/index.vue";
   import { Posting } from "@/interfaces/models/entities/posting";
 
-  const { postingImages, setValidateInput, setPostingInput, updatePosting } = usePostingInput();
+  const { postingImages, setValidateInput, setPostingInput, updatePosting, loadGalleryImages } =
+    usePostingInput();
 
   const { t } = useI18n({ useScope: "global" });
 
@@ -81,7 +82,7 @@
   onBeforeMount(() => {
     debugger;
     setPostingInput(props.postingData);
-
+    loadGalleryImages();
     postingImage.value = postingImages.value;
 
     initialValues.value = {
