@@ -11,21 +11,11 @@
       </q-item-section>
 
       <q-item-section side>
-        <div class="q-gutter-md">
-          <app-button-rounded v-if="siteItem.contactPhone" icon="phone" @click="navigateToPhone" />
-
-          <app-button-rounded
-            v-if="siteItem.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
-          />
-          <app-button-rounded
-            icon="favorite"
-            :text-color="isFavourite ? 'red' : 'white'"
-            :class="{ 'margin-200': imageCount > 1, 'margin-40': imageCount <= 1 }"
-            @click="onBtnFavClick"
-          />
-        </div>
+        <app-button-rounded
+          icon="favorite"
+          :text-color="isFavourite ? 'red' : 'white'"
+          @click="onBtnFavClick"
+        />
       </q-item-section>
     </q-item>
 
@@ -67,7 +57,7 @@
 
   const siteItem = computed(() => props.item as SiteView);
 
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const { eventBus, translate } = useUtilities();
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref(siteItem.value.subtitle1);
@@ -94,13 +84,6 @@
     return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
-  const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
-
   const onBtnFavClick = () => {
     const localFavItem = favoriteItems.value;
     if (isFavourite.value) {
@@ -120,12 +103,3 @@
     eventBus.emit("favoriteUpdated", props.item);
   };
 </script>
-<style scoped>
-  .margin-200 {
-    margin-top: -200px;
-  }
-
-  .margin-40 {
-    margin-top: -40px;
-  }
-</style>

@@ -8,24 +8,12 @@
       </q-item-section>
 
       <q-item-section side>
-        <div class="q-gutter-md">
-          <app-button-rounded
-            v-if="businessItem.contactPhone"
-            icon="phone"
-            @click="navigateToPhone"
-          />
-          <app-button-rounded
-            v-if="businessItem.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
-          />
-          <app-button-rounded
-            :text-color="isFavourite ? 'red' : 'white'"
-            icon="favorite"
-            :class="{ 'margin-200': imageCount > 1, 'margin-40': imageCount <= 1 }"
-            @click="onBtnFavClick"
-          />
-        </div>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          :class="{ 'margin-top-right': imageCount > 1, 'margin-top': imageCount <= 1 }"
+          @click="onBtnFavClick"
+        />
       </q-item-section>
     </q-item>
 
@@ -54,6 +42,23 @@
 
     <q-item>
       <app-text-editor v-model="translatedContent" />
+    </q-item>
+    <q-item>
+      <q-item-section>
+        <div class="q-gutter-md">
+          <app-button-rounded
+            v-if="businessItem.contactPhone"
+            icon="phone"
+            @click="navigateToPhone"
+          />
+
+          <app-button-rounded
+            v-if="item.contactWhatsApp"
+            icon="fab fa-whatsapp"
+            @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
+          />
+        </div>
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
@@ -169,11 +174,12 @@
   };
 </script>
 <style scoped>
-  .margin-200 {
-    margin-top: -200px;
+  .margin-top {
+    margin-top: -50px;
   }
 
-  .margin-40 {
-    margin-top: -40px;
+  .margin-top-right {
+    margin-top: -50px;
+    margin-right: -15px;
   }
 </style>

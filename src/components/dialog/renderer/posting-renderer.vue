@@ -6,17 +6,6 @@
           >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
         </q-item-label>
       </q-item-section>
-
-      <q-item-section side>
-        <div class="q-gutter-md">
-          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
-          <app-button-rounded
-            v-if="item.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
-          />
-        </div>
-      </q-item-section>
     </q-item>
 
     <q-item>
@@ -30,7 +19,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -44,11 +33,4 @@
   const translatedContent: any = ref(
     translate(postingItem.value.description, postingItem.value.meta, "description")
   );
-
-  const navigateToPhone = () => {
-    if (postingItem?.value.contactPhone) {
-      const phoneURL = `tel:${postingItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 </script>

@@ -7,8 +7,13 @@
           >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
         </q-item-label>
       </q-item-section>
+    </q-item>
 
-      <q-item-section side>
+    <q-item>
+      <app-text-editor v-model="translatedContent" />
+    </q-item>
+    <q-item>
+      <q-item-section>
         <div class="q-gutter-md">
           <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
           <app-button-rounded
@@ -18,10 +23,6 @@
           />
         </div>
       </q-item-section>
-    </q-item>
-
-    <q-item>
-      <app-text-editor v-model="translatedContent" />
     </q-item>
   </q-list>
 </template>

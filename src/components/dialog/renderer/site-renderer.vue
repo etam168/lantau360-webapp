@@ -21,7 +21,7 @@
       <app-text-editor v-model="translatedContent" />
     </q-item>
     <q-item>
-      <q-item-section side>
+      <q-item-section>
         <div class="q-gutter-md">
           <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
 

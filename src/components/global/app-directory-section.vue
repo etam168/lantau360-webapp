@@ -102,7 +102,7 @@
               () => import("@/components/dialog/category-item-list-dialog.vue")
             ),
             componentProps: {
-              directoryItemsList: directoryItems,
+              directoryItemsList: directoryItems.value,
               directory: item
               // groupBykey: groupBy
             }

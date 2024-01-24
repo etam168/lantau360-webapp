@@ -4,14 +4,6 @@
       <q-item-section>
         <app-button-rounded icon="location_on" />
       </q-item-section>
-
-      <q-item-section side>
-        <div class="q-gutter-md">
-          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
-
-          <app-button-rounded v-if="item.contactWhatsApp" icon="phone" />
-        </div>
-      </q-item-section>
     </q-item>
     <q-separator class="q-mt-sm" />
 
@@ -29,6 +21,15 @@
       <app-text-editor v-model="translatedContent" />
     </q-item>
     <q-separator class="q-mt-sm" />
+    <q-item>
+      <q-item-section>
+        <div class="q-gutter-md">
+          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
+
+          <app-button-rounded v-if="item.contactWhatsApp" icon="phone" />
+        </div>
+      </q-item-section>
+    </q-item>
   </q-list>
 </template>
 
