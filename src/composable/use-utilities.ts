@@ -1,5 +1,5 @@
 // useUtilities.ts
-import { date, EventBus, Notify, useQuasar } from "quasar";
+import { date, EventBus, Notify, Screen } from "quasar";
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
@@ -13,12 +13,11 @@ const httpMethods = {
 };
 
 export function useUtilities() {
-  const $q = useQuasar();
   const { t } = i18n.global;
-  const isSmallScreen = computed(() => $q.screen.lt.sm);
+  const isSmallScreen = computed(() => Screen.lt.sm);
 
   function aspectRatio() {
-    switch ($q.screen.name) {
+    switch (Screen.name) {
       case "xs":
         return 16 / 9;
       case "sm":
