@@ -14,7 +14,7 @@
 
     <q-separator color="white" />
 
-    <q-card-actions class="bg-grey-4 q-py-none">
+    <q-card-actions class="bg-grey-4 q-py-none" v-if="galleryImages.length > 1">
       <q-btn
         v-show="virtualScrollIndex > 0"
         round

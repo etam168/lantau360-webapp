@@ -56,15 +56,15 @@ export function useUtilities() {
     const years = Math.floor(days / 365); // assuming 365 days per year
 
     if (years > 0) {
-      return `${years} ${years === 1 ? "year" : "years"} ago`;
+      return `${years} ${years === 1 ? "y" : "y"} ago`;
     } else if (months > 0) {
-      return `${months} ${months === 1 ? "month" : "months"} ago`;
+      return `${months} ${months === 1 ? "m" : "m"} ago`;
     } else if (days > 0) {
-      return `${days} ${days === 1 ? "day" : "days"} ago`;
+      return `${days} ${days === 1 ? "d" : "d"} ago`;
     } else if (hours > 0) {
-      return `${hours} ${hours === 1 ? "hour" : "hours"} ago`;
+      return `${hours} ${hours === 1 ? "h" : "h"} ago`;
     } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "minute" : "minutes"} ago`;
+      return `${minutes} ${minutes === 1 ? "min" : "min"} ago`;
     } else {
       return "Just now";
     }

@@ -26,21 +26,10 @@
           <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
         </q-item-section>
         <q-space />
-        <q-item-section side top
+        <q-item-section side top class="q-pa-none"
           ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
           <q-item class="q-pa-none">
             <q-item-section class="q-pa-none">
-              <q-btn
-                color="primary"
-                icon="info"
-                size="md"
-                dense
-                flat
-                rounded
-                @click="handleItemClick(item)"
-              />
-            </q-item-section>
-            <q-item-section class="q-pa-none" side>
               <q-btn
                 color="primary"
                 icon="edit"
@@ -50,6 +39,17 @@
                 rounded
                 @click="editPosting(item as PostingView)"
                 v-if="userStore.userId == (item as Posting).memberId"
+              />
+            </q-item-section>
+            <q-item-section side style="padding-left: 0px">
+              <q-btn
+                color="primary"
+                icon="info"
+                size="md"
+                dense
+                flat
+                rounded
+                @click="handleItemClick(item)"
               />
             </q-item-section>
           </q-item>
