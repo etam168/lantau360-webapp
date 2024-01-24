@@ -1,17 +1,19 @@
 <template>
   <q-toolbar v-bind="$attrs" class="q-gutter-x-sm">
     <!-- <q-toolbar class="flex justify-center q-gutter-x-sm"> -->
-    <q-chip
-      v-for="(tabItem, index) in tabItems"
-      :key="index"
-      :outline="currentTab !== tabItem.name"
-      color="primary"
-      text-color="white"
-      clickable
-      @click="setTab(tabItem.name)"
-    >
-      {{ tabItem.label }}
-    </q-chip>
+    <div>
+      <q-chip
+        v-for="(tabItem, index) in tabItems"
+        :key="index"
+        :outline="currentTab !== tabItem.name"
+        color="primary"
+        text-color="white"
+        clickable
+        @click="setTab(tabItem.name)"
+      >
+        {{ tabItem.label }}
+      </q-chip>
+    </div>
   </q-toolbar>
 </template>
 
