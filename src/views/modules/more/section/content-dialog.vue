@@ -6,7 +6,6 @@
         @hide="onDialogHide"
         transition-show="slide-up"
         transition-hide="slide-down"
-        @update:model-value="updateDialogState"
         :model-value="isDialogVisible"
         maximized
       >
@@ -39,7 +38,7 @@
   // Other Import
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
-  const { eventBus } = useUtilities();
+  // const { eventBus } = useUtilities();
 
   defineProps({
     contentDataValue: {
@@ -50,19 +49,9 @@
       required: true
     }
   });
+  defineEmits(["ok", "hide"]); // Declare the custom events
 
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
-
-  onMounted(() => {
-    eventBus.on("ContentDialog", () => {
-      isDialogVisible.value = false;
-    });
-  });
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "ContentDialog");
-  }
 </script>

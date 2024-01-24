@@ -19,6 +19,7 @@
           <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
             icon="favorite"
+            :class="{ 'margin-200': imageCount > 1, 'margin-40': imageCount <= 1 }"
             @click="onBtnFavClick"
           />
         </div>
@@ -46,6 +47,10 @@
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
+      required: true
+    },
+    imageCount: {
+      type: Number,
       required: true
     }
   });
@@ -90,3 +95,12 @@
     eventBus.emit("favoriteUpdated", props.item);
   };
 </script>
+<style scoped>
+  .margin-200 {
+    margin-top: -200px;
+  }
+
+  .margin-40 {
+    margin-top: -40px;
+  }
+</style>

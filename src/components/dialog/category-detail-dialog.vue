@@ -25,11 +25,31 @@
             </div>
           </div>
 
-          <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
-          <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
-          <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
-          <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
-          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
+          <site-renderer
+            v-if="renderer === RENDERER.SITE"
+            :item="item"
+            :image-count="galleryItems?.length"
+          />
+          <business-renderer
+            v-else-if="renderer === RENDERER.BUSINESS"
+            :item="item"
+            :image-count="galleryItems?.length"
+          />
+          <timetable-renderer
+            v-else-if="renderer === RENDERER.TIMETABLE"
+            :item="item"
+            :image-count="galleryItems?.length"
+          />
+          <taxi-renderer
+            v-else-if="renderer === RENDERER.TAXI"
+            :item="item"
+            :image-count="galleryItems?.length"
+          />
+          <restaurant-renderer
+            v-else-if="renderer === RENDERER.RESTAURANT"
+            :item="item"
+            :image-count="galleryItems?.length"
+          />
         </q-page>
       </q-page-container>
     </q-layout>
