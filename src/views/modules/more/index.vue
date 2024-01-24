@@ -4,7 +4,7 @@
 
     <login-signup @on-dialog="throttledHandleLoginDialog" />
 
-    <q-card-section class="q-pt-none">
+    <q-card-section class="q-pt-none q-qb-xl">
       <q-item
         v-for="(item, index) in filteredMenuItems"
         :key="index"
@@ -38,14 +38,10 @@
       </q-item>
     </q-card-section>
 
-    <q-card flat class="text-center justify-center absolute-bottom">
-      <q-card-section class="text-center text-subtitle2 q-pa-xs q-py-md">
-        <div>{{ appVersion }}</div>
-        <div class="text-caption text-grey">
-          {{ $t("more.footer.copyRightText", { currentYear: currentYear }) }}
-        </div>
-      </q-card-section>
-    </q-card>
+    <q-page-sticky position="bottom" :offset="[0, 18]">
+      <q-item-label class="text-center">{{ appVersion }}</q-item-label>
+      <q-item-label class="text-center">{{ copyright }}</q-item-label>
+    </q-page-sticky>
   </q-page>
 </template>
 
@@ -66,8 +62,12 @@
 
   const data = ref<Content | null>(null);
   const memberData = ref();
-  const appVersion = __APP_VERSION__;
-  const currentYear = new Date().getFullYear();
+
+  const appVersion = computed(() => t("more.footer.version", { version: __APP_VERSION__ }));
+  const copyright = computed(() =>
+    t("more.footer.copyright", { currentYear: new Date().getFullYear() })
+  );
+
   const Menu = {
     LANGUAGE: "language",
     ABOUT: "aboutUs",

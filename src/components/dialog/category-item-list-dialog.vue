@@ -7,8 +7,8 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px; position: relative">
-      <q-header class="bg-transparent text-dark">
+    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+      <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 

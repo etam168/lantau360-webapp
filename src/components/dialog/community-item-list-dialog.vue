@@ -7,8 +7,8 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px; position: relative">
-      <q-header class="bg-transparent text-dark">
+    <q-layout view="lHh lpr lFr" container class="bg-white" style="max-width: 1024px">
+      <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
@@ -47,11 +47,12 @@
               style="position: relative"
             />
           </template>
+
+          <q-page-sticky position="bottom-right" :offset="[24, 24]">
+            <q-btn round color="primary" icon="add" @click="createPosting" />
+          </q-page-sticky>
         </q-page>
       </q-page-container>
-      <q-page-sticky position="bottom-right" :offset="[500, 20]">
-        <q-btn round color="primary" icon="add" @click="createPosting" />
-      </q-page-sticky>
     </q-layout>
   </q-dialog>
 </template>

@@ -22,5 +22,9 @@ export default {
       terms: "條款與條件",
       aboutUs: "關於我們"
     }
+  },
+  footer: {
+    version: "{version} 版本",
+    copyright: "© {currentYear} Lantau360.com"
   }
 };

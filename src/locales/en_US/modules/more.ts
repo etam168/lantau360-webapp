@@ -25,6 +25,7 @@ export default {
   },
 
   footer: {
-    copyRightText: "© {currentYear} Lantau360.com"
+    version: "Ver {version}",
+    copyright: "© {currentYear} Lantau360.com"
   }
 };
