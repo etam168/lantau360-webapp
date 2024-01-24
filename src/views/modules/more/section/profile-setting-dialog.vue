@@ -4,7 +4,6 @@
     @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
-    @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
     maximized
   >
@@ -83,7 +82,7 @@
   import { Member } from "@/interfaces/models/entities/member";
 
   // .ts files
-  import { useMoreInput } from "../use-member-input";
+  import { useMemberInput } from "../use-member-input";
   import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({
@@ -95,23 +94,24 @@
 
   const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
 
-  const { eventBus } = useUtilities();
+  defineEmits(["ok", "hide"]); // Declare the custom events
+
   const { t } = useI18n({ useScope: "global" });
-  const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
+  const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMemberInput();
 
   const form = ref();
   const initialValues = ref({});
   const schema = yup.object({
-    email: yup.string().min(3).required().label(t("area.columns.areaName"))
+    email: yup.string().min(3).required().label(t("auth.register.email"))
   });
 
   const { onDialogCancel, dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
   onMounted(() => {
-    eventBus.on("ProfileSettingDialog", () => {
-      isDialogVisible.value = false;
-    });
+    // eventBus.on("ProfileSettingDialog", () => {
+    //   isDialogVisible.value = false;
+    // });
 
     setMemberInput(props?.member);
     memberInput.value.memberId = props.member.memberId;
@@ -132,10 +132,10 @@
     });
   }
 
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "ProfileSettingDialog");
-  }
+  // function updateDialogState(status: any) {
+  //   isDialogVisible.value = status;
+  //   eventBus.emit("DialogStatus", status, "ProfileSettingDialog");
+  // }
 
   const fullNameFields = [
     { name: "firstName", label: "auth.register.firstName", icon: "", maxlength: 20 },

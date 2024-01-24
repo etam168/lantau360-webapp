@@ -40,9 +40,10 @@
   // .ts files
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { useUserStore } from "@/stores/user";
+  import { useMemberInput } from "../use-member-input";
 
   const userStore = useUserStore();
-  const { handleUpdateMemberAvatar } = useContentInput();
+  const { handleUpdateMemberAvatar } = useMemberInput();
 
   const imageRef = ref();
   const imagePath = ref(null);

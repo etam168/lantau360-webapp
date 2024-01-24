@@ -4,10 +4,11 @@ import { Member } from "@/interfaces/models/entities/member";
 
 // .ts files
 import { useUserStore } from "@/stores/user";
+import { BASE_URL } from "@/constants";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
-
+const error = ref<string | null>(null);
 const newInput = () => {
   return {
     modifiedAt: new Date()
@@ -21,7 +22,7 @@ const toolTipCreate = ref("member.gallery.uploadNewImage");
 const locale = ref("hk");
 const lang = ref("hk");
 
-export function useMoreInput() {
+export function useMemberInput() {
   const memberInput = ref<Member>(newInput());
 
   function setMemberInput(val: Member) {
@@ -59,14 +60,41 @@ export function useMoreInput() {
         notify(errors.message, "negative");
       });
   }
+  async function handleUpdateMemberAvatar(newAvatar: any) {
+    const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
 
+    const formData = new FormData();
+    formData.append("image", newAvatar);
+
+    await axios
+      .post(url, formData, {
+        headers: { "Content-Type": "multipart/form-data" }
+      })
+      .then(response => {
+        if (response.status == 200) {
+          userStore.avatar = response.data;
+        }
+      })
+      .catch(err => {
+        if (err instanceof AxiosError) {
+          if (err.response && err.response.status === 404) {
+            error.value = "Not found";
+          } else {
+            error.value = "An error occurred";
+          }
+        } else {
+          error.value = "An unexpected error occurred";
+        }
+      });
+  }
   return {
     memberInput,
+    handleUpdateMemberAvatar,
     updateMember,
     toolTipCreate,
     locale,
     lang,
-    useMoreInput,
+    useMemberInput,
     setValidatedInput,
     setMemberInput
   };
