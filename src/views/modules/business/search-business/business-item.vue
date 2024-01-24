@@ -2,7 +2,7 @@
   <q-item clickable @click="handleDetail" class="shadow-1 q-mb-md q-pl-sm">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img ratio="1" :src="computePath(row.iconPath)" />
+        <q-img ratio="1" :src="computeIconPath" />
       </q-avatar>
     </q-item-section>
 
@@ -36,16 +36,21 @@
 
   const emits = defineEmits(["on-detail"]);
 
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
   const { translate } = useUtilities();
 
-  defineProps({
+  const props = defineProps({
     row: {
       type: Object as PropType<BusinessView>,
       required: true
     }
+  });
+
+  const businessItem = computed(() => props.row);
+
+  const computeIconPath = computed(() => {
+    return businessItem.value.iconPath
+      ? `${BLOB_URL}/${businessItem.value.iconPath}`
+      : "./img/icons/no_image_available.jpeg";
   });
 
   function handleDetail() {

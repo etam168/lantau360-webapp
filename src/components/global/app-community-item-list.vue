@@ -7,8 +7,8 @@
             ratio="1"
             :src="
               (item as PostingView)?.memberImage
-                ? computePath((item as PostingView)?.memberImage)
-                : PLACEHOLDER_AVATAR
+                ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
+                : '/img/icons/no_image_available.jpeg'
             "
           >
             <template v-slot:error>
@@ -77,7 +77,7 @@
   import { useUserStore } from "@/stores/user";
 
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  import { BLOB_URL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   const $q = useQuasar();
@@ -107,9 +107,6 @@
   const { getTimeAgo } = useUtilities();
 
   const userStore = useUserStore();
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
 
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;

@@ -13,7 +13,14 @@
         >
           <q-item-section avatar>
             <q-avatar size="64px" square>
-              <q-img ratio="1" :src="computePath(item.iconPath)">
+              <q-img
+                ratio="1"
+                :src="
+                  item.iconPath
+                    ? `${BLOB_URL}/${item.iconPath}`
+                    : '/img/icons/no_image_available.jpeg'
+                "
+              >
                 <template v-slot:error>
                   <div class="absolute-full flex flex-center bg-negative text-white">
                     Cannot load image
@@ -71,10 +78,6 @@
         translate(item.directoryName, item.directoryMeta, "directoryName") as string | number // Make sure the key exists on the item
     );
   });
-
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
 
   function line1(item: CategoryTypes) {
     return translate(item.title, item.meta, "title");

@@ -22,12 +22,12 @@
     <q-tab-panels v-model="tab">
       <q-tab-panel :name="siteItem.subtitle1" class="q-pa-none">
         <q-scroll-area style="height: calc(100vh - 110px)">
-          <q-img :src="computePath(siteItem.imagePath)" />
+          <q-img :src="computeImagePath" />
         </q-scroll-area>
       </q-tab-panel>
 
       <q-tab-panel :name="siteItem.subtitle2" class="q-pa-none"
-        ><q-img :src="computePath(siteItem.bannerPath)" />
+        ><q-img :src="computeBannerPath" />
       </q-tab-panel>
     </q-tab-panels>
   </q-list>
@@ -73,9 +73,17 @@
     }
   ]);
 
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
+  const computeImagePath = computed(() => {
+    return siteItem.value.iconPath
+      ? `${BLOB_URL}/${siteItem.value.iconPath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
+
+  const computeBannerPath = computed(() => {
+    return siteItem.value.bannerPath
+      ? `${BLOB_URL}/${siteItem.value.bannerPath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
 
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 

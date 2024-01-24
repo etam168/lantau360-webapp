@@ -9,7 +9,12 @@
     >
       <q-item-section avatar>
         <q-avatar size="64px" square>
-          <q-img ratio="1" :src="computePath(item.iconPath)">
+          <q-img
+            ratio="1"
+            :src="
+              item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'
+            "
+          >
             <template v-slot:error>
               <div class="absolute-full flex flex-center bg-negative text-white">
                 Cannot load image
@@ -89,10 +94,6 @@
   });
 
   const { translate } = useUtilities();
-
-  const computePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {
