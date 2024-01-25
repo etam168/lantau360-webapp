@@ -1,5 +1,5 @@
 export interface BaseImage {
-  imageId?: number;
+  imageId: number;
   ranking: number;
   imagePath: string;
   meta: Record<string, unknown>;

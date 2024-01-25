@@ -97,7 +97,7 @@
   });
 
   const galleryImages = computed(() => props.imageList);
-  const slide = ref(galleryImages.value[0]?.imageId);
+  const slide = ref(0);
 
   const hasImage = computed(() => {
     return props.imageList.length > 1;
@@ -109,12 +109,6 @@
 
   const virtualScroll = ref();
   const virtualScrollIndex = ref(0);
-
-  // Watch for changes in galleryImages
-  watch(galleryImages, newGalleryImages => {
-    // Set slide to the imageId of the first item in the updated galleryImages
-    slide.value = newGalleryImages[0]?.imageId;
-  });
 
   function getImgStyle(index: number) {
     return index === virtualScrollIndex.value
@@ -157,8 +151,9 @@
   });
 
   function initvirtualScroll() {
-    virtualScroll.value.reset();
+    slide.value = props.imageList.length > 0 ? props.imageList[0].imageId : 0;
 
+    virtualScroll.value.reset();
     virtualScroll.value.refresh(0);
     virtualScroll.value.scrollTo(0, "start-force");
   }
