@@ -1,7 +1,7 @@
 <template>
   <q-card bordered flat>
     <q-responsive :ratio="16 / 9">
-      <q-carousel v-if="hasImage" v-model="slide" animated class="bg-thumbnail">
+      <q-carousel v-if="hasMultipleImage" v-model="slide" animated class="bg-thumbnail">
         <q-carousel-slide
           v-for="(item, index) in galleryImages"
           :key="index"
@@ -15,7 +15,7 @@
 
     <q-separator color="white" />
 
-    <q-card-actions class="bg-grey-4 q-py-none" v-show="galleryImages.length > 1">
+    <q-card-actions class="bg-grey-4 q-py-none" v-show="hasMultipleImage">
       <q-btn
         v-show="virtualScrollIndex > 0"
         round
@@ -99,12 +99,14 @@
   const galleryImages = computed(() => props.imageList);
   const slide = ref(0);
 
-  const hasImage = computed(() => {
+  const hasMultipleImage = computed(() => {
     return props.imageList.length > 1;
   });
 
   const image = computed(() => {
-    return props.imageList.length == 1 ? props.imageList[0].imagePath : PLACEHOLDER_THUMBNAIL;
+    return props.imageList.length == 1
+      ? getImageURL(props.imageList[0].imagePath)
+      : PLACEHOLDER_THUMBNAIL;
   });
 
   const virtualScroll = ref();
