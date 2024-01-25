@@ -48,10 +48,6 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    imageCount: {
-      type: Number,
-      required: true
     }
   });
 

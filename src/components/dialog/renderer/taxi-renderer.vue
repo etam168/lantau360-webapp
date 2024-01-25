@@ -11,14 +11,14 @@
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
-          :class="{ 'margin-top-right': imageCount > 1, 'margin-top': imageCount <= 1 }"
           @click="onBtnFavClick"
+          style="transform: translateY(-24px)"
         />
       </q-item-section>
     </q-item>
 
     <q-item>
-      <app-text-editor style="width: 100%" v-model="translatedContent" />
+      <app-text-editor v-model="translatedContent" />
     </q-item>
 
     <q-item>
@@ -53,15 +53,10 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    imageCount: {
-      type: Number,
-      required: true
     }
   });
 
   const siteItem = computed(() => props.item as SiteView);
-
   const translatedContent: any = ref(
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
@@ -100,13 +95,3 @@
     eventBus.emit("favoriteUpdated", props.item);
   };
 </script>
-<style scoped>
-  .margin-top {
-    margin-top: -50px;
-  }
-
-  .margin-top-right {
-    margin-top: -50px;
-    margin-right: -15px;
-  }
-</style>
