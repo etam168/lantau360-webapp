@@ -19,12 +19,6 @@
           <div v-if="galleryItems && galleryItems?.length > 0">
             <gallery-image-list :image-list="galleryItems" />
           </div>
-          <div v-else>
-            <q-responsive :ratio="16 / 9">
-              <q-img :src="PLACEHOLDER_THUMBNAIL" />
-            </q-responsive>
-          </div>
-
           <property-renderer v-if="renderer === RENDERER.PROPERTY" :item="item" />
           <tuition-renderer v-else-if="renderer === RENDERER.TUITION" :item="item" />
           <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
@@ -41,7 +35,7 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { URL, RENDERER, TEMPLATE, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { URL, RENDERER, TEMPLATE } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

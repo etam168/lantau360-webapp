@@ -46,28 +46,30 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  import ICONS from "@/constants/app/image-icon";
   import { Content } from "@/interfaces/models/entities/content";
   import { throttle } from "quasar";
-  // .ts files
   import { useUserStore } from "@/stores/user";
+  import { URL } from "@/constants";
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
-  import ICONS from "@/constants/app/image-icon";
-  import { URL } from "@/constants";
 
+  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
-  const $q = useQuasar();
-
-  const data = ref<Content | null>(null);
-  const memberData = ref();
 
   const appVersion = computed(() => t("more.footer.version", { version: __APP_VERSION__ }));
   const copyright = computed(() =>
     t("more.footer.copyright", { currentYear: new Date().getFullYear() })
   );
+
+  const filteredMenuItems = computed(() => {
+    // Filter out the "profileSetting" item if userStore.token does not exist
+    return userStore.isUserLogon()
+      ? menuItems
+      : menuItems.filter(item => item.name !== Menu.PROFILE);
+  });
 
   const Menu = {
     LANGUAGE: "language",
@@ -93,19 +95,19 @@
     { name: Menu.PROFILE, icon: ICONS.PROFILE, title: "more.profile" }
   ];
 
+  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
+  const throttledHandleContentDialog = throttle(showContentDialog, 2000);
+
   async function showContentDialog(item: any) {
     if (item.contentKey) {
-      // This will be true if contentKey is not undefined
       try {
         const url = `${URL.CONTENT_NAME_URL}/${item.contentKey}`;
         const response = await axios.get<Content>(url);
-
-        data.value = response.data;
         if (response.status === 200) {
           $q.dialog({
             component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
             componentProps: {
-              contentDataValue: data.value,
+              contentDataValue: response.data,
               title: t(item.title)
             }
           });
@@ -117,16 +119,6 @@
       OpenProfileDialog();
     }
   }
-
-  const filteredMenuItems = computed(() => {
-    // Filter out the "profileSetting" item if userStore.token does not exist
-    return userStore.isUserLogon()
-      ? menuItems
-      : menuItems.filter(item => item.name !== Menu.PROFILE);
-  });
-
-  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
-  const throttledHandleContentDialog = throttle(showContentDialog, 2000);
 
   function showLoginDialog(tabValue: string) {
     $q.dialog({
@@ -141,11 +133,10 @@
     axios
       .get(`${URL.MEMBER_URL}/${userStore.userId}`)
       .then(response => {
-        memberData.value = response.data;
         $q.dialog({
           component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue")),
           componentProps: {
-            member: memberData.value
+            member: response.data
           }
         });
       })

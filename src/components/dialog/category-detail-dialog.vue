@@ -15,14 +15,7 @@
       <q-page-container>
         <q-page>
           <div v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
-            <div v-if="galleryItems && galleryItems?.length > 0">
-              <gallery-image-list :image-list="galleryItems" />
-            </div>
-            <div v-else>
-              <q-responsive :ratio="16 / 9">
-                <q-img :src="PLACEHOLDER_THUMBNAIL" />
-              </q-responsive>
-            </div>
+            <gallery-image-list :image-list="galleryItems" />
           </div>
 
           <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
@@ -44,7 +37,7 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { URL, RENDERER, TEMPLATE, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { URL, RENDERER, TEMPLATE } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

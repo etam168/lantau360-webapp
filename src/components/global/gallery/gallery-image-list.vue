@@ -1,7 +1,7 @@
 <template>
   <q-card bordered flat>
     <q-responsive :ratio="16 / 9">
-      <q-carousel v-model="slide" animated class="bg-thumbnail">
+      <q-carousel v-if="hasImage" v-model="slide" animated class="bg-thumbnail">
         <q-carousel-slide
           v-for="(item, index) in galleryImages"
           :key="index"
@@ -10,6 +10,7 @@
         >
         </q-carousel-slide>
       </q-carousel>
+      <q-img v-else :src="image" />
     </q-responsive>
 
     <q-separator color="white" />
@@ -90,7 +91,7 @@
   const { getImageURL } = useUtilities();
   const props = defineProps({
     imageList: {
-      type: Object as PropType<GalleryImageType[]>,
+      type: Array as PropType<GalleryImageType[]>,
       required: true
     }
   });
@@ -98,8 +99,22 @@
   const galleryImages = computed(() => props.imageList);
   const slide = ref(galleryImages.value[0]?.imageId);
 
+  const hasImage = computed(() => {
+    return props.imageList.length > 1;
+  });
+
+  const image = computed(() => {
+    return props.imageList.length == 1 ? props.imageList[0].imagePath : PLACEHOLDER_THUMBNAIL;
+  });
+
   const virtualScroll = ref();
   const virtualScrollIndex = ref(0);
+
+  // Watch for changes in galleryImages
+  watch(galleryImages, newGalleryImages => {
+    // Set slide to the imageId of the first item in the updated galleryImages
+    slide.value = newGalleryImages[0]?.imageId;
+  });
 
   function getImgStyle(index: number) {
     return index === virtualScrollIndex.value
