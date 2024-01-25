@@ -5,7 +5,7 @@
     </q-header>
 
     <q-page-container class="q-mx-md q-my-md">
-      <app-search-bar v-model="filter" @on-search="onSearch" />
+      <app-search-bar :query="queryData" @on-search="onSearch" />
 
       <business-list-table
         v-model:pagination="pagination"
@@ -46,6 +46,7 @@
     url,
     key
   );
+  const queryData = ref(props.query.searchKeyword);
 
   const $q = useQuasar();
 

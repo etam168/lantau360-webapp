@@ -27,6 +27,8 @@ export const URL = {
   BUSINESS_VOUCHER_GALLERY_URL: `${BASE_URL}/BusinessVoucherImage/GetBusinessVoucherImages`,
   BUSINESS_PROMOTION_GALLERY_URL: `${BASE_URL}/BusinessPromotionImage/GetBusinessPromotionImages`,
   MEMBER_IMAGE_URL: `${BASE_URL}/MemberImage`,
+  CONTENT_NAME_URL: `${BASE_URL}/Content/ContentByName`,
+  MEMBER_URL: `${BASE_URL}/Member`,
 
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,

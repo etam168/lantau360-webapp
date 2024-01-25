@@ -49,12 +49,13 @@
   // Interface files
   import { Content } from "@/interfaces/models/entities/content";
   import { throttle } from "quasar";
-
   // .ts files
   import { useUserStore } from "@/stores/user";
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
+  import ICONS from "@/constants/app/image-icon";
+  import { URL } from "@/constants";
 
   const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
@@ -70,40 +71,33 @@
 
   const Menu = {
     LANGUAGE: "language",
-    ABOUT: "aboutUs",
     PRIVACY: "privacy",
     TERMS: "terms",
     PROFILE: "profileSetting"
   };
 
   const menuItems = [
-    { name: Menu.LANGUAGE, icon: "./img/icons/ic_language_setting.svg", title: "more.language" },
-    {
-      name: Menu.ABOUT,
-      icon: "./img/icons/ic_inbox.svg",
-      title: "more.aboutUs",
-      contentKey: "About"
-    },
+    { name: Menu.LANGUAGE, icon: ICONS.SETTING, title: "more.language" },
     {
       name: Menu.TERMS,
-      icon: "./img/icons/ic_terms_conditions.svg",
+      icon: ICONS.TNC,
       title: "more.terms",
       contentKey: "Terms"
     },
     {
       name: Menu.PRIVACY,
-      icon: "./img/icons/ic_privacy.svg",
+      icon: ICONS.PRIVACY,
       title: "more.privacy",
       contentKey: "Privacy"
     },
-    { name: Menu.PROFILE, icon: "./img/icons/ic_privacy.svg", title: "more.profile" }
+    { name: Menu.PROFILE, icon: ICONS.PROFILE, title: "more.profile" }
   ];
 
   async function showContentDialog(item: any) {
     if (item.contentKey) {
       // This will be true if contentKey is not undefined
       try {
-        const url = `/Content/ContentByName/${item.contentKey}`;
+        const url = `${URL.CONTENT_NAME_URL}/${item.contentKey}`;
         const response = await axios.get<Content>(url);
 
         data.value = response.data;
@@ -145,7 +139,7 @@
 
   function OpenProfileDialog() {
     axios
-      .get(`/Member/${userStore.userId}`)
+      .get(`${URL.MEMBER_URL}/${userStore.userId}`)
       .then(response => {
         memberData.value = response.data;
         $q.dialog({

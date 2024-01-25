@@ -22,6 +22,7 @@
 <script setup lang="ts">
   import { useDialogPluginComponent } from "quasar";
   import MainDatatable from "./main-datatable.vue";
+  defineEmits(["ok", "hide"]); // Declare the custom events
 
   defineProps({
     query: {

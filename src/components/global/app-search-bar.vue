@@ -29,9 +29,20 @@
 
 <script setup lang="ts">
   const emit = defineEmits(["on-search"]);
-  const keyword = ref("");
+  const props = defineProps({
+    query: {
+      type: String,
+      required: false,
+      default: ""
+    }
+  });
+
+  const keyword = ref(props.query);
 
   function handleSearch() {
+    if (keyword.value.length < 3) {
+      return;
+    }
     emit("on-search", keyword.value);
   }
 
