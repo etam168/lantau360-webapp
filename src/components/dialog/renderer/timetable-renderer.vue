@@ -70,8 +70,8 @@
   ]);
 
   const computeImagePath = computed(() => {
-    return siteItem.value.iconPath
-      ? `${BLOB_URL}/${siteItem.value.iconPath}`
+    return siteItem.value.imagePath
+      ? `${BLOB_URL}/${siteItem.value.imagePath}`
       : "./img/icons/no_image_available.jpeg";
   });
 
