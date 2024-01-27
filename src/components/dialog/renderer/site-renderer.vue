@@ -30,6 +30,7 @@
             icon="fab fa-whatsapp"
             @click="navigateToWhatsApp(item.contactWhatsApp)"
           />
+          <app-button-rounded icon="fa fa-map-marker" @click="launchMap()" />
         </div>
       </q-item-section>
     </q-item>
@@ -67,6 +68,19 @@
     const favItem = favoriteItems.value;
     return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
+
+  const launchMap = () => {
+    debugger;
+    const mapLink = siteItem.value.meta.mapLink;
+
+    if (mapLink) {
+      // Open the map link in a new window or tab
+      window.open(mapLink, "_blank");
+    } else {
+      // Handle the case where the map link is not available
+      console.error("Map link is not available.");
+    }
+  };
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
