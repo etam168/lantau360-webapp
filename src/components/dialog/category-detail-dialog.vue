@@ -123,9 +123,9 @@
         // galleryItems.value = galleryResponse.data.filter(
         //   element => !(maskValue & (1 << (element.ranking - 1)))
         // );
-        galleryItems.value = galleryResponse.data.filter(
-          element => !((maskValue >> (element.ranking - 1)) & 1)
-        );
+        galleryItems.value = galleryResponse.data
+          .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
+          .sort((a, b) => a.ranking - b.ranking);
       } catch (err) {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
