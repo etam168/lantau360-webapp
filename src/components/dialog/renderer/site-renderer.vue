@@ -70,7 +70,6 @@
   });
 
   const launchMap = () => {
-    debugger;
     const mapLink = siteItem.value.meta.mapLink;
 
     if (mapLink) {
