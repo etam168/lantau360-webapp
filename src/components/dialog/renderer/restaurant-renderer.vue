@@ -2,9 +2,6 @@
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <q-item-section top>
-        <!-- <q-item-label v-if="businessItem.subtitle1" class="text-caption text-weight-light"
-          >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-        </q-item-label> -->
         <app-tab-select
           :tab-items="tabItems"
           :current-tab="tab"
@@ -18,7 +15,7 @@
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
           @click="onBtnFavClick"
-          style="transform: translateY(-24px)"
+          style="transform: translateY(-34px)"
         />
       </q-item-section>
     </q-item>
@@ -53,7 +50,111 @@
         </q-tab-panel>
 
         <q-tab-panel name="info" class="q-pa-none">
-          <div>
+          <q-item>
+            <q-item-section>
+              <q-img
+                :ratio="16 / 9"
+                width="450px"
+                :src="imagePath(businessItem.imagePath)"
+                @click="openGoogleMaps"
+              ></q-img>
+              <q-list dense v-if="$q.screen.xs">
+                <q-item>
+                  <q-item-section avatar @click="openGoogleMaps">
+                    <q-avatar>
+                      <q-icon name="location_on" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
+                <q-item v-if="businessItem.contactWhatsApp">
+                  <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
+                    <q-avatar>
+                      <q-icon name="fab fa-whatsapp" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{
+                        businessItem.contactWhatsApp == undefined
+                          ? "N/A"
+                          : businessItem.contactWhatsApp
+                      }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
+                <q-item v-if="businessItem.contactPhone">
+                  <q-item-section avatar @click="navigateToPhone">
+                    <q-avatar>
+                      <q-icon name="phone" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{
+                        businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
+                      }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+              </q-list>
+            </q-item-section>
+            <q-item-section side top v-if="$q.screen.gt.xs">
+              <q-list dense>
+                <q-item>
+                  <q-item-section avatar @click="openGoogleMaps">
+                    <q-avatar>
+                      <q-icon name="location_on" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
+                <q-item v-if="businessItem.contactWhatsApp">
+                  <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
+                    <q-avatar>
+                      <q-icon name="fab fa-whatsapp" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{
+                        businessItem.contactWhatsApp == undefined
+                          ? "N/A"
+                          : businessItem.contactWhatsApp
+                      }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
+                <q-item v-if="businessItem.contactPhone">
+                  <q-item-section avatar @click="navigateToPhone">
+                    <q-avatar>
+                      <q-icon name="phone" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{
+                        businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
+                      }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+              </q-list>
+            </q-item-section>
+          </q-item>
+          <!-- <div>
             <q-img
               class="q-ml-lg"
               :ratio="16 / 9"
@@ -108,13 +209,13 @@
                 >
               </q-item>
             </q-list>
-          </div>
+          </div> -->
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
   </q-list>
 </template>
-
+<!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
   import { LocalStorage } from "quasar";
 
