@@ -20,14 +20,13 @@
     </q-item>
 
     <q-tab-panels v-model="tab">
-      <q-tab-panel :name="siteItem.subtitle1" class="q-pa-none">
-        <q-scroll-area style="height: calc(100vh - 110px)">
-          <q-img :src="computeImagePath" />
-        </q-scroll-area>
-      </q-tab-panel>
-
-      <q-tab-panel :name="siteItem.subtitle2" class="q-pa-none"
-        ><q-img :src="computeBannerPath" />
+      <q-tab-panel
+        v-for="(tabItem, index) in tabItems"
+        :key="index"
+        :name="tabItem.name"
+        class="q-pa-none"
+      >
+        <q-img :src="tabItem.image" />
       </q-tab-panel>
     </q-tab-panels>
   </q-list>
@@ -53,6 +52,37 @@
 
   const siteItem = computed(() => props.item as SiteView);
 
+  onMounted(() => {
+    // Need both onMounted and onUpdated to work!!
+    initTabItems();
+  });
+
+  onUpdated(() => {
+    // Need both onMounted and onUpdated to work!!
+    initTabItems();
+  });
+
+  function initTabItems() {
+    tabItems.value = [
+      {
+        name: siteItem.value.subtitle1,
+        label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1"),
+        image: siteItem.value.bannerPath
+          ? `${BLOB_URL}/${siteItem.value.bannerPath}`
+          : "./img/icons/no_image_available.jpeg"
+      } as TabItem,
+      {
+        name: siteItem.value.subtitle2,
+        label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2"),
+        image: siteItem.value.imagePath
+          ? `${BLOB_URL}/${siteItem.value.imagePath}`
+          : "./img/icons/no_image_available.jpeg"
+      } as TabItem
+    ];
+
+    tab.value = siteItem.value.subtitle1;
+  }
+
   const { eventBus, translate } = useUtilities();
 
   const setTab = (val: string) => (tab.value = val);
@@ -68,18 +98,6 @@
       label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2")
     }
   ]);
-
-  const computeImagePath = computed(() => {
-    return siteItem.value.imagePath
-      ? `${BLOB_URL}/${siteItem.value.imagePath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
-
-  const computeBannerPath = computed(() => {
-    return siteItem.value.bannerPath
-      ? `${BLOB_URL}/${siteItem.value.bannerPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 
