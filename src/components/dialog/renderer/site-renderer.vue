@@ -163,7 +163,7 @@
     { name: "info", label: t("home.tabItems.info") }
   ]);
 
-  const translatedContent: any = ref(
+  const translatedContent: any = computed(() =>
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
 
