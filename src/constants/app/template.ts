@@ -1,6 +1,6 @@
 const Template = {
   DEFAULT: { value: 1, mask: 1 },
-  TAXI: { value: 2, mask: 7 },
+  TAXI: { value: 2, mask: 3 },
   TIMETABLE: { value: 3, mask: 7 },
   RESTAURANT: { value: 8, mask: 7 },
   NEWS: { value: 8, mask: 7 },
