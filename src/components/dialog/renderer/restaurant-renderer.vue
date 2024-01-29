@@ -55,7 +55,7 @@
               <q-img
                 :ratio="16 / 9"
                 width="450px"
-                :src="imagePath(businessItem.imagePath)"
+                :src="computeImagePath"
                 @click="openGoogleMaps"
               ></q-img>
               <q-list dense v-if="$q.screen.xs">
@@ -289,9 +289,11 @@
     (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
   );
 
-  const imagePath = (path: string) => {
-    return path ? `${BLOB_URL}/${path}` : "./img/icons/no_image_available.jpeg";
-  };
+  const computeImagePath = computed(() => {
+    return businessItem.value.imagePath
+      ? `${BLOB_URL}/${businessItem.value.imagePath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
 
   const isFavourite = computed(() => {
     const favItem = favoriteItems.value;
