@@ -6,7 +6,6 @@
     flat
     square
     grid
-    :hide-pagination="hidePagination"
     :rows-per-page-options="[25, 30, 50]"
     :rows-per-page="25"
   >
@@ -14,7 +13,7 @@
       <site-item class="col-12" :row="props.row" @on-detail="handleDetail(props.row)" />
     </template>
 
-    <template v-slot:bottom="scope">
+    <!-- <template v-slot:bottom="scope">
       <div class="pagination-container">
         <q-btn flat v-show="!scope.isFirstPage" @click="scope.prevPage">Previous</q-btn>
 
@@ -29,7 +28,7 @@
         />
         <q-btn flat v-show="!scope.isLastPage" @click="scope.nextPage">Next</q-btn>
       </div>
-    </template>
+    </template> -->
   </q-table>
 </template>
 
@@ -50,22 +49,22 @@
     emits("on-detail", props);
   }
 
-  function updatePagination(val: any, scope: any) {
-    if (qTableRef.value) {
-      const qTable = qTableRef.value as QTable;
-      const { pagination } = scope;
+  // function updatePagination(val: any, scope: any) {
+  //   if (qTableRef.value) {
+  //     const qTable = qTableRef.value as QTable;
+  //     const { pagination } = scope;
 
-      if (pagination) {
-        pagination.page = val;
-        qTable.requestServerInteraction({
-          pagination: {
-            ...pagination,
-            sortBy: pagination.sortBy || undefined
-          }
-        });
-      }
-    }
-  }
+  //     if (pagination) {
+  //       pagination.page = val;
+  //       qTable.requestServerInteraction({
+  //         pagination: {
+  //           ...pagination,
+  //           sortBy: pagination.sortBy || undefined
+  //         }
+  //       });
+  //     }
+  //   }
+  // }
 </script>
 
 <style lang="scss">
