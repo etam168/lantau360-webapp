@@ -64,6 +64,7 @@ export default function useDataTable(url: string, key: string) {
   };
 
   const onSearch = (value: string) => {
+    filter.value = value;
     loadData({ filter: value, pagination: { ...pagination.value, page: 1 } });
   };
 

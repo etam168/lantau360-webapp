@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+  const { notify } = useUtilities();
+
   const emit = defineEmits(["on-search"]);
   const props = defineProps({
     query: {
@@ -41,6 +43,7 @@
 
   function handleSearch() {
     if (keyword.value.length < 3) {
+      notify("Minimum 3 letters are required", "negative");
       return;
     }
     emit("on-search", keyword.value);
