@@ -1,4 +1,5 @@
 const Renderer = {
+  ATM: "ATM",
   SITE: "Site",
   TAXI: "Taxi",
   TIMETABLE: "Timetable",

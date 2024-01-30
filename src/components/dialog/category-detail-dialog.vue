@@ -18,6 +18,7 @@
             <gallery-image-list :image-list="galleryItems" />
           </div>
 
+          <atm-renderer v-if="renderer === RENDERER.ATM" :item="item" />
           <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
           <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
@@ -41,6 +42,7 @@
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
+  import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
@@ -84,7 +86,10 @@
   });
 
   const renderer = computed(() => {
+    debugger;
     switch (true) {
+      case props.item.directoryTemplate == TEMPLATE.ATM.value:
+        return RENDERER.ATM;
       case props.item.directoryTemplate == TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
       case props.item.directoryTemplate == TEMPLATE.TAXI.value:
