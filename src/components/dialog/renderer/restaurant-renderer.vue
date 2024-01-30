@@ -44,20 +44,23 @@
     </q-item>
 
     <q-item>
-      <q-tab-panels v-model="tab">
+      <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
         <q-tab-panel name="aboutUs" class="q-pa-none">
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
 
         <q-tab-panel name="info" class="q-pa-none">
-          <q-item>
-            <q-item-section>
+          <q-item class="q-pa-none">
+            <q-item-section v-if="businessItem.imagePath">
               <q-img
+                style="cursor: pointer"
                 :ratio="16 / 9"
-                width="450px"
-                :src="computeImagePath"
+                width="100%"
+                :src="businessItem.imagePath ? `${BLOB_URL}/${businessItem.imagePath}` : ''"
                 @click="openGoogleMaps"
-              ></q-img>
+              >
+              </q-img>
+
               <q-list dense v-if="$q.screen.xs">
                 <q-item>
                   <q-item-section avatar @click="openGoogleMaps">
@@ -105,13 +108,22 @@
                 </q-item>
               </q-list>
             </q-item-section>
-            <q-item-section side top v-if="$q.screen.gt.xs">
+            <q-item-section top v-if="$q.screen.gt.xs">
               <q-list dense>
                 <q-item>
                   <q-item-section avatar @click="openGoogleMaps">
-                    <q-avatar>
+                    <!-- <q-avatar>
                       <q-icon name="location_on" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
+
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="location_on"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -120,11 +132,22 @@
                   >
                 </q-item>
 
+                <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
+
                 <q-item v-if="businessItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <q-avatar>
+                    <!-- <q-avatar>
                       <q-icon name="fab fa-whatsapp" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
+
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="fab fa-whatsapp"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -137,11 +160,22 @@
                   >
                 </q-item>
 
+                <q-separator spaced inset v-if="businessItem.contactPhone" />
+
                 <q-item v-if="businessItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar>
+                    <!-- <q-avatar>
                       <q-icon name="phone" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
+
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="phone"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -154,62 +188,6 @@
               </q-list>
             </q-item-section>
           </q-item>
-          <!-- <div>
-            <q-img
-              class="q-ml-lg"
-              :ratio="16 / 9"
-              width="900px"
-              :src="imagePath(businessItem.imagePath)"
-              @click="openGoogleMaps"
-            ></q-img>
-
-            <q-list dense>
-              <q-item>
-                <q-item-section avatar @click="openGoogleMaps">
-                  <q-avatar>
-                    <q-icon name="location_on" color="primary" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-caption"
-                    >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-                  </q-item-label></q-item-section
-                >
-              </q-item>
-
-              <q-item v-if="businessItem.contactWhatsApp">
-                <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                  <q-avatar>
-                    <q-icon name="fab fa-whatsapp" color="primary" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-caption"
-                    >{{
-                      businessItem.contactWhatsApp == undefined
-                        ? "N/A"
-                        : businessItem.contactWhatsApp
-                    }}
-                  </q-item-label></q-item-section
-                >
-              </q-item>
-
-              <q-item v-if="businessItem.contactPhone">
-                <q-item-section avatar @click="navigateToPhone">
-                  <q-avatar>
-                    <q-icon name="phone" color="primary" />
-                  </q-avatar>
-                </q-item-section>
-                <q-item-section>
-                  <q-item-label class="text-caption"
-                    >{{
-                      businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
-                    }}
-                  </q-item-label></q-item-section
-                >
-              </q-item>
-            </q-list>
-          </div> -->
         </q-tab-panel>
       </q-tab-panels>
     </q-item>

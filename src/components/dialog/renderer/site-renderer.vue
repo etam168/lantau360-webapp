@@ -27,15 +27,17 @@
         </q-tab-panel>
 
         <q-tab-panel name="info" class="q-pa-none">
-          <q-item>
-            <q-item-section>
+          <q-item class="q-pa-none">
+            <q-item-section v-if="siteItem.imagePath">
               <q-img
                 style="cursor: pointer"
                 :ratio="16 / 9"
-                width="450px"
-                :src="computeImagePath"
+                width="100%"
+                :src="siteItem.imagePath ? `${BLOB_URL}/${siteItem.imagePath}` : ''"
                 @click="openGoogleMaps"
-              ></q-img>
+              >
+              </q-img>
+
               <q-list dense v-if="$q.screen.xs">
                 <q-item>
                   <q-item-section avatar @click="openGoogleMaps">
@@ -83,10 +85,14 @@
               <q-list dense>
                 <q-item dense>
                   <q-item-section avatar @click="openGoogleMaps">
-                    <!-- <q-avatar>
-                      <q-icon name="location_on" color="primary" />
-                    </q-avatar> -->
-                    <q-avatar dense rounded color="primary" icon="location_on" text-color="white" />
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="location_on"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -95,7 +101,7 @@
                   >
                 </q-item>
 
-                <q-separator spaced inset />
+                <q-separator spaced inset v-if="siteItem.contactWhatsApp" />
 
                 <q-item v-if="siteItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
@@ -105,6 +111,7 @@
                       color="primary"
                       icon="fab fa-whatsapp"
                       text-color="white"
+                      size="sm"
                     />
                     <!-- <q-avatar>
                       <q-icon name="fab fa-whatsapp" color="primary" />
@@ -119,11 +126,18 @@
                   >
                 </q-item>
 
-                <q-separator spaced inset />
+                <q-separator spaced inset v-if="siteItem.contactPhone" />
 
                 <q-item v-if="siteItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar dense rounded color="primary" icon="phone" text-color="white" />
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="phone"
+                      text-color="white"
+                      size="sm"
+                    />
                     <!-- <q-avatar>
                       <q-icon name="phone" color="primary" />
                     </q-avatar> -->
@@ -184,11 +198,11 @@
     return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
-  const computeImagePath = computed(() => {
-    return siteItem.value.imagePath
-      ? `${BLOB_URL}/${siteItem.value.imagePath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
+  // const computeImagePath = computed(() => {
+  //   return siteItem.value.imagePath
+  //     ? `${BLOB_URL}/${siteItem.value.imagePath}`
+  //     : "./img/icons/no_image_available.jpeg";
+  // });
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
