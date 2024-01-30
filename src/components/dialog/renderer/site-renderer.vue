@@ -52,6 +52,19 @@
                   >
                 </q-item>
 
+                <q-item v-if="siteItem.contactPhone">
+                  <q-item-section avatar @click="navigateToPhone">
+                    <q-avatar>
+                      <q-icon name="phone" color="primary" />
+                    </q-avatar>
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
                 <q-item v-if="siteItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
                     <q-avatar>
@@ -63,19 +76,6 @@
                       >{{
                         siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
                       }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-
-                <q-item v-if="siteItem.contactPhone">
-                  <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
                     </q-item-label></q-item-section
                   >
                 </q-item>
@@ -101,6 +101,28 @@
                   >
                 </q-item>
 
+                <q-separator spaced inset v-if="siteItem.contactPhone" />
+                <q-item v-if="siteItem.contactPhone">
+                  <q-item-section avatar @click="navigateToPhone">
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="phone"
+                      text-color="white"
+                      size="sm"
+                    />
+                    <!-- <q-avatar>
+                      <q-icon name="phone" color="primary" />
+                    </q-avatar> -->
+                  </q-item-section>
+                  <q-item-section>
+                    <q-item-label class="text-caption"
+                      >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+                    </q-item-label></q-item-section
+                  >
+                </q-item>
+
                 <q-separator spaced inset v-if="siteItem.contactWhatsApp" />
 
                 <q-item v-if="siteItem.contactWhatsApp">
@@ -122,29 +144,6 @@
                       >{{
                         siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
                       }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-
-                <q-separator spaced inset v-if="siteItem.contactPhone" />
-
-                <q-item v-if="siteItem.contactPhone">
-                  <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="phone"
-                      text-color="white"
-                      size="sm"
-                    />
-                    <!-- <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar> -->
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
                     </q-item-label></q-item-section
                   >
                 </q-item>
