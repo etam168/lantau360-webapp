@@ -1,10 +1,6 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <!-- <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"
-          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
-        </q-item-label> -->
-
       <q-item-section top>
         <app-tab-select
           :tab-items="tabItems"
@@ -25,7 +21,7 @@
     </q-item>
 
     <q-item>
-      <q-tab-panels v-model="tab">
+      <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
         <q-tab-panel name="aboutUs" class="q-pa-none">
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
@@ -34,6 +30,7 @@
           <q-item>
             <q-item-section>
               <q-img
+                style="cursor: pointer"
                 :ratio="16 / 9"
                 width="450px"
                 :src="computeImagePath"
@@ -82,13 +79,14 @@
                 </q-item>
               </q-list>
             </q-item-section>
-            <q-item-section side top v-if="$q.screen.gt.xs">
+            <q-item-section top v-if="$q.screen.gt.xs">
               <q-list dense>
-                <q-item>
+                <q-item dense>
                   <q-item-section avatar @click="openGoogleMaps">
-                    <q-avatar>
+                    <!-- <q-avatar>
                       <q-icon name="location_on" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
+                    <q-avatar dense rounded color="primary" icon="location_on" text-color="white" />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -97,11 +95,20 @@
                   >
                 </q-item>
 
+                <q-separator spaced inset />
+
                 <q-item v-if="siteItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
-                    <q-avatar>
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="fab fa-whatsapp"
+                      text-color="white"
+                    />
+                    <!-- <q-avatar>
                       <q-icon name="fab fa-whatsapp" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -112,11 +119,14 @@
                   >
                 </q-item>
 
+                <q-separator spaced inset />
+
                 <q-item v-if="siteItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar>
+                    <q-avatar dense rounded color="primary" icon="phone" text-color="white" />
+                    <!-- <q-avatar>
                       <q-icon name="phone" color="primary" />
-                    </q-avatar>
+                    </q-avatar> -->
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"

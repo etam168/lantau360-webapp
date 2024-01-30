@@ -114,7 +114,6 @@ export function usePostingInput() {
   }
 
   function updatePosting() {
-    debugger;
     postingInput.value.bannerPath = postingInput.value.iconPath = postingInput.value.imagePath = "";
 
     postingInput.value.modifiedBy = parseInt(userStore.userId);
@@ -122,13 +121,12 @@ export function usePostingInput() {
       .put(`/Posting/${postingInput.value.postingId}`, postingInput.value)
       .then(async () => {
         // onRefresh();
-        debugger;
+
         const successMessage = t("posting.message.updated");
 
         successCallback(successMessage);
       })
       .catch(errors => {
-        debugger;
         notify(errors.message, "negative");
       });
   }

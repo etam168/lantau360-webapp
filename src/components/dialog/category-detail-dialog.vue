@@ -86,7 +86,6 @@
   });
 
   const renderer = computed(() => {
-    debugger;
     switch (true) {
       case props.item.directoryTemplate == TEMPLATE.ATM.value:
         return RENDERER.ATM;

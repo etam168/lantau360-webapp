@@ -1,39 +1,112 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section top>
-        <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"
-          >{{ translate(item.subtitle1, item.meta, "subtitle1") }}
-        </q-item-label>
-      </q-item-section>
-
+      <q-item-section top></q-item-section>
       <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
           @click="onBtnFavClick"
-          style="transform: translateY(-24px)"
+          style="transform: translateY(-34px)"
         />
       </q-item-section>
     </q-item>
 
     <q-item>
-      <app-text-editor v-model="translatedContent" />
-    </q-item>
-    <q-item>
       <q-item-section>
-        <div class="q-gutter-md">
-          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
+        <q-img
+          style="cursor: pointer"
+          :ratio="16 / 9"
+          width="450px"
+          :src="computeImagePath"
+          @click="openGoogleMaps"
+        ></q-img>
+        <q-list dense v-if="$q.screen.xs">
+          <q-item>
+            <q-item-section avatar @click="openGoogleMaps">
+              <q-avatar>
+                <q-icon name="location_on" color="primary" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
 
-          <app-button-rounded
-            v-if="item.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
-          />
-          <app-button-rounded icon="fa fa-map-marker" @click="launchMap()" />
-        </div>
+          <q-item v-if="siteItem.contactWhatsApp">
+            <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
+              <q-avatar>
+                <q-icon name="fab fa-whatsapp" color="primary" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
+
+          <q-item v-if="siteItem.contactPhone">
+            <q-item-section avatar @click="navigateToPhone">
+              <q-avatar>
+                <q-icon name="phone" color="primary" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
+        </q-list>
+      </q-item-section>
+      <q-item-section top v-if="$q.screen.gt.xs">
+        <q-list dense>
+          <q-item>
+            <q-item-section avatar @click="openGoogleMaps">
+              <q-avatar dense rounded color="primary" icon="location_on" text-color="white" />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
+
+          <q-item v-if="siteItem.contactWhatsApp">
+            <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
+              <q-avatar>
+                <q-icon name="fab fa-whatsapp" color="primary" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
+
+          <q-item v-if="siteItem.contactPhone">
+            <q-item-section avatar @click="navigateToPhone">
+              <q-avatar>
+                <q-icon name="phone" color="primary" />
+              </q-avatar>
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption"
+                >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+              </q-item-label></q-item-section
+            >
+          </q-item>
+        </q-list>
       </q-item-section>
     </q-item>
+
+    <!-- <q-item>
+      <app-text-editor v-model="translatedContent" />
+    </q-item> -->
   </q-list>
 </template>
 
@@ -45,7 +118,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
 
   const { eventBus, navigateToWhatsApp, translate } = useUtilities();
 
@@ -58,9 +131,9 @@
 
   const siteItem = computed(() => props?.item as SiteView);
 
-  const translatedContent: any = ref(
-    translate(siteItem.value.description, siteItem.value.meta, "description")
-  );
+  // const translatedContent: any = computed(() =>
+  //   translate(siteItem.value.description, siteItem.value.meta, "description")
+  // );
 
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
 
@@ -69,17 +142,11 @@
     return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
 
-  const launchMap = () => {
-    const mapLink = siteItem.value.meta.mapLink;
-
-    if (mapLink) {
-      // Open the map link in a new window or tab
-      window.open(mapLink, "_blank");
-    } else {
-      // Handle the case where the map link is not available
-      console.error("Map link is not available.");
-    }
-  };
+  const computeImagePath = computed(() => {
+    return siteItem.value.imagePath
+      ? `${BLOB_URL}/${siteItem.value.imagePath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
@@ -105,5 +172,22 @@
     }
     LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
     eventBus.emit("favoriteUpdated", props.item);
+  };
+
+  const openGoogleMaps = () => {
+    // Check if the business has an address
+    if (siteItem.value.subtitle1) {
+      // Replace spaces in the address with '+'
+      const address = encodeURIComponent(siteItem.value.subtitle1);
+
+      // Construct the Google Maps URL with the address
+      const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
+
+      // Open a new tab or window with the Google Maps URL
+      window.open(mapsURL, "_blank");
+    } else {
+      // Handle cases where the business address is not available
+      // console.error("Address not available");
+    }
   };
 </script>

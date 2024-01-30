@@ -96,7 +96,6 @@
   }
 
   onBeforeMount(() => {
-    debugger;
     setPostingInput(props.postingData);
     loadGalleryImages();
     postingImage.value = postingImages.value;

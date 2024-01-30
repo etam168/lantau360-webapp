@@ -135,7 +135,6 @@
   }
 
   function editPosting(item: Posting) {
-    debugger;
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/views/modules/community/edit-dialog/index.vue")
