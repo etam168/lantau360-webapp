@@ -40,7 +40,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useDialogPluginComponent } from "quasar";
+  import { LocalStorage, useDialogPluginComponent } from "quasar";
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -49,7 +49,6 @@
   // .ts files
   import { URL, RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
-  import { LocalStorage } from "quasar";
 
   // Custom Components
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
@@ -97,6 +96,59 @@
     }
   });
 
+  const favoriteSiteItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
+  );
+  const favoriteBusinessItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
+  );
+
+  const isFavourite = computed(() => {
+    if ("siteId" in props.item) {
+      const favItems = favoriteSiteItems.value;
+      const item = props.item as SiteView;
+      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
+    } else if ("businessId" in props.item) {
+      const favItems = favoriteBusinessItems.value;
+      const item = props.item as BusinessView;
+      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
+    }
+  });
+
+  const onBtnFavClick = () => {
+    if ("siteId" in props.item) {
+      const item = props.item as SiteView;
+      const index = favoriteSiteItems.value.findIndex(fav => fav.siteId === item.siteId);
+
+      if (isFavourite.value) {
+        if (index !== -1) {
+          favoriteSiteItems.value.splice(index, 1);
+        }
+      } else {
+        favoriteSiteItems.value.push(item);
+      }
+
+      LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteSiteItems.value);
+    } else if ("businessId" in props.item) {
+      const item = props.item as BusinessView;
+      const index = favoriteBusinessItems.value.findIndex(
+        fav => fav.businessId === item.businessId
+      );
+
+      if (isFavourite.value) {
+        if (index !== -1) {
+          favoriteBusinessItems.value.splice(index, 1);
+        }
+      } else {
+        favoriteBusinessItems.value.push(item);
+      }
+
+      LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteBusinessItems.value);
+    }
+
+    eventBus.emit("favoriteUpdated", props.item);
+  };
+
   const renderer = computed(() => {
     switch (true) {
       case props.item.directoryTemplate == TEMPLATE.ATM.value:
@@ -121,25 +173,6 @@
     eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;
     });
-  });
-
-  const favoriteSiteItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
-  );
-  const favoriteBusinessItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
-  );
-
-  const isFavourite = computed(() => {
-    if ("siteId" in props.item) {
-      const favItems = favoriteSiteItems.value;
-      const item = props.item as SiteView;
-      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
-    } else if ("businessId" in props.item) {
-      const favItems = favoriteBusinessItems.value;
-      const item = props.item as BusinessView;
-      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
-    }
   });
 
   function updateDialogState(status: any) {
@@ -181,22 +214,4 @@
     }
     return 0;
   }
-
-  const onBtnFavClick = () => {
-    // const localFavItem = favoriteItems.value;
-    // if (isFavourite.value) {
-    //   const itemIndex = localFavItem.findIndex(
-    //     (item: any) => item.siteId === siteItem.value.siteId
-    //   );
-    //   if (itemIndex !== -1) {
-    //     localFavItem.splice(itemIndex, 1);
-    //     favoriteItems.value = localFavItem;
-    //   }
-    // } else {
-    //   localFavItem.push(siteItem.value);
-    //   favoriteItems.value = localFavItem;
-    // }
-    // LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    // eventBus.emit("favoriteUpdated", props.item);
-  };
 </script>
