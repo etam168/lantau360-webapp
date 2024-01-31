@@ -9,15 +9,6 @@
           class="q-pl-none"
         />
       </q-item-section>
-
-      <q-item-section side>
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          icon="favorite"
-          @click="onBtnFavClick"
-          style="transform: translateY(-34px)"
-        />
-      </q-item-section>
     </q-item>
 
     <q-item>
@@ -151,16 +142,14 @@
 </template>
 
 <script setup lang="ts">
-  import { LocalStorage } from "quasar";
-
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL } from "@/constants";
 
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -184,37 +173,11 @@
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
 
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
-
-  const isFavourite = computed(() => {
-    const favItem = favoriteItems.value;
-    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
-  });
-
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
       const phoneURL = `tel:${siteItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
-  };
-
-  const onBtnFavClick = () => {
-    const localFavItem = favoriteItems.value;
-    if (isFavourite.value) {
-      const itemIndex = localFavItem.findIndex(
-        (item: any) => item.siteId === siteItem.value.siteId
-      );
-
-      if (itemIndex !== -1) {
-        localFavItem.splice(itemIndex, 1);
-        favoriteItems.value = localFavItem;
-      }
-    } else {
-      localFavItem.push(siteItem.value);
-      favoriteItems.value = localFavItem;
-    }
-    LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", props.item);
   };
 
   const openGoogleMaps = () => {

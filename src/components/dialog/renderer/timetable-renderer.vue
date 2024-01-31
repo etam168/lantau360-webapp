@@ -9,14 +9,6 @@
           class="q-px-none"
         />
       </q-item-section>
-
-      <q-item-section side>
-        <app-button-rounded
-          icon="favorite"
-          :text-color="isFavourite ? 'red' : 'white'"
-          @click="onBtnFavClick"
-        />
-      </q-item-section>
     </q-item>
 
     <q-tab-panels v-model="tab">
@@ -33,15 +25,13 @@
 </template>
 
 <script setup lang="ts">
-  import { LocalStorage } from "quasar";
-
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts files
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL } from "@/constants";
 
   const props = defineProps({
     item: {
@@ -83,7 +73,7 @@
     tab.value = siteItem.value.subtitle1;
   }
 
-  const { eventBus, translate } = useUtilities();
+  const { translate } = useUtilities();
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref(siteItem.value.subtitle1);
@@ -98,30 +88,4 @@
       label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2")
     }
   ]);
-
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
-
-  const isFavourite = computed(() => {
-    const favItem = favoriteItems.value;
-    return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
-  });
-
-  const onBtnFavClick = () => {
-    const localFavItem = favoriteItems.value;
-    if (isFavourite.value) {
-      const itemIndex = localFavItem.findIndex(
-        (item: any) => item.siteId === siteItem.value.siteId
-      );
-
-      if (itemIndex !== -1) {
-        localFavItem.splice(itemIndex, 1);
-        favoriteItems.value = localFavItem;
-      }
-    } else {
-      localFavItem.push(siteItem.value);
-      favoriteItems.value = localFavItem;
-    }
-    LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", props.item);
-  };
 </script>

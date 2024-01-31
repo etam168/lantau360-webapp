@@ -9,15 +9,6 @@
           class="q-pl-none"
         />
       </q-item-section>
-
-      <q-item-section side>
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          icon="favorite"
-          @click="onBtnFavClick"
-          style="transform: translateY(-34px)"
-        />
-      </q-item-section>
     </q-item>
 
     <q-item v-if="shouldShowItem">
@@ -195,16 +186,14 @@
 </template>
 <!-- eslint-disable @typescript-eslint/no-unused-vars -->
 <script setup lang="ts">
-  import { LocalStorage } from "quasar";
-
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL } from "@/constants";
 
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -263,21 +252,6 @@
     return now >= startTimeToday && now <= endTimeToday;
   };
 
-  const favoriteItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
-  );
-
-  const computeImagePath = computed(() => {
-    return businessItem.value.imagePath
-      ? `${BLOB_URL}/${businessItem.value.imagePath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
-
-  const isFavourite = computed(() => {
-    const favItem = favoriteItems.value;
-    return useArraySome(favItem, fav => fav.businessId == businessItem.value.businessId).value;
-  });
-
   const navigateToPhone = () => {
     if (businessItem.value.contactPhone) {
       const phoneURL = `tel:${businessItem.value.contactPhone}`;
@@ -295,25 +269,6 @@
       businessItem.value.closeTime !== ""
     );
   });
-
-  const onBtnFavClick = () => {
-    const localFavItem = favoriteItems.value;
-    if (isFavourite.value) {
-      const itemIndex = localFavItem.findIndex(
-        (item: any) => item.businessId === businessItem.value.businessId
-      );
-
-      if (itemIndex !== -1) {
-        localFavItem.splice(itemIndex, 1);
-        favoriteItems.value = localFavItem;
-      }
-    } else {
-      localFavItem.push(businessItem.value);
-      favoriteItems.value = localFavItem;
-    }
-    LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteItems.value);
-    eventBus.emit("favoriteUpdated", props.item);
-  };
 
   const openGoogleMaps = () => {
     // Check if the business has an address
