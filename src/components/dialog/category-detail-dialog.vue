@@ -26,7 +26,12 @@
           <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
 
           <q-page-sticky position="bottom-right" :offset="[24, 24]">
-            <q-btn round color="primary" icon="add" />
+            <!-- <q-btn round color="primary" icon="add" /> -->
+            <app-button-rounded
+              :text-color="isFavourite ? 'red' : 'white'"
+              icon="favorite"
+              @click="onBtnFavClick"
+            />
           </q-page-sticky>
         </q-page>
       </q-page-container>
@@ -42,8 +47,9 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { URL, RENDERER, TEMPLATE } from "@/constants";
+  import { URL, RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
+  import { LocalStorage } from "quasar";
 
   // Custom Components
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
@@ -52,6 +58,8 @@
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
+  import { SiteView } from "@/interfaces/models/views/site-view";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   const props = defineProps({
     item: {
@@ -115,6 +123,25 @@
     });
   });
 
+  const favoriteSiteItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
+  );
+  const favoriteBusinessItems = ref(
+    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
+  );
+
+  const isFavourite = computed(() => {
+    if ("siteId" in props.item) {
+      const favItems = favoriteSiteItems.value;
+      const item = props.item as SiteView;
+      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
+    } else if ("businessId" in props.item) {
+      const favItems = favoriteBusinessItems.value;
+      const item = props.item as BusinessView;
+      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
+    }
+  });
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CategoryDetailDialog");
@@ -128,9 +155,6 @@
         ]);
 
         const maskValue = getMaskValue(props.item.directoryTemplate ?? 0) ?? 0;
-        // galleryItems.value = galleryResponse.data.filter(
-        //   element => !(maskValue & (1 << (element.ranking - 1)))
-        // );
         galleryItems.value = galleryResponse.data
           .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
           .sort((a, b) => a.ranking - b.ranking);
@@ -151,9 +175,28 @@
   function getMaskValue(templateValue: number) {
     for (const make in TEMPLATE) {
       if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        return TEMPLATE[make as keyof typeof TEMPLATE].mask;
+        const modifier = props.item.meta?.["hasMap"] === true ? 2 : 0;
+        return TEMPLATE[make as keyof typeof TEMPLATE].mask + modifier;
       }
     }
     return 0;
   }
+
+  const onBtnFavClick = () => {
+    // const localFavItem = favoriteItems.value;
+    // if (isFavourite.value) {
+    //   const itemIndex = localFavItem.findIndex(
+    //     (item: any) => item.siteId === siteItem.value.siteId
+    //   );
+    //   if (itemIndex !== -1) {
+    //     localFavItem.splice(itemIndex, 1);
+    //     favoriteItems.value = localFavItem;
+    //   }
+    // } else {
+    //   localFavItem.push(siteItem.value);
+    //   favoriteItems.value = localFavItem;
+    // }
+    // LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteItems.value);
+    // eventBus.emit("favoriteUpdated", props.item);
+  };
 </script>
