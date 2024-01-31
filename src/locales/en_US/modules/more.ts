@@ -26,6 +26,6 @@ export default {
 
   footer: {
     version: "Ver {version}",
-    copyright: "© {currentYear} Lantau360.com"
+    copyright: "© {currentYear} Lantau360.com."
   }
 };

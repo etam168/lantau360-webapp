@@ -7,7 +7,7 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+    <q-layout view="lHh lpr lFf" container class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -24,6 +24,10 @@
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
           <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
+
+          <q-page-sticky position="bottom-right" :offset="[24, 24]">
+            <q-btn round color="primary" icon="add" />
+          </q-page-sticky>
         </q-page>
       </q-page-container>
     </q-layout>

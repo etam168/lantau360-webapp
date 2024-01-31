@@ -112,9 +112,6 @@
                       text-color="white"
                       size="sm"
                     />
-                    <!-- <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar> -->
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -135,9 +132,6 @@
                       text-color="white"
                       size="sm"
                     />
-                    <!-- <q-avatar>
-                      <q-icon name="fab fa-whatsapp" color="primary" />
-                    </q-avatar> -->
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -196,12 +190,6 @@
     const favItem = favoriteItems.value;
     return useArraySome(favItem, fav => fav.siteId == siteItem.value.siteId).value;
   });
-
-  // const computeImagePath = computed(() => {
-  //   return siteItem.value.imagePath
-  //     ? `${BLOB_URL}/${siteItem.value.imagePath}`
-  //     : "./img/icons/no_image_available.jpeg";
-  // });
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {

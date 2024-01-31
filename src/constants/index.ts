@@ -1,13 +1,6 @@
 export const NONE = "none";
 export const AREA_NAME = "areaName";
 
-export const Screen = {
-  laptopMaxWidth: "max-width: 800px;",
-  tabletMaxWidth: "max-width: 100vw;",
-  laptopHeight: "height: 90vh;",
-  tabletHeight: "height: auto;"
-};
-
 export const CAROUSEL_BACKGROUND = "@/assets/img/home-bg.webp";
 export const PLACEHOLDER_AVATAR = "./img/icons/avatar.png";
 export const PLACEHOLDER_THUMBNAIL = "./img/icons/no_image_available.jpeg";
