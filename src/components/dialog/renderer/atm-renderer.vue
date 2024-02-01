@@ -1,10 +1,6 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section top></q-item-section>
-    </q-item>
-
-    <q-item>
       <q-item-section v-if="shouldShowImage">
         <q-img
           style="cursor: pointer"
