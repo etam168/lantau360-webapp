@@ -5,12 +5,12 @@
     </q-item>
 
     <q-item>
-      <q-item-section v-if="siteItem.imagePath">
+      <q-item-section v-if="shouldShowImage">
         <q-img
           style="cursor: pointer"
           :ratio="16 / 9"
           width="100%"
-          :src="siteItem.imagePath ? `${BLOB_URL}/${siteItem.imagePath}` : ''"
+          :src="mapImagePath"
           @click="openGoogleMaps"
         >
         </q-img>
@@ -119,19 +119,29 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
+      required: true
+    },
+    galleryImages: {
+      type: Array as PropType<GalleryImageType[]>,
       required: true
     }
   });
 
   const siteItem = computed(() => props?.item as SiteView);
 
+  const mapImagePath = computed(() => {
+    const galleryValue = props.galleryImages;
+    return siteItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
+      ? getImageURL(galleryValue[1]?.imagePath)
+      : "./img/icons/no_image_available.jpeg";
+  });
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
       const phoneURL = `tel:${siteItem.value.contactPhone}`;
@@ -155,4 +165,5 @@
       // console.error("Address not available");
     }
   };
+  const shouldShowImage = computed(() => siteItem.value.meta?.["hasMap"] === true);
 </script>

@@ -42,21 +42,26 @@
 
         <q-tab-panel name="info" class="q-pa-none">
           <q-item class="q-pa-none">
-            <q-item-section v-if="businessItem.imagePath">
+            <q-item-section v-if="shouldShowImage">
               <q-img
                 style="cursor: pointer"
                 :ratio="16 / 9"
                 width="100%"
-                :src="businessItem.imagePath ? `${BLOB_URL}/${businessItem.imagePath}` : ''"
+                :src="mapImagePath"
                 @click="openGoogleMaps"
               >
               </q-img>
               <q-list dense v-if="$q.screen.xs">
                 <q-item>
                   <q-item-section avatar @click="openGoogleMaps">
-                    <q-avatar>
-                      <q-icon name="location_on" color="primary" />
-                    </q-avatar>
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="location_on"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -64,12 +69,17 @@
                     </q-item-label></q-item-section
                   >
                 </q-item>
-
+                <q-separator spaced inset v-if="businessItem.contactPhone" />
                 <q-item v-if="businessItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar>
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="phone"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -79,12 +89,17 @@
                     </q-item-label></q-item-section
                   >
                 </q-item>
-
+                <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
                 <q-item v-if="businessItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <q-avatar>
-                      <q-icon name="fab fa-whatsapp" color="primary" />
-                    </q-avatar>
+                    <q-avatar
+                      dense
+                      rounded
+                      color="primary"
+                      icon="fab fa-whatsapp"
+                      text-color="white"
+                      size="sm"
+                    />
                   </q-item-section>
                   <q-item-section>
                     <q-item-label class="text-caption"
@@ -102,10 +117,6 @@
               <q-list dense>
                 <q-item>
                   <q-item-section avatar @click="openGoogleMaps">
-                    <!-- <q-avatar>
-                      <q-icon name="location_on" color="primary" />
-                    </q-avatar> -->
-
                     <q-avatar
                       dense
                       rounded
@@ -126,10 +137,6 @@
 
                 <q-item v-if="businessItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <!-- <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar> -->
-
                     <q-avatar
                       dense
                       rounded
@@ -152,10 +159,6 @@
 
                 <q-item v-if="businessItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <!-- <q-avatar>
-      <q-icon name="fab fa-whatsapp" color="primary" />
-    </q-avatar> -->
-
                     <q-avatar
                       dense
                       rounded
@@ -190,14 +193,17 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
-
+      required: true
+    },
+    galleryImages: {
+      type: Array as PropType<GalleryImageType[]>,
       required: true
     }
   });
@@ -225,15 +231,12 @@
     translate(businessItem.value.description, businessItem.value.meta, "description")
   );
 
-  // const computeImagePath = computed(() => {
-  //   return businessItem.value.imagePath
-  //     ? `${BLOB_URL}/${businessItem.value.imagePath}`
-  //     : "./img/icons/no_image_available.jpeg";
-  // });
-
-  // const translatedContent: any = ref(
-  //   translate(businessItem.value.description, businessItem.value.meta, "description")
-  // );
+  const mapImagePath = computed(() => {
+    const galleryValue = props.galleryImages;
+    return businessItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
+      ? getImageURL(galleryValue[1]?.imagePath)
+      : "./img/icons/no_image_available.jpeg";
+  });
 
   const isCurrentTimeInRange = (
     startTime: string | undefined,
@@ -295,4 +298,5 @@
       // console.error("Address not available");
     }
   };
+  const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
 </script>

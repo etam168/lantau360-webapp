@@ -18,12 +18,28 @@
             <gallery-image-list :image-list="galleryItems" />
           </div>
 
-          <atm-renderer v-if="renderer === RENDERER.ATM" :item="item" />
-          <site-renderer v-if="renderer === RENDERER.SITE" :item="item" />
-          <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
+          <atm-renderer
+            v-if="renderer === RENDERER.ATM"
+            :item="item"
+            :gallery-images="galleryImagesCompleteList"
+          />
+          <site-renderer
+            v-if="renderer === RENDERER.SITE"
+            :item="item"
+            :gallery-images="galleryImagesCompleteList"
+          />
+          <business-renderer
+            v-else-if="renderer === RENDERER.BUSINESS"
+            :item="item"
+            :gallery-images="galleryImagesCompleteList"
+          />
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
-          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
+          <restaurant-renderer
+            v-else-if="renderer === RENDERER.RESTAURANT"
+            :item="item"
+            :gallery-images="galleryImagesCompleteList"
+          />
 
           <q-page-sticky position="bottom-right" :offset="[24, 24]">
             <!-- <q-btn round color="primary" icon="add" /> -->
@@ -73,6 +89,7 @@
 
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImageType[]>([]);
+  const galleryImagesCompleteList = ref<GalleryImageType[]>([]);
 
   const dialogTitle = computed(() => {
     switch (true) {
@@ -186,6 +203,8 @@
         const [galleryResponse] = await Promise.all([
           axios.get<GalleryImageType[]>(galleryUrl.value)
         ]);
+        galleryImagesCompleteList.value = galleryResponse.data;
+        galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
 
         const maskValue = getMaskValue(props.item.directoryTemplate ?? 0) ?? 0;
         galleryItems.value = galleryResponse.data
