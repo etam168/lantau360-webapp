@@ -1,6 +1,6 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
-    <q-item>
+    <q-item v-if="item.subtitle1">
       <q-item-section top>
         <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"
           >{{ translate(item.title, item.meta, "title") }}

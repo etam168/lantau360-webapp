@@ -1,6 +1,6 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
-    <q-item>
+    <q-item v-if="item.subtitle1">
       <q-item-section>
         <app-button-rounded icon="location_on" />
       </q-item-section>

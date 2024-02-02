@@ -19,7 +19,7 @@
 
         <q-tab-panel name="info" class="q-pa-none">
           <q-item class="q-pa-none">
-            <q-item-section v-if="shouldShowImage">
+            <q-item-section v-if="shouldShowImage && mapImagePath">
               <q-img
                 style="cursor: pointer"
                 :ratio="16 / 9"
@@ -30,7 +30,7 @@
               </q-img>
 
               <q-list dense v-if="$q.screen.xs">
-                <q-item>
+                <q-item dense v-if="siteItem.subtitle1">
                   <q-item-section avatar @click="openGoogleMaps">
                     <q-avatar>
                       <q-icon name="location_on" color="primary" />
@@ -74,7 +74,7 @@
             </q-item-section>
             <q-item-section top v-if="$q.screen.gt.xs">
               <q-list dense>
-                <q-item dense>
+                <q-item dense v-if="siteItem.subtitle1">
                   <q-item-section avatar @click="openGoogleMaps">
                     <q-avatar
                       dense

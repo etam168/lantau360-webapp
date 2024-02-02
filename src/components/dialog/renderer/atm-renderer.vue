@@ -1,7 +1,7 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section v-if="shouldShowImage">
+      <q-item-section v-if="shouldShowImage && mapImagePath">
         <q-img
           style="cursor: pointer"
           :ratio="16 / 9"
@@ -11,7 +11,7 @@
         >
         </q-img>
         <q-list dense v-if="$q.screen.xs">
-          <q-item>
+          <q-item dense v-if="siteItem.subtitle1">
             <q-item-section avatar @click="openGoogleMaps">
               <q-avatar>
                 <q-icon name="location_on" color="primary" />
@@ -53,7 +53,7 @@
       </q-item-section>
       <q-item-section top v-if="$q.screen.gt.xs">
         <q-list dense>
-          <q-item>
+          <q-item dense v-if="siteItem.subtitle1">
             <q-item-section avatar @click="openGoogleMaps">
               <q-avatar
                 dense
@@ -136,7 +136,7 @@
     const galleryValue = props.galleryImages;
     return siteItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
       ? getImageURL(galleryValue[1]?.imagePath)
-      : "./img/icons/no_image_available.jpeg";
+      : null;
   });
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
