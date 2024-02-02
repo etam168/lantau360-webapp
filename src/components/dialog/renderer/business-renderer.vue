@@ -11,32 +11,31 @@
       </q-item-section>
     </q-item>
 
-    <q-item v-if="shouldShowItem">
-      <q-item-section>
-        <q-item-label class="q-mt-sm">
-          <span
-            class="text-subtitle1"
-            :style="{
-              color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                ? '#478d45'
-                : 'red'
-            }"
-          >
-            {{
-              isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                ? "Open now"
-                : "Close now"
-            }}
-          </span>
-          <q-icon size="0.9em" name="fiber_manual_record" />
-          {{ formatTime(businessItem.openTime) }} - {{ formatTime(businessItem.closeTime) }}
-        </q-item-label>
-      </q-item-section>
-    </q-item>
-
     <q-item>
       <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
         <q-tab-panel name="aboutUs" class="q-pa-none">
+          <q-item v-if="shouldShowItem" class="q-pa-none">
+            <q-item-section>
+              <q-item-label class="q-mt-sm">
+                <span
+                  class="text-subtitle1"
+                  :style="{
+                    color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                      ? '#478d45'
+                      : 'red'
+                  }"
+                >
+                  {{
+                    isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                      ? "Open now"
+                      : "Close now"
+                  }}
+                </span>
+                <q-icon size="0.9em" name="fiber_manual_record" />
+                {{ formatTime(businessItem.openTime) }} - {{ formatTime(businessItem.closeTime) }}
+              </q-item-label>
+            </q-item-section>
+          </q-item>
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
 
