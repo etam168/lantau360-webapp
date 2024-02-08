@@ -281,20 +281,28 @@
     );
   });
 
+  // const openGoogleMaps = () => {
+  //   // Check if the business has an address
+  //   if (businessItem.value.subtitle1) {
+  //     // Replace spaces in the address with '+'
+  //     const address = encodeURIComponent(businessItem.value.subtitle1);
+
+  //     // Construct the Google Maps URL with the address
+  //     const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
+
+  //     // Open a new tab or window with the Google Maps URL
+  //     window.open(mapsURL, "_blank");
+  //   } else {
+  //     // Handle cases where the business address is not available
+  //     // console.error("Address not available");
+  //   }
+  // };
+
   const openGoogleMaps = () => {
-    // Check if the business has an address
-    if (businessItem.value.subtitle1) {
-      // Replace spaces in the address with '+'
-      const address = encodeURIComponent(businessItem.value.subtitle1);
-
-      // Construct the Google Maps URL with the address
-      const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
-
-      // Open a new tab or window with the Google Maps URL
-      window.open(mapsURL, "_blank");
+    if (businessItem.value.meta?.["hasMap"]) {
+      window.open(businessItem.value.meta?.["mapLink"], "_blank");
     } else {
-      // Handle cases where the business address is not available
-      // console.error("Address not available");
+      console.error("Map link not available");
     }
   };
   const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
