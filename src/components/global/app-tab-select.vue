@@ -1,9 +1,7 @@
 <template>
-  <q-toolbar v-bind="$attrs" class="q-gutter-x-sm" v-if="$q.screen.gt.sm">
-    <!-- <q-toolbar class="flex justify-center q-gutter-x-sm"> -->
-
+  <q-toolbar v-bind="$attrs" class="q-gutter-x-sm">
     <q-chip
-      v-for="(tabItem, index) in tabItems"
+      v-for="(tabItem, index) in props.tabItems"
       :key="index"
       :outline="currentTab !== tabItem.name"
       color="primary"
@@ -14,22 +12,6 @@
       {{ tabItem.label }}
     </q-chip>
   </q-toolbar>
-
-  <q-toolbar v-bind="$attrs" class="" v-else>
-    <div>
-      <q-chip
-        v-for="(tabItem, index) in tabItems"
-        :key="index"
-        :outline="currentTab !== tabItem.name"
-        color="primary"
-        text-color="white"
-        clickable
-        @click="setTab(tabItem.name)"
-      >
-        {{ tabItem.label }}
-      </q-chip>
-    </div>
-  </q-toolbar>
 </template>
 
 <script setup lang="ts">
@@ -37,7 +19,7 @@
   import { TabItem } from "@/interfaces/tab-item"; // Ensure this path is correct
 
   // Define the props the component takes with types and required fields
-  defineProps({
+  const props = defineProps({
     tabItems: {
       type: Array as PropType<TabItem[]>,
       required: true // If tabItems is required, otherwise you can provide a default value

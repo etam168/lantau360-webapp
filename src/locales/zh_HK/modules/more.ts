@@ -10,6 +10,12 @@ export default {
   logout: "登出",
   loginName: "登入名稱",
 
+  account: {
+    title: "帳戶",
+    recentTransactions: "Recent Transactions",
+    history: "History"
+  },
+
   profileSetting: {
     title: "個人資料",
     subtitle: "選擇您在應用程式中的顯示方式",

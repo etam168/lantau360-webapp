@@ -68,14 +68,15 @@
     // Filter out the "profileSetting" item if userStore.token does not exist
     return userStore.isUserLogon()
       ? menuItems
-      : menuItems.filter(item => item.name !== Menu.PROFILE);
+      : menuItems.filter(item => item.name !== Menu.PROFILE && item.name !== Menu.ACCOUNT);
   });
 
   const Menu = {
     LANGUAGE: "language",
     PRIVACY: "privacy",
     TERMS: "terms",
-    PROFILE: "profileSetting"
+    PROFILE: "profileSetting",
+    ACCOUNT: "account"
   };
 
   const menuItems = [
@@ -92,7 +93,8 @@
       title: "more.privacy",
       contentKey: "Privacy"
     },
-    { name: Menu.PROFILE, icon: ICONS.PROFILE, title: "more.profile" }
+    { name: Menu.PROFILE, icon: ICONS.PROFILE, title: "more.profile" },
+    { name: Menu.ACCOUNT, icon: ICONS.ACCOUNT, title: "more.account.title" }
   ];
 
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
@@ -117,6 +119,8 @@
       }
     } else if (item.name == Menu.PROFILE) {
       OpenProfileDialog();
+    } else if (item.name == Menu.ACCOUNT) {
+      OpenAccountDialog();
     }
   }
 
@@ -135,6 +139,23 @@
       .then(response => {
         $q.dialog({
           component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue")),
+          componentProps: {
+            member: response.data
+          }
+        });
+      })
+      .catch(errors => {
+        errors;
+        // notify(errors.message, "negative");
+      });
+  }
+
+  function OpenAccountDialog() {
+    axios
+      .get(`${URL.MEMBER_URL}/${userStore.userId}`)
+      .then(response => {
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./section/profile-account-dialog.vue")),
           componentProps: {
             member: response.data
           }

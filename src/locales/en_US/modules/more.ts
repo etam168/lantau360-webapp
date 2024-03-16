@@ -10,6 +10,12 @@ export default {
   logout: "Logout",
   loginName: "Login Name",
 
+  account: {
+    title: "Account",
+    recentTransactions: "Recent Transactions",
+    history: "History"
+  },
+
   profileSetting: {
     title: "Profile",
     subtitle: "Choose how you appear in the app",
