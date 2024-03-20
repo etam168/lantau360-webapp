@@ -157,17 +157,18 @@ export function usePostingInput() {
   }
 
   const getPostingsByDirectoryId = async () => {
-    try {
-      const directoryListUrl = `${URL.DIRECTORY_LIST.POSTING}/${postingInput.value.directoryId}`;
+    const directoryListUrl = `${URL.DIRECTORY_LIST.POSTING}/${postingInput.value.directoryId}`;
 
+    try {
       const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
-        eventBus.emit("ItemListUpdate", response.data);
-      } else {
-        // console.error(`Unexpected response status: ${response.status}`);
+        const directoryItems = response.data.sort(
+          (a: any, b: any) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+        );
+        eventBus.emit("ItemListUpdate", directoryItems);
       }
     } catch (error) {
-      // console.error("Error fetching data: ", error);
+      console.error("Error fetching data: ", error);
     }
   };
 

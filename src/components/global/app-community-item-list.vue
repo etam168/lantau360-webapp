@@ -55,25 +55,13 @@
           </q-item>
         </q-item-section>
       </q-item>
-
-      <q-item-section side>
-        <q-icon
-          v-if="isFavoriteItem(item)"
-          name="favorite"
-          size="2em"
-          color="red"
-          class="favorite-icon"
-        />
-      </q-item-section>
     </q-item>
   </q-list>
 </template>
 <script setup lang="ts">
   // Interface files
-  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { PostingView } from "@/interfaces/models/views/posting-view";
-  import { SiteView } from "@/interfaces/models/views/site-view";
   import { useUserStore } from "@/stores/user";
 
   // .ts files
@@ -94,10 +82,6 @@
       type: Object as PropType<CommunityDirectory>,
       required: false
     },
-    favoriteItems: {
-      type: Array as PropType<CategoryTypes[]>,
-      default: () => []
-    },
     template: {
       type: Number,
       required: false
@@ -115,20 +99,6 @@
     postItem.title !== null && postItem.title !== undefined && postItem.title !== ""
       ? postItem.title
       : postItem.memberEmail;
-
-  const isFavoriteItem = (item: CategoryTypes): boolean => {
-    switch (true) {
-      case "businessId" in item:
-        return props.favoriteItems.some(
-          favItem => (favItem as BusinessView).businessId === item.businessId
-        );
-      case "siteId" in item:
-        return props.favoriteItems.some(favItem => (favItem as SiteView).siteId === item.siteId);
-      default:
-        // No known type matched, or it's not a favorite item
-        return false;
-    }
-  };
 
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
