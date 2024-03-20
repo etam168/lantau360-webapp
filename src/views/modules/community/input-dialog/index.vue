@@ -8,16 +8,19 @@
     :model-value="isDialogVisible"
   >
     <q-card>
-      <q-list dense>
-        <q-item>
-          <q-item-label class="text-h6 q-py-sm"> {{ item.directoryName }}</q-item-label>
-        </q-item>
-        <q-separator style="height: 3px" />
+      <q-bar class="bg-primary">
+        <q-toolbar-title class="text-white">{{ item.directoryName }}</q-toolbar-title>
 
-        <q-card-section class="bg-red q-pa-none" style="height: 500px; width: 520px">
-          <input-step @close-dialog="closeDialog" :directory-id="item.communityDirectoryId" />
-        </q-card-section>
-      </q-list>
+        <q-space />
+
+        <q-btn dense icon="close" color="red" v-close-popup size="xs">
+          <q-tooltip>Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+
+      <q-card-section class="q-pa-none" style="height: 500px; width: 520px">
+        <input-step @close-dialog="closeDialog" :directory-id="item.communityDirectoryId" />
+      </q-card-section>
     </q-card>
     <!-- End of input content -->
   </q-dialog>

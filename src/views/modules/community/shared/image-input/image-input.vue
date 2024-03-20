@@ -1,5 +1,5 @@
 <template>
-  <q-item v-if="!isSmallSize">
+  <q-item v-if="!isSmallSize" class="q-pt-md">
     <q-item-section>
       <q-card flat bordered>
         <q-card-section

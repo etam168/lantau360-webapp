@@ -9,7 +9,7 @@
   >
     <q-card flat class="full-height q-pa-none" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
-        <q-card-section class="q-py-none">
+        <q-card-section class="q-pa-none">
           <images-section />
           <input-content />
         </q-card-section>

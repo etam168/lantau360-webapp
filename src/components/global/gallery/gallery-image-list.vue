@@ -10,6 +10,7 @@
         >
         </q-carousel-slide>
       </q-carousel>
+
       <q-img v-else :src="image" />
     </q-responsive>
 
