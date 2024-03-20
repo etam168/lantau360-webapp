@@ -120,7 +120,7 @@ export function usePostingInput() {
     axios
       .put(`/Posting/${postingInput.value.postingId}`, postingInput.value)
       .then(async () => {
-        // onRefresh();
+        getPostingsByDirectoryId();
 
         const successMessage = t("posting.message.updated");
 
@@ -148,7 +148,7 @@ export function usePostingInput() {
         postingInput.value.postingId = postingId;
         await uploadImages();
         getPostingsByDirectoryId();
-        const successMessage = t("posting.message.updated");
+        const successMessage = t("posting.message.created");
         successCallback(successMessage);
       })
       .catch(errors => {
