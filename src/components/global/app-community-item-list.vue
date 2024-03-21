@@ -1,62 +1,81 @@
 <template>
-  <q-list>
-    <q-item v-for="item in directoryItems" :key="item.directoryId" class="shadow-1 q-pa-sm q-mb-md">
-      <q-item-section avatar>
-        <q-avatar size="64px">
-          <q-img
-            ratio="1"
-            :src="
-              (item as PostingView)?.memberImage
-                ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
-                : '/img/icons/no_image_available.jpeg'
-            "
-          >
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                Cannot load image
-              </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
+  <div>
+    <q-list v-if="directoryItems.length > 0">
+      <q-item
+        v-for="item in directoryItems"
+        :key="item.directoryId"
+        class="shadow-1 q-pa-sm q-mb-md"
+      >
+        <q-item-section avatar>
+          <q-avatar size="64px">
+            <q-img
+              ratio="1"
+              :src="
+                (item as PostingView)?.memberImage
+                  ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
+                  : '/img/icons/no_image_available.jpeg'
+              "
+            >
+              <template v-slot:error>
+                <div class="absolute-full flex flex-center bg-negative text-white">
+                  Cannot load image
+                </div>
+              </template>
+            </q-img>
+          </q-avatar>
+        </q-item-section>
 
-      <q-item class="q-pa-none" style="width: 100%">
-        <q-item-section>
-          <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
-          <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
-        </q-item-section>
-        <q-space />
-        <q-item-section side top class="q-pa-none"
-          ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
-          <q-item class="q-pa-none">
-            <q-item-section class="q-pa-none">
-              <q-btn
-                color="primary"
-                icon="edit"
-                size="md"
-                dense
-                flat
-                rounded
-                @click="editPosting(item as PostingView)"
-                v-if="userStore.userId == (item as Posting).memberId"
-              />
-            </q-item-section>
-            <q-item-section side style="padding-left: 0px">
-              <q-btn
-                color="primary"
-                icon="info"
-                size="md"
-                dense
-                flat
-                rounded
-                @click="handleItemClick(item)"
-              />
-            </q-item-section>
-          </q-item>
-        </q-item-section>
+        <q-item class="q-pa-none" style="width: 100%">
+          <q-item-section>
+            <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
+            <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
+          </q-item-section>
+          <q-space />
+          <q-item-section side top class="q-pa-none"
+            ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
+            <q-item class="q-pa-none">
+              <q-item-section class="q-pa-none">
+                <q-btn
+                  color="primary"
+                  icon="edit"
+                  size="md"
+                  dense
+                  flat
+                  rounded
+                  @click="editPosting(item as PostingView)"
+                  v-if="userStore.userId == (item as Posting).memberId"
+                />
+              </q-item-section>
+              <q-item-section side style="padding-left: 0px">
+                <q-btn
+                  color="primary"
+                  icon="info"
+                  size="md"
+                  dense
+                  flat
+                  rounded
+                  @click="handleItemClick(item)"
+                />
+              </q-item-section>
+            </q-item>
+          </q-item-section>
+        </q-item>
       </q-item>
-    </q-item>
-  </q-list>
+    </q-list>
+    <q-card
+      flat
+      v-else
+      style="min-height: calc(100vh - 160px)"
+      class="row justify-center items-center"
+    >
+      <q-card-section class="text-center">
+        <q-icon name="fa-solid fa-database" size="4rem" color="primary" />
+        <div class="text-subtitle2 text-weight-regular q-mt-md">
+          There is no Record to show you right now.
+        </div>
+      </q-card-section>
+    </q-card>
+  </div>
 </template>
 <script setup lang="ts">
   // Interface files
