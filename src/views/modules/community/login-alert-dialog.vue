@@ -7,16 +7,23 @@
     :model-value="isDialogVisible"
   >
     <q-card>
-      <q-card-section class="row items-center">
-        <q-avatar icon="info" />
-        <span class="q-ml-sm"
-          >You are currently not login to your account, First Login to proceed.</span
-        >
+      <q-bar class="bg-primary">
+        <q-space />
+
+        <q-btn dense icon="close" color="red" v-close-popup size="xs">
+          <q-tooltip>Close</q-tooltip>
+        </q-btn>
+      </q-bar>
+      <q-card-section class="q-pa-md">
+        <div class="text-h6">What Would You Do Next?</div>
+        <div class="text-subtitle2 text-weight-regular">
+          You are currently not signed in to your account. First sign in to proceed.
+        </div>
       </q-card-section>
 
-      <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup />
-        <q-btn flat label="OK" color="primary" @click="handleOk" />
+      <q-card-actions align="right" class="q-pa-md">
+        <q-btn outline label="Cancel" color="primary" v-close-popup />
+        <q-btn :label="$t('auth.login.button')" color="primary" @click="handleOk" />
       </q-card-actions>
     </q-card>
   </q-dialog>
