@@ -65,7 +65,7 @@
 
   // others import
   import { useDialogPluginComponent, useQuasar } from "quasar";
-  import { NONE, AREA_NAME } from "@/constants";
+  import { NONE, AREA_NAME, POST_POINTS } from "@/constants";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { useUserStore } from "@/stores/user";
 
@@ -157,24 +157,38 @@
   }
 
   function createPosting() {
-    if (!userStore.isUserLogon()) {
+    const { isUserLogon, availabelPoints } = userStore;
+    if (!isUserLogon()) {
       // User is not logged in, open the login dialog
-
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/views/modules/community/login-alert-dialog.vue")
         )
       });
-    } else {
-      // User is logged in, continue with the regular flow
+
+      return;
+    }
+
+    // Check whether user have required point to create post
+
+    if (availabelPoints < POST_POINTS) {
       $q.dialog({
         component: defineAsyncComponent(
-          () => import("@/views/modules/community/input-dialog/index.vue")
-        ),
-        componentProps: {
-          item: props.directory as CommunityDirectory
-        }
+          () => import("@/views/modules/community/login-alert-dialog.vue")
+        )
       });
+
+      return;
     }
+
+    // User is logged in and also have required points to create new post
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/views/modules/community/input-dialog/index.vue")
+      ),
+      componentProps: {
+        item: props.directory as CommunityDirectory
+      }
+    });
   }
 </script>

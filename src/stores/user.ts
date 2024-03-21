@@ -18,7 +18,8 @@ export const useUserStore = defineStore("user", {
       status: "",
       code: "",
       totalPoints: 0,
-      spendPoints: 0
+      spendPoints: 0,
+      availabelPoints: 0
     },
 
   actions: {
@@ -30,7 +31,9 @@ export const useUserStore = defineStore("user", {
 
         const response = await axios.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
         const { total, spend } = response.data;
-        this.SetUserInfo({ totalPoints: total, spendPoints: spend });
+        (this.totalPoints = total),
+          (this.spendPoints = spend),
+          (this.availabelPoints = total - spend);
       } catch (error) {
         console.error("Error fetching user data:", error);
         throw error;
@@ -55,7 +58,8 @@ export const useUserStore = defineStore("user", {
         "profilePic",
         "code",
         "totalPoints",
-        "spendPoints"
+        "spendPoints",
+        "availabelPoints"
       ];
 
       if (payload.logout) {

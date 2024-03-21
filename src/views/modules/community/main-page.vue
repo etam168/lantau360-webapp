@@ -127,7 +127,7 @@
     );
 
     // Sync user points.
-    fetchMemberPoints();
+    await fetchMemberPoints();
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
