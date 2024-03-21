@@ -14,20 +14,25 @@
 
       <q-page-container>
         <q-page>
-          <q-card class="text-white bg-primary q-ma-md">
+          <q-card class="text-white bg-primary q-ma-md q-py-md">
             <q-card-section class="q-ma-none q-pa-none">
               <q-item>
                 <q-item-section>
-                  <q-item-label class="text-subtitle1">Available Credits</q-item-label>
+                  <q-item-label class="text-subtitle1"
+                    >Available Credits : {{ userStore.availabelPoints }}
+                  </q-item-label>
                   <q-item-label caption class="text-white">
                     By this time you spent (15)
                   </q-item-label>
-                  <q-item-label class="text-h6 q-pt-sm"> $34.00 </q-item-label>
                 </q-item-section>
 
                 <q-item-section side>
-                  <q-btn dense rounded class="text-primary bg-grey-1 text-caption q-px-md"
-                    >Buy Credits</q-btn
+                  <q-btn
+                    dense
+                    rounded
+                    @click="onBtnBuyPoints"
+                    class="text-primary bg-grey-1 text-caption q-px-md"
+                    >Buy Points</q-btn
                   >
                 </q-item-section>
               </q-item>
@@ -66,14 +71,25 @@
 </template>
 
 <script setup lang="ts">
-  // .ts files
+  import { useMoreInput } from "../use-more-input";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
-
   const { t } = useI18n({ useScope: "global" });
+  const $q = useQuasar();
+  const { claimFreePoints, userStore } = useMoreInput();
+
   const tab = ref("recentTransactions");
   const setTab = (val: string) => (tab.value = val);
+
+  const onBtnBuyPoints = () => {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),
+      componentProps: {
+        callback: claimFreePoints
+      }
+    });
+  };
 
   const tabItems = ref([
     {

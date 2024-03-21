@@ -169,12 +169,10 @@
     }
 
     // Check whether user have required point to create post
-
     if (userStore.availabelPoints < POST_POINTS) {
       $q.dialog({
         component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
       });
-
       return;
     }
 

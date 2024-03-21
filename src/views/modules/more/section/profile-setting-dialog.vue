@@ -82,7 +82,7 @@
   import { Member } from "@/interfaces/models/entities/member";
 
   // .ts files
-  import { useMemberInput } from "../use-member-input";
+  import { useMoreInput } from "../use-more-input";
   import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({
@@ -97,7 +97,7 @@
   defineEmits(["ok", "hide"]); // Declare the custom events
 
   const { t } = useI18n({ useScope: "global" });
-  const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMemberInput();
+  const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
 
   const form = ref();
   const initialValues = ref({});
@@ -109,10 +109,6 @@
   const isDialogVisible = ref();
 
   onMounted(() => {
-    // eventBus.on("ProfileSettingDialog", () => {
-    //   isDialogVisible.value = false;
-    // });
-
     setMemberInput(props?.member);
     memberInput.value.memberId = props.member.memberId;
     initialValues.value = {
@@ -132,13 +128,9 @@
     });
   }
 
-  // function updateDialogState(status: any) {
-  //   isDialogVisible.value = status;
-  //   eventBus.emit("DialogStatus", status, "ProfileSettingDialog");
-  // }
-
   const fullNameFields = [
     { name: "firstName", label: "auth.register.firstName", icon: "", maxlength: 20 },
     { name: "lastName", label: "auth.register.lastName", icon: "", maxlength: 20 }
   ];
 </script>
+../use-more-input

@@ -4,7 +4,7 @@ import { Member } from "@/interfaces/models/entities/member";
 
 // .ts files
 import { useUserStore } from "@/stores/user";
-import { BASE_URL } from "@/constants";
+import { BASE_URL, NO_FREE_POINTS } from "@/constants";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -22,7 +22,7 @@ const toolTipCreate = ref("member.gallery.uploadNewImage");
 const locale = ref("hk");
 const lang = ref("hk");
 
-export function useMemberInput() {
+export function useMoreInput() {
   const memberInput = ref<Member>(newInput());
 
   function setMemberInput(val: Member) {
@@ -60,6 +60,27 @@ export function useMemberInput() {
         notify(errors.message, "negative");
       });
   }
+
+  function claimFreePoints(onDialogCancel: any) {
+    const memberId = parseInt(userStore.userId);
+    axios
+      .post(`/Points/RequestFreePoints?memberId=${memberId}`)
+      .then(async () => {
+        const successMessage = "You claimed free points successfully";
+        successCallback(successMessage);
+
+        userStore.totalPoints += NO_FREE_POINTS;
+        userStore.availabelPoints += NO_FREE_POINTS;
+
+        setTimeout(() => {
+          onDialogCancel();
+        }, 1200);
+      })
+      .catch(errors => {
+        notify(errors.message, "negative");
+      });
+  }
+
   async function handleUpdateMemberAvatar(newAvatar: any) {
     const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
 
@@ -94,8 +115,10 @@ export function useMemberInput() {
     toolTipCreate,
     locale,
     lang,
-    useMemberInput,
+    useMoreInput,
     setValidatedInput,
-    setMemberInput
+    setMemberInput,
+    claimFreePoints,
+    userStore
   };
 }
