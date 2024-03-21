@@ -157,8 +157,7 @@
   }
 
   function createPosting() {
-    const { isUserLogon, availabelPoints } = userStore;
-    if (!isUserLogon()) {
+    if (!userStore.isUserLogon()) {
       // User is not logged in, open the login dialog
       $q.dialog({
         component: defineAsyncComponent(
@@ -171,11 +170,9 @@
 
     // Check whether user have required point to create post
 
-    if (availabelPoints < POST_POINTS) {
+    if (userStore.availabelPoints < POST_POINTS) {
       $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/views/modules/community/login-alert-dialog.vue")
-        )
+        component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
       });
 
       return;
