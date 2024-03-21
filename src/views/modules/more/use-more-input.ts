@@ -48,7 +48,7 @@ export function useMoreInput() {
     axios
       .put(`/Member/${memberInput.value.memberId}`, memberInput.value)
       .then(async () => {
-        const successMessage = t("member.message.updated");
+        const successMessage = t("more.profileSetting.profileUpdate");
 
         successCallback(successMessage);
 
@@ -82,6 +82,7 @@ export function useMoreInput() {
   }
 
   async function handleUpdateMemberAvatar(newAvatar: any) {
+    alert(userStore.userId);
     const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
 
     const formData = new FormData();
@@ -93,7 +94,7 @@ export function useMoreInput() {
       })
       .then(response => {
         if (response.status == 200) {
-          userStore.avatar = response.data;
+          userStore.profilePic = response.data;
         }
       })
       .catch(err => {

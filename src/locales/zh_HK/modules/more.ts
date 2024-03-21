@@ -19,7 +19,8 @@ export default {
   profileSetting: {
     title: "個人資料",
     subtitle: "選擇您在應用程式中的顯示方式",
-    save: "儲存"
+    save: "儲存",
+    profileUpdate: "Profile Updated"
   },
 
   contentDialog: {

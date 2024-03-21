@@ -19,7 +19,8 @@ export default {
   profileSetting: {
     title: "个人资料",
     subtitle: "选择您在应用程序中的显示方式",
-    save: "保存"
+    save: "保存",
+    profileUpdate: "Profile Updated"
   },
 
   contentDialog: {

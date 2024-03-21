@@ -19,7 +19,8 @@ export default {
   profileSetting: {
     title: "Profile",
     subtitle: "Choose how you appear in the app",
-    save: "Save"
+    save: "Save",
+    profileUpdate: "Profile Updated"
   },
 
   contentDialog: {

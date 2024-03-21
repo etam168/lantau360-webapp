@@ -40,10 +40,10 @@
   // .ts files
   import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { useUserStore } from "@/stores/user";
-  import { useMemberInput } from "../use-member-input";
+  import { useMoreInput } from "../use-more-input";
 
   const userStore = useUserStore();
-  const { handleUpdateMemberAvatar } = useMemberInput();
+  const { handleUpdateMemberAvatar } = useMoreInput();
 
   const imageRef = ref();
   const imagePath = ref(null);
@@ -60,4 +60,3 @@
     return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
   });
 </script>
-../use-more-input
