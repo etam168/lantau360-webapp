@@ -16,10 +16,26 @@ export const useUserStore = defineStore("user", {
       phone: "",
       profilePic: "",
       status: "",
-      code: ""
+      code: "",
+      totalPoints: 0,
+      spendPoints: 0
     },
 
   actions: {
+    async fetchMemberPoints() {
+      try {
+        if (!this.token) {
+          return;
+        }
+
+        const response = await axios.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
+        const { total, spend } = response.data;
+        this.SetUserInfo({ totalPoints: total, spendPoints: spend });
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+        throw error;
+      }
+    },
     async LogOut() {
       this.SetUserInfo({ logout: true });
     },
@@ -37,7 +53,9 @@ export const useUserStore = defineStore("user", {
         "email",
         "phone",
         "profilePic",
-        "code"
+        "code",
+        "totalPoints",
+        "spendPoints"
       ];
 
       if (payload.logout) {

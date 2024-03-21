@@ -52,9 +52,12 @@
 
   // .ts file
   import { URL } from "@/constants";
+  import { useUserStore } from "@/stores/user";
 
   const { eventBus, isSmallScreen } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
+
+  const { fetchMemberPoints } = useUserStore();
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
@@ -122,6 +125,9 @@
     directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
       (directory: Directory) => directory.status === 1
     );
+
+    // Sync user points.
+    fetchMemberPoints();
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

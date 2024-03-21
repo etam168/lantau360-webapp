@@ -166,4 +166,11 @@
         // notify(errors.message, "negative");
       });
   }
+
+  try {
+    // Sync user points.
+    userStore.fetchMemberPoints();
+  } catch (err: any) {
+    console.error(err.message);
+  }
 </script>
