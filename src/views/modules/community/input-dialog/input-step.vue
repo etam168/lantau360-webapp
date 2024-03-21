@@ -15,7 +15,7 @@
         </q-card-section>
       </q-scroll-area>
 
-      <q-card-actions class="q-pa-md">
+      <q-card-actions class="q-py-md q-px-lg">
         <app-button
           color="primary"
           class="full-width"

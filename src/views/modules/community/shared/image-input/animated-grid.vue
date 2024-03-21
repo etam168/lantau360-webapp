@@ -19,7 +19,7 @@
 
     <template v-slot:bottom="scope"> </template>
   </q-table> -->
-  <div class="max-width-480">
+  <div class="max-width-480 q-mx-none">
     <q-scroll-observer @scroll="onScroll" />
     <VueDraggableNext :list="rows" class="grid-container" @change="onMove">
       <div class="grid-item" v-for="row in rows" :key="row.imageId">
@@ -79,7 +79,6 @@
 <style scoped>
   .max-width-480 {
     max-width: 480px;
-    margin: 0 auto;
   }
   .grid-container {
     display: flex;

@@ -4,7 +4,7 @@
   </q-card-section>
 
   <q-card-section v-else>
-    <div class="q-pt-sm">
+    <div>
       {{ "Photos - " + (imageList.length - 1) + "/" + "10 - You can add upto 10 pics" }}
     </div>
 

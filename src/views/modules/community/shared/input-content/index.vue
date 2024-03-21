@@ -2,7 +2,12 @@
   <q-list v-for="field in veeInputsFields" :key="field.name">
     <q-item>
       <q-item-section>
-        <vee-input :name="field.name" :label="$t(field.label)" :type="field.type" />
+        <vee-input
+          :name="field.name"
+          :label="$t(field.label)"
+          :type="field.type"
+          class="q-pb-none"
+        />
       </q-item-section>
     </q-item>
   </q-list>
