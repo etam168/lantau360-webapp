@@ -29,7 +29,8 @@ export const URL = {
   MEMBER_IMAGE_URL: `${BASE_URL}/MemberImage`,
   CONTENT_NAME_URL: `${BASE_URL}/Content/ContentByName`,
   MEMBER_URL: `${BASE_URL}/Member`,
-
+  MEMBER_TRANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberTransactions`,
+  MEMBER_RECENT_RANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberRecentTransactions`,
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
     POSTING: `${BASE_URL}/Posting/ByDirectoryId`,

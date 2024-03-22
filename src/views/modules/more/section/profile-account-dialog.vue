@@ -25,7 +25,6 @@
                     By this time you spent (15)
                   </q-item-label>
                 </q-item-section>
-
                 <q-item-section side>
                   <q-btn
                     dense
@@ -42,7 +41,6 @@
           <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
           <q-separator size="2px" color="primary" />
-
           <q-tab-panels v-model="tab">
             <q-tab-panel
               v-for="(tabItem, index) in tabItems"
@@ -53,12 +51,12 @@
               <q-list>
                 <q-item v-for="(subItem, subIndex) in tabItem.subItems" :key="subIndex">
                   <q-item-section>
-                    <q-item-label>{{ subItem.name }}</q-item-label>
-                    <q-item-label caption>{{ subItem.label }}</q-item-label>
+                    <q-item-label>{{ subItem.title }}</q-item-label>
+                    <q-item-label caption>{{ subItem.createdAt }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-item-label class="text-negative"> {{ subItem.price }}</q-item-label>
+                    <q-item-label class="text-negative"> {{ subItem.points }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -71,13 +69,24 @@
 </template>
 
 <script setup lang="ts">
+  import { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import { useMoreInput } from "../use-more-input";
+  import { PropType } from "vue";
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { claimFreePoints, userStore } = useMoreInput();
+
+  const props = defineProps({
+    trHistory: {
+      type: Array as PropType<TransactionView[]>
+    },
+    trRecent: {
+      type: Array as PropType<TransactionView[]>
+    }
+  });
 
   const tab = ref("recentTransactions");
   const setTab = (val: string) => (tab.value = val);
@@ -95,17 +104,12 @@
     {
       name: "recentTransactions",
       label: t("more.account.recentTransactions"),
-      subItems: [
-        { name: "Buy/Sell", label: "13 Feb - 11:29Am", price: "- $10.00" },
-        { name: "Lost/Found", label: "10 Jan - 10:30Am", price: "- $05.00" }
-      ]
+      subItems: props.trRecent || []
     },
     {
       name: "history",
       label: t("more.account.history"),
-      subItems: [
-        // Add sub-items for "history" here if needed
-      ]
+      subItems: props.trHistory || []
     }
   ]);
 </script>
