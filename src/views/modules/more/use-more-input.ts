@@ -71,13 +71,21 @@ export function useMoreInput() {
 
         userStore.totalPoints += NO_FREE_POINTS;
         userStore.availabelPoints += NO_FREE_POINTS;
-
+        alert();
         setTimeout(() => {
           onDialogCancel();
         }, 1200);
       })
-      .catch(errors => {
-        notify(errors.message, "negative");
+      .catch(err => {
+        if (err instanceof AxiosError) {
+          if (err.response?.status === 400 && err.response?.data === "have_enough_points") {
+            notify("You have enough points to create a new post.", "negative");
+          } else {
+            notify(err.message, "negative");
+          }
+        } else {
+          notify(err.message, "negative");
+        }
       });
   }
 
