@@ -52,11 +52,15 @@
                 <q-item v-for="(subItem, subIndex) in tabItem.subItems" :key="subIndex">
                   <q-item-section>
                     <q-item-label>{{ subItem.title }}</q-item-label>
-                    <q-item-label caption>{{ subItem.createdAt }}</q-item-label>
+                    <q-item-label caption>{{
+                      new Date(subItem.createdAt).toDateString()
+                    }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-item-label class="text-negative"> {{ subItem.points }}</q-item-label>
+                    <q-item-label class="text-negative">
+                      - ${{ subItem.amount.toFixed(2) }}</q-item-label
+                    >
                   </q-item-section>
                 </q-item>
               </q-list>
