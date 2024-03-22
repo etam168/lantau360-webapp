@@ -32,9 +32,9 @@
                 <q-item>
                   <q-item-section>
                     <vee-input
+                      v-model="memberInput.alias"
                       name="alias"
                       :maxlength="20"
-                      icon="email"
                       :label="$t('auth.register.alias')"
                     />
                   </q-item-section>

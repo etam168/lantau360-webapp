@@ -26,6 +26,8 @@ export function useMoreInput() {
   const memberInput = ref<Member>(newInput());
 
   function setMemberInput(val: Member) {
+    memberInput.value.alias = val.alias;
+    memberInput.value.userName = val.userName;
     memberInput.value.email = val.email;
     memberInput.value.firstName = val.firstName;
     memberInput.value.lastName = val.lastName;
@@ -33,6 +35,8 @@ export function useMoreInput() {
   }
 
   function setValidatedInput(values: any) {
+    memberInput.value.alias = values.alias;
+    memberInput.value.userName = values.userName;
     memberInput.value.email = values.email;
     memberInput.value.firstName = values.firstName;
     memberInput.value.lastName = values.lastName;
@@ -71,7 +75,7 @@ export function useMoreInput() {
 
         userStore.totalPoints += NO_FREE_POINTS;
         userStore.availabelPoints += NO_FREE_POINTS;
-        alert();
+
         setTimeout(() => {
           onDialogCancel();
         }, 1200);
@@ -90,7 +94,6 @@ export function useMoreInput() {
   }
 
   async function handleUpdateMemberAvatar(newAvatar: any) {
-    alert(userStore.userId);
     const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
 
     const formData = new FormData();
