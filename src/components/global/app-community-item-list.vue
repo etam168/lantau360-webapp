@@ -69,8 +69,7 @@
       class="row justify-center items-center"
     >
       <q-card-section class="text-center">
-        <q-icon name="fa-solid fa-database" size="4rem" color="primary" />
-        <div class="text-subtitle2 text-weight-regular q-mt-md">
+        <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold">
           There is no Record to show you right now.
         </div>
       </q-card-section>
