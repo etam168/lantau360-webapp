@@ -86,15 +86,13 @@
   import ProfileSettingImage from "./profile-setting-image.vue";
 
   const props = defineProps({
-    member: {
+    data: {
       type: Object as PropType<Member>,
       required: true
     }
   });
 
   const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
-
-  defineEmits(["ok", "hide"]); // Declare the custom events
 
   const { t } = useI18n({ useScope: "global" });
   const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
@@ -109,13 +107,13 @@
   const isDialogVisible = ref();
 
   onMounted(() => {
-    setMemberInput(props?.member);
-    memberInput.value.memberId = props.member.memberId;
+    setMemberInput(props?.data);
+    memberInput.value.memberId = props.data.memberId;
     initialValues.value = {
-      email: props.member.email,
-      firstName: props.member.firstName,
-      lastName: props.member.lastName,
-      phone: props.member.phone
+      email: props.data.email,
+      firstName: props.data.firstName,
+      lastName: props.data.lastName,
+      phone: props.data.phone
     };
   });
 

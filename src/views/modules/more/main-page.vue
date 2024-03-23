@@ -5,11 +5,7 @@
     <login-signup @on-dialog="throttledHandleLoginDialog" />
 
     <q-card-section class="q-pt-none q-qb-xl">
-      <q-item
-        v-for="(item, index) in filteredMenuItems"
-        :key="index"
-        class="shadow-1 q-mb-md q-pl-sm"
-      >
+      <q-item v-for="(item, index) in menuItems" :key="index" class="shadow-1 q-mb-md q-pl-sm">
         <q-item-section avatar>
           <q-avatar size="36px" square>
             <img :src="item.icon" />
@@ -22,7 +18,7 @@
           >
         </q-item-section>
 
-        <q-item-section side v-if="item.name == Menu.LANGUAGE">
+        <q-item-section side v-if="item.name == MENU.LANGUAGE">
           <language-select />
         </q-item-section>
         <q-item-section side v-else>
@@ -46,11 +42,9 @@
 </template>
 
 <script setup lang="ts">
-  import ICONS from "@/constants/app/image-icon";
-  import { Content } from "@/interfaces/models/entities/content";
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { URL } from "@/constants";
+  import { URL, LOGGED_ON_USER_MENU, DEFAULT_MENU, MENU } from "@/constants";
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
@@ -68,63 +62,30 @@
   const trRecent = ref();
   const trHistory = ref();
 
-  const filteredMenuItems = computed(() => {
-    // Filter out the "profileSetting" item if userStore.token does not exist
-    return userStore.isUserLogon()
-      ? menuItems
-      : menuItems.filter(item => item.name !== Menu.PROFILE && item.name !== Menu.ACCOUNT);
+  const menuItems = computed(() => {
+    return userStore.isUserLogon() ? LOGGED_ON_USER_MENU : DEFAULT_MENU;
   });
 
-  const Menu = {
-    LANGUAGE: "language",
-    PRIVACY: "privacy",
-    TERMS: "terms",
-    PROFILE: "profileSetting",
-    ACCOUNT: "account"
-  };
-
-  const menuItems = [
-    { name: Menu.LANGUAGE, icon: ICONS.SETTING, title: "more.language" },
-    {
-      name: Menu.TERMS,
-      icon: ICONS.TNC,
-      title: "more.terms",
-      contentKey: "Terms"
-    },
-    {
-      name: Menu.PRIVACY,
-      icon: ICONS.PRIVACY,
-      title: "more.privacy",
-      contentKey: "Privacy"
-    },
-    { name: Menu.PROFILE, icon: ICONS.PROFILE, title: "more.profile" },
-    { name: Menu.ACCOUNT, icon: ICONS.ACCOUNT, title: "more.account.title" }
-  ];
-
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
-  const throttledHandleContentDialog = throttle(showContentDialog, 2000);
+  const throttledHandleContentDialog = throttle(showDialog, 2000);
 
-  async function showContentDialog(item: any) {
+  async function showDialog(item: any) {
     if (item.contentKey) {
-      try {
-        const url = `${URL.CONTENT_NAME_URL}/${item.contentKey}`;
-        const response = await axios.get<Content>(url);
-        if (response.status === 200) {
-          $q.dialog({
-            component: defineAsyncComponent(() => import("./section/content-dialog.vue")),
-            componentProps: {
-              contentDataValue: response.data,
-              title: t(item.title)
-            }
-          });
-        }
-      } catch (error) {
-        // Handle error if the API call fails
+      OpenDialog(
+        import("./section/content-dialog.vue"),
+        { title: t(item.title) },
+        item.contentKey,
+        true
+      );
+    } else if (item.name == MENU.PROFILE) {
+      OpenDialog(import("./section/profile-setting-dialog.vue"));
+    } else if (item.name == MENU.ACCOUNT) {
+      if (trHistory.value && trRecent.value) {
+        OpenDialog(import("./section/profile-account-dialog.vue"), {
+          trHistory: trHistory.value,
+          trRecent: trRecent.value
+        });
       }
-    } else if (item.name == Menu.PROFILE) {
-      OpenProfileDialog();
-    } else if (item.name == Menu.ACCOUNT) {
-      OpenAccountDialog();
     }
   }
 
@@ -137,39 +98,29 @@
     });
   }
 
-  function OpenProfileDialog() {
-    axios
-      .get(`${URL.MEMBER_URL}/${userStore.userId}`)
-      .then(response => {
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./section/profile-setting-dialog.vue")),
-          componentProps: {
-            member: response.data
-          }
-        });
-      })
-      .catch(errors => {
-        errors;
-        // notify(errors.message, "negative");
-      });
-  }
+  async function OpenDialog(
+    component: any,
+    componentProps?: any,
+    contentKey?: string,
+    isContent: boolean = false
+  ) {
+    const requestUrl = isContent
+      ? `${URL.CONTENT_NAME_URL}/${contentKey}`
+      : `${URL.MEMBER_URL}/${userStore.userId}`;
 
-  function OpenAccountDialog() {
     axios
-      .get(`${URL.MEMBER_URL}/${userStore.userId}`)
+      .get(requestUrl)
       .then(response => {
         $q.dialog({
-          component: defineAsyncComponent(() => import("./section/profile-account-dialog.vue")),
+          component: defineAsyncComponent(() => component),
           componentProps: {
-            member: response.data,
-            trHistory: trHistory.value,
-            trRecent: trRecent.value
+            data: response.data,
+            ...componentProps
           }
         });
       })
-      .catch(errors => {
-        errors;
-        // notify(errors.message, "negative");
+      .catch(err => {
+        handleError(err);
       });
   }
 
@@ -185,6 +136,10 @@
     // Sync user points.
     userStore.fetchMemberPoints();
   } catch (err) {
+    handleError(err);
+  }
+
+  function handleError(err: any) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
         error.value = "Not found";

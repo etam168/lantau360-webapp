@@ -19,7 +19,7 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-subtitle1"
-                    >Available Credits : {{ userStore.availabelPoints }}
+                    >Available Points : {{ userStore.availabelPoints }}
                   </q-item-label>
                   <q-item-label caption class="text-white">
                     By this time you spent (15)
@@ -52,9 +52,7 @@
                 <q-item v-for="(subItem, subIndex) in tabItem.subItems" :key="subIndex">
                   <q-item-section>
                     <q-item-label>{{ subItem.title }}</q-item-label>
-                    <q-item-label caption>{{
-                      new Date(subItem.createdAt).toDateString()
-                    }}</q-item-label>
+                    <q-item-label caption>{{ dateFormatter(subItem.createdAt) }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
@@ -82,6 +80,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { claimFreePoints, userStore } = useMoreInput();
+  const { dateFormatter } = useUtilities();
 
   const props = defineProps({
     trHistory: {

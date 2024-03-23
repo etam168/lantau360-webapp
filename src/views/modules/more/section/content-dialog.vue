@@ -17,11 +17,7 @@
           <q-page-container>
             <q-page>
               <q-item>
-                <div
-                  v-html="
-                    translate(contentDataValue.contentData, contentDataValue.meta, 'contentData')
-                  "
-                ></div
+                <div v-html="translate(data?.contentData, data?.meta, 'contentData')"></div
               ></q-item>
             </q-page>
           </q-page-container>
@@ -35,13 +31,11 @@
 </template>
 
 <script setup lang="ts">
-  // Other Import
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
-  // const { eventBus } = useUtilities();
 
   defineProps({
-    contentDataValue: {
+    data: {
       type: Object as PropType<any>
     },
     title: {
@@ -49,7 +43,6 @@
       required: true
     }
   });
-  defineEmits(["ok", "hide"]); // Declare the custom events
 
   const { translate } = useUtilities();
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
