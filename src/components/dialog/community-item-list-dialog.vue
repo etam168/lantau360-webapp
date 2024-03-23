@@ -36,10 +36,12 @@
             </q-tab-panels>
           </template>
 
-          <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
+          <!-- `If groupBykey doesn't exist, show the linear app-category-item-list` -->
+
           <template v-else>
             <app-community-item-list
               class="q-px-md q-pt-md q-pb-none"
+              @create-posting="createPosting"
               @item-click="onItemClick"
               :directoryItems="directoryItems"
               :template="template"
@@ -48,9 +50,9 @@
             />
           </template>
 
-          <q-page-sticky position="bottom-right" :offset="[24, 24]">
+          <!-- <q-page-sticky position="bottom-right" :offset="[24, 24]">
             <q-btn round color="primary" icon="add" @click="createPosting" />
-          </q-page-sticky>
+          </q-page-sticky> -->
         </q-page>
       </q-page-container>
     </q-layout>
@@ -85,6 +87,7 @@
   const userStore = useUserStore();
   const $q = useQuasar();
   const isDialogVisible = ref();
+
   const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
 
   const dialogTitle = computed(() =>

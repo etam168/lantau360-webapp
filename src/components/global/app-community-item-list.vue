@@ -1,5 +1,43 @@
 <template>
   <div>
+    <q-card class="q-pa-md q-mb-md">
+      <q-input
+        rounded
+        standout
+        bottom-slots
+        v-model="textModel"
+        placeholder="What's on your mind?"
+        dense
+        @click="createPosting"
+      >
+        <template v-slot:before>
+          <q-avatar size="45px">
+            <img :src="avatar" />
+          </q-avatar>
+        </template>
+      </q-input>
+
+      <q-separator />
+
+      <q-card-actions class="justify-center q-px-none q-pb-none q-pt-md">
+        <q-list dense>
+          <q-item dense class="q-pa-none">
+            <q-item-section v-for="postItem in postItems" :key="postItem.title">
+              <q-item clickable dense @click="createPosting">
+                <q-item-section avatar>
+                  <q-icon color="primary" :name="postItem.icon" />
+                </q-item-section>
+
+                <q-item-section>
+                  <q-item-label>{{ postItem.title }}</q-item-label>
+                </q-item-section>
+              </q-item>
+            </q-item-section>
+          </q-item>
+        </q-list>
+      </q-card-actions>
+    </q-card>
+
     <q-list v-if="directoryItems.length > 0">
       <q-item
         v-for="item in directoryItems"
@@ -65,7 +103,7 @@
     <q-card
       flat
       v-else
-      style="min-height: calc(100vh - 160px)"
+      style="min-height: calc(100vh - 228px)"
       class="row justify-center items-center"
     >
       <q-card-section class="text-center">
@@ -83,12 +121,12 @@
   import { useUserStore } from "@/stores/user";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
+  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   const $q = useQuasar();
 
-  const emit = defineEmits(["item-click"]);
+  const emit = defineEmits(["item-click", "create-posting"]);
 
   const props = defineProps({
     directoryItems: {
@@ -109,6 +147,7 @@
   const { getTimeAgo } = useUtilities();
 
   const userStore = useUserStore();
+  const textModel = ref("");
 
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
@@ -122,6 +161,10 @@
     emit("item-click", item);
   }
 
+  function createPosting() {
+    emit("create-posting");
+  }
+
   function editPosting(item: Posting) {
     $q.dialog({
       component: defineAsyncComponent(
@@ -133,4 +176,13 @@
       }
     });
   }
+
+  const avatar = computed(() => {
+    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
+  });
+
+  const postItems = ref([
+    { icon: "description", title: "Title" },
+    { icon: "collections", title: "Photos" }
+  ]);
 </script>
