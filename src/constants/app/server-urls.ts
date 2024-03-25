@@ -33,7 +33,7 @@ export const URL = {
   MEMBER_RECENT_RANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberRecentTransactions`,
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
-    POSTING: `${BASE_URL}/Posting/ByDirectoryId`,
+    POSTING: `${BASE_URL}/Posting/Active/ByDirectoryId`,
     SITE: `${BASE_URL}/Site/ByDirectoryId`
   }
 };
