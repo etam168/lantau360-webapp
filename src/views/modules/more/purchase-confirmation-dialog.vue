@@ -9,12 +9,14 @@
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="info" />
-        <span class="q-ml-sm">Are you sure you want to claim your free 20 points?</span>
+        <span class="q-ml-sm">{{
+          $t("more.profileSetting.claimFreePointText", { points: "20" })
+        }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="No" color="primary" v-close-popup />
-        <q-btn flat label="Yes" color="primary" @click="handleOk" />
+        <q-btn flat :label="$t('action.no')" color="primary" v-close-popup />
+        <q-btn flat :label="$t('action.yes')" color="primary" @click="handleOk" />
       </q-card-actions>
     </q-card>
   </q-dialog>

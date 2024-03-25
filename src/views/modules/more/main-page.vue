@@ -142,12 +142,12 @@
   function handleError(err: any) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
-        error.value = "Not found";
+        error.value = t("errors.404");
       } else {
-        error.value = "An error occurred";
+        error.value = t("errors.anErrorOccured");
       }
     } else {
-      error.value = "An unexpected error occurred";
+      error.value = t("errors.anErrorOccured");
     }
   }
 </script>

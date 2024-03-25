@@ -17,10 +17,14 @@ export default {
   },
 
   profileSetting: {
+    buyPoints: "Buy Points",
     title: "个人资料",
     subtitle: "选择您在应用程序中的显示方式",
     save: "保存",
-    profileUpdate: "Profile Updated"
+    profileUpdate: "Profile Updated",
+    availablePoints: "Available Points : {availablePoints}",
+    bythisTimeText: "By this time you spent {spentPoints}",
+    claimFreePointText: "Are you sure you want to claim your free {points} points?"
   },
 
   contentDialog: {
@@ -29,6 +33,11 @@ export default {
       terms: "条款与条件",
       aboutUs: "关于我们"
     }
+  },
+
+  message: {
+    claimedFreePointsSuccessfully: "You claimed free points successfully",
+    enoughPoints: "You have enough points to create a new post."
   },
 
   footer: {

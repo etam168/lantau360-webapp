@@ -14,7 +14,7 @@
         <q-space />
 
         <q-btn dense icon="close" color="red" v-close-popup size="xs">
-          <q-tooltip>Close</q-tooltip>
+          <q-tooltip>{{ $t("action.close") }}</q-tooltip>
         </q-btn>
       </q-bar>
 

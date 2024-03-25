@@ -57,10 +57,12 @@
   import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+
+  const { t } = useI18n({ useScope: "global" });
   defineProps({
     label: {
       type: String,
-      default: "Add Photos"
+      default: t("community.addPhotos")
     },
     isSmallSize: {
       type: Boolean,
@@ -91,7 +93,7 @@
   }
 
   function onRejected() {
-    notify("Total number images should not be greater then 10", "negative");
+    notify(t("community.rejectImagesText"), "negative");
   }
 </script>
 

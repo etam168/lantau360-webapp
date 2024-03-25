@@ -1,24 +1,4 @@
 <template>
-  <!-- <q-scroll-observer @scroll="onScroll" />
-  <q-table
-    v-bind="$attrs"
-    card-container-class="q-col-gutter-sm"
-    grid
-    flat
-    hide-bottom
-    :pagination="{ rowsPerPage: 30 }"
-  >
-    <template #item="props">
-      <ImageCard
-        flat
-        :row="props.row"
-        @on-delete-gallery="handleDelete"
-        @on-add-image="handleAddImage"
-      />
-    </template>
-
-    <template v-slot:bottom="scope"> </template>
-  </q-table> -->
   <div class="max-width-480 q-mx-none">
     <q-scroll-observer @scroll="onScroll" />
     <VueDraggableNext :list="rows" class="grid-container" @change="onMove">
@@ -76,6 +56,7 @@
     scrollInfo.value = info;
   }
 </script>
+
 <style scoped>
   .max-width-480 {
     max-width: 480px;

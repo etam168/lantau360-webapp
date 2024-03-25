@@ -5,7 +5,7 @@
 
   <q-card-section v-else>
     <div>
-      {{ "Photos - " + (imageList.length - 1) + "/" + "10 - You can add upto 10 pics" }}
+      {{ $t("errors.galleryPhotos", { imageLength: imageList.length - 1 }) }}
     </div>
 
     <animated-grid

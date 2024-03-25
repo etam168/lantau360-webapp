@@ -9,13 +9,11 @@
     <q-card>
       <q-card-section class="row items-center">
         <q-avatar icon="info" />
-        <span class="q-ml-sm"
-          >Insufficient points to create new posts. Please purchase more points. Thank you.</span
-        >
+        <span class="q-ml-sm">{{ $t("community.alertDialog.alertText") }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="OK" color="primary" @click="handleOk" />
+        <q-btn flat :label="$t('action.close')" color="primary" @click="handleOk" />
       </q-card-actions>
     </q-card>
   </q-dialog>

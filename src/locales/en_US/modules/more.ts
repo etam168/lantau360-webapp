@@ -17,10 +17,14 @@ export default {
   },
 
   profileSetting: {
+    buyPoints: "Buy Points",
     title: "Profile",
     subtitle: "Choose how you appear in the app",
     save: "Save",
-    profileUpdate: "Profile Updated"
+    profileUpdate: "Profile Updated",
+    availablePoints: "Available Points : {availablePoints}",
+    bythisTimeText: "By this time you spent {spentPoints}",
+    claimFreePointText: "Are you sure you want to claim your free {points} points?"
   },
 
   contentDialog: {
@@ -29,6 +33,11 @@ export default {
       terms: "Terms & Conditions",
       aboutUs: "About"
     }
+  },
+
+  message: {
+    claimedFreePointsSuccessfully: "You claimed free points successfully",
+    enoughPoints: "You have enough points to create a new post."
   },
 
   footer: {

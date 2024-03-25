@@ -17,10 +17,14 @@ export default {
   },
 
   profileSetting: {
+    buyPoints: "Buy Points",
     title: "個人資料",
     subtitle: "選擇您在應用程式中的顯示方式",
     save: "儲存",
-    profileUpdate: "Profile Updated"
+    profileUpdate: "Profile Updated",
+    availablePoints: "Available Points : {availablePoints}",
+    bythisTimeText: "By this time you spent {spentPoints}",
+    claimFreePointText: "Are you sure you want to claim your free {points} points?"
   },
 
   contentDialog: {
@@ -30,6 +34,12 @@ export default {
       aboutUs: "關於我們"
     }
   },
+
+  message: {
+    claimedFreePointsSuccessfully: "You claimed free points successfully",
+    enoughPoints: "You have enough points to create a new post."
+  },
+
   footer: {
     version: "{version} 版本",
     copyright: "© {currentYear} Lantau360.com"

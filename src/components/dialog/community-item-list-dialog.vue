@@ -61,6 +61,7 @@
 
 <script setup lang="ts">
   // interface files
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { TabItem } from "@/interfaces/tab-item";
@@ -68,7 +69,6 @@
   // others import
   import { useDialogPluginComponent, useQuasar } from "quasar";
   import { NONE, AREA_NAME, POST_POINTS } from "@/constants";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
@@ -83,16 +83,23 @@
   });
 
   const { dialogRef } = useDialogPluginComponent();
-  const { groupBy, translate, eventBus } = useUtilities();
+  const { groupBy, translate, translateAlt, eventBus } = useUtilities();
   const userStore = useUserStore();
   const $q = useQuasar();
   const isDialogVisible = ref();
 
   const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
 
-  const dialogTitle = computed(() =>
-    translate(props.directory.directoryName, props.directory.meta, "directoryName")
-  );
+  const dialogTitle = computed(() => {
+    const { directoryName, directoryNameAlt } = props.directory as CommunityDirectory;
+
+    // Check if directoryNameAlt exists and is not null
+    if (directoryNameAlt !== undefined && directoryNameAlt !== null) {
+      return translateAlt(directoryName, directoryNameAlt, "directoryName");
+    } else {
+      return translate(directoryName, props.directory.meta, "directoryName");
+    }
+  });
 
   const template = computed(() => props.directory.meta?.template);
   const groupBykey = computed(() =>

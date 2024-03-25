@@ -5,7 +5,7 @@
       <div>
         <div class="text-h2">404</div>
         <div class="text-h4" style="opacity: 0.4">
-          Oops! The page you're looking for can't be found.
+          {{ $t("errors.error404") }}
         </div>
       </div>
     </div>

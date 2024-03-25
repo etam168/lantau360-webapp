@@ -131,4 +131,3 @@
     { name: "lastName", label: "auth.register.lastName", icon: "", maxlength: 20 }
   ];
 </script>
-../use-more-input

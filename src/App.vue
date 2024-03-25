@@ -2,7 +2,7 @@
   <router-view />
   <!-- <AddToHomeScreen /> -->
   <div v-show="showInstallPrompt" class="install-banner" @click="showInstallationGuide">
-    Install App
+    {{ $t("installApp.title") }}
   </div>
 </template>
 

@@ -11,13 +11,13 @@
         <q-space />
 
         <q-btn dense icon="close" color="red" v-close-popup size="xs">
-          <q-tooltip>Close</q-tooltip>
+          <q-tooltip>{{ $t("action.close") }}</q-tooltip>
         </q-btn>
       </q-bar>
       <q-card-section class="q-pa-md">
-        <div class="text-h6">What Would You Do Next?</div>
+        <div class="text-h6">{{ $t("community.loginDialog.question") }}</div>
         <div class="text-subtitle2 text-weight-regular">
-          You are currently not signed in to your account. First sign in to proceed.
+          {{ $t("community.loginDialog.subtitle") }}
         </div>
       </q-card-section>
 

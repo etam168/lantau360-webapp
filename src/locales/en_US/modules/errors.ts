@@ -1,4 +1,5 @@
 export default {
+  cannotLoadImage: "Cannot load image",
   whoops: "Whoops",
   back: "Get me out of here!",
   301: "Moved Permanently",
@@ -6,7 +7,11 @@ export default {
   403: "Forbidden",
   404: "Not Found",
   500: "Internal Server Error",
+  error404: "Oops! The page you're looking for can't be found.",
   error: "Something went wrong please try again or contact administrator",
+  noInternetConnection: "No Internet Connection",
+  anErrorOccured: "An error occurred",
+  anExpectedError: "An unexpected error occurred",
   login: {
     wrongCredentials: "Wrong username/password supplied"
   },

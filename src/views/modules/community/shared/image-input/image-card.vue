@@ -6,7 +6,9 @@
       style="width: 133px; height: 100px"
     >
       <template v-slot:error>
-        <div class="absolute-full flex flex-center bg-primary text-white">Cannot load image</div>
+        <div class="absolute-full flex flex-center bg-primary text-white">
+          {{ $t("errors.cannotLoadImage") }}
+        </div>
       </template>
 
       <template v-slot:loading>

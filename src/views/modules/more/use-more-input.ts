@@ -70,7 +70,7 @@ export function useMoreInput() {
     axios
       .post(`/Points/RequestFreePoints?memberId=${memberId}`)
       .then(async () => {
-        const successMessage = "You claimed free points successfully";
+        const successMessage = t("more.message.claimedFreePointsSuccessfully");
         successCallback(successMessage);
 
         userStore.totalPoints += NO_FREE_POINTS;
@@ -83,7 +83,7 @@ export function useMoreInput() {
       .catch(err => {
         if (err instanceof AxiosError) {
           if (err.response?.status === 400 && err.response?.data === "have_enough_points") {
-            notify("You have enough points to create a new post.", "negative");
+            notify(t("more.message.enoughPoints"), "negative");
           } else {
             notify(err.message, "negative");
           }
@@ -111,12 +111,12 @@ export function useMoreInput() {
       .catch(err => {
         if (err instanceof AxiosError) {
           if (err.response && err.response.status === 404) {
-            error.value = "Not found";
+            error.value = t("errors.404");
           } else {
-            error.value = "An error occurred";
+            error.value = t("errors.anErrorOccured");
           }
         } else {
-          error.value = "An unexpected error occurred";
+          error.value = t("errors.anErrorOccured");
         }
       });
   }

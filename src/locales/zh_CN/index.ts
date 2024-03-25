@@ -1,3 +1,4 @@
+import action from "./modules/action";
 import auth from "./modules/auth";
 import business from "./modules/business";
 import community from "./modules/community";
@@ -9,6 +10,7 @@ import more from "./modules/more";
 import posting from "./modules/posting";
 
 export default {
+  action,
   auth,
   business,
   community,
@@ -17,5 +19,8 @@ export default {
   footer,
   home,
   more,
-  posting
+  posting,
+  installApp: {
+    title: "Install App"
+  }
 };

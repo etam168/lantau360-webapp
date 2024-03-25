@@ -22,7 +22,7 @@
           :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
         >
           <q-skeleton type="circle" size="64px" />
-          <q-skeleton width="74px" type="text" />
+          <q-skeleton type="text" width="74px" />
         </div>
       </div>
     </q-item>

@@ -19,10 +19,18 @@
               <q-item>
                 <q-item-section>
                   <q-item-label class="text-subtitle1"
-                    >Available Points : {{ userStore.availabelPoints }}
+                    >{{
+                      $t("more.profileSetting.availablePoints", {
+                        availablePoints: userStore.availabelPoints
+                      })
+                    }}
                   </q-item-label>
                   <q-item-label caption class="text-white">
-                    By this time you spent (15)
+                    {{
+                      $t("more.profileSetting.bythisTimeText", {
+                        spentPoints: "15"
+                      })
+                    }}
                   </q-item-label>
                 </q-item-section>
                 <q-item-section side>
@@ -31,7 +39,7 @@
                     rounded
                     @click="onBtnBuyPoints"
                     class="text-primary bg-grey-1 text-caption q-px-md"
-                    >Buy Points</q-btn
+                    >{{ $t("more.profileSetting.buyPoints") }}</q-btn
                   >
                 </q-item-section>
               </q-item>

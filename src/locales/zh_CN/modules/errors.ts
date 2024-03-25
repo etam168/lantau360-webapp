@@ -1,4 +1,5 @@
 export default {
+  cannotLoadImage: "无法加载图片",
   whoops: "有問題~!",
   back: "返回!",
   301: "頁面已移動",
@@ -6,7 +7,12 @@ export default {
   403: "禁止訪問",
   404: "頁面未找到",
   500: "內部服務器錯誤",
+  error404: "糟糕！找不到您要找的页面。",
   error: "有問題! 請聯繫系統管理員",
+  noInternetConnection: "无网络连接",
+  notFound: "未找到",
+  anErrorOccured: "发生了错误",
+  anExpectedError: "发生了意外错误",
   login: {
     wrongCredentials: "密碼錯誤"
   },

@@ -20,12 +20,7 @@
       </q-scroll-area>
 
       <q-card-actions class="q-py-md q-px-lg">
-        <app-button
-          color="primary"
-          class="full-width"
-          :label="$t('posting.dialoge.save')"
-          type="submit"
-        />
+        <app-button color="primary" class="full-width" :label="$t('action.save')" type="submit" />
       </q-card-actions>
     </q-card>
   </Form>
