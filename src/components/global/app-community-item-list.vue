@@ -6,7 +6,7 @@
         standout
         bottom-slots
         v-model="textModel"
-        placeholder="What's on your mind?"
+        :placeholder="$t('community.createPost.inputPlaceholder')"
         dense
         @click="createPosting"
       >
@@ -29,7 +29,7 @@
                 </q-item-section>
 
                 <q-item-section>
-                  <q-item-label>{{ postItem.title }}</q-item-label>
+                  <q-item-label>{{ $t(postItem.title) }}</q-item-label>
                 </q-item-section>
               </q-item>
             </q-item-section>
@@ -56,7 +56,7 @@
             >
               <template v-slot:error>
                 <div class="absolute-full flex flex-center bg-negative text-white">
-                  Cannot load image
+                  {{ $t("errors.cannotLoadImage") }}
                 </div>
               </template>
             </q-img>
@@ -108,7 +108,7 @@
     >
       <q-card-section class="text-center">
         <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold">
-          There is no Record to show you right now.
+          {{ $t("errors.noRecord") }}
         </div>
       </q-card-section>
     </q-card>
@@ -182,7 +182,7 @@
   });
 
   const postItems = ref([
-    { icon: "description", title: "Title" },
-    { icon: "collections", title: "Photos" }
+    { icon: "description", title: "community.createPost.title" },
+    { icon: "collections", title: "community.createPost.photos" }
   ]);
 </script>

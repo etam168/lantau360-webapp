@@ -29,8 +29,9 @@
 
 <script setup lang="ts">
   const { notify } = useUtilities();
-
+  const { t } = useI18n({ useScope: "global" });
   const emit = defineEmits(["on-search"]);
+
   const props = defineProps({
     query: {
       type: String,
@@ -43,7 +44,7 @@
 
   function handleSearch() {
     if (keyword.value.length < 3) {
-      notify("Minimum 3 letters are required", "negative");
+      notify(t("errors.minimum3letter"), "negative");
       return;
     }
     emit("on-search", keyword.value);

@@ -6,6 +6,7 @@ export default function useDataTable(url: string, key: string) {
   const filter = ref("");
   const loading = ref(false);
   const columnFilter = ref<Record<string, unknown>>();
+  const { t } = useI18n({ useScope: "global" });
 
   const pagination = ref({
     sortBy: key || "",
@@ -23,7 +24,7 @@ export default function useDataTable(url: string, key: string) {
       return data || [];
     } catch (err: any) {
       if ((err as Error).message == "Network Error") {
-        notify("No Internet Connection", "negative");
+        notify(t("errors.noInternetConnection"), "negative");
       } else {
         throw new Error(err);
       }

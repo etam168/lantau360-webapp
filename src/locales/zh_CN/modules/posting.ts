@@ -1,68 +1,74 @@
 export default {
-  create: "新增地點",
-  delete: "移除地點",
-  edit: "修改地點",
-  title: "地點",
+  edit: "编辑帖子",
+  create: "创建帖子",
+  delete: "删除帖子",
+  title: "发帖",
 
   steps: {
-    default: "基本",
-    editor: "相片",
-    localization: "信息",
-    image: "信息"
+    default: "默认",
+    editor: "编辑器",
+    localization: "本地化",
+    image: "图片"
   },
-
   expansion: {
-    postListing: "基本信息",
-    postContent: "地點",
-    postGallery: "相片集"
+    postListing: "帖子清单",
+    postContent: "帖子内容",
+    postGallery: "帖子图库"
   },
-
   gallery: {
-    uploadNewImage: "Upload Image 密碼"
+    uploadNewImage: "上传图片"
   },
-
   columns: {
     id: "ID.",
-    postingName: "地點",
-    whatsApp: "WhatsApp",
-    phone: "電話",
-    contactOther: "其他聯繫",
-    locationName: "地址",
-    buttonText: "地址",
-    title: "標題",
-    numberPlate: "Number Plate",
-    subtitle1: "地址",
-    subtitle2: "標題2",
-    subtitle3: "標題3",
-
-    subtitle1Hk: "地址（繁体）",
-    subtitle1Cn: "地址（简体）",
-
-    displayMask: "顯示暗碼",
-    description: "簡介",
-    directoryId: "目錄編號",
-    directory: "目錄名稱",
-    imagePath: "圖像路徑",
-    iconPath: "圖像路徑",
-    bannerPath: "圖像路徑",
-    latitude: "緯度",
-    longitude: "經度",
-    status: "狀況",
-    createdAt: "創造時間",
-    createdBy: "創造人編號",
-    modifiedAt: "修改時間",
-    modifiedBy: "修改"
+    postingName: "帖子名称",
+    postingNameHk: "帖子名称（繁体）",
+    postingNameCn: "帖子名称（简体）",
+    contactWhatsApp: "WhatsApp",
+    contactPhone: "联系电话",
+    contactOther: "其他联系方式",
+    locationName: "地点名称",
+    buttonText: "按钮文字",
+    title: "标题（繁体）",
+    titleHk: "标题（繁体）",
+    titleCn: "标题（简体）",
+    subtitle1: "副标题1",
+    subtitle2: "副标题2",
+    subtitle3: "副标题3",
+    subtitle1Hk: "副标题1（繁体）",
+    subtitle2Hk: "副标题2（繁体）",
+    subtitle3Hk: "副标题3（繁体）",
+    subtitle1Cn: "副标题1（简体）",
+    subtitle2Cn: "副标题2（简体）",
+    subtitle3Cn: "副标题3（简体）",
+    numberPlate: "车牌号码",
+    selectLanguage: "选择语言",
+    displayMask: "显示遮罩",
+    description: "描述",
+    directoryId: "目录编号",
+    directory: "目录",
+    imagePath: "图片路径",
+    iconPath: "图示路径",
+    bannerPath: "横幅路径",
+    status: "状态",
+    latitude: "纬度",
+    longitude: "经度",
+    createdAt: "创建时间",
+    createdBy: "创建者",
+    modifiedAt: "修改时间",
+    modifiedBy: "修改者",
+    rank: "排名"
   },
 
   dialoge: {
-    edit: "修改地點",
-    create: "新增地點"
+    edit: "编辑帖子对话框",
+    create: "创建帖子对话框",
+    save: "保存"
   },
-
   message: {
-    created: "已加入地點",
-    updated: "已修改地點",
-    uploadImage: "已上載相片",
-    deleteImage: "已刪除相片"
+    created: "新帖子已创建",
+    updated: "帖子信息已更新",
+    deleted: "帖子已成功删除",
+    uploadImage: "图片上传成功",
+    deleteImage: "图片删除成功"
   }
 };

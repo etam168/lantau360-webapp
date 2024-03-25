@@ -1,10 +1,10 @@
 export default {
-  title: "我的最愛",
-  advertisement: "广告",
+  title: "已保存項目",
+  advertisement: "廣告",
 
   tabItems: {
-    location: "主頁",
-    business: "商戶",
-    coupon: "Coupon"
+    location: "首頁",
+    business: "商業",
+    coupon: "優惠券"
   }
 };

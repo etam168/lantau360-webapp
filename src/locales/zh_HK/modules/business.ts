@@ -1,8 +1,8 @@
 export default {
   title: "大嶼商戶",
   advertisement: "廣告",
-  moreDetail: "更多细节",
-  businessSearch: "Business Search",
+  moreDetail: "更多細節",
+  businessSearch: "商戶搜尋",
   subtitle1: "地址",
 
   tabItems: {

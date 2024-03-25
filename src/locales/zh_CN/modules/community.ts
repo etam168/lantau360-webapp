@@ -1,14 +1,22 @@
 export default {
   title: "大屿社区",
   advertisement: "广告",
+  addPhotos: "添加照片",
+  rejectImagesText: "总图片数不能超过10张",
+
+  createPost: {
+    title: "标题",
+    photos: "照片",
+    inputPlaceholder: "您有什么想说的？"
+  },
 
   loginDialog: {
-    question: "What Would You Do Next?",
-    subtitle: "You are currently not signed in to your account. First sign in to proceed."
+    question: "接下来您会怎么做？",
+    subtitle: "您目前尚未登录您的账户。请先登录以继续。"
   },
 
   alertDialog: {
-    alertText: "Insufficient points to create new posts. Please purchase more points. Thank you."
+    alertText: "积分不足以创建新帖子。请购买更多积分。谢谢。"
   },
 
   tabItems: {

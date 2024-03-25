@@ -59,6 +59,7 @@
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
+  const { t } = useI18n({ useScope: "global" });
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImageType[]>([]);
 

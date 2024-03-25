@@ -4,6 +4,12 @@ export default {
   addPhotos: "Add Photos",
   rejectImagesText: "Total number images should not be greater then 10",
 
+  createPost: {
+    title: "Title",
+    photos: "Photos",
+    inputPlaceholder: "What's on your mind ?"
+  },
+
   loginDialog: {
     question: "What Would You Do Next?",
     subtitle: "You are currently not signed in to your account. First sign in to proceed."

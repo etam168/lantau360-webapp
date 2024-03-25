@@ -193,7 +193,6 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const { navigateToWhatsApp, translate, getImageURL } = useUtilities();

@@ -32,6 +32,7 @@ const userEditor = {
 };
 
 export function useMember() {
+  const { t } = useI18n({ useScope: "global" });
   const loginByUserName = async (
     loginRequest: ILoginRequest
   ): Promise<ILoginResponse | undefined> => {
@@ -45,10 +46,10 @@ export function useMember() {
         response = { ...data };
       })
       .catch(error => {
-        throw new Error(error.response.data || "User is not found");
+        throw new Error(error.response.data || t("errors.userNotFound"));
       });
     if (!response || !response["token"]) {
-      throw new Error("User is not found");
+      throw new Error(t("errors.userNotFound"));
     }
     return response;
   };
@@ -67,7 +68,7 @@ export function useMember() {
         //console.log(error);
       });
     if (!user || !user["token"]) {
-      throw new Error("User is not found");
+      throw new Error(t("errors.userNotFound"));
     }
     return { user };
   };
@@ -75,7 +76,7 @@ export function useMember() {
     let user = {};
     try {
       if (!token) {
-        throw new Error("Invalid token");
+        throw new Error(t("errors.inValidToken"));
       }
 
       if (token === userAdmin.token) {
@@ -125,7 +126,7 @@ export function useMember() {
         response = res;
       })
       .catch(error => {
-        throw new Error(error.response.data || "Password not updated");
+        throw new Error(error.response.data || t("errors.passwordNotUpdated"));
       });
     return response;
   };

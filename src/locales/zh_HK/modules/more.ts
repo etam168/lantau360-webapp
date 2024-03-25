@@ -12,19 +12,19 @@ export default {
 
   account: {
     title: "帳戶",
-    recentTransactions: "Recent Transactions",
-    history: "History"
+    recentTransactions: "最近交易",
+    history: "歷史"
   },
 
   profileSetting: {
-    buyPoints: "Buy Points",
+    buyPoints: "購買積分",
     title: "個人資料",
     subtitle: "選擇您在應用程式中的顯示方式",
     save: "儲存",
-    profileUpdate: "Profile Updated",
-    availablePoints: "Available Points : {availablePoints}",
-    bythisTimeText: "By this time you spent {spentPoints}",
-    claimFreePointText: "Are you sure you want to claim your free {points} points?"
+    profileUpdate: "個人資料已更新",
+    availablePoints: "可用積分: {availablePoints}",
+    bythisTimeText: "截至目前您已花費 {spentPoints} 積分",
+    claimFreePointText: "您確定要領取您的免費 {points} 積分嗎？"
   },
 
   contentDialog: {
@@ -36,8 +36,8 @@ export default {
   },
 
   message: {
-    claimedFreePointsSuccessfully: "You claimed free points successfully",
-    enoughPoints: "You have enough points to create a new post."
+    claimedFreePointsSuccessfully: "您已成功領取免費積分",
+    enoughPoints: "您有足夠的積分來創建新的帖子。"
   },
 
   footer: {

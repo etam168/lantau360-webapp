@@ -12,19 +12,19 @@ export default {
 
   account: {
     title: "帐户",
-    recentTransactions: "Recent Transactions",
-    history: "History"
+    recentTransactions: "最近交易",
+    history: "历史"
   },
 
   profileSetting: {
-    buyPoints: "Buy Points",
+    buyPoints: "购买积分",
     title: "个人资料",
     subtitle: "选择您在应用程序中的显示方式",
     save: "保存",
-    profileUpdate: "Profile Updated",
-    availablePoints: "Available Points : {availablePoints}",
-    bythisTimeText: "By this time you spent {spentPoints}",
-    claimFreePointText: "Are you sure you want to claim your free {points} points?"
+    profileUpdate: "个人资料已更新",
+    availablePoints: "可用积分: {availablePoints}",
+    bythisTimeText: "截至目前您已花费 {spentPoints} 积分",
+    claimFreePointText: "您确定要领取您的免费 {points} 积分吗 ？"
   },
 
   contentDialog: {
@@ -36,8 +36,8 @@ export default {
   },
 
   message: {
-    claimedFreePointsSuccessfully: "You claimed free points successfully",
-    enoughPoints: "You have enough points to create a new post."
+    claimedFreePointsSuccessfully: "您已成功领取免费积分",
+    enoughPoints: "您有足够的积分来创建新的帖子。"
   },
 
   footer: {

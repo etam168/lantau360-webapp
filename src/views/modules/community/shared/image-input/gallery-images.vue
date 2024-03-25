@@ -5,7 +5,7 @@
 
   <q-card-section v-else>
     <div>
-      {{ $t("errors.galleryPhotos", { imageLength: imageList.length - 1 }) }}
+      {{ $t("action.galleryPhotos", { imageLength: imageList.length - 1 }) }}
     </div>
 
     <animated-grid

@@ -1,14 +1,22 @@
 export default {
   title: "大嶼社區",
-  advertisement: "广告",
+  advertisement: "廣告",
+  addPhotos: "添加照片",
+  rejectImagesText: "總圖片數不能超過10張",
+
+  createPost: {
+    title: "標題",
+    photos: "照片",
+    inputPlaceholder: "您有什麼想說的？"
+  },
 
   loginDialog: {
-    question: "What Would You Do Next?",
-    subtitle: "You are currently not signed in to your account. First sign in to proceed."
+    question: "接下來您會怎麼做？",
+    subtitle: "您目前尚未登錄您的帳戶。請先登錄以繼續。"
   },
 
   alertDialog: {
-    alertText: "Insufficient points to create new posts. Please purchase more points. Thank you."
+    alertText: "積分不足以創建新帖子。請購買更多積分。謝謝。"
   },
 
   tabItems: {
