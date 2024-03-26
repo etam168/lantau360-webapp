@@ -11,7 +11,7 @@ export default {
   error: "Something went wrong please try again or contact administrator",
   noInternetConnection: "No Internet Connection",
   anErrorOccured: "An error occurred",
-  anExpectedError: "An unexpected error occurred",
+  anUnExpectedError: "An unexpected error occurred",
   inValidToken: "Invalid token",
   noRecord: "There is no Record to show you right now.",
   minimum3letter: "Minimum 3 letters are required",

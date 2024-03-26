@@ -129,7 +129,7 @@
         error.value = t("errors.anErrorOccured");
       }
     } else {
-      error.value = t("errors.anExpectedError");
+      error.value = t("errors.anUnExpectedError");
     }
   }
 </script>

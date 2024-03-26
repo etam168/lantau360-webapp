@@ -11,7 +11,7 @@ export default {
   error: "出现了问题，请重试或联系管理员",
   noInternetConnection: "没有网络连接",
   anErrorOccured: "发生了一个错误",
-  anExpectedError: "发生了一个意外的错误",
+  anUnExpectedError: "发生了一个意外的错误",
   inValidToken: "无效的令牌",
   noRecord: "目前没有记录可供查看。",
   minimum3letter: "最少需要3个字符",
