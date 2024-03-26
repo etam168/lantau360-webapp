@@ -69,7 +69,11 @@
       case "businessVoucherId" in props.item:
         return translate(props.item.businessName, props.item.meta, "businessName");
       case "businessPromotionId" in props.item:
-        return translate(props.item.businessName, props.item.meta, "businessName");
+        return translate(
+          props.item.businessPromotionName,
+          props.item.meta,
+          "businessPromotionName"
+        );
       default:
         return "";
     }

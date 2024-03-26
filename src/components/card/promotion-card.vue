@@ -49,7 +49,11 @@
   const promotionItem = computed(() => props.item as BusinessPromotionView);
 
   const translatedTitle: any = ref(
-    translate(promotionItem.value.title, promotionItem.value.meta, "title")
+    translate(
+      promotionItem.value.businessPromotionName,
+      promotionItem.value.meta,
+      "businessPromotionName"
+    )
   );
 
   const onItemClick = (item: BusinessPromotionView) => {
