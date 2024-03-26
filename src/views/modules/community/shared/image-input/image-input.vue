@@ -53,16 +53,13 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
   import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
 
   const { t } = useI18n({ useScope: "global" });
   defineProps({
     label: {
       type: String,
-      default: t("community.addPhotos")
+      default: "Add Photos" // Bind to locale variable is not allowed here
     },
     isSmallSize: {
       type: Boolean,
@@ -102,6 +99,6 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    text-align: center; /* Optional: Center the text within the badge */
+    text-align: center;
   }
 </style>

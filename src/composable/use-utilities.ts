@@ -2,6 +2,7 @@
 import { date, EventBus, Notify, Screen } from "quasar";
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+import { useUserStore } from "@/stores/user";
 
 const eventBus = new EventBus();
 
@@ -139,6 +140,23 @@ export function useUtilities() {
     window.open(whatsappURL, "_blank");
   }
 
+  async function refreshToken() {
+    const userStore = useUserStore();
+    try {
+      const response = await axios.post(`/MemberAuth/RefreshToken`, {
+        accessToken: userStore.token,
+        refreshToken: userStore.refreshToken
+      });
+      const { token, refreshToken } = response.data;
+      userStore.token = token;
+      userStore.refreshToken = refreshToken;
+      return token;
+    } catch (error) {
+      console.error("Error refreshing token:", error);
+      throw error;
+    }
+  }
+
   return {
     aspectRatio,
     dateFormatter,
@@ -155,6 +173,7 @@ export function useUtilities() {
     sleep,
     translate,
     translateAlt,
-    translateAltName
+    translateAltName,
+    refreshToken
   };
 }

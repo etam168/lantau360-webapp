@@ -28,7 +28,6 @@ export const useUserStore = defineStore("user", {
         if (!this.token) {
           return;
         }
-
         const response = await axios.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
         const { total, spend } = response.data;
         (this.totalPoints = total),

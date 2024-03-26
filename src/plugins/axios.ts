@@ -1,3 +1,38 @@
+import { useUserStore } from "@/stores/user";
 import axios from "axios";
 
+const { refreshToken } = useUtilities();
+
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+
+axios.interceptors.request.use(
+  async config => {
+    const userStore = useUserStore();
+    if (userStore.token) {
+      config.headers.Authorization = `Bearer ${userStore.token}`;
+    }
+    return config;
+  },
+  error => {
+    return Promise.reject(error);
+  }
+);
+
+axios.interceptors.response.use(
+  response => {
+    return response;
+  },
+  async error => {
+    if (error.response.status === 401 && !error.config._retry) {
+      error.config._retry = true;
+      try {
+        const token = await refreshToken();
+        error.config.headers.Authorization = `Bearer ${token}`;
+        return axios.request(error.config);
+      } catch (refreshError) {
+        console.error("Error refreshing token:", refreshError);
+      }
+    }
+    return Promise.reject(error);
+  }
+);
