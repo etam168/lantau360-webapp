@@ -100,19 +100,6 @@ export function usePostingInput() {
     // loading.value = false;
   }
 
-  function loadDescription() {
-    axios
-      .get(`/Posting/${postingInput.value.postingId}`)
-      .then(response => {
-        const data = response.data;
-        locale.value = "en";
-        metaDescription.value = data.description;
-      })
-      .catch(errors => {
-        notify(errors.message, "negative");
-      });
-  }
-
   function updatePosting() {
     postingInput.value.bannerPath = postingInput.value.iconPath = postingInput.value.imagePath = "";
 
@@ -302,7 +289,6 @@ export function usePostingInput() {
     lang,
     usePostingInput,
     metaDescription,
-    loadDescription,
     postingImages,
     loadGalleryImages,
     setValidateInput,
