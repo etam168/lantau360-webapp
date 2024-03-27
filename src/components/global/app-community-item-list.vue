@@ -8,7 +8,7 @@
 
         <q-item-section>
           <q-item-label>{{
-            $t("action.createDirectory", { directoryName: directory?.directoryName })
+            $t("action.createDirectory", { directoryName: directoryName })
           }}</q-item-label>
           <q-item-label caption>Add the gallery and description</q-item-label></q-item-section
         >
@@ -121,7 +121,7 @@
     }
   });
 
-  const { getTimeAgo } = useUtilities();
+  const { getTimeAgo, translateAlt, translate } = useUtilities();
 
   const userStore = useUserStore();
   //const textModel = ref("");
@@ -153,6 +153,17 @@
       }
     });
   }
+
+  const directoryName = computed(() => {
+    const { directoryName, directoryNameAlt } = props.directory as CommunityDirectory;
+
+    // Check if directoryNameAlt exists and is not null
+    if (directoryNameAlt !== undefined && directoryNameAlt !== null) {
+      return translateAlt(directoryName, directoryNameAlt, "directoryName");
+    } else {
+      return translate(directoryName, props?.directory?.meta, "directoryName");
+    }
+  });
 
   // const avatar = computed(() => {
   //   return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
