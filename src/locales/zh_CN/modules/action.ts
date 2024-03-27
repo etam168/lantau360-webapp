@@ -1,4 +1,5 @@
 export default {
+  createDirectory: "创建 {directoryName}",
   close: "关闭",
   ok: "确定",
   no: "否",

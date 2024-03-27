@@ -1,41 +1,18 @@
 <template>
   <div>
-    <q-card class="q-pa-md q-mb-md">
-      <q-input
-        rounded
-        standout
-        bottom-slots
-        v-model="textModel"
-        :placeholder="$t('community.createPost.inputPlaceholder')"
-        dense
-        @click="createPosting"
-      >
-        <template v-slot:before>
-          <q-avatar size="45px">
-            <img :src="avatar" />
-          </q-avatar>
-        </template>
-      </q-input>
+    <q-card class="q-mb-md">
+      <q-item clickable v-ripple @click="createPosting">
+        <q-item-section avatar>
+          <q-avatar color="green-1" text-color="primary" icon="add" />
+        </q-item-section>
 
-      <q-separator />
-
-      <q-card-actions class="justify-center q-px-none q-pb-none q-pt-md">
-        <q-list dense>
-          <q-item dense class="q-pa-none">
-            <q-item-section v-for="postItem in postItems" :key="postItem.title">
-              <q-item clickable dense @click="createPosting">
-                <q-item-section avatar>
-                  <q-icon color="primary" :name="postItem.icon" />
-                </q-item-section>
-
-                <q-item-section>
-                  <q-item-label>{{ $t(postItem.title) }}</q-item-label>
-                </q-item-section>
-              </q-item>
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card-actions>
+        <q-item-section>
+          <q-item-label>{{
+            $t("action.createDirectory", { directoryName: directory?.directoryName })
+          }}</q-item-label>
+          <q-item-label caption>Add the gallery and description</q-item-label></q-item-section
+        >
+      </q-item>
     </q-card>
 
     <q-list v-if="directoryItems.length > 0">
@@ -121,7 +98,7 @@
   import { useUserStore } from "@/stores/user";
 
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  import { BLOB_URL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   const $q = useQuasar();
@@ -147,7 +124,7 @@
   const { getTimeAgo } = useUtilities();
 
   const userStore = useUserStore();
-  const textModel = ref("");
+  //const textModel = ref("");
 
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
@@ -177,12 +154,7 @@
     });
   }
 
-  const avatar = computed(() => {
-    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
-  });
-
-  const postItems = ref([
-    { icon: "description", title: "community.createPost.title" },
-    { icon: "collections", title: "community.createPost.photos" }
-  ]);
+  // const avatar = computed(() => {
+  //   return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
+  // });
 </script>

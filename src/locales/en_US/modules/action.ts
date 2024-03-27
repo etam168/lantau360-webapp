@@ -1,4 +1,5 @@
 export default {
+  createDirectory: "Create {directoryName}",
   close: "Close",
   ok: "OK",
   no: "No",
