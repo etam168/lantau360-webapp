@@ -93,7 +93,7 @@
   try {
     const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
       axios.get<SiteView[]>(URL.ATTRACTION_URL),
-      axios.get(URL.WEATHER_URL, { headers: { api: "jelll" } }),
+      axios.get(URL.WEATHER_URL),
       axios.get<Directory[]>(URL.SITE_DIRECTORIES)
     ]);
 

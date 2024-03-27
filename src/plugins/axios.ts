@@ -11,7 +11,7 @@ axios.interceptors.request.use(
     if (userStore.token) {
       config.headers.Authorization = `Bearer ${userStore.token}`;
     }
-    config.headers["X-API-Key"] = "Ab]~#>)*g^23WV|{<O[LJCz5Q6n}5bi%;PeeYHDC5iJm,OC2LcU]IBZyUB7e=T9";
+    // config.headers["X-API-Key"] = "Ab]~#>)*g^23WV|{<O[LJCz5Q6n}5bi%;PeeYHDC5iJm,OC2LcU]IBZyUB7e=T9";
     return config;
   },
   error => {
