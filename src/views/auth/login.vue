@@ -54,7 +54,7 @@
   import { useUserStore } from "@/stores/user";
   import { STORAGE_KEYS } from "@/constants";
 
-  const emits = defineEmits(["close-dialog", "on-forgotPassword"]);
+  const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
 
   const $q = useQuasar();
 
@@ -117,6 +117,7 @@
             });
             LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
             emits("close-dialog");
+            emits("on-login-success");
           })
           .catch(err => {
             $q.notify({

@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
@@ -50,6 +49,7 @@
                   @close-dialog="closeDialog"
                   @on-register="showRegister"
                   @on-forgot-password="handleForgotPassword"
+                  @on-login-success="onLoginSuccess"
                 />
               </q-tab-panel>
               <q-tab-panel name="register" class="q-pa-none">
@@ -79,10 +79,14 @@
   const props = defineProps({
     tabValue: {
       type: String
+    },
+    refresAccountData: {
+      type: Function,
+      required: true
     }
   });
 
-  const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
@@ -101,6 +105,10 @@
       onDialogCancel();
     }, 1200);
   };
+
+  function onLoginSuccess() {
+    props.refresAccountData();
+  }
 
   function showRegister() {
     tab.value = "register";

@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     :model-value="isDialogVisible"
@@ -83,7 +82,7 @@
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
 
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();

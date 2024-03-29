@@ -68,6 +68,7 @@
 
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
   const throttledHandleContentDialog = throttle(showDialog, 2000);
+  initTransactionData();
 
   async function showDialog(item: any) {
     if (item.contentKey) {
@@ -93,7 +94,8 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
-        tabValue: tabValue
+        tabValue: tabValue,
+        refresAccountData: initTransactionData
       }
     });
   }
@@ -124,19 +126,23 @@
       });
   }
 
-  try {
-    const [transactionHistory, recentTransactions] = await Promise.all([
-      axios.get(`${URL.MEMBER_TRANSACTIONS_URL}/${userStore.userId}`),
-      axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`)
-    ]);
+  async function initTransactionData() {
+    try {
+      if (userStore.isUserLogon()) {
+        const [transactionHistory, recentTransactions] = await Promise.all([
+          axios.get(`${URL.MEMBER_TRANSACTIONS_URL}/${userStore.userId}`),
+          axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`)
+        ]);
 
-    trRecent.value = recentTransactions.data;
-    trHistory.value = transactionHistory.data;
+        trRecent.value = recentTransactions.data;
+        trHistory.value = transactionHistory.data;
 
-    // Sync user points.
-    userStore.fetchMemberPoints();
-  } catch (err) {
-    handleError(err);
+        // Sync user points.
+        userStore.fetchMemberPoints();
+      }
+    } catch (err) {
+      handleError(err);
+    }
   }
 
   function handleError(err: any) {

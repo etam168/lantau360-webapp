@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     :model-value="isDialogVisible"
@@ -103,7 +102,7 @@
     email: yup.string().min(3).required().label(t("auth.register.email"))
   });
 
-  const { onDialogCancel, dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { onDialogCancel, dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
   onMounted(() => {
