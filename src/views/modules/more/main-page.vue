@@ -134,8 +134,8 @@
           axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`)
         ]);
 
-        trRecent.value = recentTransactions.data;
-        trHistory.value = transactionHistory.data;
+        trRecent.value = recentTransactions?.data ?? [];
+        trHistory.value = transactionHistory?.data ?? [];
 
         // Sync user points.
         userStore.fetchMemberPoints();

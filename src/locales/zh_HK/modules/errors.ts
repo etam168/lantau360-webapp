@@ -16,5 +16,6 @@ export default {
   noRecord: "目前沒有記錄可供查看。",
   minimum3letter: "最少需要3個字符",
   userNotFound: "找不到用戶",
-  passwordNotUpdated: "密碼未更新"
+  passwordNotUpdated: "密碼未更新",
+  emialAreadyExists: "電郵已存在！！！"
 };

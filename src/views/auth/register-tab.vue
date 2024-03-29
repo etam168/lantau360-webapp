@@ -64,9 +64,12 @@
 
   // .ts files
   import { STORAGE_KEYS } from "@/constants";
+  import i18n from "@/plugins/i18n/i18n";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
   const $q = useQuasar();
+  const { notify } = useUtilities();
+  const { t } = i18n.global;
 
   const email = ref("");
   const firstName = ref("");
@@ -113,11 +116,21 @@
           });
           LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
           emits("close-dialog");
-        } catch (e: any) {
-          $q.notify({
-            message: e.message,
-            type: "negative"
-          });
+        } catch (err) {
+          if (err instanceof AxiosError) {
+            if (err.response?.status === 400 && err.response?.data === "email_already_exists") {
+              notify(t("errors.emialAreadyExists"), "negative");
+            } else if (
+              err.response?.status === 400 &&
+              err.response?.data === "something_went_wrong"
+            ) {
+              notify(t("errors.anErrorOccured"), "negative");
+            } else {
+              notify(t("errors.anUnExpectedError"), "negative");
+            }
+          } else {
+            notify((err as any).message, "negative");
+          }
           loading.value = false;
         }
 
