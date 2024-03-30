@@ -1,5 +1,29 @@
 <template>
-  <q-list>
+  <div v-if="template === TEMPLATE.DAYTRIP.value">
+    <q-card
+      clickable
+      v-for="item in directoryItems"
+      :key="item.directoryId"
+      @click="handleItemClick(item)"
+      class="my-card"
+    >
+      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+        <div class="absolute-bottom text-h6">
+          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
+        </div>
+      </q-img>
+
+      <q-card-section>
+        <div class="text-subtitle2">{{ translate(item.title, item.meta, "title") }}</div>
+      </q-card-section>
+
+      <q-card-section>
+        <app-text-editor v-model="item.description" />
+      </q-card-section>
+    </q-card>
+  </div>
+
+  <q-list v-else>
     <q-item
       clickable
       v-for="item in directoryItems"
@@ -42,25 +66,6 @@
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
-      </q-item-section>
-
-      <q-item-section v-else-if="template === TEMPLATE.DAYTRIP.value">
-        <q-card class="my-card">
-          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-            <div class="absolute-bottom text-h6">Title</div>
-          </q-img>
-
-          <q-card-section>
-            <div class="text-h6">
-              {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
-            </div>
-            <div class="text-subtitle2">{{ translate(item.title, item.meta, "title") }}</div>
-          </q-card-section>
-
-          <q-card-section>
-            {{ item }}
-          </q-card-section>
-        </q-card>
       </q-item-section>
 
       <q-item-section v-else>
