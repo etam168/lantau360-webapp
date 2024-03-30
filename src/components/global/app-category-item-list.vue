@@ -43,6 +43,26 @@
           {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
       </q-item-section>
+
+      <q-item-section v-else-if="template === TEMPLATE.DAYTRIP.value">
+        <q-card class="my-card">
+          <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
+            <div class="absolute-bottom text-h6">Title</div>
+          </q-img>
+
+          <q-card-section>
+            <div class="text-h6">
+              {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
+            </div>
+            <div class="text-subtitle2">{{ translate(item.title, item.meta, "title") }}</div>
+          </q-card-section>
+
+          <q-card-section>
+            {{ item }}
+          </q-card-section>
+        </q-card>
+      </q-item-section>
+
       <q-item-section v-else>
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
