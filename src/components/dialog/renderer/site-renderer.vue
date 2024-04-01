@@ -136,12 +136,38 @@
             </q-item-section>
           </q-item>
         </q-tab-panel>
+
+        <q-tab-panel name="checkIn" class="q-pa-none">
+          {{ "Site Location:  " + "Lat: " + item.latitude + " - " + " Lng: " + item.longitude }}
+          <br />
+          {{
+            "Current User Location: " +
+            "Lat: " +
+            currentLatitude +
+            " - " +
+            " Lng: " +
+            currentLongitude
+          }}
+
+          <br />
+          {{ "Distance in meters: " + distanceToDestination + " m" }}
+
+          <!-- {{ currentLatitude }} -->
+          <!-- {{ currentLongitude }} -->
+
+          <!-- {{ "Distance" + distanceToDestination }} -->
+          <br />
+          <q-btn @click="openCheckInDialog()">Checkin</q-btn>
+        </q-tab-panel>
       </q-tab-panels>
     </q-item>
   </q-list>
 </template>
 
 <script setup lang="ts">
+  import * as geolib from "geolib";
+  import { useQuasar } from "quasar";
+
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
@@ -160,16 +186,27 @@
     }
   });
 
+  const $q = useQuasar();
+
   const siteItem = computed(() => props?.item as SiteView);
 
   const { t } = useI18n({ useScope: "global" });
+
+  const currentLatitude = ref(0);
+  const currentLongitude = ref(0);
+  const distanceToDestination = ref(0);
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("aboutUs");
   const tabItems = ref([
     { name: "aboutUs", label: t("home.tabItems.aboutUs") },
-    { name: "info", label: t("home.tabItems.info") }
+    { name: "info", label: t("home.tabItems.info") },
+    { name: "checkIn", label: "Checkin" }
   ]);
+
+  onMounted(() => {
+    getLocation();
+  });
 
   const translatedContent: any = computed(() =>
     translate(siteItem.value.description, siteItem.value.meta, "description")
@@ -214,4 +251,41 @@
     }
   };
   const shouldShowImage = computed(() => siteItem.value.meta?.["hasMap"] === true);
+
+  function getLocation() {
+    if (navigator.geolocation) {
+      navigator.geolocation.watchPosition((postion: any) => {
+        currentLatitude.value = postion.coords.latitude;
+        currentLongitude.value = postion.coords.longitude;
+        calculateDistance();
+      });
+    }
+  }
+
+  // Compute distance between current location and destination
+  // const distanceToDestination = computed(() => {
+  //   // const item = props.item;
+  //   const destinationLatitude = 31.4678;
+  //   const destinationLongitude = 74.2666;
+  //   return geolib.getDistance(
+  //     { latitude: currentLatitude.value, longitude: currentLongitude.value },
+  //     { latitude: destinationLatitude, longitude: destinationLongitude }
+  //   );
+  // });
+
+  const calculateDistance = () => {
+    const item = props.item;
+    const destinationLatitude = item.latitude;
+    const destinationLongitude = item.longitude;
+    distanceToDestination.value = geolib.getDistance(
+      { latitude: currentLatitude.value, longitude: currentLongitude.value },
+      { latitude: destinationLatitude, longitude: destinationLongitude }
+    );
+  };
+
+  function openCheckInDialog() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/checkin-dialog.vue"))
+    });
+  }
 </script>
