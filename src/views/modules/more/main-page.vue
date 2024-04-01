@@ -80,6 +80,8 @@
       );
     } else if (item.name == MENU.PROFILE) {
       OpenDialog(import("./section/profile-setting-dialog.vue"));
+    } else if (item.name == MENU.CHECKIN) {
+      OpenDialog(import("./section/profile-checkin-dialog.vue"));
     } else if (item.name == MENU.ACCOUNT) {
       if (trHistory.value && trRecent.value) {
         OpenDialog(import("./section/profile-account-dialog.vue"), {

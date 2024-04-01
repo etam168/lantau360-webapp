@@ -9,6 +9,7 @@ export default {
   profile: "个人资料",
   logout: "登出",
   loginName: "登录名",
+  checkIn: "Check-In",
 
   account: {
     title: "帐户",

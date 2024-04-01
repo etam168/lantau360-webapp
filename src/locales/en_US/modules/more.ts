@@ -9,6 +9,7 @@ export default {
   profile: "Profile",
   logout: "Logout",
   loginName: "Login Name",
+  checkIn: "Check-In",
 
   account: {
     title: "Account",
