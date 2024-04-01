@@ -95,7 +95,7 @@
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
         tabValue: tabValue,
-        refresAccountData: initTransactionData
+        callback: initTransactionData
       }
     });
   }

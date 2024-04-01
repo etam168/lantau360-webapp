@@ -69,7 +69,7 @@
   }
 
   onMounted(() => {
-    eventBus.on("DialogStatus", (status, emitter) => {
+    eventBus.on("DialogStatus", (status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
       } else {

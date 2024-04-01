@@ -78,11 +78,12 @@
 
   const props = defineProps({
     tabValue: {
-      type: String
+      type: String,
+      default: "login"
     },
-    refresAccountData: {
+    callback: {
       type: Function,
-      required: true
+      default: null
     }
   });
 
@@ -107,7 +108,7 @@
   };
 
   function onLoginSuccess() {
-    props.refresAccountData();
+    if (props.callback != null) props.callback();
   }
 
   function showRegister() {

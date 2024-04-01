@@ -151,13 +151,8 @@
 
           <br />
           {{ "Distance in meters: " + distanceToDestination + " m" }}
-
-          <!-- {{ currentLatitude }} -->
-          <!-- {{ currentLongitude }} -->
-
-          <!-- {{ "Distance" + distanceToDestination }} -->
           <br />
-          <q-btn @click="openCheckInDialog()">Checkin</q-btn>
+          <q-btn @click="checkIn()">Checkin</q-btn>
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
@@ -172,8 +167,10 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import { useUserStore } from "@/stores/user";
 
   const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
+  const userStore = useUserStore();
 
   const props = defineProps({
     item: {
@@ -226,23 +223,6 @@
     }
   };
 
-  // const openGoogleMaps = () => {
-  //   // Check if the business has an address
-  //   if (siteItem.value.subtitle1) {
-  //     // Replace spaces in the address with '+'
-  //     const address = encodeURIComponent(siteItem.value.subtitle1);
-
-  //     // Construct the Google Maps URL with the address
-  //     const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
-
-  //     // Open a new tab or window with the Google Maps URL
-  //     window.open(mapsURL, "_blank");
-  //   } else {
-  //     // Handle cases where the business address is not available
-  //     // console.error("Address not available");
-  //   }
-  // };
-
   const openGoogleMaps = () => {
     if (siteItem.value.meta?.["hasMap"]) {
       window.open(siteItem.value.meta?.["mapLink"], "_blank");
@@ -254,38 +234,42 @@
 
   function getLocation() {
     if (navigator.geolocation) {
-      navigator.geolocation.watchPosition((postion: any) => {
-        currentLatitude.value = postion.coords.latitude;
-        currentLongitude.value = postion.coords.longitude;
+      navigator.geolocation.watchPosition(({ coords }) => {
+        currentLatitude.value = coords.latitude;
+        currentLongitude.value = coords.longitude;
         calculateDistance();
       });
     }
   }
 
-  // Compute distance between current location and destination
-  // const distanceToDestination = computed(() => {
-  //   // const item = props.item;
-  //   const destinationLatitude = 31.4678;
-  //   const destinationLongitude = 74.2666;
-  //   return geolib.getDistance(
-  //     { latitude: currentLatitude.value, longitude: currentLongitude.value },
-  //     { latitude: destinationLatitude, longitude: destinationLongitude }
-  //   );
-  // });
-
   const calculateDistance = () => {
-    const item = props.item;
-    const destinationLatitude = item.latitude;
-    const destinationLongitude = item.longitude;
-    distanceToDestination.value = geolib.getDistance(
-      { latitude: currentLatitude.value, longitude: currentLongitude.value },
-      { latitude: destinationLatitude, longitude: destinationLongitude }
-    );
+    const { latitude, longitude } = props.item;
+    const sourceCoords = { latitude: currentLatitude.value, longitude: currentLongitude.value };
+    const destinationCoords = { latitude, longitude };
+
+    distanceToDestination.value = geolib.getDistance(sourceCoords, destinationCoords);
   };
+
+  function checkIn() {
+    if (!userStore.isUserLogon()) {
+      showLoginDialog();
+      return;
+    }
+    openCheckInDialog();
+  }
 
   function openCheckInDialog() {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/checkin-dialog.vue"))
+    });
+  }
+
+  function showLoginDialog() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+      componentProps: {
+        callback: openCheckInDialog
+      }
     });
   }
 </script>
