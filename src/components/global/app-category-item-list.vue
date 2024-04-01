@@ -1,24 +1,39 @@
 <template>
-  <div v-if="template === TEMPLATE.DAYTRIP.value">
+  <div v-if="template === TEMPLATE.DAYTRIP.value" class="row q-gutter-md">
     <q-card
       clickable
       v-for="item in directoryItems"
       :key="item.directoryId"
       @click="handleItemClick(item)"
       class="my-card"
+      style="width: 300px"
     >
-      <q-img src="https://cdn.quasar.dev/img/parallax2.jpg">
-        <div class="absolute-bottom text-h6">
-          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
-        </div>
+      <q-img
+        :ratio="16 / 9"
+        :src="item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'"
+      >
+        <template v-slot:error>
+          <div class="absolute-full flex flex-center bg-negative text-white">
+            {{ $t("errors.cannotLoadImage") }}
+          </div>
+        </template>
       </q-img>
 
       <q-card-section>
-        <div class="text-subtitle2">{{ translate(item.title, item.meta, "title") }}</div>
-      </q-card-section>
+        <q-list>
+          <q-item class="q-pa-none">
+            <q-item-section>
+              <q-item-label overline>{{ translate(item.title, item.meta, "title") }}</q-item-label>
+              <q-item-label caption>Estimated Time: 2-3 hrs</q-item-label>
+              <q-separator spaced />
+              <q-item-label lines="2"><app-text-editor v-model="item.description" /></q-item-label>
+            </q-item-section>
 
-      <q-card-section>
-        <app-text-editor v-model="item.description" />
+            <q-item-section side top>
+              <q-icon name="favorite" size="2em" color="red" class="favorite-icon" />
+            </q-item-section>
+          </q-item>
+        </q-list>
       </q-card-section>
     </q-card>
   </div>
