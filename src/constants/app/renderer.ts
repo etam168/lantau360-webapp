@@ -14,7 +14,8 @@ const Renderer = {
   NOTICE: "notice",
   RESTAURANT: "restaurant",
   TUITION: "tuition",
-  PROPERTY: "property"
+  PROPERTY: "property",
+  DAYTRIP: "daytrip"
 };
 
 export default Renderer;

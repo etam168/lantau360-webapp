@@ -1,12 +1,16 @@
 <template>
-  <div v-if="template === TEMPLATE.DAYTRIP.value" class="row q-gutter-md">
+  <div
+    v-if="template === TEMPLATE.DAYTRIP.value"
+    :class="$q.screen.gt.xs ? 'row' : ''"
+    class="q-gutter-md"
+  >
     <q-card
       clickable
       v-for="item in directoryItems"
       :key="item.directoryId"
       @click="handleItemClick(item)"
       class="my-card"
-      style="width: 300px"
+      :style="$q.screen.gt.xs ? 'width: 300px' : ''"
     >
       <q-img
         :ratio="16 / 9"

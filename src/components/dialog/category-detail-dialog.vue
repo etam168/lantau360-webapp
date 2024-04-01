@@ -35,6 +35,7 @@
           />
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
+          <daytrip-renderer v-else-if="renderer === RENDERER.DAYTRIP" :item="item" />
           <restaurant-renderer
             v-else-if="renderer === RENDERER.RESTAURANT"
             :item="item"
@@ -69,6 +70,7 @@
   // Custom Components
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
+  import DaytripRenderer from "@/components/dialog/renderer/daytrip-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
@@ -177,6 +179,8 @@
         return RENDERER.TAXI;
       case props.item.directoryTemplate == TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
+      case props.item.directoryTemplate == TEMPLATE.DAYTRIP.value:
+        return RENDERER.DAYTRIP;
       case "siteId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
       case "businessId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
