@@ -305,6 +305,8 @@
     "watchTriggerable": true,
     "watchWithFilter": true,
     "whenever": true,
-    "useMemberInput": true
+    "useMemberInput": true,
+    "handlePermission": true,
+    "GeolocationPermissionStatus": true
   }
 }

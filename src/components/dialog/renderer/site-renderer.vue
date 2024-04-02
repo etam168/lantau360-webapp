@@ -153,6 +153,7 @@
           {{ "Distance in meters: " + distanceToDestination + " m" }}
           <br />
           <q-btn @click="checkIn()">Checkin</q-btn>
+          <q-btn @click="checkGeoPermissionState" id="geoBtn">Grant Geolocation Permission</q-btn>
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
@@ -168,7 +169,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { useUserStore } from "@/stores/user";
-
+  import { handlePermission, GeolocationPermissionStatus } from "@/composable/geo_permission";
   const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
   const userStore = useUserStore();
 
@@ -278,5 +279,27 @@
         callback: openCheckInDialog
       }
     });
+  }
+
+  async function checkGeoPermissionState() {
+    try {
+      const { status } = await handlePermission();
+      switch (status) {
+        case GeolocationPermissionStatus.GRANTED:
+          console.log("Geolocation permission granted.");
+          break;
+        case GeolocationPermissionStatus.PROMPT:
+          console.log("Geolocation permission prompt.");
+          break;
+        case GeolocationPermissionStatus.DENIED:
+          console.log("Geolocation permission denied.");
+          break;
+        default:
+          console.log("Unknown geolocation permission status.");
+          break;
+      }
+    } catch (error) {
+      console.error("Error occurred while requesting geolocation permission:", error);
+    }
   }
 </script>
