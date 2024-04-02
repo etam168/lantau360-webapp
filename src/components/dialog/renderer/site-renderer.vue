@@ -260,7 +260,14 @@
 
   function openCheckInDialog() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/checkin-dialog.vue"))
+      component: defineAsyncComponent(() => import("@/components/dialog/checkin-dialog.vue")),
+      componentProps: {
+        userLocation: {
+          lat: currentLatitude.value,
+          lng: currentLatitude.value
+        },
+        itemId: (props.item as SiteView).siteId
+      }
     });
   }
 
