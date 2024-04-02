@@ -211,7 +211,9 @@
         galleryImagesCompleteList.value = galleryResponse.data;
         galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
 
-        const maskValue = getMaskValue(props.item.directoryTemplate ?? 0) ?? 0;
+        const maskValue = getMaskValue(props.item.directoryTemplate || 0);
+
+        alert(maskValue);
         galleryItems.value = galleryResponse.data
           .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
           .sort((a, b) => a.ranking - b.ranking);
@@ -232,8 +234,9 @@
   function getMaskValue(templateValue: number) {
     for (const make in TEMPLATE) {
       if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        const modifier = props.item.meta?.["hasMap"] === true ? 2 : 0;
-        return TEMPLATE[make as keyof typeof TEMPLATE].mask + modifier;
+        return props.item.meta?.["hasMap"] === true
+          ? 5
+          : TEMPLATE[make as keyof typeof TEMPLATE].mask;
       }
     }
     return 0;

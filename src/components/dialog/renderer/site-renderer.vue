@@ -216,9 +216,8 @@
   );
 
   const mapImagePath = computed(() => {
-    const galleryValue = props.galleryImages;
-    return siteItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
-      ? getImageURL(galleryValue[1]?.imagePath)
+    return siteItem.value.meta?.["hasMap"] === true
+      ? getImageURL(props.item?.imagePath)
       : "./img/icons/no_image_available.jpeg";
   });
 
