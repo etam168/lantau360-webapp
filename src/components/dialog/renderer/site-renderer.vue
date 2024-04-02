@@ -138,22 +138,24 @@
         </q-tab-panel>
 
         <q-tab-panel name="checkIn" class="q-pa-none">
-          {{ "Site Location:  " + "Lat: " + item.latitude + " - " + " Lng: " + item.longitude }}
-          <br />
-          {{
-            "Current User Location: " +
-            "Lat: " +
-            currentLatitude +
-            " - " +
-            " Lng: " +
-            currentLongitude
-          }}
+          <div v-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
+            {{ "Site Location:  " + "Lat: " + item.latitude + " - " + " Lng: " + item.longitude }}
+            <br />
+            {{
+              "Current User Location: " +
+              "Lat: " +
+              currentLatitude +
+              " - " +
+              " Lng: " +
+              currentLongitude
+            }}
 
-          <br />
-          {{ "Distance in meters: " + distanceToDestination + " m" }}
-          <br />
-          <q-btn @click="checkIn()">Checkin</q-btn>
-          <q-btn @click="checkGeoPermissionState" id="geoBtn">Grant Geolocation Permission</q-btn>
+            <br />
+            {{ "Distance in meters: " + distanceToDestination + " m" }}
+            <br />
+            <q-btn @click="checkIn">CheckIn</q-btn>
+          </div>
+          <div v-else>Please turn localtion feature the settings</div>
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
@@ -188,6 +190,8 @@
 
   const siteItem = computed(() => props?.item as SiteView);
 
+  const geoPermissionStatus = ref(GeolocationPermissionStatus.DENIED);
+
   const { t } = useI18n({ useScope: "global" });
 
   const currentLatitude = ref(0);
@@ -203,7 +207,8 @@
   ]);
 
   onMounted(() => {
-    getLocation();
+    // getLocation();
+    checkGeoPermissionState();
   });
 
   const translatedContent: any = computed(() =>
@@ -284,13 +289,12 @@
   async function checkGeoPermissionState() {
     try {
       const { status } = await handlePermission();
+      geoPermissionStatus.value = status;
       switch (status) {
         case GeolocationPermissionStatus.GRANTED:
-          console.log("Geolocation permission granted.");
+          getLocation();
           break;
-        case GeolocationPermissionStatus.PROMPT:
-          console.log("Geolocation permission prompt.");
-          break;
+
         case GeolocationPermissionStatus.DENIED:
           console.log("Geolocation permission denied.");
           break;
