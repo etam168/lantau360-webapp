@@ -80,11 +80,13 @@
 
         const checkInDto: CheckIn = {
           siteId: props.itemId,
-          status: 1,
-          description: values.description,
+          memberId: parseInt(userStore.userId),
+          checkInfo: {
+            description: values.description,
+            checkInAt: new Date()
+          },
           createdAt: new Date(),
-          createdBy: parseInt(userStore.userId),
-          userLocation: props.userLocation
+          createdBy: parseInt(userStore.userId)
         };
 
         await axios
@@ -95,6 +97,7 @@
               type: "positive",
               color: "primary"
             });
+            loading.value = false;
           })
           .catch(err => {
             $q.notify({
