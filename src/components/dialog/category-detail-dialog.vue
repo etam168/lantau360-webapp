@@ -212,8 +212,6 @@
         galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
 
         const maskValue = getMaskValue(props.item.directoryTemplate || 0);
-
-        alert(maskValue);
         galleryItems.value = galleryResponse.data
           .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
           .sort((a, b) => a.ranking - b.ranking);
