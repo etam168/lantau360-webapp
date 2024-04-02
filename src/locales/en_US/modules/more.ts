@@ -10,6 +10,7 @@ export default {
   logout: "Logout",
   loginName: "Login Name",
   checkIn: "Check-In",
+  checkInInfoDetail: "CheckIn Info Detail",
 
   account: {
     title: "Account",

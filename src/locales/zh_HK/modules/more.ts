@@ -10,6 +10,7 @@ export default {
   logout: "登出",
   loginName: "登入名稱",
   checkIn: "Check-In",
+  checkInInfoDetail: "CheckIn Info Detail",
 
   account: {
     title: "帳戶",

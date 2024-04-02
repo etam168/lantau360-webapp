@@ -76,18 +76,22 @@
         import("./section/content-dialog.vue"),
         { title: t(item.title) },
         item.contentKey,
-        true
+        "content"
       );
     } else if (item.name == MENU.PROFILE) {
-      OpenDialog(import("./section/profile-setting-dialog.vue"));
+      OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, "profile");
     } else if (item.name == MENU.CHECKIN) {
-      OpenDialog(import("./section/profile-checkin-dialog.vue"));
+      OpenDialog(import("./section/profile-checkin-dialog.vue"), undefined);
     } else if (item.name == MENU.ACCOUNT) {
       if (trHistory.value && trRecent.value) {
-        OpenDialog(import("./section/profile-account-dialog.vue"), {
-          trHistory: trHistory.value,
-          trRecent: trRecent.value
-        });
+        OpenDialog(
+          import("./section/profile-account-dialog.vue"),
+          {
+            trHistory: trHistory.value,
+            trRecent: trRecent.value
+          },
+          "profile"
+        );
       }
     }
   }
@@ -106,11 +110,21 @@
     component: any,
     componentProps?: any,
     contentKey?: string,
-    isContent: boolean = false
+    requestType?: string
   ) {
-    const requestUrl = isContent
-      ? `${URL.CONTENT_NAME_URL}/${contentKey}`
-      : `${URL.MEMBER_URL}/${userStore.userId}`;
+    let requestUrl;
+
+    switch (requestType) {
+      case "content":
+        requestUrl = `${URL.CONTENT_NAME_URL}/${contentKey}`;
+        break;
+      case "profile":
+        requestUrl = `${URL.MEMBER_URL}/${userStore.userId}`;
+        break;
+      default:
+        requestUrl = `${URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
+        break;
+    }
 
     axios
       .get(requestUrl)

@@ -13,64 +13,38 @@
 
       <q-page-container>
         <q-page>
-          <q-card class="text-white bg-primary q-ma-md q-py-md">
-            <q-card-section class="q-ma-none q-pa-none">
-              <q-item>
-                <q-item-section>
-                  <q-item-label class="text-subtitle1"
-                    >{{
-                      $t("more.profileSetting.availablePoints", {
-                        availablePoints: userStore.availabelPoints
-                      })
-                    }}
-                  </q-item-label>
-                  <q-item-label caption class="text-white">
-                    {{
-                      $t("more.profileSetting.bythisTimeText", {
-                        spentPoints: "15"
-                      })
-                    }}
-                  </q-item-label>
-                </q-item-section>
-                <q-item-section side>
-                  <q-btn
-                    dense
-                    rounded
-                    @click="onBtnBuyPoints"
-                    class="text-primary bg-grey-1 text-caption q-px-md"
-                    >{{ $t("more.profileSetting.buyPoints") }}</q-btn
-                  >
-                </q-item-section>
-              </q-item>
-            </q-card-section>
-          </q-card>
-
-          <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
-
-          <q-separator size="2px" color="primary" />
-          <q-tab-panels v-model="tab">
-            <q-tab-panel
-              v-for="(tabItem, index) in tabItems"
-              :key="index"
-              :name="tabItem.name"
-              class="q-pa-none"
-            >
+          <q-card class="q-ma-md">
+            <q-card-section class="q-pa-none">
               <q-list>
-                <q-item v-for="(subItem, subIndex) in tabItem.subItems" :key="subIndex">
-                  <q-item-section>
-                    <q-item-label>{{ subItem.title }}</q-item-label>
-                    <q-item-label caption>{{ dateFormatter(subItem.createdAt) }}</q-item-label>
+                <q-item clickable @click="throttledHandleDialog">
+                  <q-item-section avatar>
+                    <q-avatar size="64px" square>
+                      <q-img ratio="1" :src="computeIconPath">
+                        <template v-slot:error>
+                          <div class="absolute-full flex flex-center bg-negative text-white">
+                            {{ $t("errors.cannotLoadImage") }}
+                          </div>
+                        </template>
+                      </q-img>
+                    </q-avatar>
                   </q-item-section>
 
-                  <q-item-section side>
-                    <q-item-label class="text-negative">
-                      - ${{ subItem.amount.toFixed(2) }}</q-item-label
-                    >
+                  <q-item-section>
+                    <q-item-label>{{ data.siteName }}</q-item-label>
+                    <q-item-label lines="2">
+                      <app-text-editor v-model="translatedContent"
+                    /></q-item-label>
                   </q-item-section>
+
+                  <!-- <q-item-section side top>
+                    <q-item-label caption>5 min ago</q-item-label>
+                    <q-icon name="star" color="yellow" />
+                  </q-item-section> -->
                 </q-item>
               </q-list>
-            </q-tab-panel>
-          </q-tab-panels>
+              <!-- {{ data }} -->
+            </q-card-section>
+          </q-card>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -78,48 +52,53 @@
 </template>
 
 <script setup lang="ts">
-  import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  import { useMoreInput } from "../use-more-input";
-  import { PropType } from "vue";
+  // Quasar Import
+  import { throttle } from "quasar";
+  import { BLOB_URL } from "@/constants";
 
-  const { dialogRef } = useDialogPluginComponent();
-  const isDialogVisible = ref();
-  const { t } = useI18n({ useScope: "global" });
-  const $q = useQuasar();
-  const { claimFreePoints, userStore } = useMoreInput();
-  const { dateFormatter } = useUtilities();
+  // Interface files
+  import { CheckIn } from "@/interfaces/models/entities/CheckIn";
 
   const props = defineProps({
-    trHistory: {
-      type: Array as PropType<TransactionView[]>
-    },
-    trRecent: {
-      type: Array as PropType<TransactionView[]>
+    data: {
+      type: Object as PropType<CheckIn>,
+      required: true
     }
   });
 
-  const tab = ref("recentTransactions");
-  const setTab = (val: string) => (tab.value = val);
+  // const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
+  //const { claimFreePoints, userStore } = useMoreInput();
 
-  const onBtnBuyPoints = () => {
+  const { translate } = useUtilities();
+
+  const { dialogRef } = useDialogPluginComponent();
+  const isDialogVisible = ref();
+  const $q = useQuasar();
+
+  const computeIconPath = computed(() => {
+    return props?.data?.iconPath
+      ? `${BLOB_URL}/${props?.data?.iconPath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
+
+  const translatedContent: any = ref(
+    translate(props?.data?.description, props?.data?.meta, "description")
+  );
+
+  const onItemClick = () => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/checkin-detail-dialog.vue")
+      ),
       componentProps: {
-        callback: claimFreePoints
+        data: props.data
       }
     });
   };
 
-  const tabItems = ref([
-    {
-      name: "recentTransactions",
-      label: t("more.account.recentTransactions"),
-      subItems: props.trRecent || []
-    },
-    {
-      name: "history",
-      label: t("more.account.history"),
-      subItems: props.trHistory || []
-    }
-  ]);
+  const throttledHandleDialog = throttle(onItemClick, 2000);
+
+  onMounted(() => {
+    translatedContent;
+  });
 </script>

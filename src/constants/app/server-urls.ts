@@ -9,6 +9,7 @@ export const URL = {
   BUSINESS_GALLERY: `${BASE_URL}/BusinessImage/GetBusinessImages`,
   BUSINESS_PROMOTION: `${BASE_URL}/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `${BASE_URL}/BusinessVoucher/Datatable`,
+  CHECKIN_BY_MEMBER: `${BASE_URL}/CheckIn/GetByMemberId`,
   COMMUNITY_DIRECTORY: `${BASE_URL}/CommunityDirectory`,
   COMMUNITY_EVENT_CURRENT: `${BASE_URL}/CommunityEvent/CommunityEventCurrent`,
   COMMUNITY_EVENT_GALLERY: `${BASE_URL}/CommunityEventImage/GetCommunityEventImages`,
