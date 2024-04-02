@@ -6,12 +6,14 @@
   import { useQuasar } from "quasar";
 
   const $q = useQuasar();
-
+  const emits = defineEmits(["callback"]);
   function showLoginDialog() {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
-        callback: openCheckInDialog
+        callback: () => {
+          emits("callback");
+        }
       }
     });
   }
