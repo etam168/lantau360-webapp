@@ -3,7 +3,13 @@
     <login-widget />
   </template>
   <template v-else-if="loading">
-    <loading-widget />
+    <loading-widget
+      @callback="
+        () => {
+          loading = false;
+        }
+      "
+    />
   </template>
   <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
     <input-template :item-id="(item as SiteView).siteId" />
