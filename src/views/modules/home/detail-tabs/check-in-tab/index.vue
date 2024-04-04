@@ -12,7 +12,12 @@
     />
   </template>
   <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
-    <input-template :item-id="(item as SiteView).siteId" />
+    <input-template
+      :item-id="(item as SiteView).siteId"
+      :current-Address="currentLocationAddress"
+      :destination-address="destinationLocationAddress"
+      :distance="distanceToDestination"
+    />
   </template>
   <template v-else>Please turn localtion feature the settings</template>
 </template>
@@ -36,6 +41,9 @@
     }
   });
 
+  const currentLocationAddress = ref();
+  const destinationLocationAddress = ref();
+
   const currentLatitude = ref(0);
   const currentLongitude = ref(0);
   const distanceToDestination = ref(0);
@@ -51,11 +59,14 @@
   });
 
   function getLocation() {
+    const { latitude, longitude } = props.item;
     if (navigator.geolocation) {
       navigator.geolocation.watchPosition(({ coords }) => {
         currentLatitude.value = coords.latitude;
         currentLongitude.value = coords.longitude;
         calculateDistance();
+        getAddressFromCoordinates(coords.latitude, coords.longitude, true);
+        getAddressFromCoordinates(latitude, longitude);
       });
     }
   }
@@ -88,6 +99,32 @@
       }
     } catch (error) {
       console.error("Error occurred while requesting geolocation permission:", error);
+    }
+  }
+
+  async function getAddressFromCoordinates(
+    latitude: number,
+    longitude: number,
+    isCurrentLocation = false
+  ) {
+    try {
+      // Make an HTTP GET request to the Nominatim API endpoint
+      const response = await axios.get(
+        `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
+      );
+
+      // Parse the response data to extract the address
+
+      if (isCurrentLocation) {
+        currentLocationAddress.value = response.data.display_name;
+      } else {
+        destinationLocationAddress.value = response.data.display_name;
+      }
+
+      // Do something with the address (e.g., display it)
+      // Do something with the address (e.g., display it)
+    } catch (error) {
+      console.error("Error fetching address:", error);
     }
   }
 </script>

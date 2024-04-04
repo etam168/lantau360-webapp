@@ -8,9 +8,33 @@
     v-slot="{ meta, values }"
   >
     <q-card-section class="q-ma-none q-pa-xs">
-      <vee-input type="textarea" label="Description" name="description" />
+      <q-item>
+        <q-item-section avatar>
+          <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-caption">{{ "Cuurent Location:" }} </q-item-label>
+          <q-item-label class="text-caption">{{ currentAddress }} </q-item-label>
+        </q-item-section>
+      </q-item>
 
-      <q-card-actions class="q-mt-lg q-pa-none">
+      <q-item>
+        <q-item-section avatar>
+          <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
+        </q-item-section>
+        <q-item-section>
+          <q-item-label class="text-caption">{{ "Destiantion Address" }} </q-item-label>
+          <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
+          <q-item-label class="text-caption">{{ distance + " (Meters away)" }} </q-item-label>
+        </q-item-section>
+      </q-item>
+      <q-item class="q-mt-lg">
+        <q-item-section>
+          <vee-input type="textarea" label="Review" name="description" />
+        </q-item-section>
+      </q-item>
+
+      <q-card-actions class="q-ml-lg q-pa-none">
         <app-button label="Submit" :loading="loading" color="primary" type="submit" size="md" />
       </q-card-actions>
     </q-card-section>
@@ -28,6 +52,18 @@
     itemId: {
       type: Number,
       required: true
+    },
+    currentAddress: {
+      type: String,
+      required: false
+    },
+    destinationAddress: {
+      type: String,
+      required: false
+    },
+    distance: {
+      type: Number,
+      required: false
     }
   });
 
