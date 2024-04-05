@@ -2,24 +2,26 @@
   <template v-if="!isAuthenticated">
     <login-widget />
   </template>
-  <template v-else-if="loading">
-    <loading-widget
-      @callback="
-        () => {
-          loading = false;
-        }
-      "
-    />
-  </template>
-  <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
-    <input-template
-      :item-id="(item as SiteView).siteId"
-      :current-Address="currentLocationAddress"
-      :destination-address="destinationLocationAddress"
-      :distance="distanceToDestination"
-    />
-  </template>
-  <template v-else>Please turn localtion feature the settings</template>
+  <!-- <template v-else-if="loading"> -->
+  <loading-widget
+    @callback="
+      () => {
+        loading = false;
+      }
+    "
+  />
+  <!-- </template>
+  <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED"> -->
+  <input-template
+    :item-id="(item as SiteView).siteId"
+    :current-Address="currentLocationAddress"
+    :destination-address="destinationLocationAddress"
+    :distance="distanceToDestination"
+  />
+  <!-- </template> -->
+  <template
+    ><div>{{ $t("home.turnOnLocation") }}</div></template
+  >
 </template>
 
 <script setup lang="ts">
@@ -101,7 +103,6 @@
       console.error("Error occurred while requesting geolocation permission:", error);
     }
   }
-
   async function getAddressFromCoordinates(
     latitude: number,
     longitude: number,

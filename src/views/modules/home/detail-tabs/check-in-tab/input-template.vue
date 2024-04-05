@@ -7,37 +7,63 @@
     @submit="onSubmit"
     v-slot="{ meta, values }"
   >
-    <q-card-section class="q-ma-none q-pa-xs">
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-caption">{{ "Cuurent Location:" }} </q-item-label>
-          <q-item-label class="text-caption">{{ currentAddress }} </q-item-label>
-        </q-item-section>
-      </q-item>
+    <q-card flat class="row justify-center">
+      <q-card-section
+        class="q-ma-none q-pa-xs"
+        :style="$q.screen.gt.xs ? 'width: 400px' : 'width : 100%'"
+      >
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar
+              dense
+              rounded
+              color="primary"
+              icon="location_on"
+              text-color="white"
+              size="sm"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-caption">{{ "Cuurent Location:" }} </q-item-label>
+            <q-item-label class="text-caption">{{ currentAddress }} </q-item-label>
+          </q-item-section>
+        </q-item>
 
-      <q-item>
-        <q-item-section avatar>
-          <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
-        </q-item-section>
-        <q-item-section>
-          <q-item-label class="text-caption">{{ "Destiantion Address" }} </q-item-label>
-          <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
-          <q-item-label class="text-caption">{{ distance + " (Meters away)" }} </q-item-label>
-        </q-item-section>
-      </q-item>
-      <q-item class="q-mt-lg">
-        <q-item-section>
-          <vee-input type="textarea" label="Review" name="description" />
-        </q-item-section>
-      </q-item>
+        <q-item>
+          <q-item-section avatar>
+            <q-avatar
+              dense
+              rounded
+              color="primary"
+              icon="location_on"
+              text-color="white"
+              size="sm"
+            />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label class="text-caption">{{ "Destiantion Address" }} </q-item-label>
+            <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
+            <q-item-label class="text-caption">{{ distance + " (Meters away)" }} </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item class="q-mt-lg q-pa-none">
+          <q-item-section class="q-pa-none">
+            <vee-input type="textarea" :label="$t('home.review')" name="description" />
+          </q-item-section>
+        </q-item>
 
-      <q-card-actions class="q-ml-lg q-pa-none">
-        <app-button label="Submit" :loading="loading" color="primary" type="submit" size="md" />
-      </q-card-actions>
-    </q-card-section>
+        <q-card-actions class="q-mt-xs q-pa-none">
+          <app-button
+            class="full-width"
+            label="Submit"
+            :loading="loading"
+            color="primary"
+            type="submit"
+            size="md"
+          />
+        </q-card-actions>
+      </q-card-section>
+    </q-card>
   </Form>
 </template>
 

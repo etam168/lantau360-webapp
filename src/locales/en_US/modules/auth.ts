@@ -1,6 +1,7 @@
 export default {
   login: {
     button: "Sign in",
+    checkInCaption: "For CheckIn Please SignIn First",
     newAccount: "Don't have an account before?",
     password: "Password",
     register: "Register",
