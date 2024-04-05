@@ -2,23 +2,23 @@
   <template v-if="!isAuthenticated">
     <login-widget />
   </template>
-  <!-- <template v-else-if="loading"> -->
-  <loading-widget
-    @callback="
-      () => {
-        loading = false;
-      }
-    "
-  />
-  <!-- </template>
-  <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED"> -->
-  <input-template
-    :item-id="(item as SiteView).siteId"
-    :current-Address="currentLocationAddress"
-    :destination-address="destinationLocationAddress"
-    :distance="distanceToDestination"
-  />
-  <!-- </template> -->
+  <template v-else-if="loading">
+    <loading-widget
+      @callback="
+        () => {
+          loading = false;
+        }
+      "
+    />
+  </template>
+  <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
+    <input-template
+      :item-id="(item as SiteView).siteId"
+      :current-Address="currentLocationAddress"
+      :destination-address="destinationLocationAddress"
+      :distance="distanceToDestination"
+    />
+  </template>
   <template
     ><div>{{ $t("home.turnOnLocation") }}</div></template
   >
