@@ -24,6 +24,7 @@ declare module 'vue' {
     AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
     GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
+    MapComponent: typeof import('./components/global/map-component.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     ToggleStatus: typeof import('./components/global/toggle-status.vue')['default']

@@ -29,6 +29,7 @@
     "@types/twemoji-parser": "^13.1.4",
     "@vee-validate/rules": "^4.12.5",
     "@vee-validate/yup": "^4.12.5",
+    "@vue-leaflet/vue-leaflet": "^0.10.1",
     "@vueuse/core": "^10.7.2",
     "axios": "^1.6.7",
     "emojibase": "^15.3.0",
@@ -36,6 +37,7 @@
     "emojibase-regex": "^15.3.0",
     "font-awesome": "^4.7.0",
     "geolib": "^3.3.4",
+    "leaflet": "^1.9.4",
     "lodash-es": "^4.17.21",
     "pinia": "^2.1.7",
     "pinia-plugin-persistedstate": "^3.2.1",
@@ -53,6 +55,7 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^2.0.0",
     "@quasar/vite-plugin": "^1.6.0",
+    "@types/leaflet": "^1.9.9",
     "@types/node": "^20.11.10",
     "@types/vue-tel-input": "^2.1.6",
     "@typescript-eslint/eslint-plugin": "^6.20.0",
