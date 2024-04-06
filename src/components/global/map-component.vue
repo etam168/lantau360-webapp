@@ -1,30 +1,28 @@
 <template>
-  <div class="q-pa-md">
-    <q-list>
-      <q-item>
-        <q-item-section>
-          <div class="bg-red" style="width: 100px; width: 100%">
-            <q-responsive :ratio="16 / 9">
-              <l-map
-                :use-global-leaflet="false"
-                ref="map"
-                v-model:zoom="zoom"
-                :center="mapCenter"
-                :options="mapOptions"
-                :bounds="bounds"
-              >
-                <l-tile-layer :url="url" layer-type="base" name="OpenStreetMap"></l-tile-layer>
-                <l-marker :lat-lng="markerPosition">
-                  <l-tooltip :options="{ permanent: true, interactive: true }">{{
-                    tooltip
-                  }}</l-tooltip>
-                </l-marker>
-              </l-map>
-            </q-responsive>
-          </div>
-        </q-item-section>
-      </q-item>
-    </q-list>
+  <div>
+    <q-item class="q-pa-none">
+      <q-item-section>
+        <div style="width: 100px; width: 100%">
+          <q-responsive :ratio="16 / 9">
+            <l-map
+              :use-global-leaflet="false"
+              ref="map"
+              v-model:zoom="zoom"
+              :center="mapCenter"
+              :options="mapOptions"
+              :bounds="bounds"
+            >
+              <l-tile-layer :url="url" layer-type="base" name="OpenStreetMap"></l-tile-layer>
+              <l-marker :lat-lng="markerPosition">
+                <l-tooltip :options="{ permanent: true, interactive: true }">{{
+                  tooltip
+                }}</l-tooltip>
+              </l-marker>
+            </l-map>
+          </q-responsive>
+        </div>
+      </q-item-section>
+    </q-item>
   </div>
 </template>
 

@@ -1,7 +1,8 @@
 <template>
-  <q-item class="q-pa-none" style="height: 400px">
-    <q-item-section top>
+  <q-item :class="{ 'q-pa-none': $q.screen.lt.sm, 'q-pa-xl': $q.screen.gt.md }">
+    <q-item-section class="q-py-none" top>
       <map-component
+        :style="{ height: $q.screen.gt.xs ? '400px' : '220px' }"
         :zoom="zoom"
         :marker-position="markerPosition"
         :url="localMapUrl"
@@ -10,7 +11,7 @@
       />
 
       <q-list dense v-if="$q.screen.xs">
-        <q-item dense v-if="siteItem.subtitle1">
+        <q-item v-if="siteItem.subtitle1">
           <q-item-section avatar @click="openGoogleMaps">
             <q-avatar>
               <q-icon name="location_on" color="primary" />
@@ -51,7 +52,7 @@
       </q-list>
     </q-item-section>
     <q-list dense v-if="$q.screen.gt.xs">
-      <q-item dense v-if="siteItem.subtitle1" class="bg-red">
+      <q-item dense v-if="siteItem.subtitle1">
         <q-item-section avatar @click="openGoogleMaps">
           <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
         </q-item-section>
@@ -112,18 +113,33 @@
   });
 
   const siteItem = computed(() => props?.item as SiteView);
+  const $q = useQuasar();
 
-  const zoom = ref(11.5);
+  const zoom = computed(() => {
+    const screenWidth = $q.screen.width;
+
+    if (screenWidth > 900) return 11.5;
+    if (screenWidth > 450) return 11;
+
+    return 10.5;
+  });
   const markerPosition = computed<LatLngExpression>(() => [
     siteItem.value.latitude,
     siteItem.value.longitude
   ]); //ref<LatLngExpression>([22.2544, 113.8642]);
   const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
 
-  const bounds = latLngBounds([
-    [22.04, 113.71],
+  const gtXsBounds = latLngBounds([
+    [22.04, 113.7],
     [22.5, 114.21]
   ]);
+
+  const ltSmBounds = latLngBounds([
+    [22.05, 113.66],
+    [22.51, 114.23]
+  ]);
+
+  const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
   const mapTooltip = computed(() => translate(siteItem.value.title, siteItem.value.meta, "title"));
 

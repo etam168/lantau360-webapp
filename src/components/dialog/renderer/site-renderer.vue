@@ -17,7 +17,9 @@
           <app-text-editor v-model="translatedContent" />
         </q-tab-panel>
 
-        <q-tab-panel name="info" class="q-pa-none"> <info-tab :item="item" /> </q-tab-panel>
+        <q-tab-panel name="info" class="q-pa-none">
+          <info-tab :item="item" />
+        </q-tab-panel>
 
         <q-tab-panel name="checkIn" class="q-pa-none"> <chekc-in-tab :item="item" /> </q-tab-panel>
       </q-tab-panels>
