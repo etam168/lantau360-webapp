@@ -232,9 +232,7 @@
   function getMaskValue(templateValue: number) {
     for (const make in TEMPLATE) {
       if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        return props.item.meta?.["hasMap"] === true
-          ? 5
-          : TEMPLATE[make as keyof typeof TEMPLATE].mask;
+        return TEMPLATE[make as keyof typeof TEMPLATE].mask;
       }
     }
     return 0;
