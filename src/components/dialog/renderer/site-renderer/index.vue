@@ -31,8 +31,8 @@
   // Interface files
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import InfoTab from "@/views/modules/home/detail-tabs/info-tab.vue";
-  import ChekcInTab from "@/views/modules/home/detail-tabs/check-in-tab/index.vue";
+  import InfoTab from "./detail-tabs/info-tab.vue";
+  import ChekcInTab from "./detail-tabs/check-in-tab/index.vue";
 
   const { translate } = useUtilities();
 

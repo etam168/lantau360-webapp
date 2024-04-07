@@ -71,7 +71,7 @@
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
   import DaytripRenderer from "@/components/dialog/renderer/daytrip-renderer.vue";
-  import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
+  import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
