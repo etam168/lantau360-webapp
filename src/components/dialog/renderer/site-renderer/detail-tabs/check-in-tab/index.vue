@@ -3,13 +3,7 @@
     <login-widget />
   </template>
   <template v-else-if="loading">
-    <loading-widget
-      @callback="
-        () => {
-          loading = false;
-        }
-      "
-    />
+    <loading-widget />
   </template>
   <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
     <input-template
@@ -26,6 +20,7 @@
 
 <script setup lang="ts">
   import * as geolib from "geolib";
+
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { handlePermission, GeolocationPermissionStatus } from "@/composable/geo_permission";
@@ -60,28 +55,6 @@
     checkGeoPermissionState();
   });
 
-  function getLocation() {
-    const { latitude, longitude } = props.item;
-    if (navigator.geolocation) {
-      navigator.geolocation.watchPosition(({ coords }) => {
-        currentLatitude.value = coords.latitude;
-        currentLongitude.value = coords.longitude;
-        calculateDistance();
-        getAddressFromCoordinates(coords.latitude, coords.longitude, true);
-        getAddressFromCoordinates(latitude, longitude);
-      });
-    }
-  }
-
-  const calculateDistance = () => {
-    const { latitude, longitude } = props.item;
-    const sourceCoords = { latitude: currentLatitude.value, longitude: currentLongitude.value };
-    const destinationCoords = { latitude, longitude };
-
-    distanceToDestination.value = geolib.getDistance(sourceCoords, destinationCoords);
-    loading.value = false;
-  };
-
   async function checkGeoPermissionState() {
     try {
       const { status } = await handlePermission();
@@ -103,6 +76,48 @@
       console.error("Error occurred while requesting geolocation permission:", error);
     }
   }
+
+  function getLocation() {
+    const { latitude, longitude } = props.item;
+
+    function handlePositionChange(isWatch: boolean) {
+      return ({ coords }: { coords: GeolocationCoordinates }) => {
+        currentLatitude.value = coords?.altitude ?? 0;
+        currentLongitude.value = coords.longitude;
+        calculateDistance();
+        getAddressFromCoordinates(coords.latitude, coords.longitude, true);
+        getAddressFromCoordinates(latitude, longitude, false);
+
+        alert(isWatch ? "Initial position retrieved" : "Position changed");
+      };
+    }
+
+    function handleError(isWatch: boolean) {
+      return (error: GeolocationPositionError) => {
+        console.error("Error getting geolocation:", error);
+        alert(`${isWatch}Error occurred while getting geolocation`);
+      };
+    }
+
+    // Get current position once
+    navigator.geolocation.getCurrentPosition(
+      () => handlePositionChange(true),
+      () => handleError(true)
+    );
+
+    // Watch for position changes
+    navigator.geolocation.watchPosition(handlePositionChange(false), handleError(false));
+  }
+
+  const calculateDistance = () => {
+    const { latitude, longitude } = props.item;
+    const sourceCoords = { latitude: currentLatitude.value, longitude: currentLongitude.value };
+    const destinationCoords = { latitude, longitude };
+
+    distanceToDestination.value = geolib.getDistance(sourceCoords, destinationCoords);
+    loading.value = false;
+  };
+
   async function getAddressFromCoordinates(
     latitude: number,
     longitude: number,
