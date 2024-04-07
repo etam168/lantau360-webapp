@@ -141,7 +141,9 @@
 
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
-  const mapTooltip = computed(() => translate(siteItem.value.title, siteItem.value.meta, "title"));
+  const mapTooltip = computed(() =>
+    translate(siteItem.value.mapLabel, siteItem.value.meta, "mapLabel")
+  );
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {

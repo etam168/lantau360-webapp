@@ -4,6 +4,7 @@ export interface BaseDirectoryItem {
   contactOther: string;
   buttonText: string;
   title: string;
+  mapLabel: string;
   subtitle1: string;
   subtitle2: string;
   subtitle3: string;
