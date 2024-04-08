@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-item class="q-pa-none">
+    <q-item class="q-pa-none bg-red">
       <q-item-section>
         <div style="width: 100px; width: 100%">
           <q-responsive :ratio="16 / 9">
