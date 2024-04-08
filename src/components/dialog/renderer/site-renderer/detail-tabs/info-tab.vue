@@ -1,5 +1,5 @@
 <template>
-  <q-card flat class="location-card">
+  <q-card flat class="location-card" style="height: 430px">
     <q-card-section
       class="location-card-section"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
@@ -15,22 +15,10 @@
         :url="localMapUrl"
         :bounds="bounds"
         :tooltip="mapTooltip"
+        :bottom-right-label="address"
       />
 
-      <div class="details-section">
-        <q-item v-if="siteItem.subtitle1">
-          <q-item-section avatar @click="openGoogleMaps">
-            <q-avatar>
-              <q-icon name="location_on" color="primary" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption">{{
-              translate(siteItem.subtitle1, siteItem.meta, "subtitle1")
-            }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
+      <q-list dense class="details-section">
         <q-item v-if="siteItem.contactPhone">
           <q-item-section avatar @click="navigateToPhone">
             <q-avatar>
@@ -56,7 +44,7 @@
             }}</q-item-label>
           </q-item-section>
         </q-item>
-      </div>
+      </q-list>
     </q-card-section>
   </q-card>
 </template>
@@ -76,6 +64,9 @@
 
   const siteItem = computed(() => props?.item as SiteView);
   const $q = useQuasar();
+  const address = computed(() =>
+    translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1")
+  );
 
   const zoom = computed(() => {
     const screenWidth = $q.screen.width;
@@ -114,13 +105,13 @@
     }
   };
 
-  const openGoogleMaps = () => {
-    if (siteItem.value.meta?.["hasMap"]) {
-      window.open(siteItem.value.meta?.["mapLink"], "_blank");
-    } else {
-      console.error("Map link not available");
-    }
-  };
+  // const openGoogleMaps = () => {
+  //   if (siteItem.value.meta?.["hasMap"]) {
+  //     window.open(siteItem.value.meta?.["mapLink"], "_blank");
+  //   } else {
+  //     console.error("Map link not available");
+  //   }
+  // };
 </script>
 
 <style scoped>
