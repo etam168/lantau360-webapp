@@ -11,9 +11,21 @@
 
       <q-item-section>
         <q-item-label v-if="userStore.token">{{ userStore.user }}</q-item-label>
+        <q-item-label caption v-if="$q.screen.xs">
+          <q-chip
+            v-if="userStore.token"
+            clickable
+            @click="logout()"
+            outline
+            color="primary"
+            text-color="white"
+          >
+            {{ $t("auth.login.logout") }}
+          </q-chip>
+        </q-item-label>
       </q-item-section>
 
-      <q-item-section side>
+      <q-item-section side v-if="$q.screen.gt.xs">
         <div class="text-grey-8 q-gutter-xs">
           <q-chip
             v-if="userStore.token"

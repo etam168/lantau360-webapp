@@ -14,8 +14,8 @@
 
         <q-item-section>
           <q-item-label class="text-subtitle1 text-weight-medium">
-            {{ $t(item.title) }}</q-item-label
-          >
+            {{ $t(item.title) }}
+          </q-item-label>
         </q-item-section>
 
         <q-item-section side v-if="item.name == MENU.LANGUAGE">
@@ -34,7 +34,12 @@
       </q-item>
     </q-card-section>
 
-    <q-page-sticky position="bottom" :offset="[0, 18]">
+    <q-card-section v-if="$q.screen.height < 700" class="q-pt-none">
+      <q-item-label class="text-center">{{ appVersion }}</q-item-label>
+      <q-item-label class="text-center">{{ copyright }}</q-item-label>
+    </q-card-section>
+
+    <q-page-sticky position="bottom" :offset="[0, 18]" v-else>
       <q-item-label class="text-center">{{ appVersion }}</q-item-label>
       <q-item-label class="text-center">{{ copyright }}</q-item-label>
     </q-page-sticky>
@@ -52,6 +57,8 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
+  const screenHeight = $q.screen.height;
+  alert(JSON.stringify(screenHeight));
   const error = ref<string | null>(null);
 
   const appVersion = computed(() => t("more.footer.version", { version: __APP_VERSION__ }));
