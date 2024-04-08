@@ -6,6 +6,7 @@ export default {
   review: "Review",
   turnOnLocation: "Please turn on location feature the settings",
   loadingRefreshLocation: "Please wait to refresh the location..",
+  locationPermissionDenied: "位置权限被拒绝，请从设置中启用",
 
   tabItems: {
     aboutUs: "关于我们",

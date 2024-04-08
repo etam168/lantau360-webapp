@@ -34,4 +34,8 @@
     font-weight: 600;
     font-size: 14px;
   }
+
+  .refresh-btn {
+    margin-top: 16px;
+  }
 </style>
