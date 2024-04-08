@@ -33,7 +33,9 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import InfoTab from "./detail-tabs/info-tab.vue";
   import ChekcInTab from "./detail-tabs/check-in-tab/index.vue";
+  import { useGeolocation } from "@vueuse/core";
 
+  const { coords } = useGeolocation();
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -45,7 +47,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
-
+  provide("userPosition", coords);
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("aboutUs");
   const tabItems = ref([

@@ -23,7 +23,7 @@
 
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { handlePermission, GeolocationPermissionStatus } from "@/composable/geo_permission";
+  import { GeolocationPermissionStatus } from "@/composable/geo_permission";
 
   import LoadingWidget from "./loading-widget.vue";
   import InputTemplate from "./input-template.vue";
@@ -38,11 +38,10 @@
     }
   });
 
+  const userCooords = inject("userPosition") as Ref<GeolocationCoordinates>;
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
 
-  const currentLatitude = ref(0);
-  const currentLongitude = ref(0);
   const distanceToDestination = ref(0);
   const geoPermissionStatus = ref(GeolocationPermissionStatus.DENIED);
 
@@ -77,45 +76,24 @@
     }
   }
 
-  function getLocation() {
+  async function getLocation() {
     const { latitude, longitude } = props.item;
 
-    function handlePositionChange(isWatch: boolean) {
-      return ({ coords }: { coords: GeolocationCoordinates }) => {
-        currentLatitude.value = coords?.altitude ?? 0;
-        currentLongitude.value = coords.longitude;
-        calculateDistance();
-        getAddressFromCoordinates(coords.latitude, coords.longitude, true);
-        getAddressFromCoordinates(latitude, longitude, false);
-
-        alert(isWatch ? "Initial position retrieved" : "Position changed");
-      };
-    }
-
-    function handleError(isWatch: boolean) {
-      return (error: GeolocationPositionError) => {
-        console.error("Error getting geolocation:", error);
-        alert(`${isWatch}Error occurred while getting geolocation`);
-      };
-    }
-
-    // Get current position once
-    navigator.geolocation.getCurrentPosition(
-      () => handlePositionChange(true),
-      () => handleError(true)
-    );
-
-    // Watch for position changes
-    navigator.geolocation.watchPosition(handlePositionChange(false), handleError(false));
+    calculateDistance();
+    await getAddressFromCoordinates(userCooords.value.latitude, userCooords.value.longitude, true);
+    await getAddressFromCoordinates(latitude, longitude, false);
+    loading.value = false;
   }
 
   const calculateDistance = () => {
     const { latitude, longitude } = props.item;
-    const sourceCoords = { latitude: currentLatitude.value, longitude: currentLongitude.value };
+    const sourceCoords = {
+      latitude: userCooords.value.latitude,
+      longitude: userCooords.value.longitude
+    };
     const destinationCoords = { latitude, longitude };
 
     distanceToDestination.value = geolib.getDistance(sourceCoords, destinationCoords);
-    loading.value = false;
   };
 
   async function getAddressFromCoordinates(
@@ -129,16 +107,11 @@
         `https://nominatim.openstreetmap.org/reverse?lat=${latitude}&lon=${longitude}&format=json`
       );
 
-      // Parse the response data to extract the address
-
       if (isCurrentLocation) {
         currentLocationAddress.value = response.data.display_name;
       } else {
         destinationLocationAddress.value = response.data.display_name;
       }
-
-      // Do something with the address (e.g., display it)
-      // Do something with the address (e.g., display it)
     } catch (error) {
       console.error("Error fetching address:", error);
     }
