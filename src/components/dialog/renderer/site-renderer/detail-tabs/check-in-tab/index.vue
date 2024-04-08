@@ -5,6 +5,9 @@
   <template v-else-if="loading">
     <loading-widget />
   </template>
+  <template v-else-if="isPermissionDenied">
+    <permission-denied-wiget />
+  </template>
   <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
     <input-template
       :item-id="(item as SiteView).siteId"
@@ -28,6 +31,7 @@
   import LoadingWidget from "./loading-widget.vue";
   import InputTemplate from "./input-template.vue";
   import LoginWidget from "./login-widget.vue";
+  import PermissionDeniedWiget from "./permission-denied-widget.vue";
 
   import { useUserStore } from "@/stores/user";
 
@@ -49,6 +53,7 @@
 
   const userStore = useUserStore();
   const isAuthenticated = computed(() => userStore.isUserLogon());
+  const isPermissionDenied = ref(false);
 
   onMounted(() => {
     checkGeoPermissionState();
@@ -65,7 +70,7 @@
           break;
 
         case GeolocationPermissionStatus.DENIED:
-          console.log("Geolocation permission denied.");
+          isPermissionDenied.value = true;
           break;
         default:
           console.log("Unknown geolocation permission status.");
