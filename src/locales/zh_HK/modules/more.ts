@@ -9,8 +9,13 @@ export default {
   profile: "個人資料",
   logout: "登出",
   loginName: "登入名稱",
-  checkIn: "Check-In",
-  checkInInfoDetail: "CheckIn Info Detail",
+
+  checkIn: {
+    title: "My Check-In",
+    detail: "CheckIn Info Detail",
+    history: "History",
+    map: "Map"
+  },
 
   account: {
     title: "帳戶",

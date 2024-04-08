@@ -8,20 +8,63 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ $t("more.checkInInfoDetail") }}</app-dialog-title>
+        <app-dialog-title>{{ $t("more.checkIn.detail") }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <q-page>
-          <gallery-image-list :image-list="galleryItems" />
-          <q-list class="q-gutter-md">
-            <q-item v-for="(checkInfo, index) in data.checkInfo" :key="index">
-              <q-item-section>
-                <q-item-label caption>{{
-                  new Date(checkInfo.checkInAt).toLocaleString()
-                }}</q-item-label>
-                <q-item-label lines="2">{{ checkInfo.description }}</q-item-label>
+          <q-img :ratio="16 / 9" :src="bannerPath" />
+
+          <q-list padding class="q-mx-sm q-pa-none">
+            <q-item>
+              <q-item-section top>
+                <app-tab-select
+                  :tab-items="tabItems"
+                  :current-tab="tab"
+                  @update:currentTab="setTab"
+                  class="q-pl-none"
+                />
               </q-item-section>
+            </q-item>
+
+            <q-item>
+              <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
+                <q-tab-panel name="map" class="q-pa-none">
+                  <q-card flat class="location-card" style="height: 430px">
+                    <q-card-section
+                      class="location-card-section"
+                      :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
+                    >
+                      <map-component
+                        class="map-component"
+                        :style="{
+                          height: $q.screen.gt.xs ? '300px' : '200px',
+                          width: $q.screen.gt.xs ? '600px' : '100%'
+                        }"
+                        :zoom="zoom"
+                        :marker-position="markerPosition"
+                        :url="localMapUrl"
+                        :bounds="bounds"
+                        :tooltip="mapTooltip"
+                        :bottom-right-label="address"
+                      />
+                    </q-card-section>
+                  </q-card>
+                </q-tab-panel>
+
+                <q-tab-panel name="history" class="q-pa-none">
+                  <q-list class="q-gutter-md">
+                    <q-item v-for="(checkInfo, index) in data.checkInfo" :key="index">
+                      <q-item-section>
+                        <q-item-label>{{
+                          new Date(checkInfo.checkInAt).toLocaleString()
+                        }}</q-item-label>
+                        <q-item-label lines="2" caption>{{ checkInfo.description }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-tab-panel>
+              </q-tab-panels>
             </q-item>
           </q-list>
         </q-page>
@@ -32,64 +75,69 @@
 
 <script setup lang="ts">
   import { ref } from "vue";
-  import { URL } from "@/constants";
-  // // Quasar Import
-  // import { throttle } from "quasar";
-  // import { BLOB_URL } from "@/constants";
 
   // Interface files
-  import { CheckIn } from "@/interfaces/models/entities/CheckIn";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  //import { CheckIn } from "@/interfaces/models/entities/CheckIn";
+
+  // .ts files
+  import { BLOB_URL } from "@/constants";
+
+  // 3rd Party Import
+  import { LatLngExpression, latLngBounds } from "leaflet";
 
   const props = defineProps({
     data: {
-      type: Object as PropType<CheckIn>,
+      type: Object as PropType<any>,
       required: true
     }
   });
-  // Interface files
 
-  // Custom Components
-
+  const { translate } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
+  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const error = ref<string | null>(null);
 
-  const galleryItems = ref<GalleryImageType[]>([]);
-  const galleryImagesCompleteList = ref<GalleryImageType[]>([]);
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("map");
+  const tabItems = ref([
+    { name: "map", label: t("more.checkIn.map") },
+    { name: "history", label: t("more.checkIn.history") }
+  ]);
 
-  const galleryUrl = computed(() => {
-    return `${URL.SITE_GALLERY}/${props.data.siteId}`;
+  const bannerPath = computed(() => {
+    return props.data.bannerPath
+      ? `${BLOB_URL}/${props.data.bannerPath}`
+      : "./img/icons/no_image_available.jpeg";
+  });
+  const address = computed(() => translate(props.data.subtitle1, props.data.meta, "subtitle1"));
+
+  const zoom = computed(() => {
+    const screenWidth = $q.screen.width;
+
+    if (screenWidth > 900) return 11.5;
+    if (screenWidth > 450) return 11;
+
+    return 10.5;
   });
 
-  const loadData = async () => {
-    if (galleryUrl.value) {
-      try {
-        const [galleryResponse] = await Promise.all([
-          axios.get<GalleryImageType[]>(galleryUrl.value)
-        ]);
-        galleryImagesCompleteList.value = galleryResponse.data;
-        galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
+  const markerPosition = computed<LatLngExpression>(() => [
+    props.data.latitude,
+    props.data.longitude
+  ]); //ref<LatLngExpression>([22.2544, 113.8642]);
+  const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
 
-        galleryItems.value = galleryResponse.data
-          .filter(element => !((1 >> (element.ranking - 1)) & 1))
-          .sort((a, b) => a.ranking - b.ranking);
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          if (err.response && err.response.status === 404) {
-            error.value = t("errors.404");
-          } else {
-            error.value = t("errors.anErrorOccured");
-          }
-        } else {
-          error.value = t("errors.anErrorOccured");
-        }
-      }
-    }
-  };
+  const gtXsBounds = latLngBounds([
+    [22.04, 113.7],
+    [22.5, 114.21]
+  ]);
 
-  onMounted(() => {
-    loadData();
-  });
+  const ltSmBounds = latLngBounds([
+    [22.05, 113.66],
+    [22.51, 114.23]
+  ]);
+
+  const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
+
+  const mapTooltip = computed(() => translate(props.data.mapLabel, props.data.meta, "mapLabel"));
 </script>

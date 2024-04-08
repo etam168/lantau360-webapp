@@ -21,6 +21,13 @@
           >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
         </q-item-label>
       </q-item-section>
+      <q-item-section side>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+        />
+      </q-item-section>
     </q-item>
 
     <q-item>
@@ -54,8 +61,14 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   });
+
+  const emits = defineEmits(["on-favourite"]);
 
   const siteItem = computed(() => props.item as SiteView);
   const translatedContent: any = ref(
@@ -67,5 +80,9 @@
       const phoneURL = `tel:${siteItem.value.contactPhone}`;
       window.location.href = phoneURL;
     }
+  };
+
+  const onBtnFavClick = () => {
+    emits("on-favourite");
   };
 </script>

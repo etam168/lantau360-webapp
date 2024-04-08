@@ -9,8 +9,13 @@ export default {
   profile: "Profile",
   logout: "Logout",
   loginName: "Login Name",
-  checkIn: "Check-In",
-  checkInInfoDetail: "CheckIn Info Detail",
+
+  checkIn: {
+    title: "My Check-In",
+    detail: "CheckIn Info Detail",
+    history: "History",
+    map: "Map"
+  },
 
   account: {
     title: "Account",

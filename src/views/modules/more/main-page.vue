@@ -57,8 +57,6 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
-  const screenHeight = $q.screen.height;
-  alert(JSON.stringify(screenHeight));
   const error = ref<string | null>(null);
 
   const appVersion = computed(() => t("more.footer.version", { version: __APP_VERSION__ }));

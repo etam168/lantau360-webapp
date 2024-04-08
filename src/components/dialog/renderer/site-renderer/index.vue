@@ -9,6 +9,12 @@
           class="q-pl-none"
         />
       </q-item-section>
+      <q-item-section side>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+      /></q-item-section>
     </q-item>
 
     <q-item>
@@ -42,8 +48,14 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   });
+
+  const emits = defineEmits(["on-favourite"]);
 
   const { t } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
@@ -53,10 +65,14 @@
   const tabItems = ref([
     { name: "aboutUs", label: t("home.tabItems.aboutUs") },
     { name: "info", label: t("home.tabItems.info") },
-    { name: "checkIn", label: "Checkin" }
+    { name: "checkIn", label: t("home.tabItems.checkin") }
   ]);
 
   const translatedContent: any = computed(() =>
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
+
+  const onBtnFavClick = () => {
+    emits("on-favourite");
+  };
 </script>

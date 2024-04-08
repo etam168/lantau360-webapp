@@ -9,6 +9,12 @@
           class="q-px-none"
         />
       </q-item-section>
+      <q-item-section side>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+      /></q-item-section>
     </q-item>
 
     <q-tab-panels v-model="tab">
@@ -37,8 +43,14 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   });
+
+  const emits = defineEmits(["on-favourite"]);
 
   const siteItem = computed(() => props.item as SiteView);
 
@@ -88,4 +100,8 @@
       label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2")
     }
   ]);
+
+  const onBtnFavClick = () => {
+    emits("on-favourite");
+  };
 </script>

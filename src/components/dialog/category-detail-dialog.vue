@@ -21,35 +21,49 @@
           <atm-renderer
             v-if="renderer === RENDERER.ATM"
             :item="item"
+            :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
+            @on-favourite="onBtnFavClick"
           />
           <site-renderer
             v-if="renderer === RENDERER.SITE"
             :item="item"
+            :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
+            @on-favourite="onBtnFavClick"
           />
           <business-renderer
             v-else-if="renderer === RENDERER.BUSINESS"
             :item="item"
+            :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
+            @on-favourite="onBtnFavClick"
           />
-          <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
-          <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
-          <daytrip-renderer v-else-if="renderer === RENDERER.DAYTRIP" :item="item" />
+          <timetable-renderer
+            v-else-if="renderer === RENDERER.TIMETABLE"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
+          <taxi-renderer
+            v-else-if="renderer === RENDERER.TAXI"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
+          <daytrip-renderer
+            v-else-if="renderer === RENDERER.DAYTRIP"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
           <restaurant-renderer
             v-else-if="renderer === RENDERER.RESTAURANT"
             :item="item"
             :gallery-images="galleryImagesCompleteList"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
           />
-
-          <q-page-sticky position="bottom-right" :offset="[24, 24]">
-            <!-- <q-btn round color="primary" icon="add" /> -->
-            <app-button-rounded
-              :text-color="isFavourite ? 'red' : 'white'"
-              icon="favorite"
-              @click="onBtnFavClick"
-            />
-          </q-page-sticky>
         </q-page>
       </q-page-container>
     </q-layout>

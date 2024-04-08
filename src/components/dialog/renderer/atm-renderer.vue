@@ -1,16 +1,17 @@
 <template>
-  <q-list padding class="q-mx-sm q-pa-none">
-    <q-item>
-      <q-item-section v-if="shouldShowImage && mapImagePath">
-        <q-img
-          style="cursor: pointer"
-          :ratio="16 / 9"
-          width="100%"
-          :src="mapImagePath"
-          @click="openGoogleMaps"
-        >
-        </q-img>
-        <q-list dense v-if="$q.screen.xs">
+  <q-card flat class="q-mx-sm q-pa-none">
+    <q-card-section v-if="shouldShowImage && mapImagePath">
+      <q-img
+        style="cursor: pointer"
+        :ratio="16 / 9"
+        width="100%"
+        :src="mapImagePath"
+        @click="openGoogleMaps"
+      />
+    </q-card-section>
+    <q-card-section class="q-pl-none">
+      <q-item class="q-pa-none" v-if="$q.screen.xs">
+        <q-item-section>
           <q-item dense v-if="siteItem.subtitle1">
             <q-item-section avatar @click="openGoogleMaps">
               <q-avatar>
@@ -49,64 +50,80 @@
               </q-item-label></q-item-section
             >
           </q-item>
-        </q-list>
-      </q-item-section>
-      <q-item-section top v-if="$q.screen.gt.xs">
-        <q-list dense>
-          <q-item dense v-if="siteItem.subtitle1">
-            <q-item-section avatar @click="openGoogleMaps">
-              <q-avatar
-                dense
-                rounded
-                color="primary"
-                icon="location_on"
-                text-color="white"
-                size="sm"
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-caption" lines="2"
-                >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
-              </q-item-label></q-item-section
-            >
-          </q-item>
+        </q-item-section>
+        <q-item-section top side>
+          <app-button-rounded
+            :text-color="isFavourite ? 'red' : 'white'"
+            icon="favorite"
+            @click="onBtnFavClick"
+          />
+        </q-item-section>
+      </q-item>
 
-          <q-separator spaced inset v-if="siteItem.contactPhone" />
+      <q-list dense v-if="$q.screen.gt.xs">
+        <q-item>
+          <q-item-section>
+            <q-item dense v-if="siteItem.subtitle1">
+              <q-item-section avatar @click="openGoogleMaps">
+                <q-avatar
+                  dense
+                  rounded
+                  color="primary"
+                  icon="location_on"
+                  text-color="white"
+                  size="sm"
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-caption" lines="2"
+                  >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
+                </q-item-label></q-item-section
+              >
+            </q-item>
 
-          <q-item v-if="siteItem.contactPhone">
-            <q-item-section avatar @click="navigateToPhone">
-              <q-avatar dense rounded color="primary" icon="phone" text-color="white" size="sm" />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-caption"
-                >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
-              </q-item-label></q-item-section
-            >
-          </q-item>
+            <q-separator spaced inset v-if="siteItem.contactPhone" />
 
-          <q-separator spaced inset v-if="siteItem.contactWhatsApp" />
+            <q-item v-if="siteItem.contactPhone">
+              <q-item-section avatar @click="navigateToPhone">
+                <q-avatar dense rounded color="primary" icon="phone" text-color="white" size="sm" />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-caption"
+                  >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+                </q-item-label></q-item-section
+              >
+            </q-item>
 
-          <q-item v-if="siteItem.contactWhatsApp">
-            <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
-              <q-avatar
-                dense
-                rounded
-                color="primary"
-                icon="fab fa-whatsapp"
-                text-color="white"
-                size="sm"
-              />
-            </q-item-section>
-            <q-item-section>
-              <q-item-label class="text-caption"
-                >{{ siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp }}
-              </q-item-label></q-item-section
-            >
-          </q-item>
-        </q-list>
-      </q-item-section>
-    </q-item>
-  </q-list>
+            <q-separator spaced inset v-if="siteItem.contactWhatsApp" />
+
+            <q-item v-if="siteItem.contactWhatsApp">
+              <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
+                <q-avatar
+                  dense
+                  rounded
+                  color="primary"
+                  icon="fab fa-whatsapp"
+                  text-color="white"
+                  size="sm"
+                />
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-caption"
+                  >{{ siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp }}
+                </q-item-label></q-item-section
+              >
+            </q-item>
+          </q-item-section>
+          <q-item-section side top>
+            <app-button-rounded
+              :text-color="isFavourite ? 'red' : 'white'"
+              icon="favorite"
+              @click="onBtnFavClick"
+          /></q-item-section>
+        </q-item>
+      </q-list>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script setup lang="ts">
@@ -127,8 +144,14 @@
     galleryImages: {
       type: Array as PropType<GalleryImageType[]>,
       required: true
+    },
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   });
+
+  const emits = defineEmits(["on-favourite"]);
 
   const siteItem = computed(() => props?.item as SiteView);
 
@@ -167,6 +190,10 @@
     } else {
       console.error("Map link not available");
     }
+  };
+
+  const onBtnFavClick = () => {
+    emits("on-favourite");
   };
 
   const shouldShowImage = computed(() => siteItem.value.meta?.["hasMap"] === true);

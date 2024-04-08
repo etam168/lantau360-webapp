@@ -10,6 +10,7 @@ export default {
 
   tabItems: {
     aboutUs: "关于我们",
+    checkin: "Check-In",
     info: "信息"
   },
   searchBar: {

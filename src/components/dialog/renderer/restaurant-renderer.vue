@@ -9,6 +9,12 @@
           class="q-pl-none"
         />
       </q-item-section>
+      <q-item-section side>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+      /></q-item-section>
     </q-item>
 
     <q-item v-if="shouldShowItem">
@@ -205,8 +211,14 @@
     galleryImages: {
       type: Array as PropType<GalleryImageType[]>,
       required: true
+    },
+    isFavourite: {
+      type: Boolean,
+      default: false
     }
   });
+
+  const emits = defineEmits(["on-favourite"]);
 
   const { t } = useI18n({ useScope: "global" });
 
@@ -310,4 +322,8 @@
     }
   };
   const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
+
+  const onBtnFavClick = () => {
+    emits("on-favourite");
+  };
 </script>
