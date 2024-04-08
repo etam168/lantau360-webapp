@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-item class="q-pa-none bg-red">
+    <q-item class="q-pa-none">
       <q-item-section>
         <div style="width: 100px; width: 100%">
           <q-responsive :ratio="16 / 9">
@@ -18,6 +18,9 @@
                   tooltip
                 }}</l-tooltip>
               </l-marker>
+              <l-control position="bottomright">
+                <div style="font-weight: 500">{{ bottomRightLabel }}</div>
+              </l-control>
             </l-map>
           </q-responsive>
         </div>
@@ -29,7 +32,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
   import "leaflet/dist/leaflet.css";
-  import { LMap, LTileLayer, LMarker, LTooltip } from "@vue-leaflet/vue-leaflet";
+  import { LMap, LTileLayer, LMarker, LTooltip, LControl } from "@vue-leaflet/vue-leaflet";
   import { LatLngBounds, LatLngExpression } from "leaflet";
 
   const props = defineProps({
@@ -52,6 +55,10 @@
     tooltip: {
       type: String,
       default: "Lantau Lite"
+    },
+    bottomRightLabel: {
+      type: String,
+      defualt: ""
     }
   });
 
