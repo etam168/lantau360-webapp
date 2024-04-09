@@ -8,6 +8,7 @@
       @on-click="throttledHandleDialog"
     />
   </div>
+  {{ locale }}
 </template>
 
 <script setup lang="ts">
@@ -19,6 +20,8 @@
 
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
+
+  const { locale } = useI18n();
 
   const props = defineProps({
     data: {
@@ -56,23 +59,17 @@
       if (response.status === 200) {
         // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
-        // directoryItems = useSorted(
-        //   response.data,
-        //   (a, b) =>
-        //     a.rank - b.rank ||
-        //     a[sortByKey].localeCompare(b[sortByKey], undefined, { sensitivity: "base" })
-        // );
 
         const directoryItems = useSorted(response.data, (a, b) => {
           const rankingDifference = a.rank - b.rank;
-
           // Check if sortByKey exists in the first object
           const hasSortByKey = sortByKey in response.data[0];
-
           // If sortByKey exists, use it for comparison
-          if (hasSortByKey) {
-            const sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
 
+          if (hasSortByKey) {
+            const sortByKeyComparison = String(
+              a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
+            ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
             // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
             return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
           }
