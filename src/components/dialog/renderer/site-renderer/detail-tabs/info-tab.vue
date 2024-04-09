@@ -94,9 +94,15 @@
 
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
-  const mapTooltip = computed(() =>
-    translate(siteItem.value.mapLabel, siteItem.value.meta, "mapLabel")
-  );
+  const mapTooltip = computed(() => {
+    const mapLabel = translate(siteItem.value.mapLabel, siteItem.value.meta, "mapLabel");
+    debugger;
+    if (mapLabel !== undefined && mapLabel !== null) {
+      return mapLabel;
+    } else {
+      return translate(siteItem.value.siteName, props.item.meta, "siteName");
+    }
+  });
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
