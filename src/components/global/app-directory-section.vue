@@ -8,7 +8,6 @@
       @on-click="throttledHandleDialog"
     />
   </div>
-  {{ locale }}
 </template>
 
 <script setup lang="ts">
