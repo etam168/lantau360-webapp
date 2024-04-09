@@ -222,6 +222,7 @@
         const [galleryResponse] = await Promise.all([
           axios.get<GalleryImageType[]>(galleryUrl.value)
         ]);
+
         galleryImagesCompleteList.value = galleryResponse.data;
         galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
 
@@ -243,12 +244,22 @@
     }
   };
 
-  function getMaskValue(templateValue: number) {
+  function getMaskValue(templateValue: number, meta?: any) {
     for (const make in TEMPLATE) {
       if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        return TEMPLATE[make as keyof typeof TEMPLATE].mask;
+        const modifier = meta?.["hasMap"] === true ? 2 : 0;
+        return TEMPLATE[make as keyof typeof TEMPLATE].mask + modifier;
       }
     }
     return 0;
   }
+
+  // function getMaskValue(templateValue: number) {
+  //   for (const make in TEMPLATE) {
+  //     if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
+  //       return TEMPLATE[make as keyof typeof TEMPLATE].mask;
+  //     }
+  //   }
+  //   return 0;
+  // }
 </script>
