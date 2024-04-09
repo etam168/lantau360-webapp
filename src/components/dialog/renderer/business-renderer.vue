@@ -46,146 +46,56 @@
         </q-tab-panel>
 
         <q-tab-panel name="info" class="q-pa-none">
-          <q-item class="q-pa-none">
-            <q-item-section v-if="shouldShowImage && mapImagePath">
-              <q-img
-                style="cursor: pointer"
-                :ratio="16 / 9"
-                width="100%"
-                :src="mapImagePath"
-                @click="openGoogleMaps"
-              >
-              </q-img>
-              <q-list dense v-if="$q.screen.xs">
-                <q-item dense v-if="businessItem.subtitle1">
-                  <q-item-section avatar @click="openGoogleMaps">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="location_on"
-                      text-color="white"
-                      size="sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-                <q-separator spaced inset v-if="businessItem.contactPhone" />
+          <q-card flat class="location-card" style="height: 430px">
+            <q-card-section
+              class="location-card-section"
+              :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
+            >
+              <map-component
+                class="map-component"
+                :style="{
+                  height: $q.screen.gt.xs ? '300px' : '200px',
+                  width: $q.screen.gt.xs ? '600px' : '100%'
+                }"
+                :zoom="zoom"
+                :marker-position="markerPosition"
+                :url="localMapUrl"
+                :bounds="bounds"
+                :tooltip="mapTooltip"
+                :bottom-right-label="address"
+              />
+
+              <q-list dense class="details-section">
                 <q-item v-if="businessItem.contactPhone">
                   <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="phone"
-                      text-color="white"
-                      size="sm"
-                    />
+                    <q-avatar>
+                      <q-icon name="phone" color="primary" />
+                    </q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{
-                        businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
-                      }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-                <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
-                <q-item v-if="businessItem.contactWhatsApp">
-                  <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="fab fa-whatsapp"
-                      text-color="white"
-                      size="sm"
-                    />
+                    <q-item-label class="text-caption">{{
+                      businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
+                    }}</q-item-label>
                   </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{
-                        businessItem.contactWhatsApp == undefined
-                          ? "N/A"
-                          : businessItem.contactWhatsApp
-                      }}
-                    </q-item-label></q-item-section
-                  >
                 </q-item>
-              </q-list>
-            </q-item-section>
-            <q-item-section top v-if="$q.screen.gt.xs">
-              <q-list dense>
-                <q-item dense v-if="businessItem.subtitle1">
-                  <q-item-section avatar @click="openGoogleMaps">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="location_on"
-                      text-color="white"
-                      size="sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-
-                <q-separator spaced inset v-if="businessItem.contactPhone" />
-
-                <q-item v-if="businessItem.contactPhone">
-                  <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="phone"
-                      text-color="white"
-                      size="sm"
-                    />
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{
-                        businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
-                      }}
-                    </q-item-label></q-item-section
-                  >
-                </q-item>
-
-                <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
 
                 <q-item v-if="businessItem.contactWhatsApp">
                   <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <q-avatar
-                      dense
-                      rounded
-                      color="primary"
-                      icon="fab fa-whatsapp"
-                      text-color="white"
-                      size="sm"
-                    />
+                    <q-avatar>
+                      <q-icon name="fab fa-whatsapp" color="primary" />
+                    </q-avatar>
                   </q-item-section>
                   <q-item-section>
-                    <q-item-label class="text-caption"
-                      >{{
-                        businessItem.contactWhatsApp == undefined
-                          ? "N/A"
-                          : businessItem.contactWhatsApp
-                      }}
-                    </q-item-label></q-item-section
-                  >
+                    <q-item-label class="text-caption">{{
+                      businessItem.contactWhatsApp == undefined
+                        ? "N/A"
+                        : businessItem.contactWhatsApp
+                    }}</q-item-label>
+                  </q-item-section>
                 </q-item>
               </q-list>
-            </q-item-section>
-          </q-item>
+            </q-card-section>
+          </q-card>
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
@@ -196,11 +106,12 @@
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { LatLngExpression, latLngBounds } from "leaflet";
 
   // .ts files
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
-  const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -219,6 +130,7 @@
 
   const emits = defineEmits(["on-favourite"]);
   const { t } = useI18n({ useScope: "global" });
+  const $q = useQuasar();
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("aboutUs");
@@ -241,12 +153,38 @@
     translate(businessItem.value.description, businessItem.value.meta, "description")
   );
 
-  const mapImagePath = computed(() => {
-    const galleryValue = props.galleryImages;
-    return businessItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
-      ? getImageURL(galleryValue[1]?.imagePath)
-      : "./img/icons/no_image_available.jpeg";
+  const address = computed(() =>
+    translate(businessItem.value.subtitle1, businessItem.value.meta, "subtitle1")
+  );
+
+  const zoom = computed(() => {
+    const screenWidth = $q.screen.width;
+
+    if (screenWidth > 900) return 11.5;
+    if (screenWidth > 450) return 11;
+
+    return 10.5;
   });
+
+  const markerPosition = computed<LatLngExpression>(() => [
+    businessItem.value.latitude,
+    businessItem.value.longitude
+  ]);
+  const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
+
+  const gtXsBounds = latLngBounds([
+    [22.04, 113.7],
+    [22.5, 114.21]
+  ]);
+
+  const ltSmBounds = latLngBounds([
+    [22.05, 113.66],
+    [22.51, 114.23]
+  ]);
+  const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
+  const mapTooltip = computed(() =>
+    translate(businessItem.value.mapLabel, businessItem.value.meta, "mapLabel")
+  );
 
   const isCurrentTimeInRange = (
     startTime: string | undefined,
@@ -292,33 +230,43 @@
     );
   });
 
-  // const openGoogleMaps = () => {
-  //   // Check if the business has an address
-  //   if (businessItem.value.subtitle1) {
-  //     // Replace spaces in the address with '+'
-  //     const address = encodeURIComponent(businessItem.value.subtitle1);
-
-  //     // Construct the Google Maps URL with the address
-  //     const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
-
-  //     // Open a new tab or window with the Google Maps URL
-  //     window.open(mapsURL, "_blank");
-  //   } else {
-  //     // Handle cases where the business address is not available
-  //     // console.error("Address not available");
-  //   }
-  // };
-
-  const openGoogleMaps = () => {
-    if (businessItem.value.meta?.["hasMap"]) {
-      window.open(businessItem.value.meta?.["mapLink"], "_blank");
-    } else {
-      console.error("Map link not available");
-    }
-  };
-  const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
-
   const onBtnFavClick = () => {
     emits("on-favourite");
   };
 </script>
+<style scoped>
+  .location-card {
+    margin: 16px;
+  }
+
+  .location-card-section {
+    padding: 0;
+    display: flex;
+    flex-wrap: wrap;
+  }
+
+  .map-component {
+    flex: 1;
+  }
+
+  .details-section {
+    flex: 1;
+    padding: 16px;
+    max-width: 250px; /* Adjust the max-width as needed */
+  }
+
+  .text-caption {
+    font-size: 14px;
+  }
+
+  @media only screen and (max-width: 600px) {
+    .location-card-section {
+      flex-direction: column;
+    }
+
+    .details-section {
+      padding: 16px 0;
+      max-width: none; /* Reset the max-width for small screens */
+    }
+  }
+</style>
