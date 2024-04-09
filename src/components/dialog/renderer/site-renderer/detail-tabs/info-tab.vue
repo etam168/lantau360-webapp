@@ -62,6 +62,7 @@
     }
   });
 
+  const { locale } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
   const $q = useQuasar();
   const address = computed(() =>
@@ -95,8 +96,7 @@
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
   const mapTooltip = computed(() => {
-    const mapLabel = translate(siteItem.value.mapLabel, siteItem.value.meta, "mapLabel");
-    debugger;
+    const mapLabel = siteItem.value.meta?.i18n?.[locale.value]?.mapLabel;
     if (mapLabel !== undefined && mapLabel !== null) {
       return mapLabel;
     } else {

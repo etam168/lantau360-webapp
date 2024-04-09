@@ -35,6 +35,7 @@
                       class="location-card-section"
                       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
                     >
+                      <div>{{ props.data.meta }}</div>
                       <map-component
                         class="map-component"
                         :style="{
@@ -96,7 +97,8 @@
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const $q = useQuasar();
-  const { t } = useI18n({ useScope: "global" });
+
+  const { locale, t } = useI18n({ useScope: "global" });
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("map");
@@ -110,6 +112,7 @@
       ? `${BLOB_URL}/${props.data.bannerPath}`
       : "./img/icons/no_image_available.jpeg";
   });
+
   const address = computed(() => translate(props.data.subtitle1, props.data.meta, "subtitle1"));
 
   const zoom = computed(() => {
@@ -139,5 +142,7 @@
 
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
-  const mapTooltip = computed(() => translate(props.data.mapLabel, props.data.meta, "mapLabel"));
+  const mapTooltip = computed(() => {
+    return props.data.meta?.i18n?.[locale.value]?.mapLabel;
+  });
 </script>

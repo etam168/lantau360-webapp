@@ -129,7 +129,7 @@
   });
 
   const emits = defineEmits(["on-favourite"]);
-  const { t } = useI18n({ useScope: "global" });
+  const { locale, t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
   const setTab = (val: string) => (tab.value = val);
@@ -182,8 +182,9 @@
     [22.51, 114.23]
   ]);
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
+
   const mapTooltip = computed(() => {
-    const mapLabel = translate(businessItem.value.mapLabel, businessItem.value.meta, "mapLabel");
+    const mapLabel = businessItem.value.meta?.i18n?.[locale.value]?.mapLabel;
     if (mapLabel !== undefined && mapLabel !== null) {
       return mapLabel;
     } else {
