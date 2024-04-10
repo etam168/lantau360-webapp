@@ -37,7 +37,7 @@
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
 
-  const { isNthBitSet, eventBus } = useUtilities();
+  const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
 
@@ -57,15 +57,18 @@
   ]);
 
   const directoryData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 1))
+    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 1))
+    homeDirectories.value.filter((dir: Directory) => dir.groupId == 1)
   );
 
   const infoData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
+    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
+    homeDirectories.value.filter((dir: Directory) => dir.groupId == 3)
   );
 
   const tripAdvisorData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
+    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
+    homeDirectories.value.filter((dir: Directory) => dir.groupId == 5)
   );
 
   function handleSearchDialog(value: any) {
