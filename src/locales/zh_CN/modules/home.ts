@@ -7,7 +7,7 @@ export default {
   turnOnLocation: "Please turn on location feature the settings",
   loadingRefreshLocation: "Please wait to refresh the location..",
   locationPermissionDenied: "位置权限被拒绝，请从设置中启用",
-
+  tripAdvisor: "旅行顾问",
   tabItems: {
     aboutUs: "关于我们",
     checkin: "Check-In",

@@ -16,6 +16,10 @@
       <q-tab-panel name="info">
         <app-directory-section :data="infoData" />
       </q-tab-panel>
+
+      <q-tab-panel name="tripAdvisor">
+        <app-directory-section :data="tripAdvisorData" />
+      </q-tab-panel>
     </q-tab-panels>
   </q-page>
 </template>
@@ -48,7 +52,8 @@
   const tab = ref("all");
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t("home.allLocations") },
-    { name: "info", label: t("home.info") }
+    { name: "info", label: t("home.info") },
+    { name: "tripAdvisor", label: t("home.tripAdvisor") }
   ]);
 
   const directoryData = computed(() =>
@@ -56,6 +61,10 @@
   );
 
   const infoData = computed(() =>
+    homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
+  );
+
+  const tripAdvisorData = computed(() =>
     homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
   );
 
