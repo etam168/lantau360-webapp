@@ -63,6 +63,7 @@
                 :bounds="bounds"
                 :tooltip="mapTooltip"
                 :bottom-right-label="address"
+                @click="openGoogleMaps()"
               />
 
               <q-list dense class="details-section">
@@ -111,7 +112,7 @@
   // .ts files
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate, notify } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -238,6 +239,16 @@
 
   const onBtnFavClick = () => {
     emits("on-favourite");
+  };
+
+  const openGoogleMaps = () => {
+    if (businessItem.value.meta?.["hasMap"]) {
+      debugger;
+      window.open(businessItem.value.meta?.["mapLink"], "_blank");
+    } else {
+      notify("Map link not available", "negative");
+      console.error("Map link not available");
+    }
   };
 </script>
 <style scoped>

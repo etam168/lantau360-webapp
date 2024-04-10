@@ -16,6 +16,7 @@
         :bounds="bounds"
         :tooltip="mapTooltip"
         :bottom-right-label="address"
+        @click="openGoogleMaps()"
       />
 
       <q-list dense class="details-section">
@@ -53,7 +54,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { LatLngExpression, latLngBounds } from "leaflet";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { navigateToWhatsApp, translate, notify } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -111,13 +112,15 @@
     }
   };
 
-  // const openGoogleMaps = () => {
-  //   if (siteItem.value.meta?.["hasMap"]) {
-  //     window.open(siteItem.value.meta?.["mapLink"], "_blank");
-  //   } else {
-  //     console.error("Map link not available");
-  //   }
-  // };
+  const openGoogleMaps = () => {
+    if (siteItem.value.meta?.["hasMap"]) {
+      debugger;
+      window.open(siteItem.value.meta?.["mapLink"], "_blank");
+    } else {
+      notify("Map link not available", "negative");
+      console.error("Map link not available");
+    }
+  };
 </script>
 
 <style scoped>
