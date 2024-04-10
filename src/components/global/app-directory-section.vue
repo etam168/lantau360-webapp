@@ -65,7 +65,6 @@
           // Check if sortByKey exists in the first object
           const hasSortByKey = sortByKey in response.data[0];
           // If sortByKey exists, use it for comparison
-          debugger;
           if (hasSortByKey) {
             let sortByKeyComparison;
             if (locale.value == "en") {
