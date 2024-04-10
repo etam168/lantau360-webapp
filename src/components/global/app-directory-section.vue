@@ -20,6 +20,7 @@
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { locale } = useI18n();
 
   const props = defineProps({
@@ -64,12 +65,18 @@
           // Check if sortByKey exists in the first object
           const hasSortByKey = sortByKey in response.data[0];
           // If sortByKey exists, use it for comparison
-
+          debugger;
           if (hasSortByKey) {
-            const sortByKeyComparison = String(
-              a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
-            ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
-            // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+            let sortByKeyComparison;
+            if (locale.value == "en") {
+              sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+            } else {
+              sortByKeyComparison = String(
+                a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
+              ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
+              // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+            }
+
             return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
           }
 
