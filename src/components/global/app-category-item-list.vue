@@ -87,6 +87,12 @@
         </q-item-label>
       </q-item-section>
 
+      <q-item-section v-else-if="template === TEMPLATE.Emergency.value">
+        <q-item-label>
+          {{ "Emergency Template" }}
+        </q-item-label>
+      </q-item-section>
+
       <q-item-section v-else>
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}

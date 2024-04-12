@@ -1,6 +1,6 @@
 export default {
   allLocations: "地点",
-  info: "其他资讯",
+  resources: "资源",
   other: "其他",
   siteSearch: "网站搜索",
   review: "Review",

@@ -1,5 +1,5 @@
 const DirectoryGroups = {
-  HOME: [1, 3],
+  HOME: [1, 3, 5],
   BUSINESS: [2, 4],
   PROMOTIONS: 108,
   LATEST_OFFERS: 100,

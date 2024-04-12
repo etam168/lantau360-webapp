@@ -1,6 +1,6 @@
 export default {
-  allLocations: "All Locations",
-  info: "Info",
+  allLocations: "Locations",
+  resources: "Resources",
   other: "Other",
   siteSearch: "Site Search",
   review: "Review",

@@ -5,6 +5,7 @@ const Template = {
   DAYTRIP: { value: 16, mask: 7 },
   ATM: { value: 4, mask: 1 },
   RESTAURANT: { value: 8, mask: 1 },
+  Emergency: { value: 18, mask: 1 },
   NEWS: { value: 8, mask: 7 },
   NOTICE: { value: 8, mask: 7 },
   EVENT: { value: 8, mask: 7 },
