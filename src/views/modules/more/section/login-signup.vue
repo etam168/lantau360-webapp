@@ -11,7 +11,10 @@
 
       <q-item-section>
         <q-item-label v-if="userStore.token">{{ userStore.user }}</q-item-label>
-        <q-item-label caption v-if="$q.screen.xs">
+      </q-item-section>
+
+      <q-item-section side v-if="$q.screen.gt.xs">
+        <div class="text-grey-8 q-gutter-xs">
           <q-chip
             v-if="userStore.token"
             clickable
@@ -22,10 +25,29 @@
           >
             {{ $t("auth.login.logout") }}
           </q-chip>
-        </q-item-label>
+          <q-chip
+            v-if="!userStore.token"
+            clickable
+            @click="showLoginDialog('login')"
+            outline
+            color="primary"
+            text-color="white"
+          >
+            {{ $t("auth.login.button") }}
+          </q-chip>
+          <q-chip
+            v-if="!userStore.token"
+            clickable
+            @click="showLoginDialog('register')"
+            color="primary"
+            text-color="white"
+          >
+            {{ $t("auth.register.joinNow") }}
+          </q-chip>
+        </div>
       </q-item-section>
 
-      <q-item-section side v-if="$q.screen.gt.xs">
+      <q-item-section side v-else>
         <div class="text-grey-8 q-gutter-xs">
           <q-chip
             v-if="userStore.token"
