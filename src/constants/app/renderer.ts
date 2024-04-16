@@ -15,7 +15,8 @@ const Renderer = {
   RESTAURANT: "restaurant",
   TUITION: "tuition",
   PROPERTY: "property",
-  DAYTRIP: "daytrip"
+  DAYTRIP: "daytrip",
+  EMERGENCY: "emergency"
 };
 
 export default Renderer;

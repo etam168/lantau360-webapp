@@ -57,6 +57,12 @@
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
+          <emergency-renderer
+            v-else-if="renderer === RENDERER.EMERGENCY"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
           <restaurant-renderer
             v-else-if="renderer === RENDERER.RESTAURANT"
             :item="item"
@@ -85,6 +91,7 @@
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
   import DaytripRenderer from "@/components/dialog/renderer/daytrip-renderer.vue";
+  import EmergencyRenderer from "@/components/dialog/renderer/emergency-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
@@ -194,6 +201,8 @@
       case props.item.directoryTemplate == TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
       case props.item.directoryTemplate == TEMPLATE.DAYTRIP.value:
+        return RENDERER.DAYTRIP;
+      case props.item.directoryTemplate == TEMPLATE.EMERGENCY.value:
         return RENDERER.DAYTRIP;
       case "siteId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
