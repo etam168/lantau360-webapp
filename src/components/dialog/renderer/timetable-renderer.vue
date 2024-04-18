@@ -1,32 +1,11 @@
 <template>
-  <q-card class="my-card bg-grey-2" flat>
+  <q-card class="my-card bg-grey-2" flat v-if="Number(siteItem.meta.maskValue) === 1">
     <q-card-section horizontal class="justify-between">
-      <q-card-section style="width: 100%" v-if="Number(siteItem.meta.maskValue) === 1">
-        <q-card-section>
-          <div class="text-h6 q-mb-xs">
-            {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }} |
-            {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
-          </div>
-          <q-img
-            class="rounded-borders"
-            :src="
-              siteItem.bannerPath
-                ? `${BLOB_URL}/${siteItem.bannerPath}`
-                : './img/icons/no_image_available.jpeg'
-            "
-          />
-        </q-card-section>
-      </q-card-section>
-
-      <q-card-section v-else style="width: 100%">
-        <q-card-section v-for="(item, index) in items" :key="index">
-          <div class="text-h5 q-mb-xs">{{ item.label }}</div>
-          <div class="text-caption q-mb-xs" v-if="item.customSubtitle">
-            {{ item.customSubtitle }}
-          </div>
-
-          <q-img class="rounded-borders" :src="item.image" />
-        </q-card-section>
+      <q-card-section style="width: 100%" class="q-pb-none">
+        <div class="text-h6 q-mb-xs">
+          {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }} |
+          {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
+        </div>
       </q-card-section>
 
       <q-card-section>
@@ -34,6 +13,71 @@
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
           @click="onBtnFavClick"
+        />
+      </q-card-section>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+      <q-img
+        class="rounded-borders"
+        :src="
+          siteItem.bannerPath
+            ? `${BLOB_URL}/${siteItem.bannerPath}`
+            : './img/icons/no_image_available.jpeg'
+        "
+      />
+    </q-card-section>
+  </q-card>
+
+  <q-card class="my-card bg-grey-2" flat v-else>
+    <q-card-section horizontal class="justify-between">
+      <q-card-section style="width: 100%" class="q-pb-none">
+        <div class="text-h6 q-mb-xs" v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle1">
+          {{ translate(siteItem.customSubtitle1, siteItem.meta, "customSubtitle1") }}
+        </div>
+
+        <div class="text-h6 q-mb-xs" v-else>
+          {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
+        </div>
+      </q-card-section>
+
+      <q-card-section>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+        />
+      </q-card-section>
+    </q-card-section>
+
+    <q-card-section class="q-pt-none">
+      <q-img
+        class="rounded-borders"
+        :src="
+          siteItem.bannerPath
+            ? `${BLOB_URL}/${siteItem.bannerPath}`
+            : './img/icons/no_image_available.jpeg'
+        "
+      />
+    </q-card-section>
+
+    <q-card-section class="q-py-none">
+      <div class="text-h6 q-mb-xs" v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle2">
+        {{ translate(siteItem.customSubtitle2, siteItem.meta, "customSubtitle2") }}
+      </div>
+
+      <div class="text-h6 q-mb-xs" v-else>
+        {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
+      </div>
+
+      <q-card-section class="q-px-none">
+        <q-img
+          class="rounded-borders"
+          :src="
+            siteItem.imagePath
+              ? `${BLOB_URL}/${siteItem.imagePath}`
+              : './img/icons/no_image_available.jpeg'
+          "
         />
       </q-card-section>
     </q-card-section>
@@ -61,6 +105,7 @@
   });
 
   const emits = defineEmits(["on-favourite"]);
+  const { locale } = useI18n({ useScope: "global" });
 
   const siteItem = computed(() => props.item as SiteView);
 
