@@ -78,8 +78,8 @@
         try {
           const response = await axios.post("MemberAuth/RecoverPassword", {
             email: prop.email,
-            password: values.password,
-            opt: values.otp
+            newPassword: values.password,
+            otp: values.otp
           });
           response.data;
 
@@ -90,6 +90,7 @@
           });
           emits("close-dialog");
         } catch (e: any) {
+          debugger;
           $q.notify({
             message: e.message,
             type: "negative"

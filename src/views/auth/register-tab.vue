@@ -110,7 +110,7 @@
           });
           response;
           $q.notify({
-            message: "Register successful",
+            message: "An email has been sent to your email to confirm your account.",
             type: "positive",
             color: "primary"
           });
