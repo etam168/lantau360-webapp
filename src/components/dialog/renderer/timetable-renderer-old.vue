@@ -1,22 +1,33 @@
 <template>
-  <q-card class="my-card bg-grey-2" flat>
-    <q-card-section horizontal class="justify-between">
-      <q-card-section style="width: 100%">
-        <q-card-section v-for="(item, index) in items" :key="index">
-          <div class="text-h6 q-mb-xs">{{ item.label }}</div>
-          <q-img class="rounded-borders" :src="item.image" />
-        </q-card-section>
-      </q-card-section>
-
-      <q-card-section>
+  <q-list padding class="q-mx-sm q-pa-none">
+    <q-item>
+      <q-item-section top>
+        <app-tab-select
+          :tab-items="tabItems"
+          :current-tab="tab"
+          @update:currentTab="setTab"
+          class="q-px-none"
+        />
+      </q-item-section>
+      <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
           @click="onBtnFavClick"
-        />
-      </q-card-section>
-    </q-card-section>
-  </q-card>
+      /></q-item-section>
+    </q-item>
+
+    <q-tab-panels v-model="tab">
+      <q-tab-panel
+        v-for="(tabItem, index) in tabItems"
+        :key="index"
+        :name="tabItem.name"
+        class="q-pa-none"
+      >
+        <q-img :src="tabItem.image" />
+      </q-tab-panel>
+    </q-tab-panels>
+  </q-list>
 </template>
 
 <script setup lang="ts">
@@ -54,7 +65,7 @@
   });
 
   function initTabItems() {
-    items.value = [
+    tabItems.value = [
       {
         name: siteItem.value.subtitle1,
         label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1"),
@@ -76,10 +87,10 @@
 
   const { translate } = useUtilities();
 
-  // const setTab = (val: string) => (tab.value = val);
+  const setTab = (val: string) => (tab.value = val);
   const tab = ref(siteItem.value.subtitle1);
 
-  const items = ref<TabItem[]>([
+  const tabItems = ref<TabItem[]>([
     {
       name: siteItem.value.subtitle1,
       label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1")
