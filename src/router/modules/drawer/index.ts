@@ -58,6 +58,16 @@ const drawerRouter: Array<RouteRecordRaw> = [
         }
       },
       {
+        path: "/email-confirmation",
+        name: "email-confirmation",
+        component: () => import("@/views/auth/email-confirmation.vue"),
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: "mdi-briefcase-check",
+          group: "common"
+        }
+      },
+      {
         path: "/:catchAll(.*)",
         name: "not-found",
         component: Error404,
