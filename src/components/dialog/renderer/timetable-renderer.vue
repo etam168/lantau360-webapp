@@ -21,6 +21,9 @@
       <q-card-section v-else style="width: 100%">
         <q-card-section v-for="(item, index) in items" :key="index">
           <div class="text-h5 q-mb-xs">{{ item.label }}</div>
+          <div class="text-caption q-mb-xs" v-if="item.customSubtitle">
+            {{ item.customSubtitle }}
+          </div>
 
           <q-img class="rounded-borders" :src="item.image" />
         </q-card-section>
@@ -76,6 +79,11 @@
       {
         name: siteItem.value.subtitle1,
         label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1"),
+        customSubtitle: translate(
+          siteItem.value.customSubtitle1,
+          siteItem.value.meta,
+          "customSubtitle1"
+        ),
         image: siteItem.value.bannerPath
           ? `${BLOB_URL}/${siteItem.value.bannerPath}`
           : "./img/icons/no_image_available.jpeg"
@@ -83,6 +91,11 @@
       {
         name: siteItem.value.subtitle2,
         label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2"),
+        customSubtitle: translate(
+          siteItem.value.customSubtitle2,
+          siteItem.value.meta,
+          "customSubtitle2"
+        ),
         image: siteItem.value.imagePath
           ? `${BLOB_URL}/${siteItem.value.imagePath}`
           : "./img/icons/no_image_available.jpeg"

@@ -2,6 +2,8 @@ export interface BaseDirectoryItem {
   contactWhatsApp: string;
   contactPhone: string;
   contactOther: string;
+  customSubtitle1: string;
+  customSubtitle2: string;
   buttonText: string;
   title: string;
   mapLabel: string;
