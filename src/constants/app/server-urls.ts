@@ -32,5 +32,9 @@ export const URL = {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
     POSTING: `${BASE_URL}/Posting/Active/ByDirectoryId`,
     SITE: `${BASE_URL}/Site/ByDirectoryId`
+  },
+  EMAIL_CONFIRMATION: {
+    RESEND_LINK: "/MemberAuth/SendEmailConfirmationLink",
+    CONFIRM_EMAIL: "/MemberAuth/verifyEmail"
   }
 };

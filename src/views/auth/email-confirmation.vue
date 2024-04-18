@@ -1,58 +1,110 @@
 <template>
-  <h3>Confirm your email</h3>
-  <h5>
-    Verifying your email gives you access to more features. Click the button below to complete the
-    process
-  </h5>
-  <q-chip clickable outline color="primary" text-color="white" @click="ConfirmEmail()">
-    {{ "Confirm Email" }}
-  </q-chip>
+  <div class="email-verification">
+    <div class="header">
+      <q-avatar size="128px" square>
+        <q-img :src="logo" />
+      </q-avatar>
+    </div>
+    <div v-if="loading">
+      <q-circular-progress
+        indeterminate
+        size="90px"
+        :thickness="0.2"
+        color="primary"
+        center-color="grey-3"
+        track-color="transparent"
+        class="q-ma-md"
+      />
+    </div>
+    <div class="verification-message" v-else-if="error">
+      <h2>Email Verification</h2>
+      <p class="error-message">An error occurred while verifying your email.</p>
+      <p>Please try with a new link.</p>
+      <q-btn @click="goToHome" outline color="primary">Go to Home</q-btn>
+    </div>
+    <div class="verification-message" v-else>
+      <h2>Email Verification</h2>
+      <p>Thank you for verifying your email address.</p>
+      <p>Your email has been successfully verified.</p>
+      <q-btn @click="goToHome" outline color="primary">Go to Home</q-btn>
+    </div>
+  </div>
 </template>
 
 <script setup lang="ts">
-  import { useRouter } from "vue-router";
-  const router = useRouter();
-  const $q = useQuasar();
+  import { URL } from "@/constants";
+  import axios from "axios";
+  import { useRoute } from "vue-router";
 
+  const logo = ref("/img/logo/logo.png");
   const token = ref();
   const userId = ref();
+  const route = useRoute();
+  const loading = ref(true);
+  const error = ref(false);
+  const router = useRouter();
 
   onMounted(() => {
-    const { query } = router.currentRoute.value;
-    if (query?.token !== undefined && query.userId !== undefined) {
-      debugger;
-      token.value = decodeURIComponent(query?.token);
-      userId.value = query.userId;
+    const query = route.query;
+    token.value = query.token || null;
+    userId.value = query.userId || null;
+    if (token.value && userId.value) {
+      confirmEmail();
+    } else {
+      loading.value = false;
     }
   });
 
-  async function ConfirmEmail() {
+  const goToHome = () => {
+    router.push("/");
+  };
+
+  const confirmEmail = async () => {
     try {
       const response = await axios.get(
-        `/MemberAuth/VerifyEmail?token=${encodeURIComponent(token.value)}&userId=${userId.value}`
+        `${URL.EMAIL_CONFIRMATION.CONFIRM_EMAIL}?token=${token.value}&userId=${userId.value}`
       );
-      console.log(response);
-      // isEmailSent.value = true;
-      // emits("on-forgotPassword", userName.value);
-      $q.notify({
-        message: "Email verified",
-        type: "positive"
-      });
-      router.push("/home");
-    } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
+      error.value = response.status !== 200;
+    } catch {
+      error.value = true;
+    } finally {
+      loading.value = false;
     }
-  }
+  };
 </script>
 
 <style scoped>
-  .forgot-password-link {
-    color: green; /* Change the color to your preferred link color */
-    text-decoration: underline; /* Add an underline to mimic a link */
-    cursor: pointer; /* Change the cursor to a pointer on hover */
-    margin-right: 10px; /* Optional: Add some spacing between the link and the button */
+  .email-verification {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 90vh;
+  }
+
+  .header {
+    text-align: center;
+  }
+
+  .verification-message {
+    text-align: center;
+  }
+
+  .verification-message h2 {
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+
+  .verification-message p {
+    font-size: 16px;
+    margin-bottom: 8px;
+  }
+
+  .error-message {
+    color: red;
+  }
+
+  .q-btn {
+    margin-top: 16px;
   }
 </style>
