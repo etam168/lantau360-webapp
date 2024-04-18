@@ -1,9 +1,27 @@
 <template>
   <q-card class="my-card bg-grey-2" flat>
     <q-card-section horizontal class="justify-between">
-      <q-card-section style="width: 100%">
+      <q-card-section style="width: 100%" v-if="Number(siteItem.meta.maskValue) === 1">
+        <q-card-section>
+          <div class="text-h6 q-mb-xs">
+            {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }} |
+            {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
+          </div>
+          <q-img
+            class="rounded-borders"
+            :src="
+              siteItem.bannerPath
+                ? `${BLOB_URL}/${siteItem.bannerPath}`
+                : './img/icons/no_image_available.jpeg'
+            "
+          />
+        </q-card-section>
+      </q-card-section>
+
+      <q-card-section v-else style="width: 100%">
         <q-card-section v-for="(item, index) in items" :key="index">
-          <div class="text-h6 q-mb-xs">{{ item.label }}</div>
+          <div class="text-h5 q-mb-xs">{{ item.label }}</div>
+
           <q-img class="rounded-borders" :src="item.image" />
         </q-card-section>
       </q-card-section>
