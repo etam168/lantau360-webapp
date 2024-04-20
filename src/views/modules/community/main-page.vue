@@ -4,7 +4,7 @@
       <div class="col text-center">{{ $t("community.advertisement") }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" />
+    <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
@@ -54,7 +54,7 @@
   import { URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
-  const { eventBus, isSmallScreen } = useUtilities();
+  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
   const { fetchMemberPoints } = useUserStore();

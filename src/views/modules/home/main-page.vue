@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <app-carousel-section :data="attractions" />
+    <app-carousel-section :data="attractions" :aspect-ratio="aspectRatio()" />
     <weather-section :data="weatherData" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
@@ -40,6 +40,8 @@
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
+
+  const { aspectRatio } = useUtilities();
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);

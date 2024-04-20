@@ -1,5 +1,5 @@
 <template>
-  <q-responsive v-if="data && data?.length > 0" :ratio="aspectRatio()">
+  <q-responsive v-if="data && data?.length > 0" :ratio="aspectRatio">
     <q-carousel
       v-model="slide"
       animated
@@ -23,7 +23,7 @@
       </q-carousel-slide>
     </q-carousel>
   </q-responsive>
-  <q-img v-else :src="CAROUSEL_BACKGROUND" :ratio="aspectRatio()" />
+  <q-img v-else :src="CAROUSEL_BACKGROUND" :ratio="aspectRatio" />
 </template>
 
 <script setup lang="ts">
@@ -45,11 +45,14 @@
     data: {
       type: Array as PropType<CarouselItem[]>,
       required: true
+    },
+    aspectRatio: {
+      type: Number,
+      required: true
     }
   });
 
   const $q = useQuasar();
-  const { aspectRatio } = useUtilities();
   const slideInterval = 10000;
 
   // Initialize slide with the ID of the first item

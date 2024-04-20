@@ -4,7 +4,7 @@
       <div class="col text-center">{{ $t("favourite.advertisement") }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" />
+    <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
@@ -46,7 +46,7 @@
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
 
-  const { eventBus, isSmallScreen } = useUtilities();
+  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
 
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<BusinessView[]>(

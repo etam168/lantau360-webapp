@@ -26,30 +26,22 @@
   const { t } = useI18n();
   const router = useRouter();
   const { eventBus } = useUtilities();
-  const ACTIVE_TAB_KEY = "activeTab"; // Define a key for storing in localStorage
+  const ACTIVE_TAB_KEY = "activeTab";
 
-  const tab = ref(localStorage.getItem(ACTIVE_TAB_KEY) || "home");
+  const tab = ref(sessionStorage.getItem(ACTIVE_TAB_KEY) || "home");
 
   const navigateTo = (route: string, tabName: string) => {
     router.push(route);
     tab.value = tabName;
-    localStorage.setItem(ACTIVE_TAB_KEY, tabName); // Save active tab to localStorage
+    sessionStorage.setItem(ACTIVE_TAB_KEY, tabName);
   };
 
   onMounted(() => {
-    localStorage.setItem(ACTIVE_TAB_KEY, "home"); // Save active tab to localStorage
-    const storedTab = localStorage.getItem(ACTIVE_TAB_KEY);
+    const storedTab = sessionStorage.getItem(ACTIVE_TAB_KEY);
     if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
       tab.value = storedTab;
     }
   });
-
-  // onUpdated(() => {
-  //   const storedTab = localStorage.getItem(ACTIVE_TAB_KEY);
-  //   if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
-  //     tab.value = storedTab;
-  //   }
-  // });
 
   const tabs = computed(() => [
     { name: "home", icon: "fas fa-home", label: t("footer.home"), route: "/home" },

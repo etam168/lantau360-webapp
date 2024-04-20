@@ -1,14 +1,7 @@
 <template>
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
-      <q-item-section top>
-        <app-tab-select
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-          class="q-pl-none"
-        />
-      </q-item-section>
+      <q-item-section></q-item-section>
       <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
@@ -17,7 +10,31 @@
       /></q-item-section>
     </q-item>
 
-    <q-item>
+    <q-list bordered class="rounded-borders q-mx-lg q-mb-xl">
+      <q-expansion-item group="siteGroup" dense dense-toggle>
+        <template v-slot:header>
+          <q-item-section avatar>
+            <q-avatar size="24px" color="primary" text-color="white"></q-avatar>
+          </q-item-section>
+          <q-item-section> Description </q-item-section>
+        </template>
+        <app-text-editor v-model="translatedContent" />
+      </q-expansion-item>
+
+      <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
+        <template v-slot:header>
+          <q-item-section avatar>
+            <q-avatar size="24px" color="primary" text-color="white"></q-avatar>
+          </q-item-section>
+
+          <q-item-section> Location </q-item-section>
+        </template>
+        <info-tab :item="item" />
+        <chekc-in-tab :item="item" />
+      </q-expansion-item>
+    </q-list>
+
+    <!-- <q-item>
       <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
         <q-tab-panel name="aboutUs" class="q-pa-none">
           <app-text-editor v-model="translatedContent" />
@@ -29,7 +46,7 @@
 
         <q-tab-panel name="checkIn" class="q-pa-none"> <chekc-in-tab :item="item" /> </q-tab-panel>
       </q-tab-panels>
-    </q-item>
+    </q-item> -->
   </q-list>
 </template>
 
@@ -57,16 +74,8 @@
 
   const emits = defineEmits(["on-favourite"]);
 
-  const { t } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
   provide("userPosition", coords);
-  const setTab = (val: string) => (tab.value = val);
-  const tab = ref("aboutUs");
-  const tabItems = ref([
-    { name: "aboutUs", label: t("home.tabItems.aboutUs") },
-    { name: "info", label: t("home.tabItems.info") },
-    { name: "checkIn", label: t("home.tabItems.checkin") }
-  ]);
 
   const translatedContent: any = computed(() =>
     translate(siteItem.value.description, siteItem.value.meta, "description")
