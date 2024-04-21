@@ -62,7 +62,6 @@
   async function checkGeoPermissionState() {
     try {
       const { status } = await handlePermission();
-      debugger;
       geoPermissionStatus.value = status;
       switch (status) {
         case GeolocationPermissionStatus.GRANTED:
