@@ -7,6 +7,11 @@
     @submit="onSubmit"
     v-slot="{ meta, values }"
   >
+    <q-item class="justify-center">
+      <q-item-label v-if="!isDataAvailable" style="color: red"
+        >{{ "Current and destiantion location is required to submit review" }}
+      </q-item-label>
+    </q-item>
     <q-card flat class="row justify-center">
       <q-card-section
         class="q-ma-none q-pa-xs"
@@ -60,6 +65,7 @@
             color="primary"
             type="submit"
             size="md"
+            :disabled="!isDataAvailable"
           />
         </q-card-actions>
       </q-card-section>
@@ -104,7 +110,10 @@
   const schema = yup.object({
     description: yup.string().required().label("descritption")
   });
-
+  const isDataAvailable = computed(() => {
+    debugger;
+    return props.currentAddress && props.destinationAddress && props.distance;
+  });
   function onSubmit(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
