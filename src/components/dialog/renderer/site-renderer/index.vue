@@ -30,23 +30,8 @@
           <q-item-section> Location </q-item-section>
         </template>
         <info-tab :item="item" />
-        <chekc-in-tab :item="item" />
       </q-expansion-item>
     </q-list>
-
-    <!-- <q-item>
-      <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
-        <q-tab-panel name="aboutUs" class="q-pa-none">
-          <app-text-editor v-model="translatedContent" />
-        </q-tab-panel>
-
-        <q-tab-panel name="info" class="q-pa-none">
-          <info-tab :item="item" />
-        </q-tab-panel>
-
-        <q-tab-panel name="checkIn" class="q-pa-none"> <chekc-in-tab :item="item" /> </q-tab-panel>
-      </q-tab-panels>
-    </q-item> -->
   </q-list>
 </template>
 
@@ -55,10 +40,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import InfoTab from "./detail-tabs/info-tab.vue";
-  import ChekcInTab from "./detail-tabs/check-in-tab/index.vue";
-  import { useGeolocation } from "@vueuse/core";
 
-  const { coords } = useGeolocation();
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -75,7 +57,7 @@
   const emits = defineEmits(["on-favourite"]);
 
   const siteItem = computed(() => props?.item as SiteView);
-  provide("userPosition", coords);
+  // provide("userPosition", coords);
 
   const translatedContent: any = computed(() =>
     translate(siteItem.value.description, siteItem.value.meta, "description")
