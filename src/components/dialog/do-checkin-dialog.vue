@@ -14,7 +14,7 @@
       <q-page-container>
         <q-page>
           <!-- Content here -->
-          <chekc-in-tab :item="item" :currentLocation="currentLocation" />
+          <chekc-in-tab :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -35,10 +35,6 @@
   defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
-      required: true
-    },
-    currentLocation: {
-      type: Object as PropType<any>,
       required: true
     }
   });

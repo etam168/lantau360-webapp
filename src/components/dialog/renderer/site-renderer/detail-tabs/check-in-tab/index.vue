@@ -42,19 +42,15 @@
 
   // const { coords } = useGeolocation();
   import { useUserStore } from "@/stores/user";
+  const { notify } = useUtilities();
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    currentLocation: {
-      type: Object as PropType<any>,
-      required: true
     }
   });
-
-  const userCooords = ref(props.currentLocation);
+  const location = ref();
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
 
@@ -68,7 +64,8 @@
   const isPermissionDenied = ref(false);
 
   onMounted(() => {
-    checkGeoPermissionState();
+    // checkGeoPermissionState();
+    getCurrentLocation();
   });
 
   async function checkGeoPermissionState() {
@@ -78,7 +75,7 @@
       switch (status) {
         case GeolocationPermissionStatus.GRANTED:
           loading.value = true;
-          getLocation();
+          getLocationDetails();
           break;
         case GeolocationPermissionStatus.DENIED:
           isPermissionDenied.value = true;
@@ -93,10 +90,10 @@
     }
   }
 
-  async function getLocation() {
+  async function getLocationDetails() {
     const { latitude, longitude } = props.item;
     await calculateDistance();
-    await getAddressFromCoordinates(userCooords.value.latitude, userCooords.value.longitude, true);
+    await getAddressFromCoordinates(location.value.latitude, location.value.longitude, true);
     await getAddressFromCoordinates(latitude, longitude, false);
     loading.value = false;
   }
@@ -104,8 +101,8 @@
   async function calculateDistance() {
     const { latitude, longitude } = props.item;
     const sourceCoords = {
-      latitude: userCooords.value.latitude,
-      longitude: userCooords.value.longitude
+      latitude: location.value.latitude,
+      longitude: location.value.longitude
     };
     const destinationCoords = { latitude, longitude };
 
@@ -132,4 +129,39 @@
       console.error("Error fetching address:", error);
     }
   }
+
+  const getCurrentLocation = () => {
+    loading.value = true;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    } else {
+      notify("Geolocation is not supported by this browser.", "negative");
+    }
+  };
+
+  const onSuccess = (position: GeolocationPosition) => {
+    location.value = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
+    checkGeoPermissionState();
+  };
+
+  const onError = (error: GeolocationPositionError) => {
+    loading.value = false;
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        notify("User denied the request for geolocation.", "negative");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        notify("Location information is unavailable.", "negative");
+        break;
+      case error.TIMEOUT:
+        notify("The request to get user location timed out.", "negative");
+        break;
+      default:
+        notify("An unknown error occurred.", "negative");
+        break;
+    }
+  };
 </script>
