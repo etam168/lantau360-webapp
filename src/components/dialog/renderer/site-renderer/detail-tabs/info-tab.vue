@@ -74,6 +74,10 @@
     }
   });
 
+  onMounted(() => {
+    getLocation();
+  });
+
   const { locale } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
   const $q = useQuasar();
@@ -89,6 +93,8 @@
 
     return 10.5;
   });
+  const isLocationAvailable = ref(false);
+
   const markerPosition = computed<LatLngExpression>(() => [
     siteItem.value.latitude,
     siteItem.value.longitude
@@ -132,15 +138,56 @@
       console.error("Map link not available");
     }
   };
-
   function checkIn() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
-      componentProps: {
-        item: props.item
-      }
-    });
+    if (isLocationAvailable.value) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
+        componentProps: {
+          item: props.item,
+          currentLocation: location.value
+        }
+      });
+    } else {
+      // Handle the case where location is not available yet
+      // You can show a message to the user or take alternative actions
+      notify("Location not available yet. Please wait for few seconds.", "negative");
+    }
   }
+
+  const location = ref();
+
+  const getLocation = () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    } else {
+      notify("Geolocation is not supported by this browser.", "negative");
+    }
+  };
+
+  const onSuccess = (position: GeolocationPosition) => {
+    location.value = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
+    isLocationAvailable.value = true;
+  };
+
+  const onError = (error: GeolocationPositionError) => {
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        notify("User denied the request for geolocation.", "negative");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        notify("Location information is unavailable.", "negative");
+        break;
+      case error.TIMEOUT:
+        notify("The request to get user location timed out.", "negative");
+        break;
+      default:
+        notify("An unknown error occurred.", "negative");
+        break;
+    }
+  };
 </script>
 
 <style scoped>

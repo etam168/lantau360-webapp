@@ -13,7 +13,7 @@
       <q-page-container>
         <q-page>
           <!-- Content here -->
-          <chekc-in-tab :item="item" />
+          <chekc-in-tab :item="item" :currentLocation="currentLocation" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -24,16 +24,20 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { useDialogPluginComponent } from "quasar";
   import { ref } from "vue";
-  import { useGeolocation } from "@vueuse/core";
+  // import { useGeolocation } from "@vueuse/core";
 
-  const { coords } = useGeolocation();
-  provide("userPosition", coords);
+  // const { coords } = useGeolocation();
+  // provide("userPosition", coords);
 
   import ChekcInTab from "@/components/dialog/renderer/site-renderer/detail-tabs/check-in-tab/index.vue";
 
   defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
+      required: true
+    },
+    currentLocation: {
+      type: Object as PropType<any>,
       required: true
     }
   });

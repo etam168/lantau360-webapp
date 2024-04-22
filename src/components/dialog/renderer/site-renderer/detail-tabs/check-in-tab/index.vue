@@ -19,6 +19,12 @@
   <template
     ><div>{{ $t("home.turnOnLocation") }}</div></template
   >
+  <!-- <div>
+    <button @click="getLocationTest()">Get Location</button>
+    <div v-if="location">
+      Latitude: {{ location.latitude }}, Longitude: {{ location.longitude }}
+    </div>
+  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -32,17 +38,23 @@
   import InputTemplate from "./input-template.vue";
   import LoginWidget from "./login-widget.vue";
   import PermissionDeniedWiget from "./permission-denied-widget.vue";
+  // import { useGeolocation } from "@vueuse/core";
 
+  // const { coords } = useGeolocation();
   import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    currentLocation: {
+      type: Object as PropType<any>,
+      required: true
     }
   });
 
-  const userCooords = inject("userPosition") as Ref<GeolocationCoordinates>;
+  const userCooords = ref(props.currentLocation);
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
 
@@ -68,12 +80,12 @@
           loading.value = true;
           getLocation();
           break;
-
         case GeolocationPermissionStatus.DENIED:
           isPermissionDenied.value = true;
+          alert("User denied the request for geolocation.");
           break;
         default:
-          console.log("Unknown geolocation permission status.");
+          alert("Unknown geolocation permission status.");
           break;
       }
     } catch (error) {
@@ -83,6 +95,7 @@
 
   async function getLocation() {
     const { latitude, longitude } = props.item;
+    debugger;
     await calculateDistance();
     await getAddressFromCoordinates(userCooords.value.latitude, userCooords.value.longitude, true);
     await getAddressFromCoordinates(latitude, longitude, false);
