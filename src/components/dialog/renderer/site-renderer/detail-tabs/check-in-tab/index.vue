@@ -83,14 +83,13 @@
 
   async function getLocation() {
     const { latitude, longitude } = props.item;
-
-    calculateDistance();
+    await calculateDistance();
     await getAddressFromCoordinates(userCooords.value.latitude, userCooords.value.longitude, true);
     await getAddressFromCoordinates(latitude, longitude, false);
     loading.value = false;
   }
 
-  const calculateDistance = () => {
+  async function calculateDistance() {
     const { latitude, longitude } = props.item;
     const sourceCoords = {
       latitude: userCooords.value.latitude,
@@ -98,8 +97,8 @@
     };
     const destinationCoords = { latitude, longitude };
 
-    distanceToDestination.value = geolib.getDistance(sourceCoords, destinationCoords);
-  };
+    distanceToDestination.value = await geolib.getDistance(sourceCoords, destinationCoords);
+  }
 
   async function getAddressFromCoordinates(
     latitude: number,

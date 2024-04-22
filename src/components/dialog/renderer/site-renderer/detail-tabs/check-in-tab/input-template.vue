@@ -8,8 +8,11 @@
     v-slot="{ meta, values }"
   >
     <q-item class="justify-center">
-      <q-item-label v-if="!isDataAvailable" style="color: red"
+      <q-item-label v-if="!isSubmitReviewEnabled" style="color: red"
         >{{ "Current and destiantion location is required to submit review" }}
+      </q-item-label>
+      <q-item-label v-else-if="props.distance && props.distance > 10" style="color: red">
+        {{ "You must be under 10 meter distance to submit review" }}
       </q-item-label>
     </q-item>
     <q-card flat class="row justify-center">
@@ -65,7 +68,7 @@
             color="primary"
             type="submit"
             size="md"
-            :disabled="!isDataAvailable"
+            :disabled="!isSubmitReviewEnabled || (props.distance && props.distance > 10)"
           />
         </q-card-actions>
       </q-card-section>
@@ -110,8 +113,7 @@
   const schema = yup.object({
     description: yup.string().required().label("descritption")
   });
-  const isDataAvailable = computed(() => {
-    debugger;
+  const isSubmitReviewEnabled = computed(() => {
     return props.currentAddress && props.destinationAddress && props.distance;
   });
   function onSubmit(values: any) {
