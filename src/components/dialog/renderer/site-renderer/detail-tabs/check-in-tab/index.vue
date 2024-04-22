@@ -95,7 +95,6 @@
 
   async function getLocation() {
     const { latitude, longitude } = props.item;
-    debugger;
     await calculateDistance();
     await getAddressFromCoordinates(userCooords.value.latitude, userCooords.value.longitude, true);
     await getAddressFromCoordinates(latitude, longitude, false);

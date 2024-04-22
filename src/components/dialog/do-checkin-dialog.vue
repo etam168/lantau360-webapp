@@ -4,6 +4,7 @@
     transition-show="slide-up"
     transition-hide="slide-down"
     :model-value="isDialogVisible"
+    maximized
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">

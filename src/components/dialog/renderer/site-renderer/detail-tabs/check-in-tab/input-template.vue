@@ -11,9 +11,6 @@
       <q-item-label v-if="!isSubmitReviewEnabled" style="color: red"
         >{{ "Current and destiantion location is required to submit review" }}
       </q-item-label>
-      <q-item-label v-else-if="props.distance && props.distance > 10" style="color: red">
-        {{ "You must be under 10 meter distance to submit review" }}
-      </q-item-label>
     </q-item>
     <q-card flat class="row justify-center">
       <q-card-section
@@ -54,23 +51,31 @@
             <q-item-label class="text-caption">{{ distance + " (Meters away)" }} </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item class="q-mt-lg q-pa-none">
-          <q-item-section class="q-pa-none">
-            <vee-input type="textarea" :label="$t('home.review')" name="description" />
-          </q-item-section>
+        <q-item v-if="props.distance && props.distance > 10">
+          <q-item-label style="color: red">
+            {{ "You must be under 10 meter distance to submit review" }}
+          </q-item-label>
         </q-item>
 
-        <q-card-actions class="q-mt-xs q-pa-none">
-          <app-button
-            class="full-width"
-            label="Submit"
-            :loading="loading"
-            color="primary"
-            type="submit"
-            size="md"
-            :disabled="!isSubmitReviewEnabled || (props.distance && props.distance > 10)"
-          />
-        </q-card-actions>
+        <div v-if="props.distance && props.distance <= 10">
+          <q-item class="q-mt-lg q-pa-none">
+            <q-item-section class="q-pa-none">
+              <vee-input type="textarea" :label="$t('home.review')" name="description" />
+            </q-item-section>
+          </q-item>
+
+          <q-card-actions class="q-mt-xs q-pa-none">
+            <app-button
+              class="full-width"
+              label="Submit"
+              :loading="loading"
+              color="primary"
+              type="submit"
+              size="md"
+              :disabled="!isSubmitReviewEnabled"
+            />
+          </q-card-actions>
+        </div>
       </q-card-section>
     </q-card>
   </Form>
