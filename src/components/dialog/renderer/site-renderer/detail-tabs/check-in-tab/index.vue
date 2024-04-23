@@ -3,14 +3,10 @@
     <login-widget />
   </template>
   <template v-else-if="locationError != null">
-    {{ locationError.message }}
+    <error-widget :error="locationError as GeoLocationError" />
   </template>
   <template v-else-if="loading">
-    {{ isSupported }}
     <loading-widget />
-  </template>
-  <template v-else-if="isPermissionDenied">
-    <permission-denied-wiget />
   </template>
 
   <template v-else>
@@ -32,7 +28,7 @@
   import LoadingWidget from "./loading-widget.vue";
   import InputTemplate from "./input-template.vue";
   import LoginWidget from "./login-widget.vue";
-  import PermissionDeniedWiget from "./permission-denied-widget.vue";
+  import ErrorWidget from "./error-widget.vue";
   import { useGeolocation } from "@vueuse/core";
   import GeoLocationError from "@/interfaces/geo-location-error";
   const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
@@ -53,10 +49,9 @@
 
   const userStore = useUserStore();
   const isAuthenticated = computed(() => userStore.isUserLogon());
-  const isPermissionDenied = ref(false);
+
   const addressErrorCode = 5;
   const deviceSupportErrorCode = 4;
-  const locationUnavailableError = 2;
 
   async function getLocationDetails() {
     const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
@@ -102,22 +97,28 @@
       locationError.value = { code: addressErrorCode } as GeoLocationError;
     }
   }
+
   watch(
-    [() => locationError, () => isSupported, () => userLocation],
-    ([error, supported, location]) => {
-      if (error) {
-        loading.value = false;
-      } else if (!supported) {
-        locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
-        loading.value = false;
-      } else if (location) {
-        if (location.value.latitude == null || location.value.longitude == null) {
-          locationError.value = { code: locationUnavailableError } as GeoLocationError;
-          loading.value = false;
-        } else {
-          getLocationDetails();
-        }
-      }
+    () => locationError,
+    () => {
+      loading.value = false;
+    },
+    { deep: true }
+  );
+
+  watch(
+    () => isSupported,
+    () => {
+      locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
+      loading.value = false;
+    },
+    { deep: true }
+  );
+
+  watch(
+    () => userLocation,
+    () => {
+      getLocationDetails();
     },
     { deep: true }
   );
