@@ -2,13 +2,18 @@
   <template v-if="!isAuthenticated">
     <login-widget />
   </template>
+  <template v-else-if="locationError != null">
+    {{ locationError.message }}
+  </template>
   <template v-else-if="loading">
+    {{ isSupported }}
     <loading-widget />
   </template>
   <template v-else-if="isPermissionDenied">
     <permission-denied-wiget />
   </template>
-  <template v-else-if="geoPermissionStatus === GeolocationPermissionStatus.GRANTED">
+
+  <template v-else>
     <input-template
       :item-id="(item as SiteView).siteId"
       :current-Address="currentLocationAddress"
@@ -16,15 +21,6 @@
       :distance="distanceToDestination"
     />
   </template>
-  <template>
-    <div>{{ $t("home.turnOnLocation") }}</div></template
-  >
-  <!-- <div>
-    <button @click="getLocationTest()">Get Location</button>
-    <div v-if="location">
-      Latitude: {{ location.latitude }}, Longitude: {{ location.longitude }}
-    </div>
-  </div> -->
 </template>
 
 <script setup lang="ts">
@@ -32,17 +28,15 @@
 
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GeolocationPermissionStatus } from "@/composable/geo_permission";
 
   import LoadingWidget from "./loading-widget.vue";
   import InputTemplate from "./input-template.vue";
   import LoginWidget from "./login-widget.vue";
   import PermissionDeniedWiget from "./permission-denied-widget.vue";
   import { useGeolocation } from "@vueuse/core";
-
-  const { coords: userLocation } = useGeolocation();
+  import GeoLocationError from "@/interfaces/geo-location-error";
+  const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
   import { useUserStore } from "@/stores/user";
-  // const { notify } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -50,52 +44,19 @@
       required: true
     }
   });
-  // const location = ref();
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
 
   const distanceToDestination = ref(0);
-  const geoPermissionStatus = ref(GeolocationPermissionStatus.DENIED);
 
   const loading = ref(true);
 
   const userStore = useUserStore();
   const isAuthenticated = computed(() => userStore.isUserLogon());
   const isPermissionDenied = ref(false);
-
-  watch(
-    () => userLocation,
-    () => {
-      checkGeoPermissionState();
-    },
-    { deep: true }
-  );
-
-  async function checkGeoPermissionState() {
-    try {
-      const { status } = await handlePermission();
-      geoPermissionStatus.value = status;
-
-      switch (status) {
-        case GeolocationPermissionStatus.GRANTED:
-          getLocationDetails();
-          break;
-        case GeolocationPermissionStatus.DENIED:
-          loading.value = false;
-
-          isPermissionDenied.value = true;
-          alert("User denied the request for geolocation.");
-          break;
-        default:
-          loading.value = false;
-
-          alert("Unknown geolocation permission status.");
-          break;
-      }
-    } catch (error) {
-      console.error("Error occurred while requesting geolocation permission:", error);
-    }
-  }
+  const addressErrorCode = 5;
+  const deviceSupportErrorCode = 4;
+  const locationUnavailableError = 2;
 
   async function getLocationDetails() {
     const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
@@ -137,7 +98,27 @@
         destinationLocationAddress.value = response.data.display_name;
       }
     } catch (error) {
-      console.error("Error fetching address:", error);
+      loading.value = false;
+      locationError.value = { code: addressErrorCode } as GeoLocationError;
     }
   }
+  watch(
+    [() => locationError, () => isSupported, () => userLocation],
+    ([error, supported, location]) => {
+      if (error) {
+        loading.value = false;
+      } else if (!supported) {
+        locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
+        loading.value = false;
+      } else if (location) {
+        if (location.value.latitude == null || location.value.longitude == null) {
+          locationError.value = { code: locationUnavailableError } as GeoLocationError;
+          loading.value = false;
+        } else {
+          getLocationDetails();
+        }
+      }
+    },
+    { deep: true }
+  );
 </script>
