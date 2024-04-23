@@ -1,13 +1,20 @@
 export default {
   allLocations: "Locations",
+  curentLocation: "Curent Location:",
+  description: "description",
+  destinationAddress: "Destination Address",
+  metersAway: "Meters Away",
   resources: "Resources",
   other: "Other",
   siteSearch: "Site Search",
   review: "Review",
   turnOnLocation: "Please turn on location feature the settings",
   loadingRefreshLocation: "Please wait to refresh the location..",
-  locationPermissionDenied: "Location permission is denied. Please enable it from settings",
   tripAdvisor: "Trip Advisor",
+
+  message: {
+    checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"
+  },
   tabItems: {
     aboutUs: "About Us",
     checkin: "Check-In",

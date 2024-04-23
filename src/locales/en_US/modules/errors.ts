@@ -17,5 +17,14 @@ export default {
   minimum3letter: "Minimum 3 letters are required",
   userNotFound: "User is not found",
   passwordNotUpdated: "Password not updated",
-  emialAreadyExists: "Email already exists!!!."
+  emialAreadyExists: "Email already exists!!!.",
+  locationUnavailable:
+    "Location un-available, please check the locaton service settings and internet connection.",
+  errorTimeout: "Timeout to pick the location, please check your internet connection",
+  errorDeviceSupport: "Sorry, your doesn't support location services",
+  errorPickAddress: "Sorry, unable to pick the address",
+  errorPickAddressTryAgain: "Something wen't wrong to pick current location, please try again",
+  locationPermissionDenied: "Location permission is denied. Please enable it from settings",
+  destinationRequired: "Current and destiantion location is required to submit review",
+  under10MeterDistance: "You must be under 10 meter distance to submit review"
 };

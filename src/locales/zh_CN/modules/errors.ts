@@ -17,5 +17,14 @@ export default {
   minimum3letter: "最少需要3个字符",
   userNotFound: "找不到用户",
   passwordNotUpdated: "密码未更新",
-  emialAreadyExists: "邮箱已存在！！！"
+  emialAreadyExists: "邮箱已存在！！！",
+  locationUnavailable:
+    "Location un-available, please check the locaton service settings and internet connection.",
+  errorTimeout: "Timeout to pick the location, please check your internet connection",
+  errorDeviceSupport: "Sorry, your doesn't support location services",
+  errorPickAddress: "Sorry, unable to pick the address",
+  errorPickAddressTryAgain: "Something wen't wrong to pick current location, please try again",
+  locationPermissionDenied: "位置权限被拒绝，请从设置中启用",
+  destinationRequired: "Current and destiantion location is required to submit review",
+  under10MeterDistance: "You must be under 10 meter distance to submit review"
 };

@@ -9,7 +9,7 @@
   >
     <q-item class="justify-center">
       <q-item-label v-if="!isSubmitReviewEnabled" style="color: red"
-        >{{ "Current and destiantion location is required to submit review" }}
+        >{{ $t("errors.destinationRequired") }}
       </q-item-label>
     </q-item>
     <q-card flat class="row justify-center">
@@ -29,7 +29,7 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-caption">{{ "Cuurent Location:" }} </q-item-label>
+            <q-item-label class="text-caption">{{ $t("home.curentLocation") }} </q-item-label>
             <q-item-label class="text-caption">{{ currentAddress }} </q-item-label>
           </q-item-section>
         </q-item>
@@ -46,14 +46,16 @@
             />
           </q-item-section>
           <q-item-section>
-            <q-item-label class="text-caption">{{ "Destiantion Address" }} </q-item-label>
+            <q-item-label class="text-caption">{{ $t("home.destinationAddress") }} </q-item-label>
             <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
-            <q-item-label class="text-caption">{{ distance + " (Meters away)" }} </q-item-label>
+            <q-item-label class="text-caption"
+              >{{ distance + $t("home.metersAway") }}
+            </q-item-label>
           </q-item-section>
         </q-item>
         <q-item v-if="props.distance && props.distance > 10">
           <q-item-label style="color: red">
-            {{ "You must be under 10 meter distance to submit review" }}
+            {{ $t("errors.under10MeterDistance") }}
           </q-item-label>
         </q-item>
 
@@ -87,6 +89,7 @@
   import { CheckIn } from "@/interfaces/models/entities/check-in";
   import { ref } from "vue";
   import { useUserStore } from "@/stores/user";
+  import i18n from "@/plugins/i18n/i18n";
 
   const props = defineProps({
     itemId: {
@@ -110,13 +113,14 @@
   const loading = ref(false);
   const userStore = useUserStore();
   const $q = useQuasar();
+  const { t } = i18n.global;
 
   const form = ref();
   const initialValues = ref({
     description: ""
   });
   const schema = yup.object({
-    description: yup.string().required().label("descritption")
+    description: yup.string().required().label(t("home.description"))
   });
   const isSubmitReviewEnabled = computed(() => {
     return props.currentAddress && props.destinationAddress && props.distance;
@@ -141,7 +145,7 @@
           .post("/CheckIn", checkInDto)
           .then(() => {
             $q.notify({
-              message: "CheckIn data submit successfully",
+              message: t("home.message.checkInDataSubmittedSuccessfully"),
               type: "positive",
               color: "primary"
             });

@@ -29,28 +29,25 @@
   };
 
   const errorMessageList = computed(() => [
-    { code: errorCodes.PERMISSION_DENIED, message: t("home.locationPermissionDenied") },
+    { code: errorCodes.PERMISSION_DENIED, message: t("errors.locationPermissionDenied") },
     {
       code: errorCodes.POSITION_UNAVAILABLE,
-      message:
-        "Location un-available, please check the locaton service settings and internet connection. "
+      message: t("errors.locationUnavailable")
     },
     {
       code: errorCodes.TIMEOUT,
-      message: "Timeout to pick the location, please check your internet connection"
+      message: t("errors.errorTimeout")
     },
     {
       code: errorCodes.DEVICE_SUPPORT_ERROR,
-      message: "Sorry, your doesn't support location services"
+      message: t("errors.errorDeviceSupport")
     },
-    { code: errorCodes.ADDRESS_ERROR, message: "Sorry, unable to pick the address" }
+    { code: errorCodes.ADDRESS_ERROR, message: t("errors.errorPickAddress") }
   ]);
 
   const errorMessage = computed(() => {
     const errorObject = errorMessageList.value.find(er => er.code == error?.code);
-    return errorObject
-      ? errorObject.message
-      : "Something wen't wrong to pick current location, please try again";
+    return errorObject ? errorObject.message : t("errors.errorPickAddressTryAgain");
   });
 </script>
 
