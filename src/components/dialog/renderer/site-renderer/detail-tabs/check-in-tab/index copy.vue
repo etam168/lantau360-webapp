@@ -16,8 +16,8 @@
       :distance="distanceToDestination"
     />
   </template>
-  <template>
-    <div>{{ $t("home.turnOnLocation") }}</div></template
+  <template
+    ><div>{{ $t("home.turnOnLocation") }}</div></template
   >
   <!-- <div>
     <button @click="getLocationTest()">Get Location</button>
@@ -38,11 +38,11 @@
   import InputTemplate from "./input-template.vue";
   import LoginWidget from "./login-widget.vue";
   import PermissionDeniedWiget from "./permission-denied-widget.vue";
-  import { useGeolocation } from "@vueuse/core";
+  // import { useGeolocation } from "@vueuse/core";
 
-  const { coords: userLocation } = useGeolocation();
+  // const { coords } = useGeolocation();
   import { useUserStore } from "@/stores/user";
-  // const { notify } = useUtilities();
+  const { notify } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -50,45 +50,38 @@
       required: true
     }
   });
-  // const location = ref();
+  const location = ref();
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
 
   const distanceToDestination = ref(0);
   const geoPermissionStatus = ref(GeolocationPermissionStatus.DENIED);
 
-  const loading = ref(true);
+  const loading = ref(false);
 
   const userStore = useUserStore();
   const isAuthenticated = computed(() => userStore.isUserLogon());
   const isPermissionDenied = ref(false);
 
-  watch(
-    () => userLocation,
-    () => {
-      checkGeoPermissionState();
-    },
-    { deep: true }
-  );
+  onMounted(() => {
+    // checkGeoPermissionState();
+    getCurrentLocation();
+  });
 
   async function checkGeoPermissionState() {
     try {
       const { status } = await handlePermission();
       geoPermissionStatus.value = status;
-
       switch (status) {
         case GeolocationPermissionStatus.GRANTED:
+          loading.value = true;
           getLocationDetails();
           break;
         case GeolocationPermissionStatus.DENIED:
-          loading.value = false;
-
           isPermissionDenied.value = true;
           alert("User denied the request for geolocation.");
           break;
         default:
-          loading.value = false;
-
           alert("Unknown geolocation permission status.");
           break;
       }
@@ -98,24 +91,20 @@
   }
 
   async function getLocationDetails() {
-    const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
+    const { latitude, longitude } = props.item;
     await calculateDistance();
-    await getAddressFromCoordinates(
-      userLocation.value.latitude,
-      userLocation.value.longitude,
-      true
-    );
-    await getAddressFromCoordinates(siteLatitude, siteLongitude, false);
+    await getAddressFromCoordinates(location.value.latitude, location.value.longitude, true);
+    await getAddressFromCoordinates(latitude, longitude, false);
     loading.value = false;
   }
 
   async function calculateDistance() {
-    const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
+    const { latitude, longitude } = props.item;
     const sourceCoords = {
-      latitude: userLocation.value.latitude,
-      longitude: userLocation.value.longitude
+      latitude: location.value.latitude,
+      longitude: location.value.longitude
     };
-    const destinationCoords = { latitude: siteLatitude, longitude: siteLongitude };
+    const destinationCoords = { latitude, longitude };
 
     distanceToDestination.value = await geolib.getDistance(sourceCoords, destinationCoords);
   }
@@ -140,4 +129,39 @@
       console.error("Error fetching address:", error);
     }
   }
+
+  const getCurrentLocation = () => {
+    loading.value = true;
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(onSuccess, onError);
+    } else {
+      notify("Geolocation is not supported by this browser.", "negative");
+    }
+  };
+
+  const onSuccess = (position: GeolocationPosition) => {
+    location.value = {
+      latitude: position.coords.latitude,
+      longitude: position.coords.longitude
+    };
+    checkGeoPermissionState();
+  };
+
+  const onError = (error: GeolocationPositionError) => {
+    loading.value = false;
+    switch (error.code) {
+      case error.PERMISSION_DENIED:
+        notify("User denied the request for geolocation.", "negative");
+        break;
+      case error.POSITION_UNAVAILABLE:
+        notify("Location information is unavailable.", "negative");
+        break;
+      case error.TIMEOUT:
+        notify("The request to get user location timed out.", "negative");
+        break;
+      default:
+        notify("An unknown error occurred.", "negative");
+        break;
+    }
+  };
 </script>
