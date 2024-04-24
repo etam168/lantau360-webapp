@@ -1,7 +1,8 @@
 export default {
   allLocations: "地點",
   curentLocation: "Curent Location:",
-  description: "description",
+  description: "Description",
+  location: "Location",
   destinationAddress: "Destination Address",
   metersAway: "Meters Away",
   resources: "資源",
