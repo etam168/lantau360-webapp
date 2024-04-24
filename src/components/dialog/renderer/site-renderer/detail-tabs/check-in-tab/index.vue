@@ -31,7 +31,6 @@
   import ErrorWidget from "./error-widget.vue";
   import { useGeolocation } from "@vueuse/core";
   import GeoLocationError from "@/interfaces/geo-location-error";
-  const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
   import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
@@ -40,11 +39,12 @@
       required: true
     }
   });
+
+  const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
+
   const currentLocationAddress = ref();
   const destinationLocationAddress = ref();
-
   const distanceToDestination = ref(0);
-
   const loading = ref(true);
 
   const userStore = useUserStore();
@@ -109,7 +109,8 @@
   watch(
     () => isSupported,
     () => {
-      locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
+      if (!isSupported.value)
+        locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
       loading.value = false;
     },
     { deep: true }
