@@ -1,5 +1,11 @@
 <template>
-  <q-card flat class="location-card" style="height: 430px">
+  <q-card
+    flat
+    class="location-card"
+    :style="{
+      height: $q.screen.gt.xs ? '370px' : 'auto'
+    }"
+  >
     <q-card-section
       class="location-card-section"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"

@@ -11,17 +11,19 @@
     </q-item>
 
     <q-list bordered class="rounded-borders q-mx-lg q-mb-xl">
-      <q-expansion-item group="siteGroup" dense dense-toggle>
+      <q-expansion-item group="siteGroup" dense-toggle>
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar size="24px" color="primary" text-color="white"></q-avatar>
           </q-item-section>
           <q-item-section> Description </q-item-section>
         </template>
-        <app-text-editor v-model="translatedContent" />
+        <q-item class="q-px-xl q-py-md" style="background-color: #f6f6f6">
+          <app-text-editor v-model="translatedContent" />
+        </q-item>
       </q-expansion-item>
 
-      <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
+      <q-expansion-item group="siteGroup" dense-toggle default-opened>
         <template v-slot:header>
           <q-item-section avatar>
             <q-avatar size="24px" color="primary" text-color="white"></q-avatar>
@@ -29,7 +31,9 @@
 
           <q-item-section> Location </q-item-section>
         </template>
-        <info-tab :item="item" />
+        <!-- <q-item class="q-px-xl" style="background-color: #f6f6f6">
+        </q-item> -->
+        <info-tab :item="item" style="background-color: #f6f6f6" />
       </q-expansion-item>
     </q-list>
   </q-list>
