@@ -4,11 +4,14 @@
       <q-item-section>
         <q-item class="q-pa-none">
           <q-item-section>
-            <q-avatar size="56px">
+            <!-- <q-avatar size="56px">
               <q-img :src="iconPath" />
-            </q-avatar>
+            </q-avatar> -->
 
-            <q-item-label class="text-weight-medium text-subtitle1">{{ caption }}</q-item-label>
+            <q-avatar size="56px">
+              <img :src="iconPath" />
+            </q-avatar>
+            <q-item-label class="text -weight-medium text-subtitle1">{{ caption }}</q-item-label>
             <q-item-label class="text-caption">{{ weatherDate }}</q-item-label>
           </q-item-section>
         </q-item>
@@ -54,6 +57,7 @@
     return translate(props.data?.caption ?? "", props.data?.meta, "caption");
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const iconPath = computed(() => {
     const fileNameWithoutExtension = props.data?.icon.split(".")[0];
     return `/img/weather/${fileNameWithoutExtension}.svg`;
