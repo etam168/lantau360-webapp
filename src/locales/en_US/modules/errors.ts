@@ -26,5 +26,9 @@ export default {
   errorPickAddressTryAgain: "Something wen't wrong to pick current location, please try again",
   locationPermissionDenied: "Location permission is denied. Please enable it from settings",
   destinationRequired: "Current and destiantion location is required to submit review",
-  under10MeterDistance: "You must be under 10 meter distance to submit review"
+  under10MeterDistance: "You must be under 10 meter distance to submit review",
+  weAreSorry: "We're Sorry",
+  seemsInternetConnection: "There seems to be a problem with your internet connection.",
+  pleaseCheckConnection: "Please check your connection and try again.",
+  retry: "Retry"
 };

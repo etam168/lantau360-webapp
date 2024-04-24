@@ -7,6 +7,7 @@ export const NO_FREE_POINTS = 20;
 export const CAROUSEL_BACKGROUND = "@/assets/img/home-bg.webp";
 export const PLACEHOLDER_AVATAR = "./img/icons/avatar.png";
 export const PLACEHOLDER_THUMBNAIL = "./img/icons/no_image_available.jpeg";
+export const NO_INTERNET = "./img/icons/no_wifi.png";
 
 export { default as DIRECTORY_GROUPS } from "./app/directory-groups";
 export { default as RENDERER } from "./app/renderer";
