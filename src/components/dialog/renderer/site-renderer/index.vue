@@ -14,16 +14,20 @@
       <q-item-section class="q-mb-md"> {{ $t("home.description") }} </q-item-section>
 
       <q-card>
-        <q-card-section>
-          <app-text-editor v-model="translatedContent" />
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item group="siteGroup" dense dense-toggle>
+            <app-text-editor v-model="translatedContent" class="q-pa-md" />
+          </q-expansion-item>
         </q-card-section>
       </q-card>
 
       <q-item-section class="q-my-sm"> {{ $t("home.location") }} </q-item-section>
 
       <q-card>
-        <q-card-section>
-          <info-tab :item="item" style="background-color: #f6f6f6" />
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
+            <info-tab :item="item" style="background-color: #f6f6f6" />
+          </q-expansion-item>
         </q-card-section>
       </q-card>
     </q-list>
