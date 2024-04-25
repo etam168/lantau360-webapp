@@ -1,5 +1,5 @@
 <template>
-  <q-list padding class="q-pa-none" style="background-color: #f6f6f6">
+  <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
       <q-item-section></q-item-section>
       <q-item-section side>
@@ -10,23 +10,35 @@
       /></q-item-section>
     </q-item>
 
-    <q-list class="rounded-borders q-mx-lg q-mb-xl">
-      <q-item-section class="q-mb-md"> {{ $t("home.description") }} </q-item-section>
-
-      <q-card>
+    <q-list class="rounded-borders q-mx-lg">
+      <q-card class="q-mb-md">
         <q-card-section class="q-pa-sm">
-          <q-expansion-item group="siteGroup" dense dense-toggle>
-            <app-text-editor v-model="translatedContent" class="q-pa-md" />
+          <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
+            <template v-slot:header>
+              <q-item-section> {{ $t("home.description") }} </q-item-section>
+            </template>
+
+            <q-card>
+              <q-card-section>
+                <app-text-editor v-model="translatedContent" class="q-pa-md" />
+              </q-card-section>
+            </q-card>
           </q-expansion-item>
         </q-card-section>
       </q-card>
 
-      <q-item-section class="q-my-sm"> {{ $t("home.location") }} </q-item-section>
-
       <q-card>
         <q-card-section class="q-pa-sm">
           <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
-            <info-tab :item="item" style="background-color: #f6f6f6" />
+            <template v-slot:header>
+              <q-item-section> {{ $t("home.location") }} </q-item-section>
+            </template>
+
+            <q-card>
+              <q-card-section>
+                <info-tab :item="item" style="background-color: #f6f6f6" />
+              </q-card-section>
+            </q-card>
           </q-expansion-item>
         </q-card-section>
       </q-card>
