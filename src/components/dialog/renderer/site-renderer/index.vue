@@ -18,7 +18,6 @@
             group="siteGroup"
             dense
             dense-toggle
-            default-opened
             header-class="text-h6"
           >
             <q-separator />
@@ -39,6 +38,7 @@
             group="siteGroup"
             dense
             dense-toggle
+            default-opened
             header-class="text-h6"
           >
             <q-separator />
@@ -79,9 +79,19 @@
   const siteItem = computed(() => props?.item as SiteView);
   // provide("userPosition", coords);
 
-  const translatedContent: any = computed(() =>
-    translate(siteItem.value.description, siteItem.value.meta, "description")
-  );
+  const translatedContent = ref("");
+
+  watchEffect(() => {
+    translatedContent.value = translate(
+      siteItem.value.description,
+      siteItem.value.meta,
+      "description"
+    );
+  });
+
+  // const translatedContent: any = computed(() =>
+  //   translate(siteItem.value.description, siteItem.value.meta, "description")
+  // );
 
   const onBtnFavClick = () => {
     emits("on-favourite");

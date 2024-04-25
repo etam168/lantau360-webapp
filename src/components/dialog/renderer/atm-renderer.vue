@@ -1,65 +1,96 @@
 <template>
-  <q-card flat class="q-mx-sm q-pa-none">
-    <q-card-section class="text-right">
-      <app-button-rounded
-        :text-color="isFavourite ? 'red' : 'white'"
-        icon="favorite"
-        @click="onBtnFavClick"
-      />
-    </q-card-section>
-    <q-card-section
-      class="justify-between"
-      :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-      style="width: 100%"
-    >
-      <map-component
-        style="flex: 1"
-        :style="{
-          height: $q.screen.gt.xs ? '300px' : '200px',
-          width: $q.screen.gt.xs ? '100%' : '100%'
-        }"
-        :zoom="zoom"
-        :marker-position="markerPosition"
-        :url="localMapUrl"
-        :bounds="bounds"
-        :tooltip="mapTooltip"
-        :bottom-right-label="address"
-        @click="openGoogleMaps()"
-      />
+  <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
+    <q-item>
+      <q-item-section></q-item-section>
+      <q-item-section side>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          icon="favorite"
+          @click="onBtnFavClick"
+      /></q-item-section>
+    </q-item>
 
-      <q-list
-        dense
-        style="max-width: 250px; flex: 1"
-        :class="$q.screen.gt.xs ? 'q-pa-md' : 'q-px-none q-py-md'"
-      >
-        <q-item v-if="siteItem.contactPhone">
-          <q-item-section avatar @click="navigateToPhone">
-            <q-avatar>
-              <q-icon name="phone" color="primary" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
-            </q-item-label></q-item-section
+    <q-list class="rounded-borders q-mx-lg">
+      <q-card>
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item
+            :label="$t('home.location')"
+            group="siteGroup"
+            dense
+            dense-toggle
+            default-opened
+            header-class="text-h6"
           >
-        </q-item>
+            <q-separator />
 
-        <q-item v-if="siteItem.contactWhatsApp">
-          <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
-            <q-avatar>
-              <q-icon name="fab fa-whatsapp" color="primary" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-      </q-list>
-    </q-card-section>
-  </q-card>
+            <q-card
+              flat
+              class="q-ma-md"
+              :style="{
+                height: $q.screen.gt.xs ? '370px' : 'auto'
+              }"
+            >
+              <q-card-section
+                class="justify-between q-pa-none"
+                :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
+                style="width: 100%"
+              >
+                <map-component
+                  class=""
+                  style="flex: 1"
+                  :style="{
+                    height: $q.screen.gt.xs ? '300px' : '200px',
+                    width: $q.screen.gt.xs ? '600px' : '100%'
+                  }"
+                  :zoom="zoom"
+                  :marker-position="markerPosition"
+                  :url="localMapUrl"
+                  :bounds="bounds"
+                  :tooltip="mapTooltip"
+                  :bottom-right-label="address"
+                  @click="openGoogleMaps()"
+                />
+
+                <q-list
+                  dense
+                  style="max-width: 250px; flex: 1"
+                  :class="$q.screen.gt.xs ? 'q-pa-md' : 'q-px-none q-py-md'"
+                >
+                  <q-item v-if="siteItem.contactPhone">
+                    <q-item-section avatar @click="navigateToPhone">
+                      <q-avatar>
+                        <q-icon name="phone" color="primary" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-caption"
+                        >{{ siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone }}
+                      </q-item-label></q-item-section
+                    >
+                  </q-item>
+
+                  <q-item v-if="siteItem.contactWhatsApp">
+                    <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
+                      <q-avatar>
+                        <q-icon name="fab fa-whatsapp" color="primary" />
+                      </q-avatar>
+                    </q-item-section>
+                    <q-item-section>
+                      <q-item-label class="text-caption"
+                        >{{
+                          siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
+                        }}
+                      </q-item-label></q-item-section
+                    >
+                  </q-item>
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </q-card-section>
+      </q-card>
+    </q-list>
+  </q-list>
 </template>
 
 <script setup lang="ts">
