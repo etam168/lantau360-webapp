@@ -13,13 +13,18 @@
     <q-list class="rounded-borders q-mx-lg">
       <q-card class="q-mb-md">
         <q-card-section class="q-pa-sm">
-          <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
-            <template v-slot:header>
-              <q-item-section> {{ $t("home.description") }} </q-item-section>
-            </template>
+          <q-expansion-item
+            :label="$t('home.description')"
+            group="siteGroup"
+            dense
+            dense-toggle
+            default-opened
+            header-class="text-h6"
+          >
+            <q-separator />
 
             <q-card>
-              <q-card-section>
+              <q-card-section class="q-pa-none">
                 <app-text-editor v-model="translatedContent" class="q-pa-md" />
               </q-card-section>
             </q-card>
@@ -29,13 +34,17 @@
 
       <q-card>
         <q-card-section class="q-pa-sm">
-          <q-expansion-item group="siteGroup" dense dense-toggle default-opened>
-            <template v-slot:header>
-              <q-item-section> {{ $t("home.location") }} </q-item-section>
-            </template>
+          <q-expansion-item
+            :label="$t('home.location')"
+            group="siteGroup"
+            dense
+            dense-toggle
+            header-class="text-h6"
+          >
+            <q-separator />
 
             <q-card>
-              <q-card-section>
+              <q-card-section class="q-pa-none">
                 <info-tab :item="item" style="background-color: #f6f6f6" />
               </q-card-section>
             </q-card>
