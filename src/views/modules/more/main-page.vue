@@ -84,7 +84,7 @@
         "content"
       );
     } else if (item.name == MENU.PROFILE) {
-      OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, "profile");
+      OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, undefined, "profile");
     } else if (item.name == MENU.CHECKIN) {
       OpenDialog(import("./section/profile-checkin-dialog.vue"), undefined);
     } else if (item.name == MENU.ACCOUNT) {
@@ -130,21 +130,17 @@
         requestUrl = `${URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
         break;
     }
+    const response = await axios.get(requestUrl).catch(err => {
+      handleError(err);
+    });
 
-    axios
-      .get(requestUrl)
-      .then(response => {
-        $q.dialog({
-          component: defineAsyncComponent(() => component),
-          componentProps: {
-            data: response.data,
-            ...componentProps
-          }
-        });
-      })
-      .catch(err => {
-        handleError(err);
-      });
+    $q.dialog({
+      component: defineAsyncComponent(() => component),
+      componentProps: {
+        data: response?.data || [],
+        ...componentProps
+      }
+    });
   }
 
   async function initTransactionData() {
