@@ -10,10 +10,43 @@
           <q-item-label>{{
             $t("action.createDirectory", { directoryName: directoryName })
           }}</q-item-label>
-          <q-item-label caption>Add the gallery and description</q-item-label></q-item-section
+          <q-item-label caption>{{
+            $t("community.createPost.addGalleryDescription")
+          }}</q-item-label></q-item-section
         >
       </q-item>
     </q-card>
+
+    <q-slide-transition>
+      <div v-show="visible">
+        <q-card class="q-mb-md">
+          <q-item dense v-ripple style="width: 100%">
+            <q-item-section avatar>
+              <q-img :src="checkinImage" />
+            </q-item-section>
+
+            <q-item-section>
+              <q-item-label> </q-item-label>
+              <q-item-label class="text-red">
+                {{ $t("community.loginDialog.subtitle") }}
+              </q-item-label>
+            </q-item-section>
+            <q-space />
+            <q-item-section side top class="q-pa-none">
+              <q-card-actions align="right" class="q-px-none">
+                <q-chip clickable outline color="primary" text-color="white" @click="handleCancel">
+                  Cancel
+                </q-chip>
+
+                <q-chip clickable color="primary" text-color="white" @click="handleOk">
+                  {{ $t("auth.login.button") }}
+                </q-chip>
+              </q-card-actions>
+            </q-item-section>
+          </q-item>
+        </q-card>
+      </div>
+    </q-slide-transition>
 
     <q-list v-if="directoryItems.length > 0">
       <q-item
@@ -102,6 +135,7 @@
   import { Posting } from "@/interfaces/models/entities/posting";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   const $q = useQuasar();
+  // const router = useRouter();
 
   const emit = defineEmits(["item-click", "create-posting"]);
 
@@ -121,10 +155,12 @@
     }
   });
 
-  const { getTimeAgo, translateAlt, translate } = useUtilities();
+  const { eventBus, getTimeAgo, translateAlt, translate } = useUtilities();
 
   const userStore = useUserStore();
   //const textModel = ref("");
+  const visible = ref(false);
+  const checkinImage = ref("/img/icons/checkin.jpg");
 
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
@@ -138,8 +174,21 @@
     emit("item-click", item);
   }
 
+  function handleCancel() {
+    visible.value = false;
+  }
+
+  function handleOk() {
+    eventBus.emit("navigateToMore");
+  }
+
   function createPosting() {
-    emit("create-posting");
+    if (!userStore.isUserLogon()) {
+      visible.value = true;
+    } else {
+      visible.value = false;
+      emit("create-posting");
+    }
   }
 
   function editPosting(item: Posting) {

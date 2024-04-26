@@ -7,7 +7,8 @@ export default {
   createPost: {
     title: "Title",
     photos: "Photos",
-    inputPlaceholder: "What's on your mind ?"
+    inputPlaceholder: "What's on your mind ?",
+    addGalleryDescription: "Add the gallery and description"
   },
 
   loginDialog: {

@@ -7,7 +7,8 @@ export default {
   createPost: {
     title: "标题",
     photos: "照片",
-    inputPlaceholder: "您有什么想说的？"
+    inputPlaceholder: "您有什么想说的？",
+    addGalleryDescription: "Add the gallery and description"
   },
 
   loginDialog: {
