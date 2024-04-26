@@ -35,11 +35,6 @@
                       <app-text-editor v-model="translatedContent"
                     /></q-item-label>
                   </q-item-section>
-
-                  <!-- <q-item-section side top>
-                    <q-item-label caption>5 min ago</q-item-label>
-                    <q-icon name="star" color="yellow" />
-                  </q-item-section> -->
                 </q-item>
               </q-list>
               <!-- {{ data }} -->
@@ -55,9 +50,9 @@
   // Quasar Import
   import { throttle } from "quasar";
   import { BLOB_URL } from "@/constants";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   // Interface files
-  import { CheckIn } from "@/interfaces/models/entities/CheckIn";
 
   const props = defineProps({
     data: {
@@ -65,9 +60,6 @@
       required: true
     }
   });
-
-  // const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
-  //const { claimFreePoints, userStore } = useMoreInput();
 
   const { translate } = useUtilities();
 

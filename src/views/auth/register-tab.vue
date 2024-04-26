@@ -26,12 +26,14 @@
         name="lastName"
         placeholder="Last Name"
       />
-      <vee-input
+
+      <vee-q-tel-input name="phone" defaultIso="HK" />
+      <!-- <vee-input
         :label="$t('auth.register.phone')"
         icon="mdi-account"
         name="phone"
         placeholder="Phone"
-      />
+      /> -->
 
       <vee-input-password :label="$t('auth.login.password')" name="password" />
       <div>{{ setFormValues(values) }}</div>
