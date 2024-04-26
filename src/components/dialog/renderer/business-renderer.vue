@@ -1,14 +1,7 @@
 <template>
-  <q-list padding class="q-mx-sm q-pa-none">
+  <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
-      <q-item-section top>
-        <app-tab-select
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-          class="q-pl-none"
-        />
-      </q-item-section>
+      <q-item-section></q-item-section>
       <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
@@ -17,7 +10,128 @@
       /></q-item-section>
     </q-item>
 
-    <q-item>
+    <q-list class="rounded-borders q-mx-lg">
+      <q-card class="q-mb-md">
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item
+            :label="$t('home.description')"
+            group="siteGroup"
+            dense
+            dense-toggle
+            header-class="text-h6"
+          >
+            <q-separator />
+
+            <q-card>
+              <q-card-section class="q-pa-none">
+                <q-item v-if="shouldShowItem" class="q-pa-none">
+                  <q-item-section>
+                    <q-item-label class="q-mt-sm">
+                      <span
+                        class="text-subtitle1"
+                        :style="{
+                          color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                            ? '#478d45'
+                            : 'red'
+                        }"
+                      >
+                        {{
+                          isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                            ? "Open now"
+                            : "Close now"
+                        }}
+                      </span>
+                      <q-icon size="0.9em" name="fiber_manual_record" />
+                      {{ formatTime(businessItem.openTime) }} -
+                      {{ formatTime(businessItem.closeTime) }}
+                    </q-item-label>
+                  </q-item-section>
+                </q-item>
+                <app-text-editor v-model="translatedContent" />
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </q-card-section>
+      </q-card>
+
+      <q-card>
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item
+            :label="$t('home.location')"
+            group="siteGroup"
+            dense
+            dense-toggle
+            default-opened
+            header-class="text-h6"
+          >
+            <q-separator />
+
+            <q-card>
+              <q-card-section
+                class="location-card"
+                :style="{
+                  height: $q.screen.gt.xs ? '370px' : 'auto'
+                }"
+              >
+                <q-card-section
+                  class="location-card-section"
+                  :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
+                >
+                  <map-component
+                    class="map-component"
+                    :style="{
+                      height: $q.screen.gt.xs ? '300px' : '200px',
+                      width: $q.screen.gt.xs ? '600px' : '100%'
+                    }"
+                    :zoom="zoom"
+                    :marker-position="markerPosition"
+                    :url="localMapUrl"
+                    :bounds="bounds"
+                    :tooltip="mapTooltip"
+                    :bottom-right-label="address"
+                    @click="openGoogleMaps()"
+                  />
+
+                  <q-list dense class="details-section">
+                    <q-item v-if="businessItem.contactPhone">
+                      <q-item-section avatar @click="navigateToPhone">
+                        <q-avatar>
+                          <q-icon name="phone" color="primary" />
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-caption">{{
+                          businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
+                        }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+
+                    <q-item v-if="businessItem.contactWhatsApp">
+                      <q-item-section
+                        avatar
+                        @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
+                      >
+                        <q-avatar>
+                          <q-icon name="fab fa-whatsapp" color="primary" />
+                        </q-avatar>
+                      </q-item-section>
+                      <q-item-section>
+                        <q-item-label class="text-caption">{{
+                          businessItem.contactWhatsApp == undefined
+                            ? "N/A"
+                            : businessItem.contactWhatsApp
+                        }}</q-item-label>
+                      </q-item-section>
+                    </q-item>
+                  </q-list>
+                </q-card-section>
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </q-card-section>
+      </q-card>
+    </q-list>
+    <!-- <q-item>
       <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
         <q-tab-panel name="aboutUs" class="q-pa-none">
           <q-item v-if="shouldShowItem" class="q-pa-none">
@@ -99,7 +213,7 @@
           </q-card>
         </q-tab-panel>
       </q-tab-panels>
-    </q-item>
+    </q-item> -->
   </q-list>
 </template>
 
@@ -130,15 +244,8 @@
   });
 
   const emits = defineEmits(["on-favourite"]);
-  const { locale, t } = useI18n({ useScope: "global" });
+  const { locale } = useI18n({ useScope: "global" });
   const $q = useQuasar();
-
-  const setTab = (val: string) => (tab.value = val);
-  const tab = ref("aboutUs");
-  const tabItems = ref([
-    { name: "aboutUs", label: t("business.tabItems.aboutUs") },
-    { name: "info", label: t("business.tabItems.info") }
-  ]);
 
   const businessItem = computed(() => props?.item as BusinessView);
 
@@ -251,6 +358,7 @@
     }
   };
 </script>
+
 <style scoped>
   .location-card {
     margin: 16px;
