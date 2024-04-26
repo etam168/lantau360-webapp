@@ -12,8 +12,7 @@ export default {
   },
 
   loginDialog: {
-    question: "What Would You Do Next?",
-    subtitle: "You are currently not signed in to your account. First sign in to proceed."
+    subtitle: "Please sign in to proceed."
   },
 
   alertDialog: {

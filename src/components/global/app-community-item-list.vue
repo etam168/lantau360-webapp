@@ -19,31 +19,36 @@
 
     <q-slide-transition>
       <div v-show="visible">
-        <q-card class="q-mb-md">
-          <q-item dense v-ripple style="width: 100%">
-            <q-item-section avatar>
-              <q-img :src="checkinImage" />
-            </q-item-section>
+        <q-card class="row justify-center q-mb-md">
+          <q-card-section :style="$q.screen.gt.xs ? 'width: 400px' : 'width : 100%'">
+            <q-img :src="checkinImage" />
 
-            <q-item-section>
-              <q-item-label> </q-item-label>
-              <q-item-label class="text-red">
-                {{ $t("community.loginDialog.subtitle") }}
-              </q-item-label>
-            </q-item-section>
-            <q-space />
-            <q-item-section side top class="q-pa-none">
-              <q-card-actions align="right" class="q-px-none">
-                <q-chip clickable outline color="primary" text-color="white" @click="handleCancel">
-                  Cancel
-                </q-chip>
+            <q-card-actions class="q-px-none no-wrap">
+              <!-- <div class="row"> -->
+              <app-button
+                class="full-width"
+                :label="$t('auth.login.button')"
+                color="primary"
+                type="submit"
+                @click="handleOk"
+              />
+              <div class="q-mx-xs"></div>
 
-                <q-chip clickable color="primary" text-color="white" @click="handleOk">
-                  {{ $t("auth.login.button") }}
-                </q-chip>
-              </q-card-actions>
-            </q-item-section>
-          </q-item>
+              <app-button
+                class="full-width"
+                outline
+                label="Cancel"
+                color="primary"
+                type="submit"
+                @click="handleCancel"
+              />
+              <!-- </div> -->
+            </q-card-actions>
+
+            <div class="text-caption text-weight-regular text-grey-6 text-center q-mt-xs">
+              {{ $t("community.loginDialog.subtitle") }}
+            </div>
+          </q-card-section>
         </q-card>
       </div>
     </q-slide-transition>
