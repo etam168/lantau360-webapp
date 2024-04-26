@@ -14,7 +14,10 @@
 
       <q-page-container>
         <q-page>
-          <div v-if="renderer !== RENDERER.TIMETABLE" class="q-items-center q-pa-none">
+          <div
+            v-if="renderer !== RENDERER.TIMETABLE && renderer !== RENDERER.EMERGENCY"
+            class="q-items-center q-pa-none"
+          >
             <gallery-image-list :image-list="galleryItems" />
           </div>
 
@@ -204,7 +207,7 @@
       case props.item.directoryTemplate == TEMPLATE.DAYTRIP.value:
         return RENDERER.DAYTRIP;
       case props.item.directoryTemplate == TEMPLATE.EMERGENCY.value:
-        return RENDERER.DAYTRIP;
+        return RENDERER.EMERGENCY;
       case "siteId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
         return RENDERER.SITE;
       case "businessId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
