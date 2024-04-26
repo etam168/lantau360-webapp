@@ -1,6 +1,6 @@
 <template>
   <template v-if="!isAuthenticated">
-    <login-widget />
+    <login-widget @on-cancel="handleCancel" />
   </template>
   <template v-else-if="locationError != null">
     <error-widget :error="locationError as GeoLocationError" />
@@ -40,6 +40,7 @@
     }
   });
 
+  const emits = defineEmits(["on-cancel"]);
   const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
 
   const currentLocationAddress = ref();
@@ -52,6 +53,10 @@
 
   const addressErrorCode = 5;
   const deviceSupportErrorCode = 4;
+
+  function handleCancel() {
+    emits("on-cancel");
+  }
 
   async function getLocationDetails() {
     const { latitude: siteLatitude, longitude: siteLongitude } = props.item;

@@ -1,17 +1,31 @@
 <template>
-  <q-card flat class="row justify-center">
-    <q-card-section :style="$q.screen.gt.xs ? 'width: 400px' : 'width : 100%'">
+  <q-card flat class="row justify-center items-center" style="min-height: calc(100vh - 50px)">
+    <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
       <q-img :src="checkinImage" />
 
-      <app-button
-        :label="$t('auth.login.button')"
-        class="full-width q-mt-md"
-        color="primary"
-        type="submit"
-        size="md"
-        @click="showLoginDialog"
-      />
-      <div class="text-caption text-weight-regular text-grey-6 text-center q-mt-sm">
+      <q-card-actions class="q-px-none no-wrap">
+        <!-- <div class="row"> -->
+        <app-button
+          class="full-width"
+          :label="$t('auth.login.button')"
+          color="primary"
+          type="submit"
+          @click="showLoginDialog"
+        />
+        <div class="q-mx-xs"></div>
+
+        <app-button
+          class="full-width"
+          outline
+          label="Cancel"
+          color="primary"
+          type="submit"
+          @click="handleCancel"
+        />
+        <!-- </div> -->
+      </q-card-actions>
+
+      <div class="text-caption text-weight-regular text-grey-8 text-center q-mt-xs">
         {{ $t("auth.login.checkInCaption") }}
       </div>
     </q-card-section>
@@ -21,7 +35,7 @@
   import { useQuasar } from "quasar";
 
   const $q = useQuasar();
-  const emits = defineEmits(["callback"]);
+  const emits = defineEmits(["callback", "on-cancel"]);
 
   const checkinImage = ref("/img/icons/checkin.jpg");
 
@@ -34,5 +48,9 @@
         }
       }
     });
+  }
+
+  function handleCancel() {
+    emits("on-cancel");
   }
 </script>

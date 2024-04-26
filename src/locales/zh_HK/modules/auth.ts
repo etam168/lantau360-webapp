@@ -1,7 +1,7 @@
 export default {
   login: {
     button: "登入",
-    checkInCaption: "For CheckIn Please SignIn First",
+    checkInCaption: "For checkIn please signIn first",
     newAccount: "之前沒有帳戶嗎？",
     password: "密碼",
     register: "註冊",

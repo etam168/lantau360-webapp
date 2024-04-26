@@ -14,7 +14,7 @@
       <q-page-container>
         <q-page>
           <!-- Content here -->
-          <chekc-in-tab :item="item" />
+          <check-in-tab :item="item" @on-cancel="handleCancel" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -30,7 +30,7 @@
   // const { coords } = useGeolocation();
   // provide("userPosition", coords);
 
-  import ChekcInTab from "@/components/dialog/renderer/site-renderer/detail-tabs/check-in-tab/index.vue";
+  import CheckInTab from "@/components/dialog/renderer/site-renderer/detail-tabs/check-in-tab/index.vue";
 
   defineProps({
     item: {
@@ -39,6 +39,10 @@
     }
   });
 
-  const { dialogRef } = useDialogPluginComponent();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
+
+  function handleCancel() {
+    onDialogCancel();
+  }
 </script>

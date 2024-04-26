@@ -20,7 +20,7 @@
     <q-slide-transition>
       <div v-show="visible">
         <q-card class="row justify-center q-mb-md">
-          <q-card-section :style="$q.screen.gt.xs ? 'width: 400px' : 'width : 100%'">
+          <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
             <q-img :src="checkinImage" />
 
             <q-card-actions class="q-px-none no-wrap">
@@ -45,7 +45,7 @@
               <!-- </div> -->
             </q-card-actions>
 
-            <div class="text-caption text-weight-regular text-grey-6 text-center q-mt-xs">
+            <div class="text-caption text-weight-regular text-grey-8 text-center q-mt-xs">
               {{ $t("community.loginDialog.subtitle") }}
             </div>
           </q-card-section>
