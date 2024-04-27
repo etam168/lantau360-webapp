@@ -4,7 +4,19 @@
       <q-item-section top avatar :style="!userStore.token ? 'height: 72px;' : ''">
         <q-btn round padding="1px" color="black" style="cursor: auto" v-if="userStore.token">
           <q-avatar size="72px" font-size="36px">
-            <q-img :src="avatar"> </q-img>
+            <q-img :ratio="1" :src="avatar">
+              <template v-slot:error>
+                <q-img :src="PLACEHOLDER_AVATAR" style="left: 0" />
+              </template>
+
+              <template v-slot:loading>
+                <div class="absolute-full flex flex-center bg-gray text-white">
+                  <q-inner-loading showing class="spinner-card row justify-center items-center">
+                    <q-spinner size="50px" color="primary" />
+                  </q-inner-loading>
+                </div>
+              </template>
+            </q-img>
           </q-avatar>
         </q-btn>
       </q-item-section>
