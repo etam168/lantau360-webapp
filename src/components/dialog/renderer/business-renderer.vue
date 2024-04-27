@@ -1,7 +1,27 @@
 <template>
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
-      <q-item-section></q-item-section>
+      <q-item-section v-if="shouldShowItem">
+        <q-item-label class="q-mt-sm q-ml-sm">
+          <span
+            class="text-subtitle1"
+            :style="{
+              color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                ? '#478d45'
+                : 'red'
+            }"
+          >
+            {{
+              isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
+                ? "Open now"
+                : "Close now"
+            }}
+          </span>
+          <q-icon size="0.9em" name="fiber_manual_record" />
+          {{ formatTime(businessItem.openTime) }} -
+          {{ formatTime(businessItem.closeTime) }}
+        </q-item-label>
+      </q-item-section>
       <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
@@ -11,7 +31,7 @@
     </q-item>
 
     <q-list class="rounded-borders q-mx-lg">
-      <q-card class="q-mb-md">
+      <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
             :label="$t('home.description')"
@@ -24,29 +44,6 @@
 
             <q-card>
               <q-card-section class="q-pa-none">
-                <q-item v-if="shouldShowItem" class="q-pa-none">
-                  <q-item-section>
-                    <q-item-label class="q-mt-sm">
-                      <span
-                        class="text-subtitle1"
-                        :style="{
-                          color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                            ? '#478d45'
-                            : 'red'
-                        }"
-                      >
-                        {{
-                          isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                            ? "Open now"
-                            : "Close now"
-                        }}
-                      </span>
-                      <q-icon size="0.9em" name="fiber_manual_record" />
-                      {{ formatTime(businessItem.openTime) }} -
-                      {{ formatTime(businessItem.closeTime) }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
                 <app-text-editor v-model="translatedContent" />
               </q-card-section>
             </q-card>

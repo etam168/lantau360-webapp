@@ -30,7 +30,7 @@
       </q-item-section>
     </q-item>
 
-    <q-item>
+    <q-item v-if="translatedContent != null && translatedContent != ''">
       <app-text-editor v-model="translatedContent" />
     </q-item>
 

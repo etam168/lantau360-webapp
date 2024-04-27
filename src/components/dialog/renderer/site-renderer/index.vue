@@ -11,7 +11,7 @@
     </q-item>
 
     <q-list class="rounded-borders q-mx-lg">
-      <q-card class="q-mb-md">
+      <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
             :label="$t('home.description')"
