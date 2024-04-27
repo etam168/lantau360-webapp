@@ -6,7 +6,7 @@
         <q-avatar size="108px">
           <q-img :ratio="1" :src="avatar">
             <template v-slot:error>
-              <q-img :src="PLACEHOLDER_AVATAR" />
+              <q-img :src="PLACEHOLDER_AVATAR" style="left: 0" />
             </template>
 
             <template v-slot:loading>
