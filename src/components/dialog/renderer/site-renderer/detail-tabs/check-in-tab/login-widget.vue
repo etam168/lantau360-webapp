@@ -2,9 +2,20 @@
   <q-card flat class="row justify-center items-center" style="min-height: calc(100vh - 50px)">
     <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
       <q-img :src="checkinImage" />
-
+      <q-item-label style="font-weight: 600" class="text-caption text-grey-8 text-center q-mt-sm">
+        {{ $t("auth.login.checkInCaption") }}
+      </q-item-label>
       <q-card-actions class="q-px-none no-wrap">
         <!-- <div class="row"> -->
+        <app-button
+          class="full-width q-mx-xs"
+          label="Cancel"
+          color="red"
+          type="submit"
+          @click="handleCancel"
+        />
+        <div class="q-mx-xs"></div>
+
         <app-button
           class="full-width"
           :label="$t('auth.login.button')"
@@ -12,22 +23,9 @@
           type="submit"
           @click="showLoginDialog"
         />
-        <div class="q-mx-xs"></div>
 
-        <app-button
-          class="full-width"
-          outline
-          label="Cancel"
-          color="primary"
-          type="submit"
-          @click="handleCancel"
-        />
         <!-- </div> -->
       </q-card-actions>
-
-      <div class="text-caption text-weight-regular text-grey-8 text-center q-mt-xs">
-        {{ $t("auth.login.checkInCaption") }}
-      </div>
     </q-card-section>
   </q-card>
 </template>
