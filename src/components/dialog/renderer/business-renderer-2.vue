@@ -65,7 +65,6 @@
 
             <q-card>
               <q-card-section
-                class="location-card"
                 :style="{
                   height: $q.screen.gt.xs ? '370px' : 'auto'
                 }"
@@ -75,7 +74,7 @@
                   :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
                 >
                   <map-component
-                    class="map-component"
+                    style="flex: 1"
                     :style="{
                       height: $q.screen.gt.xs ? '300px' : '200px',
                       width: $q.screen.gt.xs ? '600px' : '100%'
@@ -89,7 +88,11 @@
                     @click="openGoogleMaps()"
                   />
 
-                  <q-list dense class="details-section">
+                  <q-list
+                    dense
+                    style="max-width: 250px; flex: 1"
+                    :class="$q.screen.gt.xs ? 'q-pa-md' : 'q-px-none q-py-md'"
+                  >
                     <q-item v-if="businessItem.contactPhone">
                       <q-item-section avatar @click="navigateToPhone">
                         <q-avatar>
@@ -284,16 +287,6 @@
     flex-wrap: wrap;
   }
 
-  .map-component {
-    flex: 1;
-  }
-
-  .details-section {
-    flex: 1;
-    padding: 16px;
-    max-width: 250px; /* Adjust the max-width as needed */
-  }
-
   .text-caption {
     font-size: 14px;
   }
@@ -301,11 +294,6 @@
   @media only screen and (max-width: 600px) {
     .location-card-section {
       flex-direction: column;
-    }
-
-    .details-section {
-      padding: 16px 0;
-      max-width: none; /* Reset the max-width for small screens */
     }
   }
 </style>

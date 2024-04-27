@@ -36,7 +36,6 @@
                 style="width: 100%"
               >
                 <map-component
-                  class=""
                   style="flex: 1"
                   :style="{
                     height: $q.screen.gt.xs ? '300px' : '200px',

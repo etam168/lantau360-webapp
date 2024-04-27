@@ -37,7 +37,7 @@
                     >
                       <div>{{ props.data.meta }}</div>
                       <map-component
-                        class="map-component"
+                        style="flex: 1"
                         :style="{
                           height: $q.screen.gt.xs ? '300px' : '200px',
                           width: $q.screen.gt.xs ? '600px' : '100%'

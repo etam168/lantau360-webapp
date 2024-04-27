@@ -1,13 +1,13 @@
 <template>
   <q-card
     flat
-    class="location-card"
+    class="q-ma-md"
     :style="{
       height: $q.screen.gt.xs ? '370px' : 'auto'
     }"
   >
     <q-card-section
-      class="location-card-section"
+      class="q-pa-none"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
     >
       <map-component
@@ -55,17 +55,6 @@
             }}</q-item-label>
           </q-item-section>
         </q-item>
-
-        <q-card-actions class="q-mt-xs q-pa-none">
-          <app-button
-            class="full-width"
-            :label="$t('home.tabItems.checkin')"
-            color="primary"
-            type="submit"
-            size="md"
-            @click="checkIn()"
-          />
-        </q-card-actions>
       </q-list>
     </q-card-section>
   </q-card>
@@ -142,34 +131,4 @@
       console.error("Map link not available");
     }
   };
-  function checkIn() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
-      componentProps: {
-        item: props.item
-      }
-    });
-  }
 </script>
-
-<style scoped>
-  .location-card {
-    margin: 16px;
-  }
-
-  .location-card-section {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .text-caption {
-    font-size: 14px;
-  }
-
-  @media only screen and (max-width: 600px) {
-    .location-card-section {
-      flex-direction: column;
-    }
-  }
-</style>
