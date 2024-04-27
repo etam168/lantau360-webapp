@@ -1,8 +1,8 @@
 <template>
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
-      <q-item-section v-if="shouldShowItem">
-        <q-item-label class="q-mt-sm q-ml-sm">
+      <q-item-section>
+        <q-item-label class="q-mt-sm q-ml-sm" v-if="shouldShowItem">
           <span
             class="text-subtitle1"
             :style="{
@@ -128,89 +128,6 @@
         </q-card-section>
       </q-card>
     </q-list>
-    <!-- <q-item>
-      <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
-        <q-tab-panel name="aboutUs" class="q-pa-none">
-          <q-item v-if="shouldShowItem" class="q-pa-none">
-            <q-item-section>
-              <q-item-label class="q-mt-sm">
-                <span
-                  class="text-subtitle1"
-                  :style="{
-                    color: isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                      ? '#478d45'
-                      : 'red'
-                  }"
-                >
-                  {{
-                    isCurrentTimeInRange(businessItem.openTime, businessItem.closeTime)
-                      ? "Open now"
-                      : "Close now"
-                  }}
-                </span>
-                <q-icon size="0.9em" name="fiber_manual_record" />
-                {{ formatTime(businessItem.openTime) }} - {{ formatTime(businessItem.closeTime) }}
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-          <app-text-editor v-model="translatedContent" />
-        </q-tab-panel>
-
-        <q-tab-panel name="info" class="q-pa-none">
-          <q-card flat class="location-card" style="height: 430px">
-            <q-card-section
-              class="location-card-section"
-              :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-            >
-              <map-component
-                class="map-component"
-                :style="{
-                  height: $q.screen.gt.xs ? '300px' : '200px',
-                  width: $q.screen.gt.xs ? '600px' : '100%'
-                }"
-                :zoom="zoom"
-                :marker-position="markerPosition"
-                :url="localMapUrl"
-                :bounds="bounds"
-                :tooltip="mapTooltip"
-                :bottom-right-label="address"
-                @click="openGoogleMaps()"
-              />
-
-              <q-list dense class="details-section">
-                <q-item v-if="businessItem.contactPhone">
-                  <q-item-section avatar @click="navigateToPhone">
-                    <q-avatar>
-                      <q-icon name="phone" color="primary" />
-                    </q-avatar>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption">{{
-                      businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-
-                <q-item v-if="businessItem.contactWhatsApp">
-                  <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-                    <q-avatar>
-                      <q-icon name="fab fa-whatsapp" color="primary" />
-                    </q-avatar>
-                  </q-item-section>
-                  <q-item-section>
-                    <q-item-label class="text-caption">{{
-                      businessItem.contactWhatsApp == undefined
-                        ? "N/A"
-                        : businessItem.contactWhatsApp
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card-section>
-          </q-card>
-        </q-tab-panel>
-      </q-tab-panels>
-    </q-item> -->
   </q-list>
 </template>
 
