@@ -55,7 +55,7 @@
               <q-tab-panel name="register" class="q-pa-none">
                 <Register @close-dialog="closeDialog" @on-login="showlogin" />
               </q-tab-panel>
-              <q-tab-panel name="reset">
+              <q-tab-panel class="q-pa-none" name="reset">
                 <ResetPassword
                   @close-dialog="closeDialog"
                   @on-login="showlogin"

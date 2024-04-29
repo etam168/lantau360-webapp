@@ -7,7 +7,7 @@
     @submit="onSubmit"
     v-slot="{ meta, values }"
   >
-    <q-card-section>
+    <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.forgotPassword.otp')"
         icon="mdi-account"
@@ -30,7 +30,7 @@
     </q-card-section>
   </Form>
 
-  <q-card-actions class="q-px-md q-py-none justify-center">
+  <q-card-actions class="bg-secondary q-px-md q-py-none justify-center">
     {{ $t("auth.register.haveAccount") }}
 
     <a href="#" @click="login" class="forgot-password-link">
@@ -88,7 +88,6 @@
           notify(t("auth.login.passwordResetSuccessfully"), "positive");
           emits("close-dialog");
         } catch (e: any) {
-          debugger;
           $q.notify({
             message: e.message,
             type: "negative"
