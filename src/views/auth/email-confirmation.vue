@@ -16,24 +16,23 @@
         class="q-ma-md"
       />
     </div>
-    <div class="verification-message" v-else-if="error">
-      <h2>Email Verification</h2>
-      <p class="error-message">An error occurred while verifying your email.</p>
-      <p>Please try with a new link.</p>
-      <q-btn @click="goToHome" outline color="primary">Go to Home</q-btn>
-    </div>
     <div class="verification-message" v-else>
       <h2>Email Verification</h2>
-      <p>Thank you for verifying your email address.</p>
-      <p>Your email has been successfully verified.</p>
+      <p v-if="error" class="error-message">{{ message }}</p>
+      <template v-else>
+        <p v-html="message"></p>
+      </template>
       <q-btn @click="goToHome" outline color="primary">Go to Home</q-btn>
+      <q-btn v-if="error" class="q-ml-sm" @click="resendLink" outline color="primary"
+        >Resend Link</q-btn
+      >
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
   import { URL } from "@/constants";
-  import axios from "axios";
+  import axios, { AxiosError } from "axios";
   import { useRoute } from "vue-router";
 
   const logo = ref("/img/logo/logo.png");
@@ -43,6 +42,21 @@
   const loading = ref(true);
   const error = ref(false);
   const router = useRouter();
+
+  const messages: any = {
+    token_or_userid_missing: "Invalid link, please resend the link to verify",
+    invalid_user: "Invalid data, please provide the correct data",
+    invalid_token: "Invalid link, please resend the link to verify",
+    token_expired: "The link has expired, please try with a new link",
+    email_confirmation_failed: "Email confirmation failed, please try with a new link",
+    email_send_failed: "Unable to send email, please try again",
+    email_sent_successfully: "Please check your email for the confirmation link",
+    email_already_verified: "Your email is already verified",
+    confimation_sucessfull:
+      "Thank you for verifying your email address.\nYour email has been successfully verified."
+  };
+
+  const message = ref("");
 
   onMounted(() => {
     const query = route.query;
@@ -59,14 +73,49 @@
     router.push("/");
   };
 
+  const handleAxiosError = (err: AxiosError) => {
+    if (err.response) {
+      const { data } = err.response;
+      if (data === "email_already_verified") {
+        error.value = false;
+      }
+      message.value = messages[data as string] || messages.email_confirmation_failed;
+    } else {
+      message.value = messages.email_confirmation_failed;
+      error.value = true;
+    }
+  };
+
+  const resendLink = async () => {
+    try {
+      if (!userId) {
+        message.value = messages.invalid_user;
+        return;
+      }
+      loading.value = true;
+      const response = await axios.post(
+        `${URL.EMAIL_CONFIRMATION.RESEND_LINK}?userId=${userId.value}`
+      );
+      error.value = response.status !== 200;
+      message.value = messages.email_sent_successfully;
+    } catch (err: any) {
+      error.value = true;
+      handleAxiosError(err);
+    } finally {
+      loading.value = false;
+    }
+  };
+
   const confirmEmail = async () => {
     try {
       const response = await axios.get(
-        `${URL.EMAIL_CONFIRMATION.CONFIRM_EMAIL}?token=${token.value}&userId=${userId.value}`
+        `${URL.EMAIL_CONFIRMATION.CONFIRM_EMAIL}?token=${encodeURIComponent(token.value)}&userId=${userId.value}`
       );
       error.value = response.status !== 200;
-    } catch {
+      message.value = messages.confimation_sucessfull;
+    } catch (err: any) {
       error.value = true;
+      handleAxiosError(err);
     } finally {
       loading.value = false;
     }

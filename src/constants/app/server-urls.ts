@@ -34,7 +34,8 @@ export const URL = {
     SITE: `${BASE_URL}/Site/ByDirectoryId`
   },
   EMAIL_CONFIRMATION: {
-    RESEND_LINK: "/MemberAuth/SendEmailConfirmationLink",
-    CONFIRM_EMAIL: "/MemberAuth/verifyEmail"
+    SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",
+    RESEND_LINK: "/MemberAuth/ReSendEmailConfirmationLink",
+    CONFIRM_EMAIL: "/MemberAuth/VerifyEmail"
   }
 };
