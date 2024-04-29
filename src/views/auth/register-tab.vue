@@ -69,7 +69,6 @@
   import i18n from "@/plugins/i18n/i18n";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
-  const $q = useQuasar();
   const { notify } = useUtilities();
   const { t } = i18n.global;
 
