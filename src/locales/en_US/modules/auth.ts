@@ -10,7 +10,10 @@ export default {
     newPassword: "New Password",
     forgotPassword: "Forgot Password",
     submit: "Submit",
-    logout: "Logout"
+    logout: "Logout",
+    successFulLoginMessage: "Login successful",
+    pleaseCheckMails:
+      "Please check your mails, If you havn't received an email then please contact the administrator"
   },
 
   register: {
@@ -45,6 +48,7 @@ export default {
 
   forgotPassword: {
     otp: "Otp",
-    update: "Update Password"
+    update: "Update Password",
+    otpMessage: "Otp sent to your email"
   }
 };

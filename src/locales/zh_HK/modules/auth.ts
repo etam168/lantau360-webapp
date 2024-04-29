@@ -10,7 +10,10 @@ export default {
     newPassword: "新密碼",
     forgotPassword: "忘記密碼",
     submit: "提交",
-    logout: "登出"
+    logout: "登出",
+    successFulLoginMessage: "Login successful",
+    pleaseCheckMails:
+      "Please check your mails, If you havn't received an email then please contact the administrator"
   },
 
   register: {
@@ -45,6 +48,7 @@ export default {
 
   forgotPassword: {
     otp: "驗證碼",
-    update: "更新密碼"
+    update: "更新密碼",
+    otpMessage: "Otp sent to your email"
   }
 };

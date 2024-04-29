@@ -18,10 +18,9 @@
       <vee-input-password :label="$t('auth.login.password')" name="password" />
       <div>{{ setFormValues(values) }}</div>
 
-      <q-item-label v-if="isEmailSent" class="text-red"
-        >Please check your mails, If you havn't received an email then please contact the
-        administrator</q-item-label
-      >
+      <q-item-label v-if="isEmailSent" class="text-red">{{
+        $t("auth.login.pleaseCheckMails")
+      }}</q-item-label>
 
       <q-card-actions class="q-mt-lg q-pa-none">
         <app-button
@@ -47,8 +46,9 @@
 <script setup lang="ts">
   // 3rd Party Import
   import { Form } from "vee-validate";
-  import { LocalStorage, useQuasar } from "quasar";
+  import { LocalStorage } from "quasar";
   import * as yup from "yup";
+  import i18n from "@/plugins/i18n/i18n";
 
   // .ts files
   import { useUserStore } from "@/stores/user";
@@ -56,8 +56,8 @@
 
   const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
 
-  const $q = useQuasar();
-
+  const { notify } = useUtilities();
+  const { t } = i18n.global;
   const userStore = useUserStore();
   const userName = ref("");
 
@@ -77,10 +77,7 @@
 
   async function handleForgotPassword() {
     if (userName.value == "") {
-      $q.notify({
-        message: "Username required",
-        type: "negative"
-      });
+      notify(t("errors.usernameRequired"), "negative");
       return;
     }
     try {
@@ -88,15 +85,9 @@
       await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
       isEmailSent.value = true;
       emits("on-forgotPassword", userName.value);
-      $q.notify({
-        message: "Otp sent to email",
-        type: "positive"
-      });
+      notify("Otp sent to email", "positive");
     } catch (e: any) {
-      $q.notify({
-        message: e.message,
-        type: "negative"
-      });
+      notify(e.message, "negative");
     }
     loading.value = false;
   }
@@ -110,20 +101,13 @@
           .post("/MemberAuth/SignIn", { login: values.userName, password: values.password })
           .then(async response => {
             userStore.SetUserInfo(response.data);
-            $q.notify({
-              message: "Login successful",
-              type: "positive",
-              color: "primary"
-            });
+            notify(t("auth.login.successFulLoginMessage"), "positive");
             LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
             emits("close-dialog");
             emits("on-login-success");
           })
           .catch(err => {
-            $q.notify({
-              message: err.message,
-              type: "negative"
-            });
+            notify(err.message, "negative");
             loading.value = false;
           });
       }

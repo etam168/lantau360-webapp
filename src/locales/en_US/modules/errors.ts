@@ -16,6 +16,7 @@ export default {
   noRecord: "There is no Record to show you right now.",
   minimum3letter: "Minimum 3 letters are required",
   userNotFound: "User is not found",
+  usernameRequired: "Username Required",
   passwordNotUpdated: "Password not updated",
   emialAreadyExists: "Email already exists!!!.",
   locationUnavailable:
