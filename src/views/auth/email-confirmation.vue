@@ -17,15 +17,15 @@
       />
     </div>
     <div class="verification-message" v-else>
-      <h2>Email Verification</h2>
+      <h2>{{ $t("action.emailVerification") }}</h2>
       <p v-if="error" class="error-message">{{ message }}</p>
       <template v-else>
         <p v-html="message"></p>
       </template>
-      <q-btn @click="goToHome" outline color="primary">Go to Home</q-btn>
-      <q-btn v-if="error" class="q-ml-sm" @click="resendLink" outline color="primary"
-        >Resend Link</q-btn
-      >
+      <q-btn @click="goToHome" outline color="primary">{{ $t("action.goToHome") }}</q-btn>
+      <q-btn v-if="error" class="q-ml-sm" @click="resendLink" outline color="primary">{{
+        $t("action.resendLink")
+      }}</q-btn>
     </div>
   </div>
 </template>
@@ -34,6 +34,7 @@
   import { URL } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { useRoute } from "vue-router";
+  import i18n from "@/plugins/i18n/i18n";
 
   const logo = ref("/img/logo/logo.png");
   const token = ref();
@@ -42,18 +43,18 @@
   const loading = ref(true);
   const error = ref(false);
   const router = useRouter();
+  const { t } = i18n.global;
 
   const messages: any = {
-    token_or_userid_missing: "Invalid link, please resend the link to verify",
-    invalid_user: "Invalid data, please provide the correct data",
-    invalid_token: "Invalid link, please resend the link to verify",
-    token_expired: "The link has expired, please try with a new link",
-    email_confirmation_failed: "Email confirmation failed, please try with a new link",
-    email_send_failed: "Unable to send email, please try again",
-    email_sent_successfully: "Please check your email for the confirmation link",
-    email_already_verified: "Your email is already verified",
-    confimation_sucessfull:
-      "Thank you for verifying your email address.\nYour email has been successfully verified."
+    token_or_userid_missing: t("auth.emailMessages.tokenOrUseridMissing"),
+    invalid_user: t("auth.emailMessages.invalidUser"),
+    invalid_token: t("auth.emailMessages.invalidToken"),
+    token_expired: t("auth.emailMessages.tokenExpired"),
+    email_confirmation_failed: t("auth.emailMessages.emailConfirmationFailed"),
+    email_send_failed: t("auth.emailMessages.emailSendFailed"),
+    email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
+    email_already_verified: t("auth.emailMessages.emailAlreadyVerified"),
+    confimation_sucessfull: t("auth.emailMessages.confimationSucessfull")
   };
 
   const message = ref("");

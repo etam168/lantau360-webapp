@@ -1,6 +1,9 @@
 export default {
   createDirectory: "創建 {directoryName}",
   close: "關閉",
+  emailVerification: "Email Verification",
+  goToHome: "Go to Home",
+  resendLink: "Resend Link",
   ok: "確定",
   no: "否",
   yes: "是",

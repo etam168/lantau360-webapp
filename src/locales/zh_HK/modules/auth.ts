@@ -30,6 +30,19 @@ export default {
     haveAccount: "已經有帳戶？"
   },
 
+  emailMessages: {
+    tokenOrUseridMissing: "Invalid link, please resend the link to verify",
+    invalidUser: "Invalid data, please provide the correct data",
+    invalidToken: "Invalid link, please resend the link to verify",
+    tokenExpired: "The link has expired, please try with a new link",
+    emailConfirmationFailed: "Email confirmation failed, please try with a new link",
+    emailSendFailed: "Unable to send email, please try again",
+    emailSentSuccessfully: "Please check your email for the confirmation link",
+    emailAlreadyVerified: "Your email is already verified",
+    confimationSucessfull:
+      "Thank you for verifying your email address.\nYour email has been successfully verified."
+  },
+
   forgotPassword: {
     otp: "驗證碼",
     update: "更新密碼"
