@@ -88,18 +88,18 @@
   });
 
   const messages: any = {
-    invalid_user: "Invalid data, please provide the correct data",
-    email_not_verified: "Email is not verified, please verify it first",
-    invalid_credentials: "Username or password is incorrect",
-    invalid_username: "Username or password is incorrect",
-    email_sent_successfully: "Please check your email for the confirmation link",
-    email_send_failed: "Unable to send email, please try again",
-    username_required: "User name required"
+    invalid_user: t("auth.emailMessages.invalidUser"),
+    email_not_verified: t("errors.emailNotVerified"),
+    invalid_credentials: t("errors.invalidCredentials"),
+    invalid_username: t("errors.invalidUsername"),
+    email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
+    email_send_failed: t("auth.emailMessages.emailSendFailed"),
+    username_required: t("errors.usernameRequired")
   };
 
   const schema = yup.object({
-    userName: yup.string().required().label("user name"),
-    password: yup.string().required().min(4).label("Password")
+    userName: yup.string().required().label(t("auth.login.userName")),
+    password: yup.string().required().min(4).label(t("auth.login.password"))
   });
 
   async function handleForgotPassword() {
@@ -113,7 +113,7 @@
       await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
       isEmailSent.value = true;
       emits("on-forgotPassword", userName.value);
-      notify("Otp sent to email", "positive");
+      notify(t("auth.forgotPassword.otpMessage"), "positive");
     } catch (e: any) {
       notify(e.message, "negative");
     }

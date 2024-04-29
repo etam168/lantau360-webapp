@@ -18,13 +18,13 @@
         :label="$t('auth.register.firstName')"
         icon="mdi-account"
         name="firstName"
-        placeholder="First Name"
+        :placeholder="$t('auth.register.firstName')"
       />
       <vee-input
         :label="$t('auth.register.lastName')"
         icon="mdi-account"
         name="lastName"
-        placeholder="Last Name"
+        :placeholder="$t('auth.register.lastName')"
       />
 
       <vee-q-tel-input name="phone" defaultIso="HK" />
@@ -89,8 +89,8 @@
     password: ""
   });
   const schema = yup.object({
-    email: yup.string().email().required(),
-    password: yup.string().required().min(4).label("Password")
+    email: yup.string().email().required().label(t("auth.register.userName")),
+    password: yup.string().required().min(4).label(t("auth.password.password"))
   });
 
   function login() {
@@ -111,11 +111,7 @@
             status: 1
           });
           response;
-          $q.notify({
-            message: "An email has been sent to your email to confirm your account.",
-            type: "positive",
-            color: "primary"
-          });
+          notify(t("auth.emailMessages.emailSentSuccessfully"), "positive");
           LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
           emits("close-dialog");
         } catch (err) {

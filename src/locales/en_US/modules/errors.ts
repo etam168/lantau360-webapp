@@ -13,6 +13,8 @@ export default {
   anErrorOccured: "An error occurred",
   anUnExpectedError: "An unexpected error occurred",
   inValidToken: "Invalid token",
+  invalidUsername: "Username is incorrect",
+  invalidCredentials: "Username or password is incorrect",
   noRecord: "There is no Record to show you right now.",
   minimum3letter: "Minimum 3 letters are required",
   userNotFound: "User is not found",
@@ -31,5 +33,6 @@ export default {
   weAreSorry: "We're Sorry",
   seemsInternetConnection: "There seems to be a problem with your internet connection.",
   pleaseCheckConnection: "Please check your connection and try again.",
+  emailNotVerified: "Email is not verified, please verify it first",
   retry: "Retry"
 };

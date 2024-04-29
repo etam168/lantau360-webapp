@@ -43,6 +43,7 @@
   // 3rd Party Import
   import { Form } from "vee-validate";
   import * as yup from "yup";
+  import i18n from "@/plugins/i18n/i18n";
 
   const emits = defineEmits(["close-dialog", "on-login"]);
   const $q = useQuasar();
@@ -56,6 +57,8 @@
 
   const otp = ref("");
   const password = ref("");
+  const { notify } = useUtilities();
+  const { t } = i18n.global;
 
   const loading = ref(false);
   const form = ref();
@@ -64,7 +67,7 @@
     password: ""
   });
   const schema = yup.object({
-    password: yup.string().required().min(4).label("Password")
+    password: yup.string().required().min(4).label(t("auth.login.password"))
   });
 
   function login() {
@@ -82,12 +85,7 @@
             otp: values.otp
           });
           response.data;
-
-          $q.notify({
-            message: "Password reset successful",
-            type: "positive",
-            color: "primary"
-          });
+          notify(t("auth.login.passwordResetSuccessfully"), "positive");
           emits("close-dialog");
         } catch (e: any) {
           debugger;

@@ -13,6 +13,8 @@ export default {
   anErrorOccured: "發生了一個錯誤",
   anUnExpectedError: "發生了一個意外的錯誤",
   inValidToken: "無效的令牌",
+  invalidUsername: "Username is incorrect",
+  invalidCredentials: "Username or password is incorrect",
   noRecord: "目前沒有記錄可供查看。",
   minimum3letter: "最少需要3個字符",
   userNotFound: "找不到用戶",
@@ -31,5 +33,6 @@ export default {
   weAreSorry: "We're Sorry",
   seemsInternetConnection: "There seems to be a problem with your internet connection.",
   pleaseCheckConnection: "Please check your connection and try again.",
+  emailNotVerified: "Email is not verified, please verify it first",
   retry: "Retry"
 };
