@@ -27,7 +27,7 @@
                   <q-item-label caption class="text-white">
                     {{
                       $t("more.profileSetting.bythisTimeText", {
-                        spentPoints: "15"
+                        spentPoints: "0"
                       })
                     }}
                   </q-item-label>
