@@ -61,7 +61,7 @@
 
 <script setup lang="ts">
   import { Form } from "vee-validate";
-  import { LocalStorage, useQuasar } from "quasar";
+  import { LocalStorage } from "quasar";
   import * as yup from "yup";
 
   // .ts files
