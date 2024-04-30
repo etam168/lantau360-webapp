@@ -13,7 +13,8 @@ export default {
     logout: "Logout",
     successFulLoginMessage: "Login successful",
     pleaseCheckMails:
-      "Please check your mails, If you havn't received an email then please contact the administrator"
+      "Please check your mails, If you havn't received an email then please contact the administrator",
+    passwordResetSuccessfully: "Password reset successfully"
   },
 
   register: {
