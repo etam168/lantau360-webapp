@@ -94,7 +94,8 @@
     invalid_username: t("errors.invalidUsername"),
     email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
     email_send_failed: t("auth.emailMessages.emailSendFailed"),
-    username_required: t("errors.usernameRequired")
+    username_required: t("errors.usernameRequired"),
+    email_already_verified: t("auth.emailMessages.emailAlreadyVerified")
   };
 
   const schema = yup.object({
@@ -184,7 +185,6 @@
           .catch(err => {
             handleAxiosError(err as any);
             error.value = true;
-            notify(err.message, "negative");
             loading.value = false;
           });
       }

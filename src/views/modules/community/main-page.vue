@@ -37,6 +37,7 @@
         <app-directory-section :rightSlotAction="1" :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </q-tab-panels>
+    {{ availabelPoints }}
   </q-page>
 </template>
 
@@ -53,17 +54,21 @@
   // .ts file
   import { URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
+  import { Content } from "@/interfaces/models/entities/content";
 
-  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
+  const { eventBus, isSmallScreen, aspectRatio, notify } = useUtilities();
+
   const { t } = useI18n({ useScope: "global" });
 
-  const { fetchMemberPoints } = useUserStore();
+  const { fetchMemberPoints, availabelPoints } = useUserStore();
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
   const news = ref<CommunityNews[]>([]);
   const notices = ref<CommunityNotice[]>([]);
+  const memberConfig = ref<Content>();
+
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
   const $q = useQuasar();
@@ -89,9 +94,16 @@
     });
 
     eventBus.on("createPost", () => {
-      $q.dialog({
-        component: defineAsyncComponent(() => import("./input-dialog/index.vue"))
-      });
+      if (
+        memberConfig.value?.meta.postPoints != null &&
+        availabelPoints > memberConfig.value?.meta.postPoints
+      ) {
+        $q.dialog({
+          component: defineAsyncComponent(() => import("./input-dialog/index.vue"))
+        });
+      } else {
+        notify("You don't have points to create post", "negative");
+      }
     });
   });
 
@@ -108,19 +120,27 @@
   });
 
   try {
-    const [advertisementResponse, eventResponse, directoryResponse, newsResponse, noticeResponse] =
-      await Promise.all([
-        axios.get(URL.ADVERTISEMENT),
-        axios.get(URL.COMMUNITY_EVENT_CURRENT),
-        axios.get(URL.COMMUNITY_DIRECTORY),
-        axios.get(URL.COMMUNITY_NEWS_CURRENT),
-        axios.get(URL.COMMUNITY_NOTICE_CURRENT)
-      ]);
+    const [
+      advertisementResponse,
+      eventResponse,
+      directoryResponse,
+      newsResponse,
+      noticeResponse,
+      memberConfigResponse
+    ] = await Promise.all([
+      axios.get(URL.ADVERTISEMENT),
+      axios.get(URL.COMMUNITY_EVENT_CURRENT),
+      axios.get(URL.COMMUNITY_DIRECTORY),
+      axios.get(URL.COMMUNITY_NEWS_CURRENT),
+      axios.get(URL.COMMUNITY_NOTICE_CURRENT),
+      axios.get(URL.MEMBER_CONFIG)
+    ]);
 
     advertisements.value = advertisementResponse.data;
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
+    memberConfig.value = memberConfigResponse.data;
 
     directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
       (directory: Directory) => directory.status === 1
