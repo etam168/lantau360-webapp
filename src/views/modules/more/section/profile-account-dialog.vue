@@ -64,9 +64,7 @@
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-item-label class="text-negative">
-                      - {{ subItem.amount.toFixed(2) }}</q-item-label
-                    >
+                    <q-item-label class="text-negative"> {{ subItem.points }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
