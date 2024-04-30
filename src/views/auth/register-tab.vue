@@ -88,8 +88,8 @@
     password: ""
   });
   const schema = yup.object({
-    email: yup.string().email().required().label(t("auth.register.userName")),
-    password: yup.string().required().min(4).label(t("auth.password.password"))
+    email: yup.string().email().required().label(t("auth.register.email")),
+    password: yup.string().required().min(4).label(t("auth.register.password"))
   });
 
   function login() {
