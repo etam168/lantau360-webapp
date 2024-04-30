@@ -27,7 +27,7 @@
                   <q-item-label caption class="text-white">
                     {{
                       $t("more.profileSetting.bythisTimeText", {
-                        spentPoints: "0"
+                        spentPoints: userStore.spendPoints
                       })
                     }}
                   </q-item-label>
@@ -49,22 +49,23 @@
 
           <q-separator size="2px" color="primary" />
           <q-tab-panels v-model="tab">
-            <q-tab-panel
-              v-for="(tabItem, index) in tabItems"
-              :key="index"
-              :name="tabItem.name"
-              class="q-pa-none"
-            >
+            <q-tab-panel v-for="(tabItem, index) in tabItems" :key="index" :name="tabItem.name">
               <q-list>
-                <q-item v-for="(subItem, subIndex) in tabItem.subItems" :key="subIndex">
+                <q-item
+                  v-for="(subItem, subIndex) in tabItem.subItems"
+                  :key="subIndex"
+                  class="shadow-1 q-pa-md q-mb-md"
+                >
                   <q-item-section>
-                    <q-item-label>{{ subItem.title }}</q-item-label>
-                    <q-item-label caption>{{ dateFormatter(subItem.createdAt) }}</q-item-label>
+                    <q-item-label class="text-body2 q-mb-xs">{{
+                      dateFormatterMonth(subItem.createdAt)
+                    }}</q-item-label>
+                    <q-item-label class="text-grey-8">{{ subItem.title }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
                     <q-item-label class="text-negative">
-                      - ${{ subItem.amount.toFixed(2) }}</q-item-label
+                      - {{ subItem.amount.toFixed(2) }}</q-item-label
                     >
                   </q-item-section>
                 </q-item>
@@ -78,6 +79,7 @@
 </template>
 
 <script setup lang="ts">
+  import { date } from "quasar";
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
@@ -87,7 +89,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { claimFreePoints, userStore } = useMoreInput();
-  const { dateFormatter } = useUtilities();
+  // const { dateFormatter } = useUtilities();
 
   const props = defineProps({
     trHistory: {
@@ -109,6 +111,10 @@
       }
     });
   };
+
+  function dateFormatterMonth(value: string | number | Date) {
+    return date.formatDate(value, "DD MMM YYYY");
+  }
 
   const tabItems = ref([
     {
