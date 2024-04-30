@@ -8,7 +8,7 @@ import { PostingImage } from "@/interfaces/models/entities/posting-image";
 import i18n from "@/plugins/i18n/i18n";
 
 // .ts files
-import { BLOB_URL, PLACEHOLDER_THUMBNAIL, POST_POINTS, URL } from "@/constants";
+import { BLOB_URL, PLACEHOLDER_THUMBNAIL, URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { useUtilities } from "@/composable/use-utilities";
 
@@ -138,8 +138,8 @@ export function usePostingInput() {
         const successMessage = t("posting.message.created");
         successCallback(successMessage);
 
-        userStore.spendPoints += POST_POINTS;
-        userStore.availabelPoints -= POST_POINTS;
+        userStore.spendPoints += userStore.pointsPerPost;
+        userStore.availabelPoints -= userStore.pointsPerPost;
       })
       .catch(errors => {
         notify(errors.message, "negative");

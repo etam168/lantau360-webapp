@@ -68,7 +68,7 @@
 
   // others import
   import { useDialogPluginComponent, useQuasar } from "quasar";
-  import { NONE, AREA_NAME, POST_POINTS } from "@/constants";
+  import { NONE, AREA_NAME } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
@@ -179,7 +179,7 @@
     }
 
     // Check whether user have required point to create post
-    if (userStore.availabelPoints < POST_POINTS) {
+    if (userStore.availabelPoints < userStore.pointsPerPost) {
       $q.dialog({
         component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
       });

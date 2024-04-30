@@ -37,7 +37,6 @@
         <app-directory-section :rightSlotAction="1" :data="directories" class="q-my-sm" />
       </q-tab-panel>
     </q-tab-panels>
-    {{ availabelPoints }}
   </q-page>
 </template>
 
@@ -56,11 +55,11 @@
   import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
 
-  const { eventBus, isSmallScreen, aspectRatio, notify } = useUtilities();
+  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
 
   const { t } = useI18n({ useScope: "global" });
 
-  const { fetchMemberPoints, availabelPoints } = useUserStore();
+  const { fetchMemberPoints, setPointsPerPost } = useUserStore();
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
@@ -71,7 +70,6 @@
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
-  const $q = useQuasar();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
@@ -84,25 +82,14 @@
     { name: "directory", label: t("community.tabItems.directory") }
   ]);
 
+  provide("memberConfig", memberConfig);
+
   onMounted(() => {
     eventBus.on("DialogStatus", (status, emitter) => {
       if (status) {
         dialogStack.value.push(emitter);
       } else {
         dialogStack.value = dialogStack.value.filter(item => item != emitter);
-      }
-    });
-
-    eventBus.on("createPost", () => {
-      if (
-        memberConfig.value?.meta.postPoints != null &&
-        availabelPoints > memberConfig.value?.meta.postPoints
-      ) {
-        $q.dialog({
-          component: defineAsyncComponent(() => import("./input-dialog/index.vue"))
-        });
-      } else {
-        notify("You don't have points to create post", "negative");
       }
     });
   });
@@ -141,7 +128,7 @@
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
     memberConfig.value = memberConfigResponse.data;
-
+    setPointsPerPost(memberConfig.value?.meta.postPoints ?? 50);
     directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
       (directory: Directory) => directory.status === 1
     );
