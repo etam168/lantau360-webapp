@@ -16,7 +16,9 @@ export default {
   },
 
   alertDialog: {
-    alertText: "Insufficient points to create new posts. Please purchase more points. Thank you."
+    alertText:
+      "Insufficient points to create new posts. Go to Setting to purchase more points. Thank you.",
+    gotoSetting: "Go to Setting"
   },
 
   tabItems: {

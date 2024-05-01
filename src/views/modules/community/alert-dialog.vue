@@ -5,17 +5,54 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    maximized
   >
-    <q-card>
-      <q-card-section class="row items-center">
-        <q-avatar icon="info" />
-        <span class="q-ml-sm">{{ $t("community.alertDialog.alertText") }}</span>
-      </q-card-section>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title />
+      </q-header>
 
-      <q-card-actions align="right">
-        <q-btn flat :label="$t('action.close')" color="primary" @click="handleOk" />
-      </q-card-actions>
-    </q-card>
+      <q-page-container>
+        <q-page>
+          <q-card
+            flat
+            class="row justify-center items-center"
+            style="min-height: calc(100vh - 50px)"
+          >
+            <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
+              <q-img :src="insufficientImage" />
+              <q-item-label
+                style="font-weight: 600"
+                class="text-caption text-grey-8 text-center q-mt-sm"
+              >
+                {{ $t("community.alertDialog.alertText") }}
+              </q-item-label>
+              <q-card-actions class="q-px-none no-wrap">
+                <!-- <div class="row"> -->
+                <app-button
+                  class="full-width q-mx-xs"
+                  :label="$t('action.cancel')"
+                  color="red"
+                  type="submit"
+                  @click="handleCancel"
+                />
+                <div class="q-mx-xs"></div>
+
+                <app-button
+                  class="full-width"
+                  :label="$t('community.alertDialog.gotoSetting')"
+                  color="primary"
+                  type="submit"
+                  @click="handleGoToSetting"
+                />
+
+                <!-- </div> -->
+              </q-card-actions>
+            </q-card-section>
+          </q-card>
+        </q-page>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -36,12 +73,18 @@
     });
   });
 
+  const insufficientImage = ref("/img/icons/insufficient.png");
+
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "AlertDialog");
   }
 
-  function handleOk() {
+  function handleCancel() {
+    onDialogCancel();
+  }
+
+  function handleGoToSetting() {
     onDialogCancel();
     setTimeout(() => {
       eventBus.emit("navigateToMore");

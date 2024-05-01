@@ -1,5 +1,6 @@
 export default {
   createDirectory: "Create {directoryName}",
+  cancel: "Cancel",
   close: "Close",
   emailVerification: "Email Verification",
   goToHome: "Go to Home",
