@@ -18,7 +18,7 @@ export default {
 
   alertDialog: {
     alertText: "積分不足以創建新帖子。請購買更多積分。謝謝。",
-    gotoSetting: "Go to Setting"
+    gotoAccount: "Go to Account"
   },
 
   tabItems: {

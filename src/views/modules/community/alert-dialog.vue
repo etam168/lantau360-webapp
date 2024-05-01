@@ -40,10 +40,10 @@
 
                 <app-button
                   class="full-width"
-                  :label="$t('community.alertDialog.gotoSetting')"
+                  :label="$t('community.alertDialog.gotoAccount')"
                   color="primary"
                   type="submit"
-                  @click="handleGoToSetting"
+                  @click="handleGoToAccount"
                 />
 
                 <!-- </div> -->
@@ -84,7 +84,7 @@
     onDialogCancel();
   }
 
-  function handleGoToSetting() {
+  function handleGoToAccount() {
     onDialogCancel();
     setTimeout(() => {
       eventBus.emit("navigateToMore");
