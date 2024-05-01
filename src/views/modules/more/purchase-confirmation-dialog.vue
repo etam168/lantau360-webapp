@@ -12,7 +12,7 @@
       <q-card-section class="text-center">
         <q-icon name="report_problem" size="4rem" :color="haveEnoughPoints ? 'red' : 'primary'" />
         <div class="text-h6">{{ title }}</div>
-        <div class="text-body2">
+        <div class="text-body2" v-if="availabelPoints >= pointsPerPost">
           {{ $t("more.message.enoughPoints") }}
         </div>
         <div class="text-body2">{{ bodyMessage }}</div>
@@ -27,9 +27,26 @@
           v-close-popup
         />
       </q-card-actions>
-      <q-card-actions v-else align="right">
-        <q-btn flat :label="$t('action.no')" color="primary" v-close-popup />
-        <q-btn flat :label="$t('action.yes')" color="primary" @click="handleOk" />
+      <q-card-actions v-else class="q-px-none no-wrap">
+        <app-button
+          class="full-width q-mx-xs"
+          :label="$t('action.no')"
+          color="red"
+          type="submit"
+          v-close-popup
+        />
+
+        <div class="q-mx-xs"></div>
+
+        <app-button
+          class="full-width"
+          :label="$t('action.yes')"
+          color="primary"
+          type="submit"
+          @click="handleOk"
+        />
+        <!-- <q-btn flat :label="$t('action.no')" color="primary" v-close-popup />
+        <q-btn flat :label="$t('action.yes')" color="primary" @click="handleOk" /> -->
       </q-card-actions>
     </q-card>
   </q-dialog>
