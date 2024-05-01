@@ -57,10 +57,10 @@
                   class="shadow-1 q-pa-md q-mb-md"
                 >
                   <q-item-section>
-                    <q-item-label class="text-body2 q-mb-xs">{{
-                      dateFormatterMonth(subItem.createdAt)
-                    }}</q-item-label>
                     <q-item-label class="text-grey-8">{{ subItem.title }}</q-item-label>
+                    <q-item-label class="text-grey-8">{{
+                      subItem.directoryName + "   -  " + dateFormatterMonth(subItem.createdAt)
+                    }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>

@@ -24,12 +24,12 @@ export default {
   },
 
   profileSetting: {
-    buyPoints: "購買積分",
+    buyPoints: "儲值積分",
     title: "個人資料",
     subtitle: "選擇您在應用程式中的顯示方式",
     save: "儲存",
     profileUpdate: "個人資料已更新",
-    availablePoints: "可用積分: {availablePoints}",
+    availablePoints: "积分余额 : {availablePoints}",
     bythisTimeText: "截至目前您已花費 {spentPoints} 積分",
     claimFreePointText: "您確定要領取您的免費 {points} 積分嗎？"
   },

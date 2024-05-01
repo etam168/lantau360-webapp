@@ -24,7 +24,7 @@ export default {
   },
 
   profileSetting: {
-    buyPoints: "购买积分",
+    buyPoints: "充值积分",
     title: "个人资料",
     subtitle: "选择您在应用程序中的显示方式",
     save: "保存",

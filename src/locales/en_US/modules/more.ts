@@ -24,12 +24,12 @@ export default {
   },
 
   profileSetting: {
-    buyPoints: "Buy Points",
+    buyPoints: "Top Up Points",
     title: "Profile",
     subtitle: "Choose how you appear in the app",
     save: "Save",
     profileUpdate: "Profile Updated",
-    availablePoints: "Available Points : {availablePoints}",
+    availablePoints: "Points Balance : {availablePoints}",
     bythisTimeText: "By this time you spent {spentPoints}",
     claimFreePointText: "Are you sure you want to claim your free {points} points?"
   },

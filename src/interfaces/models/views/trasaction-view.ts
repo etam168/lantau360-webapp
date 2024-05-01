@@ -2,6 +2,7 @@ export interface TransactionView {
   postingId: number;
   title: string;
   createdByUsername: string;
+  directoryName: string;
   transactionId: number;
   memberId: number;
   amount: number;
