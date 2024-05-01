@@ -6,18 +6,26 @@
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
   >
-    <q-card class="q-px-sm">
-      <q-card-section class="row items-center q-pa-none q-mt-sm">
-        <q-avatar icon="info" :text-color="haveEnoughPoints ? 'red' : 'primary'" />
-        <span class="text-h6">{{ title }}</span>
+    <q-card class="q-pa-md">
+      <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
+
+      <q-card-section class="text-center">
+        <q-icon name="report_problem" size="4rem" :color="haveEnoughPoints ? 'red' : 'primary'" />
+        <div class="text-h6">{{ title }}</div>
+        <div class="text-body2">
+          {{ $t("more.message.enoughPoints") }}
+        </div>
+        <div class="text-body2">{{ bodyMessage }}</div>
       </q-card-section>
 
-      <q-card-section class="row items-center q-pt-none">
-        <span class="q-ml-lg">{{ bodyMessage }}</span>
-      </q-card-section>
-
-      <q-card-actions v-if="haveEnoughPoints" align="right">
-        <q-btn flat :label="$t('action.ok')" color="primary" v-close-popup />
+      <q-card-actions v-if="haveEnoughPoints" align="right" class="no-wrap">
+        <app-button
+          class="q-mx-xs"
+          :label="$t('action.ok')"
+          color="primary"
+          type="submit"
+          v-close-popup
+        />
       </q-card-actions>
       <q-card-actions v-else align="right">
         <q-btn flat :label="$t('action.no')" color="primary" v-close-popup />
@@ -52,7 +60,7 @@
 
   const bodyMessage = computed(() =>
     availabelPoints >= pointsPerPost
-      ? `You have enough points to create new post.Please try again when point balance is less then ${pointsPerPost}`
+      ? t("more.profileSetting.pointLessThan50", { points: pointsPerPost })
       : t("more.profileSetting.claimFreePointText", { points: pointsPerPost })
   );
 

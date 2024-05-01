@@ -17,7 +17,7 @@ export default {
   },
 
   alertDialog: {
-    alertText: "积分不足以创建新帖子。请购买更多积分。谢谢。",
+    insufficientPoints: "积分不足以创建新帖子。请购买更多积分。谢谢。",
     gotoAccount: "Go to Account"
   },
 

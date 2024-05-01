@@ -25,7 +25,7 @@
                 style="font-weight: 600"
                 class="text-caption text-grey-8 text-center q-mt-sm"
               >
-                {{ $t("community.alertDialog.alertText") }}
+                {{ $t("community.alertDialog.insufficientPoints") }}
               </q-item-label>
               <q-card-actions class="q-px-none no-wrap">
                 <!-- <div class="row"> -->

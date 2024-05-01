@@ -31,6 +31,7 @@ export default {
     profileUpdate: "Profile Updated",
     availablePoints: "Points Balance : {availablePoints}",
     bythisTimeText: "By this time you spent {spentPoints}",
+    pointLessThan50: "Please try again when point balance is less than {points}",
     claimFreePointText: "Are you sure you want to claim your free {points} points?"
   },
 

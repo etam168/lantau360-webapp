@@ -16,7 +16,7 @@ export default {
   },
 
   alertDialog: {
-    alertText:
+    insufficientPoints:
       "Insufficient points to create new posts. Go to Account to get more points. Thank you.",
     gotoAccount: "Go to Account"
   },

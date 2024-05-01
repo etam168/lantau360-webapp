@@ -63,9 +63,9 @@
                       subItem.directoryName + "   -  " + dateFormatter(subItem.createdAt)
                     }}</q-item-label>
 
-                    <q-item-label v-else caption>{{
-                      dateFormatter(subItem.createdAt)
-                    }}</q-item-label>
+                    <q-item-label v-else caption>
+                      {{ dateFormatter(subItem.createdAt) }}</q-item-label
+                    >
                   </q-item-section>
 
                   <q-item-section side>
