@@ -88,6 +88,7 @@
   });
 
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
+  const { eventBus } = useUtilities();
 
   const $q = useQuasar();
   const logo = ref("/img/logo/logo.png");
@@ -108,7 +109,10 @@
   };
 
   function onLoginSuccess() {
-    if (props.callback != null) props.callback();
+    eventBus.emit("on-login-success");
+    if (props.callback != null) {
+      props.callback();
+    }
   }
 
   function showRegister() {

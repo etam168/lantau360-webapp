@@ -1,6 +1,6 @@
 <template>
   <template v-if="!isAuthenticated">
-    <login-widget @on-cancel="handleCancel" />
+    <login-widget @on-cancel="handleCancel" @on-login="onLoginSuccess" />
   </template>
   <template v-else-if="locationError != null">
     <error-widget :error="locationError as GeoLocationError" />
@@ -49,13 +49,17 @@
   const loading = ref(true);
 
   const userStore = useUserStore();
-  const isAuthenticated = computed(() => userStore.isUserLogon());
+  const isAuthenticated = ref(userStore.isUserLogon());
 
   const addressErrorCode = 5;
   const deviceSupportErrorCode = 4;
 
   function handleCancel() {
     emits("on-cancel");
+  }
+
+  function onLoginSuccess() {
+    isAuthenticated.value = userStore.isUserLogon();
   }
 
   async function getLocationDetails() {

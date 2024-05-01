@@ -33,20 +33,23 @@
   import { useQuasar } from "quasar";
 
   const $q = useQuasar();
-  const emits = defineEmits(["callback", "on-cancel"]);
+  const emits = defineEmits(["on-login", "on-cancel"]);
 
   const checkinImage = ref("/img/icons/checkin.jpg");
+  const { eventBus } = useUtilities();
 
   function showLoginDialog() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
-      componentProps: {
-        callback: () => {
-          emits("callback");
-        }
-      }
+      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
     });
   }
+
+  onMounted(() => {
+    eventBus.on("on-login-success", () => {
+      alert("");
+      emits("on-login");
+    });
+  });
 
   function handleCancel() {
     emits("on-cancel");
