@@ -57,19 +57,23 @@
                   class="shadow-1 q-pa-md q-mb-md"
                 >
                   <q-item-section>
-                    <q-item-label class="text-grey-8">{{ subItem.title }}</q-item-label>
+                    <q-item-label>{{ subItem.title }}</q-item-label>
 
-                    <q-item-label v-if="subItem.directoryName !== null" class="text-grey-8">{{
-                      subItem.directoryName + "   -  " + dateFormatterMonth(subItem.createdAt)
+                    <q-item-label v-if="subItem.directoryName !== null" caption>{{
+                      subItem.directoryName + "   -  " + dateFormatter(subItem.createdAt)
                     }}</q-item-label>
 
-                    <q-item-label v-else class="text-grey-8">{{
-                      dateFormatterMonth(subItem.createdAt)
+                    <q-item-label v-else caption>{{
+                      dateFormatter(subItem.createdAt)
                     }}</q-item-label>
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-item-label class="text-negative"> {{ subItem.points }}</q-item-label>
+                    <q-item-label
+                      :style="{ color: subItem.transactionType === 2 ? 'red' : 'black' }"
+                    >
+                      {{ subItem.points }}</q-item-label
+                    >
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -82,7 +86,6 @@
 </template>
 
 <script setup lang="ts">
-  import { date } from "quasar";
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
@@ -92,7 +95,7 @@
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { claimFreePoints, userStore } = useMoreInput();
-  // const { dateFormatter } = useUtilities();
+  const { dateFormatter } = useUtilities();
 
   const props = defineProps({
     trHistory: {
@@ -114,10 +117,6 @@
       }
     });
   };
-
-  function dateFormatterMonth(value: string | number | Date) {
-    return date.formatDate(value, "DD MMM YYYY");
-  }
 
   const tabItems = ref([
     {
