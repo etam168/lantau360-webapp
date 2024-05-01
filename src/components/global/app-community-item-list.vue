@@ -17,42 +17,9 @@
       </q-item>
     </q-card>
 
-    <q-slide-transition>
-      <div v-show="visible">
-        <q-card class="row justify-center q-mb-md">
-          <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
-            <q-img :src="checkinImage" />
-            <q-item-label
-              style="font-weight: 600"
-              class="text-caption text-grey-8 text-center q-mt-sm"
-            >
-              {{ $t("community.loginDialog.subtitle") }}
-            </q-item-label>
-            <q-card-actions class="q-px-none no-wrap">
-              <!-- <div class="row"> -->
-
-              <app-button
-                class="full-width"
-                label="Cancel"
-                color="red"
-                type="submit"
-                @click="handleCancel"
-              />
-              <div class="q-mx-xs"></div>
-              <app-button
-                class="full-width"
-                :label="$t('auth.login.button')"
-                color="primary"
-                type="submit"
-                @click="handleOk"
-              />
-
-              <!-- </div> -->
-            </q-card-actions>
-          </q-card-section>
-        </q-card>
-      </div>
-    </q-slide-transition>
+    <!-- <template>
+      <app-login-dialog-widget />
+    </template> -->
 
     <q-list v-if="directoryItems.length > 0">
       <q-item
@@ -140,6 +107,7 @@
   import { BLOB_URL } from "@/constants";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  //import AppLoginDialogWidget from "@/components/dialog/app-login-dialog-widget.vue";
   const $q = useQuasar();
   // const router = useRouter();
 
@@ -161,12 +129,10 @@
     }
   });
 
-  const { eventBus, getTimeAgo, translateAlt, translate } = useUtilities();
+  const { getTimeAgo, translateAlt, translate } = useUtilities();
 
   const userStore = useUserStore();
   //const textModel = ref("");
-  const visible = ref(false);
-  const checkinImage = ref("/img/icons/checkin.jpg");
 
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
@@ -180,19 +146,14 @@
     emit("item-click", item);
   }
 
-  function handleCancel() {
-    visible.value = false;
-  }
-
-  function handleOk() {
-    eventBus.emit("navigateToMore");
-  }
-
   function createPosting() {
     if (!userStore.isUserLogon()) {
-      visible.value = true;
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/app-login-dialog-widget.vue")
+        )
+      });
     } else {
-      visible.value = false;
       emit("create-posting");
     }
   }
