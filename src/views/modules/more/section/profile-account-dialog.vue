@@ -58,8 +58,13 @@
                 >
                   <q-item-section>
                     <q-item-label class="text-grey-8">{{ subItem.title }}</q-item-label>
-                    <q-item-label class="text-grey-8">{{
+
+                    <q-item-label v-if="subItem.directoryName !== null" class="text-grey-8">{{
                       subItem.directoryName + "   -  " + dateFormatterMonth(subItem.createdAt)
+                    }}</q-item-label>
+
+                    <q-item-label v-else class="text-grey-8">{{
+                      dateFormatterMonth(subItem.createdAt)
                     }}</q-item-label>
                   </q-item-section>
 
