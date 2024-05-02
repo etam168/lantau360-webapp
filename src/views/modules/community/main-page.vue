@@ -128,7 +128,7 @@
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
     memberConfig.value = memberConfigResponse.data;
-    setPointsPerPost(memberConfig.value?.meta.postPoints ?? 50);
+    setPointsPerPost(memberConfig.value?.meta.postPoint ?? 50);
     directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
       (directory: Directory) => directory.status === 1
     );
