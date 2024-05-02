@@ -6,26 +6,27 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    maximized
   >
-    <q-card>
-      <q-bar class="bg-primary">
-        <q-toolbar-title class="text-white">{{ directory.directoryName }}</q-toolbar-title>
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <q-header class="bg-transparent text-dark">
+        <app-dialog-title>{{ directoryName }}</app-dialog-title>
+      </q-header>
 
-        <q-space />
-
-        <q-btn dense icon="close" color="red" v-close-popup size="xs">
-          <q-tooltip>{{ $t("action.close") }}</q-tooltip>
-        </q-btn>
-      </q-bar>
-
-      <q-card-section class="q-pa-none" style="height: 500px; width: 520px">
-        <input-step
-          @close-dialog="closeDialog"
-          :posting-data="postingData"
-          :directory-id="directory.communityDirectoryId"
-        />
-      </q-card-section>
-    </q-card>
+      <q-page-container>
+        <q-page>
+          <q-card flat class="row justify-center">
+            <q-card-section class="q-pa-none" style="height: calc(100vh - 125px); width: 520px">
+              <input-step
+                @close-dialog="closeDialog"
+                :posting-data="postingData"
+                :directory-id="directory.communityDirectoryId"
+              />
+            </q-card-section>
+          </q-card>
+        </q-page>
+      </q-page-container>
+    </q-layout>
     <!-- End of input content -->
   </q-dialog>
 </template>
@@ -45,7 +46,7 @@
 
   defineEmits([...useDialogPluginComponent.emits]);
 
-  defineProps({
+  const props = defineProps({
     directory: {
       type: Object as PropType<CommunityDirectory>,
       required: true
@@ -57,6 +58,7 @@
   });
 
   const { dialogRef, onDialogHide, onDialogCancel } = useDialogPluginComponent();
+  const { translateAlt, translate } = useUtilities();
   const isDialogVisible = ref();
 
   const previewData = ref<PostingView>({} as PostingView);
@@ -83,4 +85,15 @@
     isDialogVisible.value = status;
     // eventBus.emit("DialogStatus", status, true);
   }
+
+  const directoryName = computed(() => {
+    const { directoryName, directoryNameAlt } = props.directory as CommunityDirectory;
+
+    // Check if directoryNameAlt exists and is not null
+    if (directoryNameAlt !== undefined && directoryNameAlt !== null) {
+      return translateAlt(directoryName, directoryNameAlt, "directoryName");
+    } else {
+      return translate(directoryName, props?.directory?.meta, "directoryName");
+    }
+  });
 </script>
