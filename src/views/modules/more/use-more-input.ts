@@ -4,7 +4,7 @@ import { Member } from "@/interfaces/models/entities/member";
 
 // .ts files
 import { useUserStore } from "@/stores/user";
-import { BASE_URL, NO_FREE_POINTS } from "@/constants";
+import { BASE_URL } from "@/constants";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -73,8 +73,8 @@ export function useMoreInput() {
         const successMessage = t("more.message.claimedFreePointsSuccessfully");
         successCallback(successMessage);
 
-        userStore.totalPoints += NO_FREE_POINTS;
-        userStore.availabelPoints += NO_FREE_POINTS;
+        userStore.totalPoints += userStore.topUpPoints;
+        userStore.availabelPoints += userStore.topUpPoints;
 
         setTimeout(() => {
           onDialogCancel();

@@ -59,7 +59,7 @@
 
   const { t } = useI18n({ useScope: "global" });
 
-  const { fetchMemberPoints, setPointsPerPost } = useUserStore();
+  const { fetchMemberPoints, setPoints } = useUserStore();
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directories = ref<CommunityDirectory[]>([]);
@@ -128,7 +128,10 @@
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
     memberConfig.value = memberConfigResponse.data;
-    setPointsPerPost(memberConfig.value?.meta.postPoint ?? 50);
+    setPoints(
+      memberConfig.value?.meta.postPoint ?? 50,
+      memberConfig.value?.meta.requestFreePoints ?? 100
+    );
     directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
       (directory: Directory) => directory.status === 1
     );

@@ -60,7 +60,7 @@
 
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-  const { availabelPoints, pointsPerPost } = useUserStore();
+  const { availabelPoints, pointsPerPost, topUpPoints } = useUserStore();
   const { t } = i18n.global;
   const isDialogVisible = ref();
 
@@ -78,7 +78,7 @@
   const bodyMessage = computed(() =>
     availabelPoints >= pointsPerPost
       ? t("more.profileSetting.pointLessThan50", { points: pointsPerPost })
-      : t("more.profileSetting.claimFreePointText", { points: pointsPerPost })
+      : t("more.profileSetting.claimFreePointText", { points: topUpPoints })
   );
 
   const haveEnoughPoints = computed(() => availabelPoints >= pointsPerPost);

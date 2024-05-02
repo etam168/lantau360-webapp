@@ -53,9 +53,12 @@
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
+  import { Content } from "@/interfaces/models/entities/content";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
+  const { setPoints } = useUserStore();
+
   const userStore = useUserStore();
   const error = ref<string | null>(null);
 
@@ -66,6 +69,7 @@
 
   const trRecent = ref();
   const trHistory = ref();
+  const memberConfig = ref<Content>();
 
   const menuItems = computed(() => {
     return userStore.isUserLogon() ? LOGGED_ON_USER_MENU : DEFAULT_MENU;
@@ -146,13 +150,20 @@
   async function initTransactionData() {
     try {
       if (userStore.isUserLogon()) {
-        const [transactionHistory, recentTransactions] = await Promise.all([
+        const [transactionHistory, recentTransactions, memberConfigResponse] = await Promise.all([
           axios.get(`${URL.MEMBER_TRANSACTIONS_URL}/${userStore.userId}`),
-          axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`)
+          axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`),
+          axios.get(URL.MEMBER_CONFIG)
         ]);
 
         trRecent.value = recentTransactions?.data ?? [];
         trHistory.value = transactionHistory?.data ?? [];
+        memberConfig.value = memberConfigResponse.data;
+
+        setPoints(
+          memberConfig.value?.meta.postPoint ?? 50,
+          memberConfig.value?.meta.requestFreePoints ?? 100
+        );
 
         // Sync user points.
         userStore.fetchMemberPoints();
