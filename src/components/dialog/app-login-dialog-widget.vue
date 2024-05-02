@@ -63,6 +63,7 @@
   const isDialogVisible = ref();
 
   const checkinImage = ref("/img/icons/checkin.jpg");
+  const { eventBus } = useUtilities();
 
   function showLoginDialog() {
     $q.dialog({
@@ -74,6 +75,12 @@
       }
     });
   }
+
+  onMounted(() => {
+    eventBus.on("on-login-success", () => {
+      onDialogCancel();
+    });
+  });
 
   function handleCancel() {
     onDialogCancel();

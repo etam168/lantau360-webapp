@@ -110,9 +110,7 @@
 
   function onLoginSuccess() {
     eventBus.emit("on-login-success");
-    if (props.callback != null) {
-      props.callback();
-    }
+    if (props.callback != null) props.callback();
   }
 
   function showRegister() {

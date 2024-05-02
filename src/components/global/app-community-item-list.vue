@@ -112,6 +112,7 @@
   // const router = useRouter();
 
   const emit = defineEmits(["item-click", "create-posting"]);
+  const { eventBus } = useUtilities();
 
   const props = defineProps({
     directoryItems: {
@@ -157,6 +158,11 @@
       emit("create-posting");
     }
   }
+  onMounted(() => {
+    eventBus.on("on-login-success", () => {
+      emit("create-posting");
+    });
+  });
 
   function editPosting(item: Posting) {
     $q.dialog({
