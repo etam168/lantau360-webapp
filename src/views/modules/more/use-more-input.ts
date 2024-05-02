@@ -73,8 +73,9 @@ export function useMoreInput() {
         const successMessage = t("more.message.claimedFreePointsSuccessfully");
         successCallback(successMessage);
 
-        userStore.totalPoints += userStore.topUpPoints;
-        userStore.availabelPoints += userStore.topUpPoints;
+        userStore.totalPoints = parseInt(userStore.totalPoints) + parseInt(userStore.topUpPoints);
+        userStore.availabelPoints =
+          parseInt(userStore.availabelPoints) + parseInt(userStore.topUpPoints);
 
         setTimeout(() => {
           onDialogCancel();
