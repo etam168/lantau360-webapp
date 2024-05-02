@@ -179,12 +179,12 @@
     }
 
     // Check whether user have required point to create post
-    // if (userStore.availabelPoints < userStore.pointsPerPost) {
-    //   $q.dialog({
-    //     component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
-    //   });
-    //   return;
-    // }
+    if (userStore.availabelPoints < userStore.pointsPerPost) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
+      });
+      return;
+    }
 
     // User is logged in and also have required points to create new post
     $q.dialog({
