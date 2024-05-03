@@ -55,6 +55,8 @@
                   v-for="(subItem, subIndex) in tabItem.subItems"
                   :key="subIndex"
                   class="shadow-1 q-pa-md q-mb-md"
+                  clickable
+                  @click="handleItemClick(subItem)"
                 >
                   <q-item-section>
                     <q-item-label>{{ subItem.title }}</q-item-label>
@@ -123,6 +125,16 @@
       }
     });
   };
+
+  async function handleItemClick(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
+      componentProps: {
+        item: item
+        // directory: directoryData
+      }
+    });
+  }
 
   const tabItems = ref([
     {
