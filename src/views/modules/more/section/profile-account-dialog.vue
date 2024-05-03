@@ -111,12 +111,6 @@
   const tab = ref("recentTransactions");
   const setTab = (val: string) => (tab.value = val);
 
-  // provide("trHistory", trHistory);
-  // provide("trRecent", trRecent);
-
-  // const trHistory1 = inject("trHistory") as Ref<TransactionView[]>;
-  // const trRecent1 = inject("trRecent") as Ref<TransactionView[]>;
-
   const onBtnBuyPoints = () => {
     $q.dialog({
       component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),
@@ -126,14 +120,21 @@
     });
   };
 
-  async function handleItemClick(item: any) {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
-      componentProps: {
-        item: item
-        // directory: directoryData
-      }
-    });
+  function handleItemClick(item: any) {
+    if (item.postingId) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
+        componentProps: {
+          item: item
+        }
+      });
+    } else {
+      $q.notify({
+        message: t("more.message.notPosting"),
+        icon: "report_problem",
+        color: "yellow-9"
+      });
+    }
   }
 
   const tabItems = ref([

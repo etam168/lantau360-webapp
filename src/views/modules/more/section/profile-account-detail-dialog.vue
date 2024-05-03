@@ -8,7 +8,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ item.title }}</app-dialog-title>
+        <app-dialog-title>{{ item.directoryName }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
