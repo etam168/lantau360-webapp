@@ -109,6 +109,12 @@
   const tab = ref("recentTransactions");
   const setTab = (val: string) => (tab.value = val);
 
+  // provide("trHistory", trHistory);
+  // provide("trRecent", trRecent);
+
+  // const trHistory1 = inject("trHistory") as Ref<TransactionView[]>;
+  // const trRecent1 = inject("trRecent") as Ref<TransactionView[]>;
+
   const onBtnBuyPoints = () => {
     $q.dialog({
       component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),

@@ -95,6 +95,6 @@
   }
 
   function handleOk() {
-    props.callback(onDialogCancel());
+    props.callback(onDialogCancel);
   }
 </script>

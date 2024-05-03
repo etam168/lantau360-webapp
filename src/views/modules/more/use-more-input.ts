@@ -16,7 +16,7 @@ const newInput = () => {
 };
 
 const { t } = i18n.global;
-
+const { eventBus } = useUtilities();
 const toolTipCreate = ref("member.gallery.uploadNewImage");
 
 const locale = ref("hk");
@@ -72,10 +72,10 @@ export function useMoreInput() {
       .then(async () => {
         const successMessage = t("more.message.claimedFreePointsSuccessfully");
         successCallback(successMessage);
-
-        userStore.totalPoints = parseInt(userStore.totalPoints) + parseInt(userStore.topUpPoints);
-        userStore.availabelPoints =
-          parseInt(userStore.availabelPoints) + parseInt(userStore.topUpPoints);
+        eventBus.emit("refresh-transaction-data");
+        // userStore.totalPoints = parseInt(userStore.totalPoints) + parseInt(userStore.topUpPoints);
+        // userStore.availabelPoints =
+        //   parseInt(userStore.availabelPoints) + parseInt(userStore.topUpPoints);
 
         setTimeout(() => {
           onDialogCancel();

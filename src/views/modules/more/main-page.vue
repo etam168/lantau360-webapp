@@ -57,8 +57,7 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { setPoints } = useUserStore();
-
+  const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const error = ref<string | null>(null);
 
@@ -70,15 +69,20 @@
   const trRecent = ref();
   const trHistory = ref();
   const memberConfig = ref<Content>();
+  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
+  const throttledHandleContentDialog = throttle(showDialog, 2000);
 
   const menuItems = computed(() => {
     return userStore.isUserLogon() ? LOGGED_ON_USER_MENU : DEFAULT_MENU;
   });
 
-  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
-  const throttledHandleContentDialog = throttle(showDialog, 2000);
   initTransactionData();
 
+  onMounted(() => {
+    eventBus.on("refresh-transaction-data", () => {
+      initTransactionData();
+    });
+  });
   async function showDialog(item: any) {
     if (item.contentKey) {
       OpenDialog(
@@ -96,8 +100,8 @@
         OpenDialog(
           import("./section/profile-account-dialog.vue"),
           {
-            trHistory: trHistory.value,
-            trRecent: trRecent.value
+            trHistory: trHistory,
+            trRecent: trRecent
           },
           "profile"
         );
@@ -160,7 +164,7 @@
         trHistory.value = transactionHistory?.data ?? [];
         memberConfig.value = memberConfigResponse.data;
 
-        setPoints(
+        userStore.setPoints(
           memberConfig.value?.meta.postPoint ?? 50,
           memberConfig.value?.meta.requestFreePoints ?? 100
         );
