@@ -72,7 +72,9 @@
   });
 
   const title = computed(() =>
-    availabelPoints >= pointsPerPost ? "Enough Points" : "Confirmation"
+    availabelPoints >= pointsPerPost
+      ? t("more.profileSetting.enoughPoints")
+      : t("more.profileSetting.confirmation")
   );
 
   const bodyMessage = computed(() =>

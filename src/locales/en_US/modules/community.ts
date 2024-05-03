@@ -8,7 +8,9 @@ export default {
     title: "Title",
     photos: "Photos",
     inputPlaceholder: "What's on your mind ?",
-    addGalleryDescription: "Add the gallery and description"
+    addGalleryDescription: "Add the gallery and description",
+    confirmation: "Confirmation",
+    confirmationQuestion: "Are you sure you want to create a Post for {pointsPerPost} points?"
   },
 
   loginDialog: {

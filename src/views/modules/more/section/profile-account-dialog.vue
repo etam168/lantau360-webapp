@@ -74,7 +74,9 @@
                     <q-item-label
                       :style="{ color: subItem.transactionType === 2 ? 'red' : 'black' }"
                     >
-                      {{ subItem.points }}</q-item-label
+                      {{
+                        subItem.transactionType === 2 ? "-" + subItem.points : subItem.points
+                      }}</q-item-label
                     >
                   </q-item-section>
                 </q-item>

@@ -32,7 +32,9 @@ export default {
     availablePoints: "积分余额 : {availablePoints}",
     bythisTimeText: "截至目前您已花費 {spentPoints} 積分",
     pointLessThan50: "Please try again when point balance is less than {points}",
-    claimFreePointText: "您確定要領取您的免費 {points} 積分嗎？"
+    claimFreePointText: "您確定要領取您的免費 {points} 積分嗎？",
+    enoughPoints: "Enough Points",
+    confirmation: "Confirmation"
   },
 
   contentDialog: {

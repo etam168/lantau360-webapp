@@ -8,7 +8,9 @@ export default {
     title: "标题",
     photos: "照片",
     inputPlaceholder: "您有什么想说的？",
-    addGalleryDescription: "Add the gallery and description"
+    addGalleryDescription: "Add the gallery and description",
+    confirmation: "Confirmation",
+    confirmationQuestion: "Are you sure you want to create a Post for {pointsPerPost} points?"
   },
 
   loginDialog: {

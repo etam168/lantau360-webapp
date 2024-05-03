@@ -189,7 +189,7 @@
     // User is logged in and also have required points to create new post
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/views/modules/community/input-dialog/index.vue")
+        () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
       ),
       componentProps: {
         item: props.directory as CommunityDirectory
