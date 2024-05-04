@@ -27,6 +27,8 @@ export default {
     events: "Events",
     news: "News",
     notice: "Notice",
-    directory: "Directory"
+    directory: "Directory",
+    allDirectory: "All {directory}",
+    myDirectory: "My {directory}"
   }
 };
