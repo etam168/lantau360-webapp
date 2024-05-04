@@ -10,7 +10,7 @@ export default {
     inputPlaceholder: "您有什麼想說的？",
     addGalleryDescription: "Add the gallery and description",
     confirmation: "Confirmation",
-    confirmationQuestion: "Are you sure you want to create a Post for {pointsPerPost} points?"
+    confirmationQuestion: "Are you sure? This will deduct {pointsPerPost} points from your account."
   },
 
   loginDialog: {

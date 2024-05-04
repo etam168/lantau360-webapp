@@ -3,6 +3,8 @@ export interface TransactionView {
   title: string;
   createdByUsername: string;
   directoryName: string;
+  postingDescription: string;
+  isPostExpired: boolean;
   transactionId: number;
   memberId: number;
   amount: number;

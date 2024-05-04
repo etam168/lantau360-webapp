@@ -100,6 +100,7 @@
       // galleryItems.value = galleryResponse.data.filter(
       //   element => !(maskValue & (1 << (element.ranking - 1)))
       // );
+
       galleryItems.value = galleryResponse.data.filter(
         element => !((maskValue >> (element.ranking - 1)) & 1)
       );

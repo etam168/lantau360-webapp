@@ -34,7 +34,8 @@ export default {
     pointLessThan50: "Please try again when point balance is less than {points}",
     claimFreePointText: "Are you sure you want to claim your free {points} points?",
     enoughPoints: "Enough Points",
-    confirmation: "Confirmation"
+    confirmation: "Confirmation",
+    expired: "Expired"
   },
 
   contentDialog: {

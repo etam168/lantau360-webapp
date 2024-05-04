@@ -2,6 +2,9 @@ export interface Transaction {
   transactionId: number;
   postingId: number;
   memberId: number;
+  directoryName: string;
+  postingDescription: string;
+  isPostExpired: boolean;
   title: string;
   amount: number;
   points: number;

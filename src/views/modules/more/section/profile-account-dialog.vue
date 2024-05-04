@@ -71,13 +71,14 @@
                   </q-item-section>
 
                   <q-item-section side>
-                    <q-item-label
-                      :style="{ color: subItem.transactionType === 2 ? 'red' : 'black' }"
-                    >
+                    <q-item-label :class="subItem.transactionType === 2 ? 'text-red' : ''">
                       {{
                         subItem.transactionType === 2 ? "-" + subItem.points : subItem.points
                       }}</q-item-label
                     >
+                    <q-item-label class="text-red" v-if="subItem.isPostExpired == true">{{
+                      $t("more.profileSetting.expired")
+                    }}</q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -123,7 +124,23 @@
   };
 
   function handleItemClick(item: any) {
-    if (item.postingId) {
+    if (item.isPostExpired && item.postingId) {
+      // $q.dialog({
+      //   component: defineAsyncComponent(() => import("./edit-dialog/index.vue")),
+      //   componentProps: {
+      //     item: item
+      //   }
+      // });
+
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
+        ),
+        componentProps: {
+          item: item
+        }
+      });
+    } else if (item.postingId) {
       $q.dialog({
         component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
         componentProps: {

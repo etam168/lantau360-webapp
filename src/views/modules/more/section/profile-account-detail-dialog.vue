@@ -65,7 +65,7 @@
       ]);
 
       galleryItems.value = galleryResponse.data.filter(
-        element => !((0 >> (element.ranking - 1)) & 1)
+        element => !((1 >> (element.ranking - 1)) & 1)
       );
     } catch (err) {
       if (err instanceof AxiosError) {

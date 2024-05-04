@@ -34,7 +34,8 @@ export default {
     pointLessThan50: "Please try again when point balance is less than {points}",
     claimFreePointText: "您確定要領取您的免費 {points} 積分嗎？",
     enoughPoints: "Enough Points",
-    confirmation: "Confirmation"
+    confirmation: "Confirmation",
+    expired: "Expired"
   },
 
   contentDialog: {
