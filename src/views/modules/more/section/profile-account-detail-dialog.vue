@@ -18,7 +18,11 @@
           </div>
           <q-card>
             <q-card-section>
-              <div class="text-h5 q-mt-sm q-mb-xs">{{ item.title }}</div>
+              <q-item class="q-pa-none">
+                <div class="text-h5 q-mt-sm q-mb-xs">{{ item.title }}</div>
+                <q-space />
+                <q-btn @click="repost" v-if="item.isPostExpired" outline color="red">Repost</q-btn>
+              </q-item>
               <div class="text-caption text-grey">
                 {{ item.postingDescription }}
               </div>
@@ -44,13 +48,9 @@
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
-
+  const $q = useQuasar();
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImageType[]>([]);
-  // const { t } = useI18n({ useScope: "global" });
-  // const $q = useQuasar();
-  // const { claimFreePoints, userStore } = useMoreInput();
-  // const { dateFormatter } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -78,6 +78,17 @@
         error.value = t("errors.anErrorOccured");
       }
     }
+  };
+
+  const repost = () => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
+      ),
+      componentProps: {
+        item: props.item
+      }
+    });
   };
 
   onMounted(() => {

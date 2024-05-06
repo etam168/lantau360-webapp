@@ -12,7 +12,6 @@
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ directoryName }}</app-dialog-title>
       </q-header>
-
       <q-page-container>
         <q-page>
           <q-card flat class="row justify-center">

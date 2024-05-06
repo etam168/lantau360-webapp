@@ -140,23 +140,24 @@
   };
 
   function handleItemClick(item: any) {
-    if (item.isPostExpired && item.postingId) {
-      // $q.dialog({
-      //   component: defineAsyncComponent(() => import("./edit-dialog/index.vue")),
-      //   componentProps: {
-      //     item: item
-      //   }
-      // });
+    // if (item.isPostExpired && item.postingId) {
+    //   // $q.dialog({
+    //   //   component: defineAsyncComponent(() => import("./edit-dialog/index.vue")),
+    //   //   componentProps: {
+    //   //     item: item
+    //   //   }
+    //   // });
 
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
-        ),
-        componentProps: {
-          item: item
-        }
-      });
-    } else if (item.postingId) {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
+    //     ),
+    //     componentProps: {
+    //       item: item
+    //     }
+    //   });
+    // } else
+    if (item.postingId) {
       $q.dialog({
         component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
         componentProps: {

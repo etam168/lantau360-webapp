@@ -8,6 +8,7 @@ import { SiteImage } from "@/interfaces/models/entities/site-image";
 import { CommunityEventImage } from "@/interfaces/models/entities/community-event-image";
 import { CommunityNewsImage } from "@/interfaces/models/entities/community-news-image";
 import { CommunityNoticeImage } from "@/interfaces/models/entities/community-notice-image";
+import { PostingImage } from "../models/entities/posting-image";
 
 export type GalleryImageType =
   | AdvertisementImage
@@ -17,4 +18,5 @@ export type GalleryImageType =
   | CommunityNoticeImage
   | PromotionImage
   | SiteImage
-  | voucherImage;
+  | voucherImage
+  | PostingImage;

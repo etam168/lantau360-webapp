@@ -11,6 +11,7 @@ import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL, URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { useUtilities } from "@/composable/use-utilities";
+import { List } from "lodash";
 
 const { notify, eventBus } = useUtilities();
 const userStore = useUserStore();
@@ -34,10 +35,10 @@ const locale = ref("hk");
 const lang = ref("hk");
 
 const metaDescription = ref<string>("");
-
 export function usePostingInput() {
   const postingInput = ref<Posting>(newInput());
   const postingImages = ref<PostingImages>({} as PostingImages);
+  let prePostingId = 0;
 
   function setPostingInput(val: Posting) {
     postingInput.value.postingId = val.postingId;
@@ -100,18 +101,28 @@ export function usePostingInput() {
     // loading.value = false;
   }
 
-  function updatePosting() {
+  function createPosting() {
     postingInput.value.bannerPath = postingInput.value.iconPath = postingInput.value.imagePath = "";
-
-    postingInput.value.modifiedBy = parseInt(userStore.userId);
+    postingInput.value.createdBy = parseInt(userStore.userId);
+    postingInput.value.memberId = parseInt(userStore.userId);
+    const requestData = postingInput.value;
+    requestData.status = 1;
+    prePostingId = postingInput.value.postingId;
+    postingInput.value.postingId = 0;
+    debugger;
     axios
-      .put(`/Posting/${postingInput.value.postingId}`, postingInput.value)
-      .then(async () => {
+      .post(`/Posting`, requestData)
+      .then(async response => {
+        // assign postingId value back to postingInput
+        const postingId = response.data.postingId;
+        postingInput.value.postingId = postingId;
+        await uploadImages();
         getPostingsByDirectoryId();
-
-        const successMessage = t("posting.message.updated");
-
+        const successMessage = t("posting.message.created");
         successCallback(successMessage);
+
+        userStore.spendPoints += userStore.pointsPerPost;
+        userStore.availabelPoints -= userStore.pointsPerPost;
       })
       .catch(errors => {
         notify(errors.message, "negative");
@@ -145,6 +156,22 @@ export function usePostingInput() {
       })
       .then(response => {
         postingImages.value.galleryImages[imageIndex].imageId = response.data.imageId;
+        eventBus.emit("on-gallery-image-updates");
+        // onRefresh();
+      })
+      .catch(() => {});
+  }
+
+  async function copyPostImages(prePostImage: List<any>) {
+    const requestData = {
+      newPostingId: postingInput.value.postingId,
+      prePostImages: prePostImage,
+      prePostingId: prePostingId
+    };
+    await axios
+      .post(`/PostingImage/Repost`, requestData)
+      .then(() => {
+        // postingImages.value.galleryImages[imageIndex].imageId = response.data.imageId;
         eventBus.emit("on-gallery-image-updates");
         // onRefresh();
       })
@@ -219,9 +246,35 @@ export function usePostingInput() {
     return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 
+  async function uploadImages() {
+    const images = [];
+    const serverImages = [];
+
+    if (postingImages?.value?.galleryImages == null || postingImages.value.galleryImages.length < 1)
+      return;
+
+    for (const [index, gImage] of postingImages.value.galleryImages.entries()) {
+      if (gImage.image != null)
+        images.push({ index: index, ranking: index + 1, image: gImage.image });
+      else serverImages.push({ ranking: index + 1, imageId: gImage.imageId, index: index });
+    }
+
+    const insertNewImages = images.map((i: any) => uploadImage(i.index, i.ranking, i.image));
+    const copyPrePostImages = copyPostImages(serverImages);
+    const promises = [...insertNewImages, copyPrePostImages];
+
+    Promise.all(promises)
+      .then(() => {
+        eventBus.emit("refresh-transaction-data");
+      })
+      .catch(errors => {
+        notify(errors.message, "negative");
+      });
+  }
+
   return {
     postingInput,
-    updatePosting,
+    createPosting,
     uploadImage,
     deleteImage,
     updateRanking,

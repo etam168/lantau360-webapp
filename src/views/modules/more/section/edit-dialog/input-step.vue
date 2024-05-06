@@ -10,11 +10,7 @@
     <q-card flat class="full-height q-pa-none" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         <q-card-section class="q-pa-none">
-          <images-section
-            @on-upload="uplaodImageToServer"
-            @update-ranking="updateRanking"
-            @delete-image="deleteImage"
-          />
+          <images-section @update-ranking="updateRanking" @delete-image="deleteImage" />
           <input-content />
         </q-card-section>
       </q-scroll-area>
@@ -46,9 +42,8 @@
     postingImages,
     setValidateInput,
     setPostingInput,
-    updatePosting,
+    createPosting,
     loadGalleryImages,
-    uploadImage,
     updateRanking,
     deleteImage
   } = usePostingInput();
@@ -82,15 +77,11 @@
     title: yup.string().required().label(t("posting.columns.title"))
   });
 
-  async function uplaodImageToServer(ranking: number, imageFile: any) {
-    await uploadImage(ranking - 1, ranking, imageFile);
-  }
-
   function onOKClick(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
         setValidateInput(values);
-        await updatePosting();
+        await createPosting();
         emits("close-dialog");
       }
     });

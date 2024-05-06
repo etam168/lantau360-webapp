@@ -120,12 +120,9 @@ export function usePostingInput() {
 
   function createPosting() {
     postingInput.value.bannerPath = postingInput.value.iconPath = postingInput.value.imagePath = "";
-
     postingInput.value.createdBy = parseInt(userStore.userId);
     postingInput.value.memberId = parseInt(userStore.userId);
-
     const requestData = postingInput.value;
-
     requestData.status = 1;
     axios
       .post(`/Posting`, requestData)
