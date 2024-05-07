@@ -40,6 +40,13 @@
                     class="text-primary bg-grey-1 text-caption q-px-md"
                     >{{ $t("more.profileSetting.buyPoints") }}</q-btn
                   >
+                  <q-btn
+                    dense
+                    rounded
+                    @click="onCreditCard"
+                    class="text-primary bg-grey-1 text-caption q-px-md"
+                    >{{ "Payment" }}</q-btn
+                  >
                 </q-item-section>
               </q-item>
             </q-card-section>
@@ -117,6 +124,15 @@
   const onBtnBuyPoints = () => {
     $q.dialog({
       component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),
+      componentProps: {
+        callback: claimFreePoints
+      }
+    });
+  };
+
+  const onCreditCard = () => {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("../credit-card-dialog.vue")),
       componentProps: {
         callback: claimFreePoints
       }

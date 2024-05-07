@@ -17,6 +17,13 @@ export default {
     map: "Map"
   },
 
+  creditCard: {
+    cardNumber: "Card Number",
+    cardHolderName: "Card Holder Name",
+    expiryDate: "Expiry Date",
+    cvv: "CVV"
+  },
+
   account: {
     title: "Account",
     recentTransactions: "Recent Transactions",

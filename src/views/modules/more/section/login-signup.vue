@@ -22,7 +22,7 @@
       </q-item-section>
 
       <q-item-section>
-        <q-item-label v-if="userStore.token">{{ userStore.user }}</q-item-label>
+        <q-item-label lines="1" v-if="userStore.token">{{ userStore.user }}</q-item-label>
       </q-item-section>
 
       <q-item-section side v-if="$q.screen.gt.xs">
