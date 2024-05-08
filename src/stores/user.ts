@@ -22,7 +22,9 @@ export const useUserStore = defineStore("user", {
       availabelPoints: 0,
       pointsPerPost: 0,
       topUpPoints: 0,
-      currentMonthFreeTransactionCount: 0
+      currentMonthFreeTransactionCount: 0,
+      purchsePrice: 0,
+      purchsePoints: 0
     },
 
   actions: {
@@ -76,9 +78,16 @@ export const useUserStore = defineStore("user", {
     isUserLogon() {
       return this.token ? true : false;
     },
-    setPoints(perPostPoints: number, freeTopUpPoints: number) {
+    setPoints(
+      perPostPoints: number,
+      freeTopUpPoints: number,
+      purchasePrice: number,
+      purchasePoints: number
+    ) {
       this.pointsPerPost = perPostPoints;
       this.topUpPoints = freeTopUpPoints;
+      this.purchsePrice = purchasePrice;
+      this.purchsePoints = purchasePoints;
     }
   },
 
