@@ -34,6 +34,7 @@
                 </q-item-section>
                 <q-item-section side>
                   <q-btn
+                    v-if="userStore.currentMonthFreeTransactionCount < 2"
                     dense
                     rounded
                     @click="onBtnBuyPoints"
@@ -41,6 +42,7 @@
                     >{{ $t("more.profileSetting.buyPoints") }}</q-btn
                   >
                   <q-btn
+                    v-else
                     dense
                     rounded
                     @click="onCreditCard"
@@ -140,23 +142,6 @@
   };
 
   function handleItemClick(item: any) {
-    // if (item.isPostExpired && item.postingId) {
-    //   // $q.dialog({
-    //   //   component: defineAsyncComponent(() => import("./edit-dialog/index.vue")),
-    //   //   componentProps: {
-    //   //     item: item
-    //   //   }
-    //   // });
-
-    //   $q.dialog({
-    //     component: defineAsyncComponent(
-    //       () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
-    //     ),
-    //     componentProps: {
-    //       item: item
-    //     }
-    //   });
-    // } else
     if (item.postingId) {
       $q.dialog({
         component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),

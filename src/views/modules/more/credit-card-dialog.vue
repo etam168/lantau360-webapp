@@ -31,18 +31,21 @@
                   name="cardNumber"
                   placeholder="XXXX XXXX XXXX 8014"
                 />
-                <vee-input
-                  :label="$t('more.creditCard.cardHolderName')"
-                  icon="mdi-account"
-                  name="cardHolderName"
-                  placeholder="EDDIE TAM"
-                />
+
                 <q-card-actions class="q-pa-none justify-between">
                   <vee-input
-                    :label="$t('more.creditCard.expiryDate')"
+                    label="Expiry Month"
                     icon="mdi-account"
-                    name="expiryDate"
-                    placeholder="08/21"
+                    name="expMonth"
+                    placeholder="08"
+                    style="width: 49%"
+                  />
+
+                  <vee-input
+                    label="Expiry Year"
+                    icon="mdi-account"
+                    name="expYear"
+                    placeholder="2"
                     style="width: 49%"
                   />
 
@@ -55,7 +58,7 @@
                   />
                 </q-card-actions>
 
-                <q-card-section class="text-h4">{{ `Total: $50` }}</q-card-section>
+                <q-card-section class="text-h4">{{ `Total: $5` }}</q-card-section>
 
                 <q-card-actions class="q-mt-md justify-end q-pa-none">
                   <app-button
@@ -77,15 +80,16 @@
 </template>
 
 <script setup lang="ts">
+  import { Form } from "vee-validate";
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import * as yup from "yup";
-  // import { useUserStore } from "@/stores/user";
   import i18n from "@/plugins/i18n/i18n";
+  import { useUserStore } from "@/stores/user";
 
-  const { eventBus } = useUtilities();
+  const { eventBus, notify } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
-  // const { availabelPoints, pointsPerPost, topUpPoints } = useUserStore();
+  const { userId } = useUserStore();
   const { t } = i18n.global;
   const isDialogVisible = ref();
   //const $q = useQuasar();
@@ -100,31 +104,16 @@
   });
 
   const initialValues = ref({});
-  provide("formInitialValues", initialValues);
-
-  // const title = computed(() =>
-  //   availabelPoints >= pointsPerPost
-  //     ? t("more.profileSetting.enoughPoints")
-  //     : t("more.profileSetting.confirmation")
-  // );
-
-  // const bodyMessage = computed(() =>
-  //   availabelPoints >= pointsPerPost
-  //     ? t("more.profileSetting.pointLessThan50", { points: pointsPerPost })
-  //     : t("more.profileSetting.claimFreePointText", { points: topUpPoints })
-  // );
-
-  // const haveEnoughPoints = computed(() => availabelPoints >= pointsPerPost);
 
   const schema = yup.object({
-    cardNumber: yup.string().email().required().label(t("more.creditCard.cardNumber")),
-    cardHolderName: yup.string().required().min(4).label(t("more.creditCard.cardHolderName")),
-    expiryDate: yup.string().required().label(t("more.creditCard.expiryDate")),
+    cardNumber: yup.string().required().label(t("more.creditCard.cardNumber")),
+    expMonth: yup.string().required().label(t("more.creditCard.expiryDate")),
     cvv: yup.string().required().label(t("more.creditCard.cvv"))
   });
 
   onMounted(() => {
     eventBus.on("CreditCardDialog", () => {
+      isDialogVisible.value = false;
       isDialogVisible.value = false;
     });
   });
@@ -138,39 +127,24 @@
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
         loading.value = true;
-        console.log(values);
 
-        // await axios
-        //   .post("/CheckIn", checkInDto)
-        //   .then(() => {
-        //     $q.notify({
-        //       message: "CheckIn data submit successfully",
-        //       type: "positive",
-        //       color: "primary"
-        //     });
-        //     loading.value = false;
-        //   })
-        //   .catch(err => {
-        //     $q.notify({
-        //       message: err.message,
-        //       type: "negative"
-        //     });
-        //     loading.value = false;
-        //   });
+        values["totalCost"] = 500;
+        values["subscriberId"] = parseInt(userId);
+        values["purchasedPoints"] = 50;
+
+        await axios
+          .post("/Points/PurchasePoints", values)
+          .then(() => {
+            eventBus.emit("refresh-transaction-data");
+            notify("Purchase point successfully", "positive");
+            loading.value = false;
+            isDialogVisible.value = false;
+          })
+          .catch(err => {
+            notify(err.message, "negative");
+            loading.value = false;
+          });
       }
     });
   }
-
-  // function handleOk() {
-  //   props.callback(onDialogCancel);
-  // }
-
-  onBeforeMount(() => {
-    initialValues.value = {
-      cardNumber: "",
-      cardHolderName: "",
-      expiryDate: "",
-      cvv: ""
-    };
-  });
 </script>
