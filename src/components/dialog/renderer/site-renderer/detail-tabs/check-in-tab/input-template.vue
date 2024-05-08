@@ -49,7 +49,7 @@
             <q-item-label class="text-caption">{{ $t("home.destinationAddress") }} </q-item-label>
             <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
             <q-item-label class="text-caption"
-              >{{ distance + $t("home.metersAway") }}
+              >{{ distance + " " + $t("home.metersAway") }}
             </q-item-label>
           </q-item-section>
         </q-item>

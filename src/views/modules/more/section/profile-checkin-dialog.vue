@@ -13,13 +13,18 @@
 
       <q-page-container>
         <q-page>
-          <q-card class="q-ma-md">
+          <q-card v-if="data.length != 0" class="q-ma-md">
             <q-card-section class="q-pa-none">
               <q-list>
-                <q-item clickable @click="throttledHandleDialog">
+                <q-item
+                  clickable
+                  v-for="item in data"
+                  :key="item.checkInId"
+                  @click="throttledHandleDialog(item)"
+                >
                   <q-item-section avatar>
                     <q-avatar size="64px" square>
-                      <q-img ratio="1" :src="computeIconPath">
+                      <q-img ratio="1" :src="computeIconPath(item)">
                         <template v-slot:error>
                           <div class="absolute-full flex flex-center bg-negative text-white">
                             {{ $t("errors.cannotLoadImage") }}
@@ -30,16 +35,16 @@
                   </q-item-section>
 
                   <q-item-section>
-                    <q-item-label>{{ data.siteName }}</q-item-label>
+                    <q-item-label>{{ item.siteName }}</q-item-label>
                     <q-item-label lines="2">
-                      <app-text-editor v-model="translatedContent"
+                      <app-text-editor :v-model="translatedContent(item)"
                     /></q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
-              <!-- {{ data }} -->
             </q-card-section>
           </q-card>
+          <q-item-label caption v-else>You don't have any CheckIn's</q-item-label>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -54,9 +59,9 @@
 
   // Interface files
 
-  const props = defineProps({
+  defineProps({
     data: {
-      type: Object as PropType<CheckIn>,
+      type: Object as PropType<CheckIn[]>,
       required: true
     }
   });
@@ -67,30 +72,22 @@
   const isDialogVisible = ref();
   const $q = useQuasar();
 
-  const computeIconPath = computed(() => {
-    return props?.data?.iconPath
-      ? `${BLOB_URL}/${props?.data?.iconPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
+  const computeIconPath = (item: any) => {
+    return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
+  };
 
-  const translatedContent: any = ref(
-    translate(props?.data?.description, props?.data?.meta, "description")
-  );
+  const translatedContent = (item: any) => translate(item.description, item.meta, "description");
 
-  const onItemClick = () => {
+  const onItemClick = (item: any) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/checkin-detail-dialog.vue")
       ),
       componentProps: {
-        data: props.data
+        data: item
       }
     });
   };
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
-
-  onMounted(() => {
-    translatedContent;
-  });
 </script>
