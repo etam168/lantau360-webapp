@@ -9,7 +9,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ "Payment" }}</app-dialog-title>
+        <app-dialog-title>{{ $t("more.creditCard.title") }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -19,10 +19,7 @@
 
             <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
               <q-img :src="visaCardImage" />
-              <q-item-label class="q-my-md"
-                >You are making this payment as you have reached your monthly points
-                limit</q-item-label
-              >
+              <q-item-label class="q-my-md">{{ $t("more.creditCard.subtitle") }}</q-item-label>
               <Form
                 ref="form"
                 class="full-height"
@@ -55,7 +52,11 @@
                   />
                 </q-card-actions>
 
-                <q-card-section class="text-h4">{{ `Total: $5` }}</q-card-section>
+                <q-card-section class="text-h4">{{
+                  $t("more.creditCard.total", {
+                    amount: `$5`
+                  })
+                }}</q-card-section>
 
                 <q-card-actions class="q-mt-md justify-end q-pa-none">
                   <app-button

@@ -18,10 +18,13 @@ export default {
   },
 
   creditCard: {
+    title: "Payment",
     cardNumber: "Card Number",
-    cardHolderName: "Card Holder Name",
     expiryDate: "Expiry Date",
-    cvv: "CVV"
+    cvv: "CVV",
+    proceedToPay: "Proceed to pay",
+    subtitle: "You are making this payment as you have reached your monthly points limit",
+    total: "Total : {amount}"
   },
 
   account: {

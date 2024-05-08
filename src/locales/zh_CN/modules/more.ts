@@ -17,6 +17,16 @@ export default {
     map: "Map"
   },
 
+  creditCard: {
+    title: "Payment",
+    cardNumber: "Card Number",
+    expiryDate: "Expiry Date",
+    cvv: "CVV",
+    proceedToPay: "Proceed to pay",
+    subtitle: "You are making this payment as you have reached your monthly points limit",
+    total: "Total : {amount}"
+  },
+
   account: {
     title: "帐户",
     recentTransactions: "最近交易",
