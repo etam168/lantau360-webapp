@@ -131,11 +131,9 @@
         values["totalCost"] = 500;
         values["subscriberId"] = parseInt(userId);
         values["purchasedPoints"] = 50;
-        alert(JSON.stringify(values));
         await axios
           .post("/Points/PurchasePoints", values)
-          .then(response => {
-            alert(JSON.stringify(response));
+          .then(() => {
             eventBus.emit("refresh-transaction-data");
             notify("Purchase point successfully", "positive");
             loading.value = false;
