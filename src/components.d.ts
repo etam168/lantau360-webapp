@@ -32,6 +32,7 @@ declare module 'vue' {
     VeeInputPassword: typeof import('./components/global/vee-input-password.vue')['default']
     VeeInputWhatsapp: typeof import('./components/global/vee-input-whatsapp.vue')['default']
     VeeQTelInput: typeof import('./components/global/vee-q-tel-input.vue')['default']
+    VeeSelect: typeof import('./components/global/vee-select.vue')['default']
     VeeSelectWithId: typeof import('./components/global/vee-select-with-id.vue')['default']
     VeeToggle: typeof import('./components/global/vee-toggle.vue')['default']
   }

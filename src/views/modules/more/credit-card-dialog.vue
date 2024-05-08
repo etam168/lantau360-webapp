@@ -14,10 +14,15 @@
 
       <q-page-container>
         <q-page>
-          <q-card flat class="q-pa-md">
+          <q-card flat class="row justify-center items-center">
             <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
 
-            <q-card-section class="text-center">
+            <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
+              <q-img :src="visaCardImage" />
+              <q-item-label class="q-my-md"
+                >You are making this payment as you have reached your monthly points
+                limit</q-item-label
+              >
               <Form
                 ref="form"
                 class="full-height"
@@ -34,19 +39,11 @@
 
                 <q-card-actions class="q-pa-none justify-between">
                   <vee-input
-                    label="Expiry Month"
+                    :label="$t('more.creditCard.expiryDate')"
                     icon="mdi-account"
-                    name="expMonth"
-                    placeholder="08"
-                    style="width: 49%"
-                  />
-
-                  <vee-input
-                    label="Expiry Year"
-                    icon="mdi-account"
-                    name="expYear"
-                    placeholder="2"
-                    style="width: 49%"
+                    name="expiryDate"
+                    placeholder="08/21"
+                    style="width: 48%"
                   />
 
                   <vee-input
@@ -54,7 +51,7 @@
                     icon="mdi-account"
                     name="csv"
                     placeholder="XXX"
-                    style="width: 49%"
+                    style="width: 48%"
                   />
                 </q-card-actions>
 
@@ -64,7 +61,7 @@
                   <app-button
                     label="Proceed to pay"
                     :loading="loading"
-                    :class="$q.screen.lt.sm ? 'full-width' : ''"
+                    class="full-width"
                     color="primary"
                     type="submit"
                     size="md"
@@ -104,10 +101,11 @@
   });
 
   const initialValues = ref({});
+  const visaCardImage = ref("/img/icons/visa_card.png");
 
   const schema = yup.object({
     number: yup.string().required().label(t("more.creditCard.cardNumber")),
-    expMonth: yup.string().required().label(t("more.creditCard.expiryDate")),
+    expiryDate: yup.string().required().label(t("more.creditCard.expiryDate")),
     csv: yup.string().required().label(t("more.creditCard.cvv"))
   });
 
