@@ -28,7 +28,7 @@
                 <vee-input
                   :label="$t('more.creditCard.cardNumber')"
                   icon="mdi-account"
-                  name="cardNumber"
+                  name="number"
                   placeholder="XXXX XXXX XXXX 8014"
                 />
 
@@ -52,7 +52,7 @@
                   <vee-input
                     :label="$t('more.creditCard.cvv')"
                     icon="mdi-account"
-                    name="cvv"
+                    name="csv"
                     placeholder="XXX"
                     style="width: 49%"
                   />
@@ -106,9 +106,9 @@
   const initialValues = ref({});
 
   const schema = yup.object({
-    cardNumber: yup.string().required().label(t("more.creditCard.cardNumber")),
+    number: yup.string().required().label(t("more.creditCard.cardNumber")),
     expMonth: yup.string().required().label(t("more.creditCard.expiryDate")),
-    cvv: yup.string().required().label(t("more.creditCard.cvv"))
+    csv: yup.string().required().label(t("more.creditCard.cvv"))
   });
 
   onMounted(() => {
@@ -131,10 +131,11 @@
         values["totalCost"] = 500;
         values["subscriberId"] = parseInt(userId);
         values["purchasedPoints"] = 50;
-
+        alert(JSON.stringify(values));
         await axios
           .post("/Points/PurchasePoints", values)
-          .then(() => {
+          .then(response => {
+            alert(JSON.stringify(response));
             eventBus.emit("refresh-transaction-data");
             notify("Purchase point successfully", "positive");
             loading.value = false;

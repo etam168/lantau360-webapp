@@ -47,7 +47,7 @@
                     rounded
                     @click="onCreditCard"
                     class="text-primary bg-grey-1 text-caption q-px-md"
-                    >{{ "Payment" }}</q-btn
+                    >{{ "Purchase points" }}</q-btn
                   >
                 </q-item-section>
               </q-item>
