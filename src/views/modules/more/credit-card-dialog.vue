@@ -17,8 +17,7 @@
           <q-card flat class="row justify-center items-center">
             <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
 
-            <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
-              <q-img :src="visaCardImage" />
+            <q-card-section :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'">
               <q-item-label class="q-my-md">{{ $t("more.creditCard.subtitle") }}</q-item-label>
               <Form
                 ref="form"
@@ -41,7 +40,15 @@
                     name="expiryDate"
                     placeholder="08/21"
                     style="width: 48%"
-                  />
+                  >
+                    <template v-slot:append>
+                      <q-btn round dense flat icon="info">
+                        <q-tooltip class="bg-grey-2"
+                          ><div><q-img :src="visaCardImage" style="width: 300px" /></div>
+                        </q-tooltip>
+                      </q-btn>
+                    </template>
+                  </vee-input>
 
                   <vee-input
                     :label="$t('more.creditCard.cvv')"

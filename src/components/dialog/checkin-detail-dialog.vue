@@ -8,7 +8,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ $t("more.checkIn.detail") }}</app-dialog-title>
+        <app-dialog-title>{{ data.siteName }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -27,7 +27,7 @@
               </q-item-section>
             </q-item>
 
-            <q-item>
+            <q-item class="q-pa-none">
               <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
                 <q-tab-panel name="map" class="q-pa-none">
                   <q-card flat class="location-card" style="height: 430px">
@@ -52,9 +52,13 @@
                     </q-card-section>
                   </q-card>
                 </q-tab-panel>
-                <q-tab-panel name="history" class="q-pa-none">
+                <q-tab-panel name="checkInList">
                   <q-list class="q-gutter-md">
-                    <q-item v-for="(checkInfo, index) in checkInInfoList" :key="index">
+                    <q-item
+                      v-for="(checkInfo, index) in checkInInfoList"
+                      :key="index"
+                      class="shadow-1 q-pa-sm q-mb-md"
+                    >
                       <q-item-section>
                         <q-item-label>{{ checkInfo.checkInAt }}</q-item-label>
                         <q-item-label lines="2" caption>{{ checkInfo.description }}</q-item-label>
@@ -114,7 +118,7 @@
   });
   const tabItems = ref([
     { name: "map", label: t("more.checkIn.map") },
-    { name: "history", label: t("more.checkIn.history") }
+    { name: "checkInList", label: t("more.checkIn.checkInList") }
   ]);
 
   const bannerPath = computed(() => {

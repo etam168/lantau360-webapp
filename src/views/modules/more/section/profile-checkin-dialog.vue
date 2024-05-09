@@ -13,38 +13,39 @@
 
       <q-page-container>
         <q-page>
-          <q-card v-if="data.length != 0" class="q-ma-md">
-            <q-card-section class="q-pa-none">
-              <q-list>
-                <q-item
-                  clickable
-                  v-for="item in data"
-                  :key="item.checkInId"
-                  @click="throttledHandleDialog(item)"
-                >
-                  <q-item-section avatar>
-                    <q-avatar size="64px" square>
-                      <q-img ratio="1" :src="computeIconPath(item)">
-                        <template v-slot:error>
-                          <div class="absolute-full flex flex-center bg-negative text-white">
-                            {{ $t("errors.cannotLoadImage") }}
-                          </div>
-                        </template>
-                      </q-img>
-                    </q-avatar>
-                  </q-item-section>
+          <div v-if="data.length != 0">
+            <q-card v-for="item in data" :key="item.checkInId" class="q-ma-md">
+              <q-card-section class="q-pa-none">
+                <q-list>
+                  <q-item clickable @click="throttledHandleDialog(item)">
+                    <q-item-section avatar>
+                      <q-avatar size="64px" square>
+                        <q-img ratio="1" :src="computeIconPath(item)">
+                          <template v-slot:error>
+                            <div class="absolute-full flex flex-center bg-negative text-white">
+                              {{ $t("errors.cannotLoadImage") }}
+                            </div>
+                          </template>
+                        </q-img>
+                      </q-avatar>
+                    </q-item-section>
 
-                  <q-item-section>
-                    <q-item-label>{{ item.siteName }}</q-item-label>
-                    <q-item-label lines="2">
-                      Last CheckIn : {{ dateFormatter(item.modifiedAt) }}
-                    </q-item-label>
-                  </q-item-section>
-                </q-item>
-              </q-list>
-            </q-card-section>
-          </q-card>
-          <q-item-label caption v-else>You don't have any CheckIn's</q-item-label>
+                    <q-item-section>
+                      <q-item-label>{{ item.siteName }}</q-item-label>
+                      <q-item-label lines="2"
+                        >{{
+                          $t("more.checkIn.lastCheckIn", {
+                            date: dateFormatter(item.modifiedAt)
+                          })
+                        }}
+                      </q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </q-list>
+              </q-card-section>
+            </q-card>
+          </div>
+          <q-item-label caption v-else>{{ $t("more.checkIn.noCheckIn") }}</q-item-label>
         </q-page>
       </q-page-container>
     </q-layout>

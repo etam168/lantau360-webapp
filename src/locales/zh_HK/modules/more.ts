@@ -14,7 +14,9 @@ export default {
     title: "My Check-In",
     detail: "CheckIn Info Detail",
     history: "History",
-    map: "Map"
+    map: "Map",
+    lastCheckIn: "Last CheckIn : {date}",
+    noCheckIn: "You don't have any CheckIn's"
   },
 
   creditCard: {
