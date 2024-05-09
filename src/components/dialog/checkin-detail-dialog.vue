@@ -52,14 +52,11 @@
                     </q-card-section>
                   </q-card>
                 </q-tab-panel>
-
                 <q-tab-panel name="history" class="q-pa-none">
                   <q-list class="q-gutter-md">
-                    <q-item v-for="(checkInfo, index) in data.checkInfo" :key="index">
+                    <q-item v-for="(checkInfo, index) in checkInInfoList" :key="index">
                       <q-item-section>
-                        <q-item-label>{{
-                          new Date(checkInfo.checkInAt).toLocaleString()
-                        }}</q-item-label>
+                        <q-item-label>{{ checkInfo.checkInAt }}</q-item-label>
                         <q-item-label lines="2" caption>{{ checkInfo.description }}</q-item-label>
                       </q-item-section>
                     </q-item>
@@ -93,15 +90,28 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { translate, dateTimeFormatter } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
+  const { locale, t } = useI18n({ useScope: "global" });
+
   const isDialogVisible = ref();
   const $q = useQuasar();
 
-  const { locale, t } = useI18n({ useScope: "global" });
-
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("map");
+
+  const checkInInfoList = computed(() => {
+    return props.data.checkInfo
+      .map((item: any) => ({
+        ...item,
+        checkInAt: new Date(item.checkInAt)
+      }))
+      .sort((a: any, b: any) => b.checkInAt - a.checkInAt)
+      .map((item: any) => ({
+        ...item,
+        checkInAt: dateTimeFormatter(new Date(item.checkInAt))
+      }));
+  });
   const tabItems = ref([
     { name: "map", label: t("more.checkIn.map") },
     { name: "history", label: t("more.checkIn.history") }

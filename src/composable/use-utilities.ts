@@ -36,6 +36,10 @@ export function useUtilities() {
     return date.formatDate(value, "YYYY-MM-DD");
   }
 
+  function dateTimeFormatter(value: string | number | Date) {
+    return date.formatDate(value, "YYYY-MM-DD HH:mm:ss");
+  }
+
   function getImageURL(relativePath: any) {
     if (relativePath != null) {
       return relativePath.includes("http") ? relativePath : `${BLOB_URL}/${relativePath}`;
@@ -160,6 +164,7 @@ export function useUtilities() {
   return {
     aspectRatio,
     dateFormatter,
+    dateTimeFormatter,
     eventBus,
     getImageURL,
     getTimeAgo,

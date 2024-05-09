@@ -37,8 +37,8 @@
                   <q-item-section>
                     <q-item-label>{{ item.siteName }}</q-item-label>
                     <q-item-label lines="2">
-                      <app-text-editor :v-model="translatedContent(item)"
-                    /></q-item-label>
+                      Last CheckIn : {{ dateFormatter(item.modifiedAt) }}
+                    </q-item-label>
                   </q-item-section>
                 </q-item>
               </q-list>
@@ -66,17 +66,13 @@
     }
   });
 
-  const { translate } = useUtilities();
-
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const $q = useQuasar();
-
+  const { dateFormatter } = useUtilities();
   const computeIconPath = (item: any) => {
     return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
   };
-
-  const translatedContent = (item: any) => translate(item.description, item.meta, "description");
 
   const onItemClick = (item: any) => {
     $q.dialog({
