@@ -34,7 +34,8 @@ export const URL = {
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
     POSTING: `${BASE_URL}/Posting/Active/ByDirectoryId`,
-    SITE: `${BASE_URL}/Site/ByDirectoryId`
+    SITE: `${BASE_URL}/Site/ByDirectoryId`,
+    MEMBER_CHECKED_IN_SITES: `${BASE_URL}/Site/Directory/Member`
   },
   EMAIL_CONFIRMATION: {
     SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",

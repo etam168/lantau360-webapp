@@ -49,15 +49,18 @@
         switch (true) {
           case "communityDirectoryId" in item:
             return `${URL.DIRECTORY_LIST.POSTING}/${item.communityDirectoryId}`;
-          case "groupId" in item && DIRECTORY_GROUPS.HOME.includes(item.groupId):
-            return `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
+          case "groupId" in item && DIRECTORY_GROUPS.HOME.includes(item.groupId): {
+            const isLogon = userStore.isUserLogon();
+            return isLogon
+              ? `${URL.DIRECTORY_LIST.MEMBER_CHECKED_IN_SITES}?directoryId=${item.directoryId}&memberId=${userStore.userId}`
+              : `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
+          }
           case "groupId" in item && DIRECTORY_GROUPS.BUSINESS.includes(item.groupId):
             return `${URL.DIRECTORY_LIST.BUSINESS}/${item.directoryId}`;
           default:
             throw new Error("Unknown directory type");
         }
       })();
-
       // const response = await axios.get(directoryListUrl);
       const [response, checkInResponse] = await Promise.all([
         axios.get(directoryListUrl),

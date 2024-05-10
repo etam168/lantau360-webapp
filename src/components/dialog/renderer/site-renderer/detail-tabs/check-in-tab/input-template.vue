@@ -58,7 +58,6 @@
             {{ $t("errors.under10MeterDistance") }}
           </q-item-label>
         </q-item>
-
         <div v-if="props.distance && props.distance <= 10">
           <div v-if="!configLoading && isPermitToPost">
             <q-item class="q-mt-lg q-pa-none">
@@ -78,7 +77,7 @@
               />
             </q-card-actions>
           </div>
-          <div style="color: red" v-if="!configLoading && !isPermitToPost">
+          <div style="color: red" v-else-if="!configLoading && !isPermitToPost">
             Please wait, to recheck-in again!.
           </div>
         </div>
@@ -190,6 +189,8 @@
     isPermitToPost.value = hoursDifference >= configTimeDifference;
     configLoading.value = false;
   } catch (err) {
+    configLoading.value = false;
+    isPermitToPost.value = true;
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
         error.value = t("errors.404");

@@ -118,11 +118,11 @@
       </q-item-section>
       <q-item-section side style="padding-left: 0px">
         <q-icon
-          v-if="isCheckedIn(item)"
+          v-if="(item as SiteView).isCheckedIn"
           name="check"
           size="2em"
           color="green"
-          class="favorite-icon"
+          class="checked-in-icon"
         />
       </q-item-section>
     </q-item>
@@ -178,17 +178,17 @@
     }
   };
 
-  const isCheckedIn = (item: CategoryTypes): boolean => {
-    switch (true) {
-      case "siteId" in item:
-        return props.checkInItemsList.some(
-          checkInitem => (checkInitem as CheckIn).siteId === item.siteId
-        );
-      default:
-        // No known type matched, or it's not a favorite item
-        return false;
-    }
-  };
+  // const isCheckedIn = (item: CategoryTypes): boolean => {
+  //   switch (true) {
+  //     case "siteId" in item:
+  //       return props.checkInItemsList.some(
+  //         checkInitem => (checkInitem as CheckIn).siteId === item.siteId
+  //       );
+  //     default:
+  //       // No known type matched, or it's not a favorite item
+  //       return false;
+  //   }
+  // };
 
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
