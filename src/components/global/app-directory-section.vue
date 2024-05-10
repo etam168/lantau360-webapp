@@ -70,7 +70,6 @@
       if (response.status === 200) {
         // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
-
         const directoryItems = useSorted(response.data, (a, b) => {
           const rankingDifference = a.rank - b.rank;
           // Check if sortByKey exists in the first object

@@ -101,7 +101,6 @@
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
         </q-item-label>
-
         <q-item-label>
           {{ translate(item.subtitle1, item.meta, "subtitle1") }}
         </q-item-label>

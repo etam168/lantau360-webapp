@@ -64,8 +64,10 @@
 
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
-  import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
+  import { NONE, STORAGE_KEYS, AREA_NAME, URL } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { Directory } from "@/interfaces/models/entities/directory";
+  import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
     directoryItemsList: {
@@ -87,8 +89,10 @@
   const { groupBy, translate, eventBus } = useUtilities();
   const $q = useQuasar();
   const isDialogVisible = ref();
-  const directoryItems = ref<CategoryTypes[]>(props?.directoryItemsList ?? []);
+  const directoryItems = ref<any>(props?.directoryItemsList ?? []);
   const favoriteItems = ref<any>(getFavItem() || []);
+  const { locale } = useI18n();
+  const userStore = useUserStore();
 
   const dialogTitle = computed(() =>
     translate(props.directory.directoryName, props.directory.meta, "directoryName")
@@ -103,7 +107,7 @@
     // Use the groupKey prop with a fallback to "directoryName"
     const key = groupBykey.value as keyof CategoryTypes;
     return groupBy(
-      directoryItems.value.filter(item => item[key] !== undefined),
+      directoryItems.value.filter((item: any) => item[key] !== undefined),
       (item: any) =>
         translate(item[key], groupBykey.value == AREA_NAME ? item.areaNameAlt : item.meta, key) as
           | string
@@ -134,6 +138,10 @@
   onMounted(() => {
     eventBus.on("CategoryItemListDialog", () => {
       isDialogVisible.value = false;
+    });
+
+    eventBus.on("refresh-directory-items", () => {
+      refreshDirectoryItems(props.directory);
     });
   });
 
@@ -169,4 +177,45 @@
         return [];
     }
   }
+
+  const refreshDirectoryItems = async (item: DirectoryTypes) => {
+    try {
+      const directoryListUrl = `${URL.DIRECTORY_LIST.MEMBER_CHECKED_IN_SITES}?directoryId=${(props.directory as Directory).directoryId}&memberId=${userStore.userId}`;
+      // const response = await axios.get(directoryListUrl);
+      const [response] = await Promise.all([axios.get(directoryListUrl)]);
+      if (response.status === 200) {
+        // let directoryItems = null;
+        const sortByKey = item.meta.sortByKey;
+
+        const itemList = useSorted(response.data, (a, b) => {
+          const rankingDifference = a.rank - b.rank;
+          // Check if sortByKey exists in the first object
+          const hasSortByKey = sortByKey in response.data[0];
+          // If sortByKey exists, use it for comparison
+          if (hasSortByKey) {
+            let sortByKeyComparison;
+            if (locale.value == "en") {
+              sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+            } else {
+              sortByKeyComparison = String(
+                a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
+              ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
+              // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+            }
+
+            return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
+          }
+
+          // If sortByKey doesn't exist, fall back to ranking difference
+          return (
+            rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+          );
+        });
+        directoryItems.value = itemList.value;
+        debugger;
+      }
+    } catch (error) {
+      // console.error("Error fetching data: ", error);
+    }
+  };
 </script>
