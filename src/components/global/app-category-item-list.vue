@@ -116,6 +116,15 @@
           class="favorite-icon"
         />
       </q-item-section>
+      <q-item-section side style="padding-left: 0px">
+        <q-icon
+          v-if="isCheckedIn(item)"
+          name="check"
+          size="2em"
+          color="green"
+          class="favorite-icon"
+        />
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
@@ -128,6 +137,7 @@
 
   // .ts files
   import { BLOB_URL, TEMPLATE } from "@/constants";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const emit = defineEmits(["item-click"]);
 
@@ -139,6 +149,11 @@
     },
     favoriteItems: {
       type: Array as PropType<CategoryTypes[]>,
+      default: () => []
+    },
+    checkInItemsList: {
+      type: Array as PropType<CheckIn[]>,
+      required: true,
       default: () => []
     },
     template: {
@@ -157,6 +172,18 @@
         );
       case "siteId" in item:
         return props.favoriteItems.some(favItem => (favItem as SiteView).siteId === item.siteId);
+      default:
+        // No known type matched, or it's not a favorite item
+        return false;
+    }
+  };
+
+  const isCheckedIn = (item: CategoryTypes): boolean => {
+    switch (true) {
+      case "siteId" in item:
+        return props.checkInItemsList.some(
+          checkInitem => (checkInitem as CheckIn).siteId === item.siteId
+        );
       default:
         // No known type matched, or it's not a favorite item
         return false;

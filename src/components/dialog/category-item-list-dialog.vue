@@ -42,6 +42,7 @@
               class="q-px-md q-pt-md q-pb-none"
               @item-click="onItemClick"
               :directoryItems="directoryItems"
+              :checkInItemsList="checkInItemsList"
               :favoriteItems="favoriteItems"
               :template="template"
               style="position: relative"
@@ -64,11 +65,17 @@
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME } from "@/constants";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const props = defineProps({
     directoryItemsList: {
       type: Array as PropType<CategoryTypes[]>,
       required: true
+    },
+    checkInItemsList: {
+      type: Array as PropType<CheckIn[]>,
+      required: true,
+      default: () => []
     },
     directory: {
       type: Object as PropType<DirectoryTypes>,
