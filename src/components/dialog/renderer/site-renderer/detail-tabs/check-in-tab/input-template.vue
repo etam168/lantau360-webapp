@@ -89,7 +89,7 @@
 <script setup lang="ts">
   import { Form } from "vee-validate";
   import * as yup from "yup";
-  import { CheckIn } from "@/interfaces/models/entities/check-in";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { ref } from "vue";
   import { useUserStore } from "@/stores/user";
   import i18n from "@/plugins/i18n/i18n";

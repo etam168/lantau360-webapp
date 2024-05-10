@@ -44,7 +44,7 @@
   import { useDialogPluginComponent } from "quasar";
   import { Form } from "vee-validate";
   import * as yup from "yup";
-  import { CheckIn } from "@/interfaces/models/entities/check-in";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { ref } from "vue";
   import { useUserStore } from "@/stores/user";
 

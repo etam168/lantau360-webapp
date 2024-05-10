@@ -81,7 +81,7 @@
         () => import("@/components/dialog/checkin-detail-dialog.vue")
       ),
       componentProps: {
-        data: item
+        item: item
       }
     });
   };

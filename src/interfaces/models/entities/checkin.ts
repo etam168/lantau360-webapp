@@ -1,5 +1,5 @@
 export interface CheckIn {
-  checkInId: number;
+  checkInId?: number;
   memberId: number;
   siteId: number;
   directoryId: number;
@@ -24,6 +24,6 @@ export interface CheckIn {
   createdAt: Date;
   createdBy: number;
   modifiedAt: Date;
-  modifiedBy: number;
-  meta: Record<string, any>;
+  modifiedBy?: number;
+  meta?: Record<string, any>;
 }

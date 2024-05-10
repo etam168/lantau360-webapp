@@ -8,7 +8,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ data.siteName }}</app-dialog-title>
+        <app-dialog-title>{{ item.siteName }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -35,7 +35,6 @@
                       class="location-card-section"
                       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
                     >
-                      <div>{{ props.data.meta }}</div>
                       <map-component
                         style="flex: 1"
                         :style="{
@@ -77,6 +76,7 @@
 
 <script setup lang="ts">
   import { ref } from "vue";
+  import { CheckInView } from "@/interfaces/models/views/checkin-view";
 
   // Interface files
   //import { CheckIn } from "@/interfaces/models/entities/CheckIn";
@@ -88,8 +88,8 @@
   import { LatLngExpression, latLngBounds } from "leaflet";
 
   const props = defineProps({
-    data: {
-      type: Object as PropType<any>,
+    item: {
+      type: Object as PropType<CheckInView>,
       required: true
     }
   });
@@ -97,6 +97,7 @@
   const { translate, dateTimeFormatter } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const { locale, t } = useI18n({ useScope: "global" });
+  const checkInItem = computed(() => props?.item as CheckInView);
 
   const isDialogVisible = ref();
   const $q = useQuasar();
@@ -105,7 +106,7 @@
   const tab = ref("map");
 
   const checkInInfoList = computed(() => {
-    return props.data.checkInfo
+    return checkInItem.value.checkInfo
       .map((item: any) => ({
         ...item,
         checkInAt: new Date(item.checkInAt)
@@ -122,12 +123,14 @@
   ]);
 
   const bannerPath = computed(() => {
-    return props.data.bannerPath
-      ? `${BLOB_URL}/${props.data.bannerPath}`
+    return checkInItem.value.bannerPath
+      ? `${BLOB_URL}/${checkInItem.value.bannerPath}`
       : "./img/icons/no_image_available.jpeg";
   });
 
-  const address = computed(() => translate(props.data.subtitle1, props.data.meta, "subtitle1"));
+  const address = computed(() =>
+    translate(checkInItem.value.subtitle1, checkInItem.value.meta, "subtitle1")
+  );
 
   const zoom = computed(() => {
     const screenWidth = $q.screen.width;
@@ -139,8 +142,8 @@
   });
 
   const markerPosition = computed<LatLngExpression>(() => [
-    props.data.latitude,
-    props.data.longitude
+    checkInItem.value.latitude,
+    checkInItem.value.longitude
   ]); //ref<LatLngExpression>([22.2544, 113.8642]);
   const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
 
@@ -157,6 +160,11 @@
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
   const mapTooltip = computed(() => {
-    return props.data.meta?.i18n?.[locale.value]?.mapLabel;
+    const mapLabel = checkInItem.value.meta?.i18n?.[locale.value]?.mapLabel;
+    if (mapLabel !== undefined && mapLabel !== null) {
+      return mapLabel;
+    } else {
+      return translate(checkInItem.value.siteName, props.item.meta, "siteName");
+    }
   });
 </script>
