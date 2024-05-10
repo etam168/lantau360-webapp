@@ -29,6 +29,8 @@ export const URL = {
   MEMBER_TRANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberTransactions`,
   MEMBER_RECENT_RANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberRecentTransactions`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
+  MEMBER_SITE_CHECK_IN: "/CheckIn/GetByMemberAndSiteId",
+
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
     POSTING: `${BASE_URL}/Posting/Active/ByDirectoryId`,

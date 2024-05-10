@@ -25,10 +25,6 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { useDialogPluginComponent } from "quasar";
   import { ref } from "vue";
-  // import { useGeolocation } from "@vueuse/core";
-
-  // const { coords } = useGeolocation();
-  // provide("userPosition", coords);
 
   import CheckInTab from "@/components/dialog/renderer/site-renderer/detail-tabs/check-in-tab/index.vue";
 
@@ -38,10 +34,15 @@
       required: true
     }
   });
-
+  const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
+  onMounted(() => {
+    eventBus.on("close-check-in-dialog", () => {
+      handleCancel();
+    });
+  });
   function handleCancel() {
     onDialogCancel();
   }

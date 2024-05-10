@@ -60,23 +60,27 @@
         </q-item>
 
         <div v-if="props.distance && props.distance <= 10">
-          <q-item class="q-mt-lg q-pa-none">
-            <q-item-section class="q-pa-none">
-              <vee-input type="textarea" :label="$t('home.review')" name="description" />
-            </q-item-section>
-          </q-item>
-
-          <q-card-actions class="q-mt-xs q-pa-none">
-            <app-button
-              class="full-width"
-              label="Submit"
-              :loading="loading"
-              color="primary"
-              type="submit"
-              size="md"
-              :disabled="!isSubmitReviewEnabled"
-            />
-          </q-card-actions>
+          <div v-if="!configLoading && isPermitToPost">
+            <q-item class="q-mt-lg q-pa-none">
+              <q-item-section class="q-pa-none">
+                <vee-input type="textarea" :label="$t('home.review')" name="description" />
+              </q-item-section>
+            </q-item>
+            <q-card-actions class="q-mt-xs q-pa-none">
+              <app-button
+                class="full-width"
+                label="Submit"
+                :loading="loading"
+                color="primary"
+                type="submit"
+                size="md"
+                :disabled="!isSubmitReviewEnabled"
+              />
+            </q-card-actions>
+          </div>
+          <div style="color: red" v-if="!configLoading && !isPermitToPost">
+            Please wait, to recheck-in again!.
+          </div>
         </div>
       </q-card-section>
     </q-card>
@@ -90,6 +94,8 @@
   import { ref } from "vue";
   import { useUserStore } from "@/stores/user";
   import i18n from "@/plugins/i18n/i18n";
+  import { URL } from "@/constants";
+  import { Content } from "@/interfaces/models/entities/content";
 
   const props = defineProps({
     itemId: {
@@ -111,10 +117,13 @@
   });
 
   const loading = ref(false);
+  const configLoading = ref(true);
+  const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const $q = useQuasar();
   const { t } = i18n.global;
-
+  const error = ref<string | null>(null);
+  const isPermitToPost = ref(false);
   const form = ref();
   const initialValues = ref({
     description: ""
@@ -150,6 +159,8 @@
               color: "primary"
             });
             loading.value = false;
+
+            eventBus.emit("close-check-in-dialog");
           })
           .catch(err => {
             $q.notify({
@@ -160,5 +171,33 @@
           });
       }
     });
+  }
+
+  try {
+    const [memberConfig, checkInData] = await Promise.all([
+      axios.get<Content>(URL.MEMBER_CONFIG),
+      axios.get<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${props.itemId}`)
+    ]);
+
+    const config = memberConfig.data;
+    const checkIn = checkInData.data;
+
+    const configTimeDifference = config?.meta?.checkInTimeDifferenceInHours ?? 1;
+
+    const timeDifference = new Date().getTime() - new Date(checkIn?.modifiedAt ?? "").getTime();
+    const hoursDifference = Math.abs(timeDifference / (1000 * 60 * 60));
+
+    isPermitToPost.value = hoursDifference >= configTimeDifference;
+    configLoading.value = false;
+  } catch (err) {
+    if (err instanceof AxiosError) {
+      if (err.response && err.response.status === 404) {
+        error.value = t("errors.404");
+      } else {
+        error.value = t("errors.anErrorOccured");
+      }
+    } else {
+      error.value = t("errors.anErrorOccured");
+    }
   }
 </script>
