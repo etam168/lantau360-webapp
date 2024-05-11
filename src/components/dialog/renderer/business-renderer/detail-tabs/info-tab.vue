@@ -73,7 +73,7 @@
     }
   });
 
-  const { locale } = useI18n({ useScope: "global" });
+  const { locale, t } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
   const $q = useQuasar();
   const address = computed(() =>
@@ -127,8 +127,8 @@
     if (siteItem.value.meta?.["hasMap"]) {
       window.open(siteItem.value.meta?.["mapLink"], "_blank");
     } else {
-      notify("Map link not available", "negative");
-      console.error("Map link not available");
+      notify(t("errors.mapLinkNotAvailable"), "negative");
+      console.error(t("errors.mapLinkNotAvailable"));
     }
   };
 </script>

@@ -34,5 +34,6 @@ export default {
   seemsInternetConnection: "There seems to be a problem with your internet connection.",
   pleaseCheckConnection: "Please check your connection and try again.",
   emailNotVerified: "Email is not verified, please verify it first",
-  retry: "Retry"
+  retry: "Retry",
+  mapLinkNotAvailable: "Map link not available"
 };

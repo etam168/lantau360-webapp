@@ -318,7 +318,7 @@
       window.open(businessItem.value.meta?.["mapLink"], "_blank");
     } else {
       // Handle cases where the map link is not available
-      console.error("Map link not available");
+      console.error(t("errors.mapLinkNotAvailable"));
     }
   };
   const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);

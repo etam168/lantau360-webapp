@@ -1,13 +1,13 @@
 <template>
   <q-card
     flat
-    class="location-card"
+    class="q-ma-md"
     :style="{
       height: $q.screen.gt.xs ? '370px' : 'auto'
     }"
   >
     <q-card-section
-      class="location-card-section"
+      class="q-pa-none"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
     >
       <map-component
@@ -84,7 +84,7 @@
     }
   });
 
-  const { locale } = useI18n({ useScope: "global" });
+  const { locale, t } = useI18n({ useScope: "global" });
   const siteItem = computed(() => props?.item as SiteView);
   const $q = useQuasar();
   const address = computed(() =>
@@ -138,8 +138,8 @@
     if (siteItem.value.meta?.["hasMap"]) {
       window.open(siteItem.value.meta?.["mapLink"], "_blank");
     } else {
-      notify("Map link not available", "negative");
-      console.error("Map link not available");
+      notify(t("errors.mapLinkNotAvailable"), "negative");
+      console.error(t("errors.mapLinkNotAvailable"));
     }
   };
   function checkIn() {
@@ -151,25 +151,3 @@
     });
   }
 </script>
-
-<style scoped>
-  .location-card {
-    margin: 16px;
-  }
-
-  .location-card-section {
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  .text-caption {
-    font-size: 14px;
-  }
-
-  @media only screen and (max-width: 600px) {
-    .location-card-section {
-      flex-direction: column;
-    }
-  }
-</style>

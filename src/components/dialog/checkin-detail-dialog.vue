@@ -30,9 +30,8 @@
             <q-item class="q-pa-none">
               <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
                 <q-tab-panel name="map" class="q-pa-none">
-                  <q-card flat class="location-card" style="height: 430px">
+                  <q-card flat style="height: 430px">
                     <q-card-section
-                      class="location-card-section"
                       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
                     >
                       <map-component
