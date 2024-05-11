@@ -20,6 +20,7 @@ export interface CheckIn {
   latitude: number;
   longitude: number;
   directoryMeta: Record<string, any>;
+  siteMeta: Record<string, any>;
   createdByUsername: number;
   createdAt: Date;
   createdBy: number;

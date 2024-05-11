@@ -160,11 +160,11 @@
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
 
   const mapTooltip = computed(() => {
-    const mapLabel = checkInItem.value.meta?.i18n?.[locale.value]?.mapLabel;
+    const mapLabel = checkInItem.value.siteMeta?.i18n?.[locale.value]?.mapLabel;
     if (mapLabel !== undefined && mapLabel !== null) {
       return mapLabel;
     } else {
-      return translate(checkInItem.value.siteName, props.item.meta, "siteName");
+      return translate(checkInItem.value.siteName, props.item.siteMeta, "siteName");
     }
   });
 </script>
