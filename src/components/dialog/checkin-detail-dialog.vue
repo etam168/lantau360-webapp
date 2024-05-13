@@ -33,6 +33,7 @@
                   <q-card flat style="height: 430px; display: flex; justify-content: center">
                     <q-card-section>
                       <map-component
+                        style="flex: 1"
                         :style="{
                           height: $q.screen.gt.xs ? '300px' : '200px',
                           width: $q.screen.gt.xs ? '600px' : '100%'
@@ -43,6 +44,7 @@
                         :bounds="bounds"
                         :tooltip="mapTooltip"
                         :bottom-right-label="address"
+                        @click="openGoogleMaps()"
                       />
                     </q-card-section>
                   </q-card>
@@ -117,6 +119,14 @@
     { name: "map", label: t("more.checkIn.map") },
     { name: "checkInList", label: t("more.checkIn.checkInList") }
   ]);
+
+  const openGoogleMaps = () => {
+    if (checkInItem.value.siteMeta?.["hasMap"]) {
+      window.open(checkInItem.value.siteMeta?.["mapLink"], "_blank");
+    } else {
+      console.error(t("errors.mapLinkNotAvailable"));
+    }
+  };
 
   const bannerPath = computed(() => {
     return checkInItem.value.bannerPath
