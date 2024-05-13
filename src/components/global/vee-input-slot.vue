@@ -1,0 +1,37 @@
+<!-- vee-input.vue -->
+<template>
+  <q-input
+    v-bind="$attrs"
+    v-model="value"
+    stack-label
+    standout="bg-grey-7 text-white"
+    :dark="false"
+    :error="!!errorMessage"
+    :error-message="errorMessage"
+  >
+    <template v-slot:after>
+      <q-btn round dense flat icon="info" color="primary">
+        <q-tooltip class="bg-grey-2"
+          ><div><q-img :src="visaCardImage" style="width: 300px" /></div>
+        </q-tooltip>
+      </q-btn>
+    </template>
+  </q-input>
+</template>
+
+<script setup lang="ts">
+  // Vue Import
+  import { useField } from "vee-validate";
+
+  const props = defineProps({
+    name: {
+      type: String,
+      required: true
+    }
+  });
+
+  const { errorMessage, value: untypedValue } = useField(() => props.name);
+  const value = untypedValue as Ref<string | number | null>;
+
+  const visaCardImage = ref("/img/icons/visa_card.png");
+</script>

@@ -34,28 +34,18 @@
                 />
 
                 <q-card-actions class="q-pa-none justify-between">
-                  <vee-input
+                  <vee-input-slot
                     :label="$t('more.creditCard.expiryDate')"
                     icon="mdi-account"
                     name="expiryDate"
                     placeholder="08/21"
-                    style="width: 48%"
-                  >
-                    <template v-slot:append>
-                      <q-btn round dense flat icon="info">
-                        <q-tooltip class="bg-grey-2"
-                          ><div><q-img :src="visaCardImage" style="width: 300px" /></div>
-                        </q-tooltip>
-                      </q-btn>
-                    </template>
-                  </vee-input>
+                  />
 
                   <vee-input
                     :label="$t('more.creditCard.cvv')"
                     icon="mdi-account"
                     name="csv"
                     placeholder="XXX"
-                    style="width: 48%"
                   />
                 </q-card-actions>
 
@@ -109,7 +99,6 @@
   });
 
   const initialValues = ref({});
-  const visaCardImage = ref("/img/icons/visa_card.png");
 
   const schema = yup.object({
     number: yup.string().required().label(t("more.creditCard.cardNumber")),
