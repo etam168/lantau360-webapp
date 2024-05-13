@@ -23,8 +23,8 @@ export const useUserStore = defineStore("user", {
       pointsPerPost: 0,
       topUpPoints: 0,
       currentMonthFreeTransactionCount: 0,
-      purchsePrice: 0,
-      purchsePoints: 0
+      purchasePrice: 0,
+      purchasePoints: 0
     },
 
   actions: {
@@ -86,8 +86,8 @@ export const useUserStore = defineStore("user", {
     ) {
       this.pointsPerPost = perPostPoints;
       this.topUpPoints = freeTopUpPoints;
-      this.purchsePrice = purchasePrice;
-      this.purchsePoints = purchasePoints;
+      this.purchasePrice = purchasePrice;
+      this.purchasePoints = purchasePoints;
     }
   },
 

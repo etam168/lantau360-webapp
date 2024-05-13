@@ -30,7 +30,7 @@
                   :label="$t('more.creditCard.cardNumber')"
                   icon="mdi-account"
                   name="number"
-                  placeholder="XXXX XXXX XXXX 8014"
+                  placeholder="XXXXXXXXXXXX8014"
                 />
 
                 <q-card-actions class="q-pa-none justify-between">
@@ -61,7 +61,7 @@
 
                 <q-card-section class="text-h4">{{
                   $t("more.creditCard.total", {
-                    amount: `$5`
+                    amount: purchasePrice
                   })
                 }}</q-card-section>
 
@@ -94,7 +94,7 @@
 
   const { eventBus, notify } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
-  const { userId } = useUserStore();
+  const { userId, purchasePrice, purchasePoints } = useUserStore();
   const { t } = i18n.global;
   const isDialogVisible = ref();
   //const $q = useQuasar();
@@ -113,7 +113,18 @@
 
   const schema = yup.object({
     number: yup.string().required().label(t("more.creditCard.cardNumber")),
-    expiryDate: yup.string().required().label(t("more.creditCard.expiryDate")),
+    expiryDate: yup
+      .string()
+      .required()
+      .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry date must be in the format MM/YY")
+      .test("expiryDate", "Credit card is expired", function (value) {
+        if (!value) return true;
+        const currentDate = new Date();
+        const [month, year] = value.split("/");
+        const expiryDate = new Date(Number("20" + year), Number(month) - 1, 1);
+        return expiryDate > currentDate;
+      })
+      .label(t("more.creditCard.expiryDate")),
     csv: yup.string().required().label(t("more.creditCard.cvv"))
   });
 
@@ -134,9 +145,13 @@
       if (isValid) {
         loading.value = true;
 
-        values["totalCost"] = 500;
+        const [month, year] = values.expiryDate.split("/");
+        values["expMonth"] = month;
+        values["expYear"] = `20${year}`;
+
+        values["totalCost"] = parseFloat(purchasePrice) * 100;
         values["subscriberId"] = parseInt(userId);
-        values["purchasedPoints"] = 50;
+        values["purchasedPoints"] = purchasePoints;
         await axios
           .post("/Points/PurchasePoints", values)
           .then(() => {
