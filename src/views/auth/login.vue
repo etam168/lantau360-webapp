@@ -13,16 +13,20 @@
         icon="mdi-account"
         name="userName"
         placeholder="user@example.com"
+        @update:model-value="onUpdateFormfield"
       />
 
-      <vee-input-password :label="$t('auth.login.password')" name="password" />
+      <vee-input-password
+        :label="$t('auth.login.password')"
+        name="password"
+        @update:model-value="onUpdateFormfield"
+      />
       <div>{{ setFormValues(values) }}</div>
 
-      <q-item-label v-if="isEmailSent" class="text-red">{{
+      <q-item-label v-if="isEmailSent" class="text-red q-mt-md">{{
         $t("auth.login.pleaseCheckMails")
       }}</q-item-label>
-
-      <q-item-label v-if="error" class="text-red">{{ message }}</q-item-label>
+      <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
     </q-card-section>
     <q-card-section class="bg-secondary">
       <q-item>
@@ -194,13 +198,17 @@
   function setFormValues(values: any) {
     userName.value = values.userName;
   }
+
+  function onUpdateFormfield() {
+    error.value = false;
+  }
 </script>
 
 <style scoped>
   .forgot-password-link {
-    color: green; /* Change the color to your preferred link color */
-    text-decoration: underline; /* Add an underline to mimic a link */
-    cursor: pointer; /* Change the cursor to a pointer on hover */
-    margin-right: 10px; /* Optional: Add some spacing between the link and the button */
+    color: green;
+    text-decoration: underline;
+    cursor: pointer;
+    margin-right: 10px;
   }
 </style>
