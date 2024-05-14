@@ -14,14 +14,11 @@
   // Quasar Import
   import { throttle, useQuasar } from "quasar";
 
-  import { useUserStore } from "@/stores/user";
-
   // interface files
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
-  const userStore = useUserStore();
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { locale } = useI18n();
@@ -50,10 +47,7 @@
           case "communityDirectoryId" in item:
             return `${URL.DIRECTORY_LIST.POSTING}/${item.communityDirectoryId}`;
           case "groupId" in item && DIRECTORY_GROUPS.HOME.includes(item.groupId): {
-            const isLogon = userStore.isUserLogon();
-            return isLogon
-              ? `${URL.DIRECTORY_LIST.MEMBER_CHECKED_IN_SITES}?directoryId=${item.directoryId}&memberId=${userStore.userId}`
-              : `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
+            return `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
           }
           case "groupId" in item && DIRECTORY_GROUPS.BUSINESS.includes(item.groupId):
             return `${URL.DIRECTORY_LIST.BUSINESS}/${item.directoryId}`;
