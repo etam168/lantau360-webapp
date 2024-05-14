@@ -30,6 +30,7 @@
                   @item-click="onItemClick"
                   :directoryItems="filterGroupedArray(item.name)"
                   :favoriteItems="favoriteItems"
+                  :directoryCheckIns="checkInItems"
                   :template="template"
                 />
               </q-tab-panel>
@@ -44,6 +45,7 @@
               :directoryItems="directoryItems"
               :favoriteItems="favoriteItems"
               :template="template"
+              :directoryCheckIns="checkInItems"
               style="position: relative"
             />
           </template>
@@ -66,6 +68,7 @@
   import { NONE, STORAGE_KEYS, AREA_NAME, URL } from "@/constants";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { useUserStore } from "@/stores/user";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const props = defineProps({
     directoryItemsList: {
@@ -75,6 +78,10 @@
     directory: {
       type: Object as PropType<DirectoryTypes>,
       required: true
+    },
+    directoryCheckIns: {
+      type: Array as PropType<CheckIn[]>,
+      required: true
     }
   });
 
@@ -83,8 +90,9 @@
   const $q = useQuasar();
   const isDialogVisible = ref();
   const directoryItems = ref<any>(props?.directoryItemsList ?? []);
+  const checkInItems = ref<any>(props?.directoryCheckIns ?? []);
+
   const favoriteItems = ref<any>(getFavItem() || []);
-  const { locale } = useI18n();
   const userStore = useUserStore();
 
   const dialogTitle = computed(() =>
@@ -134,7 +142,7 @@
     });
 
     eventBus.on("refresh-directory-items", () => {
-      refreshDirectoryItems(props.directory);
+      refreshCheckInItems();
     });
   });
 
@@ -171,44 +179,13 @@
     }
   }
 
-  const refreshDirectoryItems = async (item: DirectoryTypes) => {
+  const refreshCheckInItems = async () => {
     try {
-      const directoryListUrl = `${URL.DIRECTORY_LIST.MEMBER_CHECKED_IN_SITES}?directoryId=${(props.directory as Directory).directoryId}&memberId=${userStore.userId}`;
-      // const response = await axios.get(directoryListUrl);
-      const [response] = await Promise.all([axios.get(directoryListUrl)]);
-      if (response.status === 200) {
-        // let directoryItems = null;
-        const sortByKey = item.meta.sortByKey;
-
-        const itemList = useSorted(response.data, (a, b) => {
-          const rankingDifference = a.rank - b.rank;
-          // Check if sortByKey exists in the first object
-          const hasSortByKey = sortByKey in response.data[0];
-          // If sortByKey exists, use it for comparison
-          if (hasSortByKey) {
-            let sortByKeyComparison;
-            if (locale.value == "en") {
-              sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
-            } else {
-              sortByKeyComparison = String(
-                a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
-              ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
-              // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
-            }
-
-            return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
-          }
-
-          // If sortByKey doesn't exist, fall back to ranking difference
-          return (
-            rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-          );
-        });
-        directoryItems.value = itemList.value;
-        debugger;
-      }
+      const memberDirectoryCheckInUrl = `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userStore.userId}&directoryId=${(props.directory as Directory).directoryId}`;
+      const response = await axios.get(memberDirectoryCheckInUrl);
+      checkInItems.value = response.status == 200 ? response.data : [];
     } catch (error) {
-      // console.error("Error fetching data: ", error);
+      console.error("Error fetching data: ", error);
     }
   };
 </script>

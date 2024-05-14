@@ -117,7 +117,7 @@
       </q-item-section>
       <q-item-section side style="padding-left: 0px">
         <q-icon
-          v-if="(item as SiteView).isCheckedIn"
+          v-if="isCheckedIn(item)"
           name="check"
           size="2em"
           color="green"
@@ -136,6 +136,7 @@
 
   // .ts files
   import { BLOB_URL, TEMPLATE } from "@/constants";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const emit = defineEmits(["item-click"]);
 
@@ -152,6 +153,10 @@
     template: {
       type: Number,
       required: false
+    },
+    directoryCheckIns: {
+      type: Array as PropType<CheckIn[]>,
+      required: true
     }
   });
 
@@ -171,17 +176,15 @@
     }
   };
 
-  // const isCheckedIn = (item: CategoryTypes): boolean => {
-  //   switch (true) {
-  //     case "siteId" in item:
-  //       return props.checkInItemsList.some(
-  //         checkInitem => (checkInitem as CheckIn).siteId === item.siteId
-  //       );
-  //     default:
-  //       // No known type matched, or it's not a favorite item
-  //       return false;
-  //   }
-  // };
+  const isCheckedIn = (item: CategoryTypes): boolean => {
+    if ("siteId" in item) {
+      return props.directoryCheckIns.some(
+        checkInitem => (checkInitem as CheckIn).siteId === item.siteId
+      );
+    } else {
+      return false;
+    }
+  };
 
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);

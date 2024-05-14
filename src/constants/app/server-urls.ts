@@ -30,7 +30,7 @@ export const URL = {
   MEMBER_RECENT_RANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberRecentTransactions`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   MEMBER_SITE_CHECK_IN: "/CheckIn/GetByMemberAndSiteId",
-
+  MEMBER_DIRECTORY_CHECK_IN: "/CheckIn/GetMemberDirectoryCheckIn",
   DIRECTORY_LIST: {
     BUSINESS: `${BASE_URL}/Business/ByDirectoryId`,
     POSTING: `${BASE_URL}/Posting/Active/ByDirectoryId`,

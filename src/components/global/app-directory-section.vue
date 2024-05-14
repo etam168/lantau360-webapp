@@ -19,6 +19,9 @@
 
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { useUserStore } from "@/stores/user";
+  import { Directory } from "@/interfaces/models/entities/directory";
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { locale } = useI18n();
@@ -33,7 +36,7 @@
   const $q = useQuasar();
   const { eventBus } = useUtilities();
   const router = useRouter();
-
+  const { isUserLogon, userId } = useUserStore();
   const items = ref(props.data);
 
   items.value.sort((a, b) =>
@@ -55,8 +58,7 @@
             throw new Error("Unknown directory type");
         }
       })();
-      // const response = await axios.get(directoryListUrl);
-      const [response] = await Promise.all([axios.get(directoryListUrl)]);
+      const response = await axios.get(directoryListUrl);
       if (response.status === 200) {
         // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
@@ -98,6 +100,8 @@
           });
         };
 
+        const directoryCheckIn = await getMemberDirectoryCheckIn((item as Directory).directoryId);
+
         const createCategoryDialog = (item: DirectoryTypes) => {
           $q.dialog({
             component: defineAsyncComponent(
@@ -105,9 +109,8 @@
             ),
             componentProps: {
               directoryItemsList: directoryItems.value,
-              directory: item
-              // checkInItemsList: checkInResponse.data
-              // groupBykey: groupBy
+              directory: item,
+              directoryCheckIns: directoryCheckIn
             }
           });
         };
@@ -127,6 +130,16 @@
       // console.error("Error fetching data: ", error);
     }
   };
+
+  async function getMemberDirectoryCheckIn(directoryId: number): Promise<Array<CheckIn>> {
+    const isLogon = isUserLogon();
+
+    if (!isLogon) return [] as CheckIn[];
+    const response = await axios.get(
+      `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${directoryId}`
+    );
+    return response.status == 200 ? response.data : [];
+  }
 
   // Throttle the handleDialog function
   const throttledHandleDialog = throttle(handleDialog, 2000);

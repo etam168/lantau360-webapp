@@ -6,5 +6,4 @@ export interface SiteView extends Site {
   directoryMeta: Record<string, any>;
   areaNameAlt: Record<string, any>;
   directoryTemplate: number;
-  isCheckedIn: boolean;
 }
