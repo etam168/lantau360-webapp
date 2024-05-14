@@ -62,11 +62,7 @@
         }
       })();
       // const response = await axios.get(directoryListUrl);
-      const [response, checkInResponse] = await Promise.all([
-        axios.get(directoryListUrl),
-        axios.get(`${URL.CHECKIN_BY_MEMBER}/${userStore.userId}`),
-        axios.get(URL.MEMBER_CONFIG)
-      ]);
+      const [response] = await Promise.all([axios.get(directoryListUrl)]);
       if (response.status === 200) {
         // let directoryItems = null;
         const sortByKey = item.meta.sortByKey;
@@ -115,8 +111,8 @@
             ),
             componentProps: {
               directoryItemsList: directoryItems.value,
-              directory: item,
-              checkInItemsList: checkInResponse.data
+              directory: item
+              // checkInItemsList: checkInResponse.data
               // groupBykey: groupBy
             }
           });

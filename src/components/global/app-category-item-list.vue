@@ -136,7 +136,6 @@
 
   // .ts files
   import { BLOB_URL, TEMPLATE } from "@/constants";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const emit = defineEmits(["item-click"]);
 
@@ -148,11 +147,6 @@
     },
     favoriteItems: {
       type: Array as PropType<CategoryTypes[]>,
-      default: () => []
-    },
-    checkInItemsList: {
-      type: Array as PropType<CheckIn[]>,
-      required: true,
       default: () => []
     },
     template: {
