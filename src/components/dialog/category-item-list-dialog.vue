@@ -141,7 +141,7 @@
       isDialogVisible.value = false;
     });
 
-    eventBus.on("refresh-directory-items", () => {
+    eventBus.on("refresh-directory-checkin-items", () => {
       refreshCheckInItems();
     });
   });

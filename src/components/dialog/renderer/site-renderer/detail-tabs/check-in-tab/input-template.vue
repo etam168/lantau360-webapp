@@ -158,7 +158,7 @@
               color: "primary"
             });
             loading.value = false;
-            eventBus.emit("refresh-directory-items");
+            eventBus.emit("refresh-directory-checkin-items");
             eventBus.emit("close-check-in-dialog");
           })
           .catch(err => {

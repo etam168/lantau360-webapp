@@ -15,10 +15,47 @@
       <q-page-container>
         <q-page>
           <q-card flat class="row justify-center items-center">
-            <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
-
-            <q-card-section :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'">
-              <q-item-label class="q-my-md">{{ $t("more.creditCard.subtitle") }}</q-item-label>
+            <q-card-section
+              class="row justify-center"
+              :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
+            >
+              <q-card
+                class="row justify-center items-center q-my-lg"
+                :class="{ 'q-mx-lg': $q.screen.gt.xs }"
+                bordered
+                :style="{
+                  width: $q.screen.gt.xs ? '480px' : '100%',
+                  'border-radius': '15px',
+                  height: '100px',
+                  'border-color': 'primary'
+                }"
+              >
+                <div style="display: flex; flex-direction: column">
+                  <div style="letter-spacing: 2px; font-size: 17px">Purchase 50 points</div>
+                  <div style="text-align: center">
+                    <span style="font-size: 28px; font-weight: 500; letter-spacing: 2px">{{
+                      "$" + purchasePrice
+                    }}</span>
+                  </div>
+                </div>
+              </q-card>
+              <div
+                :class="{ 'q-ml-lg': $q.screen.gt.xs }"
+                :style="{
+                  width: $q.screen.gt.xs ? '480px' : '100%'
+                }"
+              >
+                <q-item-label
+                  class="q-ml-sm q-mb-md"
+                  style="letter-spacing: 2px; font-size: 20px; font-weight: bold"
+                  >Top up your account</q-item-label
+                >
+                <q-item-label
+                  class="q-mx-sm q-my-lg"
+                  style="letter-spacing: 1px; font-size: 16px; color: #888"
+                  >Enter the essential information below to top up your points</q-item-label
+                >
+              </div>
               <Form
                 ref="form"
                 class="full-height"
@@ -48,12 +85,6 @@
                     placeholder="XXX"
                   />
                 </q-card-actions>
-
-                <q-card-section class="text-h4">{{
-                  $t("more.creditCard.total", {
-                    amount: purchasePrice
-                  })
-                }}</q-card-section>
 
                 <q-card-actions class="q-mt-md justify-end q-pa-none">
                   <app-button
