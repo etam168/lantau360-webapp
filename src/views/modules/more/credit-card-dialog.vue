@@ -20,8 +20,8 @@
               :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
             >
               <q-card
-                class="row justify-center items-center q-my-lg"
-                :class="{ 'q-mx-lg': $q.screen.gt.xs }"
+                class="row justify-center items-center q-mb-lg"
+                :class="{ 'q-mx-lg q-mt-lg': $q.screen.gt.xs }"
                 bordered
                 :style="{
                   width: $q.screen.gt.xs ? '480px' : '100%',
@@ -31,14 +31,15 @@
                 }"
               >
                 <div style="display: flex; flex-direction: column">
-                  <div style="letter-spacing: 2px; font-size: 17px">Purchase 50 points</div>
+                  <div style="letter-spacing: 2px; font-size: 17px">Available Point Balance</div>
                   <div style="text-align: center">
                     <span style="font-size: 28px; font-weight: 500; letter-spacing: 2px">{{
-                      "$" + purchasePrice
+                      availabelPoints
                     }}</span>
                   </div>
                 </div>
               </q-card>
+
               <div
                 :class="{ 'q-ml-lg': $q.screen.gt.xs }"
                 :style="{
@@ -46,14 +47,57 @@
                 }"
               >
                 <q-item-label
-                  class="q-ml-sm q-mb-md"
+                  class="q-ml-sm q-mb-sm"
                   style="letter-spacing: 2px; font-size: 20px; font-weight: bold"
                   >Top up your account</q-item-label
                 >
                 <q-item-label
-                  class="q-mx-sm q-my-lg"
+                  class="q-mx-sm q-my-md"
                   style="letter-spacing: 1px; font-size: 16px; color: #888"
                   >Enter the essential information below to top up your points</q-item-label
+                >
+
+                <q-item-label
+                  class="q-mx-sm q-mt-lg"
+                  style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
+                  >Top up amount</q-item-label
+                >
+                <q-card
+                  flat
+                  bordered
+                  :style="{
+                    'margin-left': '8px',
+                    'margin-right': $q.screen.gt.xs ? '33px' : '8px',
+                    'margin-top': '10px',
+                    'border-radius': '10px',
+                    'border-color': 'lightgray'
+                  }"
+                  class="q-py-sm q-px-md"
+                  ><span style="font-size: 18px; font-weight: 600">{{
+                    "$ " + selectedPackage.amount
+                  }}</span
+                  ><span class="q-ml-xl">{{ "Points : " + selectedPackage.points }}</span>
+                </q-card>
+                <div
+                  class="row items-center q-mt-md"
+                  :style="{ 'margin-left': $q.screen.gt.xs ? '20px' : '8px' }"
+                >
+                  <div v-for="pPackage in purchasePackages" :key="pPackage.amount">
+                    <q-btn
+                      :class="{
+                        'bg-green-8 text-white text-weight-bold':
+                          pPackage.amount === selectedPackage.amount
+                      }"
+                      :style="{ width: '70px', 'margin-right': '8px', 'border-radius': '20px' }"
+                      @click="onPackageChange(pPackage)"
+                      >{{ pPackage.amount }}</q-btn
+                    >
+                  </div>
+                </div>
+                <q-item-label
+                  class="q-mx-sm q-mt-lg"
+                  style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
+                  >Credit card info</q-item-label
                 >
               </div>
               <Form
@@ -64,29 +108,34 @@
                 @submit="onSubmit"
               >
                 <vee-input
+                  class="q-mt-md"
                   :label="$t('more.creditCard.cardNumber')"
                   icon="mdi-account"
                   name="number"
                   placeholder="XXXXXXXXXXXX8014"
                 />
-
                 <q-card-actions class="q-pa-none justify-between">
-                  <vee-input-slot
-                    :label="$t('more.creditCard.expiryDate')"
-                    icon="mdi-account"
-                    name="expiryDate"
-                    placeholder="08/21"
-                  />
-
-                  <vee-input
-                    :label="$t('more.creditCard.cvv')"
-                    icon="mdi-account"
-                    name="csv"
-                    placeholder="XXX"
-                  />
+                  <div class="row items-center">
+                    <div class="col">
+                      <vee-input-slot
+                        :label="$t('more.creditCard.expiryDate')"
+                        icon="mdi-account"
+                        name="expiryDate"
+                        placeholder="08/21"
+                      />
+                    </div>
+                    <div class="col">
+                      <vee-input
+                        :label="$t('more.creditCard.cvv')"
+                        icon="mdi-account"
+                        name="csv"
+                        placeholder="XXX"
+                      />
+                    </div>
+                  </div>
                 </q-card-actions>
 
-                <q-card-actions class="q-mt-md justify-end q-pa-none">
+                <q-card-actions class="q-mt-sm justify-end q-pa-none">
                   <app-button
                     label="Proceed to pay"
                     :loading="loading"
@@ -115,7 +164,7 @@
 
   const { eventBus, notify } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
-  const { userId, purchasePrice, purchasePoints } = useUserStore();
+  const { userId, availabelPoints } = useUserStore();
   const { t } = i18n.global;
   const isDialogVisible = ref();
   //const $q = useQuasar();
@@ -148,6 +197,15 @@
     csv: yup.string().required().label(t("more.creditCard.cvv"))
   });
 
+  const purchasePackages = [
+    { amount: 5, points: 50 },
+    { amount: 10, points: 100 },
+    { amount: 20, points: 250 },
+    { amount: 30, points: 400 }
+  ];
+
+  const selectedPackage = ref(purchasePackages[0]);
+
   onMounted(() => {
     eventBus.on("CreditCardDialog", () => {
       isDialogVisible.value = false;
@@ -169,9 +227,9 @@
         values["expMonth"] = month;
         values["expYear"] = `20${year}`;
 
-        values["totalCost"] = parseFloat(purchasePrice) * 100;
+        values["totalCost"] = selectedPackage.value.amount * 100;
         values["subscriberId"] = parseInt(userId);
-        values["purchasedPoints"] = purchasePoints;
+        values["purchasedPoints"] = selectedPackage.value.points;
         await axios
           .post("/Points/PurchasePoints", values)
           .then(() => {
@@ -186,5 +244,9 @@
           });
       }
     });
+  }
+
+  function onPackageChange(value: any) {
+    selectedPackage.value = value;
   }
 </script>
