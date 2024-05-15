@@ -34,20 +34,11 @@
                 </q-item-section>
                 <q-item-section side>
                   <q-btn
-                    v-if="userStore.currentMonthFreeTransactionCount < 2"
                     dense
                     rounded
                     @click="onBtnBuyPoints"
                     class="text-primary bg-grey-1 text-caption q-px-md"
                     >{{ $t("more.profileSetting.buyPoints") }}</q-btn
-                  >
-                  <q-btn
-                    v-else
-                    dense
-                    rounded
-                    @click="onCreditCard"
-                    class="text-primary bg-grey-1 text-caption q-px-md"
-                    >{{ "Purchase points" }}</q-btn
                   >
                 </q-item-section>
               </q-item>
@@ -124,22 +115,32 @@
   const setTab = (val: string) => (tab.value = val);
 
   const onBtnBuyPoints = () => {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("../purchase-confirmation-dialog.vue")),
-      componentProps: {
-        callback: claimFreePoints
-      }
-    });
+    if (userStore.currentMonthFreeTransactionCount < 2) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("./top-up-points/free-top-request-confirmation-dialog.vue")
+        ),
+        componentProps: {
+          callback: claimFreePoints
+        }
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("./top-up-points/purchase-confirmation-dialog.vue")
+        ),
+        componentProps: {
+          callback: onConfirmPurchase
+        }
+      });
+    }
   };
 
-  const onCreditCard = () => {
+  function onConfirmPurchase() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("../credit-card-dialog.vue")),
-      componentProps: {
-        callback: claimFreePoints
-      }
+      component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
     });
-  };
+  }
 
   function handleItemClick(item: any) {
     if (item.postingId) {

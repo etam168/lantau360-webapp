@@ -1,0 +1,81 @@
+<template>
+  <q-dialog
+    ref="dialogRef"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    @update:model-value="updateDialogState"
+    :model-value="isDialogVisible"
+  >
+    <q-card class="q-px-md q-pb-md">
+      <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
+
+      <q-card-section class="text-center">
+        <q-icon name="report_problem" size="4rem" color="primary" />
+        <div class="text-h6">{{ title }}</div>
+
+        <div class="text-body2">{{ bodyMessage }}</div>
+      </q-card-section>
+
+      <q-card-actions class="q-px-none no-wrap">
+        <app-button
+          class="full-width q-mx-xs"
+          :label="$t('action.no')"
+          color="red"
+          type="submit"
+          v-close-popup
+        />
+
+        <div class="q-mx-xs"></div>
+
+        <app-button
+          class="full-width"
+          :label="$t('action.yes')"
+          color="primary"
+          type="submit"
+          @click="handleOk"
+        />
+      </q-card-actions>
+    </q-card>
+  </q-dialog>
+</template>
+
+<script setup lang="ts">
+  import { useDialogPluginComponent } from "quasar";
+  import { useUtilities } from "@/composable/use-utilities";
+  import { useUserStore } from "@/stores/user";
+  import i18n from "@/plugins/i18n/i18n";
+
+  const { eventBus } = useUtilities();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
+  const { topUpPoints } = useUserStore();
+  const { t } = i18n.global;
+  const isDialogVisible = ref();
+
+  const props = defineProps({
+    callback: {
+      type: Function,
+      required: true
+    }
+  });
+
+  const title = computed(() => t("more.profileSetting.confirmation"));
+
+  const bodyMessage = computed(() =>
+    t("more.profileSetting.claimFreePointText", { points: topUpPoints })
+  );
+
+  onMounted(() => {
+    eventBus.on("ConfirmationDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "ConfirmationDialog");
+  }
+
+  function handleOk() {
+    props.callback(onDialogCancel);
+  }
+</script>
