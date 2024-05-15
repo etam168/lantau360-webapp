@@ -29,6 +29,7 @@
     "@vee-validate/rules": "^4.12.6",
     "@vee-validate/yup": "^4.12.6",
     "@vue-leaflet/vue-leaflet": "^0.10.1",
+    "@vue-stripe/vue-stripe": "^4.5.0",
     "@vueuse/core": "^10.9.0",
     "axios": "^1.6.8",
     "font-awesome": "^4.7.0",

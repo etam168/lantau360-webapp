@@ -40,6 +40,13 @@
                     class="text-primary bg-grey-1 text-caption q-px-md"
                     >{{ $t("more.profileSetting.buyPoints") }}</q-btn
                   >
+                  <q-btn
+                    dense
+                    rounded
+                    @click="ontBtnStripeClick"
+                    class="text-primary bg-grey-1 text-caption q-px-md q-mt-md"
+                    >Stripe</q-btn
+                  >
                 </q-item-section>
               </q-item>
             </q-card-section>
@@ -135,6 +142,14 @@
       });
     }
   };
+
+  function ontBtnStripeClick() {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("./top-up-points/stripe-checkout/stripe-checkout.vue")
+      )
+    });
+  }
 
   function onConfirmPurchase() {
     $q.dialog({
