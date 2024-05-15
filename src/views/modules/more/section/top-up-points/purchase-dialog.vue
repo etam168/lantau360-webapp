@@ -15,137 +15,143 @@
       <q-page-container>
         <q-page>
           <q-card flat class="row justify-center items-center">
-            <q-card-section
-              class="row justify-center"
-              :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
-            >
-              <q-card
-                class="row justify-center items-center q-mb-lg"
-                :class="{ 'q-mx-lg q-mt-lg': $q.screen.gt.xs }"
-                bordered
-                :style="{
-                  width: $q.screen.gt.xs ? '480px' : '100%',
-                  'border-radius': '15px',
-                  height: '100px',
-                  'border-color': 'primary'
-                }"
-              >
-                <div style="display: flex; flex-direction: column">
-                  <div style="letter-spacing: 2px; font-size: 17px">Available Point Balance</div>
-                  <div style="text-align: center">
-                    <span style="font-size: 28px; font-weight: 500; letter-spacing: 2px">{{
-                      availabelPoints
-                    }}</span>
-                  </div>
-                </div>
-              </q-card>
+            <q-card-section horizontal>
+              <q-card-section class="q-px-md q-pb-md row items-center">
+                <free-top-request-confirmation-dialog />
+              </q-card-section>
 
-              <div
-                :class="{ 'q-ml-lg': $q.screen.gt.xs }"
-                :style="{
-                  width: $q.screen.gt.xs ? '480px' : '100%'
-                }"
+              <q-separator vertical />
+              <q-card-section
+                class="row justify-center"
+                :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
               >
-                <q-item-label
-                  class="q-ml-sm q-mb-sm"
-                  style="letter-spacing: 2px; font-size: 20px; font-weight: bold"
-                  >Top up your account</q-item-label
-                >
-                <q-item-label
-                  class="q-mx-sm q-my-md"
-                  style="letter-spacing: 1px; font-size: 16px; color: #888"
-                  >Enter the essential information below to top up your points</q-item-label
-                >
-
-                <q-item-label
-                  class="q-mx-sm q-mt-lg"
-                  style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-                  >Top up amount</q-item-label
-                >
                 <q-card
-                  flat
+                  class="row justify-center items-center q-mb-lg"
+                  :class="{ 'q-mx-lg q-mt-md': $q.screen.gt.xs }"
                   bordered
                   :style="{
-                    'margin-left': '8px',
-                    'margin-right': $q.screen.gt.xs ? '33px' : '8px',
-                    'margin-top': '10px',
-                    'border-radius': '10px',
-                    'border-color': 'lightgray'
+                    width: $q.screen.gt.xs ? '480px' : '100%',
+                    'border-radius': '15px',
+                    height: '100px',
+                    'border-color': 'primary'
                   }"
-                  class="q-py-sm q-px-md"
-                  ><span style="font-size: 18px; font-weight: 600">{{
-                    "$ " + selectedPackage.amount
-                  }}</span
-                  ><span class="q-ml-xl">{{ "Points : " + selectedPackage.points }}</span>
+                >
+                  <div style="display: flex; flex-direction: column">
+                    <div style="letter-spacing: 2px; font-size: 17px">Available Point Balance</div>
+                    <div style="text-align: center">
+                      <span style="font-size: 28px; font-weight: 500; letter-spacing: 2px">{{
+                        availabelPoints
+                      }}</span>
+                    </div>
+                  </div>
                 </q-card>
-                <div
-                  class="row items-center q-mt-md"
-                  :style="{ 'margin-left': $q.screen.gt.xs ? '20px' : '8px' }"
-                >
-                  <div v-for="pPackage in purchasePackages" :key="pPackage.amount">
-                    <q-btn
-                      :class="{
-                        'bg-green-8 text-white text-weight-bold':
-                          pPackage.amount === selectedPackage.amount
-                      }"
-                      :style="{ width: '70px', 'margin-right': '8px', 'border-radius': '20px' }"
-                      @click="onPackageChange(pPackage)"
-                      >{{ pPackage.amount }}</q-btn
-                    >
-                  </div>
-                </div>
-                <q-item-label
-                  class="q-mx-sm q-mt-lg"
-                  style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-                  >Credit card info</q-item-label
-                >
-              </div>
-              <Form
-                ref="form"
-                class="full-height"
-                :initial-values="initialValues"
-                :validation-schema="schema"
-                @submit="onSubmit"
-              >
-                <vee-input
-                  class="q-mt-md"
-                  :label="$t('more.creditCard.cardNumber')"
-                  icon="mdi-account"
-                  name="number"
-                  placeholder="XXXXXXXXXXXX8014"
-                />
-                <q-card-actions class="q-pa-none justify-between">
-                  <div class="row items-center">
-                    <div class="col">
-                      <vee-input-slot
-                        :label="$t('more.creditCard.expiryDate')"
-                        icon="mdi-account"
-                        name="expiryDate"
-                        placeholder="08/21"
-                      />
-                    </div>
-                    <div class="col">
-                      <vee-input
-                        :label="$t('more.creditCard.cvv')"
-                        icon="mdi-account"
-                        name="csv"
-                        placeholder="XXX"
-                      />
-                    </div>
-                  </div>
-                </q-card-actions>
 
-                <q-card-actions class="q-mt-sm justify-end q-pa-none">
-                  <app-button
-                    label="Proceed to pay"
-                    :loading="loading"
-                    class="full-width"
-                    color="primary"
-                    type="submit"
-                    size="md"
+                <div
+                  :class="{ 'q-ml-lg': $q.screen.gt.xs }"
+                  :style="{
+                    width: $q.screen.gt.xs ? '480px' : '100%'
+                  }"
+                >
+                  <q-item-label
+                    class="q-ml-sm q-mb-sm"
+                    style="letter-spacing: 2px; font-size: 20px; font-weight: bold"
+                    >Top up your account</q-item-label
+                  >
+                  <q-item-label
+                    class="q-mx-sm q-my-md"
+                    style="letter-spacing: 1px; font-size: 16px; color: #888"
+                    >Enter the essential information below to top up your points</q-item-label
+                  >
+
+                  <q-item-label
+                    class="q-mx-sm q-mt-lg"
+                    style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
+                    >Top up amount</q-item-label
+                  >
+                  <q-card
+                    flat
+                    bordered
+                    :style="{
+                      'margin-left': '8px',
+                      'margin-right': $q.screen.gt.xs ? '33px' : '8px',
+                      'margin-top': '10px',
+                      'border-radius': '10px',
+                      'border-color': 'lightgray'
+                    }"
+                    class="q-py-sm q-px-md"
+                    ><span style="font-size: 18px; font-weight: 600">{{
+                      "$ " + selectedPackage.amount
+                    }}</span
+                    ><span class="q-ml-xl">{{ "Points : " + selectedPackage.points }}</span>
+                  </q-card>
+                  <div
+                    class="row items-center q-mt-md"
+                    :style="{ 'margin-left': $q.screen.gt.xs ? '20px' : '8px' }"
+                  >
+                    <div v-for="pPackage in purchasePackages" :key="pPackage.amount">
+                      <q-btn
+                        :class="{
+                          'bg-green-8 text-white text-weight-bold':
+                            pPackage.amount === selectedPackage.amount
+                        }"
+                        :style="{ width: '70px', 'margin-right': '8px', 'border-radius': '20px' }"
+                        @click="onPackageChange(pPackage)"
+                        >{{ pPackage.amount }}</q-btn
+                      >
+                    </div>
+                  </div>
+                  <q-item-label
+                    class="q-mx-sm q-mt-lg"
+                    style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
+                    >Credit card info</q-item-label
+                  >
+                </div>
+                <Form
+                  ref="form"
+                  :initial-values="initialValues"
+                  :validation-schema="schema"
+                  @submit="onSubmit"
+                >
+                  <vee-input
+                    class="q-mt-md"
+                    :label="$t('more.creditCard.cardNumber')"
+                    icon="mdi-account"
+                    name="number"
+                    placeholder="XXXXXXXXXXXX8014"
                   />
-                </q-card-actions>
-              </Form>
+                  <q-card-actions class="q-pa-none justify-between">
+                    <div class="row items-center">
+                      <div class="col">
+                        <vee-input-slot
+                          :label="$t('more.creditCard.expiryDate')"
+                          icon="mdi-account"
+                          name="expiryDate"
+                          placeholder="08/21"
+                        />
+                      </div>
+                      <div class="col">
+                        <vee-input
+                          :label="$t('more.creditCard.cvv')"
+                          icon="mdi-account"
+                          name="csv"
+                          placeholder="XXX"
+                        />
+                      </div>
+                    </div>
+                  </q-card-actions>
+
+                  <q-card-actions class="q-mt-sm justify-end q-pa-none">
+                    <app-button
+                      label="Proceed to pay"
+                      :loading="loading"
+                      class="full-width"
+                      color="primary"
+                      type="submit"
+                      size="md"
+                    />
+                  </q-card-actions>
+                </Form>
+              </q-card-section>
             </q-card-section>
           </q-card>
         </q-page>
@@ -161,10 +167,12 @@
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
   import { useUserStore } from "@/stores/user";
+  import freeTopRequestConfirmationDialog from "./free-top-request-confirmation-dialog.vue";
 
   const { eventBus, notify } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const { userId, availabelPoints } = useUserStore();
+
   const { t } = i18n.global;
   const isDialogVisible = ref();
   //const $q = useQuasar();

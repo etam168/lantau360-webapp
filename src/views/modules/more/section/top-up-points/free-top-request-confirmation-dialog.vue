@@ -1,81 +1,59 @@
 <template>
-  <q-dialog
-    ref="dialogRef"
-    transition-show="slide-up"
-    transition-hide="slide-down"
-    @update:model-value="updateDialogState"
-    :model-value="isDialogVisible"
-  >
-    <q-card class="q-px-md q-pb-md">
-      <!-- <q-card-section class="row items-center q-pa-none q-mt-sm"> </q-card-section> -->
+  <q-card flat>
+    <q-card-section class="text-center">
+      <q-icon
+        name="report_problem"
+        size="4rem"
+        :color="userStore.currentMonthFreeTransactionCount < 2 ? 'primary' : 'red'"
+      />
+      <div class="text-h6">{{ title }}</div>
 
-      <q-card-section class="text-center">
-        <q-icon name="report_problem" size="4rem" color="primary" />
-        <div class="text-h6">{{ title }}</div>
+      <div class="text-body2" v-if="userStore.currentMonthFreeTransactionCount < 2">
+        {{ bodyMessage }}
+      </div>
 
-        <div class="text-body2">{{ bodyMessage }}</div>
-      </q-card-section>
+      <div class="text-body2" v-else>
+        User can gets two free top-up requests in a month. Your free top-up request of current has
+        been completed. You can either wait until next month to ask for more free top-ups or
+        purchase some now.
+      </div>
+    </q-card-section>
 
-      <q-card-actions class="q-px-none no-wrap">
-        <app-button
-          class="full-width q-mx-xs"
-          :label="$t('action.no')"
-          color="red"
-          type="submit"
-          v-close-popup
-        />
-
-        <div class="q-mx-xs"></div>
-
-        <app-button
-          class="full-width"
-          :label="$t('action.yes')"
-          color="primary"
-          type="submit"
-          @click="handleOk"
-        />
-      </q-card-actions>
-    </q-card>
-  </q-dialog>
+    <q-card-actions class="q-px-none no-wrap">
+      <app-button
+        v-if="userStore.currentMonthFreeTransactionCount < 2"
+        class="full-width"
+        :label="$t('more.creditCard.claimYourFreePoint')"
+        color="primary"
+        type="submit"
+        @click="claimFreePoints"
+      />
+      <app-button
+        v-else
+        class="full-width"
+        :label="$t('more.creditCard.claimYourFreePoint')"
+        color="primary"
+        type="submit"
+        @click="claimFreePoints"
+        disabled
+      />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup lang="ts">
-  import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
+  import { useMoreInput } from "../../use-more-input";
   import { useUserStore } from "@/stores/user";
+
   import i18n from "@/plugins/i18n/i18n";
 
-  const { eventBus } = useUtilities();
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const { topUpPoints } = useUserStore();
+  const { claimFreePoints, userStore } = useMoreInput();
   const { t } = i18n.global;
-  const isDialogVisible = ref();
 
-  const props = defineProps({
-    callback: {
-      type: Function,
-      required: true
-    }
-  });
-
-  const title = computed(() => t("more.profileSetting.confirmation"));
+  const title = computed(() => t("more.profileSetting.buyPoints"));
 
   const bodyMessage = computed(() =>
     t("more.profileSetting.claimFreePointText", { points: topUpPoints })
   );
-
-  onMounted(() => {
-    eventBus.on("ConfirmationDialog", () => {
-      isDialogVisible.value = false;
-    });
-  });
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "ConfirmationDialog");
-  }
-
-  function handleOk() {
-    props.callback(onDialogCancel);
-  }
 </script>

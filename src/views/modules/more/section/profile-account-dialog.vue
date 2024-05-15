@@ -106,7 +106,7 @@
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
-  const { claimFreePoints, userStore } = useMoreInput();
+  const { userStore } = useMoreInput();
   const { dateFormatter } = useUtilities();
 
   const props = defineProps({
@@ -122,25 +122,9 @@
   const setTab = (val: string) => (tab.value = val);
 
   const onBtnBuyPoints = () => {
-    if (userStore.currentMonthFreeTransactionCount < 2) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("./top-up-points/free-top-request-confirmation-dialog.vue")
-        ),
-        componentProps: {
-          callback: claimFreePoints
-        }
-      });
-    } else {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("./top-up-points/purchase-confirmation-dialog.vue")
-        ),
-        componentProps: {
-          callback: onConfirmPurchase
-        }
-      });
-    }
+    $q.dialog({
+      component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
+    });
   };
 
   function ontBtnStripeClick() {
@@ -151,11 +135,11 @@
     });
   }
 
-  function onConfirmPurchase() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
-    });
-  }
+  // function onConfirmPurchase() {
+  //   $q.dialog({
+  //     component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
+  //   });
+  // }
 
   function handleItemClick(item: any) {
     if (item.postingId) {

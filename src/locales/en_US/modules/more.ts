@@ -26,7 +26,8 @@ export default {
     cvv: "CVV",
     proceedToPay: "Proceed to pay",
     subtitle: "You are making this payment as you have reached your monthly points limit",
-    total: "Total : {amount}"
+    total: "Total : {amount}",
+    claimYourFreePoint: "Claim Your Free Point"
   },
 
   account: {
