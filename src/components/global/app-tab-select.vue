@@ -38,15 +38,3 @@
     emit("update:currentTab", val);
   };
 </script>
-
-<style scoped>
-  .q-toolbar {
-    display: flex; /* Use flexbox layout */
-    flex-wrap: wrap; /* Allow chips to wrap to the next line */
-  }
-
-  .q-chip {
-    margin-right: 8px; /* Add some spacing between chips */
-    margin-bottom: 8px; /* Add vertical spacing between rows of chips */
-  }
-</style>
