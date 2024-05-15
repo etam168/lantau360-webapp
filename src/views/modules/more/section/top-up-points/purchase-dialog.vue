@@ -16,11 +16,6 @@
         <q-page>
           <q-card flat class="row justify-center items-center">
             <q-card-section horizontal>
-              <q-card-section class="q-px-md q-pb-md row items-center">
-                <free-top-request-confirmation-dialog />
-              </q-card-section>
-
-              <q-separator vertical />
               <q-card-section
                 class="row justify-center"
                 :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
@@ -167,7 +162,6 @@
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
   import { useUserStore } from "@/stores/user";
-  import freeTopRequestConfirmationDialog from "./free-top-request-confirmation-dialog.vue";
 
   const { eventBus, notify } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();

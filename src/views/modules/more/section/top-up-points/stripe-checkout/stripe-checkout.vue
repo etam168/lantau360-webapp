@@ -39,7 +39,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   const publishableKey = "pk_test_cM0Cj4pEuFceQLmeRNtM9sW400S5FJBvAt";
-  const successURL = "https://apa-dev.lantau360.com/stripe-success";
+  const successURL = "https://app-dev.lantau360.com/stripe-success";
   const cancelURL = "https://app-dev.lantau360.com/stripe-cancel";
   const loading = false;
   const checkoutRef = ref();

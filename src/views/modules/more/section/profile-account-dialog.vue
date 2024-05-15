@@ -123,7 +123,9 @@
 
   const onBtnBuyPoints = () => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
+      component: defineAsyncComponent(
+        () => import("./top-up-points/top-up-points-options-dialog.vue")
+      )
     });
   };
 
@@ -134,12 +136,6 @@
       )
     });
   }
-
-  // function onConfirmPurchase() {
-  //   $q.dialog({
-  //     component: defineAsyncComponent(() => import("./top-up-points/purchase-dialog.vue"))
-  //   });
-  // }
 
   function handleItemClick(item: any) {
     if (item.postingId) {

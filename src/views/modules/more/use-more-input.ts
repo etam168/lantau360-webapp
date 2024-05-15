@@ -65,21 +65,15 @@ export function useMoreInput() {
       });
   }
 
-  function claimFreePoints(onDialogCancel: any) {
+  async function claimFreePoints(): Promise<boolean> {
     const memberId = parseInt(userStore.userId);
-    axios
+    return await axios
       .post(`/Points/RequestFreePoints?memberId=${memberId}`)
       .then(async () => {
         const successMessage = t("more.message.claimedFreePointsSuccessfully");
         successCallback(successMessage);
         eventBus.emit("refresh-transaction-data");
-        // userStore.totalPoints = parseInt(userStore.totalPoints) + parseInt(userStore.topUpPoints);
-        // userStore.availabelPoints =
-        //   parseInt(userStore.availabelPoints) + parseInt(userStore.topUpPoints);
-
-        setTimeout(() => {
-          onDialogCancel();
-        }, 1200);
+        return true;
       })
       .catch(err => {
         if (err instanceof AxiosError) {
@@ -91,6 +85,7 @@ export function useMoreInput() {
         } else {
           notify(err.message, "negative");
         }
+        return false;
       });
   }
 
