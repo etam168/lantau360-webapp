@@ -20,6 +20,7 @@
               :tab-items="tabItems"
               :current-tab="tab"
               @update:currentTab="setTab"
+              :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
               :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
             />
 
