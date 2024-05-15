@@ -100,9 +100,9 @@
           });
         };
 
-        const directoryCheckIn = await getMemberDirectoryCheckIn((item as Directory).directoryId);
+        const createCategoryDialog = async (item: DirectoryTypes) => {
+          const directoryCheckIn = await getMemberDirectoryCheckIn((item as Directory).directoryId);
 
-        const createCategoryDialog = (item: DirectoryTypes) => {
           $q.dialog({
             component: defineAsyncComponent(
               () => import("@/components/dialog/category-item-list-dialog.vue")
