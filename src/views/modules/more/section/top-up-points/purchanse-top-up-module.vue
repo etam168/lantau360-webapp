@@ -10,12 +10,7 @@
   </q-card-section>
 
   <q-card-actions class="q-px-none no-wrap">
-    <app-button
-      class="full-width"
-      :label="$t('more.creditCard.claimYourFreePoint')"
-      color="primary"
-      @click="onBtnPurchase"
-    />
+    <app-button class="full-width" label="Purchase" color="primary" @click="onBtnPurchase" />
   </q-card-actions>
 </template>
 
