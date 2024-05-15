@@ -56,8 +56,8 @@
                       :key="index"
                       class="shadow-1 q-pa-sm q-mb-md"
                     >
-                      <q-item-section>
-                        <q-item-label>{{ checkInfo.checkInAt }}</q-item-label>
+                      <q-item-section class="q-pa-sm">
+                        <q-item-label class="q-mb-xs">{{ checkInfo.checkInAt }}</q-item-label>
                         <q-item-label lines="2" caption>{{ checkInfo.description }}</q-item-label>
                       </q-item-section>
                     </q-item>
