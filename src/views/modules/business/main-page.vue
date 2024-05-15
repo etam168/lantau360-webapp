@@ -6,7 +6,6 @@
 
     <app-carousel-section :data="advertisements" :aspectRatio="16 / 11" />
     <q-separator size="4px" color="primary" />
-
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t("business.title") }}</q-toolbar-title>
 
@@ -109,7 +108,6 @@
         axios.get<Directory[]>(URL.BUSINESS_DIRECTORIES)
       ]);
 
-    advertisements.value = advertisementResponse.data;
     businessPromotion.value = promotionsResponse.data.data;
     businessVoucher.value = voucherResponse.data.data;
     directoriesData.value = useSorted(
@@ -121,6 +119,11 @@
       businessPromotion.value.filter((promo: BusinessPromotionView) => promo.status === 1),
       (a, b) => a.rank - b.rank || a.businessPromotionId - b.businessPromotionId
     ).value;
+
+    const resAdvertisement = advertisementResponse.data;
+    if (resAdvertisement != null) {
+      advertisements.value = resAdvertisement.filter((ad: AdvertisementView) => ad.status == 1);
+    }
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {
