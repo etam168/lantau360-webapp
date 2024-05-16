@@ -87,7 +87,7 @@
   const $q = useQuasar();
   const { dateFormatter } = useUtilities();
 
-  const noData = ref("/img/icons/noData.png");
+  const noData = ref("/img/icons/noData2.png");
 
   const computeIconPath = (item: any) => {
     return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
