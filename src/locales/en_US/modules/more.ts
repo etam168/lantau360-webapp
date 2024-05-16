@@ -16,7 +16,7 @@ export default {
     checkInList: "CheckIn List",
     map: "Map",
     lastCheckIn: "Last CheckIn : {date}",
-    noCheckIn: "You don't have any CheckIn's"
+    noCheckIn: "You don't have any Check-In"
   },
 
   creditCard: {

@@ -45,7 +45,22 @@
               </q-card-section>
             </q-card>
           </div>
-          <q-item-label caption v-else>{{ $t("more.checkIn.noCheckIn") }}</q-item-label>
+
+          <q-card
+            flat
+            v-else
+            style="min-height: calc(100vh - 50px)"
+            class="row justify-center items-center"
+          >
+            <q-card-section :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'">
+              <q-img :src="noData" />
+              <div
+                class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center"
+              >
+                {{ $t("more.checkIn.noCheckIn") }}
+              </div>
+            </q-card-section>
+          </q-card>
         </q-page>
       </q-page-container>
     </q-layout>
@@ -71,6 +86,9 @@
   const isDialogVisible = ref();
   const $q = useQuasar();
   const { dateFormatter } = useUtilities();
+
+  const noData = ref("/img/icons/noData.png");
+
   const computeIconPath = (item: any) => {
     return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
   };
