@@ -1,9 +1,10 @@
 <template>
-  <q-card flat>
+  <q-card bordered flat>
     <q-card-section class="text-center">
-      <div class="text-h6 q-mb-lg">Free top up points</div>
+      <div class="text-h6">Option 1</div>
+      <div class="text-subtitle1">Free top-up points</div>
 
-      <div class="text-body2">
+      <div class="text-body2 q-mt-md">
         Claim free points to publish a post in the community. Users have the opportunity to claim
         free points twice a month, allowing them to participate and share their thoughts and content
         without any cost.
@@ -19,7 +20,7 @@
       </div>
     </q-card-section>
 
-    <q-card-actions class="q-px-none no-wrap">
+    <q-card-actions class="q-pa-md no-wrap">
       <app-button
         class="full-width"
         :label="$t('more.creditCard.claimYourFreePoint')"

@@ -1,17 +1,20 @@
 <template>
-  <q-card-section class="text-center">
-    <div class="text-h6 q-mb-lg">Purchase top up points</div>
+  <q-card bordered flat>
+    <q-card-section class="text-center">
+      <div class="text-h6">Option 2</div>
+      <div class="text-subtitle1">Purchase top-up points</div>
 
-    <div class="text-body2">
-      Purchase points to gain the ability to publish posts in the community module. By buying
-      points, users can actively participate and share their thoughts, ideas, and content with the
-      community.
-    </div>
-  </q-card-section>
+      <div class="text-body2 q-mt-md">
+        Purchase points to gain the ability to publish posts in the community module. By buying
+        points, users can actively participate and share their thoughts, ideas, and content with the
+        community.
+      </div>
+    </q-card-section>
 
-  <q-card-actions class="q-px-none no-wrap">
-    <app-button class="full-width" label="Purchase" color="primary" @click="onBtnPurchase" />
-  </q-card-actions>
+    <q-card-actions class="q-pa-md no-wrap">
+      <app-button class="full-width" label="Purchase" color="primary" @click="onBtnPurchase" />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup lang="ts">

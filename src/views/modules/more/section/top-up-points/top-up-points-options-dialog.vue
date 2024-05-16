@@ -15,15 +15,14 @@
       <q-page-container>
         <q-page>
           <q-card flat class="row justify-center items-center q-mx-lg">
-            <q-card-section>
-              <q-item-section class="q-px-md q-pb-md row items-center">
-                <free-top-up-module @close-dialog="updateDialogState" />
-              </q-item-section>
+            <q-card-section :style="$q.screen.gt.xs ? 'width: 600px' : 'width : 100%'">
+              <!-- <q-item-section class="q-px-md q-pb-md row items-center"> -->
+              <free-top-up-module @close-dialog="updateDialogState" />
+              <!-- </q-item-section> -->
 
-              <q-separator class="q-mx-xl" />
-              <q-item-section class="row justify-center" style="margin-top: -16px">
-                <purchanse-top-up-module @close-dialog="updateDialogState" />
-              </q-item-section>
+              <!-- <q-item-section class="row justify-center" style="margin-top: -16px"> -->
+              <purchanse-top-up-module class="q-mt-md" @close-dialog="updateDialogState" />
+              <!-- </q-item-section> -->
             </q-card-section>
           </q-card>
         </q-page>

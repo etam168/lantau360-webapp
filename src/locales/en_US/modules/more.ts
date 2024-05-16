@@ -37,7 +37,7 @@ export default {
   },
 
   profileSetting: {
-    buyPoints: "Top Up Points",
+    buyPoints: "Top-up Points",
     title: "Profile",
     subtitle: "Choose how you appear in the app",
     save: "Save",
