@@ -9,21 +9,18 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ $t("more.creditCard.title") }}</app-dialog-title>
+        <app-dialog-title>{{ $t("more.profileSetting.buyPoints") }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <q-page>
-          <q-item class="row justify-center items-center q-my-lg">
-            <q-avatar size="128px" square> <q-img :src="logo" /> </q-avatar
-          ></q-item>
           <q-card flat class="row justify-center items-center q-mx-lg">
-            <q-card-section horizontal>
+            <q-card-section>
               <q-item-section class="q-px-md q-pb-md row items-center">
                 <free-top-up-module @close-dialog="updateDialogState" />
               </q-item-section>
 
-              <q-separator vertical class="q-mx-xl" />
+              <q-separator class="q-mx-xl" />
               <q-item-section class="row justify-center" style="margin-top: -16px">
                 <purchanse-top-up-module @close-dialog="updateDialogState" />
               </q-item-section>
@@ -45,7 +42,6 @@
   const { dialogRef } = useDialogPluginComponent();
 
   const isDialogVisible = ref();
-  const logo = ref("/img/logo/logo.png");
 
   onMounted(() => {
     eventBus.on("CreditCardDialog", () => {

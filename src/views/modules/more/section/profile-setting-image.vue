@@ -23,7 +23,13 @@
           </q-badge>
         </q-avatar>
 
-        <q-file ref="imageRef" v-show="false" v-model="imagePath" @update:model-value="uploadImage">
+        <q-file
+          ref="imageRef"
+          accept="image/png, image/jpeg"
+          v-show="false"
+          v-model="imagePath"
+          @update:model-value="uploadImage"
+        >
         </q-file>
       </q-btn>
 
