@@ -10,6 +10,7 @@
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ $t(`more.account.title`) }}</app-dialog-title>
       </q-header>
+      <stripe-checkout />
 
       <q-page-container>
         <q-page>
@@ -99,6 +100,7 @@
 
 <script setup lang="ts">
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
+  import StripeCheckout from "./top-up-points/stripe-checkout/stripe-checkout.vue";
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
 
@@ -108,7 +110,10 @@
   const $q = useQuasar();
   const { userStore } = useMoreInput();
   const { dateFormatter } = useUtilities();
+  const { notify } = useUtilities();
+  const stripeCheckoutRef = ref<any>(null);
 
+  provide("stripeCheckoutRef", stripeCheckoutRef);
   const props = defineProps({
     trHistory: {
       type: Array as PropType<TransactionView[]>
@@ -130,11 +135,8 @@
   };
 
   function ontBtnStripeClick() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("./top-up-points/stripe-checkout/stripe-checkout.vue")
-      )
-    });
+    if (stripeCheckoutRef.value) stripeCheckoutRef.value.redirectToCheckout();
+    else notify("Stripe reference is not initialized", "negative");
   }
 
   function handleItemClick(item: any) {
