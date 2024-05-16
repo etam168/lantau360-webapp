@@ -16,13 +16,9 @@
         <q-page>
           <q-card flat class="row justify-center items-center q-mx-lg">
             <q-card-section :style="$q.screen.gt.xs ? 'width: 600px' : 'width : 100%'">
-              <!-- <q-item-section class="q-px-md q-pb-md row items-center"> -->
-              <free-top-up-module @close-dialog="updateDialogState" />
-              <!-- </q-item-section> -->
+              <free-top-up-module class="q-mt-sm" @close-dialog="updateDialogState" />
 
-              <!-- <q-item-section class="row justify-center" style="margin-top: -16px"> -->
-              <purchanse-top-up-module class="q-mt-md" @close-dialog="updateDialogState" />
-              <!-- </q-item-section> -->
+              <purchanse-top-up-module class="q-mt-lg" @close-dialog="updateDialogState" />
             </q-card-section>
           </q-card>
         </q-page>
