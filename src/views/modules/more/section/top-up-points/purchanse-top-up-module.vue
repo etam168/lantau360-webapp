@@ -1,5 +1,5 @@
 <template>
-  <q-card bordered flat>
+  <q-card flat style="border: 1px solid #9e9e9e">
     <q-card-section class="text-center">
       <div class="text-h6">Option 2</div>
       <div class="text-subtitle1">Purchase top-up points</div>
