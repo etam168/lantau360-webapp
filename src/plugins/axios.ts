@@ -1,7 +1,7 @@
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 
-const { refreshToken } = useUtilities();
+const { refreshToken, notify } = useUtilities();
 
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -31,6 +31,7 @@ axios.interceptors.response.use(
         error.config.headers.Authorization = `Bearer ${token}`;
         return axios.request(error.config);
       } catch (refreshError) {
+        notify(JSON.stringify(refreshError), "negative");
         console.error("Error refreshing token:", refreshError);
       }
     }
