@@ -151,10 +151,10 @@ export function useUtilities() {
         accessToken: userStore.token,
         refreshToken: userStore.refreshToken
       });
-      const { token, refreshToken } = response.data;
-      userStore.token = token;
-      userStore.refreshToken = refreshToken;
-      return token;
+      const { accessToken, tokenRefresh } = response.data;
+      userStore.token = accessToken;
+      userStore.refreshToken = tokenRefresh;
+      return accessToken;
     } catch (error) {
       console.error("Error refreshing token:", error);
       throw error;
