@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <q-bar dense class="bg-primary text-white">
-      <div class="col text-center">{{ $t("community.advertisement") }}</div>
+      <div class="col text-center text-uppercase">{{ $t("community.advertisement") }}</div>
     </q-bar>
 
     <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
