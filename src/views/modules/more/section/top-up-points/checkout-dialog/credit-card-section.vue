@@ -1,11 +1,17 @@
 <template>
   <div>
     <q-item-label
-      class="q-mx-sm q-mt-lg"
+      class="q-mx-md q-mt-lg"
       style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
       >{{ $t("more.creditCard.payByCreditCard") }}</q-item-label
     >
-    <Form ref="form" :initial-values="initialValues" :validation-schema="schema" @submit="onSubmit">
+    <Form
+      class="q-ml-md"
+      ref="form"
+      :initial-values="initialValues"
+      :validation-schema="schema"
+      @submit="onSubmit"
+    >
       <vee-input
         class="q-mt-md"
         :label="$t('more.creditCard.cardNumber')"

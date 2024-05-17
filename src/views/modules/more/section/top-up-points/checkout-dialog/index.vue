@@ -15,20 +15,22 @@
       <q-page-container>
         <q-page>
           <q-card flat class="row justify-center items-center">
-            <q-card-section horizontal>
-              <q-card-section
-                class="row justify-center"
-                :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
-              >
+            <q-card-section>
+              <q-card-section :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'">
                 <header-section />
                 <package-options-section />
-                <div>
-                  <q-option-group
-                    v-model="selectedPaymentOption"
-                    :options="paymentOptions"
-                    color="primary"
-                  />
-                </div>
+                <q-item-label
+                  class="q-mx-md q-mt-lg"
+                  style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
+                  >{{ $t("more.account.topUpAmount") }}</q-item-label
+                >
+                <q-option-group
+                  inline
+                  class="q-ml-sm"
+                  v-model="selectedPaymentOption"
+                  :options="paymentOptions"
+                  color="primary"
+                />
 
                 <credit-card-section @update-dialog-status="updateDialogState" />
               </q-card-section>

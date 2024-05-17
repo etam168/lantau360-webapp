@@ -4,8 +4,7 @@
       flat
       bordered
       :style="{
-        'margin-left': '8px',
-        'margin-right': $q.screen.gt.xs ? '33px' : '8px',
+        'margin-left': '15px',
         'margin-top': '10px',
         'border-radius': '10px',
         'border-color': 'lightgray'
@@ -16,7 +15,7 @@
     </q-card>
     <div
       class="row items-center q-mt-md"
-      :style="{ 'margin-left': $q.screen.gt.xs ? '20px' : '8px' }"
+      :style="{ 'margin-left': $q.screen.gt.xs ? '28px' : '12px' }"
     >
       <div v-for="pPackage in purchasePackages" :key="pPackage.amount">
         <q-btn
