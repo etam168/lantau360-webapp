@@ -68,7 +68,8 @@ export default {
   message: {
     claimedFreePointsSuccessfully: "您已成功领取免费积分",
     enoughPoints: "您有足够的积分来创建新的帖子。",
-    notPosting: "This record is not Posting"
+    notPosting: "This record is not Posting",
+    purchasePointSuccessfully: "Purchase point successfully"
   },
 
   footer: {

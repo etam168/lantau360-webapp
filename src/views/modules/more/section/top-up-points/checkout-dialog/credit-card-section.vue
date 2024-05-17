@@ -3,7 +3,7 @@
     <q-item-label
       class="q-mx-sm q-mt-lg"
       style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-      >Credit card info</q-item-label
+      >{{ $t("more.creditCard.payByCreditCard") }}</q-item-label
     >
     <Form ref="form" :initial-values="initialValues" :validation-schema="schema" @submit="onSubmit">
       <vee-input
@@ -36,7 +36,7 @@
 
       <q-card-actions class="q-mt-sm justify-end q-pa-none">
         <app-button
-          label="Proceed to pay"
+          :label="$t('more.creditCard.proceedToPay')"
           :loading="loading"
           class="full-width"
           color="primary"
@@ -70,8 +70,8 @@
     expiryDate: yup
       .string()
       .required()
-      .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, "Expiry date must be in the format MM/YY")
-      .test("expiryDate", "Credit card is expired", function (value) {
+      .matches(/^(0[1-9]|1[0-2])\/\d{2}$/, t("errors.expiryDateFormat"))
+      .test("expiryDate", t("errors.creditCardExpire"), function (value) {
         if (!value) return true;
         const currentDate = new Date();
         const [month, year] = value.split("/");
@@ -98,7 +98,7 @@
           .post("/Points/PurchasePoints", values)
           .then(() => {
             eventBus.emit("refresh-transaction-data");
-            notify("Purchase point successfully", "positive");
+            notify(t("more.message.purchasePointSuccessfully"), "positive");
             loading.value = false;
             emits("update-dialog-status", false);
           })

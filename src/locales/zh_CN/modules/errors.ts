@@ -2,6 +2,8 @@ export default {
   cannotLoadImage: "无法加载图片",
   whoops: "哎呀",
   back: "让我离开这里！",
+  creditCardExpire: "Credit card is expired",
+  expiryDateFormat: "Expiry date must be in the format MM/YY",
   301: "永久移动",
   401: "未经授权",
   403: "禁止访问",

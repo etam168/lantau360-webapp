@@ -68,7 +68,8 @@ export default {
   message: {
     claimedFreePointsSuccessfully: "You claimed free points successfully",
     enoughPoints: "You have enough points to create a new post.",
-    notPosting: "This record is not Posting"
+    notPosting: "This record is not Posting",
+    purchasePointSuccessfully: "Purchase point successfully"
   },
 
   footer: {

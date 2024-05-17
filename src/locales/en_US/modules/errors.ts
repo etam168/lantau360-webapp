@@ -2,6 +2,8 @@ export default {
   cannotLoadImage: "Cannot load image",
   whoops: "Whoops",
   back: "Get me out of here!",
+  creditCardExpire: "Credit card is expired",
+  expiryDateFormat: "Expiry date must be in the format MM/YY",
   301: "Moved Permanently",
   401: "Unauthorized",
   403: "Forbidden",
