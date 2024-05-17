@@ -26,8 +26,7 @@ export default {
     cvv: "CVV",
     proceedToPay: "Proceed to pay",
     subtitle: "You are making this payment as you have reached your monthly points limit",
-    total: "Total : {amount}",
-    claimYourFreePoint: "Claim Your Free Point"
+    total: "Total : {amount}"
   },
 
   account: {
@@ -69,12 +68,19 @@ export default {
     version: "Ver {version}",
     copyright: "© {currentYear} Lantau360.com."
   },
-  freeTopUpSection: {
+
+  topUpSection: {
     option1: "Option 1",
+    option2: "Option 2",
+    purchase: "Purchase",
+    claimYourFreePoint: "Claim Your Free Point",
     freeTopUpPoints: "Free top-up points",
-    claim:
-      "Claim {points}  free points to publish a post in the community. Users have the opportunity to claim free points twice a month, allowing them to participate and share their thoughts and content without any cost.",
-    alreadyClained:
-      "You have already claimed your { points}  free points for this month. To continue posting in the community, please purchase additional points and keep sharing your  valuable insights and content."
+    purchaseTopUpPoints: "Purchase top-up points",
+    claimDescription:
+      "Claim {points} free points to publish a post in the community. Users have the opportunity to claim free points twice a month, allowing them to participate and share their thoughts and content without any cost.",
+    alreadyClaimedDescription:
+      "You have already claimed your { points} free points for this month. To continue posting in the community, please purchase additional points and keep sharing your  valuable insights and content.",
+    purchasePointsDescription:
+      "Purchase points to gain the ability to publish posts in the community module. By buying points, users can actively participate and share their thoughts, ideas, and content with the community."
   }
 };

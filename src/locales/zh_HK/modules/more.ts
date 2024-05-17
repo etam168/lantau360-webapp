@@ -68,12 +68,19 @@ export default {
     version: "{version} 版本",
     copyright: "© {currentYear} Lantau360.com"
   },
-  freeTopUpSection: {
+
+  topUpSection: {
     option1: "选项1",
+    option2: "选项2",
+    purchase: "购买",
+    claimYourFreePoint: "领取您的免费积分",
     freeTopUpPoints: "免费充值积分",
-    claim:
+    purchaseTopUpPoints: "购买充值积分",
+    claimDescription:
       "索取 {point} 免费积分以在社区中发布帖子。用户每月有机会领取两次免费积分，从而无需支付任何费用即可参与并分享他们的想法和内容",
-    alreadyClained:
-      "您已领取本月的 {point} 免费积分。要继续在社区中发帖，请购买额外积分并继续分享您宝贵的见解和内容"
+    alreadyClaimedDescription:
+      "您已领取本月的 {point} 免费积分。要继续在社区中发帖，请购买额外积分并继续分享您宝贵的见解和内容。",
+    purchasePointsDescription:
+      "购买积分以获得在社区模块中发布帖子的权限。通过购买积分，用户可以积极参与并与社区分享他们的想法、观点和内容。"
   }
 };
