@@ -51,6 +51,7 @@
   import StripeCheckoutSection from "./stripe-checkout/index.vue";
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
+  import i18n from "@/plugins/i18n/i18n";
 
   defineProps({
     callback: {
@@ -65,6 +66,7 @@
   const isDialogVisible = ref();
   const selectedPaymentOption = ref("credit_card");
   const selectedPackage = ref();
+  const { t } = i18n.global;
   provide("selectedPackage", selectedPackage);
 
   onMounted(() => {
