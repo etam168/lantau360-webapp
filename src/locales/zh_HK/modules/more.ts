@@ -26,13 +26,20 @@ export default {
     cvv: "CVV",
     proceedToPay: "Proceed to pay",
     subtitle: "You are making this payment as you have reached your monthly points limit",
-    total: "Total : {amount}"
+    total: "Total : {amount}",
+    payByCreditCard: "Pay By Credit Card"
   },
 
   account: {
     title: "帳戶",
+    availablePointBalance: "Available Point Balance",
     recentTransactions: "最近交易",
-    history: "歷史"
+    history: "歷史",
+    repost: "Repost",
+    topUpYourAccount: "Top-up your account",
+    topUpAmount: "Top-up Amount",
+    essentialInformation: "Enter the essential information below to top up your points",
+    payByStrip: "Pay By Strip"
   },
 
   profileSetting: {

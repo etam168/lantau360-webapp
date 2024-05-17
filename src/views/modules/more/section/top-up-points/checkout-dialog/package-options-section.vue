@@ -25,7 +25,7 @@
           }"
           :style="{ width: '70px', 'margin-right': '8px', 'border-radius': '20px' }"
           @click="onPackageChange(pPackage)"
-          >{{ pPackage.amount }}</q-btn
+          >{{ "$" + pPackage.amount }}<q-badge align="top">{{}}</q-badge></q-btn
         >
       </div>
     </div>

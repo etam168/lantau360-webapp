@@ -11,7 +11,7 @@
   >
     <template v-slot:after>
       <q-btn round dense flat icon="info" color="primary">
-        <q-tooltip class="bg-grey-2"
+        <q-tooltip
           ><div><q-img :src="visaCardImage" style="width: 300px" /></div>
         </q-tooltip>
       </q-btn>
@@ -33,5 +33,5 @@
   const { errorMessage, value: untypedValue } = useField(() => props.name);
   const value = untypedValue as Ref<string | number | null>;
 
-  const visaCardImage = ref("/img/icons/visa_card.png");
+  const visaCardImage = ref("/img/icons/visa_card_front.png");
 </script>
