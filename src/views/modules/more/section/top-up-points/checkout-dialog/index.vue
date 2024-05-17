@@ -67,6 +67,14 @@
                   >
                 </div>
                 <package-options-section />
+                <div>
+                  <q-option-group
+                    v-model="selectedPaymentOption"
+                    :options="paymentOptions"
+                    color="primary"
+                  />
+                </div>
+
                 <credit-card-section @update-dialog-status="updateDialogState" />
               </q-card-section>
             </q-card-section>
@@ -78,19 +86,12 @@
 </template>
 
 <script setup lang="ts">
-  import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
   import PackageOptionsSection from "./package-options-section.vue";
   import CreditCardSection from "./credit-card-section.vue";
 
   import { useUserStore } from "@/stores/user";
-
-  const { eventBus } = useUtilities();
-  const { dialogRef } = useDialogPluginComponent();
-  const { availabelPoints } = useUserStore();
-
-  const isDialogVisible = ref();
-  //const $q = useQuasar();
+  import { useDialogPluginComponent } from "quasar";
+  import { useUtilities } from "@/composable/use-utilities";
 
   defineProps({
     callback: {
@@ -99,6 +100,12 @@
     }
   });
 
+  const { eventBus } = useUtilities();
+  const { dialogRef } = useDialogPluginComponent();
+  const { availabelPoints } = useUserStore();
+
+  const isDialogVisible = ref();
+  const selectedPaymentOption = ref("credit_card");
   const selectedPackage = ref();
   provide("selectedPackage", selectedPackage);
 
@@ -113,4 +120,15 @@
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CreditCardDialog");
   }
+
+  const paymentOptions = [
+    {
+      label: "Pay by credit card",
+      value: "credit_card"
+    },
+    {
+      label: "Pay by stripe",
+      value: "stripe"
+    }
+  ];
 </script>
