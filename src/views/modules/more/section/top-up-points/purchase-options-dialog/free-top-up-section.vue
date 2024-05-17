@@ -41,7 +41,7 @@
 
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
-  import { useMoreInput } from "../../use-more-input";
+  import { useMoreInput } from "../../../use-more-input";
 
   const { claimFreePoints } = useMoreInput();
   const { topUpPoints } = useUserStore();

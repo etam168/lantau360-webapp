@@ -28,7 +28,7 @@
 
   function onBtnPurchase() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./purchase-dialog.vue"))
+      component: defineAsyncComponent(() => import("../checkout-dialog/index.vue"))
     });
     emits("close-dialog", false);
   }

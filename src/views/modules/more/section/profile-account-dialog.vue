@@ -129,7 +129,7 @@
   const onBtnBuyPoints = () => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("./top-up-points/top-up-points-options-dialog.vue")
+        () => import("./top-up-points/purchase-options-dialog/index.vue")
       )
     });
   };
