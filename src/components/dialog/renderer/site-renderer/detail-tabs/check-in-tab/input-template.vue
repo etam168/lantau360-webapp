@@ -78,7 +78,7 @@
             </q-card-actions>
           </div>
           <div style="color: red" v-else-if="!configLoading && !isPermitToPost">
-            Please wait, to recheck-in again!.
+            {{ "Please wait, you can check-in again after " + timeUntilNextCheckIn + " minutes" }}
           </div>
         </div>
       </q-card-section>
@@ -123,6 +123,8 @@
   const { t } = i18n.global;
   const error = ref<string | null>(null);
   const isPermitToPost = ref(false);
+  const timeUntilNextCheckIn = ref();
+
   const form = ref();
   const initialValues = ref({
     description: ""
@@ -178,16 +180,29 @@
       axios.get<Content>(URL.MEMBER_CONFIG),
       axios.get<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${props.itemId}`)
     ]);
+    debugger;
 
     const config = memberConfig.data;
     const checkIn = checkInData.data;
 
-    const configTimeDifference = config?.meta?.checkInTimeDifferenceInHours ?? 1;
+    const configTimeDifferenceInHours = config?.meta?.checkInTimeDifferenceInHours ?? 1;
+    const configTimeDifferenceInMinutes = configTimeDifferenceInHours * 60;
 
-    const timeDifference = new Date().getTime() - new Date(checkIn?.modifiedAt ?? "").getTime();
-    const hoursDifference = Math.abs(timeDifference / (1000 * 60 * 60));
+    const checkInModifiedAt = checkIn?.modifiedAt ? new Date(checkIn.modifiedAt).getTime() : 0;
+    const currentTime = new Date().getTime();
+    const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
+    const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
 
-    isPermitToPost.value = hoursDifference >= configTimeDifference;
+    const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
+
+    if (minutesLeftToRecheckIn <= 0) {
+      isPermitToPost.value = true;
+      timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
+    } else {
+      isPermitToPost.value = false;
+      timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
+    }
+
     configLoading.value = false;
   } catch (err) {
     configLoading.value = false;
