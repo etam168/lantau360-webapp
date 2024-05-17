@@ -18,7 +18,7 @@
             <q-card-section :style="$q.screen.gt.xs ? 'width: 600px' : 'width : 100%'">
               <free-top-up-section class="q-mt-sm" @close-dialog="updateDialogState" />
 
-              <purchanse-top-up-module class="q-mt-lg" @close-dialog="updateDialogState" />
+              <purchase-top-up-section class="q-mt-lg" @close-dialog="updateDialogState" />
             </q-card-section>
           </q-card>
         </q-page>
@@ -31,7 +31,7 @@
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
   import FreeTopUpSection from "./free-top-up-section.vue";
-  import PurchanseTopUpModule from "./purchanse-top-up-module.vue";
+  import PurchaseTopUpSection from "./purchase-top-up-section.vue";
 
   const { eventBus } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
