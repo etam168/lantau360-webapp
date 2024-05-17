@@ -11,35 +11,35 @@ export default {
   loginName: "登录名",
 
   checkIn: {
-    title: "My Check-In",
-    detail: "CheckIn Info Detail",
-    history: "History",
-    map: "Map",
-    lastCheckIn: "Last CheckIn : {date}",
-    noCheckIn: "You don't have any Check-In"
+    title: "我的签到",
+    detail: "签到信息详情",
+    history: "历史",
+    map: "地图",
+    lastCheckIn: "上次签到：{date}",
+    noCheckIn: "您没有任何签到记录"
   },
 
   creditCard: {
-    title: "Payment",
-    cardNumber: "Card Number",
-    expiryDate: "Expiry Date",
+    title: "付款",
+    cardNumber: "卡号",
+    expiryDate: "到期日",
     cvv: "CVV",
-    proceedToPay: "Proceed to pay",
-    subtitle: "You are making this payment as you have reached your monthly points limit",
-    total: "Total : {amount}",
-    payByCreditCard: "Pay By Credit Card"
+    proceedToPay: "继续付款",
+    subtitle: "您正在进行此付款，因为您已达到本月的积分限额",
+    total: "总计：{amount}",
+    payByCreditCard: "信用卡支付"
   },
 
   account: {
     title: "帐户",
-    availablePointBalance: "Available Point Balance",
+    availablePointBalance: "可用积分余额",
     recentTransactions: "最近交易",
     history: "历史",
-    repost: "Repost",
-    topUpYourAccount: "Top-up your account",
-    topUpAmount: "Top-up Amount",
-    essentialInformation: "Enter the essential information below to top up your points",
-    payByStrip: "Pay By Strip"
+    repost: "重新发布",
+    topUpYourAccount: "充值您的帐户",
+    topUpAmount: "充值金额",
+    essentialInformation: "请输入以下必要信息以充值积分",
+    payByStrip: "通过Strip支付"
   },
 
   profileSetting: {
@@ -50,11 +50,11 @@ export default {
     profileUpdate: "个人资料已更新",
     availablePoints: "可用积分: {availablePoints}",
     bythisTimeText: "截至目前您已花费 {spentPoints} 积分",
-    pointLessThan50: "Please try again when point balance is less than {points}",
+    pointLessThan50: "请在积分余额少于 {points} 时再试",
     claimFreePointText: "您确定要领取您的免费 {points} 积分吗 ？",
-    enoughPoints: "Enough Points",
-    confirmation: "Confirmation",
-    expired: "Expired"
+    enoughPoints: "足够的积分",
+    confirmation: "确认",
+    expired: "已过期"
   },
 
   contentDialog: {
@@ -68,8 +68,8 @@ export default {
   message: {
     claimedFreePointsSuccessfully: "您已成功领取免费积分",
     enoughPoints: "您有足够的积分来创建新的帖子。",
-    notPosting: "This record is not Posting",
-    purchasePointSuccessfully: "Purchase point successfully"
+    notPosting: "此记录未发布",
+    purchasePointSuccessfully: "成功购买积分"
   },
 
   footer: {

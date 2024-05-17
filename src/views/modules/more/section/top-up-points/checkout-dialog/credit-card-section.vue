@@ -26,15 +26,17 @@
               :label="$t('more.creditCard.expiryDate')"
               icon="mdi-account"
               name="expiryDate"
-              placeholder="08/2"
+              placeholder="08/26"
+              :slotImage="visaCardFrontImage"
             />
           </div>
           <div class="col">
-            <vee-input
+            <vee-input-slot
               :label="$t('more.creditCard.cvv')"
               icon="mdi-account"
               name="csv"
               placeholder="XXX"
+              :slotImage="visaCardBackImage"
             />
           </div>
         </div>
@@ -70,6 +72,8 @@
 
   const loading = ref(false);
   const selectedPackage = inject("selectedPackage") as Ref<any>;
+  const visaCardFrontImage = ref("/img/icons/visa_card_front.png");
+  const visaCardBackImage = ref("/img/icons/visa_card_back.png");
 
   const schema = yup.object({
     number: yup.string().required().label(t("more.creditCard.cardNumber")),
