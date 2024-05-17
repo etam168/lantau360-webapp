@@ -2,7 +2,7 @@ export const NONE = "none";
 export const AREA_NAME = "areaName";
 
 export const POST_POINTS = 4;
-export const NO_FREE_POINTS = 20;
+export const FREE_TOP_UP_POINTS_REQUEST_LIMIT = 1;
 
 export const CAROUSEL_BACKGROUND = "@/assets/img/home-bg.webp";
 export const PLACEHOLDER_AVATAR = "./img/icons/avatar.png";

@@ -5,7 +5,6 @@
       <div class="text-subtitle1">{{ $t("more.topUpSection.freeTopUpPoints") }}</div>
 
       <div class="text-body2 q-mt-md text-justify">
-        <!-- {{ $t("more.topUpSection.topUpSection", { topUpPoints }) }} -->
         {{
           $t("more.topUpSection.claimDescription", {
             points: topUpPoints
@@ -13,13 +12,13 @@
         }}
       </div>
       <div
-        v-if="currentMonthFreeTransactionCount > 1"
+        v-if="currentMonthFreeTransactionCount >= FREE_TOP_UP_POINTS_REQUEST_LIMIT"
         class="text-body2 q-mt-md text-justify"
         style="color: red"
       >
         {{
           $t("more.topUpSection.alreadyClaimedDescription", {
-            points: topUpPoints * 2
+            points: topUpPoints
           })
         }}
       </div>
@@ -32,7 +31,7 @@
         :label="$t('more.topUpSection.claimYourFreePoint')"
         color="primary"
         type="submit"
-        :disabled="currentMonthFreeTransactionCount > 1"
+        :disabled="currentMonthFreeTransactionCount >= FREE_TOP_UP_POINTS_REQUEST_LIMIT"
         @click="onBtnClick"
       />
     </q-card-actions>
@@ -42,6 +41,7 @@
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
   import { useMoreInput } from "../../../use-more-input";
+  import { FREE_TOP_UP_POINTS_REQUEST_LIMIT } from "@/constants";
 
   const { claimFreePoints } = useMoreInput();
   const { topUpPoints } = useUserStore();
