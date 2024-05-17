@@ -58,7 +58,7 @@
             {{ $t("errors.under10MeterDistance") }}
           </q-item-label>
         </q-item>
-        <div v-if="props.distance && props.distance <= 10">
+        <div v-if="props.distance <= 10">
           <div v-if="!configLoading && isPermitToPost">
             <q-item class="q-mt-lg q-pa-none">
               <q-item-section class="q-pa-none">
@@ -131,7 +131,7 @@
     description: yup.string().required().label(t("home.description"))
   });
   const isSubmitReviewEnabled = computed(() => {
-    return props.currentAddress && props.destinationAddress && props.distance;
+    return props.currentAddress && props.destinationAddress && props.distance != undefined;
   });
   function onSubmit(values: any) {
     form.value.validate().then(async (isValid: any) => {
@@ -162,6 +162,7 @@
             eventBus.emit("close-check-in-dialog");
           })
           .catch(err => {
+            debugger;
             $q.notify({
               message: err.message,
               type: "negative"
