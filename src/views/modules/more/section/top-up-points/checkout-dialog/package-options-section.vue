@@ -14,7 +14,7 @@
       ><span class="q-ml-xl">{{ "Points : " + selectedPackage.points }}</span>
     </q-card>
     <div
-      class="row items-center q-mt-md justify-between"
+      class="row items-center q-mt-md justify-between q-gutter-y-md"
       :style="{ 'margin-left': $q.screen.gt.xs ? '28px' : '12px' }"
     >
       <div v-for="pPackage in purchasePackages" :key="pPackage.amount">

@@ -37,3 +37,9 @@
   const { errorMessage, value: untypedValue } = useField(() => props.name);
   const value = untypedValue as Ref<string | number | null>;
 </script>
+
+<style lang="scss">
+  .q-field__after {
+    padding-left: 0px !important;
+  }
+</style>

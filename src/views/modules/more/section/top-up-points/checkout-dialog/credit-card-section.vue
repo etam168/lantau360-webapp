@@ -32,6 +32,7 @@
           </div>
           <div class="col">
             <vee-input-slot
+              class="q-pl-md"
               :label="$t('more.creditCard.cvv')"
               icon="mdi-account"
               name="csv"
