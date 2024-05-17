@@ -16,14 +16,18 @@ const stripetTranactionSuccessPage: RouteRecordRaw = {
   path: "/stripe-success",
   name: "stripeSuccess",
   component: () =>
-    import("@/views/modules/more/section/top-up-points/stripe-checkout/success-page.vue")
+    import(
+      "@/views/modules/more/section/top-up-points/checkout-dialog/stripe-checkout/success-page.vue"
+    )
 };
 
 const stripeTransactionCancelledPage: RouteRecordRaw = {
   path: "/stripe-cancel",
   name: "stripeCancel",
   component: () =>
-    import("@/views/modules/more/section/top-up-points/stripe-checkout/cancel-page.vue")
+    import(
+      "@/views/modules/more/section/top-up-points/checkout-dialog/stripe-checkout/cancel-page.vue"
+    )
 };
 
 const extraRoutes = [

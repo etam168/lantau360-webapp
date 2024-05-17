@@ -100,7 +100,7 @@
 
 <script setup lang="ts">
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  import StripeCheckout from "./top-up-points/stripe-checkout/stripe-checkout.vue";
+  import StripeCheckout from "./top-up-points/checkout-dialog/stripe-checkout/stripe-checkout.vue";
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
 
