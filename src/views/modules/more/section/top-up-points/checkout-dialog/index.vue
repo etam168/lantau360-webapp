@@ -20,52 +20,7 @@
                 class="row justify-center"
                 :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'"
               >
-                <q-card
-                  class="row justify-center items-center q-mb-lg"
-                  :class="{ 'q-mx-lg q-mt-md': $q.screen.gt.xs }"
-                  bordered
-                  :style="{
-                    width: $q.screen.gt.xs ? '480px' : '100%',
-                    'border-radius': '15px',
-                    height: '100px',
-                    'border-color': 'primary'
-                  }"
-                >
-                  <div style="display: flex; flex-direction: column">
-                    <div style="letter-spacing: 2px; font-size: 17px">
-                      {{ $t("more.account.availablePointBalance") }}
-                    </div>
-                    <div style="text-align: center">
-                      <span style="font-size: 28px; font-weight: 500; letter-spacing: 2px">{{
-                        availabelPoints
-                      }}</span>
-                    </div>
-                  </div>
-                </q-card>
-
-                <div
-                  :class="{ 'q-ml-lg': $q.screen.gt.xs }"
-                  :style="{
-                    width: $q.screen.gt.xs ? '480px' : '100%'
-                  }"
-                >
-                  <q-item-label
-                    class="q-ml-sm q-mb-sm"
-                    style="letter-spacing: 2px; font-size: 20px; font-weight: bold"
-                    >{{ $t("more.account.topUpYourAccount") }}</q-item-label
-                  >
-                  <q-item-label
-                    class="q-mx-sm q-my-md"
-                    style="letter-spacing: 1px; font-size: 16px; color: #888"
-                    >{{ $t("more.account.essentialInformation") }}</q-item-label
-                  >
-
-                  <q-item-label
-                    class="q-mx-sm q-mt-lg"
-                    style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-                    >{{ $t("more.account.topUpAmount") }}</q-item-label
-                  >
-                </div>
+                <header-section />
                 <package-options-section />
                 <div>
                   <q-option-group
@@ -88,8 +43,7 @@
 <script setup lang="ts">
   import PackageOptionsSection from "./package-options-section.vue";
   import CreditCardSection from "./credit-card-section.vue";
-
-  import { useUserStore } from "@/stores/user";
+  import HeaderSection from "./header-section.vue";
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
 
@@ -102,7 +56,6 @@
 
   const { eventBus } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
-  const { availabelPoints } = useUserStore();
 
   const isDialogVisible = ref();
   const selectedPaymentOption = ref("credit_card");
