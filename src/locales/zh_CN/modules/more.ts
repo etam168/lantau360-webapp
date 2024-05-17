@@ -67,5 +67,13 @@ export default {
   footer: {
     version: "{version} 版本",
     copyright: "© {currentYear} Lantau360.com"
+  },
+  freeTopUpSection: {
+    option1: "选项1",
+    freeTopUpPoints: "免费充值积分",
+    claim:
+      "索取 {point} 免费积分以在社区中发布帖子。用户每月有机会领取两次免费积分，从而无需支付任何费用即可参与并分享他们的想法和内容",
+    alreadyClained:
+      "您已领取本月的 {point} 免费积分。要继续在社区中发帖，请购买额外积分并继续分享您宝贵的见解和内容"
   }
 };
