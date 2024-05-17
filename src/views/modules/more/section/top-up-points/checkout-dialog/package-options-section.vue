@@ -34,10 +34,10 @@
 
 <script setup lang="ts">
   const purchasePackages = [
-    { amount: 5, points: 50 },
-    { amount: 10, points: 100 },
-    { amount: 20, points: 250 },
-    { amount: 30, points: 400 }
+    { amount: 10, points: 100, stripePriceId: "price_1PH3WiKoVaDaLA5GhCh3tebl" },
+    { amount: 20, points: 200, stripePriceId: "price_1PHNHjKoVaDaLA5G3DL2gjkx" },
+    { amount: 25, points: 300, stripePriceId: "price_1PHNITKoVaDaLA5GIgqhjTQT" },
+    { amount: 30, points: 400, stripePriceId: "price_1PHNIsKoVaDaLA5GoSiB1pse" }
   ];
   const selectedPackage = inject("selectedPackage") as Ref<any>;
   onBeforeMount(() => {
