@@ -22,7 +22,7 @@
                 <q-item-label
                   class="q-mx-md q-mt-lg"
                   style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-                  >Payment Options</q-item-label
+                  >{{ $t("more.account.paymentOptions") }}</q-item-label
                 >
                 <q-option-group
                   inline
@@ -81,11 +81,11 @@
 
   const paymentOptions = [
     {
-      label: "Pay by credit card",
+      label: t("more.creditCard.payByCreditCard"),
       value: "credit_card"
     },
     {
-      label: "Pay by stripe",
+      label: t("more.account.payByStrip"),
       value: "stripe"
     }
   ];
