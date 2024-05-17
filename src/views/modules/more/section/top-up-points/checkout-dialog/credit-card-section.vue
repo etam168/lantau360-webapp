@@ -26,7 +26,7 @@
               :label="$t('more.creditCard.expiryDate')"
               icon="mdi-account"
               name="expiryDate"
-              placeholder="08/21"
+              placeholder="08/2"
             />
           </div>
           <div class="col">

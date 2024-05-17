@@ -10,7 +10,6 @@
       <q-header class="bg-transparent text-dark">
         <app-dialog-title>{{ $t(`more.account.title`) }}</app-dialog-title>
       </q-header>
-      <stripe-checkout />
 
       <q-page-container>
         <q-page>
@@ -40,13 +39,6 @@
                     @click="onBtnBuyPoints"
                     class="text-primary bg-grey-1 text-caption q-px-md"
                     >{{ $t("more.profileSetting.buyPoints") }}</q-btn
-                  >
-                  <q-btn
-                    dense
-                    rounded
-                    @click="ontBtnStripeClick"
-                    class="text-primary bg-grey-1 text-caption q-px-md q-mt-md"
-                    >Stripe</q-btn
                   >
                 </q-item-section>
               </q-item>
@@ -100,7 +92,6 @@
 
 <script setup lang="ts">
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  import StripeCheckout from "./top-up-points/checkout-dialog/stripe-checkout/stripe-checkout.vue";
   import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
 
@@ -110,10 +101,7 @@
   const $q = useQuasar();
   const { userStore } = useMoreInput();
   const { dateFormatter } = useUtilities();
-  const { notify } = useUtilities();
-  const stripeCheckoutRef = ref<any>(null);
 
-  provide("stripeCheckoutRef", stripeCheckoutRef);
   const props = defineProps({
     trHistory: {
       type: Array as PropType<TransactionView[]>
@@ -133,11 +121,6 @@
       )
     });
   };
-
-  function ontBtnStripeClick() {
-    if (stripeCheckoutRef.value) stripeCheckoutRef.value.redirectToCheckout();
-    else notify("Stripe reference is not initialized", "negative");
-  }
 
   function handleItemClick(item: any) {
     if (item.postingId) {

@@ -22,7 +22,7 @@
                 <q-item-label
                   class="q-mx-md q-mt-lg"
                   style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-                  >{{ $t("more.account.topUpAmount") }}</q-item-label
+                  >Payment Options</q-item-label
                 >
                 <q-option-group
                   inline
@@ -31,8 +31,10 @@
                   :options="paymentOptions"
                   color="primary"
                 />
-
-                <credit-card-section @update-dialog-status="updateDialogState" />
+                <div v-show="selectedPaymentOption == 'credit_card'">
+                  <credit-card-section @update-dialog-status="updateDialogState" />
+                </div>
+                <div v-show="selectedPaymentOption == 'stripe'"><stripe-checkout-section /></div>
               </q-card-section>
             </q-card-section>
           </q-card>
@@ -46,6 +48,7 @@
   import PackageOptionsSection from "./package-options-section.vue";
   import CreditCardSection from "./credit-card-section.vue";
   import HeaderSection from "./header-section.vue";
+  import StripeCheckoutSection from "./stripe-checkout/index.vue";
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
 

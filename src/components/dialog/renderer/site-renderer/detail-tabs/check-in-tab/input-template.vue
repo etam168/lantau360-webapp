@@ -111,7 +111,8 @@
     },
     distance: {
       type: Number,
-      required: false
+      required: false,
+      default: 11
     }
   });
 
@@ -140,7 +141,7 @@
       if (isValid) {
         loading.value = true;
 
-        const checkInDto: CheckIn = {
+        const checkInDto = {
           siteId: props.itemId,
           memberId: parseInt(userStore.userId),
           checkInfo: {
