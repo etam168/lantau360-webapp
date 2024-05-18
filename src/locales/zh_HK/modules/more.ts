@@ -69,7 +69,10 @@ export default {
     claimedFreePointsSuccessfully: "您已成功領取免費積分",
     enoughPoints: "您有足夠的積分來創建新的帖子。",
     notPosting: "此記錄未發布",
-    purchasePointSuccessfully: "成功購買積分"
+    purchasePointSuccessfully: "成功購買積分",
+    transactionSuccess: "交易成功",
+    transactionCancelled: "交易請求已取消",
+    invalidRequestData: "請求數據無效"
   },
 
   footer: {

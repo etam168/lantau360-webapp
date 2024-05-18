@@ -12,11 +12,13 @@
 </template>
 
 <script setup lang="ts">
+  import i18n from "@/plugins/i18n/i18n";
+
+  const { t } = i18n.global;
+
   const img = ref("/img/icons/transaction_cancelled.png");
-
   const router = useRouter();
-
-  const message = ref("Transaction request Cancelled");
+  const message = ref(t("more.message.transactionCancelled"));
 
   const goToHome = () => {
     router.push("/");

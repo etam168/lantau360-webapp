@@ -69,7 +69,10 @@ export default {
     claimedFreePointsSuccessfully: "您已成功领取免费积分",
     enoughPoints: "您有足够的积分来创建新的帖子。",
     notPosting: "此记录未发布",
-    purchasePointSuccessfully: "成功购买积分"
+    purchasePointSuccessfully: "成功购买积分",
+    transactionSuccess: "交易成功",
+    transactionCancelled: "交易请求已取消",
+    invalidRequestData: "请求数据无效"
   },
 
   footer: {

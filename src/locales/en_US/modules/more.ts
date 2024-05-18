@@ -70,7 +70,10 @@ export default {
     claimedFreePointsSuccessfully: "You claimed free points successfully",
     enoughPoints: "You have enough points to create a new post.",
     notPosting: "This record is not Posting",
-    purchasePointSuccessfully: "Purchase point successfully"
+    purchasePointSuccessfully: "Purchase point successfully",
+    transactionSuccess: "Transaction successfull",
+    transactionCancelled: "Transaction request Cancelled",
+    invalidRequestData: "Invalid request data"
   },
 
   footer: {

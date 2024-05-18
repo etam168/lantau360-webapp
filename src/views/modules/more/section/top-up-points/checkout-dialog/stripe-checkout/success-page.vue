@@ -55,7 +55,7 @@
       postTransactionData();
     } else {
       error.value = true;
-      message.value = "Invalid request data";
+      message.value = t("more.message.invalidRequestData");
       loading.value = false;
     }
   });
@@ -75,7 +75,7 @@
 
       const response = await axios.post(`${URL.MEMBER_PURCHASE_TRANSACTIONS_URL}`, data);
       error.value = response.status !== 200;
-      message.value = "Transaction successfull";
+      message.value = t("more.message.transactionSuccess");
     } catch (err: any) {
       alert(JSON.stringify(err));
       error.value = true;
