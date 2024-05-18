@@ -86,7 +86,7 @@ export default {
     freeTopUpPoints: "Free top-up points",
     purchaseTopUpPoints: "Purchase top-up points",
     claimDescription:
-      "Claim {points} free points to publish a post in the community. Users have the opportunity to claim free points twice a month, allowing them to participate and share their thoughts and content without any cost.",
+      "Claim {points} free points to publish a post in the community. Users have the opportunity to claim free points once a month, allowing them to participate and share their thoughts and content without any cost.",
     alreadyClaimedDescription:
       "You have already claimed your { points} free points for this month. To continue posting in the community, please purchase additional points and keep sharing your  valuable insights and content.",
     purchasePointsDescription:
