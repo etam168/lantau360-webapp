@@ -26,17 +26,19 @@
 </template>
 
 <script setup lang="ts">
+  import { BASE_WEBAPP_LITE_URL } from "@/constants";
   import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
   const { notify } = useUtilities();
   const publishableKey = "pk_test_cM0Cj4pEuFceQLmeRNtM9sW400S5FJBvAt";
-  const successURL = "https://app-dev.lantau360.com/stripe-success";
-  const cancelURL = "https://app-dev.lantau360.com/stripe-cancel";
   const loading = ref(false);
   const checkoutRef = ref();
-
   const selectedPackage = inject("selectedPackage") as Ref<any>;
 
+  const successURL = computed(() => {
+    return `${BASE_WEBAPP_LITE_URL}/stripe-success?points=${selectedPackage.value.points}&amount=${selectedPackage.value.amount}`;
+  });
+  const cancelURL = `${BASE_WEBAPP_LITE_URL}/stripe-cancel`;
   const lineItems = computed(() => [
     {
       price: selectedPackage.value.stripePriceId,

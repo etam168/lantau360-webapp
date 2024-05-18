@@ -1,6 +1,7 @@
 export const BASE_WEBSITE_URL = import.meta.env.VITE_WEBSITE_URL;
 export const BASE_URL = import.meta.env.VITE_API_URL;
 export const BLOB_URL = import.meta.env.VITE_BLOB_URL;
+export const BASE_WEBAPP_LITE_URL = import.meta.env.VITE_WEBAPP_LITE_URL;
 
 export const URL = {
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
@@ -28,6 +29,7 @@ export const URL = {
   MEMBER_URL: `${BASE_URL}/Member`,
   MEMBER_TRANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberTransactions`,
   MEMBER_RECENT_RANSACTIONS_URL: `${BASE_URL}/Transactoin/MemberRecentTransactions`,
+  MEMBER_PURCHASE_TRANSACTIONS_URL: `${BASE_URL}/Transactoin/InsertPurchasePointTransaction`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   MEMBER_SITE_CHECK_IN: "/CheckIn/GetByMemberAndSiteId",
   MEMBER_DIRECTORY_CHECK_IN: "/CheckIn/GetMemberDirectoryCheckIn",
