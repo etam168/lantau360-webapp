@@ -73,7 +73,8 @@ export default {
     purchasePointSuccessfully: "成功购买积分",
     transactionSuccess: "交易成功",
     transactionCancelled: "交易请求已取消",
-    invalidRequestData: "请求数据无效"
+    invalidRequestData: "请求数据无效",
+    stripeReferenceNotInitiazed: "Stripe引用未初始化"
   },
 
   footer: {

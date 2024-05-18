@@ -8,7 +8,7 @@
     <stripe-checkout
       ref="checkoutRef"
       mode="payment"
-      :pk="publishableKey"
+      :pk="STRIPE_PUBLISH_KEY"
       :line-items="lineItems"
       :success-url="successURL"
       :cancel-url="cancelURL"
@@ -26,11 +26,12 @@
 </template>
 
 <script setup lang="ts">
-  import { BASE_WEBAPP_LITE_URL } from "@/constants";
+  import { BASE_WEBAPP_LITE_URL, STRIPE_PUBLISH_KEY } from "@/constants";
+  import i18n from "@/plugins/i18n/i18n";
   import { StripeCheckout } from "@vue-stripe/vue-stripe";
 
   const { notify } = useUtilities();
-  const publishableKey = "pk_test_cM0Cj4pEuFceQLmeRNtM9sW400S5FJBvAt";
+  const { t } = i18n.global;
   const loading = ref(false);
   const checkoutRef = ref();
   const selectedPackage = inject("selectedPackage") as Ref<any>;
@@ -48,6 +49,6 @@
 
   function onBtnClick() {
     if (checkoutRef.value) checkoutRef.value.redirectToCheckout();
-    else notify("Stripe reference is not initialized", "negative");
+    else notify(t("more.message.stripeReferenceNotInitiazed"), "negative");
   }
 </script>

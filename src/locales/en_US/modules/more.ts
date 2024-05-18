@@ -73,7 +73,8 @@ export default {
     purchasePointSuccessfully: "Purchase point successfully",
     transactionSuccess: "Transaction successfull",
     transactionCancelled: "Transaction request Cancelled",
-    invalidRequestData: "Invalid request data"
+    invalidRequestData: "Invalid request data",
+    stripeReferenceNotInitiazed: "Stripe reference is not initialized"
   },
 
   footer: {

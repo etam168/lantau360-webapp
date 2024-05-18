@@ -1,7 +1,7 @@
 export const NONE = "none";
 export const AREA_NAME = "areaName";
 
-export const POST_POINTS = 4;
+export const STRIPE_PUBLISH_KEY = import.meta.env.VITE_STRIPE_PUBLISH_KEY;
 export const FREE_TOP_UP_POINTS_REQUEST_LIMIT = 1;
 
 export const CAROUSEL_BACKGROUND = "@/assets/img/home-bg.webp";
