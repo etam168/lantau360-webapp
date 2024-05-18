@@ -13,20 +13,22 @@
       ><span style="font-size: 18px; font-weight: 600">{{ "$ " + selectedPackage.amount }}</span
       ><span class="q-ml-xl">{{ "Points : " + selectedPackage.points }}</span>
     </q-card>
-    <div
-      class="row items-center q-mt-md justify-between q-gutter-y-md"
-      :style="{ 'margin-left': $q.screen.gt.xs ? '28px' : '12px' }"
-    >
-      <div v-for="pPackage in purchasePackages" :key="pPackage.amount">
+    <div class="row items-center q-mt-md justify-between q-gutter-y-md">
+      <div
+        v-for="pPackage in purchasePackages"
+        :key="pPackage.amount"
+        class="col-6 col-sm-3 row items-center justify-center"
+      >
         <q-btn
           :class="{
             'bg-green-8 text-white text-weight-bold': pPackage.amount === selectedPackage.amount
           }"
-          :style="{ width: '70px', 'margin-right': '8px', 'border-radius': '20px' }"
+          style="border-radius: 20px; margin-right: 8px"
+          :style="$q.screen.gt.xs ? 'width: 70px;  ' : 'width: 90%;'"
           @click="onPackageChange(pPackage)"
           >{{ "$ " + pPackage.amount
-          }}<q-badge floating class="bg-amber text-white">{{ pPackage.points }}</q-badge></q-btn
-        >
+          }}<q-badge floating class="bg-amber text-white">{{ pPackage.points }}</q-badge>
+        </q-btn>
       </div>
     </div>
   </div>
