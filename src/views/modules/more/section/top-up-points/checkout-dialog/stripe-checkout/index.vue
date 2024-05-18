@@ -3,7 +3,7 @@
     <q-item-label
       class="q-mt-lg q-mb-md"
       style="letter-spacing: 1px; font-size: 16px; font-weight: bold"
-      >Pay By Stripe</q-item-label
+      >{{ $t("more.account.payByStrip") }}</q-item-label
     >
     <stripe-checkout
       ref="checkoutRef"

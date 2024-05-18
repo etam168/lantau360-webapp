@@ -39,7 +39,8 @@ export default {
     topUpYourAccount: "充值您的帳戶",
     topUpAmount: "充值金額",
     essentialInformation: "請輸入以下必要信息以充值積分",
-    payByStrip: "通過Strip支付"
+    payByStrip: "通過Stripe支付",
+    paymentOptions: "支付選項"
   },
 
   profileSetting: {
