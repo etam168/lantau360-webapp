@@ -165,9 +165,7 @@
 
         userStore.setPoints(
           memberConfig.value?.meta.postPoint ?? 50,
-          memberConfig.value?.meta.requestFreePoints ?? 100,
-          memberConfig.value?.meta.purchsePrice ?? 100,
-          memberConfig.value?.meta.purchsePoints ?? 100
+          memberConfig.value?.meta.requestFreePoints ?? 100
         );
 
         // Sync user points.
