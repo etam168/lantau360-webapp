@@ -23,7 +23,6 @@ declare module 'vue' {
     AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
     AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
-    copy: typeof import('./components/global/app-directory-section copy.vue')['default']
     GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     MapComponent: typeof import('./components/global/map-component.vue')['default']

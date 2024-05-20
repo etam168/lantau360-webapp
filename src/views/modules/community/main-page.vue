@@ -123,17 +123,20 @@
       axios.get(URL.MEMBER_CONFIG)
     ]);
 
-    advertisements.value = advertisementResponse.data;
+    advertisements.value = advertisementResponse.data.filter(
+      (adv: AdvertisementView) => adv.status === 1
+    );
+    directories.value = directoryResponse.data.filter(
+      (directory: Directory) => directory.status === 1
+    );
     events.value = eventResponse.data;
     news.value = newsResponse.data;
     notices.value = noticeResponse.data;
     memberConfig.value = memberConfigResponse.data;
+
     setPoints(
       memberConfig.value?.meta.postPoint ?? 50,
       memberConfig.value?.meta.requestFreePoints ?? 100
-    );
-    directories.value = useSorted(directoryResponse.data, (a, b) => a.rank - b.rank).value.filter(
-      (directory: Directory) => directory.status === 1
     );
 
     // Sync user points.
