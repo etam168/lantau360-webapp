@@ -1,9 +1,9 @@
 <template>
   <div class="row q-col-gutter-sm">
-    <div v-for="(item, index) in itemsWithType" :key="index" class="col-md-3 col-sm-4 col-6">
-      <div v-if="item.value.status !== 0">
-        <promotion-card v-if="item.type === PROMOTION.PROMOTION" :item="item.value" />
-        <voucher-card v-else-if="item.type === PROMOTION.VOUCHER" :item="item.value" />
+    <div v-for="(item, index) in sortedItems" :key="index" class="col-md-3 col-sm-4 col-6">
+      <div v-if="item.status !== 0">
+        <promotion-card v-if="isBusinessPromotion(item)" :item="item" />
+        <voucher-card v-else-if="isBusinessVoucher(item)" :item="item" />
       </div>
     </div>
   </div>
@@ -25,27 +25,15 @@
     }
   });
 
-  const PROMOTION = {
-    PROMOTION: "Promotion",
-    VOUCHER: "Voucher"
-  };
-
-  function getItemType(item: MarketingType) {
-    switch (true) {
-      case "businessPromotionId" in item:
-        return PROMOTION.PROMOTION;
-      case "businessVoucherId" in item:
-        return PROMOTION.VOUCHER;
-      default:
-        return "";
-    }
-  }
+  const { isBusinessPromotion, isBusinessVoucher } = useUtilities();
 
   // Computed property to transform items into key/value pairs
-  const itemsWithType = computed(() => {
-    return props.items.map(item => ({
-      value: item,
-      type: getItemType(item)
-    }));
+  const sortedItems = computed(() => {
+    const temp = [...props.items];
+    return temp.sort((a: any, b: any) => {
+      const idA = a.businessPromotionId !== undefined ? a.businessPromotionId : a.businessVoucherId;
+      const idB = b.businessPromotionId !== undefined ? b.businessPromotionId : b.businessVoucherId;
+      return a.rank - b.rank || idA - idB;
+    });
   });
 </script>

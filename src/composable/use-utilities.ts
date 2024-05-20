@@ -1,8 +1,11 @@
 // interface files
 import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
+import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
 import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
+import { MarketingType } from "@/interfaces/types/marketing-types";
 
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
@@ -83,6 +86,16 @@ export function useUtilities() {
   // Type guard to determine if the item is an Advertisement
   function isAdvertisement(item: any): item is AdvertisementView {
     return (item as AdvertisementView).advertisementId !== undefined;
+  }
+
+  // Type guard to determine if the item is an BusinessPromotionView
+  function isBusinessPromotion(item: MarketingType): item is BusinessPromotionView {
+    return (item as BusinessPromotionView).businessPromotionId !== undefined;
+  }
+
+  // Type guard to determine if the item is an BusinessVoucherView
+  function isBusinessVoucher(item: MarketingType): item is BusinessVoucherView {
+    return (item as BusinessVoucherView).businessVoucherId !== undefined;
   }
 
   // Type guard to determine if the item is an Directory
@@ -192,6 +205,8 @@ export function useUtilities() {
     groupBy,
     httpMethods,
     isAdvertisement,
+    isBusinessPromotion,
+    isBusinessVoucher,
     isCommunityDirectory,
     isDirectory,
     isNotEmptyArray,

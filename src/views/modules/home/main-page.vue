@@ -110,10 +110,6 @@
 
     attractions.value = attractionResponse.data.sort((a, b) => a.siteId - b.siteId);
     weatherData.value = weatherResponse.data;
-    // homeDirectories.value = useSorted(
-    //   homeDirectoryResponse.data,
-    //   (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
-    // ).value.filter((dir: Directory) => dir.status === 1);
     homeDirectories.value = homeDirectoryResponse.data.filter((dir: Directory) => dir.status === 1);
   } catch (err) {
     if (err instanceof AxiosError) {
