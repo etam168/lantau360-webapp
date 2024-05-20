@@ -39,11 +39,11 @@
 </template>
 
 <script setup lang="ts">
-  import { useUserStore } from "@/stores/user";
-  import { useMoreInput } from "../../../../use-more-input";
   import { FREE_TOP_UP_POINTS_REQUEST_LIMIT } from "@/constants";
+  import { useUserStore } from "@/stores/user";
+  import { useTopUpInput } from "../use-top-up-input";
 
-  const { claimFreePoints } = useMoreInput();
+  const { claimFreePoints } = useTopUpInput();
   const { topUpPoints } = useUserStore();
   const emits = defineEmits(["close-dialog"]);
 

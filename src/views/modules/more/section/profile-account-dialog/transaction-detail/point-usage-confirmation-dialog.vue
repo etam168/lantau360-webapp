@@ -73,7 +73,7 @@
   function createPosting() {
     onDialogCancel();
     $q.dialog({
-      component: defineAsyncComponent(() => import("./repost-edit-dialog/index.vue")),
+      component: defineAsyncComponent(() => import("./repost-dialog/index.vue")),
       componentProps: {
         item: props.item as any
       }

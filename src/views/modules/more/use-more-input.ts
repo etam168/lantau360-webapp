@@ -16,7 +16,6 @@ const newInput = () => {
 };
 
 const { t } = i18n.global;
-const { eventBus } = useUtilities();
 const toolTipCreate = ref("member.gallery.uploadNewImage");
 
 const locale = ref("hk");
@@ -65,30 +64,6 @@ export function useMoreInput() {
       });
   }
 
-  async function claimFreePoints(): Promise<boolean> {
-    const memberId = parseInt(userStore.userId);
-    return await axios
-      .post(`/Points/RequestFreePoints?memberId=${memberId}`)
-      .then(async () => {
-        const successMessage = t("more.message.claimedFreePointsSuccessfully");
-        successCallback(successMessage);
-        eventBus.emit("refresh-transaction-data");
-        return true;
-      })
-      .catch(err => {
-        if (err instanceof AxiosError) {
-          if (err.response?.status === 400 && err.response?.data === "have_enough_points") {
-            notify(t("more.message.enoughPoints"), "negative");
-          } else {
-            notify(err.message, "negative");
-          }
-        } else {
-          notify(err.message, "negative");
-        }
-        return false;
-      });
-  }
-
   async function handleUpdateMemberAvatar(newAvatar: any) {
     const url = `${BASE_URL}/MemberImage/${userStore.userId}`;
 
@@ -117,16 +92,15 @@ export function useMoreInput() {
       });
   }
   return {
-    memberInput,
     handleUpdateMemberAvatar,
-    updateMember,
-    toolTipCreate,
-    locale,
     lang,
-    useMoreInput,
-    setValidatedInput,
+    locale,
+    memberInput,
     setMemberInput,
-    claimFreePoints,
+    setValidatedInput,
+    toolTipCreate,
+    updateMember,
+    useMoreInput,
     userStore
   };
 }

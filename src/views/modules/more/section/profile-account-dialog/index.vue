@@ -125,7 +125,7 @@
   function handleItemClick(item: any) {
     if (item.postingId) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("./transaction-detail-dialog.vue")),
+        component: defineAsyncComponent(() => import("./transaction-detail/index.vue")),
         componentProps: {
           item: item
         }

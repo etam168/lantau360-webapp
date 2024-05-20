@@ -61,12 +61,11 @@
   import { Form } from "vee-validate";
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
-  import { useUserStore } from "@/stores/user";
+  import { useTopUpInput } from "../use-top-up-input";
 
   const emits = defineEmits(["update-dialog-status"]);
 
-  const { eventBus, notify } = useUtilities();
-  const { userId } = useUserStore();
+  const { creditCardCheckout } = useTopUpInput();
   const initialValues = ref({});
   const { t } = i18n.global;
   const form = ref();
@@ -98,25 +97,12 @@
       if (isValid) {
         loading.value = true;
 
-        const [month, year] = values.expiryDate.split("/");
-        values["expMonth"] = month;
-        values["expYear"] = `20${year}`;
+        const checkoutStatus = await creditCardCheckout(values, selectedPackage.value);
+        loading.value = false;
 
-        values["totalCost"] = selectedPackage.value.amount * 100;
-        values["subscriberId"] = parseInt(userId);
-        values["purchasedPoints"] = selectedPackage.value.points;
-        await axios
-          .post("/Points/PurchasePoints", values)
-          .then(() => {
-            eventBus.emit("refresh-transaction-data");
-            notify(t("more.message.purchasePointSuccessfully"), "positive");
-            loading.value = false;
-            emits("update-dialog-status", false);
-          })
-          .catch(err => {
-            notify(err.message, "negative");
-            loading.value = false;
-          });
+        if (checkoutStatus) {
+          emits("update-dialog-status", false);
+        }
       }
     });
   }
