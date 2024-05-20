@@ -184,16 +184,15 @@
 <script setup lang="ts">
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { Posting } from "@/interfaces/models/entities/posting";
   import { PostingView } from "@/interfaces/models/views/posting-view";
-  import { useUserStore } from "@/stores/user";
 
   // .ts files
   import { BLOB_URL } from "@/constants";
-  import { Posting } from "@/interfaces/models/entities/posting";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  //import AppLoginDialogWidget from "@/components/dialog/app-login-dialog-widget.vue";
+  import { useUserStore } from "@/stores/user";
+
   const $q = useQuasar();
-  // const router = useRouter();
 
   const emit = defineEmits(["item-click", "create-posting"]);
   const { eventBus } = useUtilities();
@@ -266,11 +265,6 @@
       emit("create-posting");
     }
   }
-  onMounted(() => {
-    eventBus.on("on-login-success", () => {
-      emit("create-posting");
-    });
-  });
 
   function editPosting(item: Posting) {
     $q.dialog({
@@ -284,7 +278,9 @@
     });
   }
 
-  // const avatar = computed(() => {
-  //   return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
-  // });
+  onMounted(() => {
+    eventBus.on("on-login-success", () => {
+      emit("create-posting");
+    });
+  });
 </script>

@@ -1,5 +1,4 @@
 <template>
-  <!-- <pre>{{ data }}</pre> -->
   <div class="row q-gutter-y-md">
     <app-directory-item
       v-for="(item, index) in sortedData"
