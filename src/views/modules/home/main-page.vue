@@ -59,17 +59,14 @@
   ]);
 
   const directoryData = computed(() =>
-    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 1))
     homeDirectories.value.filter((dir: Directory) => dir.groupId == 1)
   );
 
   const resourcesData = computed(() =>
-    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
     homeDirectories.value.filter((dir: Directory) => dir.groupId == 3)
   );
 
   const tripAdvisorData = computed(() =>
-    // homeDirectories.value.filter((dir: Directory) => isNthBitSet(dir.displayMask, 2))
     homeDirectories.value.filter((dir: Directory) => dir.groupId == 5)
   );
 
@@ -113,10 +110,11 @@
 
     attractions.value = attractionResponse.data.sort((a, b) => a.siteId - b.siteId);
     weatherData.value = weatherResponse.data;
-    homeDirectories.value = useSorted(
-      homeDirectoryResponse.data,
-      (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
-    ).value.filter((dir: Directory) => dir.status === 1);
+    // homeDirectories.value = useSorted(
+    //   homeDirectoryResponse.data,
+    //   (a, b) => a.rank - b.rank || a.directoryId - b.directoryId
+    // ).value.filter((dir: Directory) => dir.status === 1);
+    homeDirectories.value = homeDirectoryResponse.data.filter((dir: Directory) => dir.status === 1);
   } catch (err) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

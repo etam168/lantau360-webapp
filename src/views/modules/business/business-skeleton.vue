@@ -22,7 +22,7 @@
       <div class="row q-col-gutter-sm">
         <div v-for="(item, index) in 5" :key="index" class="col-md-3 col-sm-4 col-6">
           <q-card class="my-card">
-            <q-responsive :ratio="11 / 8">
+            <q-responsive :ratio="16 / 9">
               <q-skeleton height="170px" square animation="fade" />
             </q-responsive>
 

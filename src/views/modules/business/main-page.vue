@@ -4,7 +4,7 @@
       <div class="col text-center text-uppercase">{{ $t("business.advertisement") }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" :aspectRatio="16 / 11" />
+    <app-carousel-section :data="advertisements" :aspectRatio="16 / 9" />
     <q-separator size="4px" color="primary" />
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t("business.title") }}</q-toolbar-title>

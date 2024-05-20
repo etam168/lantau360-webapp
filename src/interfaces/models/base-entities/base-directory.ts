@@ -4,6 +4,7 @@ export interface BaseDirectory {
   imagePath: string;
   description: string;
   groupId: number;
+  rank: number;
   status: number;
   createdAt: Date;
   createdBy: number;

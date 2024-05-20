@@ -1,7 +1,13 @@
-// useUtilities.ts
-import { date, EventBus, Notify, Screen } from "quasar";
+// interface files
+import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+import { Directory } from "@/interfaces/models/entities/directory";
+import { DirectoryTypes } from "@/interfaces/types/directory-types";
+
+// .ts file
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+import { date, EventBus, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
 
 const eventBus = new EventBus();
@@ -74,6 +80,21 @@ export function useUtilities() {
     }
   };
 
+  // Type guard to determine if the item is an Advertisement
+  function isAdvertisement(item: any): item is AdvertisementView {
+    return (item as AdvertisementView).advertisementId !== undefined;
+  }
+
+  // Type guard to determine if the item is an Directory
+  function isDirectory(item: DirectoryTypes): item is Directory {
+    return (item as Directory).directoryId !== undefined;
+  }
+
+  // Type guard to determine if the item is an CommunityDirectory
+  function isCommunityDirectory(item: DirectoryTypes): item is CommunityDirectory {
+    return (item as CommunityDirectory).communityDirectoryId !== undefined;
+  }
+
   function isNotEmptyArray(arr: any) {
     return Array.isArray(arr) && arr.length > 0;
   }
@@ -89,9 +110,9 @@ export function useUtilities() {
     });
   }
 
-  function sleep(ms: number) {
-    return new Promise(resolve => setTimeout(resolve, ms));
-  }
+  // function sleep(ms: number) {
+  //   return new Promise(resolve => setTimeout(resolve, ms));
+  // }
 
   function groupBy<T, K extends string | number>(
     array: T[],
@@ -128,16 +149,16 @@ export function useUtilities() {
     return altName?.i18n?.[locale.value]?.[key] || label;
   }
 
-  function translateAltName(locale: string, meta: any, key: string) {
-    switch (locale) {
-      case "hk":
-        return meta?.i18n?.hk?.[key] ?? "";
-      case "cn":
-        return meta?.i18n?.cn?.[key] ?? "";
-      default:
-        return "";
-    }
-  }
+  // function translateAltName(locale: string, meta: any, key: string) {
+  //   switch (locale) {
+  //     case "hk":
+  //       return meta?.i18n?.hk?.[key] ?? "";
+  //     case "cn":
+  //       return meta?.i18n?.cn?.[key] ?? "";
+  //     default:
+  //       return "";
+  //   }
+  // }
 
   function navigateToWhatsApp(whatsAppNumber: string) {
     const whatsappURL = `https://wa.me/${whatsAppNumber}?text=Hello,%20Welcome%20to%20Lantau360.`;
@@ -170,15 +191,18 @@ export function useUtilities() {
     getTimeAgo,
     groupBy,
     httpMethods,
+    isAdvertisement,
+    isCommunityDirectory,
+    isDirectory,
     isNotEmptyArray,
     isNthBitSet,
     isSmallScreen,
     navigateToWhatsApp,
     notify,
-    sleep,
+    // sleep,
     translate,
     translateAlt,
-    translateAltName,
+    // translateAltName,
     refreshToken
   };
 }

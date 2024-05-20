@@ -16,6 +16,6 @@
   import BusinessSkeleton from "./business-skeleton.vue";
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
-    delay: 500
+    delay: 100
   });
 </script>

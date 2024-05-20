@@ -33,17 +33,15 @@
   // Interface files
   import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
+  import { CarouselTypes } from "@/interfaces/types/carousel-types";
 
   // .ts file
   import imageNotFound from "@/assets/img/image_not_found.jpg";
   import { CAROUSEL_BACKGROUND, BLOB_URL } from "@/constants";
 
-  // Define type that is a union of Site and Advertisement
-  type CarouselItem = SiteView | AdvertisementView;
-
   const props = defineProps({
     data: {
-      type: Array as PropType<CarouselItem[]>,
+      type: Array as PropType<CarouselTypes[]>,
       required: true
     },
     aspectRatio: {
@@ -52,28 +50,20 @@
     }
   });
 
+  const { isAdvertisement } = useUtilities();
   const $q = useQuasar();
   const slideInterval = 10000;
 
   // Initialize slide with the ID of the first item
-  const slide = ref(props.data && props.data.length > 0 ? getId(props.data[0]) : 0);
+  const slide = ref(props.data?.[0] ? getId(props.data[0]) : 0);
 
   // Function to extract ID from the item
-  function getId(item: CarouselItem): number {
-    if (isAdvertisement(item)) {
-      return item.advertisementId;
-    } else {
-      return item.siteId;
-    }
-  }
-
-  // Type guard to determine if the item is an Advertisement
-  function isAdvertisement(item: any): item is AdvertisementView {
-    return (item as AdvertisementView).advertisementId !== undefined;
+  function getId(item: CarouselTypes): number {
+    return isAdvertisement(item) ? item.advertisementId : item.siteId;
   }
 
   // Updated onImageClick function to handle both Site and Advertisement
-  const onImageClick = (item: CarouselItem) => {
+  const onImageClick = (item: CarouselTypes) => {
     if (isAdvertisement(item)) {
       $q.dialog({
         component: defineAsyncComponent(
@@ -96,7 +86,7 @@
   };
 
   // getImageSrc function to handle both Site and Advertisement
-  function getImageSrc(row: CarouselItem) {
+  function getImageSrc(row: CarouselTypes) {
     return row.bannerPath ? `${BLOB_URL}/${row.bannerPath}` : imageNotFound;
   }
 </script>
