@@ -55,7 +55,8 @@
     }
   });
 
-  const { translate, eventBus } = useUtilities();
+  const { translate, eventBus, isCommunityEvent, isCommunityNews, isCommunityNotice } =
+    useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
@@ -76,19 +77,19 @@
     }
   });
 
-  const galleryUrl = computed(() => {
-    switch (true) {
-      case "communityEventId" in props.item:
-        return `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
-      case "communityNewsId" in props.item:
-        return `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
-      case "communityNoticeId" in props.item:
-        return `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
+  // const galleryUrl = computed(() => {
+  //   switch (true) {
+  //     case "communityEventId" in props.item:
+  //       return `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
+  //     case "communityNewsId" in props.item:
+  //       return `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
+  //     case "communityNoticeId" in props.item:
+  //       return `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
 
-      default:
-        return "";
-    }
-  });
+  //     default:
+  //       return "";
+  //   }
+  // });
 
   const renderer = computed(() => {
     switch (true) {
@@ -103,6 +104,19 @@
     }
   });
 
+  function getBulletinListUrl() {
+    switch (true) {
+      case isCommunityEvent(props.item):
+        return `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
+      case isCommunityNews(props.item):
+        return `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
+      case isCommunityNotice(props.item):
+        return `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
+      default:
+        return "";
+    }
+  }
+
   onMounted(() => {
     loadData();
     eventBus.on("BulletinDetailDialog", () => {
@@ -116,9 +130,10 @@
   }
 
   const loadData = async () => {
-    if (galleryUrl.value) {
+    const galleryUrl = getBulletinListUrl();
+    if (galleryUrl) {
       try {
-        const [galleryResponse] = await Promise.all([axios.get(galleryUrl.value)]);
+        const [galleryResponse] = await Promise.all([axios.get(galleryUrl)]);
         galleryItems.value = galleryResponse.data;
       } catch (err) {
         if (err instanceof AxiosError) {

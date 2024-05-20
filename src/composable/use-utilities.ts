@@ -1,8 +1,12 @@
 // interface files
 import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
 import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
 import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
+import { CommunityNewsView } from "@/interfaces/models/views/community-news-view";
+import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
 import { MarketingType } from "@/interfaces/types/marketing-types";
@@ -103,7 +107,19 @@ export function useUtilities() {
     return (item as Directory).directoryId !== undefined;
   }
 
-  // Type guard to determine if the item is an CommunityDirectory
+  // Type guard to determine if the item is an CommunityEvent
+  function isCommunityEvent(item: BulletinTypes): item is CommunityEventView {
+    return (item as CommunityEventView).communityEventId !== undefined;
+  }
+
+  function isCommunityNews(item: BulletinTypes): item is CommunityNewsView {
+    return (item as CommunityNewsView).communityNewsId !== undefined;
+  }
+
+  function isCommunityNotice(item: BulletinTypes): item is CommunityNoticeView {
+    return (item as CommunityNoticeView).communityNoticeId !== undefined;
+  }
+
   function isCommunityDirectory(item: DirectoryTypes): item is CommunityDirectory {
     return (item as CommunityDirectory).communityDirectoryId !== undefined;
   }
@@ -208,16 +224,17 @@ export function useUtilities() {
     isBusinessPromotion,
     isBusinessVoucher,
     isCommunityDirectory,
+    isCommunityEvent,
+    isCommunityNews,
+    isCommunityNotice,
     isDirectory,
     isNotEmptyArray,
     isNthBitSet,
     isSmallScreen,
     navigateToWhatsApp,
     notify,
-    // sleep,
     translate,
     translateAlt,
-    // translateAltName,
     refreshToken
   };
 }
