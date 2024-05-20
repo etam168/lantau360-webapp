@@ -55,32 +55,21 @@
   const handleDialog = async (item: DirectoryTypes) => {
     const directoryListUrl = getDirectoryListUrl(item);
     try {
-      let responseData;
       let directoryCheckInResponse;
       if (isUserLogon() && isDirectory(item) && DIRECTORY_GROUPS.HOME.includes(item.groupId)) {
-        const [response, directoryCheckIn] = await Promise.all([
-          axios.get<CategoryTypes[]>(directoryListUrl),
-          axios.get<CheckIn[]>(
-            `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${(item as Directory).directoryId}`
-          )
-        ]);
-        responseData = response;
-        directoryCheckInResponse = directoryCheckIn;
-      } else {
-        const response = await axios.get<CategoryTypes[]>(directoryListUrl);
-        responseData = response;
+        directoryCheckInResponse = await axios.get<CheckIn[]>(
+          `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${(item as Directory).directoryId}`
+        );
       }
 
-      if (responseData.status === 200) {
+      const response = await axios.get<CategoryTypes[]>(directoryListUrl);
+
+      if (response.status === 200) {
         // Call the throttled functions to create the dialogs
         if (isCommunityDirectory(item)) {
-          throttledCreateCommunityDialog(item, responseData.data);
+          throttledCreateCommunityDialog(item, response.data);
         } else {
-          throttledCreateCategoryDialog(
-            item,
-            responseData.data,
-            directoryCheckInResponse?.data ?? []
-          );
+          throttledCreateCategoryDialog(item, response.data, directoryCheckInResponse?.data ?? []);
         }
       }
     } catch (error) {
