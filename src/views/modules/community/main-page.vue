@@ -129,9 +129,11 @@
     directories.value = directoryResponse.data.filter(
       (directory: Directory) => directory.status === 1
     );
-    events.value = eventResponse.data;
-    news.value = newsResponse.data;
-    notices.value = noticeResponse.data;
+    events.value = eventResponse.data.filter((comEve: CommunityEventView) => comEve.status === 1);
+    news.value = newsResponse.data.filter((comNews: CommunityNews) => comNews.status === 1);
+    notices.value = noticeResponse.data.filter(
+      (comNotice: CommunityNotice) => comNotice.status === 1
+    );
     memberConfig.value = memberConfigResponse.data;
 
     setPoints(
