@@ -26,21 +26,12 @@
     }
   });
 
-  const { isCommunityDirectory, translateAlt, translate } = useUtilities();
+  const { translateAlt, translate } = useUtilities();
 
   const directoryIcon = computed(() => {
     const imagePath = props.item.imagePath;
-    const filePath = props.item.meta?.["file-path"];
-
-    const icon = isCommunityDirectory(props.item)
-      ? imagePath != null
-        ? imagePath.includes("http")
-          ? imagePath
-          : `${BLOB_URL}/${imagePath}`
-        : null
-      : filePath != null
-        ? filePath
-        : null;
+    // item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'
+    const icon = imagePath != null ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
 
     // If icon is not null, return it; otherwise, return the placeholder URL
     return icon || PLACEHOLDER_THUMBNAIL;

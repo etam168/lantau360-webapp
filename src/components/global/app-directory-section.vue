@@ -19,11 +19,11 @@
   import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
-  // import {isCommunityDirectoty}
 
   // .ts file
   import { DIRECTORY_GROUPS, URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const props = defineProps({
     data: {
@@ -32,7 +32,6 @@
     }
   });
 
-  // const { locale } = useI18n();
   const { eventBus, isCommunityDirectory, isDirectory, translate } = useUtilities();
   const { isUserLogon, userId } = useUserStore();
 
@@ -56,52 +55,71 @@
   const handleDialog = async (item: DirectoryTypes) => {
     const directoryListUrl = getDirectoryListUrl(item);
     try {
-      const response = await axios.get(directoryListUrl);
+      let responseData;
+      let directoryCheckInResponse;
+      if (isUserLogon() && isDirectory(item) && DIRECTORY_GROUPS.HOME.includes(item.groupId)) {
+        const [response, directoryCheckIn] = await Promise.all([
+          axios.get<CategoryTypes[]>(directoryListUrl),
+          axios.get<CheckIn[]>(
+            `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${(item as Directory).directoryId}`
+          )
+        ]);
+        responseData = response;
+        directoryCheckInResponse = directoryCheckIn;
+      } else {
+        const response = await axios.get<CategoryTypes[]>(directoryListUrl);
+        responseData = response;
+      }
 
-      if (response.status === 200) {
-        const createCommunityDialog = (item: DirectoryTypes) => {
-          $q.dialog({
-            component: defineAsyncComponent(
-              () => import("@/components/dialog/community-item-list-dialog.vue")
-            ),
-            componentProps: {
-              directoryItemsList: response.data,
-              directory: item
-              // groupBykey: groupBy
-            }
-          });
-        };
-
-        const createCategoryDialog = async (item: DirectoryTypes) => {
-          const directoryCheckIn = await getMemberDirectoryCheckIn((item as Directory).directoryId);
-
-          $q.dialog({
-            component: defineAsyncComponent(
-              () => import("@/components/dialog/category-item-list-dialog.vue")
-            ),
-            componentProps: {
-              directoryItemsList: response.data,
-              directory: item,
-              directoryCheckIns: directoryCheckIn
-            }
-          });
-        };
-
-        // Throttle the createDialog functions
-        const throttledCreateCommunityDialog = throttle(createCommunityDialog, 2000);
-        const throttledCreateCategoryDialog = throttle(createCategoryDialog, 2000);
-
+      if (responseData.status === 200) {
         // Call the throttled functions to create the dialogs
-        if ("communityDirectoryId" in item) {
-          throttledCreateCommunityDialog(item);
+        if (isCommunityDirectory(item)) {
+          throttledCreateCommunityDialog(item, responseData.data);
         } else {
-          throttledCreateCategoryDialog(item);
+          throttledCreateCategoryDialog(
+            item,
+            responseData.data,
+            directoryCheckInResponse?.data ?? []
+          );
         }
       }
     } catch (error) {
       // console.error("Error fetching data: ", error);
     }
   };
+
+  const createCommunityDialog = (item: DirectoryTypes, itemList: CategoryTypes[]) => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/community-item-list-dialog.vue")
+      ),
+      componentProps: {
+        directoryItemsList: itemList,
+        directory: item
+        // groupBykey: groupBy
+      }
+    });
+  };
+
+  const createCategoryDialog = (
+    item: DirectoryTypes,
+    itemList: CategoryTypes[],
+    directoryCheckIn: CheckIn[]
+  ) => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-item-list-dialog.vue")
+      ),
+      componentProps: {
+        directoryItemsList: itemList,
+        directory: item,
+        directoryCheckIns: directoryCheckIn
+      }
+    });
+  };
+
+  const throttledCreateCommunityDialog = throttle(createCommunityDialog, 2000);
+  const throttledCreateCategoryDialog = throttle(createCategoryDialog, 2000);
 
   function getDirectoryListUrl(item: DirectoryTypes) {
     switch (true) {
@@ -115,22 +133,13 @@
         return "";
     }
   }
-
-  async function getMemberDirectoryCheckIn(directoryId: number): Promise<Array<CheckIn>> {
-    const isLogon = isUserLogon();
-
-    if (!isLogon) return [] as CheckIn[];
-    const response = await axios.get(
-      `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${directoryId}`
-    );
-    return response.status == 200 ? response.data : [];
-  }
-
   // Throttle the handleDialog function
   const throttledHandleDialog = throttle(handleDialog, 2000);
 
-  eventBus.on("navigateToMore", () => {
-    // Navigate to "/more" when the event is received
-    router.push("/more");
+  onMounted(() => {
+    eventBus.on("navigateToMore", () => {
+      // Navigate to "/more" when the event is received
+      router.push("/more");
+    });
   });
 </script>
