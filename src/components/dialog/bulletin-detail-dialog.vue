@@ -9,7 +9,7 @@
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title>{{ bulletinData.dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -23,9 +23,9 @@
             </q-responsive>
           </div>
 
-          <event-renderer v-if="renderer === RENDERER.EVENT" :item="item" />
-          <news-renderer v-else-if="renderer === RENDERER.NEWS" :item="item" />
-          <notice-renderer v-else-if="renderer === RENDERER.NOTICE" :item="item" />
+          <event-renderer v-if="bulletinData.renderer === RENDERER.EVENT" :item="item" />
+          <news-renderer v-else-if="bulletinData.renderer === RENDERER.NEWS" :item="item" />
+          <notice-renderer v-else-if="bulletinData.renderer === RENDERER.NOTICE" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -64,58 +64,33 @@
   const error = ref<string | null>(null);
   const galleryItems = ref<GalleryImageType[]>([]);
 
-  const dialogTitle = computed(() => {
-    switch (true) {
-      case "communityEventId" in props.item:
-        return translate(props.item.communityEventName, props.item.meta, "communityEventName");
-      case "communityNewsId" in props.item:
-        return translate(props.item.communityNewsName, props.item.meta, "communityNewsName");
-      case "communityNoticeId" in props.item:
-        return translate(props.item.communityNoticeName, props.item.meta, "communityNoticeName");
-      default:
-        return "";
+  function getBulletinData() {
+    let url = "";
+    let renderer = "";
+    let dialogTitle = "";
+
+    if (isCommunityEvent(props.item)) {
+      url = `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
+      renderer = RENDERER.EVENT;
+      dialogTitle = translate(props.item.communityEventName, props.item.meta, "communityEventName");
+    } else if (isCommunityNews(props.item)) {
+      url = `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
+      renderer = RENDERER.NEWS;
+      dialogTitle = translate(props.item.communityNewsName, props.item.meta, "communityNewsName");
+    } else if (isCommunityNotice(props.item)) {
+      url = `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
+      renderer = RENDERER.NOTICE;
+      dialogTitle = translate(
+        props.item.communityNoticeName,
+        props.item.meta,
+        "communityNoticeName"
+      );
     }
-  });
 
-  // const galleryUrl = computed(() => {
-  //   switch (true) {
-  //     case "communityEventId" in props.item:
-  //       return `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
-  //     case "communityNewsId" in props.item:
-  //       return `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
-  //     case "communityNoticeId" in props.item:
-  //       return `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
-
-  //     default:
-  //       return "";
-  //   }
-  // });
-
-  const renderer = computed(() => {
-    switch (true) {
-      case "communityEventId" in props.item:
-        return RENDERER.EVENT;
-      case "communityNewsId" in props.item:
-        return RENDERER.NEWS;
-      case "communityNoticeId" in props.item:
-        return RENDERER.NOTICE;
-      default:
-        return "";
-    }
-  });
-
-  function getBulletinListUrl() {
-    switch (true) {
-      case isCommunityEvent(props.item):
-        return `${URL.COMMUNITY_EVENT_GALLERY}/${props.item.communityEventId}`;
-      case isCommunityNews(props.item):
-        return `${URL.COMMUNITY_NEWS_GALLERY}/${props.item.communityNewsId}`;
-      case isCommunityNotice(props.item):
-        return `${URL.COMMUNITY_NOTICE_GALLERY}/${props.item.communityNoticeId}`;
-      default:
-        return "";
-    }
+    return { url, renderer, dialogTitle };
   }
+
+  const bulletinData = computed(() => getBulletinData());
 
   onMounted(() => {
     loadData();
@@ -130,7 +105,7 @@
   }
 
   const loadData = async () => {
-    const galleryUrl = getBulletinListUrl();
+    const galleryUrl = bulletinData.value.url;
     if (galleryUrl) {
       try {
         const [galleryResponse] = await Promise.all([axios.get(galleryUrl)]);
