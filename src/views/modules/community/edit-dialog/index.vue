@@ -75,12 +75,6 @@
     }, 1200);
   };
 
-  onMounted(() => {
-    // eventBus.on("CloseDilaog", () => {
-    //   isDialogVisible.value = false;
-    // });
-  });
-
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     // eventBus.emit("DialogStatus", status, true);

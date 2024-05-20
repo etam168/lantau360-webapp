@@ -65,9 +65,12 @@
     },
     { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
-  eventBus.on("navigateToMore", () => {
-    // Navigate to "/more" when the event is received
-    navigateTo("/more", "more");
+
+  onMounted(() => {
+    eventBus.on("navigateToMore", () => {
+      // Navigate to "/more" when the event is received
+      navigateTo("/more", "more");
+    });
   });
 </script>
 

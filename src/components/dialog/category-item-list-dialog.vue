@@ -146,12 +146,12 @@
       refreshCheckInItems();
     });
 
+    eventBus.on("favoriteUpdated", () => {
+      favoriteItems.value = getFavItem();
+    });
+
     //Sort Directory items
     directoryItems.value = sortItems(directoryItems.value, props.directory.meta.sortByKey);
-  });
-
-  eventBus.on("favoriteUpdated", () => {
-    favoriteItems.value = getFavItem();
   });
 
   function updateDialogState(status: boolean) {
