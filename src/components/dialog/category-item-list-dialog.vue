@@ -85,7 +85,7 @@
       required: true
     }
   });
-
+  const { locale } = useI18n();
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
   const $q = useQuasar();
@@ -145,6 +145,9 @@
     eventBus.on("refresh-directory-checkin-items", () => {
       refreshCheckInItems();
     });
+
+    //Sort Directory items
+    directoryItems.value = sortItems(directoryItems.value, props.directory.meta.sortByKey);
   });
 
   eventBus.on("favoriteUpdated", () => {
@@ -189,4 +192,27 @@
       console.error("Error fetching data: ", error);
     }
   };
+
+  function sortItems(items: any, sortByKey: any) {
+    return items.sort((a: any, b: any) => {
+      const rankingDifference = a.rank - b.rank;
+      // Check if sortByKey exists in the first object
+      const hasSortByKey = sortByKey in directoryItems.value[0];
+      // If sortByKey exists, use it for comparison
+      if (hasSortByKey) {
+        let sortByKeyComparison;
+        if (locale.value == "en") {
+          sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+        } else {
+          sortByKeyComparison = String(
+            a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
+          ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
+          // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+        }
+        return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
+      }
+      // If sortByKey doesn't exist, fall back to ranking difference
+      return rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
 </script>

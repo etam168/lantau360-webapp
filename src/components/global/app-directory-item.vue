@@ -26,9 +26,7 @@
     }
   });
 
-  function isCommunityDirectory(item: DirectoryTypes): item is CommunityDirectory {
-    return (item as CommunityDirectory).imagePath !== undefined;
-  }
+  const { isCommunityDirectory, translateAlt, translate } = useUtilities();
 
   const directoryIcon = computed(() => {
     const imagePath = props.item.imagePath;
@@ -48,7 +46,6 @@
     return icon || PLACEHOLDER_THUMBNAIL;
   });
 
-  const { translateAlt, translate } = useUtilities();
   const directoryTitle = computed(() => {
     const { shortName, shortNameAlt } = props.item as CommunityDirectory;
 
