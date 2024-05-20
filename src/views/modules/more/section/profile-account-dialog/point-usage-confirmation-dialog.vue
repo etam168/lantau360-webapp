@@ -42,9 +42,7 @@
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { useDialogPluginComponent } from "quasar";
   import { useUtilities } from "@/composable/use-utilities";
-  //import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { useUserStore } from "@/stores/user";
-  //import i18n from "@/plugins/i18n/i18n";
 
   const props = defineProps({
     item: {
@@ -56,20 +54,8 @@
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const { availabelPoints, pointsPerPost } = useUserStore();
-  //   const { t } = i18n.global;
   const isDialogVisible = ref();
   const $q = useQuasar();
-
-  //   const props = defineProps({
-  //     callback: {
-  //       type: Function,
-  //       required: true
-  //     },
-  //     directory: {
-  //       type: Object as PropType<DirectoryTypes>,
-  //       required: true
-  //     }
-  //   });
 
   const haveEnoughPoints = computed(() => availabelPoints >= pointsPerPost);
 
@@ -84,14 +70,10 @@
     eventBus.emit("DialogStatus", status, "ConfirmationDialog");
   }
 
-  //   function handleOk() {
-  //     props.callback(onDialogCancel);
-  //   }
-
   function createPosting() {
     onDialogCancel();
     $q.dialog({
-      component: defineAsyncComponent(() => import("./index.vue")),
+      component: defineAsyncComponent(() => import("./repost-edit-dialog/index.vue")),
       componentProps: {
         item: props.item as any
       }

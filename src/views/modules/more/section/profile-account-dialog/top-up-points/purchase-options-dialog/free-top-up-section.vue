@@ -40,7 +40,7 @@
 
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
-  import { useMoreInput } from "../../../use-more-input";
+  import { useMoreInput } from "../../../../use-more-input";
   import { FREE_TOP_UP_POINTS_REQUEST_LIMIT } from "@/constants";
 
   const { claimFreePoints } = useMoreInput();

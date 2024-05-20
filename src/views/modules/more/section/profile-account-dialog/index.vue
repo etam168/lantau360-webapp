@@ -92,7 +92,7 @@
 
 <script setup lang="ts">
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  import { useMoreInput } from "../use-more-input";
+  import { useMoreInput } from "../../use-more-input";
   import { PropType } from "vue";
 
   const { dialogRef } = useDialogPluginComponent();
@@ -125,7 +125,7 @@
   function handleItemClick(item: any) {
     if (item.postingId) {
       $q.dialog({
-        component: defineAsyncComponent(() => import("./profile-account-detail-dialog.vue")),
+        component: defineAsyncComponent(() => import("./transaction-detail-dialog.vue")),
         componentProps: {
           item: item
         }

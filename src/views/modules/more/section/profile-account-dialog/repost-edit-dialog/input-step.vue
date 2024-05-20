@@ -31,12 +31,11 @@
   import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
   // .ts files
-  import { usePostingInput } from "../edit-dialog/use-posting-input";
+  import { usePostingInput } from "./use-posting-input";
 
   // Custom Components
-  import ImagesSection from "../edit-dialog/image-input/index.vue";
-  import InputContent from "../edit-dialog/input-content.vue";
-  //import { Posting } from "@/interfaces/models/entities/posting";
+  import ImagesSection from "./image-input/index.vue";
+  import InputContent from "./input-content.vue";
 
   const {
     postingImages,
@@ -56,16 +55,6 @@
     }
   });
 
-  // const props = defineProps({
-  //   directoryId: {
-  //     type: Number,
-  //     required: true
-  //   },
-  //   postingData: {
-  //     type: Object as PropType<Posting>,
-  //     required: true
-  //   }
-  // });
   const form = ref();
   const initialValues = ref({});
 

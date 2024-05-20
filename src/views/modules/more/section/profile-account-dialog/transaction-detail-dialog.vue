@@ -35,8 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  // import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  // import { useMoreInput } from "../use-more-input";
   import { PropType } from "vue";
 
   // Interface files
@@ -82,9 +80,7 @@
 
   const repost = () => {
     $q.dialog({
-      component: defineAsyncComponent(
-        () => import("./edit-dialog/point-usage-confirmation-dialog.vue")
-      ),
+      component: defineAsyncComponent(() => import("./point-usage-confirmation-dialog.vue")),
       componentProps: {
         item: props.item
       }

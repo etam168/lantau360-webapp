@@ -98,7 +98,7 @@
     } else if (item.name == MENU.ACCOUNT) {
       if (trHistory.value && trRecent.value) {
         OpenDialog(
-          import("./section/profile-account-dialog.vue"),
+          import("./section/profile-account-dialog/index.vue"),
           {
             trHistory: trHistory,
             trRecent: trRecent

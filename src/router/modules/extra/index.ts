@@ -17,7 +17,7 @@ const stripetTranactionSuccessPage: RouteRecordRaw = {
   name: "stripeSuccess",
   component: () =>
     import(
-      "@/views/modules/more/section/top-up-points/checkout-dialog/stripe-checkout/success-page.vue"
+      "@/views/modules/more/section/profile-account-dialog/top-up-points/checkout-dialog/stripe-checkout/success-page.vue"
     )
 };
 
@@ -26,7 +26,7 @@ const stripeTransactionCancelledPage: RouteRecordRaw = {
   name: "stripeCancel",
   component: () =>
     import(
-      "@/views/modules/more/section/top-up-points/checkout-dialog/stripe-checkout/cancel-page.vue"
+      "@/views/modules/more/section/profile-account-dialog/top-up-points/checkout-dialog/stripe-checkout/cancel-page.vue"
     )
 };
 
