@@ -12,5 +12,8 @@ export const IMAGES = {
   CREDIT_CARD_FRONT: "./img/images/visa_card_front.png",
   CREDIT_CARD_BACK: "./img/images/visa_card_back.png",
   TRANACTION_SUCCESS: "./img/images/transaction_success.jpeg",
-  TRANSACTION_CANCELLED: "./img/images/transaction_cancelled.png"
+  TRANSACTION_CANCELLED: "./img/images/transaction_cancelled.png",
+  INSUFFICIENT_POINT: "./img/images/insufficient.png",
+  CHECK_IN: "./img/images/check_in.jpg",
+  LOGO: "./img/logo/logo.png"
 };

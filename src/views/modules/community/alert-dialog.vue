@@ -20,7 +20,7 @@
             style="min-height: calc(100vh - 50px)"
           >
             <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
-              <q-img :src="insufficientImage" />
+              <q-img :src="IMAGES.INSUFFICIENT_POINT" />
               <q-item-label
                 style="font-weight: 600"
                 class="text-caption text-grey-8 text-center q-mt-sm"
@@ -58,8 +58,7 @@
 
 <script setup lang="ts">
   import { useDialogPluginComponent } from "quasar";
-
-  // .ts files
+  import { IMAGES } from "@/constants";
 
   import { useUtilities } from "@/composable/use-utilities";
 
@@ -72,8 +71,6 @@
       isDialogVisible.value = false;
     });
   });
-
-  const insufficientImage = ref("/img/icons/insufficient.png");
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
