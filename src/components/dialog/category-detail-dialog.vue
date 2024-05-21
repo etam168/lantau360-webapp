@@ -9,70 +9,73 @@
   >
     <q-layout view="lHh lpr lFf" container style="max-width: 1024px; background-color: #f6f6f6">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title>{{ categoryData.dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <q-page>
           <div
-            v-if="renderer !== RENDERER.TIMETABLE && renderer !== RENDERER.EMERGENCY"
+            v-if="
+              categoryData.renderer !== RENDERER.TIMETABLE &&
+              categoryData.renderer !== RENDERER.EMERGENCY
+            "
             class="q-items-center q-pa-none"
           >
             <gallery-image-list :image-list="galleryItems" />
           </div>
 
           <atm-renderer
-            v-if="renderer === RENDERER.ATM"
+            v-if="categoryData.renderer === RENDERER.ATM"
             :item="item"
             :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <site-renderer
-            v-else-if="renderer === RENDERER.SITE"
+            v-else-if="categoryData.renderer === RENDERER.SITE"
             :item="item"
             :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <business-renderer
-            v-else-if="renderer === RENDERER.BUSINESS"
+            v-else-if="categoryData.renderer === RENDERER.BUSINESS"
             :item="item"
             :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <timetable-renderer
-            v-else-if="renderer === RENDERER.TIMETABLE"
+            v-else-if="categoryData.renderer === RENDERER.TIMETABLE"
             :item="item"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
           <taxi-renderer
-            v-else-if="renderer === RENDERER.TAXI"
+            v-else-if="categoryData.renderer === RENDERER.TAXI"
             :item="item"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
           <daytrip-renderer
-            v-else-if="renderer === RENDERER.DAYTRIP"
+            v-else-if="categoryData.renderer === RENDERER.DAYTRIP"
             :item="item"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
           <emergency-renderer
-            v-else-if="renderer === RENDERER.EMERGENCY"
+            v-else-if="categoryData.renderer === RENDERER.EMERGENCY"
             :item="item"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
           <restaurant-renderer
-            v-else-if="renderer === RENDERER.RESTAURANT"
+            v-else-if="categoryData.renderer === RENDERER.RESTAURANT"
             :item="item"
             :gallery-images="galleryImagesCompleteList"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
-            >YES</restaurant-renderer
+            >{{ $t("action.yes") }}</restaurant-renderer
           >
         </q-page>
       </q-page-container>
@@ -110,7 +113,7 @@
     }
   });
 
-  const { translate, eventBus } = useUtilities();
+  const { translate, eventBus, isSiteView, isBusinessView } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
@@ -119,27 +122,39 @@
   const galleryItems = ref<GalleryImageType[]>([]);
   const galleryImagesCompleteList = ref<GalleryImageType[]>([]);
 
-  const dialogTitle = computed(() => {
-    switch (true) {
-      case "siteId" in props.item:
-        return translate(props.item.siteName, props.item.meta, "siteName");
-      case "businessId" in props.item:
-        return translate(props.item.businessName, props.item.meta, "businessName");
-      default:
-        return "";
-    }
-  });
+  function getCategoryData() {
+    let url = "";
+    let renderer = "";
+    let dialogTitle = "";
 
-  const galleryUrl = computed(() => {
-    switch (true) {
-      case "siteId" in props.item:
-        return `${URL.SITE_GALLERY}/${props.item.siteId}`;
-      case "businessId" in props.item:
-        return `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
-      default:
-        return "";
+    if (isSiteView(props.item)) {
+      url = `${URL.SITE_GALLERY}/${props.item.siteId}`;
+      renderer = RENDERER.SITE;
+      dialogTitle = translate(props.item.siteName, props.item.meta, "siteName");
+    } else if (isBusinessView(props.item)) {
+      url = `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
+      renderer = RENDERER.BUSINESS;
+      dialogTitle = translate(props.item.businessName, props.item.meta, "businessName");
     }
-  });
+
+    if (props.item.directoryTemplate == TEMPLATE.ATM.value) {
+      renderer = RENDERER.ATM;
+    } else if (props.item.directoryTemplate == TEMPLATE.TIMETABLE.value) {
+      renderer = RENDERER.TIMETABLE;
+    } else if (props.item.directoryTemplate == TEMPLATE.TAXI.value) {
+      renderer = RENDERER.TAXI;
+    } else if (props.item.directoryTemplate == TEMPLATE.RESTAURANT.value) {
+      renderer = RENDERER.RESTAURANT;
+    } else if (props.item.directoryTemplate == TEMPLATE.DAYTRIP.value) {
+      renderer = RENDERER.DAYTRIP;
+    } else if (props.item.directoryTemplate == TEMPLATE.EMERGENCY.value) {
+      renderer = RENDERER.EMERGENCY;
+    }
+
+    return { url, renderer, dialogTitle };
+  }
+
+  const categoryData = computed(() => getCategoryData());
 
   const favoriteSiteItems = ref(
     (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
@@ -149,11 +164,11 @@
   );
 
   const isFavourite = computed(() => {
-    if ("siteId" in props.item) {
+    if (isSiteView(props.item)) {
       const favItems = favoriteSiteItems.value;
       const item = props.item as SiteView;
       return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
-    } else if ("businessId" in props.item) {
+    } else if (isBusinessView(props.item)) {
       const favItems = favoriteBusinessItems.value;
       const item = props.item as BusinessView;
       return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
@@ -161,7 +176,7 @@
   });
 
   const onBtnFavClick = () => {
-    if ("siteId" in props.item) {
+    if (isSiteView(props.item)) {
       const item = props.item as SiteView;
       const index = favoriteSiteItems.value.findIndex(fav => fav.siteId === item.siteId);
 
@@ -174,7 +189,7 @@
       }
 
       LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteSiteItems.value);
-    } else if ("businessId" in props.item) {
+    } else if (isBusinessView(props.item)) {
       const item = props.item as BusinessView;
       const index = favoriteBusinessItems.value.findIndex(
         fav => fav.businessId === item.businessId
@@ -194,29 +209,6 @@
     eventBus.emit("favoriteUpdated", props.item);
   };
 
-  const renderer = computed(() => {
-    switch (true) {
-      case props.item.directoryTemplate == TEMPLATE.ATM.value:
-        return RENDERER.ATM;
-      case props.item.directoryTemplate == TEMPLATE.TIMETABLE.value:
-        return RENDERER.TIMETABLE;
-      case props.item.directoryTemplate == TEMPLATE.TAXI.value:
-        return RENDERER.TAXI;
-      case props.item.directoryTemplate == TEMPLATE.RESTAURANT.value:
-        return RENDERER.RESTAURANT;
-      case props.item.directoryTemplate == TEMPLATE.DAYTRIP.value:
-        return RENDERER.DAYTRIP;
-      case props.item.directoryTemplate == TEMPLATE.EMERGENCY.value:
-        return RENDERER.EMERGENCY;
-      case "siteId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
-        return RENDERER.SITE;
-      case "businessId" in props.item && props.item.directoryTemplate == TEMPLATE.DEFAULT.value:
-        return RENDERER.BUSINESS;
-      default:
-        return "";
-    }
-  });
-
   onMounted(() => {
     loadData();
     eventBus.on("CategoryDetailDialog", () => {
@@ -230,11 +222,10 @@
   }
 
   const loadData = async () => {
-    if (galleryUrl.value) {
+    const galleryUrl = categoryData.value.url;
+    if (galleryUrl) {
       try {
-        const [galleryResponse] = await Promise.all([
-          axios.get<GalleryImageType[]>(galleryUrl.value)
-        ]);
+        const [galleryResponse] = await Promise.all([axios.get<GalleryImageType[]>(galleryUrl)]);
 
         galleryImagesCompleteList.value = galleryResponse.data;
         galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
@@ -266,13 +257,4 @@
     }
     return 0;
   }
-
-  // function getMaskValue(templateValue: number) {
-  //   for (const make in TEMPLATE) {
-  //     if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-  //       return TEMPLATE[make as keyof typeof TEMPLATE].mask;
-  //     }
-  //   }
-  //   return 0;
-  // }
 </script>
