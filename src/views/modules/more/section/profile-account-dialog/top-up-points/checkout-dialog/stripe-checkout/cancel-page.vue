@@ -2,7 +2,7 @@
   <div class="email-verification">
     <div class="header">
       <q-avatar size="128px" square>
-        <q-img :src="img" />
+        <q-img :src="IMAGES.TRANSACTION_CANCELLED" />
       </q-avatar>
     </div>
 
@@ -13,10 +13,9 @@
 
 <script setup lang="ts">
   import i18n from "@/plugins/i18n/i18n";
+  import { IMAGES } from "@/constants";
 
   const { t } = i18n.global;
-
-  const img = ref("/img/icons/transaction_cancelled.png");
   const router = useRouter();
   const message = ref(t("more.message.transactionCancelled"));
 

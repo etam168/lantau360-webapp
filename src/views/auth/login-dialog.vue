@@ -33,7 +33,7 @@
               <!-- Move the avatar to the center -->
               <div class="q-mb-md text-h6 q-gutter-md">
                 <q-avatar size="128px" square>
-                  <q-img :src="logo" />
+                  <q-img :src="IMAGES.LOGO" />
                 </q-avatar>
               </div>
             </q-card-section>
@@ -76,6 +76,7 @@
   import Register from "./register-tab.vue";
   import ResetPassword from "./reset-password-tab.vue";
 
+  import { IMAGES } from "@/constants";
   const props = defineProps({
     tabValue: {
       type: String,
@@ -91,7 +92,6 @@
   const { eventBus } = useUtilities();
 
   const $q = useQuasar();
-  const logo = ref("/img/logo/logo.png");
   const isDialogVisible = ref();
   const tab = ref(props.tabValue);
   const userName = ref();

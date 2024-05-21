@@ -53,7 +53,7 @@
             class="row justify-center items-center"
           >
             <q-card-section :style="$q.screen.gt.xs ? 'width: 480px' : 'width : 100%'">
-              <q-img :src="noData" />
+              <q-img :src="IMAGES.NO_DATA_IMAGE" />
               <div
                 class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center"
               >
@@ -71,7 +71,7 @@
   // Quasar Import
   import { throttle } from "quasar";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-
+  import { IMAGES } from "@/constants";
   defineProps({
     data: {
       type: Object as PropType<CheckIn[]>,
@@ -83,8 +83,6 @@
   const isDialogVisible = ref();
   const $q = useQuasar();
   const { dateFormatter, getImageURL } = useUtilities();
-
-  const noData = ref("/img/icons/noData2.png");
 
   const computeIconPath = (item: any) => {
     return getImageURL(item.iconPath);

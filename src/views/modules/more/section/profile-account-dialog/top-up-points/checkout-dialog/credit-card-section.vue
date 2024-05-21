@@ -27,7 +27,7 @@
               icon="mdi-account"
               name="expiryDate"
               placeholder="08/26"
-              :slotImage="visaCardFrontImage"
+              :slotImage="IMAGES.CREDIT_CARD_FRONT"
             />
           </div>
           <div class="col">
@@ -37,7 +37,7 @@
               icon="mdi-account"
               name="csv"
               placeholder="XXX"
-              :slotImage="visaCardBackImage"
+              :slotImage="IMAGES.CREDIT_CARD_BACK"
             />
           </div>
         </div>
@@ -62,7 +62,7 @@
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
   import { useTopUpInput } from "../use-top-up-input";
-
+  import { IMAGES } from "@/constants";
   const emits = defineEmits(["update-dialog-status"]);
 
   const { creditCardCheckout } = useTopUpInput();
@@ -72,8 +72,6 @@
 
   const loading = ref(false);
   const selectedPackage = inject("selectedPackage") as Ref<any>;
-  const visaCardFrontImage = ref("/img/icons/visa_card_front.png");
-  const visaCardBackImage = ref("/img/icons/visa_card_back.png");
 
   const schema = yup.object({
     number: yup.string().required().label(t("more.creditCard.cardNumber")),

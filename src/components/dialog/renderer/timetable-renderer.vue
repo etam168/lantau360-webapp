@@ -69,9 +69,6 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
 
-  // .ts files
-  import { BLOB_URL } from "@/constants";
-
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,

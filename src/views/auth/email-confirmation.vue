@@ -2,7 +2,7 @@
   <div class="email-verification">
     <div class="header">
       <q-avatar size="128px" square>
-        <q-img :src="logo" />
+        <q-img :src="IMAGES.LOGO" />
       </q-avatar>
     </div>
     <div v-if="loading">
@@ -35,8 +35,8 @@
   import axios, { AxiosError } from "axios";
   import { useRoute } from "vue-router";
   import i18n from "@/plugins/i18n/i18n";
+  import { IMAGES } from "@/constants";
 
-  const logo = ref("/img/logo/logo.png");
   const token = ref();
   const userId = ref();
   const route = useRoute();

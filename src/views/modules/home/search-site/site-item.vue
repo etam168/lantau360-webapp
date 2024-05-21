@@ -30,7 +30,7 @@
 
   // .ts files
   import { STORAGE_KEYS } from "@/constants";
-  import { useUtilities, getImageURL } from "@/composable/use-utilities";
+  import { useUtilities } from "@/composable/use-utilities";
 
   const props = defineProps({
     row: {
@@ -41,13 +41,13 @@
 
   const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
   const emits = defineEmits(["on-detail"]);
+  const { translate, getImageURL } = useUtilities();
 
   const siteItem = computed(() => props.row);
 
   const isFavoriteItem = (siteId: string | number): boolean => {
     return favoriteItems.value.some((item: any) => item.directoryId === siteId);
   };
-  const { translate } = useUtilities();
 
   function handleDetail() {
     emits("on-detail");
