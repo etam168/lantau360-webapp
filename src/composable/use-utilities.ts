@@ -4,6 +4,7 @@ import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
 import { BusinessView } from "@/interfaces/models/views/business-view";
 import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
+import { CategoryTypes } from "@/interfaces/types/category-types";
 import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
 import { CommunityNewsView } from "@/interfaces/models/views/community-news-view";
@@ -12,12 +13,12 @@ import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
 import { MarketingType } from "@/interfaces/types/marketing-types";
 import { SiteView } from "@/interfaces/models/views/site-view";
+
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, IMAGES } from "@/constants";
 import { date, EventBus, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
-import { CategoryTypes } from "@/interfaces/types/category-types";
 
 const eventBus = new EventBus();
 
@@ -147,10 +148,6 @@ export function useUtilities() {
     });
   }
 
-  // function sleep(ms: number) {
-  //   return new Promise(resolve => setTimeout(resolve, ms));
-  // }
-
   function groupBy<T, K extends string | number>(
     array: T[],
     keyGetter: (item: T) => K
@@ -185,17 +182,6 @@ export function useUtilities() {
     const { locale } = useI18n({ useScope: "global" });
     return altName?.i18n?.[locale.value]?.[key] || label;
   }
-
-  // function translateAltName(locale: string, meta: any, key: string) {
-  //   switch (locale) {
-  //     case "hk":
-  //       return meta?.i18n?.hk?.[key] ?? "";
-  //     case "cn":
-  //       return meta?.i18n?.cn?.[key] ?? "";
-  //     default:
-  //       return "";
-  //   }
-  // }
 
   function navigateToWhatsApp(whatsAppNumber: string) {
     const whatsappURL = `https://wa.me/${whatsAppNumber}?text=Hello,%20Welcome%20to%20Lantau360.`;

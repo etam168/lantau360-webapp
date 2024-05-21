@@ -5,18 +5,17 @@
       :key="index"
       :item="item"
       :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
-      @on-click="throttledHandleDialog"
+      @on-click="handleDialog"
     />
   </div>
 </template>
 
 <script setup lang="ts">
   // Quasar Import
-  import { throttle, useQuasar } from "quasar";
+  import { useQuasar } from "quasar";
 
   // interface files
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { Directory } from "@/interfaces/models/entities/directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // .ts file
@@ -37,14 +36,15 @@
   const $q = useQuasar();
   const router = useRouter();
 
+  const isDialogOpen = ref(false);
+
   // Computed property for sorted data that does not mutate props
   const sortedData = computed(() => {
     const temp = [...props.data];
     const key = "directoryName";
     return temp.sort((a, b) => {
-      if (a.rank !== b.rank) {
-        return a.rank - b.rank;
-      }
+      if (a.rank !== b.rank) return a.rank - b.rank;
+
       const directoryA = translate(a.directoryName, a.meta, key);
       const directoryB = translate(b.directoryName, b.meta, key);
       return directoryA.localeCompare(directoryB, undefined, { sensitivity: "base" });
@@ -52,77 +52,77 @@
   });
 
   const handleDialog = async (item: DirectoryTypes) => {
-    const directoryListUrl = getDirectoryListUrl(item);
-    try {
-      let directoryCheckInResponse;
-      if (isUserLogon() && isDirectory(item) && DIRECTORY_GROUPS.HOME.includes(item.groupId)) {
-        directoryCheckInResponse = await axios.get<CheckIn[]>(
-          `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${(item as Directory).directoryId}`
+    if (isDialogOpen.value) return;
+
+    isDialogOpen.value = true;
+    const requestUrls = [];
+
+    if (isCommunityDirectory(item)) {
+      requestUrls.push(`${URL.DIRECTORY_LIST.POSTING}/${item.communityDirectoryId}`);
+    } else if (isDirectory(item) && DIRECTORY_GROUPS.HOME.includes(item.groupId)) {
+      requestUrls.push(`${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`);
+      if (isUserLogon())
+        requestUrls.push(
+          `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${item.directoryId}`
         );
-      }
+    } else if (isDirectory(item) && DIRECTORY_GROUPS.BUSINESS.includes(item.groupId)) {
+      requestUrls.push(`${URL.DIRECTORY_LIST.BUSINESS}/${item.directoryId}`);
+    }
 
-      const response = await axios.get<CategoryTypes[]>(directoryListUrl);
+    try {
+      const axiosRequests = requestUrls.map(url => axios.get(url));
+      const responses = await Promise.all(axiosRequests);
 
-      if (response.status === 200) {
-        // Call the throttled functions to create the dialogs
+      const directoryResponse = responses[0];
+      if (directoryResponse.status === 200) {
+        const directoryData = directoryResponse.data;
+        const checkInData = responses[1] ? responses[1].data : [];
+
         if (isCommunityDirectory(item)) {
-          throttledCreateCommunityDialog(item, response.data);
+          CommunityDialog(item, directoryData);
         } else {
-          throttledCreateCategoryDialog(item, response.data, directoryCheckInResponse?.data ?? []);
+          CategoryDialog(item, directoryData, checkInData);
         }
       }
     } catch (error) {
-      // console.error("Error fetching data: ", error);
+      console.error("Error fetching data: ", error);
     }
   };
 
-  const createCommunityDialog = (item: DirectoryTypes, itemList: CategoryTypes[]) => {
+  function closeDialog() {
+    isDialogOpen.value = false;
+  }
+
+  function CommunityDialog(dir: DirectoryTypes, itemList: CategoryTypes[]) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-item-list-dialog.vue")
       ),
       componentProps: {
         directoryItemsList: itemList,
-        directory: item
-        // groupBykey: groupBy
+        directory: dir
       }
-    });
-  };
+    })
+      .onCancel(closeDialog)
+      .onOk(closeDialog)
+      .onDismiss(closeDialog);
+  }
 
-  const createCategoryDialog = (
-    item: DirectoryTypes,
-    itemList: CategoryTypes[],
-    directoryCheckIn: CheckIn[]
-  ) => {
+  function CategoryDialog(dir: DirectoryTypes, itemList: CategoryTypes[], checkIn: CheckIn[]) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-item-list-dialog.vue")
       ),
       componentProps: {
         directoryItemsList: itemList,
-        directory: item,
-        directoryCheckIns: directoryCheckIn
+        directory: dir,
+        directoryCheckIns: checkIn
       }
-    });
-  };
-
-  const throttledCreateCommunityDialog = throttle(createCommunityDialog, 2000);
-  const throttledCreateCategoryDialog = throttle(createCategoryDialog, 2000);
-
-  function getDirectoryListUrl(item: DirectoryTypes) {
-    switch (true) {
-      case isCommunityDirectory(item):
-        return `${URL.DIRECTORY_LIST.POSTING}/${item.communityDirectoryId}`;
-      case isDirectory(item) && DIRECTORY_GROUPS.HOME.includes(item.groupId):
-        return `${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`;
-      case isDirectory(item):
-        return `${URL.DIRECTORY_LIST.BUSINESS}/${item.directoryId}`;
-      default:
-        return "";
-    }
+    })
+      .onCancel(closeDialog)
+      .onOk(closeDialog)
+      .onDismiss(closeDialog);
   }
-  // Throttle the handleDialog function
-  const throttledHandleDialog = throttle(handleDialog, 2000);
 
   onMounted(() => {
     eventBus.on("navigateToMore", () => {

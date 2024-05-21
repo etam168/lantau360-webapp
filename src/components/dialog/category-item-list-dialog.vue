@@ -58,18 +58,18 @@
 
 <script setup lang="ts">
   // interface files
+  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { Directory } from "@/interfaces/models/entities/directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { TabItem } from "@/interfaces/tab-item";
 
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME, URL } from "@/constants";
-  import { Directory } from "@/interfaces/models/entities/directory";
   import { useUserStore } from "@/stores/user";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const props = defineProps({
     directoryItemsList: {
@@ -85,22 +85,22 @@
       required: true
     }
   });
+
   const { locale } = useI18n();
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, translate, eventBus } = useUtilities();
   const $q = useQuasar();
-  const isDialogVisible = ref();
-  const directoryItems = ref<any>(props?.directoryItemsList ?? []);
-  const checkInItems = ref<any>(props?.directoryCheckIns ?? []);
-
-  const favoriteItems = ref<any>(getFavItem() || []);
   const userStore = useUserStore();
+
+  const checkInItems = ref<any>(props?.directoryCheckIns ?? []);
+  const directoryItems = ref<any>(props?.directoryItemsList ?? []);
+  const favoriteItems = ref<any>(getFavItem() || []);
+  const isDialogVisible = ref();
 
   const dialogTitle = computed(() =>
     translate(props.directory.directoryName, props.directory.meta, "directoryName")
   );
 
-  const template = computed(() => props.directory.meta?.template);
   const groupBykey = computed(() =>
     props.directory.meta?.groupByKey !== NONE ? props.directory.meta?.groupByKey : null
   );
@@ -116,6 +116,8 @@
           | number // Make sure the key exists on the item
     );
   });
+
+  const template = computed(() => props.directory.meta?.template);
 
   // Function to filter groupedArray by group name
   const filterGroupedArray = (groupName: string) => {
