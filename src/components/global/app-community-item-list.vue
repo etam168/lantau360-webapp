@@ -26,157 +26,18 @@
 
     <q-tab-panels v-model="tab" style="width: 100%; height: 100%">
       <q-tab-panel name="allDirectory" class="q-pa-none">
-        <q-list v-if="directoryItems.length > 0">
-          <q-item
-            v-for="item in directoryItems"
-            :key="item.directoryId"
-            class="shadow-1 q-pa-sm q-mb-md"
-          >
-            <q-item-section avatar>
-              <q-avatar size="64px">
-                <q-img
-                  ratio="1"
-                  :src="
-                    (item as PostingView)?.memberImage
-                      ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
-                      : '/img/icons/no_image_available.jpeg'
-                  "
-                >
-                  <template v-slot:error>
-                    <div class="absolute-full flex flex-center bg-negative text-white">
-                      {{ $t("errors.cannotLoadImage") }}
-                    </div>
-                  </template>
-                </q-img>
-              </q-avatar>
-            </q-item-section>
-
-            <q-item class="q-pa-none" style="width: 100%">
-              <q-item-section>
-                <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
-                <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
-              </q-item-section>
-              <q-space />
-              <q-item-section side top class="q-pa-none"
-                ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
-                <q-item class="q-pa-none">
-                  <q-item-section class="q-pa-none">
-                    <q-btn
-                      color="primary"
-                      icon="edit"
-                      size="md"
-                      dense
-                      flat
-                      rounded
-                      @click="editPosting(item as PostingView)"
-                      v-if="userStore.userId == (item as Posting).memberId"
-                    />
-                  </q-item-section>
-                  <q-item-section side style="padding-left: 0px">
-                    <q-btn
-                      color="primary"
-                      icon="info"
-                      size="md"
-                      dense
-                      flat
-                      rounded
-                      @click="handleItemClick(item)"
-                    />
-                  </q-item-section>
-                </q-item>
-              </q-item-section>
-            </q-item>
-          </q-item>
-        </q-list>
-        <q-card
-          flat
-          v-else
-          style="min-height: calc(100vh - 228px)"
-          class="row justify-center items-center"
-        >
-          <q-card-section class="text-center">
-            <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold">
-              {{ $t("errors.noRecord") }}
-            </div>
-          </q-card-section>
-        </q-card>
+        <app-community-tab-item-list
+          :directoryItems="directoryItems"
+          :directory="directory"
+          @item-click="handleItemClick"
+        />
       </q-tab-panel>
-
       <q-tab-panel name="myDirectory" class="q-pa-none">
-        <q-list v-if="directoryItems.length > 0">
-          <template v-for="item in directoryItems" :key="item.directoryId">
-            <div v-if="userStore.userId == (item as Posting).memberId">
-              <q-item class="shadow-1 q-pa-sm q-mb-md">
-                <q-item-section avatar>
-                  <q-avatar size="64px">
-                    <q-img
-                      ratio="1"
-                      :src="
-                        (item as PostingView)?.memberImage
-                          ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
-                          : '/img/icons/no_image_available.jpeg'
-                      "
-                    >
-                      <template v-slot:error>
-                        <div class="absolute-full flex flex-center bg-negative text-white">
-                          {{ $t("errors.cannotLoadImage") }}
-                        </div>
-                      </template>
-                    </q-img>
-                  </q-avatar>
-                </q-item-section>
-
-                <q-item class="q-pa-none" style="width: 100%">
-                  <q-item-section>
-                    <q-item-label> {{ memberName(item as PostingView) }} </q-item-label>
-                    <q-item-label> {{ memberTitle(item as PostingView) }} </q-item-label>
-                  </q-item-section>
-                  <q-space />
-                  <q-item-section side top class="q-pa-none"
-                    ><q-item-label>{{ getTimeAgo(item.createdAt) }}</q-item-label>
-                    <q-item class="q-pa-none">
-                      <q-item-section class="q-pa-none">
-                        <q-btn
-                          color="primary"
-                          icon="edit"
-                          size="md"
-                          dense
-                          flat
-                          rounded
-                          @click="editPosting(item as PostingView)"
-                          v-if="userStore.userId == (item as Posting).memberId"
-                        />
-                      </q-item-section>
-                      <q-item-section side style="padding-left: 0px">
-                        <q-btn
-                          color="primary"
-                          icon="info"
-                          size="md"
-                          dense
-                          flat
-                          rounded
-                          @click="handleItemClick(item)"
-                        />
-                      </q-item-section>
-                    </q-item>
-                  </q-item-section>
-                </q-item>
-              </q-item>
-            </div>
-          </template>
-        </q-list>
-        <q-card
-          flat
-          v-else
-          style="min-height: calc(100vh - 228px)"
-          class="row justify-center items-center"
-        >
-          <q-card-section class="text-center">
-            <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold">
-              {{ $t("errors.noRecord") }}
-            </div>
-          </q-card-section>
-        </q-card>
+        <app-community-tab-item-list
+          :directoryItems="myDirectoryItems"
+          :directory="directory"
+          @item-click="handleItemClick"
+        />
       </q-tab-panel>
     </q-tab-panels>
   </div>
@@ -186,10 +47,8 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { Posting } from "@/interfaces/models/entities/posting";
-  import { PostingView } from "@/interfaces/models/views/posting-view";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
   const $q = useQuasar();
@@ -213,7 +72,7 @@
     }
   });
 
-  const { getTimeAgo, translateAlt, translate } = useUtilities();
+  const { translateAlt, translate } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
   const userStore = useUserStore();
@@ -229,6 +88,10 @@
     }
   });
 
+  const myDirectoryItems = computed(() => {
+    return props.directoryItems.filter(item => userStore.userId === (item as Posting).memberId);
+  });
+
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("allDirectory");
   const tabItems = ref([
@@ -241,14 +104,6 @@
       label: t("community.tabItems.myDirectory", { directory: directoryName.value })
     }
   ]);
-
-  const memberName = (postItem: PostingView) =>
-    postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
-
-  const memberTitle = (postItem: PostingView) =>
-    postItem.title !== null && postItem.title !== undefined && postItem.title !== ""
-      ? postItem.title
-      : postItem.memberEmail;
 
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
@@ -264,18 +119,6 @@
     } else {
       emit("create-posting");
     }
-  }
-
-  function editPosting(item: Posting) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/views/modules/community/edit-dialog/index.vue")
-      ),
-      componentProps: {
-        directory: props.directory,
-        postingData: item
-      }
-    });
   }
 
   onMounted(() => {

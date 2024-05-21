@@ -1,5 +1,5 @@
 <template>
-  <div class="q-gutter-y-md" :class="isCommunityEvent(props.items[0]) ? 'row q-col-gutter-sm' : ''">
+  <div :class="isCommunityEvent(props.items[0]) ? 'row q-col-gutter-sm' : 'q-gutter-y-md'">
     <div v-for="(item, index) in sortedItemsWithType" :key="index" class="col-md-3 col-sm-4 col-6">
       <news-card v-if="isCommunityNews(item)" :item="item" />
       <notice-card v-else-if="isCommunityNotice(item)" :item="item" />
