@@ -23,7 +23,7 @@
       </q-carousel-slide>
     </q-carousel>
   </q-responsive>
-  <q-img v-else :src="CAROUSEL_BACKGROUND" :ratio="aspectRatio" />
+  <q-img v-else :src="IMAGES.CAROUSEL_BACKGROUND" :ratio="aspectRatio" />
 </template>
 
 <script setup lang="ts">
@@ -36,7 +36,7 @@
   import { CarouselTypes } from "@/interfaces/types/carousel-types";
 
   // .ts file
-  import { CAROUSEL_BACKGROUND } from "@/constants";
+  import { IMAGES } from "@/constants";
 
   const props = defineProps({
     data: {

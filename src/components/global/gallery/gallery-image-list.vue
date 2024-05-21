@@ -46,14 +46,14 @@
                 fit="cover"
                 :ratio="1"
                 class="cursor-pointer"
-                :placeholder-src="PLACEHOLDER_THUMBNAIL"
+                :placeholder-src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER"
                 :src="getImageURL(row.imagePath)"
                 @click="showImage(row)"
               >
                 <div v-if="index === virtualScrollIndex" class="absolute-full flex flex-center" />
 
                 <template #error>
-                  <q-img :src="PLACEHOLDER_THUMBNAIL" />
+                  <q-img :src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER" />
                 </template>
 
                 <template #loading>
@@ -86,7 +86,7 @@
 </template>
 
 <script setup lang="ts">
-  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { IMAGES } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   const { getImageURL } = useUtilities();
@@ -107,7 +107,7 @@
   const image = computed(() => {
     return props.imageList.length == 1
       ? getImageURL(props.imageList[0].imagePath)
-      : PLACEHOLDER_THUMBNAIL;
+      : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
   });
 
   const virtualScroll = ref();

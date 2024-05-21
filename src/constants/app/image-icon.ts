@@ -15,5 +15,8 @@ export const IMAGES = {
   TRANSACTION_CANCELLED: "./img/images/transaction_cancelled.png",
   INSUFFICIENT_POINT: "./img/images/insufficient.png",
   CHECK_IN: "./img/images/check_in.jpg",
-  LOGO: "./img/logo/logo.png"
+  LOGO: "./img/logo/logo.png",
+  CAROUSEL_BACKGROUND: "@/assets/img/home-bg.webp",
+  PLACEHOLDER_AVATAR: "./img/icons/avatar.png",
+  NO_INTERNET: "./img/icons/no_wifi.png"
 };

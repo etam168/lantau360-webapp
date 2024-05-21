@@ -128,11 +128,6 @@
 </script>
 
 <style scoped>
-  .bg-image {
-    background: url("@/assets/img/logon-bg-lantau.jpg");
-    background-size: cover;
-    background-position: center center;
-  }
   .q-tab {
     cursor: default !important;
     pointer-events: none;

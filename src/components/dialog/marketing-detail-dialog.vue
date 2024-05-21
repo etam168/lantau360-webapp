@@ -19,7 +19,7 @@
           </div>
           <div v-else>
             <q-responsive :ratio="16 / 9">
-              <q-img :src="PLACEHOLDER_THUMBNAIL" />
+              <q-img :src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER" />
             </q-responsive>
           </div>
           <advertisement-renderer v-if="renderer === RENDERER.ADVERTISEMENT" :item="item" />
@@ -39,7 +39,7 @@
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
-  import { URL, RENDERER, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { URL, RENDERER, IMAGES } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

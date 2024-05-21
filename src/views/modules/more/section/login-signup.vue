@@ -6,7 +6,7 @@
           <q-avatar size="72px" font-size="36px">
             <q-img :ratio="1" :src="avatar">
               <template v-slot:error>
-                <q-img :src="PLACEHOLDER_AVATAR" style="left: 0" />
+                <q-img :src="IMAGES.PLACEHOLDER_AVATAR" style="left: 0" />
               </template>
 
               <template v-slot:loading>
@@ -100,7 +100,7 @@
   import { LocalStorage } from "quasar";
 
   // .ts file
-  import { BLOB_URL, PLACEHOLDER_AVATAR, STORAGE_KEYS } from "@/constants";
+  import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
   const userStore = useUserStore();
@@ -113,7 +113,7 @@
         ? userStore.profilePic
         : `${BLOB_URL}/${userStore.profilePic}`;
     }
-    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
+    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : IMAGES.PLACEHOLDER_AVATAR;
   });
 
   const logout = () => {

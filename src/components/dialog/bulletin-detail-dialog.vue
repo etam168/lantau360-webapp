@@ -19,7 +19,7 @@
           </div>
           <div v-else>
             <q-responsive :ratio="16 / 9">
-              <q-img :src="PLACEHOLDER_THUMBNAIL" />
+              <q-img :src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER" />
             </q-responsive>
           </div>
 
@@ -40,7 +40,7 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { URL, RENDERER, PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { URL, RENDERER, IMAGES } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components

@@ -12,7 +12,7 @@
           <div class="text-center row items-center justify-center q-pa-md">
             <div>
               <div class="text-h3">{{ $t("errors.weAreSorry") }}</div>
-              <q-img ratio="1" :src="NO_INTERNET" />
+              <q-img ratio="1" :src="IMAGES.NO_INTERNET" />
               <div class="text-h5">{{ $t("errors.noInternetConnection") }}</div>
               <div class="text-body2" style="opacity: 0.7">
                 {{ $t("errors.seemsInternetConnection") }}
@@ -32,5 +32,5 @@
 </template>
 
 <script setup lang="ts">
-  import { NO_INTERNET } from "@/constants";
+  import { IMAGES } from "@/constants";
 </script>

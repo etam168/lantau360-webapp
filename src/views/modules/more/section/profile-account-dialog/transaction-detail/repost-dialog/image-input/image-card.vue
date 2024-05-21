@@ -1,7 +1,7 @@
 <template>
   <q-card v-if="!row.isAddCard">
     <q-img
-      :placeholder-src="PLACEHOLDER_THUMBNAIL"
+      :placeholder-src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER"
       :src="row.imagePath"
       style="width: 133px; height: 100px"
     >
@@ -33,7 +33,7 @@
   import { GalleryImage } from "@/interfaces/models/custom-models/image-list";
 
   // .ts files
-  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
+  import { IMAGES } from "@/constants";
 
   // Custom Components
   import ImageInput from "./image-input.vue";

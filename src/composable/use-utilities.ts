@@ -13,7 +13,7 @@ import { MarketingType } from "@/interfaces/types/marketing-types";
 
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
-import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
+import { BLOB_URL, IMAGES } from "@/constants";
 import { date, EventBus, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
 
@@ -54,7 +54,7 @@ export function useUtilities() {
   }
 
   function getImageURL(imagePath: any) {
-    return imagePath != null ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
+    return imagePath != null ? `${BLOB_URL}/${imagePath}` : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
   }
 
   const getTimeAgo = (dateTime: Date) => {
