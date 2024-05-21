@@ -6,7 +6,7 @@
       height: $q.screen.gt.xs ? '370px' : 'auto'
     }"
   >
-    <q-card-section class="q-pa-none">
+    <q-card-section class="q-pa-none" :style="$q.screen.lt.sm ? 'width: 100%' : ''">
       <map-component
         style="flex: 1"
         :style="{
