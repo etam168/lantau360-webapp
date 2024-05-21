@@ -12,7 +12,7 @@ export const IMAGES = {
   CREDIT_CARD_BACK: "./resources/images/visa_card_back.png",
   CREDIT_CARD_FRONT: "./resources/images/visa_card_front.png",
   INSUFFICIENT_POINT: "./resources/images/insufficient.png",
-  LOGO: "./resources/logo/logo.png",
+  LOGO: "./resources/logo/logo.jpeg",
   NO_DATA_IMAGE: "./resources/images/no_data_image.png",
   NO_IMAGE_AVAILABLE_PLACEHOLDER: "./resources/images/no_image_available_placeholder.jpeg",
   NO_INTERNET: "./resources/images/no_wifi.png",
