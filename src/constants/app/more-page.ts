@@ -1,4 +1,4 @@
-import ICONS from "./image-icon";
+import { ICONS } from "./image-icon";
 
 export const MENU = {
   CHECKIN: "checkIn",

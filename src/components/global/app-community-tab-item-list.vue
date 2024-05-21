@@ -8,14 +8,7 @@
       >
         <q-item-section avatar>
           <q-avatar size="64px">
-            <q-img
-              ratio="1"
-              :src="
-                (item as PostingView)?.memberImage
-                  ? `${BLOB_URL}/${(item as PostingView)?.memberImage}`
-                  : '/img/icons/no_image_available.jpeg'
-              "
-            >
+            <q-img ratio="1" :src="getImageURL((item as PostingView)?.memberImage)">
               <template v-slot:error>
                 <div class="absolute-full flex flex-center bg-negative text-white">
                   {{ $t("errors.cannotLoadImage") }}
@@ -83,12 +76,10 @@
   import { Posting } from "@/interfaces/models/entities/posting";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
-  // .ts files
-  import { BLOB_URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
   const $q = useQuasar();
-
+  const { getImageURL } = useUtilities();
   const emit = defineEmits(["item-click", "create-posting"]);
 
   const props = defineProps({

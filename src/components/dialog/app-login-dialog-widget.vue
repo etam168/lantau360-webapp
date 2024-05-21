@@ -19,7 +19,7 @@
             style="min-height: calc(100vh - 50px)"
           >
             <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
-              <q-img :src="checkinImage" />
+              <q-img :src="IMAGES.CHECK_IN" />
               <q-item-label
                 style="font-weight: 600"
                 class="text-caption text-grey-8 text-center q-mt-sm"
@@ -56,13 +56,13 @@
 </template>
 <script setup lang="ts">
   import { useQuasar } from "quasar";
+  import { IMAGES } from "@/constants";
 
   const $q = useQuasar();
   const emits = defineEmits(["callback", "on-cancel"]);
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
-  const checkinImage = ref("/img/icons/checkin.jpg");
   const { eventBus } = useUtilities();
 
   function showLoginDialog() {

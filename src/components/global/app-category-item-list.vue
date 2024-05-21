@@ -49,12 +49,7 @@
     >
       <q-item-section avatar>
         <q-avatar size="64px" square>
-          <q-img
-            ratio="1"
-            :src="
-              item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'
-            "
-          >
+          <q-img ratio="1" :src="getImageURL(item.iconPath)">
             <template v-slot:error>
               <div class="absolute-full flex flex-center bg-negative text-white">
                 {{ $t("errors.cannotLoadImage") }}
@@ -132,7 +127,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { BLOB_URL, TEMPLATE } from "@/constants";
+  import { TEMPLATE } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   const emit = defineEmits(["item-click"]);

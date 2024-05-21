@@ -13,14 +13,7 @@
         >
           <q-item-section avatar>
             <q-avatar size="64px" square>
-              <q-img
-                ratio="1"
-                :src="
-                  item.iconPath
-                    ? `${BLOB_URL}/${item.iconPath}`
-                    : '/img/icons/no_image_available.jpeg'
-                "
-              >
+              <q-img ratio="1" :src="getImageURL(item.iconPath)">
                 <template v-slot:error>
                   <div class="absolute-full flex flex-center bg-negative text-white">
                     {{ $t("errors.cannotLoadImage") }}
@@ -49,7 +42,6 @@
   import { useQuasar } from "quasar";
 
   // .ts file
-  import { BLOB_URL } from "@/constants";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
@@ -67,7 +59,7 @@
     }
   });
 
-  const { groupBy, translate } = useUtilities();
+  const { groupBy, translate, getImageURL } = useUtilities();
   const favItems = computed(() => props.listItems as BusinessView[] | SiteView[]);
 
   const groupedArray = computed(() => {

@@ -2,7 +2,7 @@
   <div class="email-verification">
     <div class="header">
       <q-avatar size="128px" square>
-        <q-img :src="logo" />
+        <q-img :src="IMAGES.TRANACTION_SUCCESS" />
       </q-avatar>
     </div>
     <div v-if="loading">
@@ -27,13 +27,12 @@
 </template>
 
 <script setup lang="ts">
-  import { URL } from "@/constants";
+  import { URL, IMAGES } from "@/constants";
   import axios, { AxiosError } from "axios";
   import { useRoute } from "vue-router";
   import i18n from "@/plugins/i18n/i18n";
   import { useUserStore } from "@/stores/user";
 
-  const logo = ref("/img/icons/payment_success.jpeg");
   const points = ref();
   const amount = ref();
 
