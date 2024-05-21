@@ -41,6 +41,7 @@
                 />
               </q-item-section>
             </template>
+            <q-separator />
 
             <q-card>
               <q-card-section class="q-pa-md">
