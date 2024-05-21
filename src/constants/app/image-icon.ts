@@ -7,16 +7,16 @@ export const ICONS = {
 };
 
 export const IMAGES = {
-  CAROUSEL_BACKGROUND: "./resources/images/home-bg.webp",
-  CHECK_IN: "./resources/images/check_in.jpg",
+  CAROUSEL_BACKGROUND: "./resources/images/home-bg.png",
+  CHECK_IN: "./resources/images/check_in.png",
   CREDIT_CARD_BACK: "./resources/images/visa_card_back.png",
   CREDIT_CARD_FRONT: "./resources/images/visa_card_front.png",
   INSUFFICIENT_POINT: "./resources/images/insufficient.png",
-  LOGO: "./resources/logo/logo.jpeg",
+  LOGO: "./resources/logo/logo.png",
   NO_DATA_IMAGE: "./resources/images/no_data_image.png",
-  NO_IMAGE_AVAILABLE_PLACEHOLDER: "./resources/images/no_image_available_placeholder.jpeg",
+  NO_IMAGE_AVAILABLE_PLACEHOLDER: "./resources/images/no_image_available_placeholder.png",
   NO_INTERNET: "./resources/images/no_wifi.png",
   PLACEHOLDER_AVATAR: "./resources/images/avatar_placeholder.png",
-  TRANACTION_SUCCESS: "./resources/images/transaction_success.jpeg",
+  TRANACTION_SUCCESS: "./resources/images/transaction_success.png",
   TRANSACTION_CANCELLED: "./resources/images/transaction_cancelled.png"
 };

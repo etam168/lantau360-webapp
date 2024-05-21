@@ -60,7 +60,7 @@
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const iconPath = computed(() => {
     const fileNameWithoutExtension = props.data?.icon.split(".")[0];
-    return `/img/weather/${fileNameWithoutExtension}.svg`;
+    return `/resources/weather/${fileNameWithoutExtension}.svg`;
   });
 
   const weatherDate = computed(() =>
