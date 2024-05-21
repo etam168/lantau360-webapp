@@ -51,12 +51,6 @@
 
   const isDialogVisible = ref();
 
-  onMounted(() => {
-    eventBus.on("BusinessVoucherDialog", () => {
-      isDialogVisible.value = false;
-    });
-  });
-
   const translatedContent: any = ref(voucherItem.value.description);
   const navigateToPhone = () => {
     if (voucherItem.value.contactPhone) {
@@ -64,7 +58,14 @@
       window.location.href = phoneURL;
     }
   };
+
+  onMounted(() => {
+    eventBus.on("BusinessVoucherDialog", () => {
+      isDialogVisible.value = false;
+    });
+  });
 </script>
+
 <style scoped>
   .button-margin {
     margin-right: 40px;

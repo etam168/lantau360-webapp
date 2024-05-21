@@ -12,10 +12,7 @@
       class="my-card"
       :style="$q.screen.gt.xs ? 'width: 300px' : ''"
     >
-      <q-img
-        :ratio="16 / 9"
-        :src="item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'"
-      >
+      <q-img :ratio="16 / 9" :src="getImageURL(item.iconPath)">
         <template v-slot:error>
           <div class="absolute-full flex flex-center bg-negative text-white">
             {{ $t("errors.cannotLoadImage") }}
@@ -160,7 +157,7 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { getImageURL, translate } = useUtilities();
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {
