@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="11 / 8" :src="imagePath" />
+    <q-img :ratio="11 / 8" :src="getImageURL(eventItem.bannerPath)" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">
@@ -33,7 +33,6 @@
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
 
   const props = defineProps({
@@ -44,7 +43,7 @@
   });
 
   const $q = useQuasar();
-  const { translate } = useUtilities();
+  const { translate, getImageURL } = useUtilities();
 
   const eventItem = computed(() => props.item as CommunityEventView);
 
@@ -60,12 +59,6 @@
       }
     });
   };
-
-  const imagePath = computed(() => {
-    return eventItem.value.bannerPath
-      ? `${BLOB_URL}/${eventItem.value.bannerPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

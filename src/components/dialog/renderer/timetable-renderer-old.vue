@@ -51,7 +51,7 @@
   });
 
   const emits = defineEmits(["on-favourite"]);
-
+  const { getImageURL } = useUtilities();
   const siteItem = computed(() => props.item as SiteView);
 
   onMounted(() => {
@@ -69,16 +69,12 @@
       {
         name: siteItem.value.subtitle1,
         label: translate(siteItem.value.subtitle1, siteItem.value.meta, "subtitle1"),
-        image: siteItem.value.bannerPath
-          ? `${BLOB_URL}/${siteItem.value.bannerPath}`
-          : "./img/icons/no_image_available.jpeg"
+        image: getImageURL(siteItem.value.bannerPath)
       } as TabItem,
       {
         name: siteItem.value.subtitle2,
         label: translate(siteItem.value.subtitle2, siteItem.value.meta, "subtitle2"),
-        image: siteItem.value.imagePath
-          ? `${BLOB_URL}/${siteItem.value.imagePath}`
-          : "./img/icons/no_image_available.jpeg"
+        image: getImageURL(siteItem.value.imagePath)
       } as TabItem
     ];
 

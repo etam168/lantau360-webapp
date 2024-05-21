@@ -70,10 +70,7 @@
 <script setup lang="ts">
   // Quasar Import
   import { throttle } from "quasar";
-  import { BLOB_URL } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-
-  // Interface files
 
   defineProps({
     data: {
@@ -85,12 +82,12 @@
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const $q = useQuasar();
-  const { dateFormatter } = useUtilities();
+  const { dateFormatter, getImageURL } = useUtilities();
 
   const noData = ref("/img/icons/noData2.png");
 
   const computeIconPath = (item: any) => {
-    return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
+    return getImageURL(item.iconPath);
   };
 
   const onItemClick = (item: any) => {

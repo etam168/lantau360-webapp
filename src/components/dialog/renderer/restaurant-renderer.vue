@@ -200,7 +200,7 @@
 
   // .ts files
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-
+  import { IMAGES } from "@/constants";
   const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
 
   const props = defineProps({
@@ -273,7 +273,7 @@
     const galleryValue = props.galleryImages;
     return businessItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
       ? getImageURL(galleryValue[1]?.imagePath)
-      : "./img/icons/no_image_available.jpeg";
+      : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
   });
 
   const navigateToPhone = () => {

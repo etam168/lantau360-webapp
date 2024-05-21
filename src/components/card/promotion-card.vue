@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="11 / 8" :src="imagePath" />
+    <q-img :ratio="11 / 8" :src="getImageURL(item.bannerPath)" />
 
     <q-card-section class="q-pa-sm">
       <q-item dense class="q-py-none">
@@ -35,10 +35,9 @@
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
 
   const $q = useQuasar();
-  const { translate } = useUtilities();
+  const { translate, getImageURL } = useUtilities();
   const props = defineProps({
     item: {
       type: Object as PropType<MarketingType>,
@@ -66,12 +65,6 @@
       }
     });
   };
-
-  const imagePath = computed(() => {
-    return props.item.bannerPath
-      ? `${BLOB_URL}/${props.item.bannerPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

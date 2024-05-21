@@ -1,6 +1,6 @@
 <template>
   <q-card class="my-card">
-    <q-img :ratio="1" :src="imagePath" />
+    <q-img :ratio="1" :src="getImageURL(item.bannerPath)" />
 
     <q-card-actions>
       <q-space />
@@ -24,11 +24,8 @@
   import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  // .ts files
-  import { BLOB_URL } from "@/constants";
-
   const $q = useQuasar();
-
+  const { getImageURL } = useUtilities();
   const props = defineProps({
     item: {
       type: Object as PropType<MarketingType>,
@@ -48,12 +45,6 @@
       }
     });
   };
-
-  const imagePath = computed(() => {
-    return props.item.bannerPath
-      ? `${BLOB_URL}/${props.item.bannerPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

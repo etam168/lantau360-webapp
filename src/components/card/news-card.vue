@@ -2,7 +2,7 @@
   <q-item clickable @click="throttledHandleDialog">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img :ratio="1" :src="imagePath" />
+        <q-img :ratio="1" :src="getImageURL(newsItem.iconPath)" />
       </q-avatar>
     </q-item-section>
 
@@ -25,7 +25,6 @@
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
 
   // .ts files
-  import { BLOB_URL } from "@/constants";
 
   const props = defineProps({
     item: {
@@ -35,7 +34,7 @@
   });
 
   const $q = useQuasar();
-  const { translate } = useUtilities();
+  const { translate, getImageURL } = useUtilities();
   const newsItem = computed(() => props.item as CommunityNews);
 
   const translatedContent: any = ref(
@@ -61,12 +60,6 @@
       }
     });
   }
-
-  const imagePath = computed(() => {
-    return newsItem.value.iconPath
-      ? `${BLOB_URL}/${newsItem.value.iconPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

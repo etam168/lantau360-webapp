@@ -2,7 +2,7 @@
   <q-item clickable @click="handleDetail" class="shadow-1 q-mb-md q-pl-sm">
     <q-item-section avatar>
       <q-avatar size="64px" square>
-        <q-img ratio="1" :src="computeIconPath" />
+        <q-img ratio="1" :src="getImageURL(businessItem.iconPath)" />
       </q-avatar>
     </q-item-section>
 
@@ -29,14 +29,14 @@
   import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // .ts files
-  import { BLOB_URL, STORAGE_KEYS } from "@/constants";
+  import { STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   const favoriteItems = ref<any>(LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []);
 
   const emits = defineEmits(["on-detail"]);
 
-  const { translate } = useUtilities();
+  const { translate, getImageURL } = useUtilities();
 
   const props = defineProps({
     row: {
@@ -46,12 +46,6 @@
   });
 
   const businessItem = computed(() => props.row);
-
-  const computeIconPath = computed(() => {
-    return businessItem.value.iconPath
-      ? `${BLOB_URL}/${businessItem.value.iconPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   function handleDetail() {
     emits("on-detail");

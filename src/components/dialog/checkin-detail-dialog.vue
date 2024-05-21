@@ -13,7 +13,7 @@
 
       <q-page-container>
         <q-page>
-          <q-img :ratio="16 / 9" :src="bannerPath" />
+          <q-img :ratio="16 / 9" :src="getImageURL(checkInItem.bannerPath)" />
 
           <q-list padding class="q-mx-sm q-pa-none">
             <q-item>
@@ -75,13 +75,6 @@
 <script setup lang="ts">
   import { ref } from "vue";
   import { CheckInView } from "@/interfaces/models/views/checkin-view";
-
-  // Interface files
-  //import { CheckIn } from "@/interfaces/models/entities/CheckIn";
-
-  // .ts files
-  import { BLOB_URL } from "@/constants";
-
   // 3rd Party Import
   import { LatLngExpression, latLngBounds } from "leaflet";
 
@@ -92,7 +85,7 @@
     }
   });
 
-  const { translate, dateTimeFormatter } = useUtilities();
+  const { translate, dateTimeFormatter, getImageURL } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const { locale, t } = useI18n({ useScope: "global" });
   const checkInItem = computed(() => props?.item as CheckInView);
@@ -127,12 +120,6 @@
       console.error(t("errors.mapLinkNotAvailable"));
     }
   };
-
-  const bannerPath = computed(() => {
-    return checkInItem.value.bannerPath
-      ? `${BLOB_URL}/${checkInItem.value.bannerPath}`
-      : "./img/icons/no_image_available.jpeg";
-  });
 
   const address = computed(() =>
     translate(checkInItem.value.subtitle1, checkInItem.value.meta, "subtitle1")

@@ -16,3 +16,4 @@ export { default as TEMPLATE } from "./app/template";
 
 export * from "./app/server-urls";
 export * from "./app/more-page";
+export * from "./app/image-icon";

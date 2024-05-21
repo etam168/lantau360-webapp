@@ -18,14 +18,7 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <q-img
-        class="rounded-borders"
-        :src="
-          siteItem.bannerPath
-            ? `${BLOB_URL}/${siteItem.bannerPath}`
-            : './img/icons/no_image_available.jpeg'
-        "
-      />
+      <q-img class="rounded-borders" :src="getImageURL(siteItem.bannerPath)" />
     </q-card-section>
   </q-card>
 
@@ -51,14 +44,7 @@
     </q-card-section>
 
     <q-card-section class="q-pt-none">
-      <q-img
-        class="rounded-borders"
-        :src="
-          siteItem.bannerPath
-            ? `${BLOB_URL}/${siteItem.bannerPath}`
-            : './img/icons/no_image_available.jpeg'
-        "
-      />
+      <q-img class="rounded-borders" :src="getImageURL(siteItem.bannerPath)" />
     </q-card-section>
 
     <q-card-section class="q-py-none">
@@ -71,14 +57,7 @@
       </div>
 
       <q-card-section class="q-px-none">
-        <q-img
-          class="rounded-borders"
-          :src="
-            siteItem.imagePath
-              ? `${BLOB_URL}/${siteItem.imagePath}`
-              : './img/icons/no_image_available.jpeg'
-          "
-        />
+        <q-img class="rounded-borders" :src="getImageURL(siteItem.imagePath)" />
       </q-card-section>
     </q-card-section>
   </q-card>
@@ -106,7 +85,7 @@
 
   const emits = defineEmits(["on-favourite"]);
   const { locale } = useI18n({ useScope: "global" });
-
+  const { getImageURL } = useUtilities();
   const siteItem = computed(() => props.item as SiteView);
 
   onMounted(() => {
@@ -129,9 +108,7 @@
           siteItem.value.meta,
           "customSubtitle1"
         ),
-        image: siteItem.value.bannerPath
-          ? `${BLOB_URL}/${siteItem.value.bannerPath}`
-          : "./img/icons/no_image_available.jpeg"
+        image: getImageURL(siteItem.value.bannerPath)
       } as TabItem,
       {
         name: siteItem.value.subtitle2,
@@ -141,9 +118,7 @@
           siteItem.value.meta,
           "customSubtitle2"
         ),
-        image: siteItem.value.imagePath
-          ? `${BLOB_URL}/${siteItem.value.imagePath}`
-          : "./img/icons/no_image_available.jpeg"
+        image: getImageURL(siteItem.value.imagePath)
       } as TabItem
     ];
 
