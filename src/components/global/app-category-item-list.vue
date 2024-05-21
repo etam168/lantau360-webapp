@@ -4,39 +4,7 @@
     :class="$q.screen.gt.xs ? 'row' : ''"
     class="q-gutter-md"
   >
-    <q-card
-      clickable
-      v-for="item in directoryItems"
-      :key="item.directoryId"
-      @click="handleItemClick(item)"
-      class="my-card"
-      :style="$q.screen.gt.xs ? 'width: 300px' : ''"
-    >
-      <q-img :ratio="16 / 9" :src="getImageURL(item.iconPath)">
-        <template v-slot:error>
-          <div class="absolute-full flex flex-center bg-negative text-white">
-            {{ $t("errors.cannotLoadImage") }}
-          </div>
-        </template>
-      </q-img>
-
-      <q-card-section>
-        <q-list>
-          <q-item class="q-pa-none">
-            <q-item-section>
-              <q-item-label overline>{{ translate(item.title, item.meta, "title") }}</q-item-label>
-              <q-item-label caption>Estimated Time: 2-3 hrs</q-item-label>
-              <q-separator spaced />
-              <q-item-label lines="2"><app-text-editor v-model="item.description" /></q-item-label>
-            </q-item-section>
-
-            <q-item-section side top>
-              <q-icon name="favorite" size="2em" color="red" class="favorite-icon" />
-            </q-item-section>
-          </q-item>
-        </q-list>
-      </q-card-section>
-    </q-card>
+    <daytrip-card :directory-items="directoryItems" @item-click="handleItemClick" />
   </div>
 
   <q-list v-else>
@@ -59,33 +27,14 @@
         </q-avatar>
       </q-item-section>
 
-      <q-item-section v-if="template === TEMPLATE.TIMETABLE.value">
+      <q-item-section
+        v-if="template === TEMPLATE.TIMETABLE.value || template === TEMPLATE.TAXI.value"
+      >
         <q-item-label>
           {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
         </q-item-label>
-
         <q-item-label>
           {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-      </q-item-section>
-
-      <q-item-section v-else-if="template === TEMPLATE.TAXI.value">
-        <q-item-label>
-          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
-        </q-item-label>
-
-        <q-item-label>
-          {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-      </q-item-section>
-
-      <q-item-section v-else-if="template === TEMPLATE.EMERGENCY.value">
-        <q-item-label>
-          {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-
-        <q-item-label>
-          {{ translate(item.subtitle1, item.meta, "subtitle1") }}
         </q-item-label>
       </q-item-section>
 
@@ -121,6 +70,7 @@
 </template>
 
 <script setup lang="ts">
+  import DaytripCard from "../card/daytrip-card.vue";
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -152,30 +102,28 @@
     }
   });
 
-  const { getImageURL, translate } = useUtilities();
+  const { getImageURL, translate, isSiteView, isBusinessView } = useUtilities();
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {
-      case "businessId" in item:
+      case isBusinessView(item):
         return props.favoriteItems.some(
           favItem => (favItem as BusinessView).businessId === item.businessId
         );
-      case "siteId" in item:
+      case isSiteView(item):
         return props.favoriteItems.some(favItem => (favItem as SiteView).siteId === item.siteId);
       default:
-        // No known type matched, or it's not a favorite item
         return false;
     }
   };
 
   const isCheckedIn = (item: CategoryTypes): boolean => {
-    if ("siteId" in item) {
+    if (isSiteView(item)) {
       return props.directoryCheckIns.some(
-        checkInitem => (checkInitem as CheckIn).siteId === item.siteId
+        checkInItem => (checkInItem as CheckIn).siteId === item.siteId
       );
-    } else {
-      return false;
     }
+    return false;
   };
 
   function handleItemClick(item: CategoryTypes) {

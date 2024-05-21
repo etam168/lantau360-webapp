@@ -2,6 +2,7 @@
 import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
+import { BusinessView } from "@/interfaces/models/views/business-view";
 import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
 import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
@@ -10,12 +11,13 @@ import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
 import { MarketingType } from "@/interfaces/types/marketing-types";
-
+import { SiteView } from "@/interfaces/models/views/site-view";
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, IMAGES } from "@/constants";
 import { date, EventBus, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
+import { CategoryTypes } from "@/interfaces/types/category-types";
 
 const eventBus = new EventBus();
 
@@ -93,6 +95,11 @@ export function useUtilities() {
     return (item as BusinessPromotionView).businessPromotionId !== undefined;
   }
 
+  // Type guard to determine if the item is an BusinessView
+  function isBusinessView(item: CategoryTypes): item is BusinessView {
+    return (item as BusinessView).businessId !== undefined;
+  }
+
   // Type guard to determine if the item is an BusinessVoucherView
   function isBusinessVoucher(item: MarketingType): item is BusinessVoucherView {
     return (item as BusinessVoucherView).businessVoucherId !== undefined;
@@ -126,6 +133,11 @@ export function useUtilities() {
 
   function isNthBitSet(value: number, n: number): boolean {
     return (value & (1 << (n - 1))) !== 0;
+  }
+
+  // Type guard to determine if the item is an SiteView
+  function isSiteView(item: CategoryTypes): item is SiteView {
+    return (item as SiteView).siteId !== undefined;
   }
 
   function notify(message: string, type: string) {
@@ -218,6 +230,7 @@ export function useUtilities() {
     httpMethods,
     isAdvertisement,
     isBusinessPromotion,
+    isBusinessView,
     isBusinessVoucher,
     isCommunityDirectory,
     isCommunityEvent,
@@ -226,6 +239,7 @@ export function useUtilities() {
     isDirectory,
     isNotEmptyArray,
     isNthBitSet,
+    isSiteView,
     isSmallScreen,
     navigateToWhatsApp,
     notify,
