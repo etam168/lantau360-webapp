@@ -7,7 +7,7 @@ export const ICONS = {
 };
 
 export const IMAGES = {
-  NO_IMAGE_AVAILABLE_PLACEHOLDER: "./img/images/no_image_available.jpeg",
+  NO_IMAGE_AVAILABLE_PLACEHOLDER: "./img/images/no_image_available_placeholder.jpeg",
   NO_DATA_IMAGE: "./img/images/no_data_image.png",
   CREDIT_CARD_FRONT: "./img/images/visa_card_front.png",
   CREDIT_CARD_BACK: "./img/images/visa_card_back.png",
@@ -17,6 +17,6 @@ export const IMAGES = {
   CHECK_IN: "./img/images/check_in.jpg",
   LOGO: "./img/logo/logo.png",
   CAROUSEL_BACKGROUND: "@/assets/img/home-bg.webp",
-  PLACEHOLDER_AVATAR: "./img/icons/avatar.png",
-  NO_INTERNET: "./img/icons/no_wifi.png"
+  PLACEHOLDER_AVATAR: "./img/images/avatar_placeholder.png",
+  NO_INTERNET: "./img/images/no_wifi.png"
 };

@@ -6,7 +6,7 @@
         <q-avatar size="108px">
           <q-img :ratio="1" :src="avatar">
             <template v-slot:error>
-              <q-img :src="PLACEHOLDER_AVATAR" style="left: 0" />
+              <q-img :src="IMAGES.PLACEHOLDER_AVATAR" style="left: 0" />
             </template>
 
             <template v-slot:loading>
@@ -42,7 +42,7 @@
 
 <script setup lang="ts">
   // .ts files
-  import { BLOB_URL, PLACEHOLDER_AVATAR } from "@/constants";
+  import { BLOB_URL, IMAGES } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { useMoreInput } from "../use-more-input";
 
@@ -61,6 +61,6 @@
   }
 
   const avatar = computed(() => {
-    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : PLACEHOLDER_AVATAR;
+    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : IMAGES.PLACEHOLDER_AVATAR;
   });
 </script>
