@@ -73,6 +73,8 @@
   });
 
   const { translateAlt, translate } = useUtilities();
+  const { isUserLogon } = useUserStore();
+
   const { t } = useI18n({ useScope: "global" });
 
   const userStore = useUserStore();
@@ -110,7 +112,7 @@
   }
 
   function createPosting() {
-    if (!userStore.isUserLogon()) {
+    if (isUserLogon()) {
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/components/dialog/app-login-dialog-widget.vue")
