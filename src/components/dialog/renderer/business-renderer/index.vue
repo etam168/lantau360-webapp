@@ -22,28 +22,28 @@
           {{ formatTime(businessItem.closeTime) }}
         </q-item-label>
       </q-item-section>
-      <q-item-section side>
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          icon="favorite"
-          @click="onBtnFavClick"
-      /></q-item-section>
     </q-item>
 
     <q-list class="rounded-borders q-mx-lg">
       <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
         <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            :label="$t('home.description')"
-            group="siteGroup"
-            dense
-            dense-toggle
-            header-class="text-h6"
-          >
-            <q-separator />
+          <q-expansion-item group="siteGroup" dense dense-toggle>
+            <template v-slot:header>
+              <q-item-section class="text-h6">
+                {{ $t("home.description") }}
+              </q-item-section>
+
+              <q-item-section side>
+                <app-button-rounded
+                  :text-color="isFavourite ? 'red' : 'white'"
+                  icon="favorite"
+                  @click="onBtnFavClick"
+                />
+              </q-item-section>
+            </template>
 
             <q-card>
-              <q-card-section class="q-pa-none">
+              <q-card-section class="q-pa-md">
                 <app-text-editor v-model="translatedContent" />
               </q-card-section>
             </q-card>
@@ -51,7 +51,7 @@
         </q-card-section>
       </q-card>
 
-      <q-card>
+      <q-card class="q-mb-md">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
             :label="$t('home.location')"
@@ -64,7 +64,26 @@
             <q-separator />
             <q-card>
               <q-card-section class="q-pa-none">
-                <info-tab :item="item" style="background-color: #f6f6f6" />
+                <info-tab :item="item" />
+              </q-card-section>
+            </q-card>
+          </q-expansion-item>
+        </q-card-section>
+      </q-card>
+
+      <q-card>
+        <q-card-section class="q-pa-sm">
+          <q-expansion-item
+            :label="'Contact Info'"
+            group="siteGroup"
+            dense
+            dense-toggle
+            header-class="text-h6"
+          >
+            <q-separator />
+            <q-card>
+              <q-card-section class="q-pa-none">
+                <contact-info :item="item" />
               </q-card-section>
             </q-card>
           </q-expansion-item>
@@ -79,6 +98,7 @@
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import InfoTab from "./detail-tabs/info-tab.vue";
+  import ContactInfo from "./detail-tabs/contact-info.vue";
 
   // .ts files
 
