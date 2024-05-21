@@ -72,7 +72,7 @@
         </q-card-section>
       </q-card>
 
-      <q-card>
+      <q-card v-if="item.contactPhone || item.contactWhatsApp">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
             :label="'Contact Info'"

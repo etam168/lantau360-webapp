@@ -1,11 +1,5 @@
 <template>
-  <q-card
-    flat
-    class="q-ma-md"
-    :style="{
-      height: $q.screen.gt.xs ? '370px' : 'auto'
-    }"
-  >
+  <q-card flat class="q-ma-md">
     <q-card-section
       class="q-pa-none"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
