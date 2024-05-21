@@ -316,7 +316,6 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly AxiosError: UnwrapRef<typeof import('axios')['AxiosError']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly GeolocationPermissionStatus: UnwrapRef<typeof import('./composable/geo_permission')['GeolocationPermissionStatus']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
@@ -347,7 +346,6 @@ declare module 'vue' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly handlePermission: UnwrapRef<typeof import('./composable/geo_permission')['handlePermission']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>
@@ -611,7 +609,6 @@ declare module '@vue/runtime-core' {
   interface ComponentCustomProperties {
     readonly AxiosError: UnwrapRef<typeof import('axios')['AxiosError']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
-    readonly GeolocationPermissionStatus: UnwrapRef<typeof import('./composable/geo_permission')['GeolocationPermissionStatus']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
@@ -642,7 +639,6 @@ declare module '@vue/runtime-core' {
     readonly getCurrentInstance: UnwrapRef<typeof import('vue')['getCurrentInstance']>
     readonly getCurrentScope: UnwrapRef<typeof import('vue')['getCurrentScope']>
     readonly h: UnwrapRef<typeof import('vue')['h']>
-    readonly handlePermission: UnwrapRef<typeof import('./composable/geo_permission')['handlePermission']>
     readonly ignorableWatch: UnwrapRef<typeof import('@vueuse/core')['ignorableWatch']>
     readonly inject: UnwrapRef<typeof import('vue')['inject']>
     readonly injectLocal: UnwrapRef<typeof import('@vueuse/core')['injectLocal']>

@@ -8,12 +8,12 @@ import { PostingImage } from "@/interfaces/models/entities/posting-image";
 import i18n from "@/plugins/i18n/i18n";
 
 // .ts files
-import { BLOB_URL, PLACEHOLDER_THUMBNAIL, URL } from "@/constants";
+import { URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { useUtilities } from "@/composable/use-utilities";
 import { List } from "lodash";
 
-const { notify, eventBus } = useUtilities();
+const { getImageURL, notify, eventBus } = useUtilities();
 const userStore = useUserStore();
 
 const newInput = () => {
@@ -240,10 +240,6 @@ export function usePostingInput() {
       .catch(errors => {
         notify(errors.message, "negative");
       });
-  }
-
-  function getImageURL(imagePath: any) {
-    return imagePath ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 
   async function uploadImages() {

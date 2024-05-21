@@ -53,12 +53,8 @@ export function useUtilities() {
     return date.formatDate(value, "YYYY-MM-DD HH:mm:ss");
   }
 
-  function getImageURL(relativePath: any) {
-    if (relativePath != null) {
-      return relativePath.includes("http") ? relativePath : `${BLOB_URL}/${relativePath}`;
-    } else {
-      return PLACEHOLDER_THUMBNAIL;
-    }
+  function getImageURL(imagePath: any) {
+    return imagePath != null ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
   }
 
   const getTimeAgo = (dateTime: Date) => {

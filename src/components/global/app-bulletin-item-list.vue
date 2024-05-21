@@ -25,7 +25,6 @@
     }
   });
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const BULLETIN = {
     EVENT: "Event",
     NEWS: "News",
