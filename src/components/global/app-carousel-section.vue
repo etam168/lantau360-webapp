@@ -17,7 +17,7 @@
         :key="index"
         :name="getId(row)"
         class="q-pa-none"
-        :img-src="getImageSrc(row)"
+        :img-src="getImageURL(row.bannerPath)"
         @click="onImageClick(row)"
       >
       </q-carousel-slide>
@@ -36,8 +36,7 @@
   import { CarouselTypes } from "@/interfaces/types/carousel-types";
 
   // .ts file
-  import imageNotFound from "@/assets/img/image_not_found.jpg";
-  import { CAROUSEL_BACKGROUND, BLOB_URL } from "@/constants";
+  import { CAROUSEL_BACKGROUND } from "@/constants";
 
   const props = defineProps({
     data: {
@@ -50,7 +49,7 @@
     }
   });
 
-  const { isAdvertisement } = useUtilities();
+  const { getImageURL, isAdvertisement } = useUtilities();
   const $q = useQuasar();
   const slideInterval = 10000;
 
@@ -84,9 +83,4 @@
       });
     }
   };
-
-  // getImageSrc function to handle both Site and Advertisement
-  function getImageSrc(row: CarouselTypes) {
-    return row.bannerPath ? `${BLOB_URL}/${row.bannerPath}` : imageNotFound;
-  }
 </script>

@@ -1,7 +1,7 @@
 <template>
   <div class="text-center" @click="onItemClick()">
     <q-avatar size="64px">
-      <q-img :src="directoryIcon" />
+      <q-img :src="getImageURL(props.item.imagePath)" />
     </q-avatar>
     <div class="text-center q-ma-sm">
       {{ directoryTitle }}
@@ -15,7 +15,6 @@
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // .ts file
-  import { BLOB_URL, PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   const emit = defineEmits(["on-click"]);
 
@@ -26,16 +25,7 @@
     }
   });
 
-  const { translateAlt, translate } = useUtilities();
-
-  const directoryIcon = computed(() => {
-    const imagePath = props.item.imagePath;
-    // item.iconPath ? `${BLOB_URL}/${item.iconPath}` : '/img/icons/no_image_available.jpeg'
-    const icon = imagePath != null ? `${BLOB_URL}/${imagePath}` : PLACEHOLDER_THUMBNAIL;
-
-    // If icon is not null, return it; otherwise, return the placeholder URL
-    return icon || PLACEHOLDER_THUMBNAIL;
-  });
+  const { getImageURL, translateAlt, translate } = useUtilities();
 
   const directoryTitle = computed(() => {
     const { shortName, shortNameAlt } = props.item as CommunityDirectory;
