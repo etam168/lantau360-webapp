@@ -7,6 +7,14 @@
     <daytrip-card :directory-items="directoryItems" @item-click="handleItemClick" />
   </div>
 
+  <div v-else-if="isCommunityDirectory(directory)">
+    <app-community-tab-item-list
+      :directoryItems="directoryItems"
+      :directory="directory as CommunityDirectory"
+      @item-click="handleItemClick"
+    />
+  </div>
+
   <q-list v-else>
     <q-item
       clickable
@@ -79,6 +87,8 @@
   // .ts files
   import { TEMPLATE } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   const emit = defineEmits(["item-click"]);
 
@@ -87,6 +97,10 @@
       type: Array as PropType<CategoryTypes[]>,
       required: true,
       default: () => []
+    },
+    directory: {
+      type: Object as PropType<DirectoryTypes>,
+      required: true
     },
     favoriteItems: {
       type: Array as PropType<CategoryTypes[]>,
@@ -102,7 +116,8 @@
     }
   });
 
-  const { getImageURL, translate, isSiteView, isBusinessView } = useUtilities();
+  const { getImageURL, translate, isSiteView, isBusinessView, isCommunityDirectory } =
+    useUtilities();
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {

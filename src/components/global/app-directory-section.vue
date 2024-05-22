@@ -77,12 +77,14 @@
       if (directoryResponse.status === 200) {
         const directoryData = directoryResponse.data;
         const checkInData = responses[1] ? responses[1].data : [];
+        const isCreatePost = isCommunityDirectory(item);
+        CategoryDialog(item, directoryData, checkInData, isCreatePost);
 
-        if (isCommunityDirectory(item)) {
-          CommunityDialog(item, directoryData);
-        } else {
-          CategoryDialog(item, directoryData, checkInData);
-        }
+        // if (isCommunityDirectory(item)) {
+        //   CommunityDialog(item, directoryData);
+        // } else {
+        //   CategoryDialog(item, directoryData, checkInData);
+        // }
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -93,6 +95,7 @@
     isDialogOpen.value = false;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   function CommunityDialog(dir: DirectoryTypes, itemList: CategoryTypes[]) {
     $q.dialog({
       component: defineAsyncComponent(
@@ -108,7 +111,12 @@
       .onDismiss(closeDialog);
   }
 
-  function CategoryDialog(dir: DirectoryTypes, itemList: CategoryTypes[], checkIn: CheckIn[]) {
+  function CategoryDialog(
+    dir: DirectoryTypes,
+    itemList: CategoryTypes[],
+    checkIn: CheckIn[],
+    isCreatePost: boolean
+  ) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-item-list-dialog.vue")
@@ -116,7 +124,8 @@
       componentProps: {
         directoryItemsList: itemList,
         directory: dir,
-        directoryCheckIns: checkIn
+        directoryCheckIns: checkIn,
+        isCreatePosting: isCreatePost
       }
     })
       .onCancel(closeDialog)

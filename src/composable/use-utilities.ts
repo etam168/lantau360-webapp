@@ -19,6 +19,7 @@ import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, IMAGES } from "@/constants";
 import { date, EventBus, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
+import { PostingView } from "@/interfaces/models/views/posting-view";
 
 const eventBus = new EventBus();
 
@@ -136,6 +137,11 @@ export function useUtilities() {
     return (value & (1 << (n - 1))) !== 0;
   }
 
+  // Type guard to determine if the item is an isPostingView
+  function isPostingView(item: CategoryTypes): item is PostingView {
+    return (item as PostingView).postingId !== undefined;
+  }
+
   // Type guard to determine if the item is an SiteView
   function isSiteView(item: CategoryTypes): item is SiteView {
     return (item as SiteView).siteId !== undefined;
@@ -225,6 +231,7 @@ export function useUtilities() {
     isDirectory,
     isNotEmptyArray,
     isNthBitSet,
+    isPostingView,
     isSiteView,
     isSmallScreen,
     navigateToWhatsApp,

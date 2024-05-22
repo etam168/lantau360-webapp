@@ -14,6 +14,12 @@
 
       <q-page-container>
         <q-page>
+          <create-posting-card
+            v-if="isCreatePosting"
+            class="q-px-md q-pt-md q-pb-none"
+            @create-posting="createPosting"
+            :directoryName="dialogTitle"
+          />
           <!-- Check if groupBykey exists -->
           <template v-if="groupBykey">
             <app-tab-select
@@ -25,13 +31,14 @@
             />
 
             <q-tab-panels v-model="tab">
-              <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.label">
+              <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.name">
                 <!-- Pass filterGroupedArray(item.name) if groupBykey exists -->
                 <app-category-item-list
                   @item-click="onItemClick"
                   :directoryItems="filterGroupedArray(item.name)"
                   :favoriteItems="favoriteItems"
                   :directoryCheckIns="checkInItems"
+                  :directory="directory"
                   :template="template"
                 />
               </q-tab-panel>
@@ -44,6 +51,7 @@
               class="q-px-md q-pt-md q-pb-none"
               @item-click="onItemClick"
               :directoryItems="directoryItems"
+              :directory="directory"
               :favoriteItems="favoriteItems"
               :template="template"
               :directoryCheckIns="checkInItems"
@@ -65,11 +73,15 @@
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
   import { NONE, STORAGE_KEYS, AREA_NAME, URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
+
+  //Custom Components
+  import CreatePostingCard from "@/components/card/create-posting-card.vue";
 
   const props = defineProps({
     directoryItemsList: {
@@ -83,12 +95,16 @@
     directoryCheckIns: {
       type: Array as PropType<CheckIn[]>,
       required: true
+    },
+    isCreatePosting: {
+      type: Boolean,
+      required: false
     }
   });
-
+  const { t } = useI18n({ useScope: "global" });
   const { locale } = useI18n();
   const { dialogRef } = useDialogPluginComponent();
-  const { groupBy, translate, eventBus } = useUtilities();
+  const { groupBy, isSiteView, isBusinessView, translate, eventBus } = useUtilities();
   const $q = useQuasar();
   const userStore = useUserStore();
 
@@ -102,25 +118,42 @@
   );
 
   const groupBykey = computed(() =>
-    props.directory.meta?.groupByKey !== NONE ? props.directory.meta?.groupByKey : null
+    props.isCreatePosting
+      ? "memberId"
+      : props.directory.meta?.groupByKey !== NONE
+        ? props.directory.meta?.groupByKey
+        : null
   );
 
   const groupedArray = computed(() => {
-    // Use the groupKey prop with a fallback to "directoryName"
-    const key = groupBykey.value as keyof CategoryTypes;
-    return groupBy(
-      directoryItems.value.filter((item: any) => item[key] !== undefined),
-      (item: any) =>
-        translate(item[key], groupBykey.value == AREA_NAME ? item.areaNameAlt : item.meta, key) as
-          | string
-          | number // Make sure the key exists on the item
-    );
+    if (props.isCreatePosting) {
+      const allItems = directoryItems.value;
+      const myItems = directoryItems.value.filter(
+        (item: any) => item.memberId === userStore.userId
+      );
+      return [
+        { group: "allDirectory", items: allItems },
+        { group: "myDirectory", items: myItems }
+      ];
+    } else {
+      const key = groupBykey.value as keyof CategoryTypes;
+      return groupBy(
+        directoryItems.value.filter((item: any) => item[key] !== undefined),
+        (item: any) =>
+          translate(
+            item[key],
+            groupBykey.value == AREA_NAME ? item.areaNameAlt : item.meta,
+            key
+          ) as string | number
+      );
+    }
   });
 
   const template = computed(() => props.directory.meta?.template);
 
   // Function to filter groupedArray by group name
   const filterGroupedArray = (groupName: string) => {
+    debugger;
     const items = groupedArray.value.filter(group => group.group === groupName).pop()?.items || [];
 
     // prepare the code to have conditional sorting later
@@ -130,10 +163,23 @@
   // Define tabItems as a computed property
   const tabItems = computed(() => {
     // Map over the groupedArray to create tabItems
-    return groupedArray.value.map(group => ({
-      name: group.group,
-      label: group.group
-    })) as TabItem[];
+    if (props.isCreatePosting) {
+      return [
+        {
+          name: "allDirectory",
+          label: t("community.tabItems.allDirectory", { directory: props.directory.directoryName })
+        },
+        {
+          name: "myDirectory",
+          label: t("community.tabItems.myDirectory", { directory: props.directory.directoryName })
+        }
+      ];
+    } else {
+      return groupedArray.value.map(group => ({
+        name: group.group,
+        label: group.group
+      })) as TabItem[];
+    }
   });
 
   const tab = ref(tabItems.value.length > 0 ? tabItems.value[0].name : "");
@@ -173,12 +219,15 @@
   }
 
   function getFavItem() {
+    if (directoryItems.value.length === 0) {
+      return [];
+    }
+
+    const item = directoryItems.value[0];
     switch (true) {
-      case directoryItems.value.length === 0:
-        return [];
-      case "siteId" in directoryItems.value[0]:
+      case isSiteView(item):
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      case "businessId" in directoryItems.value[0]:
+      case isBusinessView(item):
         return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
       default:
         return [];
@@ -215,6 +264,37 @@
       }
       // If sortByKey doesn't exist, fall back to ranking difference
       return rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
+
+  function createPosting() {
+    if (!userStore.isUserLogon()) {
+      // User is not logged in, open the login dialog
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/views/modules/community/login-alert-dialog.vue")
+        )
+      });
+
+      return;
+    }
+
+    // Check whether user have required point to create post
+    if (userStore.availabelPoints < userStore.pointsPerPost) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
+      });
+      return;
+    }
+
+    // User is logged in and also have required points to create new post
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
+      ),
+      componentProps: {
+        item: props.directory as CommunityDirectory
+      }
     });
   }
 </script>
