@@ -77,8 +77,7 @@
       if (directoryResponse.status === 200) {
         const directoryData = directoryResponse.data;
         const checkInData = responses[1] ? responses[1].data : [];
-        const isCreatePost = isCommunityDirectory(item);
-        CategoryDialog(item, directoryData, checkInData, isCreatePost);
+        CategoryDialog(item, directoryData, checkInData);
 
         // if (isCommunityDirectory(item)) {
         //   CommunityDialog(item, directoryData);
@@ -111,12 +110,7 @@
       .onDismiss(closeDialog);
   }
 
-  function CategoryDialog(
-    dir: DirectoryTypes,
-    itemList: CategoryTypes[],
-    checkIn: CheckIn[],
-    isCreatePost: boolean
-  ) {
+  function CategoryDialog(dir: DirectoryTypes, itemList: CategoryTypes[], checkIn: CheckIn[]) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-item-list-dialog.vue")
@@ -124,8 +118,7 @@
       componentProps: {
         directoryItemsList: itemList,
         directory: dir,
-        directoryCheckIns: checkIn,
-        isCreatePosting: isCreatePost
+        directoryCheckIns: checkIn
       }
     })
       .onCancel(closeDialog)

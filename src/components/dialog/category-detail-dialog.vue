@@ -31,30 +31,11 @@
             :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
-          <site-renderer
-            v-else-if="categoryData.renderer === RENDERER.SITE"
-            :item="item"
-            :isFavourite="isFavourite"
-            :gallery-images="galleryImagesCompleteList"
-            @on-favourite="onBtnFavClick"
-          />
           <business-renderer
             v-else-if="categoryData.renderer === RENDERER.BUSINESS"
             :item="item"
             :isFavourite="isFavourite"
             :gallery-images="galleryImagesCompleteList"
-            @on-favourite="onBtnFavClick"
-          />
-          <timetable-renderer
-            v-else-if="categoryData.renderer === RENDERER.TIMETABLE"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <taxi-renderer
-            v-else-if="categoryData.renderer === RENDERER.TAXI"
-            :item="item"
-            :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
           <daytrip-renderer
@@ -69,6 +50,8 @@
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
           />
+          <property-renderer v-else-if="categoryData.renderer === RENDERER.PROPERTY" :item="item" />
+          <posting-renderer v-else-if="categoryData.renderer === RENDERER.POSTING" :item="item" />
           <restaurant-renderer
             v-else-if="categoryData.renderer === RENDERER.RESTAURANT"
             :item="item"
@@ -77,6 +60,26 @@
             @on-favourite="onBtnFavClick"
             >{{ $t("action.yes") }}</restaurant-renderer
           >
+          <site-renderer
+            v-else-if="categoryData.renderer === RENDERER.SITE"
+            :item="item"
+            :isFavourite="isFavourite"
+            :gallery-images="galleryImagesCompleteList"
+            @on-favourite="onBtnFavClick"
+          />
+          <taxi-renderer
+            v-else-if="categoryData.renderer === RENDERER.TAXI"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
+          <timetable-renderer
+            v-else-if="categoryData.renderer === RENDERER.TIMETABLE"
+            :item="item"
+            :isFavourite="isFavourite"
+            @on-favourite="onBtnFavClick"
+          />
+          <tuition-renderer v-else-if="categoryData.renderer === RENDERER.TUITION" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -99,10 +102,13 @@
   import BusinessRenderer from "@/components/dialog/renderer/business-renderer/index.vue";
   import DaytripRenderer from "@/components/dialog/renderer/daytrip-renderer.vue";
   import EmergencyRenderer from "@/components/dialog/renderer/emergency-renderer.vue";
+  import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
+  import TuitionRenderer from "@/components/dialog/renderer/tuition-renderer.vue";
+  import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { BusinessView } from "@/interfaces/models/views/business-view";
 
@@ -113,7 +119,7 @@
     }
   });
 
-  const { translate, eventBus, isSiteView, isBusinessView } = useUtilities();
+  const { translate, eventBus, isSiteView, isBusinessView, isPostingView } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
   const { t } = useI18n({ useScope: "global" });
@@ -135,6 +141,10 @@
       url = `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
       renderer = RENDERER.BUSINESS;
       dialogTitle = translate(props.item.businessName, props.item.meta, "businessName");
+    } else if (isPostingView(props.item)) {
+      renderer = RENDERER.POSTING;
+      url = `${URL.POSTING_GALLERY}/${props.item.postingId}`;
+      dialogTitle = "Posting";
     }
 
     if (props.item.directoryTemplate == TEMPLATE.ATM.value) {
@@ -148,6 +158,10 @@
     } else if (props.item.directoryTemplate == TEMPLATE.DAYTRIP.value) {
       renderer = RENDERER.DAYTRIP;
     } else if (props.item.directoryTemplate == TEMPLATE.EMERGENCY.value) {
+      renderer = RENDERER.EMERGENCY;
+    } else if (props.item.directoryTemplate == TEMPLATE.PROPERTY.value) {
+      renderer = RENDERER.EMERGENCY;
+    } else if (props.item.directoryTemplate == TEMPLATE.TUITION.value) {
       renderer = RENDERER.EMERGENCY;
     }
 

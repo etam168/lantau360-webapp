@@ -20,7 +20,6 @@
             @create-posting="createPosting"
             :directoryName="dialogTitle"
           />
-
           <!-- Check if groupBykey exists -->
           <template v-if="groupBykey">
             <app-tab-select
@@ -117,7 +116,7 @@
 
   const isCommunityDirectoryItem = computed(() => isCommunityDirectory(props.directory));
   const groupBykey = computed(() =>
-    isCommunityDirectoryItem.value
+    isCommunityDirectoryItem
       ? "memberId"
       : props.directory.meta?.groupByKey !== NONE
         ? props.directory.meta?.groupByKey
@@ -125,7 +124,7 @@
   );
 
   const groupedArray = computed(() => {
-    if (isCommunityDirectoryItem.value) {
+    if (isCommunityDirectoryItem) {
       const allItems = directoryItems.value;
       const myItems = directoryItems.value.filter(
         (item: any) => item.memberId === userStore.userId
@@ -162,7 +161,7 @@
   // Define tabItems as a computed property
   const tabItems = computed(() => {
     // Map over the groupedArray to create tabItems
-    if (isCommunityDirectoryItem.value) {
+    if (isCommunityDirectoryItem) {
       return [
         {
           name: "allDirectory",
@@ -195,10 +194,6 @@
 
     eventBus.on("favoriteUpdated", () => {
       favoriteItems.value = getFavItem();
-    });
-
-    eventBus.on("ItemListUpdate", (updatedList: CategoryTypes[]) => {
-      directoryItems.value = updatedList;
     });
 
     //Sort Directory items
