@@ -72,7 +72,15 @@ export default defineConfig({
     quasar({
       sassVariables: "src/css/quasar.variables.scss"
     }),
-    VitePWA(pwaOptions),
+    VitePWA({
+      ...pwaOptions,
+      registerType: "autoUpdate",
+      injectRegister: "auto",
+      workbox: {
+        cleanupOutdatedCaches: false,
+        globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
+      }
+    }),
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
       imports: [
