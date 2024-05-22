@@ -17,8 +17,8 @@
           <create-posting-card
             v-if="isCommunityDirectoryItem"
             class="q-px-md q-pt-md q-pb-none"
-            @create-posting="createPosting"
             :directoryName="dialogTitle"
+            :directory="directory as CommunityDirectory"
           />
 
           <!-- Check if groupBykey exists -->
@@ -74,7 +74,6 @@
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   // others import
   import { useDialogPluginComponent, useQuasar, LocalStorage } from "quasar";
@@ -83,6 +82,7 @@
 
   //Custom Components
   import CreatePostingCard from "@/components/card/create-posting-card.vue";
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   const props = defineProps({
     directoryItemsList: {
@@ -267,37 +267,6 @@
       }
       // If sortByKey doesn't exist, fall back to ranking difference
       return rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
-    });
-  }
-
-  function createPosting() {
-    if (!userStore.isUserLogon()) {
-      // User is not logged in, open the login dialog
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/views/modules/community/login-alert-dialog.vue")
-        )
-      });
-
-      return;
-    }
-
-    // Check whether user have required point to create post
-    if (userStore.availabelPoints < userStore.pointsPerPost) {
-      $q.dialog({
-        component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
-      });
-      return;
-    }
-
-    // User is logged in and also have required points to create new post
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
-      ),
-      componentProps: {
-        item: props.directory as CommunityDirectory
-      }
     });
   }
 </script>

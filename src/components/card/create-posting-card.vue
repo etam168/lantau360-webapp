@@ -19,17 +19,51 @@
   </div>
 </template>
 <script setup lang="ts">
-  // .ts files
+  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { useUserStore } from "@/stores/user";
 
-  defineProps({
+  const userStore = useUserStore();
+  const $q = useQuasar();
+
+  const props = defineProps({
     directoryName: {
       type: String,
       required: false
+    },
+    directory: {
+      type: Object as PropType<CommunityDirectory>,
+      required: true
     }
   });
-  const emit = defineEmits(["create-posting"]);
 
   function createPosting() {
-    emit("create-posting");
+    if (!userStore.isUserLogon()) {
+      // User is not logged in, open the login dialog
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/views/modules/community/login-alert-dialog.vue")
+        )
+      });
+
+      return;
+    }
+
+    // Check whether user have required point to create post
+    if (userStore.availabelPoints < userStore.pointsPerPost) {
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/views/modules/community/alert-dialog.vue"))
+      });
+      return;
+    }
+
+    // User is logged in and also have required points to create new post
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
+      ),
+      componentProps: {
+        item: props.directory
+      }
+    });
   }
 </script>

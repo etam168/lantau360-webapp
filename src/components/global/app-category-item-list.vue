@@ -1,19 +1,11 @@
 <template>
-  <div
-    v-if="template === TEMPLATE.DAYTRIP.value"
-    :class="$q.screen.gt.xs ? 'row' : ''"
-    class="q-gutter-md"
-  >
-    <daytrip-card :directory-items="directoryItems" @item-click="handleItemClick" />
-  </div>
-
-  <div v-else-if="isCommunityDirectory(directory)">
-    <app-community-tab-item-list
-      :directoryItems="directoryItems"
-      :directory="directory as CommunityDirectory"
-      @item-click="handleItemClick"
-    />
-  </div>
+  <daytrip-renderer v-if="template === TEMPLATE.DAYTRIP.value" :directory-items="directoryItems" />
+  <posting-renderer
+    v-else-if="isCommunityDirectory(directory)"
+    :directoryItems="directoryItems"
+    :directory="directory as CommunityDirectory"
+    @item-click="handleItemClick"
+  />
 
   <q-list v-else>
     <q-item
@@ -23,37 +15,12 @@
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
     >
-      <q-item-section avatar>
-        <q-avatar size="64px" square>
-          <q-img ratio="1" :src="getImageURL(item.iconPath)">
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                {{ $t("errors.cannotLoadImage") }}
-              </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
-
-      <q-item-section
+      <timetable-taxi-renderer
         v-if="template === TEMPLATE.TIMETABLE.value || template === TEMPLATE.TAXI.value"
-      >
-        <q-item-label>
-          {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
-        </q-item-label>
-        <q-item-label>
-          {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-      </q-item-section>
+        :item="item"
+      />
 
-      <q-item-section v-else>
-        <q-item-label>
-          {{ translate(item.title, item.meta, "title") }}
-        </q-item-label>
-        <q-item-label>
-          {{ translate(item.subtitle1, item.meta, "subtitle1") }}
-        </q-item-label>
-      </q-item-section>
+      <default-renderer v-else :item="item" />
 
       <q-item-section side>
         <q-icon
@@ -78,12 +45,14 @@
 </template>
 
 <script setup lang="ts">
-  import DaytripCard from "../card/daytrip-card.vue";
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
-
+  import DaytripRenderer from "../dialog/renderer/category-item-list/daytrip-renderer.vue";
+  import PostingRenderer from "../dialog/renderer/category-item-list/posting-renderer.vue";
+  import TimetableTaxiRenderer from "../dialog/renderer/category-item-list/timetable-taxi-renderer.vue";
+  import DefaultRenderer from "../dialog/renderer/category-item-list/default-renderer.vue";
   // .ts files
   import { TEMPLATE } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
@@ -116,8 +85,7 @@
     }
   });
 
-  const { getImageURL, translate, isSiteView, isBusinessView, isCommunityDirectory } =
-    useUtilities();
+  const { isSiteView, isBusinessView, isCommunityDirectory } = useUtilities();
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (true) {

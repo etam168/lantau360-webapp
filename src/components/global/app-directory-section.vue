@@ -78,12 +78,6 @@
         const directoryData = directoryResponse.data;
         const checkInData = responses[1] ? responses[1].data : [];
         CategoryDialog(item, directoryData, checkInData);
-
-        // if (isCommunityDirectory(item)) {
-        //   CommunityDialog(item, directoryData);
-        // } else {
-        //   CategoryDialog(item, directoryData, checkInData);
-        // }
       }
     } catch (error) {
       console.error("Error fetching data: ", error);
@@ -92,22 +86,6 @@
 
   function closeDialog() {
     isDialogOpen.value = false;
-  }
-
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  function CommunityDialog(dir: DirectoryTypes, itemList: CategoryTypes[]) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/community-item-list-dialog.vue")
-      ),
-      componentProps: {
-        directoryItemsList: itemList,
-        directory: dir
-      }
-    })
-      .onCancel(closeDialog)
-      .onOk(closeDialog)
-      .onDismiss(closeDialog);
   }
 
   function CategoryDialog(dir: DirectoryTypes, itemList: CategoryTypes[], checkIn: CheckIn[]) {

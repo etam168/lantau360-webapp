@@ -19,6 +19,7 @@
             class="q-px-md q-pt-md q-pb-none"
             @create-posting="createPosting"
             :directoryName="dialogTitle"
+            :directory="directory as CommunityDirectory"
           />
           <!-- Check if groupBykey exists -->
           <template v-if="groupBykey">
