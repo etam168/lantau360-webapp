@@ -211,6 +211,29 @@ export function useUtilities() {
     }
   }
 
+  function sortDirectoryItems(items: any, sortByKey: any, hasSortByKey: boolean) {
+    const { locale } = useI18n({ useScope: "global" });
+
+    return items.sort((a: any, b: any) => {
+      const rankingDifference = a.rank - b.rank;
+
+      if (hasSortByKey) {
+        let sortByKeyComparison;
+        if (locale.value == "en") {
+          sortByKeyComparison = String(a[sortByKey]).localeCompare(String(b[sortByKey]));
+        } else {
+          sortByKeyComparison = String(
+            a?.meta?.i18n[locale.value]?.[sortByKey] ?? sortByKey
+          ).localeCompare(String(b?.meta?.i18n[locale.value]?.[sortByKey] ?? b[sortByKey]));
+          // If sortByKey comparison is not equal, return it; otherwise, use ranking difference
+        }
+        return sortByKeyComparison !== 0 ? sortByKeyComparison : rankingDifference;
+      }
+      // If sortByKey doesn't exist, fall back to ranking difference
+      return rankingDifference || new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime();
+    });
+  }
+
   return {
     aspectRatio,
     dateFormatter,
@@ -238,6 +261,7 @@ export function useUtilities() {
     notify,
     translate,
     translateAlt,
-    refreshToken
+    refreshToken,
+    sortDirectoryItems
   };
 }

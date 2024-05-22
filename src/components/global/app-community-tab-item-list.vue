@@ -1,8 +1,8 @@
 <template>
   <div>
-    <q-list v-if="directoryItems.length > 0">
+    <q-list v-if="directoryItemList.length > 0">
       <q-item
-        v-for="item in directoryItems"
+        v-for="item in directoryItemList"
         :key="item.directoryId"
         class="shadow-1 q-pa-sm q-mb-md"
       >
@@ -72,11 +72,11 @@
 <script setup lang="ts">
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { Posting } from "@/interfaces/models/entities/posting";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
   import { useUserStore } from "@/stores/user";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   const $q = useQuasar();
   const { getImageURL } = useUtilities();
@@ -89,7 +89,7 @@
       default: () => []
     },
     directory: {
-      type: Object as PropType<CommunityDirectory>,
+      type: Object as PropType<DirectoryTypes>,
       required: false
     }
   });
@@ -97,7 +97,8 @@
   const { getTimeAgo } = useUtilities();
 
   const userStore = useUserStore();
-
+  const { eventBus } = useUtilities();
+  const directoryItemList = ref(props.directoryItems);
   const memberName = (postItem: PostingView) =>
     postItem.memberAlias ?? `${postItem.memberFirstName} ${postItem.memberLastName}`;
 
@@ -109,6 +110,12 @@
   function handleItemClick(item: CategoryTypes) {
     emit("item-click", item);
   }
+
+  onMounted(() => {
+    eventBus.on("ItemListUpdate", (updatedList: CategoryTypes[]) => {
+      directoryItemList.value = updatedList;
+    });
+  });
 
   function editPosting(item: Posting) {
     $q.dialog({

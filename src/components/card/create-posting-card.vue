@@ -20,6 +20,7 @@
 </template>
 <script setup lang="ts">
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { useUserStore } from "@/stores/user";
 
   const userStore = useUserStore();
@@ -31,7 +32,7 @@
       required: false
     },
     directory: {
-      type: Object as PropType<CommunityDirectory>,
+      type: Object as PropType<DirectoryTypes>,
       required: true
     }
   });
@@ -62,7 +63,7 @@
         () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
       ),
       componentProps: {
-        item: props.directory
+        item: props.directory as CommunityDirectory
       }
     });
   }
