@@ -87,7 +87,6 @@
       required: true
     }
   });
-  const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, isCommunityDirectory, translate, eventBus, sortDirectoryItems } = useUtilities();
@@ -115,8 +114,8 @@
         (item: any) => item.memberId === userStore.userId
       );
       return [
-        { group: "allDirectory", items: directoryItems.value },
-        { group: "myDirectory", items: myItems }
+        { group: "All " + props.directory.directoryName, items: directoryItems.value },
+        { group: "My " + props.directory.directoryName, items: myItems }
       ];
     } else {
       const key = groupBykey.value as keyof CategoryTypes;
@@ -134,24 +133,10 @@
 
   // Define tabItems as a computed property
   const tabItems = computed(() => {
-    // Map over the groupedArray to create tabItems
-    if (isCommunityDirectoryItem.value) {
-      return [
-        {
-          name: "allDirectory",
-          label: t("community.tabItems.allDirectory", { directory: props.directory.directoryName })
-        },
-        {
-          name: "myDirectory",
-          label: t("community.tabItems.myDirectory", { directory: props.directory.directoryName })
-        }
-      ];
-    } else {
-      return groupedArray.value.map(group => ({
-        name: group.group,
-        label: group.group
-      })) as TabItem[];
-    }
+    return groupedArray.value.map(group => ({
+      name: group.group,
+      label: group.group
+    })) as TabItem[];
   });
 
   const tab = ref(tabItems.value.length > 0 ? tabItems.value[0].name : "");
