@@ -2,7 +2,7 @@
   <q-list :class="[template === TEMPLATE.DAYTRIP.value ? ($q.screen.gt.xs ? 'row' : '') : '']">
     <q-item
       clickable
-      v-for="item in directoryItems"
+      v-for="item in sortedData"
       :key="item.directoryId"
       @click="handleItemClick(item)"
       class="shadow-1 q-pa-sm q-mb-md"
@@ -78,7 +78,7 @@
     }
   });
 
-  const { isSiteView, isBusinessView } = useUtilities();
+  const { isSiteView, isBusinessView, sortDirectoryItems } = useUtilities();
   const favoriteItems = ref<any>(getFavItem() || []);
   const checkInItems = ref<any>(props?.directoryCheckIns ?? []);
   const { eventBus, isCommunityDirectory } = useUtilities();
@@ -86,6 +86,11 @@
   const $q = useQuasar();
 
   const template = computed(() => props.directory.meta?.template);
+  //  Sort Directory items
+  const hasSortByKey = props.directory.meta.sortByKey in props.directoryItems[0];
+  const sortedData = computed(() => {
+    return sortDirectoryItems(props.directoryItems, props.directory.meta.sortByKey, hasSortByKey);
+  });
 
   onMounted(() => {
     eventBus.on("favoriteUpdated", () => {

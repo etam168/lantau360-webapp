@@ -45,7 +45,7 @@
           <template v-else>
             <category-list-items
               class="q-px-md q-pt-md q-pb-none"
-              :directoryItems="directoryItems"
+              :directoryItems="directoryItemsList"
               :directory="directory"
               :directoryCheckIns="directoryCheckIns"
               style="position: relative"
@@ -72,6 +72,7 @@
   // Components
   import CreatePostingCard from "@/components/card/create-posting-card.vue";
   import CategoryListItems from "@/components/dialog/renderer/category-list-items.vue";
+  import { PostingView } from "@/interfaces/models/views/posting-view";
 
   const props = defineProps({
     directoryItemsList: {
@@ -89,9 +90,9 @@
   });
   const userStore = useUserStore();
   const { dialogRef } = useDialogPluginComponent();
-  const { groupBy, isCommunityDirectory, translate, eventBus, sortDirectoryItems } = useUtilities();
+  const { groupBy, isCommunityDirectory, translate, eventBus } = useUtilities();
 
-  const directoryItems = ref<any>(props?.directoryItemsList ?? []);
+  // const directoryItems = ref<any>(props?.directoryItemsList ?? []);
   const isDialogVisible = ref();
 
   const dialogTitle = computed(() =>
@@ -110,17 +111,19 @@
 
   const groupedArray = computed(() => {
     if (isCommunityDirectoryItem.value) {
-      const myItems = directoryItems.value.filter(
-        (item: any) => item.memberId === userStore.userId
-      );
       return [
-        { group: "All " + props.directory.directoryName, items: directoryItems.value },
-        { group: "My " + props.directory.directoryName, items: myItems }
+        { group: "All " + props.directory.directoryName, items: props.directoryItemsList },
+        {
+          group: "My " + props.directory.directoryName,
+          items: (props.directoryItemsList as PostingView[]).filter(
+            item => item.memberId === userStore.userId
+          )
+        }
       ];
     } else {
       const key = groupBykey.value as keyof CategoryTypes;
       return groupBy(
-        directoryItems.value.filter((item: any) => item[key] !== undefined),
+        props.directoryItemsList.filter((item: any) => item[key] !== undefined),
         (item: any) =>
           translate(
             item[key],
@@ -152,14 +155,6 @@
     eventBus.on("CategoryItemListDialog", () => {
       isDialogVisible.value = false;
     });
-
-    //Sort Directory items
-    const hasSortByKey = props.directory.meta.sortByKey in directoryItems.value[0];
-    directoryItems.value = sortDirectoryItems(
-      directoryItems.value,
-      props.directory.meta.sortByKey,
-      hasSortByKey
-    );
   });
 
   function updateDialogState(status: boolean) {
