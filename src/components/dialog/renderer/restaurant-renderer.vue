@@ -1,4 +1,6 @@
 <template>
+  <gallery-component :item="item" />
+
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <open-close-time-content :item="item" />
 
@@ -81,9 +83,10 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // UI Components
-  import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
-  import defaultInfoTab from "@/components/dialog/renderer/common/tabs/default-info-tab.vue";
+  import DefaultInfoTab from "@/components/dialog/renderer/common/tabs/default-info-tab.vue";
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({
     item: {

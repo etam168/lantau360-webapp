@@ -1,4 +1,6 @@
 <template>
+  <gallery-component :item="item" />
+
   <q-list padding class="q-mx-sm q-pt-md">
     <q-item v-if="siteItem.subtitle1">
       <q-item-section avatar>
@@ -54,6 +56,8 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
+
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
 
   const { navigateToWhatsApp, translate } = useUtilities();
 

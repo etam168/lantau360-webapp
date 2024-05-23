@@ -14,28 +14,16 @@
 
       <q-page-container>
         <q-page>
-          <div
-            v-if="
-              categoryData.renderer !== RENDERER.TIMETABLE &&
-              categoryData.renderer !== RENDERER.EMERGENCY
-            "
-            class="q-items-center q-pa-none"
-          >
-            <gallery-image-list :image-list="galleryItems" />
-          </div>
-
           <atm-renderer
             v-if="categoryData.renderer === RENDERER.ATM"
             :item="item"
             :isFavourite="isFavourite"
-            :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <business-renderer
             v-else-if="categoryData.renderer === RENDERER.BUSINESS"
             :item="item"
             :isFavourite="isFavourite"
-            :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <daytrip-renderer
@@ -55,7 +43,6 @@
           <restaurant-renderer
             v-else-if="categoryData.renderer === RENDERER.RESTAURANT"
             :item="item"
-            :gallery-images="galleryImagesCompleteList"
             :isFavourite="isFavourite"
             @on-favourite="onBtnFavClick"
             >{{ $t("action.yes") }}</restaurant-renderer
@@ -64,7 +51,6 @@
             v-else-if="categoryData.renderer === RENDERER.SITE"
             :item="item"
             :isFavourite="isFavourite"
-            :gallery-images="galleryImagesCompleteList"
             @on-favourite="onBtnFavClick"
           />
           <taxi-renderer
@@ -92,11 +78,10 @@
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { URL, RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
+  import { RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
@@ -122,28 +107,19 @@
   const { translate, eventBus, isSiteView, isBusinessView, isPostingView } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
-  const { t } = useI18n({ useScope: "global" });
-
-  const error = ref<string | null>(null);
-  const galleryItems = ref<GalleryImageType[]>([]);
-  const galleryImagesCompleteList = ref<GalleryImageType[]>([]);
 
   function getCategoryData() {
-    let url = "";
     let renderer = "";
     let dialogTitle = "";
 
     if (isSiteView(props.item)) {
-      url = `${URL.SITE_GALLERY}/${props.item.siteId}`;
       renderer = RENDERER.SITE;
       dialogTitle = translate(props.item.siteName, props.item.meta, "siteName");
     } else if (isBusinessView(props.item)) {
-      url = `${URL.BUSINESS_GALLERY}/${props.item.businessId}`;
       renderer = RENDERER.BUSINESS;
       dialogTitle = translate(props.item.businessName, props.item.meta, "businessName");
     } else if (isPostingView(props.item)) {
       renderer = RENDERER.POSTING;
-      url = `${URL.POSTING_GALLERY}/${props.item.postingId}`;
       dialogTitle = "Posting";
     }
 
@@ -165,7 +141,7 @@
       renderer = RENDERER.EMERGENCY;
     }
 
-    return { url, renderer, dialogTitle };
+    return { renderer, dialogTitle };
   }
 
   const categoryData = computed(() => getCategoryData());
@@ -224,7 +200,6 @@
   };
 
   onMounted(() => {
-    loadData();
     eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;
     });
@@ -233,42 +208,5 @@
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
     eventBus.emit("DialogStatus", status, "CategoryDetailDialog");
-  }
-
-  const loadData = async () => {
-    const galleryUrl = categoryData.value.url;
-    if (galleryUrl) {
-      try {
-        const [galleryResponse] = await Promise.all([axios.get<GalleryImageType[]>(galleryUrl)]);
-
-        galleryImagesCompleteList.value = galleryResponse.data;
-        galleryImagesCompleteList.value.sort((a, b) => a.ranking - b.ranking);
-
-        const maskValue = getMaskValue(props.item.directoryTemplate || 0);
-        galleryItems.value = galleryResponse.data
-          .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
-          .sort((a, b) => a.ranking - b.ranking);
-      } catch (err) {
-        if (err instanceof AxiosError) {
-          if (err.response && err.response.status === 404) {
-            error.value = t("errors.404");
-          } else {
-            error.value = t("errors.anErrorOccured");
-          }
-        } else {
-          error.value = t("errors.anErrorOccured");
-        }
-      }
-    }
-  };
-
-  function getMaskValue(templateValue: number, meta?: any) {
-    for (const make in TEMPLATE) {
-      if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        const modifier = meta?.["hasMap"] === true ? 2 : 0;
-        return TEMPLATE[make as keyof typeof TEMPLATE].mask + modifier;
-      }
-    }
-    return 0;
   }
 </script>

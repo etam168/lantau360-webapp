@@ -1,4 +1,6 @@
 <template>
+  <gallery-component :item="item" />
+
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
       <q-item-section top>
@@ -30,6 +32,9 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { PostingView } from "@/interfaces/models/views/posting-view";
+
+  //UI Components
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
 
   const { navigateToWhatsApp, translate } = useUtilities();
 

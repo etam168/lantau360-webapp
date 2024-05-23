@@ -1,4 +1,6 @@
 <template>
+  <gallery-component :item="item" />
+
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
       <q-item-section></q-item-section>
@@ -57,11 +59,11 @@
 
 <script setup lang="ts">
   // Interface files
-  import { SiteView } from "@/interfaces/models/views/site-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import InfoTab from "./detail-tabs/info-tab.vue";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
-  const { translate } = useUtilities();
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import InfoTab from "./detail-tabs/info-tab.vue";
 
   const props = defineProps({
     item: {
@@ -73,6 +75,8 @@
       default: false
     }
   });
+
+  const { translate } = useUtilities();
 
   const emits = defineEmits(["on-favourite"]);
 

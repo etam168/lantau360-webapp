@@ -1,4 +1,5 @@
 <template>
+  <gallery-component :item="item" />
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
     <q-item>
       <q-item-section></q-item-section>
@@ -93,24 +94,21 @@
 </template>
 
 <script setup lang="ts">
+  //UI Component
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+
+  // Third party files
   import { LatLngExpression, latLngBounds } from "leaflet";
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
-  // .ts files
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-
   const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
-      required: true
-    },
-    galleryImages: {
-      type: Array as PropType<GalleryImageType[]>,
       required: true
     },
     isFavourite: {
@@ -132,22 +130,6 @@
     }
   };
 
-  // const openGoogleMaps = () => {
-  //   // Check if the business has an address
-  //   if (siteItem.value.subtitle1) {
-  //     // Replace spaces in the address with '+'
-  //     const address = encodeURIComponent(siteItem.value.subtitle1);
-
-  //     // Construct the Google Maps URL with the address
-  //     const mapsURL = `https://www.google.com/maps/search/?api=1&query=${address}`;
-
-  //     // Open a new tab or window with the Google Maps URL
-  //     window.open(mapsURL, "_blank");
-  //   } else {
-  //     // Handle cases where the business address is not available
-  //     // console.error("Address not available");
-  //   }
-  // };
   const openGoogleMaps = () => {
     if (siteItem.value.meta?.["hasMap"]) {
       window.open(siteItem.value.meta?.["mapLink"], "_blank");
