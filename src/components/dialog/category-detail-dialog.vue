@@ -90,8 +90,10 @@
   import { LocalStorage, useDialogPluginComponent } from "quasar";
 
   // Interface files
+  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
   import { URL, RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
@@ -99,18 +101,16 @@
 
   // Custom Components
   import AtmRenderer from "@/components/dialog/renderer/atm-renderer.vue";
-  import BusinessRenderer from "@/components/dialog/renderer/business-renderer/index.vue";
+  import BusinessRenderer from "@/components/dialog/renderer/business-renderer.vue";
   import DaytripRenderer from "@/components/dialog/renderer/daytrip-renderer.vue";
   import EmergencyRenderer from "@/components/dialog/renderer/emergency-renderer.vue";
   import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
+  import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
+  import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
   import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
-  import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer/restaurant-renderer.vue";
   import TuitionRenderer from "@/components/dialog/renderer/tuition-renderer.vue";
-  import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   const props = defineProps({
     item: {

@@ -1,28 +1,18 @@
 <template>
-  <q-card
-    flat
-    class="q-ma-md row justify-center"
+  <map-component
+    style="flex: 1"
     :style="{
-      height: $q.screen.gt.xs ? '370px' : 'auto'
+      height: $q.screen.gt.xs ? '300px' : '200px',
+      width: $q.screen.gt.xs ? '600px' : '100%'
     }"
-  >
-    <q-card-section class="q-pa-none" :style="$q.screen.lt.sm ? 'width: 100%' : ''">
-      <map-component
-        style="flex: 1"
-        :style="{
-          height: $q.screen.gt.xs ? '300px' : '200px',
-          width: $q.screen.gt.xs ? '600px' : '100%'
-        }"
-        :zoom="zoom"
-        :marker-position="markerPosition"
-        :url="localMapUrl"
-        :bounds="bounds"
-        :tooltip="mapTooltip"
-        :bottom-right-label="address"
-        @click="openGoogleMaps()"
-      />
-    </q-card-section>
-  </q-card>
+    :zoom="zoom"
+    :marker-position="markerPosition"
+    :url="localMapUrl"
+    :bounds="bounds"
+    :tooltip="mapTooltip"
+    :bottom-right-label="address"
+    @click="openGoogleMaps()"
+  />
 </template>
 <script setup lang="ts">
   import { CategoryTypes } from "@/interfaces/types/category-types";
