@@ -32,7 +32,7 @@
             <q-tab-panels v-model="tab">
               <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.name">
                 <!-- Pass filterGroupedArray(item.name) if groupBykey exists -->
-                <app-category-list-items
+                <category-list-items
                   :directoryItems="filterGroupedArray(item.name)"
                   :directoryCheckIns="directoryCheckIns"
                   :directory="directory"
