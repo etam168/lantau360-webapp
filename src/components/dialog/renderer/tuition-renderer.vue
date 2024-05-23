@@ -16,12 +16,7 @@
     <q-item>
       <q-item-section>
         <div class="q-gutter-md">
-          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
-          <app-button-rounded
-            v-if="item.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(item.contactWhatsApp)"
-          />
+          <contact-content :item="item" />
         </div>
       </q-item-section>
     </q-item>
@@ -35,8 +30,7 @@
 
   //UI Components
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-
-  const { navigateToWhatsApp, translate } = useUtilities();
+  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
 
   const props = defineProps({
     item: {
@@ -45,16 +39,11 @@
     }
   });
 
+  const { translate } = useUtilities();
+
   const postingItem = computed(() => props?.item as PostingView);
 
   const translatedContent: any = ref(
     translate(postingItem.value.description, postingItem.value.meta, "description")
   );
-
-  const navigateToPhone = () => {
-    if (postingItem?.value.contactPhone) {
-      const phoneURL = `tel:${postingItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 </script>

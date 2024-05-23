@@ -46,7 +46,7 @@
           >
             <q-separator />
             <q-card>
-              <q-card-section class="q-pa-none">
+              <q-card-section class="q-pt-lg">
                 <map-component :item="item" />
               </q-card-section>
             </q-card>

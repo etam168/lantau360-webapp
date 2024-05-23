@@ -39,13 +39,7 @@
     <q-item>
       <q-item-section>
         <div class="q-gutter-md">
-          <app-button-rounded v-if="siteItem.contactPhone" icon="phone" @click="navigateToPhone" />
-
-          <app-button-rounded
-            v-if="siteItem.contactWhatsApp"
-            icon="fab fa-whatsapp"
-            @click="navigateToWhatsApp(siteItem.contactWhatsApp)"
-          />
+          <contact-content :item="item" />
         </div>
       </q-item-section>
     </q-item>
@@ -59,6 +53,7 @@
 
   //UI Components
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
 
   const props = defineProps({
     item: {
@@ -67,8 +62,7 @@
     }
   });
 
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, navigateToWhatsApp, translate } =
-    useUtilities();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
@@ -76,13 +70,6 @@
   const translatedContent: any = ref(
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
-
-  const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 
   function onBtnFavClick() {
     toggleItemFavStatus(props.item, isFavourite.value);
