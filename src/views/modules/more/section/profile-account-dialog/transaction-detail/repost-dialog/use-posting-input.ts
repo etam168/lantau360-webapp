@@ -109,7 +109,7 @@ export function usePostingInput() {
     requestData.status = 1;
     prePostingId = postingInput.value.postingId;
     postingInput.value.postingId = 0;
-    debugger;
+
     axios
       .post(`/Posting`, requestData)
       .then(async response => {

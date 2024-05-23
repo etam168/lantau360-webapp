@@ -165,7 +165,6 @@
             eventBus.emit("close-check-in-dialog");
           })
           .catch(err => {
-            debugger;
             $q.notify({
               message: err.message,
               type: "negative"
@@ -181,7 +180,6 @@
       axios.get<Content>(URL.MEMBER_CONFIG),
       axios.get<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${props.itemId}`)
     ]);
-    debugger;
 
     const config = memberConfig.data;
     const checkIn = checkInData.data;
