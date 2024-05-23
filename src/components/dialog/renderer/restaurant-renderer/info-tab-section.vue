@@ -1,122 +1,45 @@
 <template>
-  <q-item class="q-pa-none">
-    <q-item-section v-if="shouldShowImage && mapImagePath">
-      <q-img
-        style="cursor: pointer"
-        :ratio="16 / 9"
-        width="100%"
-        :src="mapImagePath"
-        @click="openGoogleMaps"
+  <q-list dense>
+    <q-item dense v-if="businessItem.subtitle1">
+      <q-item-section avatar @click="openGoogleMaps">
+        <q-avatar dense rounded color="primary" icon="location_on" text-color="white" size="sm" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-caption"
+          >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
+        </q-item-label></q-item-section
       >
-      </q-img>
-      <q-list dense v-if="$q.screen.xs">
-        <q-item dense v-if="businessItem.subtitle1">
-          <q-item-section avatar @click="openGoogleMaps">
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="location_on"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-        <q-separator spaced inset v-if="businessItem.contactPhone" />
-        <q-item v-if="businessItem.contactPhone">
-          <q-item-section avatar @click="navigateToPhone">
-            <q-avatar dense rounded color="primary" icon="phone" text-color="white" size="sm" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-        <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
-        <q-item v-if="businessItem.contactWhatsApp">
-          <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="fab fa-whatsapp"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{
-                businessItem.contactWhatsApp == undefined ? "N/A" : businessItem.contactWhatsApp
-              }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-      </q-list>
-    </q-item-section>
-    <q-item-section top v-if="$q.screen.gt.xs">
-      <q-list dense>
-        <q-item dense v-if="businessItem.subtitle1">
-          <q-item-section avatar @click="openGoogleMaps">
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="location_on"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ translate(businessItem.subtitle1, businessItem.meta, "subtitle1") }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-
-        <q-separator spaced inset v-if="businessItem.contactPhone" />
-
-        <q-item v-if="businessItem.contactPhone">
-          <q-item-section avatar @click="navigateToPhone">
-            <q-avatar dense rounded color="primary" icon="phone" text-color="white" size="sm" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{ businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-
-        <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
-
-        <q-item v-if="businessItem.contactWhatsApp">
-          <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="fab fa-whatsapp"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption"
-              >{{
-                businessItem.contactWhatsApp == undefined ? "N/A" : businessItem.contactWhatsApp
-              }}
-            </q-item-label></q-item-section
-          >
-        </q-item>
-      </q-list>
-    </q-item-section>
-  </q-item>
+    </q-item>
+    <q-separator spaced inset v-if="businessItem.contactPhone" />
+    <q-item v-if="businessItem.contactPhone">
+      <q-item-section avatar @click="navigateToPhone">
+        <q-avatar dense rounded color="primary" icon="phone" text-color="white" size="sm" />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-caption"
+          >{{ businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone }}
+        </q-item-label></q-item-section
+      >
+    </q-item>
+    <q-separator spaced inset v-if="businessItem.contactWhatsApp" />
+    <q-item v-if="businessItem.contactWhatsApp">
+      <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
+        <q-avatar
+          dense
+          rounded
+          color="primary"
+          icon="fab fa-whatsapp"
+          text-color="white"
+          size="sm"
+        />
+      </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-caption"
+          >{{ businessItem.contactWhatsApp == undefined ? "N/A" : businessItem.contactWhatsApp }}
+        </q-item-label></q-item-section
+      >
+    </q-item>
+  </q-list>
 </template>
 <script setup lang="ts">
   // Interface files
@@ -125,8 +48,7 @@
 
   // .ts files
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  import { IMAGES } from "@/constants";
-  const { navigateToWhatsApp, translate, getImageURL } = useUtilities();
+  const { navigateToWhatsApp, translate } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -142,13 +64,6 @@
   const { t } = useI18n({ useScope: "global" });
 
   const businessItem = computed(() => props?.item as BusinessView);
-
-  const mapImagePath = computed(() => {
-    const galleryValue = props.galleryImages;
-    return businessItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
-      ? getImageURL(galleryValue[1]?.imagePath)
-      : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
-  });
 
   const navigateToPhone = () => {
     if (businessItem.value.contactPhone) {
@@ -167,5 +82,4 @@
       console.error(t("errors.mapLinkNotAvailable"));
     }
   };
-  const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
 </script>

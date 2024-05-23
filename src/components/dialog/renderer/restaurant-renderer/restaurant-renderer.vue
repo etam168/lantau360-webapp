@@ -47,7 +47,24 @@
         </q-tab-panel>
 
         <q-tab-panel name="info" class="q-pa-none">
-          <info-tab-section :item="item" :galleryImages="galleryImages" />
+          <q-item class="q-pa-none">
+            <q-item-section v-if="shouldShowImage && mapImagePath">
+              <q-img
+                style="cursor: pointer"
+                :ratio="16 / 9"
+                width="100%"
+                :src="mapImagePath"
+                @click="openGoogleMaps"
+              >
+              </q-img>
+              <q-item-section v-if="$q.screen.xs">
+                <info-tab-section :item="item" :galleryImages="galleryImages" />
+              </q-item-section>
+            </q-item-section>
+            <q-item-section top v-if="$q.screen.gt.xs">
+              <info-tab-section :item="item" :galleryImages="galleryImages" />
+            </q-item-section>
+          </q-item>
         </q-tab-panel>
       </q-tab-panels>
     </q-item>
@@ -63,7 +80,9 @@
 
   // .ts files
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
-  const { translate } = useUtilities();
+  import { IMAGES } from "@/constants";
+
+  const { translate, getImageURL } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -130,7 +149,23 @@
 
     return now >= startTimeToday && now <= endTimeToday;
   };
+  const mapImagePath = computed(() => {
+    const galleryValue = props.galleryImages;
+    return businessItem.value.meta?.["hasMap"] === true && galleryValue && galleryValue.length > 1
+      ? getImageURL(galleryValue[1]?.imagePath)
+      : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
+  });
 
+  const openGoogleMaps = () => {
+    // Check if the business has a map link
+    if (businessItem.value.meta?.["hasMap"]) {
+      // Open a new tab or window with the provided map link
+      window.open(businessItem.value.meta?.["mapLink"], "_blank");
+    } else {
+      // Handle cases where the map link is not available
+      console.error(t("errors.mapLinkNotAvailable"));
+    }
+  };
   const shouldShowItem = computed(() => {
     return (
       businessItem.value.openTime !== null &&
@@ -145,4 +180,6 @@
   const onBtnFavClick = () => {
     emits("on-favourite");
   };
+
+  const shouldShowImage = computed(() => businessItem.value.meta?.["hasMap"] === true);
 </script>
