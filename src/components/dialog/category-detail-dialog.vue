@@ -9,63 +9,24 @@
   >
     <q-layout view="lHh lpr lFf" container style="max-width: 1024px; background-color: #f6f6f6">
       <q-header class="bg-transparent text-dark">
-        <app-dialog-title>{{ categoryData.dialogTitle }}</app-dialog-title>
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <q-page>
-          <atm-renderer
-            v-if="categoryData.renderer === RENDERER.ATM"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <business-renderer
-            v-else-if="categoryData.renderer === RENDERER.BUSINESS"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <daytrip-renderer
-            v-else-if="categoryData.renderer === RENDERER.DAYTRIP"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <emergency-renderer
-            v-else-if="categoryData.renderer === RENDERER.EMERGENCY"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <property-renderer v-else-if="categoryData.renderer === RENDERER.PROPERTY" :item="item" />
-          <posting-renderer v-else-if="categoryData.renderer === RENDERER.POSTING" :item="item" />
-          <restaurant-renderer
-            v-else-if="categoryData.renderer === RENDERER.RESTAURANT"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-            >{{ $t("action.yes") }}</restaurant-renderer
-          >
-          <site-renderer
-            v-else-if="categoryData.renderer === RENDERER.SITE"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <taxi-renderer
-            v-else-if="categoryData.renderer === RENDERER.TAXI"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <timetable-renderer
-            v-else-if="categoryData.renderer === RENDERER.TIMETABLE"
-            :item="item"
-            :isFavourite="isFavourite"
-            @on-favourite="onBtnFavClick"
-          />
-          <tuition-renderer v-else-if="categoryData.renderer === RENDERER.TUITION" :item="item" />
+          <atm-renderer v-if="renderer === RENDERER.ATM" :item="item" />
+          <business-renderer v-else-if="renderer === RENDERER.BUSINESS" :item="item" />
+          <daytrip-renderer v-else-if="renderer === RENDERER.DAYTRIP" :item="item" />
+          <emergency-renderer v-else-if="renderer === RENDERER.EMERGENCY" :item="item" />
+          <property-renderer v-else-if="renderer === RENDERER.PROPERTY" :item="item" />
+          <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
+          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item">{{
+            $t("action.yes")
+          }}</restaurant-renderer>
+          <site-renderer v-else-if="renderer === RENDERER.SITE" :item="item" />
+          <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
+          <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
+          <tuition-renderer v-else-if="renderer === RENDERER.TUITION" :item="item" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -73,15 +34,13 @@
 </template>
 
 <script setup lang="ts">
-  import { LocalStorage, useDialogPluginComponent } from "quasar";
+  import { useDialogPluginComponent } from "quasar";
 
   // Interface files
-  import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { SiteView } from "@/interfaces/models/views/site-view";
 
   // .ts files
-  import { RENDERER, TEMPLATE, STORAGE_KEYS } from "@/constants";
+  import { RENDERER, TEMPLATE } from "@/constants";
   import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
@@ -104,100 +63,47 @@
     }
   });
 
-  const { translate, eventBus, isSiteView, isBusinessView, isPostingView } = useUtilities();
+  const { isBusinessView, isPostingView, isSiteView, eventBus, translate } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
   const isDialogVisible = ref();
 
-  function getCategoryData() {
-    let renderer = "";
-    let dialogTitle = "";
-
+  const dialogTitle = computed(() => {
     if (isSiteView(props.item)) {
-      renderer = RENDERER.SITE;
-      dialogTitle = translate(props.item.siteName, props.item.meta, "siteName");
+      return translate(props.item.siteName, props.item.meta, "siteName");
     } else if (isBusinessView(props.item)) {
-      renderer = RENDERER.BUSINESS;
-      dialogTitle = translate(props.item.businessName, props.item.meta, "businessName");
+      return translate(props.item.businessName, props.item.meta, "businessName");
     } else if (isPostingView(props.item)) {
-      renderer = RENDERER.POSTING;
-      dialogTitle = "Posting";
-    }
-
-    if (props.item.directoryTemplate == TEMPLATE.ATM.value) {
-      renderer = RENDERER.ATM;
-    } else if (props.item.directoryTemplate == TEMPLATE.TIMETABLE.value) {
-      renderer = RENDERER.TIMETABLE;
-    } else if (props.item.directoryTemplate == TEMPLATE.TAXI.value) {
-      renderer = RENDERER.TAXI;
-    } else if (props.item.directoryTemplate == TEMPLATE.RESTAURANT.value) {
-      renderer = RENDERER.RESTAURANT;
-    } else if (props.item.directoryTemplate == TEMPLATE.DAYTRIP.value) {
-      renderer = RENDERER.DAYTRIP;
-    } else if (props.item.directoryTemplate == TEMPLATE.EMERGENCY.value) {
-      renderer = RENDERER.EMERGENCY;
-    } else if (props.item.directoryTemplate == TEMPLATE.PROPERTY.value) {
-      renderer = RENDERER.EMERGENCY;
-    } else if (props.item.directoryTemplate == TEMPLATE.TUITION.value) {
-      renderer = RENDERER.EMERGENCY;
-    }
-
-    return { renderer, dialogTitle };
-  }
-
-  const categoryData = computed(() => getCategoryData());
-
-  const favoriteSiteItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
-  );
-  const favoriteBusinessItems = ref(
-    (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
-  );
-
-  const isFavourite = computed(() => {
-    if (isSiteView(props.item)) {
-      const favItems = favoriteSiteItems.value;
-      const item = props.item as SiteView;
-      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
-    } else if (isBusinessView(props.item)) {
-      const favItems = favoriteBusinessItems.value;
-      const item = props.item as BusinessView;
-      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
+      return "Posting";
     }
   });
 
-  const onBtnFavClick = () => {
-    if (isSiteView(props.item)) {
-      const item = props.item as SiteView;
-      const index = favoriteSiteItems.value.findIndex(fav => fav.siteId === item.siteId);
-
-      if (isFavourite.value) {
-        if (index !== -1) {
-          favoriteSiteItems.value.splice(index, 1);
-        }
-      } else {
-        favoriteSiteItems.value.push(item);
-      }
-
-      LocalStorage.set(STORAGE_KEYS.SAVED.SITE, favoriteSiteItems.value);
+  const renderer = computed(() => {
+    if (props.item.directoryTemplate == TEMPLATE.ATM.value) {
+      return RENDERER.ATM;
+    } else if (props.item.directoryTemplate == TEMPLATE.TIMETABLE.value) {
+      return RENDERER.TIMETABLE;
+    } else if (props.item.directoryTemplate == TEMPLATE.TAXI.value) {
+      return RENDERER.TAXI;
+    } else if (props.item.directoryTemplate == TEMPLATE.RESTAURANT.value) {
+      return RENDERER.RESTAURANT;
+    } else if (props.item.directoryTemplate == TEMPLATE.DAYTRIP.value) {
+      return RENDERER.DAYTRIP;
+    } else if (props.item.directoryTemplate == TEMPLATE.EMERGENCY.value) {
+      return RENDERER.EMERGENCY;
+    } else if (props.item.directoryTemplate == TEMPLATE.PROPERTY.value) {
+      return RENDERER.EMERGENCY;
+    } else if (props.item.directoryTemplate == TEMPLATE.TUITION.value) {
+      return RENDERER.EMERGENCY;
+    } else if (isSiteView(props.item)) {
+      return RENDERER.SITE;
     } else if (isBusinessView(props.item)) {
-      const item = props.item as BusinessView;
-      const index = favoriteBusinessItems.value.findIndex(
-        fav => fav.businessId === item.businessId
-      );
-
-      if (isFavourite.value) {
-        if (index !== -1) {
-          favoriteBusinessItems.value.splice(index, 1);
-        }
-      } else {
-        favoriteBusinessItems.value.push(item);
-      }
-
-      LocalStorage.set(STORAGE_KEYS.SAVED.BUSINESS, favoriteBusinessItems.value);
+      return RENDERER.BUSINESS;
+    } else if (isPostingView(props.item)) {
+      return RENDERER.POSTING;
     }
 
-    eventBus.emit("favoriteUpdated", props.item);
-  };
+    return "";
+  });
 
   onMounted(() => {
     eventBus.on("CategoryDetailDialog", () => {

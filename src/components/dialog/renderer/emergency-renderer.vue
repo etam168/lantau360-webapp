@@ -64,26 +64,17 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
-
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    isFavourite: {
-      type: Boolean,
-      default: false
     }
   });
 
-  const emits = defineEmits(["on-favourite"]);
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, navigateToWhatsApp } = useUtilities();
 
+  const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const translatedContent: any = ref(
-    translate(siteItem.value.description, siteItem.value.meta, "description")
-  );
 
   const navigateToPhone = () => {
     if (siteItem.value.contactPhone) {
@@ -92,7 +83,9 @@
     }
   };
 
-  const onBtnFavClick = () => {
-    emits("on-favourite");
-  };
+  function onBtnFavClick() {
+    toggleItemFavStatus(props.item, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
+  }
 </script>

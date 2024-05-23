@@ -104,23 +104,19 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
-
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    isFavourite: {
-      type: Boolean,
-      default: false
     }
   });
 
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
-  const emits = defineEmits(["on-favourite"]);
+  const { eventBus, isFavouriteItem, navigateToWhatsApp, toggleItemFavStatus, translate } =
+    useUtilities();
 
+  const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props?.item as SiteView);
 
   const navigateToPhone = () => {
@@ -136,10 +132,6 @@
     } else {
       console.error(t("errors.mapLinkNotAvailable"));
     }
-  };
-
-  const onBtnFavClick = () => {
-    emits("on-favourite");
   };
 
   const address = computed(() =>
@@ -180,4 +172,10 @@
       return translate(siteItem.value.siteName, props.item.meta, "siteName");
     }
   });
+
+  const onBtnFavClick = () => {
+    toggleItemFavStatus(siteItem.value, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
+  };
 </script>

@@ -92,24 +92,21 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    isFavourite: {
-      type: Boolean,
-      default: false
     }
   });
 
-  const emits = defineEmits(["on-favourite"]);
-
-  const { translate } = useUtilities();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const translatedContent = ref("");
 
   const businessItem = computed(() => props?.item as BusinessView);
+  const isFavourite = ref(isFavouriteItem(props.item));
 
-  const onBtnFavClick = () => {
-    emits("on-favourite");
-  };
+  function onBtnFavClick() {
+    toggleItemFavStatus(props.item, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
+  }
 
   watchEffect(() => {
     translatedContent.value = translate(

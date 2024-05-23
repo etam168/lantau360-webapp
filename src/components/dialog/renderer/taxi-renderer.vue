@@ -59,22 +59,19 @@
 
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
 
-  const { navigateToWhatsApp, translate } = useUtilities();
+  const { eventBus, isFavouriteItem, navigateToWhatsApp, toggleItemFavStatus, translate } =
+    useUtilities();
 
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    isFavourite: {
-      type: Boolean,
-      default: false
     }
   });
 
-  const emits = defineEmits(["on-favourite"]);
-
+  const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
+
   const translatedContent: any = ref(
     translate(siteItem.value.description, siteItem.value.meta, "description")
   );
@@ -86,7 +83,9 @@
     }
   };
 
-  const onBtnFavClick = () => {
-    emits("on-favourite");
-  };
+  function onBtnFavClick() {
+    toggleItemFavStatus(props.item, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
+  }
 </script>

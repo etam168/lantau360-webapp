@@ -76,12 +76,10 @@
     }
   });
 
-  const { translate } = useUtilities();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
-  const emits = defineEmits(["on-favourite"]);
-
+  const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props?.item as SiteView);
-  // provide("userPosition", coords);
 
   const translatedContent = ref("");
 
@@ -93,11 +91,9 @@
     );
   });
 
-  // const translatedContent: any = computed(() =>
-  //   translate(siteItem.value.description, siteItem.value.meta, "description")
-  // );
-
   const onBtnFavClick = () => {
-    emits("on-favourite");
+    toggleItemFavStatus(siteItem.value, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
   };
 </script>

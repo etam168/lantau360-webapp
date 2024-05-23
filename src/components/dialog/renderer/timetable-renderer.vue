@@ -73,16 +73,13 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    isFavourite: {
-      type: Boolean,
-      default: false
     }
   });
 
-  const emits = defineEmits(["on-favourite"]);
   const { locale } = useI18n({ useScope: "global" });
-  const { getImageURL } = useUtilities();
+  const { eventBus, getImageURL, isFavouriteItem, toggleItemFavStatus } = useUtilities();
+
+  const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
 
   onMounted(() => {
@@ -138,7 +135,9 @@
     }
   ]);
 
-  const onBtnFavClick = () => {
-    emits("on-favourite");
-  };
+  function onBtnFavClick() {
+    toggleItemFavStatus(props.item, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus.emit("favoriteUpdated", props.item);
+  }
 </script>

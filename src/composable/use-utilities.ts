@@ -12,14 +12,14 @@ import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
 import { MarketingType } from "@/interfaces/types/marketing-types";
+import { PostingView } from "@/interfaces/models/views/posting-view";
 import { SiteView } from "@/interfaces/models/views/site-view";
 
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
-import { BLOB_URL, IMAGES } from "@/constants";
-import { date, EventBus, Notify, Screen } from "quasar";
+import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";
+import { date, EventBus, LocalStorage, Notify, Screen } from "quasar";
 import { useUserStore } from "@/stores/user";
-import { PostingView } from "@/interfaces/models/views/posting-view";
 
 const eventBus = new EventBus();
 
@@ -115,6 +115,18 @@ export function useUtilities() {
   // Type guard to determine if the item is an CommunityEvent
   function isCommunityEvent(item: BulletinTypes): item is CommunityEventView {
     return (item as CommunityEventView).communityEventId !== undefined;
+  }
+
+  // Check favaorite status of item
+  function isFavouriteItem(item: CategoryTypes): boolean {
+    if (isSiteView(item)) {
+      const favItems = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
+      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
+    } else if (isBusinessView(item)) {
+      const favItems = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
+      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
+    }
+    return false;
   }
 
   function isCommunityNews(item: BulletinTypes): item is CommunityNewsView {
@@ -234,6 +246,25 @@ export function useUtilities() {
     });
   }
 
+  function toggleItemFavStatus(item: CategoryTypes, favStatus: boolean) {
+    const isBusiness = isBusinessView(item);
+    const id = isBusiness ? (item as BusinessView).businessId : (item as SiteView).siteId;
+    const storageKey = isBusiness ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE;
+
+    const favItems = (LocalStorage.getItem(storageKey) || []) as (BusinessView | SiteView)[];
+    const index = favItems.findIndex(
+      fav => (isBusiness ? (fav as BusinessView).businessId : (fav as SiteView).siteId) === id
+    );
+
+    if (favStatus && index !== -1) {
+      favItems.splice(index, 1);
+    } else if (!favStatus) {
+      favItems.push(item as BusinessView | SiteView);
+    }
+
+    LocalStorage.set(storageKey, favItems);
+  }
+
   return {
     aspectRatio,
     dateFormatter,
@@ -252,6 +283,7 @@ export function useUtilities() {
     isCommunityNews,
     isCommunityNotice,
     isDirectory,
+    isFavouriteItem,
     isNotEmptyArray,
     isNthBitSet,
     isPostingView,
@@ -262,6 +294,7 @@ export function useUtilities() {
     translate,
     translateAlt,
     refreshToken,
-    sortDirectoryItems
+    sortDirectoryItems,
+    toggleItemFavStatus
   };
 }
