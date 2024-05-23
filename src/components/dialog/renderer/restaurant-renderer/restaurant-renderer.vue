@@ -167,14 +167,8 @@
     }
   };
   const shouldShowItem = computed(() => {
-    return (
-      businessItem.value.openTime !== null &&
-      businessItem.value.openTime !== undefined &&
-      businessItem.value.openTime !== "" &&
-      businessItem.value.closeTime !== null &&
-      businessItem.value.closeTime !== undefined &&
-      businessItem.value.closeTime !== ""
-    );
+    const { openTime, closeTime } = businessItem.value;
+    return !!openTime && !!closeTime;
   });
 
   const onBtnFavClick = () => {
