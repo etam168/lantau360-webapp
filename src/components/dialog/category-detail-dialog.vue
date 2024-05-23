@@ -106,7 +106,7 @@
   import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
-  import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
+  import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer/restaurant-renderer.vue";
   import TuitionRenderer from "@/components/dialog/renderer/tuition-renderer.vue";
   import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
   import { SiteView } from "@/interfaces/models/views/site-view";
