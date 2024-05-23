@@ -15,6 +15,7 @@ declare module 'vue' {
     AppCategoryListItems: typeof import('./components/global/app-category-list-items.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItem: typeof import('./components/global/app-directory-item.vue')['default']
+    AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
     AppDirectorySection: typeof import('./components/global/app-directory-section.vue')['default']
     AppGroupedItemList: typeof import('./components/global/app-grouped-item-list.vue')['default']
     AppMarketingItemList: typeof import('./components/global/app-marketing-item-list.vue')['default']

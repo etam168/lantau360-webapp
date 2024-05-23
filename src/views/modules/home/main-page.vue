@@ -10,15 +10,15 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="all">
-        <app-directory-section :data="directoryData" />
+        <app-directory-item-list :data="directoryData" />
       </q-tab-panel>
 
       <q-tab-panel name="resources">
-        <app-directory-section :data="resourcesData" />
+        <app-directory-item-list :data="resourcesData" />
       </q-tab-panel>
 
       <q-tab-panel name="tripAdvisor">
-        <app-directory-section :data="tripAdvisorData" />
+        <app-directory-item-list :data="tripAdvisorData" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>

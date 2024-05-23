@@ -1,12 +1,18 @@
 <template>
   <div class="row q-gutter-y-md">
-    <app-directory-item
+    <q-card
+      flat
       v-for="(item, index) in sortedData"
       :key="index"
-      :item="item"
+      class="text-center"
       :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
-      @on-click="handleDialog"
-    />
+      @click="handleDialog(item)"
+    >
+      <q-avatar size="64px">
+        <q-img :src="getImageURL(item.imagePath)" />
+      </q-avatar>
+      <div class="text-center q-ma-sm">{{ getDirectoryTitle(item) }}</div>
+    </q-card>
   </div>
 </template>
 
@@ -30,7 +36,8 @@
     }
   });
 
-  const { eventBus, isCommunityDirectory, isDirectory, translate } = useUtilities();
+  const { eventBus, isCommunityDirectory, isDirectory, getImageURL, translate, translateAlt } =
+    useUtilities();
   const { isUserLogon, userId } = useUserStore();
 
   const $q = useQuasar();
@@ -38,6 +45,16 @@
 
   const isDialogOpen = ref(false);
 
+  function getDirectoryTitle(item: DirectoryTypes) {
+    const { shortName, shortNameAlt } = item;
+
+    // Check if directoryNameAlt exists and is not null
+    if (shortNameAlt !== undefined && shortNameAlt !== null) {
+      return translateAlt(shortName, shortNameAlt, "shortName");
+    } else {
+      return translate(shortName, item.meta, "shortName");
+    }
+  }
   // Computed property for sorted data that does not mutate props
   const sortedData = computed(() => {
     const temp = [...props.data];

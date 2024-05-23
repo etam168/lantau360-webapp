@@ -29,7 +29,7 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <app-directory-section :data="directoriesData" class="q-my-sm" />
+        <app-directory-item-list :data="directoriesData" class="q-my-sm" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>

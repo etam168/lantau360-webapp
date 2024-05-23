@@ -1,6 +1,7 @@
 export interface BaseDirectory {
   directoryName: string;
   shortName: string;
+  shortNameAlt: string;
   imagePath: string;
   description: string;
   groupId: number;
