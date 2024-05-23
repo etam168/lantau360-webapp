@@ -14,6 +14,7 @@ export default {
   },
 
   loginDialog: {
+    question: "What's your next step?",
     subtitle: "Please sign in to proceed."
   },
 
