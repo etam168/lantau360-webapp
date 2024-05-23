@@ -47,7 +47,7 @@
 
             <q-card>
               <q-card-section class="q-pa-none">
-                <info-tab :item="item" style="background-color: #f6f6f6" />
+                <location-expansion-content :item="item" style="background-color: #f6f6f6" />
               </q-card-section>
             </q-card>
           </q-expansion-item>
@@ -63,7 +63,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import InfoTab from "./detail-tabs/info-tab.vue";
+  import LocationExpansionContent from "@/components/dialog/renderer/site-renderer/location-expansion-content/index.vue";
 
   const props = defineProps({
     item: {

@@ -1,16 +1,13 @@
 <template>
   <q-card
     flat
-    class="q-ma-md"
+    class="row justify-center"
     :style="{
       height: $q.screen.gt.xs ? '370px' : 'auto'
     }"
   >
-    <q-card-section
-      class="q-pa-none"
-      :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-    >
-      <map-component
+    <q-card-section class="q-pa-none" :style="$q.screen.lt.sm ? 'width: 100%' : ''">
+      <app-map-component
         style="flex: 1"
         :style="{
           height: $q.screen.gt.xs ? '300px' : '200px',
@@ -24,49 +21,6 @@
         :bottom-right-label="address"
         @click="openGoogleMaps()"
       />
-
-      <q-list
-        dense
-        style="max-width: 250px; flex: 1"
-        :class="$q.screen.gt.xs ? 'q-pa-md' : 'q-px-none q-py-md'"
-      >
-        <q-item v-if="siteItem.contactPhone">
-          <q-item-section avatar @click="navigateToPhone">
-            <q-avatar>
-              <q-icon name="phone" color="primary" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption">{{
-              siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone
-            }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item v-if="siteItem.contactWhatsApp">
-          <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
-            <q-avatar>
-              <q-icon name="fab fa-whatsapp" color="primary" />
-            </q-avatar>
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption">{{
-              siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
-            }}</q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-card-actions class="q-mt-xs q-pa-none">
-          <app-button
-            class="full-width"
-            :label="$t('home.tabItems.checkin')"
-            color="primary"
-            type="submit"
-            size="md"
-            @click="checkIn()"
-          />
-        </q-card-actions>
-      </q-list>
     </q-card-section>
   </q-card>
 </template>
@@ -75,7 +29,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { LatLngExpression, latLngBounds } from "leaflet";
 
-  const { navigateToWhatsApp, translate, notify } = useUtilities();
+  const { translate, notify } = useUtilities();
 
   const props = defineProps({
     item: {
@@ -127,13 +81,6 @@
     }
   });
 
-  const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
-
   const openGoogleMaps = () => {
     if (siteItem.value.meta?.["hasMap"]) {
       window.open(siteItem.value.meta?.["mapLink"], "_blank");
@@ -142,12 +89,4 @@
       console.error(t("errors.mapLinkNotAvailable"));
     }
   };
-  function checkIn() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
-      componentProps: {
-        item: props.item
-      }
-    });
-  }
 </script>

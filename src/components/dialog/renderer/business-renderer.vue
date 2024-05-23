@@ -5,6 +5,7 @@
     <open-close-time-content :item="item" />
 
     <q-list class="rounded-borders q-mx-lg">
+      <!-- Description expansion -->
       <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
         <q-card-section class="q-pa-sm">
           <q-expansion-item group="siteGroup" dense dense-toggle>
@@ -32,6 +33,7 @@
         </q-card-section>
       </q-card>
 
+      <!-- Location expansion -->
       <q-card class="q-mb-md">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
@@ -45,13 +47,14 @@
             <q-separator />
             <q-card>
               <q-card-section class="q-pa-none">
-                <default-info-tab :item="item" />
+                <map-component :item="item" />
               </q-card-section>
             </q-card>
           </q-expansion-item>
         </q-card-section>
       </q-card>
 
+      <!-- Contact expansion -->
       <q-card v-if="item.contactPhone || item.contactWhatsApp">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
@@ -84,8 +87,8 @@
 
   // UI Components
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
-  import DefaultInfoTab from "@/components/dialog/renderer/common/tabs/default-info-tab.vue";
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import MapComponent from "@/components/dialog/renderer/common/map-component.vue";
   import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({

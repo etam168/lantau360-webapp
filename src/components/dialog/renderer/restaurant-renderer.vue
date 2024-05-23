@@ -45,7 +45,7 @@
             <q-separator />
             <q-card>
               <q-card-section class="q-pa-none">
-                <default-info-tab :item="item" />
+                <map-component :item="item" />
               </q-card-section>
             </q-card>
           </q-expansion-item>
@@ -84,8 +84,8 @@
 
   // UI Components
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
-  import DefaultInfoTab from "@/components/dialog/renderer/common/tabs/default-info-tab.vue";
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import MapComponent from "@/components/dialog/renderer/common/map-component.vue";
   import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({

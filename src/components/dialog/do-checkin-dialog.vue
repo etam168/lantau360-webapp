@@ -26,7 +26,7 @@
   import { useDialogPluginComponent } from "quasar";
   import { ref } from "vue";
 
-  import CheckInTab from "@/components/dialog/renderer/site-renderer/detail-tabs/check-in-tab/index.vue";
+  import CheckInTab from "@/components/dialog/renderer/site-renderer/location-expansion-content/check-in-section/index.vue";
 
   defineProps({
     item: {

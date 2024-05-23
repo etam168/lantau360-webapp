@@ -25,33 +25,8 @@
             default-opened
             header-class="text-h6"
           >
-            <q-separator />
-
-            <q-item v-if="siteItem.contactPhone">
-              <q-item-section avatar @click="navigateToPhone">
-                <q-avatar>
-                  <q-icon name="phone" color="primary" />
-                </q-avatar>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-caption">{{
-                  siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone
-                }}</q-item-label>
-              </q-item-section>
-            </q-item>
-
-            <q-item v-if="siteItem.contactWhatsApp">
-              <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
-                <q-avatar>
-                  <q-icon name="fab fa-whatsapp" color="primary" />
-                </q-avatar>
-              </q-item-section>
-              <q-item-section>
-                <q-item-label class="text-caption">{{
-                  siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
-                }}</q-item-label>
-              </q-item-section>
-            </q-item>
+            <q-separator class="q-mt-sm" />
+            <contact-content :item="item" />
           </q-expansion-item>
         </q-card-section>
       </q-card>
@@ -64,6 +39,9 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
+  //UI Component
+  import ContactContent from "./common/contact-content.vue";
+
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
@@ -71,17 +49,10 @@
     }
   });
 
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, navigateToWhatsApp } = useUtilities();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
-
-  const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 
   function onBtnFavClick() {
     toggleItemFavStatus(props.item, isFavourite.value);

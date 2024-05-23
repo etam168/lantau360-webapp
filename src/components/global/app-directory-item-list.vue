@@ -5,7 +5,7 @@
       v-for="(item, index) in sortedData"
       :key="index"
       class="text-center"
-      :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
+      :class="['text-center', { 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }]"
       @click="handleDialog(item)"
     >
       <q-avatar size="64px">
