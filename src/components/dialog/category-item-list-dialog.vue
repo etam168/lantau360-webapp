@@ -43,7 +43,7 @@
 
           <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
           <template v-else>
-            <app-category-list-items
+            <category-list-items
               class="q-px-md q-pt-md q-pb-none"
               :directoryItems="directoryItems"
               :directory="directory"
@@ -71,6 +71,7 @@
 
   // Components
   import CreatePostingCard from "@/components/card/create-posting-card.vue";
+  import CategoryListItems from "@/components/dialog/renderer/category-list-items.vue";
 
   const props = defineProps({
     directoryItemsList: {
@@ -161,6 +162,7 @@
     const items = groupedArray.value.filter(group => group.group === groupName).pop()?.items || [];
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
+
   onMounted(() => {
     eventBus.on("CategoryItemListDialog", () => {
       isDialogVisible.value = false;
