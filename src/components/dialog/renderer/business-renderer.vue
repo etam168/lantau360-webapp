@@ -33,7 +33,13 @@
         </q-card-section>
       </q-card>
 
-      <location-content :item="item" @open-map="openGoogleMaps" />
+      <location-content
+        :item="item"
+        :default-tooltip="
+          translate((props.item as BusinessView).businessName, props.item.meta, 'businessName')
+        "
+        @open-map="openGoogleMaps"
+      />
 
       <!-- Contact expansion -->
       <q-card v-if="item.contactPhone || item.contactWhatsApp">

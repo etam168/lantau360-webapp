@@ -47,6 +47,10 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
+    },
+    defaultTooltip: {
+      type: String,
+      required: true
     }
   });
 
@@ -90,7 +94,7 @@
     if (mapLabel !== undefined && mapLabel !== null) {
       return mapLabel;
     } else {
-      return "Unknown";
+      return props.defaultTooltip;
       //return translate(props.item.siteName, props.item.meta, "siteName");
     }
   });
