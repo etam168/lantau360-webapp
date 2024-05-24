@@ -32,26 +32,13 @@
         </q-card-section>
       </q-card>
 
-      <q-card class="q-mb-md">
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            :label="$t('home.location')"
-            group="siteGroup"
-            dense
-            dense-toggle
-            default-opened
-            header-class="text-h6"
-          >
-            <q-separator />
-            <q-card>
-              <q-card-section class="q-pa-none">
-                <map-component :item="item" />
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
-
+      <location-content
+        :item="item"
+        :default-tooltip="
+          translate((props.item as BusinessView).businessName, props.item.meta, 'businessName')
+        "
+        @open-map="openGoogleMaps"
+      />
       <q-card v-if="item.contactPhone || item.contactWhatsApp">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
@@ -85,7 +72,7 @@
   // UI Components
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import MapComponent from "@/components/dialog/renderer/common/map-component.vue";
+  import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
   import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({
@@ -94,7 +81,8 @@
       required: true
     }
   });
-
+  const $q = useQuasar();
+  const { t } = useI18n({ useScope: "global" });
   const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const translatedContent = ref("");
@@ -108,6 +96,13 @@
     eventBus.emit("favoriteUpdated", props.item);
   }
 
+  const openGoogleMaps = () => {
+    if (props.item.meta?.["hasMap"]) {
+      window.open(props.item.meta?.["mapLink"], "_blank");
+    } else {
+      $q.notify(t("errors.mapLinkNotAvailable"));
+    }
+  };
   watchEffect(() => {
     translatedContent.value = translate(
       businessItem.value.description,

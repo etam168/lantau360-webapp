@@ -90,6 +90,7 @@
     height: $q.screen.gt.xs ? "300px" : "200px",
     width: $q.screen.gt.xs ? "600px" : "100%"
   }));
+
   function openGoogleMaps() {
     emits("open-map");
   }

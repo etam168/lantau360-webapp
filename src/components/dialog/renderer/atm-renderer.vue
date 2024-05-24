@@ -11,39 +11,33 @@
       /></q-item-section>
     </q-item>
 
-    <q-list class="rounded-borders q-mx-lg">
-      <q-card>
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            :label="$t('home.location')"
-            group="siteGroup"
-            dense
-            dense-toggle
-            default-opened
-            header-class="text-h6"
-          >
-            <q-separator />
-
-            <q-card
-              flat
-              class="q-ma-md"
-              :style="{
-                height: $q.screen.gt.xs ? '370px' : 'auto'
-              }"
+    <location-content
+      :item="item"
+      :default-tooltip="translate((props.item as SiteView).siteName, props.item.meta, 'siteName')"
+      @open-map="openGoogleMaps"
+    />
+    <!-- Contact expansion -->
+    <q-card v-if="item.contactPhone || item.contactWhatsApp">
+      <q-card-section class="q-pa-sm">
+        <q-expansion-item
+          :label="'Contact Info'"
+          group="siteGroup"
+          dense
+          dense-toggle
+          header-class="text-h6"
+        >
+          <q-separator />
+          <q-card>
+            <q-card-section
+              class="q-pa-none"
+              :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
             >
-              <q-card-section
-                class="justify-between q-pa-none"
-                :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-                style="width: 100%"
-              >
-                <map-component :item="item" />
-                <contact-content :item="item" class="q-mr-xl" />
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
-    </q-list>
+              <contact-content :item="item" />
+            </q-card-section>
+          </q-card>
+        </q-expansion-item>
+      </q-card-section>
+    </q-card>
   </q-list>
 </template>
 
@@ -51,7 +45,7 @@
   //UI Component
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
-  import MapComponent from "@/components/dialog/renderer/common/map-component.vue";
+  import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -65,7 +59,8 @@
   });
 
   const $q = useQuasar();
-  const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
+  const { t } = useI18n({ useScope: "global" });
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props?.item as SiteView);
@@ -74,5 +69,13 @@
     toggleItemFavStatus(siteItem.value, isFavourite.value);
     isFavourite.value = !isFavourite.value;
     eventBus.emit("favoriteUpdated", props.item);
+  };
+
+  const openGoogleMaps = () => {
+    if (props.item.meta?.["hasMap"]) {
+      window.open(props.item.meta?.["mapLink"], "_blank");
+    } else {
+      $q.notify(t("errors.mapLinkNotAvailable"));
+    }
   };
 </script>
