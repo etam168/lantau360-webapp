@@ -71,7 +71,7 @@
 
   // Components
   import CreatePostingCard from "@/components/card/create-posting-card.vue";
-  import CategoryListItems from "@/components/dialog/renderer/category-list-items.vue";
+  import CategoryListItems from "@/components/dialog/list-items/category-list-items/index.vue";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
   const props = defineProps({
@@ -92,7 +92,6 @@
   const { dialogRef } = useDialogPluginComponent();
   const { groupBy, isCommunityDirectory, translate, eventBus } = useUtilities();
 
-  // const directoryItems = ref<any>(props?.directoryItemsList ?? []);
   const isDialogVisible = ref();
 
   const dialogTitle = computed(() =>

@@ -45,9 +45,9 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Components
-  import DaytripRenderer from "@/components/dialog/renderer/category-item-list/daytrip-renderer.vue";
-  import DirectoryRenderer from "@/components/dialog/renderer/category-item-list/directory-renderer.vue";
-  import CommunityRenderer from "@/components/dialog/renderer/category-item-list/community-renderer.vue";
+  import DaytripRenderer from "./daytrip-renderer.vue";
+  import DirectoryRenderer from "./directory-renderer.vue";
+  import CommunityRenderer from "./community-renderer.vue";
 
   // .ts files
   import { TEMPLATE } from "@/constants";
