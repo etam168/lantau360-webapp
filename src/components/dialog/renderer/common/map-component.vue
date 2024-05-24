@@ -24,6 +24,7 @@
     </q-card-section>
   </q-card>
 </template>
+
 <script setup lang="ts">
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";

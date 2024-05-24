@@ -33,8 +33,8 @@
         </q-card-section>
       </q-card>
 
-      <!-- Location expansion -->
-      <q-card class="q-mb-md">
+      <location-content :item="item" />
+      <!-- <q-card class="q-mb-md">
         <q-card-section class="q-pa-sm">
           <q-expansion-item
             :label="$t('home.location')"
@@ -52,7 +52,7 @@
             </q-card>
           </q-expansion-item>
         </q-card-section>
-      </q-card>
+      </q-card> -->
 
       <!-- Contact expansion -->
       <q-card v-if="item.contactPhone || item.contactWhatsApp">
@@ -88,7 +88,7 @@
   // UI Components
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import MapComponent from "@/components/dialog/renderer/common/map-component.vue";
+  import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
   import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({
