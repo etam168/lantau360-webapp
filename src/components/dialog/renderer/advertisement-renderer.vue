@@ -24,6 +24,7 @@
   const translatedContent: any = ref(
     translate(advertisementItem.value["description"], advertisementItem.value.meta, "description")
   );
+
   onMounted(() => {
     eventBus.on("CategoryDetailDialog", () => {
       isDialogVisible.value = false;

@@ -13,6 +13,7 @@
       <location-section
         :item="item"
         :can-check-in="true"
+        @check-in="openCheckInDialog"
         :default-tooltip="translate(siteItem.siteName, siteItem.meta, 'siteName')"
         @open-map="openGoogleMaps"
       />
@@ -45,6 +46,15 @@
   const { t } = useI18n({ useScope: "global" });
   const { translate } = useUtilities();
   const siteItem = computed(() => props?.item as SiteView);
+
+  const openCheckInDialog = () => {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
+      componentProps: {
+        item: props.item
+      }
+    });
+  };
 
   const openGoogleMaps = () => {
     if (props.item.meta?.["hasMap"]) {

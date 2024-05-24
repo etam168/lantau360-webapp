@@ -46,7 +46,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { LatLngExpression, latLng, latLngBounds } from "leaflet";
 
-  const emits = defineEmits(["open-map"]);
+  const emits = defineEmits(["open-map", "check-in"]);
   const props = defineProps({
     item: {
       type: Object as PropType<CategoryTypes>,
@@ -104,12 +104,7 @@
   }));
 
   function onBtnCheckInClick() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
-      componentProps: {
-        item: props.item
-      }
-    });
+    emits("check-in");
   }
 
   function openGoogleMaps() {

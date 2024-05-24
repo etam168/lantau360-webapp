@@ -5,7 +5,6 @@
     :initial-values="initialValues"
     :validation-schema="schema"
     @submit="onSubmit"
-    v-slot="{ meta, values }"
   >
     <q-item class="justify-center">
       <q-item-label v-if="!isSubmitReviewEnabled" style="color: red"
@@ -17,42 +16,28 @@
         class="q-ma-none q-pa-xs"
         :style="$q.screen.gt.xs ? 'width: 400px' : 'width : 100%'"
       >
-        <q-item>
-          <q-item-section avatar>
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="location_on"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption">{{ $t("home.curentLocation") }} </q-item-label>
-            <q-item-label class="text-caption">{{ currentAddress }} </q-item-label>
-          </q-item-section>
-        </q-item>
+        <div v-for="location in locationData" :key="location.lable">
+          <q-item>
+            <q-item-section avatar>
+              <q-avatar
+                dense
+                rounded
+                color="primary"
+                icon="location_on"
+                text-color="white"
+                size="sm"
+              />
+            </q-item-section>
+            <q-item-section>
+              <q-item-label class="text-caption">{{ location.lable }} </q-item-label>
+              <q-item-label class="text-caption">{{ location.address }} </q-item-label>
+            </q-item-section>
+          </q-item>
+        </div>
 
-        <q-item>
-          <q-item-section avatar>
-            <q-avatar
-              dense
-              rounded
-              color="primary"
-              icon="location_on"
-              text-color="white"
-              size="sm"
-            />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label class="text-caption">{{ $t("home.destinationAddress") }} </q-item-label>
-            <q-item-label class="text-caption">{{ destinationAddress }} </q-item-label>
-            <q-item-label class="text-caption"
-              >{{ distance + " " + $t("home.metersAway") }}
-            </q-item-label>
-          </q-item-section>
-        </q-item>
+        <q-item-label class="text-caption" style="margin-left: 70px"
+          >{{ distance + " " + $t("home.metersAway") }}
+        </q-item-label>
         <q-item v-if="props.distance && props.distance > 10">
           <q-item-label style="color: red">
             {{ $t("errors.under10MeterDistance") }}
@@ -87,14 +72,19 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { Form } from "vee-validate";
   import * as yup from "yup";
+
+  // Interface files
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { ref } from "vue";
-  import { useUserStore } from "@/stores/user";
-  import i18n from "@/plugins/i18n/i18n";
-  import { URL } from "@/constants";
   import { Content } from "@/interfaces/models/entities/content";
+
+  //.ts files
+  import i18n from "@/plugins/i18n/i18n";
+  import { useCheckInInput } from "./use-checkin-input";
+  import { useUserStore } from "@/stores/user";
+  import { URL } from "@/constants";
 
   const props = defineProps({
     itemId: {
@@ -116,62 +106,46 @@
     }
   });
 
-  const loading = ref(false);
-  const configLoading = ref(true);
+  const { t } = i18n.global;
+
+  const { submitCheckIn } = useCheckInInput();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const $q = useQuasar();
-  const { t } = i18n.global;
-  const error = ref<string | null>(null);
+
+  const loading = ref(false);
+  const configLoading = ref(true);
   const isPermitToPost = ref(false);
   const timeUntilNextCheckIn = ref();
-
+  const error = ref<string | null>(null);
   const form = ref();
   const initialValues = ref({
     description: ""
   });
+
   const schema = yup.object({
     description: yup.string().required().label(t("home.description"))
   });
+
   const isSubmitReviewEnabled = computed(() => {
     return props.currentAddress && props.destinationAddress && props.distance != undefined;
   });
+
+  const locationData = computed(() => [
+    { lable: t("home.curentLocation"), address: props.currentAddress },
+    { lable: t("home.destinationAddress"), address: props.destinationAddress }
+  ]);
 
   function onSubmit(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
         loading.value = true;
-
-        const checkInDto = {
-          siteId: props.itemId,
-          memberId: parseInt(userStore.userId),
-          checkInfo: {
-            description: values.description,
-            checkInAt: new Date()
-          },
-          createdAt: new Date(),
-          createdBy: parseInt(userStore.userId)
-        };
-
-        await axios
-          .post("/CheckIn", checkInDto)
-          .then(() => {
-            $q.notify({
-              message: t("home.message.checkInDataSubmittedSuccessfully"),
-              type: "positive",
-              color: "primary"
-            });
-            loading.value = false;
-            eventBus.emit("refresh-directory-checkin-items");
-            eventBus.emit("close-check-in-dialog");
-          })
-          .catch(err => {
-            $q.notify({
-              message: err.message,
-              type: "negative"
-            });
-            loading.value = false;
-          });
+        const responseStatus = await submitCheckIn(props.itemId, values.description);
+        if (responseStatus) {
+          eventBus.emit("refresh-directory-checkin-items");
+          eventBus.emit("close-check-in-dialog");
+        }
+        loading.value = false;
       }
     });
   }
