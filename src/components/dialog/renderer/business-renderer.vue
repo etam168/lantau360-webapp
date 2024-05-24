@@ -33,26 +33,7 @@
         </q-card-section>
       </q-card>
 
-      <location-content :item="item" />
-      <!-- <q-card class="q-mb-md">
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            :label="$t('home.location')"
-            group="siteGroup"
-            dense
-            dense-toggle
-            default-opened
-            header-class="text-h6"
-          >
-            <q-separator />
-            <q-card>
-              <q-card-section class="q-pt-lg">
-                <map-component :item="item" />
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card> -->
+      <location-content :item="item" @open-map="openGoogleMaps" />
 
       <!-- Contact expansion -->
       <q-card v-if="item.contactPhone || item.contactWhatsApp">
@@ -97,7 +78,8 @@
       required: true
     }
   });
-
+  const $q = useQuasar();
+  const { t } = useI18n({ useScope: "global" });
   const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const translatedContent = ref("");
@@ -111,6 +93,13 @@
     eventBus.emit("favoriteUpdated", props.item);
   }
 
+  const openGoogleMaps = () => {
+    if (props.item.meta?.["hasMap"]) {
+      window.open(props.item.meta?.["mapLink"], "_blank");
+    } else {
+      $q.notify(t("errors.mapLinkNotAvailable"));
+    }
+  };
   watchEffect(() => {
     translatedContent.value = translate(
       businessItem.value.description,

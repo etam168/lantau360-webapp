@@ -52,6 +52,8 @@
 
   const { locale } = useI18n({ useScope: "global" });
   const $q = useQuasar();
+  const emits = defineEmits(["open-map"]);
+
   const address = computed(() => translate(props.item.subtitle1, props.item.meta, "subtitle1"));
 
   const zoom = computed(() => {
@@ -94,14 +96,6 @@
   });
 
   function openGoogleMaps() {
-    //
+    emits("open-map");
   }
-  // // const openGoogleMaps = () => {
-  // //   if (props.item.meta?.["hasMap"]) {
-  // //     window.open(props.item.meta?.["mapLink"], "_blank");
-  // //   } else {
-  // //     notify(t("errors.mapLinkNotAvailable"), "negative");
-  // //     console.error(t("errors.mapLinkNotAvailable"));
-  // //   }
-  // // };
 </script>
