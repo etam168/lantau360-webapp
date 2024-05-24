@@ -52,8 +52,8 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   //UI Components
-  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
   import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
+  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
 
   const props = defineProps({
     item: {

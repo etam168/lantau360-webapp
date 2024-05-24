@@ -17,34 +17,14 @@
       @open-map="openGoogleMaps"
     />
     <!-- Contact expansion -->
-    <q-card v-if="item.contactPhone || item.contactWhatsApp">
-      <q-card-section class="q-pa-sm">
-        <q-expansion-item
-          :label="'Contact Info'"
-          group="siteGroup"
-          dense
-          dense-toggle
-          header-class="text-h6"
-        >
-          <q-separator />
-          <q-card>
-            <q-card-section
-              class="q-pa-none"
-              :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-            >
-              <contact-content :item="item" />
-            </q-card-section>
-          </q-card>
-        </q-expansion-item>
-      </q-card-section>
-    </q-card>
+    <contact-section :item="item" v-if="item.contactPhone || item.contactWhatsApp" />
   </q-list>
 </template>
 
 <script setup lang="ts">
   //UI Component
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
+  import ContactSection from "@/components/dialog/renderer/common/contact-section.vue";
   import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
 
   // Interface files

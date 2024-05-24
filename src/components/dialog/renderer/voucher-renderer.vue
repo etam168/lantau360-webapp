@@ -38,14 +38,14 @@
   import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const { translate, eventBus } = useUtilities();
-
   const props = defineProps({
     item: {
       type: Object as PropType<MarketingType>,
       required: true
     }
   });
+
+  const { translate, eventBus } = useUtilities();
 
   const voucherItem = computed(() => props.item as BusinessVoucherView);
 

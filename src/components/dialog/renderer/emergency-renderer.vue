@@ -11,36 +11,21 @@
       </q-item-section>
     </q-item>
 
-    <q-list
-      class="rounded-borders q-mx-lg"
-      v-if="siteItem.contactPhone || siteItem.contactWhatsApp"
-    >
-      <q-card>
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            label="Info"
-            group="siteGroup"
-            dense
-            dense-toggle
-            default-opened
-            header-class="text-h6"
-          >
-            <q-separator class="q-mt-sm" />
-            <contact-content :item="item" />
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
-    </q-list>
+    <!-- Contact expansion -->
+    <contact-section
+      class="q-mx-sm"
+      :item="item"
+      v-if="item.contactPhone || item.contactWhatsApp"
+    />
   </q-list>
 </template>
 
 <script setup lang="ts">
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { SiteView } from "@/interfaces/models/views/site-view";
 
   //UI Component
-  import ContactContent from "./common/contact-content.vue";
+  import ContactSection from "@/components/dialog/renderer/common/contact-section.vue";
 
   const props = defineProps({
     item: {
@@ -52,7 +37,6 @@
   const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
-  const siteItem = computed(() => props.item as SiteView);
 
   function onBtnFavClick() {
     toggleItemFavStatus(props.item, isFavourite.value);

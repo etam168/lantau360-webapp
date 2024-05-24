@@ -5,40 +5,21 @@
     <open-close-time-content :item="item" />
 
     <q-list class="rounded-borders q-mx-lg">
-      <!-- Description expansion -->
+      <!-- Description section -->
       <description-section
         :descriptionContent="translate(businessItem.description, businessItem.meta, 'description')"
         :item="item"
       />
 
+      <!-- Location section -->
       <location-content
         :item="item"
         :default-tooltip="translate(businessItem.businessName, businessItem.meta, 'businessName')"
         @open-map="openGoogleMaps"
       />
 
-      <!-- Contact expansion -->
-      <q-card v-if="item.contactPhone || item.contactWhatsApp">
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item
-            :label="'Contact Info'"
-            group="siteGroup"
-            dense
-            dense-toggle
-            header-class="text-h6"
-          >
-            <q-separator />
-            <q-card>
-              <q-card-section
-                class="q-pa-none"
-                :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-              >
-                <contact-content :item="item" />
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
+      <!-- Contact section -->
+      <contact-section :item="item" v-if="item.contactPhone || item.contactWhatsApp" />
     </q-list>
   </q-list>
 </template>
@@ -49,10 +30,10 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // UI Components
-  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
+  import ContactSection from "@/components/dialog/renderer/common/contact-section.vue";
+  import DescriptionSection from "@/components/dialog/renderer/common/description-section.vue";
   import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
   import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
-  import DescriptionSection from "@/components/dialog/renderer/common/description-section.vue";
   import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
 
   const props = defineProps({
