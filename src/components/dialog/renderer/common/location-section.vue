@@ -21,13 +21,12 @@
         flat
         class="row justify-center"
         :style="{
-          height: $q.screen.gt.xs ? '370px' : 'auto'
+          height: $q.screen.gt.xs ? '370px' : '100%'
         }"
       >
-        <q-card-section>
+        <q-card-section :style="mapComponentStyle">
           <app-map-component
             style="flex: 1"
-            :style="mapComponentStyle"
             :zoom="zoom"
             :marker-position="markerPosition"
             :url="localMapUrl"

@@ -44,11 +44,9 @@
           <!-- If groupBykey doesn't exist, show the linear app-category-item-list -->
           <template v-else>
             <category-list-items
-              class="q-px-md q-pt-md q-pb-none"
               :directoryItems="directoryItemsList"
               :directory="directory"
               :directoryCheckIns="directoryCheckIns"
-              style="position: relative"
             />
           </template>
         </q-page>

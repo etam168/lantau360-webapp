@@ -1,5 +1,8 @@
 <template>
-  <q-list :class="[template === TEMPLATE.DAYTRIP.value ? ($q.screen.gt.xs ? 'row' : '') : '']">
+  <q-list
+    class="q-px-md q-pt-md q-pb-none"
+    :class="[template === TEMPLATE.DAYTRIP.value ? ($q.screen.gt.xs ? 'row' : '') : '']"
+  >
     <q-item
       clickable
       v-for="item in sortedData"
