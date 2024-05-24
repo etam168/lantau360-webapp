@@ -20,9 +20,7 @@
           <emergency-renderer v-else-if="renderer === RENDERER.EMERGENCY" :item="item" />
           <property-renderer v-else-if="renderer === RENDERER.PROPERTY" :item="item" />
           <posting-renderer v-else-if="renderer === RENDERER.POSTING" :item="item" />
-          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item">{{
-            $t("action.yes")
-          }}</restaurant-renderer>
+          <restaurant-renderer v-else-if="renderer === RENDERER.RESTAURANT" :item="item" />
           <site-renderer v-else-if="renderer === RENDERER.SITE" :item="item" />
           <taxi-renderer v-else-if="renderer === RENDERER.TAXI" :item="item" />
           <timetable-renderer v-else-if="renderer === RENDERER.TIMETABLE" :item="item" />
@@ -51,7 +49,7 @@
   import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
   import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
-  import SiteRenderer from "@/components/dialog/renderer/site-renderer/index.vue";
+  import SiteRenderer from "@/components/dialog/renderer/site-renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import TuitionRenderer from "@/components/dialog/renderer/tuition-renderer.vue";

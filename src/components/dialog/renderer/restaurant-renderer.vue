@@ -5,32 +5,10 @@
     <open-close-time-content :item="item" />
 
     <q-list class="rounded-borders q-mx-lg">
-      <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
-        <q-card-section class="q-pa-sm">
-          <q-expansion-item group="siteGroup" dense dense-toggle>
-            <template v-slot:header>
-              <q-item-section class="text-h6">
-                {{ $t("home.description") }}
-              </q-item-section>
-
-              <q-item-section side>
-                <app-button-rounded
-                  :text-color="isFavourite ? 'red' : 'white'"
-                  icon="favorite"
-                  @click="onBtnFavClick"
-                />
-              </q-item-section>
-            </template>
-            <q-separator />
-
-            <q-card>
-              <q-card-section class="q-pa-md">
-                <app-text-editor v-model="translatedContent" />
-              </q-card-section>
-            </q-card>
-          </q-expansion-item>
-        </q-card-section>
-      </q-card>
+      <description-section
+        :descriptionContent="translate(businessItem.description, businessItem.meta, 'description')"
+        :item="item"
+      />
 
       <location-content
         :item="item"
@@ -83,18 +61,9 @@
   });
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
-
-  const translatedContent = ref("");
+  const { translate } = useUtilities();
 
   const businessItem = computed(() => props?.item as BusinessView);
-  const isFavourite = ref(isFavouriteItem(props.item));
-
-  function onBtnFavClick() {
-    toggleItemFavStatus(props.item, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus.emit("favoriteUpdated", props.item);
-  }
 
   const openGoogleMaps = () => {
     if (props.item.meta?.["hasMap"]) {
@@ -103,11 +72,4 @@
       $q.notify(t("errors.mapLinkNotAvailable"));
     }
   };
-  watchEffect(() => {
-    translatedContent.value = translate(
-      businessItem.value.description,
-      businessItem.value.meta,
-      "description"
-    );
-  });
 </script>
