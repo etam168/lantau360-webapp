@@ -13,9 +13,7 @@
 
       <location-content
         :item="item"
-        :default-tooltip="
-          translate((props.item as BusinessView).businessName, props.item.meta, 'businessName')
-        "
+        :default-tooltip="translate(businessItem.businessName, businessItem.meta, 'businessName')"
         @open-map="openGoogleMaps"
       />
 
