@@ -105,7 +105,7 @@
 
   function onBtnCheckInClick() {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
+      component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
       componentProps: {
         item: props.item
       }
