@@ -1,5 +1,5 @@
 <template>
-  <gallery-component :item="item" />
+  <gallery-section :item="item" />
 
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item v-if="item.subtitle1">
@@ -13,13 +13,6 @@
     <q-item v-if="translatedContent != null && translatedContent != ''">
       <app-text-editor v-model="translatedContent" />
     </q-item>
-    <q-item>
-      <q-item-section>
-        <div class="q-gutter-md">
-          <contact-content :item="item" />
-        </div>
-      </q-item-section>
-    </q-item>
   </q-list>
 </template>
 
@@ -29,8 +22,7 @@
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
   //UI Components
-  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
+  import GallerySection from "@/components/dialog/renderer/common/gallery-section.vue";
 
   const props = defineProps({
     item: {

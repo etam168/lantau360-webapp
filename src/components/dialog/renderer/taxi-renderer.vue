@@ -1,5 +1,5 @@
 <template>
-  <gallery-component :item="item" />
+  <gallery-section :item="item" />
 
   <q-list padding class="q-mx-sm q-pt-md">
     <q-item v-if="siteItem.subtitle1">
@@ -39,7 +39,33 @@
     <q-item>
       <q-item-section>
         <div class="q-gutter-md">
-          <contact-content :item="item" />
+          <q-list class="q-pa-none">
+            <q-item v-if="item.contactPhone" class="q-pa-none">
+              <q-item-section avatar @click="navigateToPhone">
+                <q-avatar>
+                  <q-icon name="phone" color="primary" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-caption">{{
+                  siteItem.contactPhone == undefined ? "N/A" : siteItem.contactPhone
+                }}</q-item-label>
+              </q-item-section>
+            </q-item>
+
+            <q-item v-if="item.contactWhatsApp" class="q-pa-none">
+              <q-item-section avatar @click="navigateToWhatsApp(siteItem.contactWhatsApp)">
+                <q-avatar>
+                  <q-icon name="fab fa-whatsapp" color="primary" />
+                </q-avatar>
+              </q-item-section>
+              <q-item-section>
+                <q-item-label class="text-caption">{{
+                  siteItem.contactWhatsApp == undefined ? "N/A" : siteItem.contactWhatsApp
+                }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </div>
       </q-item-section>
     </q-item>
@@ -52,8 +78,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   //UI Components
-  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import ContactContent from "@/components/dialog/renderer/common/contact-content.vue";
+  import GallerySection from "@/components/dialog/renderer/common/gallery-section.vue";
 
   const props = defineProps({
     item: {
@@ -61,7 +86,8 @@
       required: true
     }
   });
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
+  const { eventBus, isFavouriteItem, navigateToWhatsApp, toggleItemFavStatus, translate } =
+    useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
@@ -75,4 +101,11 @@
     isFavourite.value = !isFavourite.value;
     eventBus.emit("favoriteUpdated", props.item);
   }
+
+  const navigateToPhone = () => {
+    if (siteItem.value.contactPhone) {
+      const phoneURL = `tel:${siteItem.value.contactPhone}`;
+      window.location.href = phoneURL;
+    }
+  };
 </script>

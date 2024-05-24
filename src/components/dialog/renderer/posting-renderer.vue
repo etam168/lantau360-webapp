@@ -1,5 +1,5 @@
 <template>
-  <gallery-component :item="item" />
+  <gallery-section :item="item" />
 
   <q-list padding class="q-mx-sm q-pa-none">
     <q-item>
@@ -22,7 +22,7 @@
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
   //UI Components
-  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
+  import GallerySection from "@/components/dialog/renderer/common/gallery-section.vue";
 
   const { translate } = useUtilities();
 

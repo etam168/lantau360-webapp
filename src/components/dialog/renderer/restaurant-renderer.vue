@@ -1,8 +1,8 @@
 <template>
-  <gallery-component :item="item" />
+  <gallery-section :item="item" />
 
   <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
-    <open-close-time-content :item="item" />
+    <opening-hours-section :item="item" />
 
     <q-list class="rounded-borders q-mx-lg">
       <description-section
@@ -10,7 +10,7 @@
         :item="item"
       />
 
-      <location-content
+      <location-section
         :item="item"
         :default-tooltip="
           translate((props.item as BusinessView).businessName, props.item.meta, 'businessName')
@@ -32,9 +32,9 @@
   // UI Components
   import ContactSection from "@/components/dialog/renderer/common/contact-section.vue";
   import DescriptionSection from "@/components/dialog/renderer/common/description-section.vue";
-  import GalleryComponent from "@/components/dialog/renderer/common/gallery-component.vue";
-  import LocationContent from "@/components/dialog/renderer/common/location-content.vue";
-  import OpenCloseTimeContent from "@/components/dialog/renderer/common/open-close-time-content.vue";
+  import GallerySection from "@/components/dialog/renderer/common/gallery-section.vue";
+  import LocationSection from "@/components/dialog/renderer/common/location-section.vue";
+  import OpeningHoursSection from "@/components/dialog/renderer/common/opening-hours-section.vue";
 
   const props = defineProps({
     item: {
