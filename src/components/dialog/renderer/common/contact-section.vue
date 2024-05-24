@@ -16,7 +16,7 @@
           >
             <q-list class="q-pa-none">
               <q-item v-if="businessItem.contactPhone" class="q-pa-none">
-                <q-item-section avatar @click="navigateToPhone">
+                <q-item-section avatar @click="navigateToPhone(businessItem.contactPhone)">
                   <q-avatar>
                     <q-icon name="phone" color="primary" />
                   </q-avatar>
@@ -59,13 +59,6 @@
     }
   });
 
-  const { navigateToWhatsApp } = useUtilities();
+  const { navigateToPhone, navigateToWhatsApp } = useCommunication();
   const businessItem = computed(() => props?.item as BusinessView);
-
-  const navigateToPhone = () => {
-    if (businessItem.value.contactPhone) {
-      const phoneURL = `tel:${businessItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 </script>

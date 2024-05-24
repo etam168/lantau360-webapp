@@ -41,7 +41,7 @@
         <div class="q-gutter-md">
           <q-list class="q-pa-none">
             <q-item v-if="item.contactPhone" class="q-pa-none">
-              <q-item-section avatar @click="navigateToPhone">
+              <q-item-section avatar @click="navigateToPhone(siteItem.contactPhone)">
                 <q-avatar>
                   <q-icon name="phone" color="primary" />
                 </q-avatar>
@@ -87,8 +87,8 @@
     }
   });
 
-  const { eventBus, isFavouriteItem, navigateToWhatsApp, toggleItemFavStatus, translate } =
-    useUtilities();
+  const { navigateToPhone, navigateToWhatsApp } = useCommunication();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props.item as SiteView);
@@ -102,11 +102,4 @@
     isFavourite.value = !isFavourite.value;
     eventBus.emit("favoriteUpdated", props.item);
   }
-
-  const navigateToPhone = () => {
-    if (siteItem.value.contactPhone) {
-      const phoneURL = `tel:${siteItem.value.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
 </script>

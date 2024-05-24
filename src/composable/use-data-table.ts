@@ -1,6 +1,7 @@
 // import api from "@/api/crud";
 
-const { notify, httpMethods } = useUtilities();
+const { httpMethods } = useCommunication();
+const { notify } = useUtilities();
 
 export default function useDataTable(url: string, key: string) {
   const filter = ref("");

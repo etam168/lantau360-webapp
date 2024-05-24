@@ -307,6 +307,7 @@
     "whenever": true,
     "useMemberInput": true,
     "handlePermission": true,
-    "GeolocationPermissionStatus": true
+    "GeolocationPermissionStatus": true,
+    "useCommunication": true
   }
 }

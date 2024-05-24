@@ -1,8 +1,9 @@
+import { useCommunication } from "@/composable/use-communication";
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 
-const { refreshToken, notify } = useUtilities();
-
+const { notify } = useUtilities();
+const { refreshToken } = useCommunication();
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
 axios.interceptors.request.use(

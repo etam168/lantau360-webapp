@@ -14,7 +14,11 @@
     <q-item>
       <q-item-section>
         <div class="q-gutter-md">
-          <app-button-rounded v-if="item.contactPhone" icon="phone" @click="navigateToPhone" />
+          <app-button-rounded
+            v-if="item.contactPhone"
+            icon="phone"
+            @click="navigateToPhone(item.contactPhone)"
+          />
           <app-button-rounded
             v-if="item.contactWhatsApp"
             icon="fab fa-whatsapp"
@@ -30,8 +34,6 @@
   // Interface files
   import { MarketingType } from "@/interfaces/types/marketing-types";
 
-  const { eventBus, navigateToWhatsApp, translate } = useUtilities();
-
   const props = defineProps({
     item: {
       type: Object as PropType<MarketingType>,
@@ -39,14 +41,10 @@
     }
   });
 
-  const isDialogVisible = ref();
+  const { navigateToPhone, navigateToWhatsApp } = useCommunication();
+  const { eventBus, translate } = useUtilities();
 
-  const navigateToPhone = () => {
-    if (props?.item.contactPhone) {
-      const phoneURL = `tel:${props?.item.contactPhone}`;
-      window.location.href = phoneURL;
-    }
-  };
+  const isDialogVisible = ref();
 
   onMounted(() => {
     eventBus.on("BusinessPromotionDialog", () => {

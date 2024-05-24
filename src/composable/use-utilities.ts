@@ -19,16 +19,8 @@ import { SiteView } from "@/interfaces/models/views/site-view";
 import i18n from "@/plugins/i18n/i18n";
 import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";
 import { date, EventBus, LocalStorage, Notify, Screen } from "quasar";
-import { useUserStore } from "@/stores/user";
 
 const eventBus = new EventBus();
-
-const httpMethods = {
-  get: async (path: any, options?: any) => axios.get(path, { params: options }),
-  create: (path: any, item: any, config = {}) => axios.post(path, item, config),
-  update: (path: any, item: any, config?: any) => axios.put(path, item, config),
-  delete: (path: any) => axios.delete(path)
-};
 
 export function useUtilities() {
   const { t } = i18n.global;
@@ -201,28 +193,6 @@ export function useUtilities() {
     return altName?.i18n?.[locale.value]?.[key] || label;
   }
 
-  function navigateToWhatsApp(whatsAppNumber: string) {
-    const whatsappURL = `https://wa.me/${whatsAppNumber}?text=Hello,%20Welcome%20to%20Lantau360.`;
-    window.open(whatsappURL, "_blank");
-  }
-
-  async function refreshToken() {
-    const userStore = useUserStore();
-    try {
-      const response = await axios.post(`/MemberAuth/RefreshToken`, {
-        accessToken: userStore.token,
-        refreshToken: userStore.refreshToken
-      });
-      const { accessToken, tokenRefresh } = response.data;
-      userStore.token = accessToken;
-      userStore.refreshToken = tokenRefresh;
-      return accessToken;
-    } catch (error) {
-      console.error("Error refreshing token:", error);
-      throw error;
-    }
-  }
-
   function sortDirectoryItems(items: any, sortByKey: any, hasSortByKey: boolean) {
     const { locale } = useI18n({ useScope: "global" });
 
@@ -273,7 +243,6 @@ export function useUtilities() {
     getImageURL,
     getTimeAgo,
     groupBy,
-    httpMethods,
     isAdvertisement,
     isBusinessPromotion,
     isBusinessView,
@@ -289,11 +258,9 @@ export function useUtilities() {
     isPostingView,
     isSiteView,
     isSmallScreen,
-    navigateToWhatsApp,
     notify,
     translate,
     translateAlt,
-    refreshToken,
     sortDirectoryItems,
     toggleItemFavStatus
   };
