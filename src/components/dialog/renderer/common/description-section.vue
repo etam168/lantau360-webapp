@@ -1,7 +1,7 @@
 <template>
   <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
     <q-card-section class="q-pa-sm">
-      <q-expansion-item group="siteGroup" dense dense-toggle>
+      <q-expansion-item group="itemGroup" dense dense-toggle>
         <template v-slot:header>
           <q-item-section class="text-h6">
             {{ $t("home.description") }}

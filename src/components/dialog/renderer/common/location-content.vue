@@ -1,14 +1,22 @@
 <template>
   <q-card>
     <q-expansion-item
-      :label="$t('home.location')"
-      group="siteGroup"
+      group="itemGroup"
+      class="q-px-sm"
       expand-icon-toggle
-      expand-separator
       dense-toggle
       default-opened
-      header-class="text-h6"
     >
+      <template v-slot:header>
+        <q-item-section class="text-h6">
+          {{ $t("home.location") }}
+        </q-item-section>
+
+        <q-item-section side v-if="canCheckIn">
+          <q-btn flat color="primary" @click="onBtnCheckInClick">Check-In</q-btn>
+        </q-item-section>
+      </template>
+      <q-separator />
       <q-card
         flat
         class="row justify-center"
@@ -47,6 +55,10 @@
     defaultTooltip: {
       type: String,
       required: true
+    },
+    canCheckIn: {
+      type: Boolean,
+      default: false
     }
   });
 
@@ -90,6 +102,15 @@
     height: $q.screen.gt.xs ? "300px" : "200px",
     width: $q.screen.gt.xs ? "600px" : "100%"
   }));
+
+  function onBtnCheckInClick() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/do-checkin-dialog.vue")),
+      componentProps: {
+        item: props.item
+      }
+    });
+  }
 
   function openGoogleMaps() {
     emits("open-map");

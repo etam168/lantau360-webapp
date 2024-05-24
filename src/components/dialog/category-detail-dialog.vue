@@ -49,7 +49,7 @@
   import PostingRenderer from "@/components/dialog/renderer/posting-renderer.vue";
   import PropertyRenderer from "@/components/dialog/renderer/property-renderer.vue";
   import RestaurantRenderer from "@/components/dialog/renderer/restaurant-renderer.vue";
-  import SiteRenderer from "@/components/dialog/renderer/site-renderer/site-renderer.vue";
+  import SiteRenderer from "@/components/dialog/renderer/site-renderer.vue";
   import TaxiRenderer from "@/components/dialog/renderer/taxi-renderer.vue";
   import TimetableRenderer from "@/components/dialog/renderer/timetable-renderer.vue";
   import TuitionRenderer from "@/components/dialog/renderer/tuition-renderer.vue";

@@ -3,7 +3,7 @@
     <q-card-section class="q-pa-sm">
       <q-expansion-item
         :label="'Contact Info'"
-        group="siteGroup"
+        group="itemGroup"
         dense
         dense-toggle
         header-class="text-h6"
