@@ -25,7 +25,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     name: "Lantau360 Lite",
     short_name: "Lantau360",
     theme_color: "#ffffff",
-    background_color: "#ffffff",
+    background_color: "#00652E",
     icons: [
       {
         src: "./resources/pwa/android-icon-192x192.png",
