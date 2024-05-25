@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-mt-md">
+  <q-card class="q-mt-md" v-if="item.contactPhone || item.contactWhatsApp">
     <q-card-section class="q-pa-sm">
       <q-expansion-item
         :label="'Contact Info'"

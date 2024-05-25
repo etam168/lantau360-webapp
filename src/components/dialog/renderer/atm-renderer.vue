@@ -17,7 +17,7 @@
       @open-map="openGoogleMaps"
     />
     <!-- Contact expansion -->
-    <contact-section :item="item" v-if="item.contactPhone || item.contactWhatsApp" />
+    <contact-section :item="item" />
   </q-list>
 </template>
 
