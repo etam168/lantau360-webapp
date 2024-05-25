@@ -15,7 +15,6 @@ import { version } from "./package.json";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
-
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
   base: "/",
@@ -28,55 +27,39 @@ const pwaOptions: Partial<VitePWAOptions> = {
     theme_color: "#ffffff",
     background_color: "#00652E",
     icons: [
-      {
-        src: "./resources/pwa/android-icon-192x192.png",
-        sizes: "192x192",
-        type: "image/png"
-      },
-      {
-        src: "./resources/pwa/android-chrome-256x256.png",
-        sizes: "256x256",
-        type: "image/png"
-      },
-      {
-        src: "./resources/pwa/android-icon-384x384.png",
-        sizes: "72x72",
-        type: "image/png"
-      },
-      {
-        src: "./resources/pwa/android-icon-512x512.png",
-        sizes: "512x512",
-        type: "image/png"
-      },
-
       // Android launcher icons
       {
-        src: "./resources/pwa/android-launchericon-48-48-v2.png",
+        src: `./resources/pwa/android-icon-48x48.png?v=2`,
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-72-72-v2.png",
+        src: `./resources/pwa/android-icon-72x72.png?v=2`,
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-96-96-v2.png",
+        src: `./resources/pwa/android-icon-96x96.png?v=2`,
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-144-144-v2.png",
+        src: `./resources/pwa/android-icon-144x144.png?v=2`,
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-192-192-v2.png",
+        src: `./resources/pwa/android-icon-192x192.png?v=2`,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-512-512-v2.png",
+        src: "./resources/pwa/android-icon-256x256.png?v=2",
+        sizes: "256x256",
+        type: "image/png"
+      },
+      {
+        src: `./resources/pwa/android-icon-512x512.png?v=2`,
         sizes: "512x512",
         type: "image/png"
       }
@@ -153,12 +136,12 @@ export default defineConfig({
       inject: {
         data: {
           injectAppleTouchIcons: `
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png" sizes="60x60" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png" sizes="76x76" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png" sizes="120x120" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png" sizes="152x152" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png" sizes="180x180" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png?v=1" sizes="60x60" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png?v=1" sizes="76x76" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png?v=1" sizes="120x120" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png?v=1" sizes="152x152" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png?v=1" sizes="180x180" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png?v=1" />
           `
         }
       }
