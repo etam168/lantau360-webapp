@@ -12,6 +12,7 @@ export default {
   turnOnLocation: "Please turn on location feature the settings",
   loadingRefreshLocation: "Please wait to refresh the location..",
   tripAdvisor: "旅行顾问",
+  contactnotavailable: "联系方式不可用",
   message: {
     checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"
   },

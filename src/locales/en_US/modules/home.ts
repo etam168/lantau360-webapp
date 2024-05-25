@@ -12,6 +12,7 @@ export default {
   turnOnLocation: "Please turn on location feature the settings",
   loadingRefreshLocation: "Please wait to refresh the location..",
   tripAdvisor: "Trip Advisor",
+  contactnotavailable: "Contact info not available",
 
   message: {
     checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"

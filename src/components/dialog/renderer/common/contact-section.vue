@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-mt-md" v-if="item.contactPhone || item.contactWhatsApp">
+  <q-card class="q-mt-md">
     <q-card-section class="q-pa-sm">
       <q-expansion-item
         :label="'Contact Info'"
@@ -13,6 +13,7 @@
           <q-card-section
             class="q-pa-none"
             :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
+            v-if="item.contactPhone || item.contactWhatsApp"
           >
             <q-list class="q-pa-none">
               <q-item v-if="businessItem.contactPhone" class="q-pa-none">
@@ -41,6 +42,9 @@
                 </q-item-section>
               </q-item>
             </q-list>
+          </q-card-section>
+          <q-card-section v-else>
+            <q-item-label class="text-caption">{{ $t("home.contactnotavailable") }}</q-item-label>
           </q-card-section>
         </q-card>
       </q-expansion-item>
