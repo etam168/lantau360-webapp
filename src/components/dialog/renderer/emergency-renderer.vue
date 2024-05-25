@@ -1,5 +1,5 @@
 <template>
-  <q-list padding class="q-pa-none q-pb-md">
+  <q-list class="q-px-md q-pb-md">
     <!-- Contact section -->
     <contact-section class="q-mx-sm" :item="item" />
   </q-list>

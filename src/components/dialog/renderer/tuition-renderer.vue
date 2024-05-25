@@ -1,7 +1,7 @@
 <template>
   <gallery-section :item="item" />
 
-  <q-list padding class="q-mx-sm q-pa-none">
+  <q-list class="q-px-md q-pa-none">
     <q-item v-if="item.subtitle1">
       <q-item-section top>
         <q-item-label v-if="item.subtitle1" class="text-caption text-weight-light"

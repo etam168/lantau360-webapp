@@ -1,7 +1,7 @@
 <template>
   <gallery-section :item="item" />
 
-  <q-list padding class="q-pa-none q-pb-md" style="background-color: #f6f6f6">
+  <q-list class="q-px-md q-pb-md" style="background-color: #f6f6f6">
     <opening-hours-section :item="item" />
 
     <q-list class="rounded-borders q-mx-lg">
