@@ -1,8 +1,8 @@
 <template>
   <gallery-section :item="item" />
 
-  <q-list padding class="q-pa-none q-py-md" style="background-color: #f6f6f6">
-    <q-list class="rounded-borders q-mx-lg">
+  <q-list class="q-px-md q-py-md" style="background-color: #f6f6f6">
+    <q-list class="rounded-borders">
       <!-- Description section -->
       <description-section
         :descriptionContent="translate(siteItem.description, siteItem.meta, 'description')"
