@@ -90,7 +90,9 @@
 
   const template = computed(() => props.directory.meta?.template);
   //  Sort Directory items
-  const hasSortByKey = props.directory.meta.sortByKey in props.directoryItems[0];
+  const hasSortByKey = props.directoryItems[0]
+    ? props.directory.meta.sortByKey in props.directoryItems[0]
+    : false;
   const sortedData = computed(() => {
     return sortDirectoryItems(props.directoryItems, props.directory.meta.sortByKey, hasSortByKey);
   });
