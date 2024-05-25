@@ -5,6 +5,7 @@ import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
 
+import { createHtmlPlugin } from "vite-plugin-html";
 import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
@@ -50,64 +51,33 @@ const pwaOptions: Partial<VitePWAOptions> = {
 
       // Android launcher icons
       {
-        src: "./resources/pwa/android-launchericon-48-48-v1.png",
+        src: "./resources/pwa/android-launchericon-48-48-v2.png",
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-72-72-v1.png",
+        src: "./resources/pwa/android-launchericon-72-72-v2.png",
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-96-96-v1.png",
+        src: "./resources/pwa/android-launchericon-96-96-v2.png",
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-144-144-v1.png",
+        src: "./resources/pwa/android-launchericon-144-144-v2.png",
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-192-192-v1.png",
+        src: "./resources/pwa/android-launchericon-192-192-v2.png",
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-launchericon-512-512-v1.png",
+        src: "./resources/pwa/android-launchericon-512-512-v2.png",
         sizes: "512x512",
-        type: "image/png"
-      },
-      // iOS icons
-      {
-        src: "/resources/pwa/apple-touch-icon-60x60.png",
-        sizes: "60x60",
-        type: "image/png"
-      },
-      {
-        src: "/resources/pwa/apple-touch-icon-76x76.png",
-        sizes: "76x76",
-        type: "image/png"
-      },
-      {
-        src: "/resources/pwa/apple-touch-icon-120x120.png",
-        sizes: "120x120",
-        type: "image/png"
-      },
-      {
-        src: "/resources/pwa/apple-touch-icon-152x152.png",
-        sizes: "152x152",
-        type: "image/png"
-      },
-      {
-        src: "/resources/pwa/apple-touch-icon-180x180.png",
-        sizes: "180x180",
-        type: "image/png"
-      },
-      {
-        src: "/resources/pwa/apple-touch-icon.png",
-        sizes: "any",
         type: "image/png"
       }
     ]
@@ -178,6 +148,20 @@ export default defineConfig({
       extensions: ["vue"],
 
       dts: "src/components.d.ts" // enabled by default if `typescript` is installed
+    }),
+    createHtmlPlugin({
+      inject: {
+        data: {
+          injectAppleTouchIcons: `
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png" sizes="60x60" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png" sizes="76x76" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png" sizes="120x120" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png" sizes="152x152" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png" sizes="180x180" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png" />
+          `
+        }
+      }
     })
   ],
   define: {

@@ -8,6 +8,8 @@ import App from "@/App.vue";
 import "@/plugins/axios";
 import "quasar/src/css/index.sass";
 
+const intervalMS = 60 * 60 * 1000;
+
 const updateSW = registerSW({
   onNeedRefresh() {
     Dialog.create({
@@ -28,7 +30,25 @@ const updateSW = registerSW({
       .onCancel(() => {});
   },
 
-  onOfflineReady() {}
+  onOfflineReady() {},
+  onRegisteredSW(swUrl, r) {
+    r &&
+      setInterval(async () => {
+        if (!(!r.installing && navigator)) return;
+
+        if ("connection" in navigator && !navigator.onLine) return;
+
+        const resp = await fetch(swUrl, {
+          cache: "no-store",
+          headers: {
+            cache: "no-store",
+            "cache-control": "no-cache"
+          }
+        });
+
+        if (resp?.status === 200) await r.update();
+      }, intervalMS);
+  }
 });
 
 document.addEventListener("swUpdated", (event: any) => {
