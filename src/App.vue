@@ -1,12 +1,67 @@
 <template>
   <router-view />
   <!-- <AddToHomeScreen /> -->
-  <div v-show="showIosInstallPrompt" class="install-banner" @click="showIosInstallationGuide">
+  <!-- <div v-show="showIosInstallPrompt" class="install-banner" @click="showIosInstallationGuide">
     {{ $t("installApp.title") }}
-  </div>
-  <div v-show="showAndroidInstallPrompt" class="install-banner" @click="promptAndroidInstall">
+  </div> -->
+
+  <q-dialog
+    v-model="showIosInstallPrompt"
+    v-show="showIosInstallPrompt"
+    position="bottom"
+    persistent
+  >
+    <q-card
+      style="
+        width: 350px;
+        border: 2px solid #00652e;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+      "
+    >
+      <q-card-section class="row items-center no-wrap">
+        <div>
+          <div class="text-weight-bold">{{ $t("installApp.title") }}</div>
+        </div>
+
+        <q-space />
+
+        <q-btn flat round icon="done" @click="showIosInstallationGuide" />
+        <q-btn flat round icon="close" v-close-popup />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
+  <!-- <div v-show="showAndroidInstallPrompt" class="install-banner" @click="promptAndroidInstall">
     {{ $t("installApp.title") }}
-  </div>
+  </div> -->
+
+  <q-dialog
+    v-model="showAndroidInstallPrompt"
+    v-show="showAndroidInstallPrompt"
+    position="bottom"
+    persistent
+  >
+    <q-card
+      style="
+        width: 350px;
+        border: 2px solid #00652e;
+        border-bottom: 0;
+        border-top-left-radius: 25px;
+        border-top-right-radius: 25px;
+      "
+    >
+      <q-card-section class="row items-center no-wrap">
+        <div>
+          <div class="text-weight-bold">{{ $t("installApp.title") }}</div>
+        </div>
+
+        <q-space />
+
+        <q-btn flat round icon="done" @click="promptAndroidInstall" />
+        <q-btn flat round icon="close" v-close-popup />
+      </q-card-section>
+    </q-card>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -32,6 +87,7 @@
 
   const showIosInstallPrompt = ref(false);
   const showAndroidInstallPrompt = ref(false);
+
   let deferredPrompt: any = null;
 
   const showIosInstallationGuide = () => {
@@ -70,7 +126,9 @@
         e.preventDefault();
         deferredPrompt = e;
         if (isAndroid()) {
-          showAndroidInstallPrompt.value = true;
+          setTimeout(() => {
+            showAndroidInstallPrompt.value = true;
+          }, 10000); // Delay of 5 seconds before showing the prompt
         }
       });
     }
