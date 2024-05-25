@@ -25,6 +25,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     name: "Lantau360 Lite",
     short_name: "Lantau360",
     theme_color: "#ffffff",
+    background_color: "#ffffff",
     icons: [
       {
         src: "./resources/pwa/android-icon-192x192.png",
@@ -44,6 +45,37 @@ const pwaOptions: Partial<VitePWAOptions> = {
       {
         src: "./resources/pwa/android-icon-512x512.png",
         sizes: "512x512",
+        type: "image/png"
+      },
+      // iOS icons
+      {
+        src: "/resources/pwa/apple-touch-icon-60x60.png",
+        sizes: "60x60",
+        type: "image/png"
+      },
+      {
+        src: "/resources/pwa/apple-touch-icon-76x76.png",
+        sizes: "76x76",
+        type: "image/png"
+      },
+      {
+        src: "/resources/pwa/apple-touch-icon-120x120.png",
+        sizes: "120x120",
+        type: "image/png"
+      },
+      {
+        src: "/resources/pwa/apple-touch-icon-152x152.png",
+        sizes: "152x152",
+        type: "image/png"
+      },
+      {
+        src: "/resources/pwa/apple-touch-icon-180x180.png",
+        sizes: "180x180",
+        type: "image/png"
+      },
+      {
+        src: "/resources/pwa/apple-touch-icon.png",
+        sizes: "any",
         type: "image/png"
       }
     ]
