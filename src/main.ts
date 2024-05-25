@@ -41,6 +41,11 @@ document.addEventListener("swUpdated", (event: any) => {
   }
 });
 
+// if ("serviceWorker" in navigator) {
+//   window.addEventListener("load", () => {
+//     navigator.serviceWorker.register("/sw.js", { scope: "/" });
+//   });
+// }
 const app = createApp(App);
 registerPlugins(app);
 app.mount("#app");

@@ -27,20 +27,24 @@ const pwaOptions: Partial<VitePWAOptions> = {
     theme_color: "#ffffff",
     icons: [
       {
-        src: "pwa-192x192.png", // Path to the icon without leading slash
+        src: "./resources/pwa/android-icon-192x192.png",
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "/pwa-512x512.png", // Path to the icon with leading slash
-        sizes: "512x512",
+        src: "./resources/pwa/android-chrome-256x256.png",
+        sizes: "256x256",
         type: "image/png"
       },
       {
-        src: "pwa-512x512.png", // Path to the icon without leading slash
+        src: "./resources/pwa/android-icon-384x384.png",
+        sizes: "72x72",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/android-icon-512x512.png",
         sizes: "512x512",
-        type: "image/png",
-        purpose: ["any", "maskable"] // Purpose declaration for the icon
+        type: "image/png"
       }
     ]
   },
