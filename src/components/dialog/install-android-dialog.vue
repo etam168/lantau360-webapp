@@ -8,23 +8,24 @@
     </q-card-section>
   </q-card>
 </template>
-
 <script setup lang="ts">
+  import { ref } from "vue";
   // import { useI18n } from "vue-i18n";
 
   // const { t } = useI18n();
   const props = defineProps<{ deferredPrompt: any }>();
+  const localDeferredPrompt = ref(props.deferredPrompt);
 
   const handleDone = () => {
-    if (props.deferredPrompt) {
-      props.deferredPrompt.prompt();
-      props.deferredPrompt.userChoice.then((choiceResult: any) => {
+    if (localDeferredPrompt.value) {
+      localDeferredPrompt.value.prompt();
+      localDeferredPrompt.value.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === "accepted") {
           console.log("User accepted the A2HS prompt");
         } else {
           console.log("User dismissed the A2HS prompt");
         }
-        props.deferredPrompt = null;
+        localDeferredPrompt.value = null;
       });
     }
   };
