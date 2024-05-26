@@ -8,7 +8,7 @@ import "@/plugins/axios";
 import "quasar/src/css/index.sass";
 
 // 1 hour
-const intervalMS = 15 * 60 * 1000;
+const intervalMS = 2 * 60 * 1000;
 
 const updateSW = registerSW({
   onNeedRefresh() {
