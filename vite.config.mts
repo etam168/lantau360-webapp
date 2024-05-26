@@ -4,7 +4,6 @@ import vue from "@vitejs/plugin-vue";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
-
 import { createHtmlPlugin } from "vite-plugin-html";
 import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
@@ -23,45 +22,84 @@ const pwaOptions: Partial<VitePWAOptions> = {
   includeAssets: ["favicon.svg"], // Included assets
   manifest: {
     name: "Lantau360 Lite",
-    short_name: "Lantau360",
+    short_name: "Lantau360L",
     theme_color: "#ffffff",
     background_color: "#00652E",
+    start_url: "/?source=pwa",
+    display: "standalone",
     icons: [
       // Android launcher icons
       {
-        src: `./resources/pwa/android-icon-48x48.png?v=2`,
+        src: `./resources/pwa/android-icon-48x48.png?v=3`,
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-72x72.png?v=2`,
+        src: `./resources/pwa/android-icon-72x72.png?v=3`,
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-96x96.png?v=2`,
+        src: `./resources/pwa/android-icon-96x96.png?v=3`,
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-144x144.png?v=2`,
+        src: `./resources/pwa/android-icon-144x144.png?v=3`,
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-192x192.png?v=2`,
+        src: `./resources/pwa/android-icon-192x192.png?v=3`,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-icon-256x256.png?v=2",
+        src: "./resources/pwa/android-icon-256x256.png?v=3",
         sizes: "256x256",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-512x512.png?v=2`,
+        src: `./resources/pwa/android-icon-512x512.png?v=3`,
         sizes: "512x512",
         type: "image/png"
+      }
+    ]
+  },
+  workbox: {
+    globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"],
+    runtimeCaching: [
+      {
+        urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),
+        handler: "CacheFirst",
+        options: {
+          cacheName: "pwa-icons",
+          expiration: {
+            maxEntries: 10
+          }
+        }
+      },
+      {
+        urlPattern: /\/api\//,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "api-cache",
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 5 * 60 // 5 Minutes
+          }
+        }
+      },
+      {
+        urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+        handler: "CacheFirst",
+        options: {
+          cacheName: "image-cache",
+          expiration: {
+            maxEntries: 200,
+            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+          }
+        }
       }
     ]
   },
@@ -70,10 +108,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
     type: "module",
     navigateFallback: "index.html",
     suppressWarnings: true
-  },
-  workbox: {
-    cleanupOutdatedCaches: false,
-    globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"]
   }
 };
 
@@ -142,7 +176,7 @@ export default defineConfig({
             <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png?v=1" sizes="152x152" />
             <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png?v=1" sizes="180x180" />
             <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png?v=1" />
-          `
+        `
         }
       }
     })

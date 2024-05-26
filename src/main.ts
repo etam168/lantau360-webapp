@@ -1,5 +1,4 @@
 import { createApp } from "vue";
-
 import { registerSW } from "virtual:pwa-register";
 import { registerPlugins } from "@/plugins";
 import { Dialog } from "quasar";
@@ -8,7 +7,8 @@ import App from "@/App.vue";
 import "@/plugins/axios";
 import "quasar/src/css/index.sass";
 
-const intervalMS = 60 * 60 * 1000;
+// 1 hour
+const intervalMS = 15 * 60 * 1000;
 
 const updateSW = registerSW({
   onNeedRefresh() {
@@ -30,7 +30,10 @@ const updateSW = registerSW({
       .onCancel(() => {});
   },
 
-  onOfflineReady() {},
+  onOfflineReady() {
+    console.log("The app is ready to work offline");
+  },
+
   onRegisteredSW(swUrl, r) {
     r &&
       setInterval(async () => {
@@ -38,34 +41,39 @@ const updateSW = registerSW({
 
         if ("connection" in navigator && !navigator.onLine) return;
 
-        const resp = await fetch(swUrl, {
-          cache: "no-store",
-          headers: {
+        try {
+          const resp = await fetch(swUrl, {
             cache: "no-store",
-            "cache-control": "no-cache"
-          }
-        });
+            headers: {
+              cache: "no-store",
+              "cache-control": "no-cache"
+            }
+          });
 
-        if (resp?.status === 200) await r.update();
+          if (resp?.status === 200) await r.update();
+        } catch (error) {
+          console.error("Error fetching service worker script:", error);
+        }
       }, intervalMS);
   }
 });
 
-document.addEventListener("swUpdated", (event: any) => {
-  const registration = event.detail;
-
-  if (window.confirm("A new version is available. Do you want to refresh?")) {
-    registration.waiting.postMessage({ type: "SKIP_WAITING" });
-    // Optionally, you can force a page reload
-    window.location.reload();
+// Check for PWA launch
+document.addEventListener("DOMContentLoaded", () => {
+  const urlParams = new URLSearchParams(window.location.search);
+  if (urlParams.has("source") && urlParams.get("source") === "pwa") {
+    console.log("App launched as PWA");
+    // Apply PWA-specific logic here
+    // For example, hide the browser navigation bar
   }
 });
 
-if ("serviceWorker" in navigator) {
-  window.addEventListener("load", () => {
-    navigator.serviceWorker.register("/sw.js", { scope: "/" });
-  });
-}
 const app = createApp(App);
 registerPlugins(app);
 app.mount("#app");
+
+// Expose updateSW to the global scope for manual checking
+(window as any).updateSW = updateSW;
+
+// Trigger an update check when the app is launched
+updateSW();
