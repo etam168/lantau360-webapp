@@ -308,6 +308,7 @@
     "useMemberInput": true,
     "handlePermission": true,
     "GeolocationPermissionStatus": true,
-    "useCommunication": true
+    "useCommunication": true,
+    "useInstallPrompt": true
   }
 }

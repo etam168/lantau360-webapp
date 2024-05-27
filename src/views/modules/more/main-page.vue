@@ -34,6 +34,9 @@
       </q-item>
     </q-card-section>
 
+    <q-card-section v-if="!isAppInstalled">
+      <q-btn @click="installApp">Install App</q-btn>
+    </q-card-section>
     <q-card-section v-if="$q.screen.height < 700" class="q-pt-none">
       <q-item-label class="text-center">{{ appVersion }}</q-item-label>
       <q-item-label class="text-center">{{ copyright }}</q-item-label>
@@ -50,6 +53,7 @@
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { URL, LOGGED_ON_USER_MENU, DEFAULT_MENU, MENU } from "@/constants";
+  import { useInstallPrompt } from "@/composable/use-install-prompt";
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
@@ -57,6 +61,7 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
+  const { isAppInstalled, promptInstall } = useInstallPrompt();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const error = ref<string | null>(null);
@@ -83,6 +88,7 @@
       initTransactionData();
     });
   });
+
   async function showDialog(item: any) {
     if (item.contentKey) {
       OpenDialog(
@@ -176,6 +182,9 @@
     }
   }
 
+  function installApp() {
+    promptInstall();
+  }
   function handleError(err: any) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

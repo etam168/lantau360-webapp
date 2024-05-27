@@ -1,18 +1,19 @@
 <template>
   <router-view />
-  <button v-if="showInstallButton" @click="promptInstall">Install App</button>
+  <!-- <q-btn @click="promptInstall">Install app</q-btn> -->
 </template>
 
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
   import { useQuasar } from "quasar";
   import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
+  import { useInstallPrompt } from "@/composable/use-install-prompt";
   // import { useRegisterSW } from "vite-plugin-pwa/vue";
 
-  const { eventBus } = useUtilities();
+  // const { eventBus } = useUtilities();
   const $q = useQuasar();
   const showInstallButton = ref(false);
-  const deferredPrompt = ref();
+  const { deferredPrompt, isAppInstalled, promptInstall } = useInstallPrompt();
 
   // const isAndroid = () => /android/.test(window.navigator.userAgent.toLowerCase());
   const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
@@ -27,34 +28,7 @@
     });
   };
 
-  const promptInstall = () => {
-    alert("outside");
-
-    if (deferredPrompt.value) {
-      alert("inside");
-      deferredPrompt.value.prompt();
-      deferredPrompt.value.userChoice.then((choiceResult: any) => {
-        if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the install prompt");
-        } else {
-          console.log("User dismissed the install prompt");
-        }
-        deferredPrompt.value = null;
-        showInstallButton.value = false; // Hide the install button after the prompt
-      });
-    }
-  };
-
-  // Register the service worker
-  // useRegisterSW();
-
   onMounted(() => {
-    eventBus.on("install", () => {
-      alert("EventBus 3");
-
-      promptInstall();
-    });
-
     if (isInStandaloneMode()) {
       showInstallButton.value = false;
     } else {
@@ -64,16 +38,35 @@
       window.addEventListener("beforeinstallprompt", (e: Event) => {
         e.preventDefault();
         deferredPrompt.value = e;
-        setTimeout(() => {
-          eventBus.emit("install");
-        }, 2000);
-        showInstallButton.value = true; // Show the install button
+        // showInstallButton.value = true;
       });
+      if (!sessionStorage.getItem("installPromptShown")) {
+        $q.notify({
+          message: "You can add this app to your home screen.",
+          color: "primary",
+          timeout: 10000,
+          actions: [
+            {
+              label: "Dismiss",
+              color: "white",
+              handler: () => {}
+            },
+            {
+              label: "Install",
+              color: "white",
+              handler: () => {
+                promptInstall();
+              }
+            }
+          ]
+        });
+        sessionStorage.setItem("installPromptShown", "true");
+      }
     }
 
     window.addEventListener("appinstalled", () => {
       console.log("PWA was installed");
-      showInstallButton.value = false;
+      isAppInstalled.value = true;
     });
   });
 </script>
