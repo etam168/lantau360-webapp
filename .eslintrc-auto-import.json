@@ -309,6 +309,7 @@
     "handlePermission": true,
     "GeolocationPermissionStatus": true,
     "useCommunication": true,
-    "useInstallPrompt": true
+    "useInstallPrompt": true,
+    "platform": true
   }
 }

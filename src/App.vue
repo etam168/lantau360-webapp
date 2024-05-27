@@ -7,7 +7,7 @@
   import { ref, onMounted } from "vue";
   import { useQuasar } from "quasar";
   import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
-  import { useInstallPrompt } from "@/composable/use-install-prompt";
+  import { useInstallPrompt, platform } from "@/composable/use-install-prompt";
   // import { useRegisterSW } from "vite-plugin-pwa/vue";
 
   // const { eventBus } = useUtilities();
@@ -16,7 +16,6 @@
   const { deferredPrompt, isAppInstalled, promptInstall } = useInstallPrompt();
 
   // const isAndroid = () => /android/.test(window.navigator.userAgent.toLowerCase());
-  const isIos = () => /iphone|ipad|ipod/.test(window.navigator.userAgent.toLowerCase());
 
   const isInStandaloneMode = () =>
     window.matchMedia("(display-mode: standalone)").matches ||
@@ -32,8 +31,12 @@
     if (isInStandaloneMode()) {
       showInstallButton.value = false;
     } else {
-      if (isIos()) {
+      if (platform.isIos()) {
+        alert("IOS YESS");
         showInstallIosDialog(); // Show the iOS installation guide dialog
+      } else if (platform.isFireFox()) {
+        alert("FireFox YESS");
+        showInstallIosDialog();
       }
       window.addEventListener("beforeinstallprompt", (e: Event) => {
         e.preventDefault();
