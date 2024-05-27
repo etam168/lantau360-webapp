@@ -6,6 +6,7 @@
 <script setup lang="ts">
   import { ref, onMounted } from "vue";
   import { useQuasar } from "quasar";
+  //import InstallAndroidDialog from "@/components/dialog/install-android-dialog.vue";
   import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
   import { useInstallPrompt, platform } from "@/composable/use-install-prompt";
   // import { useRegisterSW } from "vite-plugin-pwa/vue";
@@ -27,16 +28,50 @@
     });
   };
 
+  // const showInstallAndroidDialog = () => {
+  //   $q.dialog({
+  //     component: InstallAndroidDialog,
+  //     componentProps: {
+  //       deferredPrompt: deferredPrompt.value
+  //     }
+  //   });
+  // };
+
   onMounted(() => {
     if (isInStandaloneMode()) {
       showInstallButton.value = false;
     } else {
       if (platform.isIos()) {
-        alert("IOS YESS");
         showInstallIosDialog(); // Show the iOS installation guide dialog
-      } else if (platform.isFireFox()) {
-        alert("FireFox YESS");
-        showInstallIosDialog();
+      } else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
+        window.addEventListener("beforeinstallprompt", (e: Event) => {
+          e.preventDefault();
+          deferredPrompt.value = e;
+          // showInstallButton.value = true;
+        });
+        if (!sessionStorage.getItem("installPromptShown")) {
+          $q.notify({
+            message: "You can add this app to your home screen.",
+            color: "primary",
+            timeout: 10000,
+            actions: [
+              {
+                label: "Dismiss",
+                color: "white",
+                handler: () => {}
+              },
+              {
+                label: "Install",
+                color: "white",
+                handler: () => {
+                  promptInstall();
+                }
+              }
+            ]
+          });
+
+          sessionStorage.setItem("installPromptShown", "true");
+        }
       }
       window.addEventListener("beforeinstallprompt", (e: Event) => {
         e.preventDefault();
@@ -63,6 +98,7 @@
             }
           ]
         });
+
         sessionStorage.setItem("installPromptShown", "true");
       }
     }

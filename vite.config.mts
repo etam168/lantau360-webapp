@@ -14,6 +14,9 @@ import { version } from "./package.json";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
+
+const iconVersion = "v=3"; // Define your icon version here
+
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
   base: "/",
@@ -30,37 +33,37 @@ const pwaOptions: Partial<VitePWAOptions> = {
     icons: [
       // Android launcher icons
       {
-        src: `./resources/pwa/android-icon-48x48.png?v=3`,
+        src: `./resources/pwa/android-icon-48x48.png?${iconVersion}`,
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-72x72.png?v=3`,
+        src: `./resources/pwa/android-icon-72x72.png?${iconVersion}`,
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-96x96.png?v=3`,
+        src: `./resources/pwa/android-icon-96x96.png?${iconVersion}`,
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-144x144.png?v=3`,
+        src: `./resources/pwa/android-icon-144x144.png?${iconVersion}`,
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-192x192.png?v=3`,
+        src: `./resources/pwa/android-icon-192x192.png?${iconVersion}`,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-icon-256x256.png?v=3",
+        src: "./resources/pwa/android-icon-256x256.png?${iconVersion}",
         sizes: "256x256",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-512x512.png?v=3`,
+        src: `./resources/pwa/android-icon-512x512.png?${iconVersion}`,
         sizes: "512x512",
         type: "image/png"
       }
@@ -170,12 +173,12 @@ export default defineConfig({
       inject: {
         data: {
           injectAppleTouchIcons: `
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png?v=1" sizes="60x60" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png?v=1" sizes="76x76" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png?v=1" sizes="120x120" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png?v=1" sizes="152x152" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png?v=1" sizes="180x180" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png?v=1" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png?${iconVersion}" sizes="60x60" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png?${iconVersion}" sizes="76x76" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png?${iconVersion}" sizes="120x120" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png?${iconVersion}" sizes="152x152" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png?${iconVersion}" sizes="180x180" />
+            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png?${iconVersion}" />
         `
         }
       }

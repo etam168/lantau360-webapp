@@ -9,5 +9,7 @@ export default {
   no: "否",
   yes: "是",
   save: "保存",
-  galleryPhotos: '相片 - "{imageLength}" / "10 - 您最多可以添加10张图片'
+  galleryPhotos: '相片 - "{imageLength}" / "10 - 您最多可以添加10张图片',
+  appInstalledSuccessfully: "App Installed Successfully.",
+  appNotInstalledSuccessfully: "Oops!! App not installed successfully."
 };

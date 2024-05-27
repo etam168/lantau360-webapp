@@ -9,5 +9,7 @@ export default {
   no: "No",
   yes: "Yes",
   save: "Save",
-  galleryPhotos: 'Photos - " {imageLength} "/" + "10 - You can add upto 10 pics'
+  galleryPhotos: 'Photos - " {imageLength} "/" + "10 - You can add upto 10 pics',
+  appInstalledSuccessfully: "App Installed Successfully.",
+  appNotInstalledSuccessfully: "Oops!! App not installed successfully."
 };

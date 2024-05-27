@@ -31,8 +31,6 @@ export function useInstallPrompt() {
         }
         deferredPrompt.value = null;
       });
-    } else {
-      navigateToInstalledApp();
     }
   };
 
@@ -47,11 +45,11 @@ export function useInstallPrompt() {
     }
   };
 
-  const navigateToInstalledApp = () => {
-    // Attempt to open the app using its URL scheme
-    // Replace 'myappscheme://' with the actual scheme of your app
-    window.location.href = "lantau360-webapp://";
-  };
+  //const navigateToInstalledApp = () => {
+  // Attempt to open the app using its URL scheme
+  // Replace 'myappscheme://' with the actual scheme of your app
+  //   window.location.href = "lantau360-webapp://";
+  // };
 
   window.addEventListener("appinstalled", () => {
     isAppInstalled.value = true;
