@@ -4,20 +4,16 @@
       style="
         width: 350px;
         border: 2px solid #00652e;
+        border-bottom: 0;
         border-top-left-radius: 25px;
         border-top-right-radius: 25px;
       "
     >
-      <q-card-section class="row items-center no-wrap">
-        <div>
-          <q-img :src="IMAGES.LOGO" />
-        </div>
+      <q-card-actions>
         <div>
           <div class="text-weight-bold">{{ $t("installApp.title") }}</div>
         </div>
-      </q-card-section>
-
-      <q-card-actions>
+        <q-space />
         <q-btn flat round icon="done" @click="showIosInstallationGuide" />
         <q-btn flat round icon="close" v-close-popup />
       </q-card-actions>
