@@ -15,7 +15,8 @@ import { version } from "./package.json";
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const iconVersion = "v=3"; // Define your icon version here
+const iconVersion = "v=6"; // Define your icon version here
+const iconType = "new-icons";
 
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
@@ -33,37 +34,32 @@ const pwaOptions: Partial<VitePWAOptions> = {
     icons: [
       // Android launcher icons
       {
-        src: `./resources/pwa/android-icon-48x48.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-48-48.png?${iconVersion}`,
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-72x72.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-72-72.png?${iconVersion}`,
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-96x96.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-96-96.png?${iconVersion}`,
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-144x144.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-144-144.png?${iconVersion}`,
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: `./resources/pwa/android-icon-192x192.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-192-192.png?${iconVersion}`,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/android-icon-256x256.png?${iconVersion}",
-        sizes: "256x256",
-        type: "image/png"
-      },
-      {
-        src: `./resources/pwa/android-icon-512x512.png?${iconVersion}`,
+        src: `./resources/pwa/${iconType}/android/android-launchericon-512-512.png?${iconVersion}`,
         sizes: "512x512",
         type: "image/png"
       }
@@ -90,6 +86,17 @@ const pwaOptions: Partial<VitePWAOptions> = {
           expiration: {
             maxEntries: 50,
             maxAgeSeconds: 5 * 60 // 5 Minutes
+          }
+        }
+      },
+      {
+        urlPattern: /\/manifest\.webmanifest/,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "manifest-cache",
+          expiration: {
+            maxEntries: 1,
+            maxAgeSeconds: 60 // 1 Day
           }
         }
       },
@@ -173,12 +180,12 @@ export default defineConfig({
       inject: {
         data: {
           injectAppleTouchIcons: `
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-60x60.png?${iconVersion}" sizes="60x60" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-76x76.png?${iconVersion}" sizes="76x76" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-120x120.png?${iconVersion}" sizes="120x120" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-152x152.png?${iconVersion}" sizes="152x152" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon-180x180.png?${iconVersion}" sizes="180x180" />
-            <link rel="apple-touch-icon" href="/resources/pwa/apple-touch-icon.png?${iconVersion}" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/60.png?${iconVersion}" sizes="60x60" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/76.png?${iconVersion}" sizes="76x76" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/120.png?${iconVersion}" sizes="120x120" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/152.png?${iconVersion}" sizes="152x152" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/180.png?${iconVersion}" sizes="180x180" />
+            <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/512.png?${iconVersion}" />
         `
         }
       }

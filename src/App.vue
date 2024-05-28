@@ -1,6 +1,5 @@
 <template>
   <router-view />
-  <!-- <q-btn @click="promptInstall">Install app</q-btn> -->
 </template>
 
 <script setup lang="ts">
@@ -37,70 +36,48 @@
   //   });
   // };
 
+  const notifyPrompt = () => {
+    $q.notify({
+      message: "You can add this app to your home screen.",
+      color: "primary",
+      timeout: 10000,
+      actions: [
+        {
+          label: "Dismiss",
+          color: "white",
+          handler: () => {}
+        },
+        {
+          label: "Install",
+          color: "white",
+          handler: () => {
+            promptInstall();
+          }
+        }
+      ]
+    });
+  };
+
   onMounted(() => {
     if (isInStandaloneMode()) {
       showInstallButton.value = false;
     } else {
       if (platform.isIos()) {
         showInstallIosDialog(); // Show the iOS installation guide dialog
-      } else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
+      } else {
         window.addEventListener("beforeinstallprompt", (e: Event) => {
           e.preventDefault();
           deferredPrompt.value = e;
-          // showInstallButton.value = true;
         });
         if (!sessionStorage.getItem("installPromptShown")) {
-          $q.notify({
-            message: "You can add this app to your home screen.",
-            color: "primary",
-            timeout: 10000,
-            actions: [
-              {
-                label: "Dismiss",
-                color: "white",
-                handler: () => {}
-              },
-              {
-                label: "Install",
-                color: "white",
-                handler: () => {
-                  promptInstall();
-                }
-              }
-            ]
-          });
-
+          //Notify Message
+          notifyPrompt();
           sessionStorage.setItem("installPromptShown", "true");
         }
       }
-      window.addEventListener("beforeinstallprompt", (e: Event) => {
-        e.preventDefault();
-        deferredPrompt.value = e;
-        // showInstallButton.value = true;
-      });
-      if (!sessionStorage.getItem("installPromptShown")) {
-        $q.notify({
-          message: "You can add this app to your home screen.",
-          color: "primary",
-          timeout: 10000,
-          actions: [
-            {
-              label: "Dismiss",
-              color: "white",
-              handler: () => {}
-            },
-            {
-              label: "Install",
-              color: "white",
-              handler: () => {
-                promptInstall();
-              }
-            }
-          ]
-        });
 
-        sessionStorage.setItem("installPromptShown", "true");
-      }
+      // else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
+      // }
     }
 
     window.addEventListener("appinstalled", () => {
