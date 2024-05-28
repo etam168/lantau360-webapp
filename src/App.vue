@@ -64,6 +64,8 @@
     } else {
       if (platform.isIos()) {
         showInstallIosDialog(); // Show the iOS installation guide dialog
+      } else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
+        showInstallIosDialog();
       } else {
         window.addEventListener("beforeinstallprompt", (e: Event) => {
           e.preventDefault();
@@ -75,9 +77,6 @@
           sessionStorage.setItem("installPromptShown", "true");
         }
       }
-
-      // else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
-      // }
     }
 
     window.addEventListener("appinstalled", () => {
