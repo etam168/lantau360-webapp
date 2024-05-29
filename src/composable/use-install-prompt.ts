@@ -86,15 +86,16 @@ export function useInstallPrompt() {
   }
 
   function shouldShowInstallButton() {
-    return (
+    const result =
       !isAppInstalled.value &&
       !isInStandaloneMode() &&
       (platform.isIos() ||
         platform.isFireFox() ||
         platform.isOpera() ||
         platform.isEdge() ||
-        platform.isChromium())
-    );
+        platform.isChromium());
+
+    return result;
   }
 
   function showPlatformGuidance() {
