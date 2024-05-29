@@ -2,7 +2,7 @@
   <q-dialog ref="dialogRef" position="bottom">
     <q-card class="install-card">
       <q-card-section class="row items-center no-wrap">
-        <div class="text-weight-bold">{{ $t("installApp.title") }}</div>
+        <div class="text-weight-bold">{{ $t("notification.installApp") }}</div>
         <q-space />
         <q-btn flat round icon="done" @click="handleDone" />
         <q-btn flat round icon="close" v-close-popup />

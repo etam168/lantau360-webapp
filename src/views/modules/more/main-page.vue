@@ -35,7 +35,7 @@
     </q-card-section>
 
     <q-card-section v-if="!isAppInstalled">
-      <q-btn @click="installApp">Install App</q-btn>
+      <q-btn @click="installApp">{{ $t("notification.installApp") }}</q-btn>
     </q-card-section>
 
     <q-card-section v-if="$q.screen.height < 700" class="q-pt-none">

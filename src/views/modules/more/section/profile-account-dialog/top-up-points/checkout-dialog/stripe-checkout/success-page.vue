@@ -76,7 +76,6 @@
       error.value = response.status !== 200;
       message.value = t("more.message.transactionSuccess");
     } catch (err: any) {
-      alert(JSON.stringify(err));
       error.value = true;
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

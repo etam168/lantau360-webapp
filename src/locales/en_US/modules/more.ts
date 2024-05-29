@@ -9,7 +9,6 @@ export default {
   profile: "Profile",
   logout: "Logout",
   loginName: "Login Name",
-  installApp: "Install App",
 
   checkIn: {
     title: "My Check-In",

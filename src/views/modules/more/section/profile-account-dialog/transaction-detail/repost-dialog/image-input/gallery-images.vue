@@ -43,7 +43,7 @@
       // If there is an object with isAddCard: true, insert before it; otherwise, insert at the end
       if (insertIndex !== -1) {
         imageList.value.splice(insertIndex, 0, newImage);
-        // console.log(imageList.value.length);
+
         emits("upload-image", imageList.value.length - 1, newImage.image);
       } else {
         imageList.value.push(newImage);
@@ -57,7 +57,6 @@
   }
 
   function handleDelete(value: any) {
-    // console.log(value);
     const index = imageList.value.findIndex(image => image.index === value.index);
 
     if (index !== -1) {

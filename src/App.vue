@@ -3,8 +3,7 @@
 </template>
 
 <script setup lang="ts">
-  import { useInstallPrompt } from "@/composable/use-install-prompt";
-
+  const $q = useQuasar();
   const {
     beforeInstallPromptEvent,
     isAppInstalled,
@@ -18,27 +17,37 @@
     event.preventDefault();
     beforeInstallPromptEvent.value = event;
 
-    if (!sessionStorage.getItem("hasNotifyNativeInstall")) {
+    if (!$q.sessionStorage.getItem("hasNotifiedNativeInstall")) {
       notifyNativeInstall();
-      sessionStorage.setItem("hasNotifyNativeInstall", "true");
+      $q.sessionStorage.setItem("hasNotifiedNativeInstall", "true");
+    }
+  }
+
+  function showGuidance() {
+    if (!$q.sessionStorage.getItem("hasShownGuidance")) {
+      showPlatformGuidance();
+      $q.sessionStorage.setItem("hasShownGuidance", "true");
     }
   }
 
   onMounted(() => {
     if (!isInStandaloneMode()) {
-      if (platform.isIos() || platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
-        showPlatformGuidance();
-      } else if (platform.isChromium()) {
-        window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
-      } else {
-        // To be impemented: Handle unknown browsers with a generic message or action
-        // console.log("Unknown browser detected, no specific install prompt handling available.");
+      switch (true) {
+        case platform.isIos():
+        case platform.isFireFox():
+        case platform.isOpera():
+        case platform.isEdge():
+          showGuidance();
+          break;
+        case platform.isChromium():
+          window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
+          break;
+        default:
+        //   // To be impemented: Handle unknown browsers with a generic message or action
       }
     }
 
     window.addEventListener("appinstalled", () => {
-      // alert("PWA has installed successfully");
-      // console.log("PWA was installed");
       isAppInstalled.value = true;
     });
   });

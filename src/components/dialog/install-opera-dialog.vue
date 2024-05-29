@@ -13,12 +13,12 @@
 
       <q-card-section>
         <div>
-          {{ "Follow the instructions to install the app on IOS." }}
+          {{ "Follow the instructions to install the app on OPERA." }}
         </div>
       </q-card-section>
 
       <q-card-section>
-        <img :src="PLATFORM.IOS" alt="Install Image" />
+        <img :src="PLATFORM.OPERA" alt="Install Image" />
       </q-card-section>
     </q-card>
   </q-dialog>

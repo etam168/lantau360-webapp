@@ -1,20 +1,22 @@
 import { createApp } from "vue";
 import { registerSW } from "virtual:pwa-register";
 import { registerPlugins } from "@/plugins";
-import { Dialog } from "quasar";
+import { Dialog, Notify } from "quasar";
+import i18n from "@/plugins/i18n/i18n";
 
 import App from "@/App.vue";
 import "@/plugins/axios";
 import "quasar/src/css/index.sass";
 
+const { t } = i18n.global;
 // 1 hour
 const intervalMS = 2 * 60 * 1000;
 
 const updateSW = registerSW({
   onNeedRefresh() {
     Dialog.create({
-      title: "Update Available",
-      message: "A new version is available. Do you want to refresh?",
+      title: t("notification.updateAvailable"),
+      message: t("notification.refreshApp"),
       ok: {
         label: "Refresh",
         color: "primary"
@@ -31,7 +33,21 @@ const updateSW = registerSW({
   },
 
   onOfflineReady() {
-    console.log("The app is ready to work offline");
+    Notify.create({
+      message: t("notification.workOffline"),
+      color: "primary",
+      timeout: 10000,
+      actions: [
+        {
+          icon: "close",
+          color: "white",
+          round: true,
+          handler: () => {
+            /* ... */
+          }
+        }
+      ]
+    });
   },
 
   onRegisteredSW(swUrl, r) {

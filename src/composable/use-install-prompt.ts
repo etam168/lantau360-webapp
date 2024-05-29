@@ -1,7 +1,10 @@
 import { Dialog, Notify } from "quasar";
-import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
+import installEdgeDialog from "@/components/dialog/install-edge-dialog.vue";
+import installFirefoxDialog from "@/components/dialog/install-firefox-dialog.vue";
+import installIosDialog from "@/components/dialog/install-ios-dialog.vue";
+import InstallOperaDialog from "@/components/dialog/install-opera-dialog.vue";
+import i18n from "@/plugins/i18n/i18n";
 
-const deferredPrompt = ref();
 const beforeInstallPromptEvent = ref();
 const isAppInstalled = ref(false);
 const showAppInstallButton = ref(false);
@@ -24,18 +27,19 @@ export function useInstallPrompt() {
     ("standalone" in window.navigator && window.navigator.standalone);
 
   const notifyNativeInstall = () => {
-    const { t } = useI18n({ useScope: "global" });
+    const { t } = i18n.global;
+
     Notify.create({
-      message: t("installPrompt.message"),
+      message: t("notification.installApp"),
       color: "primary",
       timeout: 10000,
       actions: [
         {
-          label: t("installPrompt.dismiss"),
+          label: t("notification.dismiss"),
           color: "white"
         },
         {
-          label: t("installPrompt.install"),
+          label: t("notification.install"),
           color: "white",
           handler: () => {
             promptInstall();
@@ -46,14 +50,13 @@ export function useInstallPrompt() {
   };
 
   const platform = {
-    isAndroid: () => /android/.test(window.navigator.userAgent.toLowerCase()),
+    isAndroid: () => /android/.test(userAgent.toLowerCase()),
     isChromium: () => {
       // Check for Chromium-specific keywords in the user agent string
+      const ua = userAgent.toLowerCase();
+
       return (
-        userAgent.includes("chrome") &&
-        !userAgent.includes("edg") &&
-        !userAgent.includes("opr") &&
-        !userAgent.includes("brave")
+        ua.includes("chrome") && !ua.includes("edg") && !ua.includes("opr") && !ua.includes("brave")
       );
     },
     isEdge: () => /edg/i.test(userAgent.toLowerCase()),
@@ -64,31 +67,53 @@ export function useInstallPrompt() {
   };
 
   const promptInstall = () => {
-    if (deferredPrompt.value) {
-      deferredPrompt.value.prompt();
-      deferredPrompt.value.userChoice.then((choiceResult: any) => {
+    if (beforeInstallPromptEvent.value) {
+      beforeInstallPromptEvent.value.prompt();
+      beforeInstallPromptEvent.value.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === "accepted") {
           console.log("User accepted the install prompt");
         } else {
           console.log("User dismissed the install prompt");
         }
-        deferredPrompt.value = null;
+        beforeInstallPromptEvent.value = null;
       });
     }
   };
 
   function setDeferredPrompt(event: any) {
-    deferredPrompt.value = event;
+    beforeInstallPromptEvent.value = event;
     isAppInstalled.value = false;
   }
 
   function showPlatformGuidance() {
-    Dialog.create({ component: InstallIosDialog });
+    switch (true) {
+      case platform.isIos():
+        Dialog.create({
+          component: installIosDialog
+        });
+        break;
+      case platform.isFireFox():
+        Dialog.create({
+          component: installFirefoxDialog
+        });
+        break;
+      case platform.isOpera():
+        Dialog.create({
+          component: InstallOperaDialog
+        });
+        break;
+      case platform.isEdge():
+        Dialog.create({
+          component: installEdgeDialog
+        });
+        break;
+      default:
+      //   // To be impemented: Handle unknown browsers with a generic message or action
+    }
   }
 
   return {
     beforeInstallPromptEvent,
-    deferredPrompt,
     hasAppInstalled,
     isAppInstalled,
     isInStandaloneMode,

@@ -6,6 +6,7 @@ import errors from "./modules/errors";
 import favourite from "./modules/favourite";
 import footer from "./modules/footer";
 import home from "./modules/home";
+import notification from "./modules/notification";
 import more from "./modules/more";
 import posting from "./modules/posting";
 
@@ -18,9 +19,7 @@ export default {
   favourite,
   footer,
   home,
+  notification,
   more,
-  posting,
-  installApp: {
-    title: "Install App"
-  }
+  posting
 };

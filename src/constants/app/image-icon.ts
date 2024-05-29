@@ -20,3 +20,10 @@ export const IMAGES = {
   TRANACTION_SUCCESS: "./resources/images/transaction_success.png",
   TRANSACTION_CANCELLED: "./resources/images/transaction_cancelled.png"
 };
+
+export const PLATFORM = {
+  IOS: "./resources/guidance/iphone.png",
+  IPAD: "./resources/guidance/ipad.png",
+  FIREFOX: "./resources/guidance/firefox.png",
+  OPERA: "./resources/guidance/opera.png"
+};
