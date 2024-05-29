@@ -30,7 +30,7 @@ export function useInstallPrompt() {
     const { t } = i18n.global;
 
     Notify.create({
-      message: t("notification.installApp"),
+      message: t("notification.installApp") + " ?",
       color: "primary",
       timeout: 10000,
       actions: [
@@ -85,6 +85,18 @@ export function useInstallPrompt() {
     isAppInstalled.value = false;
   }
 
+  function shouldShowInstallButton() {
+    return (
+      !isAppInstalled.value &&
+      !isInStandaloneMode() &&
+      (platform.isIos() ||
+        platform.isFireFox() ||
+        platform.isOpera() ||
+        platform.isEdge() ||
+        platform.isChromium())
+    );
+  }
+
   function showPlatformGuidance() {
     switch (true) {
       case platform.isIos():
@@ -121,6 +133,7 @@ export function useInstallPrompt() {
     platform,
     promptInstall,
     setDeferredPrompt,
+    shouldShowInstallButton,
     showAppInstallButton,
     showPlatformGuidance
   };

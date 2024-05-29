@@ -34,7 +34,7 @@
       </q-item>
     </q-card-section>
 
-    <q-card-section v-if="!isAppInstalled">
+    <q-card-section v-if="shouldShowInstallButton()">
       <q-btn @click="installApp">{{ $t("notification.installApp") }}</q-btn>
     </q-card-section>
 
@@ -62,7 +62,13 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { isAppInstalled, promptInstall } = useInstallPrompt();
+  const {
+    isInStandaloneMode,
+    promptInstall,
+    shouldShowInstallButton,
+    showPlatformGuidance,
+    platform
+  } = useInstallPrompt();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const error = ref<string | null>(null);
@@ -88,6 +94,8 @@
     eventBus.on("refresh-transaction-data", () => {
       initTransactionData();
     });
+
+    shouldShowInstallButton();
   });
 
   async function showDialog(item: any) {
@@ -184,7 +192,23 @@
   }
 
   function installApp() {
-    promptInstall();
+    if (!isInStandaloneMode()) {
+      switch (true) {
+        case platform.isIos():
+        case platform.isFireFox():
+        case platform.isOpera():
+        case platform.isEdge():
+          alert("Other Browser");
+          showPlatformGuidance();
+          break;
+        case platform.isChromium():
+          alert("Chrome");
+          promptInstall();
+          break;
+        default:
+        //   // To be impemented: Handle unknown browsers with a generic message or action
+      }
+    }
   }
 
   function handleError(err: any) {
