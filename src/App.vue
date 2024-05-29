@@ -3,84 +3,42 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, onMounted } from "vue";
-  import { useQuasar } from "quasar";
-  //import InstallAndroidDialog from "@/components/dialog/install-android-dialog.vue";
-  import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
-  import { useInstallPrompt, platform } from "@/composable/use-install-prompt";
-  // import { useRegisterSW } from "vite-plugin-pwa/vue";
+  import { useInstallPrompt } from "@/composable/use-install-prompt";
 
-  // const { eventBus } = useUtilities();
-  const $q = useQuasar();
-  const showInstallButton = ref(false);
-  const { deferredPrompt, isAppInstalled, promptInstall } = useInstallPrompt();
+  const {
+    beforeInstallPromptEvent,
+    isAppInstalled,
+    isInStandaloneMode,
+    platform,
+    notifyNativeInstall,
+    showPlatformGuidance
+  } = useInstallPrompt();
 
-  // const isAndroid = () => /android/.test(window.navigator.userAgent.toLowerCase());
+  function handleBeforeinstallprompt(event: Event) {
+    event.preventDefault();
+    beforeInstallPromptEvent.value = event;
 
-  const isInStandaloneMode = () =>
-    window.matchMedia("(display-mode: standalone)").matches ||
-    ("standalone" in window.navigator && window.navigator.standalone);
-
-  const showInstallIosDialog = () => {
-    $q.dialog({
-      component: InstallIosDialog
-    });
-  };
-
-  // const showInstallAndroidDialog = () => {
-  //   $q.dialog({
-  //     component: InstallAndroidDialog,
-  //     componentProps: {
-  //       deferredPrompt: deferredPrompt.value
-  //     }
-  //   });
-  // };
-
-  const notifyPrompt = () => {
-    $q.notify({
-      message: "You can add this app to your home screen.",
-      color: "primary",
-      timeout: 10000,
-      actions: [
-        {
-          label: "Dismiss",
-          color: "white",
-          handler: () => {}
-        },
-        {
-          label: "Install",
-          color: "white",
-          handler: () => {
-            promptInstall();
-          }
-        }
-      ]
-    });
-  };
+    if (!sessionStorage.getItem("hasNotifyNativeInstall")) {
+      notifyNativeInstall();
+      sessionStorage.setItem("hasNotifyNativeInstall", "true");
+    }
+  }
 
   onMounted(() => {
-    if (isInStandaloneMode()) {
-      showInstallButton.value = false;
-    } else {
-      if (platform.isIos()) {
-        showInstallIosDialog(); // Show the iOS installation guide dialog
-      } else if (platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
-        showInstallIosDialog();
+    if (!isInStandaloneMode()) {
+      if (platform.isIos() || platform.isFireFox() || platform.isOpera() || platform.isEdge()) {
+        showPlatformGuidance();
+      } else if (platform.isChromium()) {
+        window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
       } else {
-        window.addEventListener("beforeinstallprompt", (e: Event) => {
-          e.preventDefault();
-          deferredPrompt.value = e;
-        });
-        if (!sessionStorage.getItem("installPromptShown")) {
-          //Notify Message
-          notifyPrompt();
-          sessionStorage.setItem("installPromptShown", "true");
-        }
+        // To be impemented: Handle unknown browsers with a generic message or action
+        // console.log("Unknown browser detected, no specific install prompt handling available.");
       }
     }
 
     window.addEventListener("appinstalled", () => {
-      console.log("PWA was installed");
+      // alert("PWA has installed successfully");
+      // console.log("PWA was installed");
       isAppInstalled.value = true;
     });
   });

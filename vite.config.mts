@@ -66,7 +66,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
     ]
   },
   workbox: {
-    globPatterns: ["**/*.{js,css,html,ico,png,svg,json,vue,txt,woff2}"],
+    // globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
+    // Selectively cache critical assets
+    globPatterns: ["index.html", "manifest.webmanifest", "resources/pwa/*", "favicon.svg"],
     runtimeCaching: [
       {
         urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),
@@ -78,17 +80,17 @@ const pwaOptions: Partial<VitePWAOptions> = {
           }
         }
       },
-      {
-        urlPattern: /\/api\//,
-        handler: "NetworkFirst",
-        options: {
-          cacheName: "api-cache",
-          expiration: {
-            maxEntries: 50,
-            maxAgeSeconds: 5 * 60 // 5 Minutes
-          }
-        }
-      },
+      // {
+      //   urlPattern: /\/api\//,
+      //   handler: "NetworkFirst",
+      //   options: {
+      //     cacheName: "api-cache",
+      //     expiration: {
+      //       maxEntries: 50,
+      //       maxAgeSeconds: 5 * 60 // 5 Minutes
+      //     }
+      //   }
+      // },
       {
         urlPattern: /\/manifest\.webmanifest/,
         handler: "NetworkFirst",
@@ -99,18 +101,18 @@ const pwaOptions: Partial<VitePWAOptions> = {
             maxAgeSeconds: 60 // 1 Day
           }
         }
-      },
-      {
-        urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
-        handler: "CacheFirst",
-        options: {
-          cacheName: "image-cache",
-          expiration: {
-            maxEntries: 200,
-            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
-          }
-        }
       }
+      // {
+      //   urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
+      //   handler: "CacheFirst",
+      //   options: {
+      //     cacheName: "image-cache",
+      //     expiration: {
+      //       maxEntries: 200,
+      //       maxAgeSeconds: 30 * 24 * 60 * 60 // 30 Days
+      //     }
+      //   }
+      // }
     ]
   },
   devOptions: {

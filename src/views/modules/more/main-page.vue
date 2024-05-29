@@ -37,6 +37,7 @@
     <q-card-section v-if="!isAppInstalled">
       <q-btn @click="installApp">Install App</q-btn>
     </q-card-section>
+
     <q-card-section v-if="$q.screen.height < 700" class="q-pt-none">
       <q-item-label class="text-center">{{ appVersion }}</q-item-label>
       <q-item-label class="text-center">{{ copyright }}</q-item-label>
@@ -185,6 +186,7 @@
   function installApp() {
     promptInstall();
   }
+
   function handleError(err: any) {
     if (err instanceof AxiosError) {
       if (err.response && err.response.status === 404) {

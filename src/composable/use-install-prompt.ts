@@ -1,23 +1,66 @@
+import { Dialog, Notify } from "quasar";
+import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
+
 const deferredPrompt = ref();
+const beforeInstallPromptEvent = ref();
 const isAppInstalled = ref(false);
+const showAppInstallButton = ref(false);
 const userAgent = window.navigator.userAgent;
 
-export const platform = {
-  isIos: () => /iphone|ipad|ipod/i.test(userAgent.toLowerCase()),
-  isSamsung: () => /Samsung/i.test(userAgent.toLowerCase()),
-  isFireFox: () => /Firefox/i.test(userAgent),
-  isOpera: () => /opr/i.test(userAgent.toLowerCase()),
-  isEdge: () => /edg/i.test(userAgent.toLowerCase())
-};
-
 export function useInstallPrompt() {
-  const setDeferredPrompt = (event: any) => {
-    deferredPrompt.value = event;
-    isAppInstalled.value = false;
+  const hasAppInstalled = () => {
+    // Check if app is installed on iOS
+    if ("standalone" in window.navigator && (window.navigator as any).standalone) {
+      isAppInstalled.value = true;
+    }
+    // Check if app is installed in other environments
+    if (window.matchMedia("(display-mode: standalone)").matches) {
+      isAppInstalled.value = true;
+    }
   };
 
-  const clearDeferredPrompt = () => {
-    deferredPrompt.value = null;
+  const isInStandaloneMode = () =>
+    window.matchMedia("(display-mode: standalone)").matches ||
+    ("standalone" in window.navigator && window.navigator.standalone);
+
+  const notifyNativeInstall = () => {
+    const { t } = useI18n({ useScope: "global" });
+    Notify.create({
+      message: t("installPrompt.message"),
+      color: "primary",
+      timeout: 10000,
+      actions: [
+        {
+          label: t("installPrompt.dismiss"),
+          color: "white"
+        },
+        {
+          label: t("installPrompt.install"),
+          color: "white",
+          handler: () => {
+            promptInstall();
+          }
+        }
+      ]
+    });
+  };
+
+  const platform = {
+    isAndroid: () => /android/.test(window.navigator.userAgent.toLowerCase()),
+    isChromium: () => {
+      // Check for Chromium-specific keywords in the user agent string
+      return (
+        userAgent.includes("chrome") &&
+        !userAgent.includes("edg") &&
+        !userAgent.includes("opr") &&
+        !userAgent.includes("brave")
+      );
+    },
+    isEdge: () => /edg/i.test(userAgent.toLowerCase()),
+    isFireFox: () => /Firefox/i.test(userAgent),
+    isIos: () => /iphone|ipad|ipod/i.test(userAgent.toLowerCase()),
+    isOpera: () => /opr/i.test(userAgent.toLowerCase()),
+    isSamsung: () => /Samsung/i.test(userAgent.toLowerCase())
   };
 
   const promptInstall = () => {
@@ -34,43 +77,26 @@ export function useInstallPrompt() {
     }
   };
 
-  const checkIfAppInstalled = () => {
-    // Check if app is installed on iOS
-    if ("standalone" in window.navigator && (window.navigator as any).standalone) {
-      isAppInstalled.value = true;
-    }
-    // Check if app is installed in other environments
-    if (window.matchMedia("(display-mode: standalone)").matches) {
-      isAppInstalled.value = true;
-    }
-  };
+  function setDeferredPrompt(event: any) {
+    deferredPrompt.value = event;
+    isAppInstalled.value = false;
+  }
 
-  //const navigateToInstalledApp = () => {
-  // Attempt to open the app using its URL scheme
-  // Replace 'myappscheme://' with the actual scheme of your app
-  //   window.location.href = "lantau360-webapp://";
-  // };
-
-  window.addEventListener("appinstalled", () => {
-    isAppInstalled.value = true;
-    console.log("App installed successfully");
-  });
-
-  onMounted(() => {
-    checkIfAppInstalled();
-    window.addEventListener("beforeinstallprompt", (event: any) => {
-      event.preventDefault();
-      setDeferredPrompt(event);
-    });
-  });
+  function showPlatformGuidance() {
+    Dialog.create({ component: InstallIosDialog });
+  }
 
   return {
-    checkIfAppInstalled,
+    beforeInstallPromptEvent,
     deferredPrompt,
-    setDeferredPrompt,
-    clearDeferredPrompt,
+    hasAppInstalled,
     isAppInstalled,
+    isInStandaloneMode,
+    notifyNativeInstall,
     platform,
-    promptInstall
+    promptInstall,
+    setDeferredPrompt,
+    showAppInstallButton,
+    showPlatformGuidance
   };
 }
