@@ -5,6 +5,7 @@
 <script setup lang="ts">
   const $q = useQuasar();
   const {
+    appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
@@ -34,7 +35,6 @@
     if (!isInStandaloneMode()) {
       switch (true) {
         case platform.isIos():
-        case platform.isFireFox():
         case platform.isOpera():
         case platform.isEdge():
           showGuidance();
@@ -42,6 +42,7 @@
         case platform.isChromium():
           window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
           break;
+        case platform.isFireFox():
         default:
         //   // To be impemented: Handle unknown browsers with a generic message or action
       }
@@ -49,6 +50,7 @@
 
     window.addEventListener("appinstalled", () => {
       isAppInstalled.value = true;
+      appInstalledPrompt();
     });
   });
 </script>

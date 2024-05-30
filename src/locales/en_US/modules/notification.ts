@@ -4,5 +4,6 @@ export default {
   updateAvailable: "Update Available",
   refreshApp: "A new version is available. Do you want to refresh?",
   dismiss: "Dismiss",
-  install: "Install"
+  install: "Install",
+  appinstalled: "App Installed"
 };

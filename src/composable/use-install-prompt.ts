@@ -1,8 +1,8 @@
 import { Dialog, Notify } from "quasar";
-import installEdgeDialog from "@/components/dialog/install-edge-dialog.vue";
-import installFirefoxDialog from "@/components/dialog/install-firefox-dialog.vue";
-import installIosDialog from "@/components/dialog/install-ios-dialog.vue";
+import InstallEdgeDialog from "@/components/dialog/install-edge-dialog.vue";
+import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
 import InstallOperaDialog from "@/components/dialog/install-opera-dialog.vue";
+import InstallCompleteDialog from "@/components/dialog/install-complete-dialog.vue";
 import i18n from "@/plugins/i18n/i18n";
 
 const beforeInstallPromptEvent = ref();
@@ -11,20 +11,15 @@ const showAppInstallButton = ref(false);
 const userAgent = window.navigator.userAgent;
 
 export function useInstallPrompt() {
-  const hasAppInstalled = () => {
-    // Check if app is installed on iOS
-    if ("standalone" in window.navigator && (window.navigator as any).standalone) {
-      isAppInstalled.value = true;
-    }
-    // Check if app is installed in other environments
-    if (window.matchMedia("(display-mode: standalone)").matches) {
-      isAppInstalled.value = true;
-    }
-  };
-
   const isInStandaloneMode = () =>
     window.matchMedia("(display-mode: standalone)").matches ||
     ("standalone" in window.navigator && window.navigator.standalone);
+
+  const appInstalledPrompt = () => {
+    Dialog.create({
+      component: InstallCompleteDialog
+    });
+  };
 
   const notifyNativeInstall = () => {
     const { t } = i18n.global;
@@ -80,20 +75,11 @@ export function useInstallPrompt() {
     }
   };
 
-  function setDeferredPrompt(event: any) {
-    beforeInstallPromptEvent.value = event;
-    isAppInstalled.value = false;
-  }
-
   function shouldShowInstallButton() {
     const result =
       !isAppInstalled.value &&
       !isInStandaloneMode() &&
-      (platform.isIos() ||
-        platform.isFireFox() ||
-        platform.isOpera() ||
-        platform.isEdge() ||
-        platform.isChromium());
+      (platform.isIos() || platform.isOpera() || platform.isEdge() || platform.isChromium());
 
     return result;
   }
@@ -102,12 +88,7 @@ export function useInstallPrompt() {
     switch (true) {
       case platform.isIos():
         Dialog.create({
-          component: installIosDialog
-        });
-        break;
-      case platform.isFireFox():
-        Dialog.create({
-          component: installFirefoxDialog
+          component: InstallIosDialog
         });
         break;
       case platform.isOpera():
@@ -117,7 +98,7 @@ export function useInstallPrompt() {
         break;
       case platform.isEdge():
         Dialog.create({
-          component: installEdgeDialog
+          component: InstallEdgeDialog
         });
         break;
       default:
@@ -126,14 +107,13 @@ export function useInstallPrompt() {
   }
 
   return {
+    appInstalledPrompt,
     beforeInstallPromptEvent,
-    hasAppInstalled,
     isAppInstalled,
     isInStandaloneMode,
     notifyNativeInstall,
     platform,
     promptInstall,
-    setDeferredPrompt,
     shouldShowInstallButton,
     showAppInstallButton,
     showPlatformGuidance

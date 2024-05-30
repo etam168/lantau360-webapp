@@ -4,5 +4,6 @@ export default {
   updateAvailable: "Update Available",
   refreshApp: "A new version is available. Do you want to refresh?",
   dismiss: "关闭",
-  install: "安装"
+  install: "安装",
+  appinstalled: "应用程序已安装"
 };
