@@ -181,6 +181,7 @@ export default defineConfig({
     createHtmlPlugin({
       inject: {
         data: {
+          // title: manifest.name,
           injectAppleTouchIcons: `
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/60.png?${iconVersion}" sizes="60x60" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/76.png?${iconVersion}" sizes="76x76" />
