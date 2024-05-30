@@ -16,7 +16,7 @@ dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const iconVersion = "v=6"; // Define your icon version here
-const iconType = "old-icons";
+const iconType = "icons";
 
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
