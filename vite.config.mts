@@ -17,6 +17,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 
 const iconVersion = "v=6"; // Define your icon version here
 const iconType = "icons";
+const name = "Lantau360 Lite";
 
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
@@ -181,7 +182,6 @@ export default defineConfig({
     createHtmlPlugin({
       inject: {
         data: {
-          // title: manifest.name,
           injectAppleTouchIcons: `
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/60.png?${iconVersion}" sizes="60x60" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/76.png?${iconVersion}" sizes="76x76" />
@@ -189,6 +189,9 @@ export default defineConfig({
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/152.png?${iconVersion}" sizes="152x152" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/180.png?${iconVersion}" sizes="180x180" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/512.png?${iconVersion}" />
+        `,
+          injectTitle: `
+            <title>${name}</title>
         `
         }
       }
