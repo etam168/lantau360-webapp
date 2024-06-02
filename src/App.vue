@@ -9,8 +9,8 @@
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
-    platform,
     notifyNativeInstall,
+    platform,
     showPlatformGuidance
   } = useInstallPrompt();
 
@@ -34,15 +34,16 @@
   onMounted(() => {
     if (!isInStandaloneMode()) {
       switch (true) {
-        case platform.isIos():
-        case platform.isOpera():
-        case platform.isEdge():
-          showGuidance();
-          break;
         case platform.isChromium():
           window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
           break;
+        case platform.isEdge():
+        case platform.isIos():
+        case platform.isOpera():
+          showGuidance();
+          break;
         case platform.isFireFox():
+          break;
         default:
         //   // To be impemented: Handle unknown browsers with a generic message or action
       }

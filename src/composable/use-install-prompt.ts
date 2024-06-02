@@ -11,15 +11,15 @@ const showAppInstallButton = ref(false);
 const userAgent = window.navigator.userAgent;
 
 export function useInstallPrompt() {
-  const isInStandaloneMode = () =>
-    window.matchMedia("(display-mode: standalone)").matches ||
-    ("standalone" in window.navigator && window.navigator.standalone);
-
   const appInstalledPrompt = () => {
     Dialog.create({
       component: InstallCompleteDialog
     });
   };
+
+  const isInStandaloneMode = () =>
+    window.matchMedia("(display-mode: standalone)").matches ||
+    ("standalone" in window.navigator && window.navigator.standalone);
 
   const notifyNativeInstall = () => {
     const { t } = i18n.global;

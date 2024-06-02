@@ -1,6 +1,6 @@
 {
   "name": "lantau360-webapp",
-  "version": "1.0.41",
+  "version": "1.0.42",
   "private": true,
   "scripts": {
     "dev": "vite",
@@ -72,6 +72,7 @@
     "vite-plugin-eslint": "^1.8.1",
     "vite-plugin-html": "^3.2.2",
     "vite-plugin-pwa": "^0.20.0",
+    "vite-plugin-remove-console": "^2.2.0",
     "vue-eslint-parser": "^9.4.2",
     "vue-tsc": "^2.0.19"
   },

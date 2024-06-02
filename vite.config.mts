@@ -10,6 +10,7 @@ import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
+import removeConsole from "vite-plugin-remove-console";
 import { version } from "./package.json";
 
 dns.setDefaultResultOrder("verbatim");
@@ -125,6 +126,9 @@ const pwaOptions: Partial<VitePWAOptions> = {
 };
 
 export default defineConfig({
+  esbuild: {
+    drop: ["console", "debugger"]
+  },
   build: {
     chunkSizeWarningLimit: 600
   },
@@ -133,6 +137,19 @@ export default defineConfig({
       template: { transformAssetUrls }
     }),
     eslint(),
+    removeConsole({
+      includes: ["log", "warn", "error", "info"],
+      externalValue: ["这个不删", "noRemove"],
+      // Completely customize the statements that need to be removed, which will overwrite `includes`
+      custom: [
+        "debugger",
+        "console.log()",
+        // "console.warn()",
+        // "console.error()",
+        // "console.info()",
+        "val.value = 8"
+      ]
+    }),
     VueI18nPlugin({
       include: resolve(__dirname, "./path/to/src/locales/**"),
       runtimeOnly: false
