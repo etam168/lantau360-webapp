@@ -2,7 +2,7 @@
   <q-card class="my-card bg-grey-2" flat v-if="Number(siteItem.meta.maskValue) === 1">
     <q-card-section horizontal class="justify-between">
       <q-card-section style="width: 100%" class="q-pb-none">
-        <div class="text-h6 q-mb-xs">
+        <div class="text-h6 q-mb-none q-pb-none">
           {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }} |
           {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
         </div>
@@ -22,14 +22,17 @@
     </q-card-section>
   </q-card>
 
-  <q-card class="my-card bg-grey-2" flat v-else>
+  <q-card class="my-card bg-grey-2 q-mb-none q-pb-none" flat v-else>
     <q-card-section horizontal class="justify-between">
       <q-card-section style="width: 100%" class="q-pb-none">
-        <div class="text-h6 q-mb-xs" v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle1">
+        <div
+          class="text-h6 q-mb-none q-pb-none"
+          v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle1"
+        >
           {{ translate(siteItem.customSubtitle1, siteItem.meta, "customSubtitle1") }}
         </div>
 
-        <div class="text-h6 q-mb-xs" v-else>
+        <div class="text-h6 q-mb-none q-pb-none" v-else>
           {{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
         </div>
       </q-card-section>
@@ -38,7 +41,9 @@
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"
           icon="favorite"
+          style="margin-bottom: -10px"
           @click="onBtnFavClick"
+          class="q-ma-none q-pa-none"
         />
       </q-card-section>
     </q-card-section>
@@ -48,10 +53,7 @@
     </q-card-section>
 
     <q-card-section class="q-py-md">
-      <div
-        class="text-h6 q-mb-none q-pb-none"
-        v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle2"
-      >
+      <div class="text-h6 q-mb-none q-pb-xs" v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle2">
         {{ translate(siteItem.customSubtitle2, siteItem.meta, "customSubtitle2") }}
       </div>
 
