@@ -24,6 +24,7 @@
       <directory-renderer
         v-else
         :item="item"
+        :template="template"
         :favorite-items="favoriteItems"
         :directory-check-ins="directoryCheckIns"
       /> </q-item

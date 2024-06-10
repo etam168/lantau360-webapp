@@ -10,7 +10,6 @@
       </q-img>
     </q-avatar>
   </q-item-section>
-
   <q-item-section v-if="template === TEMPLATE.TIMETABLE.value || template === TEMPLATE.TAXI.value">
     <q-item-label>
       {{ translate((item as SiteView).siteName, item.meta, "siteName") }}
