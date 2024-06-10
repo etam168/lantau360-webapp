@@ -47,8 +47,11 @@
       <q-img class="rounded-borders" :src="getImageURL(siteItem.bannerPath)" />
     </q-card-section>
 
-    <q-card-section class="q-py-none">
-      <div class="text-h6 q-mb-xs" v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle2">
+    <q-card-section class="q-py-md">
+      <div
+        class="text-h6 q-mb-none q-pb-none"
+        v-if="siteItem.meta?.i18n?.[locale]?.customSubtitle2"
+      >
         {{ translate(siteItem.customSubtitle2, siteItem.meta, "customSubtitle2") }}
       </div>
 
@@ -56,7 +59,7 @@
         {{ translate(siteItem.subtitle2, siteItem.meta, "subtitle2") }}
       </div>
 
-      <q-card-section class="q-px-none">
+      <q-card-section class="q-pa-none">
         <q-img class="rounded-borders" :src="getImageURL(siteItem.imagePath)" />
       </q-card-section>
     </q-card-section>
