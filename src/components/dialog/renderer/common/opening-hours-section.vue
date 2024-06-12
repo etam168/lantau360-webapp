@@ -1,7 +1,7 @@
 <template>
-  <q-item>
+  <q-item class="q-pa-none">
     <q-item-section>
-      <q-item-label class="q-mt-sm q-ml-sm" v-if="shouldShowItem">
+      <q-item-label class="q-pa-none q-ma-none" v-if="shouldShowItem">
         <span
           class="text-subtitle1"
           :style="{

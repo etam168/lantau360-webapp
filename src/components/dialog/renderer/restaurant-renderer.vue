@@ -4,7 +4,7 @@
   <q-list class="q-px-md q-pb-md" style="background-color: #f6f6f6">
     <opening-hours-section :item="item" />
 
-    <q-list class="rounded-borders q-mx-lg">
+    <q-list class="rounded-borders">
       <description-section
         :descriptionContent="translate(businessItem.description, businessItem.meta, 'description')"
         :item="item"
