@@ -32,18 +32,18 @@
 </template>
 
 <script setup lang="ts">
-  import { URL } from "@/constants";
   import axios, { AxiosError } from "axios";
-  import { useRoute } from "vue-router";
+  import { IMAGES, URL } from "@/constants";
   import i18n from "@/plugins/i18n/i18n";
-  import { IMAGES } from "@/constants";
+  import { useRoute, useRouter } from "vue-router";
 
+  const error = ref(false);
+  const loading = ref(true);
+  const message = ref("");
+  const route = useRoute();
+  const router = useRouter();
   const token = ref();
   const userId = ref();
-  const route = useRoute();
-  const loading = ref(true);
-  const error = ref(false);
-  const router = useRouter();
   const { t } = i18n.global;
 
   const messages: any = {
@@ -58,18 +58,20 @@
     confimation_sucessfull: t("auth.emailMessages.confimationSucessfull")
   };
 
-  const message = ref("");
-
-  onMounted(() => {
-    const query = route.query;
-    token.value = query.token || null;
-    userId.value = query.userId || null;
-    if (token.value && userId.value) {
-      confirmEmail();
-    } else {
+  const confirmEmail = async () => {
+    try {
+      const response = await axios.get(
+        `${URL.EMAIL_CONFIRMATION.CONFIRM_EMAIL}?token=${encodeURIComponent(token.value)}&userId=${userId.value}`
+      );
+      error.value = response.status !== 200;
+      message.value = messages.confimation_sucessfull;
+    } catch (err: any) {
+      error.value = true;
+      handleAxiosError(err);
+    } finally {
       loading.value = false;
     }
-  });
+  };
 
   const goToHome = () => {
     router.push("/");
@@ -108,18 +110,14 @@
     }
   };
 
-  const confirmEmail = async () => {
-    try {
-      const response = await axios.get(
-        `${URL.EMAIL_CONFIRMATION.CONFIRM_EMAIL}?token=${encodeURIComponent(token.value)}&userId=${userId.value}`
-      );
-      error.value = response.status !== 200;
-      message.value = messages.confimation_sucessfull;
-    } catch (err: any) {
-      error.value = true;
-      handleAxiosError(err);
-    } finally {
+  onMounted(() => {
+    const query = route.query;
+    token.value = query.token || null;
+    userId.value = query.userId || null;
+    if (token.value && userId.value) {
+      confirmEmail();
+    } else {
       loading.value = false;
     }
-  };
+  });
 </script>
