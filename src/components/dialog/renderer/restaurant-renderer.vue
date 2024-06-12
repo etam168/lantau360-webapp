@@ -20,8 +20,8 @@
 
       <!-- Contact section -->
       <contact-section :item="item" />
-    </q-list> </q-list
-  >z
+    </q-list>
+  </q-list>
 </template>
 
 <script setup lang="ts">

@@ -2,12 +2,10 @@
   <q-card class="my-card">
     <q-img :ratio="11 / 8" :src="getImageURL(item.bannerPath)" />
 
-    <q-card-section class="q-pa-sm">
-      <q-item dense class="q-py-none">
+    <q-card-section>
+      <q-item dense class="q-pa-none">
         <q-item-section>
-          <q-item-label style="font-family: Baloo; font-size: 1rem">{{
-            translatedTitle
-          }}</q-item-label>
+          <q-item-label>{{ translatedTitle }}</q-item-label>
         </q-item-section>
       </q-item>
     </q-card-section>

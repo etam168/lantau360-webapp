@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-mb-md" v-if="translatedContent != null && translatedContent != ''">
+  <q-card class="q-mb-md" v-if="translatedContent != null">
     <q-card-section class="q-pa-sm">
       <q-expansion-item group="itemGroup" dense dense-toggle>
         <template v-slot:header>
@@ -36,14 +36,14 @@
       required: true
     },
     descriptionContent: {
-      type: String,
+      type: [String, null] as PropType<string | null>,
       required: true
     }
   });
 
   const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
 
-  const translatedContent = ref(props.descriptionContent);
+  const translatedContent = ref(props.descriptionContent ?? "");
   const isFavourite = ref(isFavouriteItem(props.item));
 
   function onBtnFavClick() {
