@@ -1,7 +1,7 @@
 <template>
   <gallery-section :item="item" />
 
-  <q-list class="q-px-md q-py-md" style="background-color: #f6f6f6">
+  <q-list class="q-pa-md" style="background-color: #f6f6f6">
     <q-list class="rounded-borders">
       <!-- Description section -->
       <description-section
