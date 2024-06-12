@@ -1,7 +1,7 @@
 <template>
-  <q-item class="q-pa-none">
-    <q-item-section>
-      <q-item-label class="q-pa-none q-ma-none" v-if="shouldShowItem">
+  <q-item class="q-pa-none" :style="{ 'margin-top': shouldShowItem ? '' : '-35px' }">
+    <q-item-section v-if="shouldShowItem">
+      <q-item-label class="q-pa-none q-ma-none">
         <span
           class="text-subtitle1"
           :style="{
