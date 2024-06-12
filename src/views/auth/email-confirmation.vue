@@ -1,12 +1,12 @@
 <template>
-  <div class="email-verification">
-    <div class="header">
+  <q-card class="text-center" flat style="height: 100vh">
+    <q-card-section class="column full-height justify-center items-center">
       <q-avatar size="128px" square>
         <q-img :src="IMAGES.LOGO" />
       </q-avatar>
-    </div>
-    <div v-if="loading">
+
       <q-circular-progress
+        v-if="loading"
         indeterminate
         size="90px"
         :thickness="0.2"
@@ -15,19 +15,20 @@
         track-color="transparent"
         class="q-ma-md"
       />
-    </div>
-    <div class="verification-message" v-else>
-      <h2>{{ $t("action.emailVerification") }}</h2>
-      <p v-if="error" class="error-message">{{ message }}</p>
-      <template v-else>
-        <p v-html="message"></p>
-      </template>
-      <q-btn @click="goToHome" outline color="primary">{{ $t("action.goToHome") }}</q-btn>
-      <q-btn v-if="error" class="q-ml-sm" @click="resendLink" outline color="primary">{{
-        $t("action.resendLink")
-      }}</q-btn>
-    </div>
-  </div>
+      <q-card-section v-else>
+        <div class="text-h6">{{ $t("action.emailVerification") }}</div>
+        <div v-if="error" class="text-subtitle2 text-red">{{ message }}</div>
+
+        <template v-else>
+          <p v-html="message"></p>
+        </template>
+        <q-btn @click="goToHome" outline color="primary">{{ $t("action.goToHome") }}</q-btn>
+        <q-btn v-if="error" class="q-ml-sm" @click="resendLink" outline color="primary">{{
+          $t("action.resendLink")
+        }}</q-btn>
+      </q-card-section>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script setup lang="ts">
@@ -122,39 +123,3 @@
     }
   };
 </script>
-
-<style scoped>
-  .email-verification {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    height: 90vh;
-  }
-
-  .header {
-    text-align: center;
-  }
-
-  .verification-message {
-    text-align: center;
-  }
-
-  .verification-message h2 {
-    font-size: 24px;
-    margin-bottom: 16px;
-  }
-
-  .verification-message p {
-    font-size: 16px;
-    margin-bottom: 8px;
-  }
-
-  .error-message {
-    color: red;
-  }
-
-  .q-btn {
-    margin-top: 16px;
-  }
-</style>
