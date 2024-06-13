@@ -73,16 +73,13 @@
 </template>
 
 <script setup lang="ts">
-  import { Form } from "vee-validate";
   import * as yup from "yup";
-  const $q = useQuasar();
-
+  import { Form } from "vee-validate";
   // Interface files
   import { Member } from "@/interfaces/models/entities/member";
-
   // .ts files
-  import { useMoreInput } from "../use-more-input";
   import ProfileSettingImage from "./profile-setting-image.vue";
+  import { useMoreInput } from "../use-more-input";
 
   const props = defineProps({
     data: {
@@ -94,6 +91,7 @@
   const authStyle = computed(() => ($q.screen.gt.sm ? { width: "60vw" } : { width: "100vw" }));
 
   const { t } = useI18n({ useScope: "global" });
+  const $q = useQuasar();
   const { updateMember, setValidatedInput, setMemberInput, memberInput } = useMoreInput();
 
   const form = ref();

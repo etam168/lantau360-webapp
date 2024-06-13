@@ -9,6 +9,10 @@ import { BASE_URL } from "@/constants";
 const { notify } = useUtilities();
 const userStore = useUserStore();
 const error = ref<string | null>(null);
+
+const lang = ref("hk");
+const locale = ref("hk");
+
 const newInput = () => {
   return {
     modifiedAt: new Date()
@@ -17,9 +21,6 @@ const newInput = () => {
 
 const { t } = i18n.global;
 const toolTipCreate = ref("member.gallery.uploadNewImage");
-
-const locale = ref("hk");
-const lang = ref("hk");
 
 export function useMoreInput() {
   const memberInput = ref<Member>(newInput());
@@ -91,6 +92,7 @@ export function useMoreInput() {
         }
       });
   }
+
   return {
     handleUpdateMemberAvatar,
     lang,

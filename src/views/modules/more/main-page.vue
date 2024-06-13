@@ -51,7 +51,6 @@
     </q-page-sticky>
   </q-page>
 </template>
-
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
@@ -80,11 +79,11 @@
     t("more.footer.copyright", { currentYear: new Date().getFullYear() })
   );
 
-  const trRecent = ref();
   const trHistory = ref();
+  const trRecent = ref();
   const memberConfig = ref<Content>();
-  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
   const throttledHandleContentDialog = throttle(showDialog, 2000);
+  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
   const menuItems = computed(() => {
     return userStore.isUserLogon() ? LOGGED_ON_USER_MENU : DEFAULT_MENU;

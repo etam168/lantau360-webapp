@@ -8,10 +8,15 @@
       :class="['text-center', { 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }]"
       @click="handleDialog(item)"
     >
-      <q-avatar size="64px">
-        <q-img :src="getImageURL(item.imagePath)" />
-      </q-avatar>
-      <div class="text-center q-ma-sm">{{ getDirectoryTitle(item) }}</div>
+      <q-item>
+        <q-item-section avatar>
+          <q-avatar size="64px" style="background: #e9f8e8">
+            <q-img :src="getImageURL(item.imagePath)" />
+          </q-avatar>
+
+          <q-item-label class="text-center q-ma-sm">{{ getDirectoryTitle(item) }}</q-item-label>
+        </q-item-section>
+      </q-item>
     </q-card>
   </div>
 </template>
@@ -128,3 +133,5 @@
     });
   });
 </script>
+
+<style scoped></style>

@@ -19,7 +19,6 @@
     </q-page-container>
   </q-layout>
 </template>
-
 <script setup lang="ts">
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
@@ -27,7 +26,7 @@
   // .ts files
   import useDataTable from "@/composable/use-data-table";
 
-  // Custom Components
+  // UI Components
   import BusinessListTable from "./business-list-table.vue";
 
   const { eventBus } = useUtilities();

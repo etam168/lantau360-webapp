@@ -72,6 +72,7 @@
   import { throttle } from "quasar";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { IMAGES } from "@/constants";
+
   defineProps({
     data: {
       type: Object as PropType<CheckIn[]>,
