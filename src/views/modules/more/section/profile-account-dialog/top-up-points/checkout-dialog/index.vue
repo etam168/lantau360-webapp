@@ -45,13 +45,14 @@
 </template>
 
 <script setup lang="ts">
-  import PackageOptionsSection from "./package-options-section.vue";
+  import { useDialogPluginComponent } from "quasar";
+  import i18n from "@/plugins/i18n/i18n";
+
+  // UI Components
   import CreditCardSection from "./credit-card-section.vue";
   import HeaderSection from "./header-section.vue";
+  import PackageOptionsSection from "./package-options-section.vue";
   import StripeCheckoutSection from "./stripe-checkout/index.vue";
-  import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
-  import i18n from "@/plugins/i18n/i18n";
 
   defineProps({
     callback: {
@@ -60,26 +61,15 @@
     }
   });
 
+  const { t } = i18n.global;
   const { eventBus } = useUtilities();
   const { dialogRef } = useDialogPluginComponent();
 
   const isDialogVisible = ref();
-  const selectedPaymentOption = ref("credit_card");
   const selectedPackage = ref();
-  const { t } = i18n.global;
+  const selectedPaymentOption = ref("credit_card");
+
   provide("selectedPackage", selectedPackage);
-
-  onMounted(() => {
-    eventBus.on("CreditCardDialog", () => {
-      isDialogVisible.value = false;
-      isDialogVisible.value = false;
-    });
-  });
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "CreditCardDialog");
-  }
 
   const paymentOptions = [
     {
@@ -91,4 +81,16 @@
       value: "stripe"
     }
   ];
+
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus.emit("DialogStatus", status, "CreditCardDialog");
+  }
+
+  onMounted(() => {
+    eventBus.on("CreditCardDialog", () => {
+      isDialogVisible.value = false;
+      isDialogVisible.value = false;
+    });
+  });
 </script>

@@ -1,20 +1,29 @@
 import axios from "axios";
+import i18n from "@/plugins/i18n/i18n";
+import { List } from "lodash";
 
 // Interface files
 import { Posting } from "@/interfaces/models/entities/posting";
-import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 import { PostingImage } from "@/interfaces/models/entities/posting-image";
-
-import i18n from "@/plugins/i18n/i18n";
+import { PostingImages } from "@/interfaces/models/custom-models/gallery";
 
 // .ts files
 import { URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
-import { useUtilities } from "@/composable/use-utilities";
-import { List } from "lodash";
-
+const { t } = i18n.global;
 const { getImageURL, notify, eventBus } = useUtilities();
 const userStore = useUserStore();
+
+const [bannerPath, imagePath, iconPath] = [ref(), ref(), ref()];
+const bannerRef = ref(null);
+const iconRef = ref(null);
+const imageRef = ref(null);
+const toolTipCreate = ref("posting.gallery.uploadNewImage");
+
+const lang = ref("hk");
+const locale = ref("hk");
+
+const metaDescription = ref<string>("");
 
 const newInput = () => {
   return {
@@ -22,19 +31,6 @@ const newInput = () => {
   } as Posting;
 };
 
-const { t } = i18n.global;
-
-const [bannerPath, imagePath, iconPath] = [ref(), ref(), ref()];
-
-const bannerRef = ref(null);
-const iconRef = ref(null);
-const imageRef = ref(null);
-const toolTipCreate = ref("posting.gallery.uploadNewImage");
-
-const locale = ref("hk");
-const lang = ref("hk");
-
-const metaDescription = ref<string>("");
 export function usePostingInput() {
   const postingInput = ref<Posting>(newInput());
   const postingImages = ref<PostingImages>({} as PostingImages);
@@ -98,7 +94,6 @@ export function usePostingInput() {
 
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
-    // loading.value = false;
   }
 
   function createPosting() {
@@ -157,7 +152,6 @@ export function usePostingInput() {
       .then(response => {
         postingImages.value.galleryImages[imageIndex].imageId = response.data.imageId;
         eventBus.emit("on-gallery-image-updates");
-        // onRefresh();
       })
       .catch(() => {});
   }
@@ -171,16 +165,13 @@ export function usePostingInput() {
     await axios
       .post(`/PostingImage/Repost`, requestData)
       .then(() => {
-        // postingImages.value.galleryImages[imageIndex].imageId = response.data.imageId;
         eventBus.emit("on-gallery-image-updates");
-        // onRefresh();
       })
       .catch(() => {});
   }
 
   function deleteImage(id: number) {
     const url = `/PostingImage/${id}`;
-    // loading.value = true;
     axios.delete(url).then(
       () => {
         const successMessage = t("posting.message.deleteImage");
@@ -188,7 +179,6 @@ export function usePostingInput() {
       },
       error => {
         notify(error.message, "negative");
-        // loading.value = false;
       }
     );
   }
@@ -277,13 +267,10 @@ export function usePostingInput() {
     bannerPath,
     iconPath,
     imagePath,
-
     bannerRef,
     iconRef,
     imageRef,
-
     toolTipCreate,
-
     locale,
     lang,
     usePostingInput,

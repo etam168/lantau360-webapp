@@ -10,7 +10,6 @@ import i18n from "@/plugins/i18n/i18n";
 // .ts files
 import { URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
-import { useUtilities } from "@/composable/use-utilities";
 
 const { getImageURL, notify, eventBus } = useUtilities();
 const userStore = useUserStore();

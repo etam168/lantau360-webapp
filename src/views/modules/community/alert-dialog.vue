@@ -60,8 +60,6 @@
   import { useDialogPluginComponent } from "quasar";
   import { IMAGES } from "@/constants";
 
-  import { useUtilities } from "@/composable/use-utilities";
-
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();

@@ -29,7 +29,6 @@
 
 <script setup lang="ts">
   import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
   import FreeTopUpSection from "./free-top-up-section.vue";
   import PurchaseTopUpSection from "./purchase-top-up-section.vue";
 

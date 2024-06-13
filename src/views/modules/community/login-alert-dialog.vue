@@ -40,10 +40,6 @@
 <script setup lang="ts">
   import { useDialogPluginComponent } from "quasar";
 
-  // .ts files
-
-  import { useUtilities } from "@/composable/use-utilities";
-
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();

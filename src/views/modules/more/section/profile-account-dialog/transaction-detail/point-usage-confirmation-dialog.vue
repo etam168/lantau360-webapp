@@ -41,7 +41,6 @@
 <script setup lang="ts">
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
   import { useUserStore } from "@/stores/user";
 
   const props = defineProps({
@@ -51,13 +50,13 @@
     }
   });
 
+  const $q = useQuasar();
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const { availabelPoints, pointsPerPost } = useUserStore();
-  const isDialogVisible = ref();
-  const $q = useQuasar();
 
   const haveEnoughPoints = computed(() => availabelPoints >= pointsPerPost);
+  const isDialogVisible = ref();
 
   onMounted(() => {
     eventBus.on("ConfirmationDialog", () => {

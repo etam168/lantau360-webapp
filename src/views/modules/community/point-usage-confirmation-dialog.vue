@@ -41,10 +41,7 @@
 <script setup lang="ts">
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
-  //import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { useUserStore } from "@/stores/user";
-  //import i18n from "@/plugins/i18n/i18n";
 
   const props = defineProps({
     item: {

@@ -32,7 +32,6 @@
 
 <script setup lang="ts">
   import { useDialogPluginComponent } from "quasar";
-  import { useUtilities } from "@/composable/use-utilities";
 
   defineProps({
     data: {
