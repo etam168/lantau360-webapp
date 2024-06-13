@@ -15,7 +15,7 @@
         :name="item.name"
         :icon="item.icon"
         :label="item.label"
-        class="icon-size"
+        class="icon-size q-py-none q-px-xs"
         @click="navigateTo(item.route, item.name)"
       />
     </q-tabs>
@@ -35,13 +35,6 @@
     tab.value = tabName;
     sessionStorage.setItem(ACTIVE_TAB_KEY, tabName);
   };
-
-  onMounted(() => {
-    const storedTab = sessionStorage.getItem(ACTIVE_TAB_KEY);
-    if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
-      tab.value = storedTab;
-    }
-  });
 
   const tabs = computed(() => [
     { name: "home", icon: "fas fa-home", label: t("footer.home"), route: "/home" },
@@ -63,19 +56,19 @@
       label: t("footer.favourite"),
       route: "/favourite"
     },
+
     { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
 
   onMounted(() => {
+    const storedTab = sessionStorage.getItem(ACTIVE_TAB_KEY);
+    if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
+      tab.value = storedTab;
+    }
+
     eventBus.on("navigateToMore", () => {
       // Navigate to "/more" when the event is received
       navigateTo("/more", "more");
     });
   });
 </script>
-
-<style scoped>
-  .q-tab {
-    padding: 0 4px; /* Adjust this value to your needs */
-  }
-</style>
