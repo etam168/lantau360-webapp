@@ -40,7 +40,6 @@
 
   // .ts files
   import { URL, RENDERER, IMAGES } from "@/constants";
-  import { useUtilities } from "@/composable/use-utilities";
 
   // Custom Components
   import AdvertisementRenderer from "@/components/dialog/renderer/advertisement-renderer.vue";
