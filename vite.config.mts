@@ -28,7 +28,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
   includeAssets: ["favicon.svg"], // Included assets
   manifest: {
     name: "Lantau360 Lite",
-    short_name: "Lantau360L",
+    short_name: "Lantau360",
     theme_color: "#ffffff",
     background_color: "#00652E",
     start_url: "/?source=pwa",
