@@ -2,27 +2,8 @@
   <gallery-section :item="item" />
 
   <q-list class="q-px-md q-pb-md">
-    <q-item v-if="siteItem.subtitle1">
-      <q-item-section avatar>
-        <q-avatar
-          v-if="$q.screen.gt.xs"
-          dense
-          rounded
-          color="primary"
-          icon="location_on"
-          text-color="white"
-          size="sm"
-        />
-
-        <q-avatar v-if="$q.screen.xs">
-          <q-icon name="location_on" color="primary" />
-        </q-avatar>
-      </q-item-section>
-      <q-item-section>
-        <q-item-label v-if="siteItem.subtitle1" class="text-caption"
-          >{{ translate(siteItem.subtitle1, siteItem.meta, "subtitle1") }}
-        </q-item-label>
-      </q-item-section>
+    <q-item>
+      <q-item-section></q-item-section>
       <q-item-section side>
         <app-button-rounded
           :text-color="isFavourite ? 'red' : 'white'"

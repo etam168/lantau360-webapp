@@ -21,14 +21,16 @@
         :item="item"
         :directory="directory"
       />
+
       <directory-renderer
         v-else
         :item="item"
         :template="template"
         :favorite-items="favoriteItems"
         :directory-check-ins="directoryCheckIns"
-      /> </q-item
-  ></q-list>
+      />
+    </q-item>
+  </q-list>
 
   <q-card
     v-if="directoryItems.length == 0"
