@@ -8,8 +8,8 @@
       :class="['text-center', { 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }]"
       @click="handleDialog(item)"
     >
-      <q-item>
-        <q-item-section avatar>
+      <q-item class="items-center justify-center">
+        <q-item-section avatar class="items-center q-pa-none">
           <q-avatar size="64px" style="background: #e9f8e8">
             <q-img :src="getImageURL(item.imagePath)" />
           </q-avatar>

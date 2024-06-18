@@ -12,8 +12,8 @@
       <template v-slot:action>
         <!-- Center the chips -->
         <q-toolbar v-bind="$attrs" class="q-gutter-x-sm" :class="tabSelectClass">
-          <q-skeleton type="QChip" />
-          <q-skeleton type="QChip" />
+          <q-skeleton type="QChip" width="99.38px" />
+          <q-skeleton type="QChip" width="141.14" />
         </q-toolbar>
       </template>
     </q-banner>

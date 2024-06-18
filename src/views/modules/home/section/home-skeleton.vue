@@ -9,16 +9,17 @@
     <q-item class="q-px-md">
       <div class="row q-gutter-sm">
         <q-skeleton type="QChip" />
-        <q-skeleton type="QChip" width="51.19px" /></div
+        <q-skeleton type="QChip" />
+        <q-skeleton type="QChip" /></div
     ></q-item>
-    <q-item class="justify-center"><q-skeleton type="QChip" width="800px" /></q-item>
+    <q-item class="justify-center"><q-skeleton type="QChip" width="776px" height="40px" /></q-item>
 
     <q-item class="row q-gutter-y-md">
       <div class="row wrap">
         <div
           v-for="index in 14"
           :key="index"
-          class="column q-gutter-sm items-center q-mt-md"
+          class="column q-gutter-sm q-mt-md items-left"
           :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
         >
           <q-skeleton type="circle" size="64px" />
