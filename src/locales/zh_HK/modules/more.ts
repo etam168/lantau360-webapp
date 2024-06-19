@@ -40,7 +40,8 @@ export default {
     topUpAmount: "充值金額",
     essentialInformation: "請輸入以下必要信息以充值積分",
     payByStrip: "通過Stripe支付",
-    paymentOptions: "支付選項"
+    paymentOptions: "支付選項",
+    noRecord: "目前没有记录可供查看。"
   },
 
   profileSetting: {

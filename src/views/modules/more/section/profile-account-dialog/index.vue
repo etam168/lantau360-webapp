@@ -12,7 +12,7 @@
       </q-header>
 
       <q-page-container>
-        <q-page>
+        <q-page style="min-height: calc(100vh - 66px)">
           <q-card class="text-white bg-primary q-ma-md q-py-md">
             <q-card-section class="q-ma-none q-pa-none">
               <q-item>
@@ -51,36 +51,41 @@
           <q-tab-panels v-model="tab">
             <q-tab-panel v-for="(tabItem, index) in tabItems" :key="index" :name="tabItem.name">
               <q-list>
-                <q-item
-                  v-for="(subItem, subIndex) in tabItem.subItems"
-                  :key="subIndex"
-                  class="shadow-1 q-pa-md q-mb-md"
-                  clickable
-                  @click="handleItemClick(subItem)"
-                >
-                  <q-item-section>
-                    <q-item-label>{{ subItem.title }}</q-item-label>
+                <div v-if="tabItem.subItems.length > 0">
+                  <q-item
+                    v-for="(subItem, subIndex) in tabItem.subItems"
+                    :key="subIndex"
+                    class="shadow-1 q-pa-md q-mb-md"
+                    clickable
+                    @click="handleItemClick(subItem)"
+                  >
+                    <q-item-section>
+                      <q-item-label>{{ subItem.title }}</q-item-label>
 
-                    <q-item-label v-if="subItem.directoryName !== null" caption>{{
-                      subItem.directoryName + "   -  " + dateFormatter(subItem.createdAt)
-                    }}</q-item-label>
+                      <q-item-label v-if="subItem.directoryName !== null" caption>{{
+                        subItem.directoryName + "   -  " + dateFormatter(subItem.createdAt)
+                      }}</q-item-label>
 
-                    <q-item-label v-else caption>
-                      {{ dateFormatter(subItem.createdAt) }}</q-item-label
-                    >
-                  </q-item-section>
+                      <q-item-label v-else caption>
+                        {{ dateFormatter(subItem.createdAt) }}</q-item-label
+                      >
+                    </q-item-section>
 
-                  <q-item-section side>
-                    <q-item-label :class="subItem.transactionType === 2 ? 'text-red' : ''">
-                      {{
-                        subItem.transactionType === 2 ? "-" + subItem.points : subItem.points
-                      }}</q-item-label
-                    >
-                    <q-item-label class="text-red" v-if="subItem.isPostExpired == true">{{
-                      $t("more.profileSetting.expired")
-                    }}</q-item-label>
-                  </q-item-section>
-                </q-item>
+                    <q-item-section side>
+                      <q-item-label :class="subItem.transactionType === 2 ? 'text-red' : ''">
+                        {{
+                          subItem.transactionType === 2 ? "-" + subItem.points : subItem.points
+                        }}</q-item-label
+                      >
+                      <q-item-label class="text-red" v-if="subItem.isPostExpired == true">{{
+                        $t("more.profileSetting.expired")
+                      }}</q-item-label>
+                    </q-item-section>
+                  </q-item>
+                </div>
+                <div v-else class="row justify-center items-center" style="height: 63vh">
+                  {{ $t("more.account.noRecord") }}
+                </div>
               </q-list>
             </q-tab-panel>
           </q-tab-panels>

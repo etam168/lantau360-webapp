@@ -40,7 +40,8 @@ export default {
     topUpAmount: "Top-up Amount",
     essentialInformation: "Enter the essential information below to top up your points",
     payByStrip: "Pay By Strip",
-    paymentOptions: "Payment Options"
+    paymentOptions: "Payment Options",
+    noRecord: "There is no Record to show you right now."
   },
 
   profileSetting: {
