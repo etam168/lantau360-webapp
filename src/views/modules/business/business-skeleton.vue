@@ -20,14 +20,13 @@
 
     <div class="q-pa-sm">
       <div class="row q-col-gutter-sm">
-        <div v-for="(item, index) in 5" :key="index" class="col-md-3 col-sm-4 col-6">
+        <div v-for="(item, index) in 2" :key="index" class="col-md-3 col-sm-4 col-6">
           <q-card class="my-card">
-            <q-responsive :ratio="16 / 9">
+            <q-responsive :ratio="11 / 8">
               <q-skeleton height="170px" square animation="fade" />
             </q-responsive>
 
-            <div class="row items-center q-pa-sm">
-              <q-icon name="location_on" color="grey-4" class="q-mr-sm" size="xs" />
+            <div class="row items-center q-pa-md">
               <q-skeleton type="text" width="40%" />
             </div>
 
