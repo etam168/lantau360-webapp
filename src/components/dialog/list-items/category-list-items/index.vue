@@ -39,7 +39,7 @@
     class="row justify-center items-center"
   >
     <q-card-section class="text-center">
-      <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold">
+      <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center">
         {{ $t("errors.noRecord") }}
       </div>
     </q-card-section>

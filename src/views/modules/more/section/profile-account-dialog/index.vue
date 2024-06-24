@@ -85,7 +85,7 @@
                 </div>
                 <div
                   v-else
-                  class="row justify-center items-center text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold"
+                  class="row justify-center items-center text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center"
                   style="min-height: calc(100vh - 268px)"
                 >
                   {{ $t("more.account.noRecord") }}
