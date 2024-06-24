@@ -12,7 +12,7 @@
       </q-header>
 
       <q-page-container>
-        <q-page>
+        <q-page style="min-height: calc(100vh - 74px)">
           <q-card flat>
             <profile-setting-image />
             <q-card-section

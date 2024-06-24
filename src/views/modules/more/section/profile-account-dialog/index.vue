@@ -83,7 +83,11 @@
                     </q-item-section>
                   </q-item>
                 </div>
-                <div v-else class="row justify-center items-center" style="height: 63vh">
+                <div
+                  v-else
+                  class="row justify-center items-center text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold"
+                  style="min-height: calc(100vh - 268px)"
+                >
                   {{ $t("more.account.noRecord") }}
                 </div>
               </q-list>
