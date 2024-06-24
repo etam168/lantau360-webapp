@@ -18,6 +18,8 @@ export default {
   invalidUsername: "Username is incorrect",
   invalidCredentials: "Username or password is incorrect",
   noRecord: "There is no Record to show you right now.",
+  noSaveSiteRecord: "There is no Favourite Site Record to show you.",
+  noSaveBusinessRecord: "There is no Favourite Business Record to show you.",
   minimum3letter: "Minimum 3 letters are required",
   userNotFound: "User is not found",
   usernameRequired: "Username Required",

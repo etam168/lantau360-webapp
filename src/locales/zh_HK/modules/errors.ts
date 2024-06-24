@@ -18,6 +18,8 @@ export default {
   invalidUsername: "Username is incorrect",
   invalidCredentials: "Username or password is incorrect",
   noRecord: "目前沒有記錄可供查看。",
+  noSaveSiteRecord: "沒有可顯示的收藏網站記錄。",
+  noSaveBusinessRecord: "沒有可顯示的收藏商家記錄。",
   minimum3letter: "最少需要3個字符",
   userNotFound: "找不到用戶",
   usernameRequired: "Username Required",

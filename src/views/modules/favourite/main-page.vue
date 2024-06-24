@@ -22,11 +22,24 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="location" class="q-pa-none">
-        <app-grouped-item-list :list-items="siteItems" />
+        <div
+          v-if="siteItems.length == 0"
+          class="text-h6 text-weight-regular q-ma-md text-grey-6 text-weight-bold text-center"
+        >
+          {{ $t("errors.noSaveSiteRecord") }}
+        </div>
+
+        <app-grouped-item-list :list-items="siteItems" v-else />
       </q-tab-panel>
 
       <q-tab-panel name="business" class="q-pa-none">
-        <app-grouped-item-list :list-items="businessItems" />
+        <div
+          v-if="businessItems.length == 0"
+          class="text-h6 text-weight-regular q-ma-md text-grey-6 text-weight-bold text-center"
+        >
+          {{ $t("errors.noSaveBusinessRecord") }}
+        </div>
+        <app-grouped-item-list v-else :list-items="businessItems" />
       </q-tab-panel>
 
       <q-tab-panel name="coupon">
