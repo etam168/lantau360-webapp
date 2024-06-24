@@ -8,9 +8,9 @@ $remoteHost = "103.15.20.214"
 
 # Define the home folder and paths
 $homeFolder = "/home/lantau360"
-$domainName = "app-dev.lantau360.biz"
-$stagingPath = "${homeFolder}/domains/${domainName}/public_html"
-$productionPath = "${homeFolder}/domains/${domainName}/public_html"
+$domainName = "lantau360.biz"
+$stagingPath = "${homeFolder}/domains/app-dev.${domainName}/public_html"
+$productionPath = "${homeFolder}/domains/app.${domainName}/public_html"
 
 # Set the build command and destination path based on the build mode
 if ($BuildMode -eq "production") {
