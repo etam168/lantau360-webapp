@@ -5,8 +5,11 @@ param (
 # Define the credentials
 $remoteUsername = "root"
 $remoteHost = "97.74.95.249"
-$stagingPath = "/home/host1/domains/app-dev.lantau360.com/public_html"
-$productionPath = "/home/host1/domains/app.lantau360.com/public_html"
+
+# Define the home folder and paths
+$homeFolder = "/home/host1"
+$stagingPath = "${homeFolder}/domains/app-dev.lantau360.com/public_html"
+$productionPath = "${homeFolder}/domains/app.lantau360.com/public_html"
 
 # Set the build command and destination path based on the build mode
 if ($BuildMode -eq "production") {
@@ -28,17 +31,30 @@ Invoke-Expression $BuildCommand
 if ($LASTEXITCODE -eq 0) {
     Write-Host "Build completed successfully."
     
-    # Use scp to upload files from the dist folder to the remote server
-    $SCPCommand = "scp -r -C ${DistFolder}/* ${remoteUsername}@${remoteHost}:${remotePath}"
-    Write-Host "Running SCP command: $SCPCommand"
-    Invoke-Expression $SCPCommand
+    # Detect if the script is running on Windows or macOS
+    if ($env:OS -eq "Windows_NT") {
+        # Running on Windows
+        # Convert Windows paths to WSL paths
+        $DistFolderWSL = wsl wslpath -a $DistFolder
+        
+        # Use rsync within WSL
+        $RSYNCCommand = "rsync -avz --delete ${DistFolderWSL}/* ${remoteUsername}@${remoteHost}:${remotePath}"
+        Write-Host "Running rsync command: $RSYNCCommand"
+        Invoke-Expression "wsl $RSYNCCommand"
+    }
+    else {
+        # Assume running on macOS
+        $RSYNCCommand = "rsync -avz --delete ${DistFolder}/ ${remoteUsername}@${remoteHost}:${remotePath}"
+        Write-Host "Running rsync command: $RSYNCCommand"
+        & /bin/bash -c $RSYNCCommand
+    }
     
-    # Check if the SCP command was successful
+    # Check if the rsync command was successful
     if ($LASTEXITCODE -eq 0) {
         Write-Host "Files uploaded successfully to ${remoteUsername}@${remoteHost}:${remotePath}"
     }
     else {
-        Write-Host "Failed to upload files. SCP command exited with code: $LASTEXITCODE"
+        Write-Host "Failed to upload files. rsync command exited with code: $LASTEXITCODE"
     }
 }
 else {
