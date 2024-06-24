@@ -4,10 +4,10 @@ param (
 
 # Define the credentials
 $remoteUsername = "root"
-$remoteHost = "97.74.95.249"
+$remoteHost = "103.15.20.214"
 
 # Define the home folder and paths
-$homeFolder = "/home/host1"
+$homeFolder = "/home/lantau360"
 $domainName = "app-dev.lantau360.biz"
 $stagingPath = "${homeFolder}/domains/${domainName}/public_html"
 $productionPath = "${homeFolder}/domains/${domainName}/public_html"
