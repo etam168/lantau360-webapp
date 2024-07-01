@@ -199,11 +199,9 @@
         case platform.isFireFox():
         case platform.isOpera():
         case platform.isEdge():
-          alert("Other Browser");
           showPlatformGuidance();
           break;
         case platform.isChromium():
-          alert("Chrome");
           promptInstall();
           break;
         default:
