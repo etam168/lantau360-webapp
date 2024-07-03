@@ -85,7 +85,7 @@
     try {
       emits("uploadCallback", imagePath.value);
     } catch (error) {
-      // console.error("Error uploading image:", error);
+      //console.error("Error uploading image:", error);
     }
   }
 

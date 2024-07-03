@@ -4,6 +4,7 @@ import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
 import InstallOperaDialog from "@/components/dialog/install-opera-dialog.vue";
 import InstallCompleteDialog from "@/components/dialog/install-complete-dialog.vue";
 import i18n from "@/plugins/i18n/i18n";
+const { notify } = useUtilities();
 
 const beforeInstallPromptEvent = ref();
 const isAppInstalled = ref(false);
@@ -66,9 +67,9 @@ export function useInstallPrompt() {
       beforeInstallPromptEvent.value.prompt();
       beforeInstallPromptEvent.value.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the install prompt");
+          notify("User accepted the install prompt", "negative");
         } else {
-          console.log("User dismissed the install prompt");
+          notify("User dismissed the install prompt", "negative");
         }
         beforeInstallPromptEvent.value = null;
       });

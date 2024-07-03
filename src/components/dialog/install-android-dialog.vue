@@ -26,9 +26,9 @@
       localDeferredPrompt.value.prompt();
       localDeferredPrompt.value.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === "accepted") {
-          console.log("User accepted the A2HS prompt");
+          notify("User accepted the A2HS prompt", "negative");
         } else {
-          console.log("User dismissed the A2HS prompt");
+          notify("User dismissed the A2HS prompt", "negative");
         }
         localDeferredPrompt.value = null;
       });

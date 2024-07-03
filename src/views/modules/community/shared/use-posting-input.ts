@@ -153,8 +153,8 @@ export function usePostingInput() {
         );
         eventBus.emit("ItemListUpdate", directoryItems);
       }
-    } catch (error) {
-      console.error("Error fetching data: ", error);
+    } catch (error: any) {
+      //console.error("Error fetching data: ", error);
     }
   };
 

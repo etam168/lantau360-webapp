@@ -1,5 +1,6 @@
 // .ts file
 import { useUserStore } from "@/stores/user";
+const { notify } = useUtilities();
 
 const httpMethods = {
   get: async (path: any, options?: any) => axios.get(path, { params: options }),
@@ -30,7 +31,7 @@ export function useCommunication() {
       userStore.refreshToken = tokenRefresh;
       return accessToken;
     } catch (error) {
-      console.error("Error refreshing token:", error);
+      notify("Error fetching data: " + error, "negative");
       throw error;
     }
   }

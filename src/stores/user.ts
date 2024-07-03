@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { usePermissionStore } from "./permission";
+const { notify } = useUtilities();
 
 export const useUserStore = defineStore("user", {
   state: () =>
@@ -37,8 +38,9 @@ export const useUserStore = defineStore("user", {
           (this.spendPoints = spend),
           (this.availabelPoints = available),
           (this.currentMonthFreeTransactionCount = currentMonthTransactionCount);
-      } catch (error) {
-        console.error("Error fetching user data:", error);
+      } catch (error: any) {
+        notify(error, "negative");
+
         throw error;
       }
     },

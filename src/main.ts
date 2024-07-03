@@ -9,6 +9,7 @@ import "@/plugins/axios";
 import "quasar/src/css/index.sass";
 
 const { t } = i18n.global;
+const { notify } = useUtilities();
 // 1 hour
 const intervalMS = 2 * 60 * 1000;
 
@@ -67,8 +68,8 @@ const updateSW = registerSW({
           });
 
           if (resp?.status === 200) await r.update();
-        } catch (error) {
-          console.error("Error fetching service worker script:", error);
+        } catch (error: any) {
+          //
         }
       }, intervalMS);
   }
@@ -78,7 +79,7 @@ const updateSW = registerSW({
 document.addEventListener("DOMContentLoaded", () => {
   const urlParams = new URLSearchParams(window.location.search);
   if (urlParams.has("source") && urlParams.get("source") === "pwa") {
-    console.log("App launched as PWA");
+    notify("App launched as PWA", "negative");
     // Apply PWA-specific logic here
     // For example, hide the browser navigation bar
   }

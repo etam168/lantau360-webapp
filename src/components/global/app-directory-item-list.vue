@@ -102,7 +102,7 @@
         CategoryDialog(item, directoryData, checkInData);
       }
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      //
     }
   };
 

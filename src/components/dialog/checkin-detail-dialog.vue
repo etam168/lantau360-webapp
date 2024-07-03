@@ -117,7 +117,7 @@
     if (checkInItem.value.siteMeta?.["hasMap"]) {
       window.open(checkInItem.value.siteMeta?.["mapLink"], "_blank");
     } else {
-      console.error(t("errors.mapLinkNotAvailable"));
+      //
     }
   };
 

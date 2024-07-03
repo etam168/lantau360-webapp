@@ -132,7 +132,7 @@
       const response = await axios.get(memberDirectoryCheckInUrl);
       checkInItems.value = response.status == 200 ? response.data : [];
     } catch (error) {
-      console.error("Error fetching data: ", error);
+      //
     }
   };
 

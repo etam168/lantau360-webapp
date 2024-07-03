@@ -2,7 +2,6 @@ import { useCommunication } from "@/composable/use-communication";
 import { useUserStore } from "@/stores/user";
 import axios from "axios";
 
-const { notify } = useUtilities();
 const { refreshToken } = useCommunication();
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
@@ -32,8 +31,7 @@ axios.interceptors.response.use(
         error.config.headers.Authorization = `Bearer ${token}`;
         return axios.request(error.config);
       } catch (refreshError) {
-        notify(JSON.stringify(refreshError), "negative");
-        console.error("Error refreshing token:", refreshError);
+        // console.error("Error refreshing token:", refreshError);
       }
     }
     return Promise.reject(error);
