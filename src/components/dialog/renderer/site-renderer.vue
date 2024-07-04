@@ -44,7 +44,7 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { translate } = useUtilities();
+  const { notify, translate } = useUtilities();
   const siteItem = computed(() => props?.item as SiteView);
 
   const openCheckInDialog = () => {
@@ -60,7 +60,7 @@
     if (props.item.meta?.["hasMap"]) {
       window.open(props.item.meta?.["mapLink"], "_blank");
     } else {
-      $q.notify(t("errors.mapLinkNotAvailable"));
+      notify(t("errors.mapLinkNotAvailable"), "negative");
     }
   };
 </script>

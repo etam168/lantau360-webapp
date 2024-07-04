@@ -38,9 +38,9 @@
     }
   });
 
-  const $q = useQuasar();
+  // const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
+  const { eventBus, notify, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(props.item));
   const siteItem = computed(() => props?.item as SiteView);
@@ -55,7 +55,7 @@
     if (props.item.meta?.["hasMap"]) {
       window.open(props.item.meta?.["mapLink"], "_blank");
     } else {
-      $q.notify(t("errors.mapLinkNotAvailable"));
+      notify(t("errors.mapLinkNotAvailable"), "negative");
     }
   };
 </script>

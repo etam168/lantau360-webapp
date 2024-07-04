@@ -1,5 +1,5 @@
 <template>
-  <div class="row q-gutter-y-md">
+  <div class="row q-gutter-y-md" v-if="data.length > 0">
     <q-card
       flat
       v-for="(item, index) in sortedData"
@@ -18,6 +18,10 @@
         </q-item-section>
       </q-item>
     </q-card>
+  </div>
+
+  <div v-else class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center">
+    {{ $t("errors.noRecord") }}
   </div>
 </template>
 

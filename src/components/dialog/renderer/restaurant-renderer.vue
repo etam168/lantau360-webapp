@@ -42,9 +42,9 @@
       required: true
     }
   });
-  const $q = useQuasar();
+
   const { t } = useI18n({ useScope: "global" });
-  const { translate } = useUtilities();
+  const { notify, translate } = useUtilities();
 
   const businessItem = computed(() => props?.item as BusinessView);
 
@@ -52,7 +52,7 @@
     if (props.item.meta?.["hasMap"]) {
       window.open(props.item.meta?.["mapLink"], "_blank");
     } else {
-      $q.notify(t("errors.mapLinkNotAvailable"));
+      notify(t("errors.mapLinkNotAvailable"), "negative");
     }
   };
 </script>
