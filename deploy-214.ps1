@@ -1,5 +1,5 @@
 param (
-    [string]$BuildMode = "staging"
+    [string]$Target = "staging"
 )
 
 # Define the credentials
@@ -13,7 +13,7 @@ $stagingPath = "${homeFolder}/domains/app-dev.${domainName}/public_html"
 $productionPath = "${homeFolder}/domains/app.${domainName}/public_html"
 
 # Set the build command and destination path based on the build mode
-if ($BuildMode -eq "production") {
+if ($Target -eq "production") {
     $BuildCommand = "yarn build"
     $remotePath = $productionPath
 }
