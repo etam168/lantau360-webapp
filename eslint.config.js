@@ -5,6 +5,7 @@ module.exports = {
     es2021: true
   },
   extends: [
+    "./eslint.js.config.js",
     "eslint:recommended",
     "plugin:vue/vue3-essential",
     "prettier",
@@ -14,17 +15,13 @@ module.exports = {
   ],
   plugins: ["prettier"],
   parserOptions: {
-    ecmaVersion: 2020
+    ecmaVersion: 2020,
+    sourceType: "module"
   },
   rules: {
     "prettier/prettier": "error",
-    "typescript/no-var-requires": "off",
-
-    "no-useless-constructor": "off",
-    "no-empty-function": "off",
-    "no-unused-vars": "off",
-    "vue/no-unused-vars": "off",
-    "vue/no-setup-props-destructure": "off",
+    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
+    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off",
     "vue/multi-word-component-names": [
       "error",
       {
@@ -32,11 +29,9 @@ module.exports = {
       }
     ],
     "@typescript-eslint/explicit-module-boundary-types": "off",
-    "@typescript-eslint/no-explicit-any": 0,
-    "@typescript-eslint/no-var-requires": 0,
-    "@typescript-eslint/no-unused-vars": ["error"],
+    "@typescript-eslint/no-explicit-any": "off",
+    "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-useless-constructor": "error",
-    "no-console": process.env.NODE_ENV === "production" ? "warn" : "off",
-    "no-debugger": process.env.NODE_ENV === "production" ? "warn" : "off"
+    "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
   }
 };

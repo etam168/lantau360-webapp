@@ -1,7 +1,7 @@
 <template>
   <div class="max-width-480 q-mx-none">
     <q-scroll-observer @scroll="onScroll" />
-    <VueDraggableNext :list="rows" class="grid-container" @change="onMove">
+    <VueDraggable :list="rows" class="grid-container" @change="onMove">
       <div class="grid-item" v-for="row in rows" :key="row.imageId">
         <ImageCard
           flat
@@ -11,12 +11,12 @@
           class="drag-handle bg-yellow"
         />
       </div>
-    </VueDraggableNext>
+    </VueDraggable>
   </div>
 </template>
 
 <script setup lang="ts">
-  import { VueDraggableNext } from "vue-draggable-next";
+  import { VueDraggable } from "vue-draggable-plus";
 
   // Interface files
   import { GalleryImage } from "@/interfaces/models/custom-models/image-list";

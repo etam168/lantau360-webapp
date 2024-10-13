@@ -7,9 +7,9 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppBulletinItemList: typeof import('./components/global/app-bulletin-item-list.vue')['default']
-    AppButton: typeof import('./components/global/app-button.vue')['default']
-    AppButtonRounded: typeof import('./components/global/app-button-rounded.vue')['default']
+    AppBulletinItemList: typeof import('./components/global/widgets/app-bulletin-item-list.vue')['default']
+    AppButton: typeof import('./components/global/widgets/app-button.vue')['default']
+    AppButtonRounded: typeof import('./components/global/widgets/app-button-rounded.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
@@ -17,16 +17,16 @@ declare module 'vue' {
     AppMapComponent: typeof import('./components/global/app-map-component.vue')['default']
     AppMarketingItemList: typeof import('./components/global/app-marketing-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
-    AppSearchBar: typeof import('./components/global/app-search-bar.vue')['default']
-    AppTabSelect: typeof import('./components/global/app-tab-select.vue')['default']
-    AppTextEditor: typeof import('./components/global/app-text-editor.vue')['default']
+    AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
+    AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
+    AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
     GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    VeeInput: typeof import('./components/global/vee-input.vue')['default']
-    VeeInputPassword: typeof import('./components/global/vee-input-password.vue')['default']
-    VeeInputSlot: typeof import('./components/global/vee-input-slot.vue')['default']
-    VeeQTelInput: typeof import('./components/global/vee-q-tel-input.vue')['default']
+    VeeInput: typeof import('./components/global/vee-validate/vee-input.vue')['default']
+    VeeInputPassword: typeof import('./components/global/vee-validate/vee-input-password.vue')['default']
+    VeeInputSlot: typeof import('./components/global/vee-validate/vee-input-slot.vue')['default']
+    VeeQTelInput: typeof import('./components/global/vee-validate/vee-q-tel-input.vue')['default']
   }
 }

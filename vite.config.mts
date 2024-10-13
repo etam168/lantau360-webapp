@@ -1,16 +1,18 @@
 import dns from "dns";
 import eslint from "vite-plugin-eslint";
+import unpluginRemoveVite from "unplugin-remove/vite";
 import vue from "@vitejs/plugin-vue";
+
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
+
 import { createHtmlPlugin } from "vite-plugin-html";
 import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
 import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
-import removeConsole from "vite-plugin-remove-console";
 import { version } from "./package.json";
 
 dns.setDefaultResultOrder("verbatim");
@@ -82,17 +84,6 @@ const pwaOptions: Partial<VitePWAOptions> = {
           }
         }
       },
-      // {
-      //   urlPattern: /\/api\//,
-      //   handler: "NetworkFirst",
-      //   options: {
-      //     cacheName: "api-cache",
-      //     expiration: {
-      //       maxEntries: 50,
-      //       maxAgeSeconds: 5 * 60 // 5 Minutes
-      //     }
-      //   }
-      // },
       {
         urlPattern: /\/manifest\.webmanifest/,
         handler: "NetworkFirst",
@@ -136,20 +127,8 @@ export default defineConfig({
     vue({
       template: { transformAssetUrls }
     }),
+    unpluginRemoveVite(),
     eslint(),
-    removeConsole({
-      includes: ["log", "warn", "error", "info"],
-      externalValue: ["这个不删", "noRemove"],
-      // Completely customize the statements that need to be removed, which will overwrite `includes`
-      custom: [
-        "debugger",
-        "console.log()",
-        // "console.warn()",
-        // "console.error()",
-        // "console.info()",
-        "val.value = 8"
-      ]
-    }),
     VueI18nPlugin({
       include: resolve(__dirname, "./path/to/src/locales/**"),
       runtimeOnly: false
@@ -166,13 +145,6 @@ export default defineConfig({
         "vue-router",
         "vue-i18n",
         "@vueuse/core",
-        // Auto-import vue-i18n functions
-        // {
-        //   "vue-i18n": [
-        //     // import { useI18n } from "vue-i18n"
-        //     "useI18n" // if you're using Composition API
-        //   ]
-        // },
         {
           axios: [["default", "axios"], "AxiosError"]
         }
