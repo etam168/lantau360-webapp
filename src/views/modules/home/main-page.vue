@@ -37,7 +37,7 @@
   import { URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-import { Dialog } from "quasar";
+  import { Dialog } from "quasar";
 
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
@@ -45,7 +45,7 @@ import { Dialog } from "quasar";
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
-  const { api , fetchData} = useApi();
+  const { api, fetchData } = useApi();
 
   const { aspectRatio } = useUtilities();
   const { isUserLogon, userId } = useUserStore();
@@ -93,51 +93,7 @@ import { Dialog } from "quasar";
   async function onDirectoryItem(item: any) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
-    const requestUrls = [];
-
-    requestUrls.push(`${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`);
-    if (isUserLogon())
-      requestUrls.push(
-        `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${item.directoryId}`
-      );
-
-    try {
-      const axiosRequests = requestUrls.map(url => api.get(url));
-      const responses = await Promise.all(axiosRequests);
-
-      const directoryResponse = responses[0];
-      if (directoryResponse.status === 200) {
-        const directoryData = directoryResponse.data;
-        const checkInData = responses[1] ? responses[1].data : [];
-        CategoryDialog(item, directoryData, checkInData);
-      }
-    } catch (error) {
-      //
-    }
-  }
-
-  function closeDialog() {
-    isDialogOpen.value = false;
-  }
-
-  // function CategoryDialog(dir: Directory, itemList: SiteView, checkIn: CheckIn[]) {
-  //   $q.dialog({
-  //     component: defineAsyncComponent(
-  //       () => import("@/components/dialog/category-item-list-dialog.vue")
-  //     ),
-  //     componentProps: {
-  //       directoryItemsList: itemList,
-  //       directory: dir,
-  //       directoryCheckIns: checkIn
-  //     }
-  //   })
-  //     .onCancel(closeDialog)
-  //     .onOk(closeDialog)
-  //     .onDismiss(closeDialog);
-  // }
-
-  function CategoryDialog(dir: Directory, itemList: SiteView, checkIn: CheckIn[]) {
-    const props = { row: dir, entityKey: "SITE"};
+    const props = { row: item, entityKey: "SITE" };
 
     Dialog.create({
       component: defineAsyncComponent(
@@ -150,20 +106,21 @@ import { Dialog } from "quasar";
       .onDismiss(closeDialog);
   }
 
+  function closeDialog() {
+    isDialogOpen.value = false;
+  }
+
   async function fetchAllData() {
     try {
-      const [attractionResponse, weatherResponse, homeDirectoryResponse] =
-        await Promise.all([
-          fetchData(URL.ATTRACTION_URL),
-          fetchData(URL.WEATHER_URL),
-          fetchData(URL.SITE_DIRECTORIES),
-        ]);
+      const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
+        fetchData(URL.ATTRACTION_URL),
+        fetchData(URL.WEATHER_URL),
+        fetchData(URL.SITE_DIRECTORIES)
+      ]);
 
-      attractions.value = attractionResponse.sort((a:any, b:any) => a.siteId - b.siteId);
+      attractions.value = attractionResponse.sort((a: any, b: any) => a.siteId - b.siteId);
       weatherData.value = weatherResponse;
-      homeDirectories.value = homeDirectoryResponse.filter(
-        (dir: Directory) => dir.status === 1
-      );
+      homeDirectories.value = homeDirectoryResponse.filter((dir: Directory) => dir.status === 1);
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

@@ -9,7 +9,7 @@ interface FetchSiteDataResult {
   directoryCheckIns: CheckIn[];
 }
 
-export function useSiteDataFetcherService() {
+export function useCategoryItemListFetcherService() {
   const { userId, isUserLogon } = useUserStore();
 
   const fetchSiteData = async (directoryId: number): Promise<FetchSiteDataResult> => {

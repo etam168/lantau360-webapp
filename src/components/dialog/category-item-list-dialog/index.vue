@@ -8,29 +8,33 @@
     :model-value="isDialogVisible"
     maximized
   >
-      <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-        <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
-        <q-page-container>
-          <!-- Suspense wrapper for async component loading -->
-          <Suspense>
-            <template #default>
-              <!-- Main edit dialog content -->
-              <category-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
-            </template>
-            <template #fallback>
-              <!-- Loading spinner shown while content is loading -->
-              <div class="row justify-center items-center" style="height: 500px">
-                <app-spinner size="10em" />
-              </div>
-            </template>
-          </Suspense>
-          <!-- Error message display -->
-          <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-            {{ errorMessage }}
-            <p>{{ $t("common.contactAdminMessage") }}</p>
-          </div>
-        </q-page-container>
-      </q-layout>
+    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
+      <q-header bordered class="bg-transparent text-dark">
+        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+      </q-header>
+
+      <q-page-container>
+        <!-- Suspense wrapper for async component loading -->
+        <Suspense>
+          <template #default>
+            <!-- Main edit dialog content -->
+            <category-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
+          </template>
+          <template #fallback>
+            <!-- Loading spinner shown while content is loading -->
+            <div class="row justify-center items-center" style="height: 500px">
+              <app-spinner size="10em" />
+            </div>
+          </template>
+        </Suspense>
+        <!-- Error message display -->
+        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
+          {{ errorMessage }}
+          <p>{{ $t("common.contactAdminMessage") }}</p>
+        </div>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
@@ -45,8 +49,7 @@
 
   // Components
   import CategoryDialogContent from "./category-dialog-content.vue";
-  
-  
+
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Emits
@@ -59,13 +62,18 @@
   }>();
 
   // Composable function calls
-  const { eventBus } = useUtilities();
+  const { eventBus, translate } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const entityName = useChangeCase(entityKey, "camelCase").value;
+
+  const dialogTitle = computed(() =>
+    translate(row.directoryName, row.meta, "directoryName")
+  );
+
 
   /**
    * Handles the closing of the dialog
