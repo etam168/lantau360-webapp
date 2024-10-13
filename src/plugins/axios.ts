@@ -5,6 +5,12 @@ import axios from "axios";
 const { refreshToken } = useCommunication();
 axios.defaults.baseURL = import.meta.env.VITE_API_URL;
 
+// Create a new axios instance
+const axiosInstance = axios.create({
+  baseURL: import.meta.env.VITE_API_URL
+});
+
+
 axios.interceptors.request.use(
   async config => {
     const userStore = useUserStore();
@@ -37,3 +43,5 @@ axios.interceptors.response.use(
     return Promise.reject(error);
   }
 );
+
+export default axiosInstance;

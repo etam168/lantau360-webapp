@@ -18,7 +18,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="tripAdvisor">
-        <generic-directory-item-list :data="tripAdvisorData" @on-directory-item="onDirectoryItem"/>
+        <generic-directory-item-list :data="tripAdvisorData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -44,6 +44,7 @@
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
+  const { api } = useApi();
 
   const { aspectRatio } = useUtilities();
   const { isUserLogon, userId } = useUserStore();
@@ -101,7 +102,7 @@
       );
 
     try {
-      const axiosRequests = requestUrls.map(url => axios.get(url));
+      const axiosRequests = requestUrls.map(url => api.get(url));
       const responses = await Promise.all(axiosRequests);
 
       const directoryResponse = responses[0];
@@ -114,7 +115,7 @@
       //
     }
   }
-  
+
   function closeDialog() {
     isDialogOpen.value = false;
   }
