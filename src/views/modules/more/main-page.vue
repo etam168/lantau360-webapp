@@ -56,6 +56,7 @@
   import { useUserStore } from "@/stores/user";
   import { URL, LOGGED_ON_USER_MENU, DEFAULT_MENU, MENU } from "@/constants";
   import { useInstallPrompt } from "@/composable/use-install-prompt";
+  import { Platform } from 'quasar';
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
@@ -68,7 +69,6 @@
     promptInstall,
     shouldShowInstallButton,
     showPlatformGuidance,
-    platform
   } = useInstallPrompt();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
@@ -195,13 +195,13 @@
   function installApp() {
     if (!isInStandaloneMode()) {
       switch (true) {
-        case platform.isIos():
-        case platform.isFireFox():
-        case platform.isOpera():
-        case platform.isEdge():
+        case Platform.is.ios:
+        case Platform.is.firefox:
+        case Platform.is.opera:
+        case Platform.is.edge:
           showPlatformGuidance();
           break;
-        case platform.isChromium():
+        case Platform.is.chrome:
           promptInstall();
           break;
         default:

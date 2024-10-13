@@ -4,13 +4,14 @@
 
 <script setup lang="ts">
   const $q = useQuasar();
+  import { Platform} from 'quasar';
+
   const {
     appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
     notifyNativeInstall,
-    platform,
     showPlatformGuidance
   } = useInstallPrompt();
 
@@ -34,15 +35,15 @@
   onMounted(() => {
     if (!isInStandaloneMode()) {
       switch (true) {
-        case platform.isChromium():
+        case Platform.is.chrome:
           window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
           break;
-        case platform.isEdge():
-        case platform.isIos():
-        case platform.isOpera():
+        case Platform.is.edge:
+        case Platform.is.ios:
+        case Platform.is.opera:
           showGuidance();
           break;
-        case platform.isFireFox():
+        case Platform.is.firefox:
           break;
         default:
         //   // To be impemented: Handle unknown browsers with a generic message or action

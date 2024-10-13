@@ -4,6 +4,7 @@ import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
 import InstallOperaDialog from "@/components/dialog/install-opera-dialog.vue";
 import InstallCompleteDialog from "@/components/dialog/install-complete-dialog.vue";
 import i18n from "@/plugins/i18n/i18n";
+import { Platform } from "quasar"; 
 
 const beforeInstallPromptEvent = ref();
 const isAppInstalled = ref(false);
@@ -44,23 +45,6 @@ export function useInstallPrompt() {
     });
   };
 
-  const platform = {
-    isAndroid: () => /android/.test(userAgent.toLowerCase()),
-    isChromium: () => {
-      // Check for Chromium-specific keywords in the user agent string
-      const ua = userAgent.toLowerCase();
-
-      return (
-        ua.includes("chrome") && !ua.includes("edg") && !ua.includes("opr") && !ua.includes("brave")
-      );
-    },
-    isEdge: () => /edg/i.test(userAgent.toLowerCase()),
-    isFireFox: () => /Firefox/i.test(userAgent),
-    isIos: () => /iphone|ipad|ipod/i.test(userAgent.toLowerCase()),
-    isOpera: () => /opr/i.test(userAgent.toLowerCase()),
-    isSamsung: () => /Samsung/i.test(userAgent.toLowerCase())
-  };
-
   const promptInstall = () => {
     if (beforeInstallPromptEvent.value) {
       beforeInstallPromptEvent.value.prompt();
@@ -79,30 +63,30 @@ export function useInstallPrompt() {
     const result =
       !isAppInstalled.value &&
       !isInStandaloneMode() &&
-      (platform.isIos() || platform.isOpera() || platform.isEdge() || platform.isChromium());
+      (Platform.is.ios || Platform.is.opera || Platform.is.edge || Platform.is.chrome); 
 
     return result;
   }
 
   function showPlatformGuidance() {
     switch (true) {
-      case platform.isIos():
+      case Platform.is.ios:
         Dialog.create({
           component: InstallIosDialog
         });
         break;
-      case platform.isOpera():
+      case Platform.is.opera: 
         Dialog.create({
           component: InstallOperaDialog
         });
         break;
-      case platform.isEdge():
+      case Platform.is.edge: 
         Dialog.create({
           component: InstallEdgeDialog
         });
         break;
       default:
-      //   // To be impemented: Handle unknown browsers with a generic message or action
+      // To be implemented: Handle unknown browsers with a generic message or action
     }
   }
 
@@ -112,7 +96,6 @@ export function useInstallPrompt() {
     isAppInstalled,
     isInStandaloneMode,
     notifyNativeInstall,
-    platform,
     promptInstall,
     shouldShowInstallButton,
     showAppInstallButton,
