@@ -37,6 +37,7 @@
   import { URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
+import { Dialog } from "quasar";
 
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
@@ -44,7 +45,7 @@
   const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
-  const { api } = useApi();
+  const { api , fetchData} = useApi();
 
   const { aspectRatio } = useUtilities();
   const { isUserLogon, userId } = useUserStore();
@@ -91,7 +92,6 @@
 
   async function onDirectoryItem(item: any) {
     if (isDialogOpen.value) return;
-
     isDialogOpen.value = true;
     const requestUrls = [];
 
@@ -120,20 +120,61 @@
     isDialogOpen.value = false;
   }
 
+  // function CategoryDialog(dir: Directory, itemList: SiteView, checkIn: CheckIn[]) {
+  //   $q.dialog({
+  //     component: defineAsyncComponent(
+  //       () => import("@/components/dialog/category-item-list-dialog.vue")
+  //     ),
+  //     componentProps: {
+  //       directoryItemsList: itemList,
+  //       directory: dir,
+  //       directoryCheckIns: checkIn
+  //     }
+  //   })
+  //     .onCancel(closeDialog)
+  //     .onOk(closeDialog)
+  //     .onDismiss(closeDialog);
+  // }
+
   function CategoryDialog(dir: Directory, itemList: SiteView, checkIn: CheckIn[]) {
-    $q.dialog({
+    const props = { row: dir, entityKey: "SITE"};
+
+    Dialog.create({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/category-item-list-dialog.vue")
+        () => import("@/components/dialog/category-item-list-dialog/index.vue")
       ),
-      componentProps: {
-        directoryItemsList: itemList,
-        directory: dir,
-        directoryCheckIns: checkIn
-      }
+      componentProps: props
     })
       .onCancel(closeDialog)
       .onOk(closeDialog)
       .onDismiss(closeDialog);
+  }
+
+  async function fetchAllData() {
+    try {
+      const [attractionResponse, weatherResponse, homeDirectoryResponse] =
+        await Promise.all([
+          fetchData(URL.ATTRACTION_URL),
+          fetchData(URL.WEATHER_URL),
+          fetchData(URL.SITE_DIRECTORIES),
+        ]);
+
+      attractions.value = attractionResponse.sort((a:any, b:any) => a.siteId - b.siteId);
+      weatherData.value = weatherResponse;
+      homeDirectories.value = homeDirectoryResponse.filter(
+        (dir: Directory) => dir.status === 1
+      );
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = t("errors.404");
+        } else {
+          error.value = t("errors.anErrorOccured");
+        }
+      } else {
+        error.value = t("errors.anErrorOccured");
+      }
+    }
   }
 
   onMounted(() => {
@@ -158,25 +199,5 @@
     }
   });
 
-  try {
-    const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
-      axios.get<SiteView[]>(URL.ATTRACTION_URL),
-      axios.get(URL.WEATHER_URL),
-      axios.get<Directory[]>(URL.SITE_DIRECTORIES)
-    ]);
-
-    attractions.value = attractionResponse.data.sort((a, b) => a.siteId - b.siteId);
-    weatherData.value = weatherResponse.data;
-    homeDirectories.value = homeDirectoryResponse.data.filter((dir: Directory) => dir.status === 1);
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
-      } else {
-        error.value = t("errors.anErrorOccured");
-      }
-    } else {
-      error.value = t("errors.anErrorOccured");
-    }
-  }
+  await fetchAllData();
 </script>

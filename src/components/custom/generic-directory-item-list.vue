@@ -9,7 +9,7 @@
     >
       <q-card flat>
         <q-card-section class="text-center">
-          <app-avatar :image-path="item.imagePath" @click="$emit('on-directory-item', item)" />
+          <app-avatar :image-path="item.imagePath" @click="handleClick(item)" />
           <q-item-label class="q-mt-sm">{{ getDirectoryTitle(item) }}</q-item-label>
         </q-card-section>
       </q-card>
@@ -53,4 +53,10 @@
       return directoryA.localeCompare(directoryB, undefined, { sensitivity: "base" });
     });
   });
+
+  function handleClick(item: any)
+  {
+    debugger;
+    emit('on-directory-item', item);
+  }
 </script>
