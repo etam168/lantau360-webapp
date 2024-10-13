@@ -14,10 +14,28 @@
     "sourceMap": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": [
+        "src/*"
+      ]
     },
-    "lib": ["ESNext", "DOM", "dom.iterable", "scripthost", "WebWorker"],
-    "types": ["vite/client", "vite-plugin-pwa/vue", "@intlify/unplugin-vue-i18n/messages"]
+    "lib": [
+      "ESNext",
+      "DOM",
+      "dom.iterable",
+      "scripthost",
+      "WebWorker"
+    ],
+    "types": [
+      "vite/client",
+      "vite-plugin-pwa/vue",
+      "@intlify/unplugin-vue-i18n/messages"
+    ],
+    "plugins": [
+      {
+        "transform": "typia/lib/transform"
+      }
+    ],
+    "strictNullChecks": true
   },
   "include": [
     "src/**/*.ts",
