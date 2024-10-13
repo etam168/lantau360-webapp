@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AppAvatar: typeof import('./components/global/app-avatar.vue')['default']
     AppBulletinItemList: typeof import('./components/global/widgets/app-bulletin-item-list.vue')['default']
     AppButton: typeof import('./components/global/widgets/app-button.vue')['default']
     AppButtonRounded: typeof import('./components/global/widgets/app-button-rounded.vue')['default']
@@ -21,6 +22,7 @@ declare module 'vue' {
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
     GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
+    HomeSkeleton: typeof import('./components/global/skeleton/home-skeleton.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']

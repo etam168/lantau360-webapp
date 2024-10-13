@@ -4,6 +4,8 @@ export const BLOB_URL = import.meta.env.VITE_BLOB_URL;
 export const BASE_WEBAPP_LITE_URL = import.meta.env.VITE_WEBAPP_LITE_URL;
 
 export const URL = {
+  REFRESH_TOKEN: `/StaffAuth/RefreshToken`,
+
   ADVERTISEMENT: `${BASE_URL}/Advertisement`,
   ATTRACTION_URL: `${BASE_URL}/Site/ByDirectoryId/1`,
   BUSINESS_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/2`,

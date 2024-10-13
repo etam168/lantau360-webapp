@@ -10,15 +10,15 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="all">
-        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
+        <app-directory-item-list :data="directoryData" />
       </q-tab-panel>
 
       <q-tab-panel name="resources">
-        <generic-directory-item-list :data="resourcesData" />
+        <app-directory-item-list :data="resourcesData" />
       </q-tab-panel>
 
       <q-tab-panel name="tripAdvisor">
-        <generic-directory-item-list :data="tripAdvisorData" />
+        <app-directory-item-list :data="tripAdvisorData" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -30,8 +30,6 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { TabItem } from "@/interfaces/tab-item";
   import { Weather } from "@/interfaces/models/entities/weather";
-
-  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
   import { URL } from "@/constants";
@@ -54,12 +52,10 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
-  const i18nKey = "home";
-
   const tabItems = ref<TabItem[]>([
-    { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
-    { name: "resources", label: t(`${i18nKey}.tabItem.resources`) },
-    { name: "tripAdvisor", label: t(`${i18nKey}.tabItem.tripAdvisor`) }
+    { name: "all", label: t("home.allLocations") },
+    { name: "resources", label: t("home.resources") },
+    { name: "tripAdvisor", label: t("home.tripAdvisor") }
   ]);
 
   const directoryData = computed(() =>
@@ -81,10 +77,6 @@
         query: { searchKeyword: value }
       }
     });
-  }
-
-  function onDirectoryItem(item: any) {
-    alert(JSON.stringify(item));
   }
 
   onMounted(() => {
