@@ -14,11 +14,11 @@
       </q-tab-panel>
 
       <q-tab-panel name="resources">
-        <generic-directory-item-list :data="resourcesData" />
+        <generic-directory-item-list :data="resourcesData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
 
       <q-tab-panel name="tripAdvisor">
-        <generic-directory-item-list :data="tripAdvisorData" />
+        <generic-directory-item-list :data="tripAdvisorData" @on-directory-item="onDirectoryItem"/>
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -35,6 +35,8 @@
 
   // .ts file
   import { URL } from "@/constants";
+  import { useUserStore } from "@/stores/user";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
 
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
@@ -44,6 +46,7 @@
   const $q = useQuasar();
 
   const { aspectRatio } = useUtilities();
+  const { isUserLogon, userId } = useUserStore();
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);
@@ -55,6 +58,8 @@
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
   const i18nKey = "home";
+
+  const isDialogOpen = ref(false);
 
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
@@ -83,8 +88,51 @@
     });
   }
 
-  function onDirectoryItem(item: any) {
-    alert(JSON.stringify(item));
+  async function onDirectoryItem(item: any) {
+    if (isDialogOpen.value) return;
+
+    isDialogOpen.value = true;
+    const requestUrls = [];
+
+    requestUrls.push(`${URL.DIRECTORY_LIST.SITE}/${item.directoryId}`);
+    if (isUserLogon())
+      requestUrls.push(
+        `${URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${item.directoryId}`
+      );
+
+    try {
+      const axiosRequests = requestUrls.map(url => axios.get(url));
+      const responses = await Promise.all(axiosRequests);
+
+      const directoryResponse = responses[0];
+      if (directoryResponse.status === 200) {
+        const directoryData = directoryResponse.data;
+        const checkInData = responses[1] ? responses[1].data : [];
+        CategoryDialog(item, directoryData, checkInData);
+      }
+    } catch (error) {
+      //
+    }
+  }
+  
+  function closeDialog() {
+    isDialogOpen.value = false;
+  }
+
+  function CategoryDialog(dir: Directory, itemList: SiteView, checkIn: CheckIn[]) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-item-list-dialog.vue")
+      ),
+      componentProps: {
+        directoryItemsList: itemList,
+        directory: dir,
+        directoryCheckIns: checkIn
+      }
+    })
+      .onCancel(closeDialog)
+      .onOk(closeDialog)
+      .onDismiss(closeDialog);
   }
 
   onMounted(() => {
