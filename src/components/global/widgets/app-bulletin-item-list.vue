@@ -17,8 +17,6 @@
   // import NewsCard from "@/components/card/news-card.vue";
   import EventCard from "@/components/card/event-card.vue";
 
-  // Define props for this component
-
   // Props
   const { items } = defineProps<{
     items: BulletinTypes[];
