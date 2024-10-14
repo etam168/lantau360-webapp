@@ -14,31 +14,18 @@
       </q-item-section>
 
       <q-item-section>
-        <q-item-label> {{ items[0] }} </q-item-label>
-        <q-item-label> {{ items[0] }} </q-item-label>
+        <q-item-label> {{ getName(item) }} </q-item-label>
+        <q-item-label> {{ item.subtitle1 }} </q-item-label>
       </q-item-section>
 
       <q-item-section side>
         <div class="q-gutter-sm">
-          <q-icon name="check" size="xs" />
-          <q-icon name="fa-solid fa-heart" color="red" size="xs" />
+          <q-icon name="mdi-map-marker" size="xs" v-if="isCheckedIn(item)" />
+          <q-icon name="mdi-heart" color="red" size="xs" v-if="isFavoriteItem(item)" />
         </div>
       </q-item-section>
     </q-item>
   </q-list>
-
-  <!-- <q-card
-    v-if="categoryItems.length == 0"
-    flat
-    style="min-height: calc(100vh - 228px)"
-    class="row justify-center items-center"
-  >
-    <q-card-section class="text-center">
-      <div class="text-h6 text-weight-regular q-mt-md text-grey-6 text-weight-bold text-center">
-        {{ $t("errors.noRecord") }}
-      </div>
-    </q-card-section>
-  </q-card> -->
 </template>
 
 <script setup lang="ts">
@@ -52,7 +39,7 @@
   import { LocalStorage } from "quasar";
   import { BusinessView } from "@/interfaces/models/views/business-view";
 
-  const { getImageURL } = useUtilities();
+  const { getEntityName, getImageURL } = useUtilities();
 
   // Props
   const {
@@ -64,6 +51,8 @@
     checkIns?: CheckIn[];
     entityKey: EntityURLKey;
   }>();
+
+  const entityName = getEntityName(entityKey);
 
   const items = computed(() => {
     switch (entityKey) {
@@ -86,6 +75,11 @@
         return [];
     }
   });
+
+  function getName(item: CategoryTypes): string {
+    const nameProperty = `${entityName}Name` as keyof CategoryTypes;
+    return (item[nameProperty] as string) || "N/A";
+  }
 
   const isCheckedIn = (item: CategoryTypes): boolean => {
     if (entityKey == "SITE") {

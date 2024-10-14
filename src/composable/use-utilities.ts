@@ -17,7 +17,8 @@ import { SiteView } from "@/interfaces/models/views/site-view";
 
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
-import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";
+import { useChangeCase } from "@vueuse/integrations/useChangeCase";
+import { BLOB_URL, EntityURLKey, IMAGES, STORAGE_KEYS } from "@/constants";
 import { date, EventBus, LocalStorage, Notify, Screen } from "quasar";
 
 const eventBus = new EventBus();
@@ -47,6 +48,10 @@ export function useUtilities() {
 
   function dateTimeFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD HH:mm:ss");
+  }
+
+  function getEntityName(entityKey: EntityURLKey): string {
+    return useChangeCase(entityKey, "camelCase").value;
   }
 
   function getImageURL(imagePath: any) {
@@ -263,6 +268,7 @@ export function useUtilities() {
     dateFormatter,
     dateTimeFormatter,
     eventBus,
+    getEntityName,
     getImageURL,
     getTimeAgo,
     groupBy,

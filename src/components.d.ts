@@ -12,6 +12,7 @@ declare module 'vue' {
     AppButton: typeof import('./components/global/widgets/app-button.vue')['default']
     AppButtonRounded: typeof import('./components/global/widgets/app-button-rounded.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
+    AppCategoryListItems: typeof import('./components/global/custom/app-category-list-items.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
     AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
     AppGroupedItemList: typeof import('./components/global/app-grouped-item-list.vue')['default']
