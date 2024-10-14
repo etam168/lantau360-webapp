@@ -95,7 +95,7 @@
       const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
         fetchData(ENTITY_URL.ATTRACTION),
         fetchData(ENTITY_URL.WEATHER),
-        fetchData(`${ENTITY_URL[entityKey]}/Directory/DirectoryGroupsData/1`)
+        fetchData(ENTITY_URL.SITE_DIRECTORIES)
       ]);
 
       attractions.value = attractionResponse.sort((a: any, b: any) => a.siteId - b.siteId);

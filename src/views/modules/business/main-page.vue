@@ -21,7 +21,7 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
-        <app-marketing-item-list :items="businessPromotion" />
+        <app-marketing-item-list :data="businessPromotion" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -102,7 +102,7 @@
         fetchData(ENTITY_URL.ADVERTISEMENT),
         fetchData(ENTITY_URL.BUSINESS_PROMOTION),
         fetchData(ENTITY_URL.BUSINESS_VOUCHER),
-        fetchData(`${ENTITY_URL[entityKey]}/ByDirectoryId/2`)
+        fetchData(ENTITY_URL.BUSINESS_DIRECTORIES)
       ]);
 
       advertisements.value = advertisementResponse.filter(
