@@ -93,8 +93,8 @@
   async function fetchAllData() {
     try {
       const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
-        fetchData(`${ENTITY_URL[entityKey]}/ByDirectoryId/1`),
-        fetchData(ENTITY_URL.WEATHER_URL),
+        fetchData(ENTITY_URL.ATTRACTION),
+        fetchData(ENTITY_URL.WEATHER),
         fetchData(`${ENTITY_URL[entityKey]}/Directory/DirectoryGroupsData/1`)
       ]);
 
