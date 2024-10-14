@@ -21,9 +21,9 @@
     </q-banner>
 
     <q-tab-panels v-model="tab">
-      <q-tab-panel name="news">
+      <!-- <q-tab-panel name="news">
         <app-bulletin-item-list :items="news" />
-      </q-tab-panel>
+      </q-tab-panel> -->
 
       <q-tab-panel name="events" class="q-pa-sm">
         <app-bulletin-item-list :items="events" />
@@ -60,6 +60,7 @@
   const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
 
   const { t } = useI18n({ useScope: "global" });
+  const { fetchData } = useApi();
   const entityKey: EntityURLKey = "COMMUNITY";
 
   const { fetchMemberPoints, setPoints } = useUserStore();
@@ -119,52 +120,102 @@
     }
   });
 
-  try {
-    const [
-      advertisementResponse,
-      eventResponse,
-      directoryResponse,
-      newsResponse,
-      noticeResponse,
-      memberConfigResponse
-    ] = await Promise.all([
-      axios.get(URL.ADVERTISEMENT),
-      axios.get(URL.COMMUNITY_EVENT_CURRENT),
-      axios.get(URL.COMMUNITY_DIRECTORY),
-      axios.get(URL.COMMUNITY_NEWS_CURRENT),
-      axios.get(URL.COMMUNITY_NOTICE_CURRENT),
-      axios.get(URL.MEMBER_CONFIG)
-    ]);
+  async function fetchAllData() {
+    try {
+      const [
+        advertisementResponse,
+        directoryResponse,
+        eventResponse,
+        newsResponse,
+        noticeResponse,
+        memberConfigResponse
+      ] = await Promise.all([
+        fetchData(ENTITY_URL.ADVERTISEMENT),
+        fetchData(ENTITY_URL.COMMUNITY_DIRECTORY),
+        fetchData(ENTITY_URL.COMMUNITY_EVENT_CURRENT),
+        fetchData(ENTITY_URL.COMMUNITY_NEWS_CURRENT),
+        fetchData(ENTITY_URL.COMMUNITY_NOTICE_CURRENT),
+        fetchData(ENTITY_URL.MEMBER_CONFIG)
+      ]);
 
-    advertisements.value = advertisementResponse.data.filter(
-      (adv: AdvertisementView) => adv.status === 1
-    );
-    directoryData.value = directoryResponse.data.filter(
-      (directory: Directory) => directory.status === 1
-    );
-    events.value = eventResponse.data.filter((comEve: CommunityEventView) => comEve.status === 1);
-    news.value = newsResponse.data.filter((comNews: CommunityNews) => comNews.status === 1);
-    notices.value = noticeResponse.data.filter(
-      (comNotice: CommunityNotice) => comNotice.status === 1
-    );
-    memberConfig.value = memberConfigResponse.data;
+      advertisements.value = advertisementResponse.filter(
+        (adv: AdvertisementView) => adv.status === 1
+      );
+      directoryData.value = directoryResponse.filter(
+        (directory: Directory) => directory.status === 1
+      );
+      events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
+      news.value = newsResponse.filter((comNews: CommunityNews) => comNews.status === 1);
+      notices.value = noticeResponse.filter((comNotice: CommunityNotice) => comNotice.status === 1);
+      memberConfig.value = memberConfigResponse.data;
 
-    setPoints(
-      memberConfig.value?.meta.postPoint ?? 50,
-      memberConfig.value?.meta.requestFreePoints ?? 100
-    );
+      setPoints(
+        memberConfig.value?.meta.postPoint ?? 50,
+        memberConfig.value?.meta.requestFreePoints ?? 100
+      );
 
-    // Sync user points.
-    await fetchMemberPoints();
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
+      // Sync user points.
+      await fetchMemberPoints();
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = t("errors.404");
+        } else {
+          error.value = t("errors.anErrorOccured");
+        }
       } else {
         error.value = t("errors.anErrorOccured");
       }
-    } else {
-      error.value = t("errors.anErrorOccured");
     }
   }
+
+  // try {
+  //   const [
+  //     advertisementResponse,
+  //     eventResponse,
+  //     directoryResponse,
+  //     newsResponse,
+  //     noticeResponse,
+  //     memberConfigResponse
+  //   ] = await Promise.all([
+  //     axios.get(URL.ADVERTISEMENT),
+  //     axios.get(URL.COMMUNITY_EVENT_CURRENT),
+  //     axios.get(URL.COMMUNITY_DIRECTORY),
+  //     axios.get(URL.COMMUNITY_NEWS_CURRENT),
+  //     axios.get(URL.COMMUNITY_NOTICE_CURRENT),
+  //     axios.get(URL.MEMBER_CONFIG)
+  //   ]);
+
+  //   advertisements.value = advertisementResponse.data.filter(
+  //     (adv: AdvertisementView) => adv.status === 1
+  //   );
+  //   directoryData.value = directoryResponse.data.filter(
+  //     (directory: Directory) => directory.status === 1
+  //   );
+  //   events.value = eventResponse.data.filter((comEve: CommunityEventView) => comEve.status === 1);
+  //   news.value = newsResponse.data.filter((comNews: CommunityNews) => comNews.status === 1);
+  //   notices.value = noticeResponse.data.filter(
+  //     (comNotice: CommunityNotice) => comNotice.status === 1
+  //   );
+  //   memberConfig.value = memberConfigResponse.data;
+
+  //   setPoints(
+  //     memberConfig.value?.meta.postPoint ?? 50,
+  //     memberConfig.value?.meta.requestFreePoints ?? 100
+  //   );
+
+  //   // Sync user points.
+  //   await fetchMemberPoints();
+  // } catch (err) {
+  //   if (err instanceof AxiosError) {
+  //     if (err.response && err.response.status === 404) {
+  //       error.value = t("errors.404");
+  //     } else {
+  //       error.value = t("errors.anErrorOccured");
+  //     }
+  //   } else {
+  //     error.value = t("errors.anErrorOccured");
+  //   }
+  // }
+  await fetchAllData();
 </script>
