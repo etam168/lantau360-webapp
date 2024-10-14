@@ -18,8 +18,9 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
+            <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <category-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
+            <category-items-content :directory :entity-key />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -44,20 +45,20 @@
 
   // Composables Imports
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
-
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import CategoryDialogContent from "./category-dialog-content.vue";
+  import CategoryItemsContent from "./category-items-content.vue";
 
+  // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { row, entityKey } = defineProps<{
-    row: DirectoryTypes;
+  const { directory, entityKey } = defineProps<{
+    directory: DirectoryTypes;
     entityKey: EntityURLKey;
   }>();
 
@@ -71,9 +72,8 @@
   const entityName = useChangeCase(entityKey, "camelCase").value;
 
   const dialogTitle = computed(() =>
-    translate(row.directoryName, row.meta, "directoryName")
+    translate(directory.directoryName, directory.meta, "directoryName")
   );
-
 
   /**
    * Handles the closing of the dialog

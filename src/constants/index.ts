@@ -9,6 +9,7 @@ export { default as RENDERER } from "./app/renderer";
 export { default as STORAGE_KEYS } from "./app/storage-keys";
 export { default as TEMPLATE } from "./app/template";
 
+export * from "./app/entity-url";
 export * from "./app/server-urls";
 export * from "./app/more-page";
 export * from "./app/image-icon";

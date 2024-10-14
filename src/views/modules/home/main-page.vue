@@ -34,21 +34,17 @@
   import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
-  import { URL } from "@/constants";
-  import { useUserStore } from "@/stores/user";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { Dialog } from "quasar";
+  import { EntityURLKey, URL } from "@/constants";
 
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
 
-  const { eventBus } = useUtilities();
-  const { t } = useI18n({ useScope: "global" });
+  const entityKey: EntityURLKey = "SITE";
   const $q = useQuasar();
-  const { api, fetchData } = useApi();
-
-  const { aspectRatio } = useUtilities();
-  const { isUserLogon, userId } = useUserStore();
+  const { t } = useI18n({ useScope: "global" });
+  const { fetchData } = useApi();
+  const { aspectRatio, eventBus } = useUtilities();
+  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);
@@ -90,25 +86,9 @@
     });
   }
 
-  async function onDirectoryItem(item: any) {
-    if (isDialogOpen.value) return;
-    isDialogOpen.value = true;
-    const props = { row: item, entityKey: "SITE" };
-
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-item-list-dialog/index.vue")
-      ),
-      componentProps: props
-    })
-      .onCancel(closeDialog)
-      .onOk(closeDialog)
-      .onDismiss(closeDialog);
-  }
-
-  function closeDialog() {
-    isDialogOpen.value = false;
-  }
+  // function closeDialog() {
+  //   isDialogOpen.value = false;
+  // }
 
   async function fetchAllData() {
     try {
@@ -132,6 +112,12 @@
         error.value = t("errors.anErrorOccured");
       }
     }
+  }
+
+  async function onDirectoryItem(directory: Directory) {
+    if (isDialogOpen.value) return;
+
+    openCategoryItemDialog(isDialogOpen, directory);
   }
 
   onMounted(() => {

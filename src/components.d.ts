@@ -19,6 +19,7 @@ declare module 'vue' {
     AppMarketingItemList: typeof import('./components/global/app-marketing-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
+    AppSpinner: typeof import('./components/global/widgets/app-spinner.vue')['default']
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
     GalleryImageList: typeof import('./components/global/gallery/gallery-image-list.vue')['default']
