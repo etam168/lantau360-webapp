@@ -37,16 +37,16 @@
 
 <script setup lang="ts">
   // Interface files
-  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-  import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
-  import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { TabItem } from "@/interfaces/tab-item";
+  import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
+  import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
+  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { TabItem } from "@/interfaces/tab-item";
 
   import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
-  import { EntityURLKey, URL } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   const entityKey: EntityURLKey = "BUSINESS";
 
@@ -99,10 +99,10 @@
         voucherResponse,
         businessDirectoryResponse
       ] = await Promise.all([
-        fetchData(URL.ADVERTISEMENT),
-        fetchData(URL.BUSINESS_PROMOTION),
-        fetchData(URL.BUSINESS_VOUCHER),
-        fetchData(URL.BUSINESS_DIRECTORIES)
+        fetchData(ENTITY_URL.ADVERTISEMENT),
+        fetchData(ENTITY_URL.BUSINESS_PROMOTION),
+        fetchData(ENTITY_URL.BUSINESS_VOUCHER),
+        fetchData(`${ENTITY_URL[entityKey]}/ByDirectoryId/2`)
       ]);
 
       advertisements.value = advertisementResponse.filter(
@@ -128,7 +128,7 @@
           error.value = t("errors.anErrorOccured");
         }
       } else {
-        error.value = t("errors.anUnexpectedError");
+        error.value = t("errors.anErrorOccured");
       }
     }
   }

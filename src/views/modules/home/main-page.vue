@@ -26,15 +26,15 @@
 
 <script setup lang="ts">
   // Interface files
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { TabItem } from "@/interfaces/tab-item";
-  import { Weather } from "@/interfaces/models/entities/weather";
+  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { TabItem } from "@/interfaces/tab-item";
+  import type { Weather } from "@/interfaces/models/entities/weather";
 
   import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
-  import { EntityURLKey, URL } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
@@ -93,9 +93,9 @@
   async function fetchAllData() {
     try {
       const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
-        fetchData(URL.ATTRACTION_URL),
-        fetchData(URL.WEATHER_URL),
-        fetchData(URL.SITE_DIRECTORIES)
+        fetchData(`${ENTITY_URL[entityKey]}/ByDirectoryId/1`),
+        fetchData(ENTITY_URL.WEATHER_URL),
+        fetchData(`${ENTITY_URL[entityKey]}/Directory/DirectoryGroupsData/1`)
       ]);
 
       attractions.value = attractionResponse.sort((a: any, b: any) => a.siteId - b.siteId);
