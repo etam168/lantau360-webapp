@@ -4,7 +4,7 @@
       <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" :aspectRatio="16 / 9" />
+    <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
     <q-separator size="4px" color="primary" />
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
@@ -44,11 +44,15 @@
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
-  import { URL } from "@/constants";
+  import { EntityURLKey, URL } from "@/constants";
+
+  const entityKey: EntityURLKey = "BUSINESS";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, isSmallScreen } = useUtilities();
+  const { fetchData } = useApi();
+  const { aspectRatio, eventBus, isSmallScreen } = useUtilities();
+  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
@@ -100,37 +104,41 @@
     }
   });
 
-  try {
-    const [advertisementResponse, promotionsResponse, voucherResponse, directoriesResponse] =
-      await Promise.all([
-        axios.get(URL.ADVERTISEMENT),
-        axios.get(URL.BUSINESS_PROMOTION),
-        axios.get(URL.BUSINESS_VOUCHER),
-        axios.get<Directory[]>(URL.BUSINESS_DIRECTORIES)
-      ]);
+  async function fetchAllData() {
+    try {
+      const [advertisementResponse, promotionsResponse, voucherResponse, directoriesResponse] =
+        await Promise.all([
+          fetchData(URL.ADVERTISEMENT),
+          fetchData(URL.BUSINESS_PROMOTION),
+          fetchData(URL.BUSINESS_VOUCHER),
+          fetchData<Directory[]>(URL.BUSINESS_DIRECTORIES)
+        ]);
 
-    businessPromotion.value = promotionsResponse.data.data.filter(
-      (promo: BusinessPromotionView) => promo.status === 1
-    );
+      advertisements.value = advertisementResponse.filter(
+        (adv: AdvertisementView) => adv.status === 1
+      );
 
-    businessVoucher.value = voucherResponse.data.data.filter(
-      (voucher: BusinessVoucherView) => voucher.status === 1
-    );
+      businessPromotion.value = promotionsResponse.filter(
+        (promo: BusinessPromotionView) => promo.status === 1
+      );
 
-    directoriesData.value = directoriesResponse.data.filter((dir: Directory) => dir.status === 1);
+      businessVoucher.value = voucherResponse.filter(
+        (voucher: BusinessVoucherView) => voucher.status === 1
+      );
 
-    advertisements.value = advertisementResponse.data.filter(
-      (adv: AdvertisementView) => adv.status == 1
-    );
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
+      directoriesData.value = directoriesResponse.filter((dir: Directory) => dir.status === 1);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = t("errors.404");
+        } else {
+          error.value = t("errors.anErrorOccured");
+        }
       } else {
-        error.value = t("errors.anErrorOccured");
+        error.value = t("errors.anUnexpectedError");
       }
-    } else {
-      error.value = t("errors.anUnExpectedError");
     }
   }
+
+  await fetchAllData();
 </script>
