@@ -109,11 +109,11 @@
         (adv: AdvertisementView) => adv.status === 1
       );
 
-      businessPromotion.value = promotionsResponse.filter(
+      businessPromotion.value = promotionsResponse.data.filter(
         (promo: BusinessPromotionView) => promo.status === 1
       );
 
-      businessVoucher.value = voucherResponse.filter(
+      businessVoucher.value = voucherResponse.data.filter(
         (voucher: BusinessVoucherView) => voucher.status === 1
       );
 

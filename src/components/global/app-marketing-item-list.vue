@@ -1,11 +1,9 @@
 <template>
-  <div class="row q-col-gutter-md" v-if="data.length > 0">
-    <div class="row q-col-gutter-sm">
-      <div v-for="(item, index) in sortedItems" :key="index" class="col-md-3 col-sm-4 col-6">
-        <div v-if="item.status !== 0">
-          <promotion-card v-if="isBusinessPromotion(item)" :item="item" />
-          <voucher-card v-else-if="isBusinessVoucher(item)" :item="item" />
-        </div>
+  <div class="row q-col-gutter-sm" v-if="data.length > 0">
+    <div v-for="(item, index) in sortedItems" :key="index" class="col-md-3 col-sm-4 col-6">
+      <div v-if="item.status !== 0">
+        <promotion-card v-if="isBusinessPromotion(item)" :item="item" />
+        <voucher-card v-else-if="isBusinessVoucher(item)" :item="item" />
       </div>
     </div>
   </div>
