@@ -1,14 +1,14 @@
 <template>
   <q-page>
     <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t("favourite.advertisement") }}</div>
+      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
     <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t("favourite.title") }}</q-toolbar-title>
+      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
       <template v-slot:action>
         <app-tab-select
@@ -43,7 +43,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="coupon">
-        <div>{{ $t("favourite.tabItems.coupon") }}</div>
+        <div>{{ $t(`${i18nKey}.tabItems.coupon`) }}</div>
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -55,6 +55,7 @@
   // Interface files
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { SiteView } from "@/interfaces/models/views/site-view";
+  import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
@@ -75,9 +76,11 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("location");
-  const tabItems = ref([
-    { name: "location", label: t("favourite.tabItems.location") },
-    { name: "business", label: t("favourite.tabItems.business") }
+  const i18nKey = "favourite";
+
+  const tabItems = ref<TabItem[]>([
+    { name: "location", label: t(`${i18nKey}.tabItems.location`) },
+    { name: "business", label: t(`${i18nKey}.tabItems.business`) }
   ]);
 
   onMounted(() => {

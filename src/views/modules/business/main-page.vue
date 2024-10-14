@@ -1,13 +1,13 @@
 <template>
   <q-page>
     <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t("business.advertisement") }}</div>
+      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
     <app-carousel-section :data="advertisements" :aspectRatio="16 / 9" />
     <q-separator size="4px" color="primary" />
     <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t("business.title") }}</q-toolbar-title>
+      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
       <template v-slot:action>
         <app-tab-select
@@ -63,9 +63,10 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("promotion");
+  const i18nKey = "business";
   const tabItems = ref<TabItem[]>([
-    { name: "promotion", label: t("business.tabItems.promotion") },
-    { name: "directory", label: t("business.tabItems.directory") }
+    { name: "promotion", label: t(`${i18nKey}.tabItems.promotion`) },
+    { name: "directory", label: t(`${i18nKey}.tabItems.directory`) }
   ]);
 
   function handleSearchDialog(value: any) {

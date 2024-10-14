@@ -54,9 +54,8 @@
     });
   });
 
-  function handleClick(item: any)
-  {
+  function handleClick(item: any) {
     debugger;
-    emit('on-directory-item', item);
+    emit("on-directory-item", item);
   }
 </script>

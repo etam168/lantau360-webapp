@@ -15,12 +15,12 @@
       @update:model-value="updateModelValue"
     >
       <template v-slot:append>
-        <q-btn v-if="keyword" icon="clear" flat round dense @click="clearInput" />
+        <q-btn v-if="keyword" icon="mdi-close" flat round dense @click="clearInput" />
       </template>
 
       <template v-slot:after>
         <q-btn square unelevated padding="md 18px" color="primary" @click="handleSearch">
-          <q-icon size="sm" name="search" />
+          <q-icon size="sm" name="mdi-magnify" />
         </q-btn>
       </template>
     </q-input>

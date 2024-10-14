@@ -1,14 +1,14 @@
 <template>
   <q-page>
     <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t("community.advertisement") }}</div>
+      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
     <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t("community.title") }}</q-toolbar-title>
+      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
       <template v-slot:action>
         <app-tab-select
@@ -76,10 +76,12 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("events");
+  const i18nKey = "community";
+
   const tabItems = ref<TabItem[]>([
-    { name: "events", label: t("community.tabItems.events") },
-    { name: "notice", label: t("community.tabItems.notice") },
-    { name: "directory", label: t("community.tabItems.directory") }
+    { name: "events", label: t(`${i18nKey}.tabItems.events`) },
+    { name: "notice", label: t(`${i18nKey}.tabItems.notice`) },
+    { name: "directory", label: t(`${i18nKey}.tabItems.directory`) }
   ]);
 
   provide("memberConfig", memberConfig);

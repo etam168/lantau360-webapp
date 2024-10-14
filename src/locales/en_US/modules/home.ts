@@ -17,10 +17,13 @@ export default {
   message: {
     checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"
   },
-  tabItems: {
+  tabItem: {
     aboutUs: "About Us",
     checkin: "Check-In",
-    info: "info"
+    info: "info",
+    allLocations: "All Location",
+    resources: "Resources",
+    tripAdvisor: "Trip Advisor"
   },
   searchBar: {
     placeholder: "Enter Keyword"

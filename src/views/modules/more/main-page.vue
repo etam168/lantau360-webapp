@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <app-page-title :title="$t('more.title')"></app-page-title>
+    <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
     <login-signup @on-dialog="throttledHandleLoginDialog" />
 
@@ -56,7 +56,7 @@
   import { useUserStore } from "@/stores/user";
   import { URL, LOGGED_ON_USER_MENU, DEFAULT_MENU, MENU } from "@/constants";
   import { useInstallPrompt } from "@/composable/use-install-prompt";
-  import { Platform } from 'quasar';
+  import { Platform } from "quasar";
 
   // Custom Components
   import LoginSignup from "./section/login-signup.vue";
@@ -64,19 +64,16 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const {
-    isInStandaloneMode,
-    promptInstall,
-    shouldShowInstallButton,
-    showPlatformGuidance,
-  } = useInstallPrompt();
+  const { isInStandaloneMode, promptInstall, shouldShowInstallButton, showPlatformGuidance } =
+    useInstallPrompt();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const error = ref<string | null>(null);
+  const i18nKey = "more";
 
-  const appVersion = computed(() => t("more.footer.version", { version: __APP_VERSION__ }));
+  const appVersion = computed(() => t(`${i18nKey}.footer.version`, { version: __APP_VERSION__ }));
   const copyright = computed(() =>
-    t("more.footer.copyright", { currentYear: new Date().getFullYear() })
+    t(`${i18nKey}.footer.copyright`, { currentYear: new Date().getFullYear() })
   );
 
   const trHistory = ref();

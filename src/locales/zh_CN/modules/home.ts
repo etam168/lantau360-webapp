@@ -16,10 +16,13 @@ export default {
   message: {
     checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"
   },
-  tabItems: {
+  tabItem: {
     aboutUs: "关于我们",
     checkin: "Check-In",
-    info: "信息"
+    info: "信息",
+    allLocations: "All Location",
+    resources: "Resources",
+    tripAdvisor: "Trip Advisor"
   },
   searchBar: {
     placeholder: "输入关键词"

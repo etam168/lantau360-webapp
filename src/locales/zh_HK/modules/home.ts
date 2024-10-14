@@ -18,10 +18,13 @@ export default {
   message: {
     checkInDataSubmittedSuccessfully: "CheckIn data submit successfully"
   },
-  tabItems: {
+  tabItem: {
     aboutUs: "關於我們",
     checkin: "Check-In",
-    info: "資訊"
+    info: "資訊",
+    allLocations: "All Location",
+    resources: "Resources",
+    tripAdvisor: "Trip Advisor"
   },
   searchBar: {
     placeholder: "輸入關鍵詞"
