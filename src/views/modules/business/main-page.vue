@@ -43,6 +43,8 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
+  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
+
   // .ts file
   import { EntityURLKey, URL } from "@/constants";
 
@@ -64,11 +66,13 @@
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
-  const isDialogOpen = ref(false);
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("promotion");
   const i18nKey = "business";
+
+  const isDialogOpen = ref(false);
+
   const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
@@ -86,28 +90,6 @@
       }
     });
   }
-
-  onMounted(() => {
-    eventBus.on("DialogStatus", (status, emitter) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value = dialogStack.value.filter(item => item != emitter);
-      }
-    });
-  });
-
-  onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus.emit(emitter);
-      dialogStack.value = dialogStack.value.filter(item => item != emitter);
-
-      next(false);
-    } else {
-      next();
-    }
-  });
 
   async function fetchAllData() {
     try {
@@ -156,6 +138,28 @@
 
     openCategoryItemDialog(isDialogOpen, directory);
   }
+
+  onMounted(() => {
+    eventBus.on("DialogStatus", (status: any, emitter: string) => {
+      if (status) {
+        dialogStack.value.push(emitter);
+      } else {
+        dialogStack.value = dialogStack.value.filter(item => item != emitter);
+      }
+    });
+  });
+
+  onBeforeRouteLeave((_to, _from, next) => {
+    if (dialogStack.value.length > 0) {
+      const emitter = dialogStack.value[dialogStack.value.length - 1];
+      eventBus.emit(emitter);
+      dialogStack.value = dialogStack.value.filter(item => item != emitter);
+
+      next(false);
+    } else {
+      next();
+    }
+  });
 
   await fetchAllData();
 </script>
