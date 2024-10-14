@@ -1,3 +1,4 @@
+<!-- category-items-content.vue -->
 <template>
   <q-card>
     <template v-if="groupBykey">
@@ -16,16 +17,16 @@
           :name="item.name"
           class="q-pa-none"
         >
-          <category-list-items
-            :directoryItems="filterGroupedArray(item.name)"
-            :directoryCheckIns="directoryCheckIns"
-            :directory="directory"
+          <app-category-list-items
+            :categoryItems="filterGroupedArray(item.name)"
+            :checkIns
+            :entityKey
           />
         </q-tab-panel>
       </q-tab-panels>
     </template>
 
-    <category-list-items v-else :directoryItems="categoryItems" :directory :directoryCheckIns />
+    <app-category-list-items v-else :categoryItems :checkIns :entityKey />
   </q-card>
 </template>
 
@@ -36,9 +37,6 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { TabItem } from "@/interfaces/tab-item";
-
-  // Components
-  import CategoryListItems from "@/components/dialog/list-items/category-list-items/index.vue";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
@@ -52,10 +50,18 @@
   const { groupBy, translate, eventBus } = useUtilities();
   const { fetchData } = useApi();
 
-  const isDialogVisible = ref();
-
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
-  const directoryCheckIns: Ref<CheckIn[]> = ref([]);
+  const checkIns: Ref<CheckIn[]> = ref([]);
+
+  const directoryId: ComputedRef<number> = computed(() => {
+    switch (entityKey) {
+      case "BUSINESS":
+      case "SITE":
+        return (directory as Directory).directoryId;
+      default:
+        return 0;
+    }
+  });
 
   const groupBykey: ComputedRef<string | null> = computed(() => {
     switch (true) {
@@ -106,12 +112,6 @@
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
 
-  onMounted(async () => {
-    eventBus.on("CategoryItemListDialog", () => {
-      isDialogVisible.value = false;
-    });
-  });
-
   /**
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
@@ -119,10 +119,11 @@
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
+        case "BUSINESS":
         case "SITE":
-          const directoryId = (directory as Directory).directoryId;
-          categoryItems.value = await fetchData(`${ENTITY_URL.SITE}/ByDirectoryId/${directoryId}`);
-          break;
+          categoryItems.value = await fetchData(
+            `${ENTITY_URL[entityKey]}/ByDirectoryId/${directoryId.value}`
+          );
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
