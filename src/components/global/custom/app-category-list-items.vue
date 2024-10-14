@@ -14,8 +14,8 @@
       </q-item-section>
 
       <q-item-section>
-        <q-item-label> {{ getName(item) }} </q-item-label>
-        <q-item-label> {{ item.subtitle1 }} </q-item-label>
+        <q-item-label> {{ line1(item) }} </q-item-label>
+        <q-item-label> {{ line2(item) }} </q-item-label>
       </q-item-section>
 
       <q-item-section side>
@@ -39,7 +39,7 @@
   import { LocalStorage } from "quasar";
   import { BusinessView } from "@/interfaces/models/views/business-view";
 
-  const { getEntityName, getImageURL } = useUtilities();
+  const { getEntityName, getImageURL, translate } = useUtilities();
 
   // Props
   const {
@@ -76,9 +76,14 @@
     }
   });
 
-  function getName(item: CategoryTypes): string {
-    const nameProperty = `${entityName}Name` as keyof CategoryTypes;
-    return (item[nameProperty] as string) || "N/A";
+  function line1(item: CategoryTypes) {
+    const name = `${entityName}Name` as keyof CategoryTypes;
+
+    return translate(item[name] as string, item.meta, name);
+  }
+
+  function line2(item: CategoryTypes) {
+    return translate(item.subtitle1, item.meta, "subtitle1");
   }
 
   const isCheckedIn = (item: CategoryTypes): boolean => {

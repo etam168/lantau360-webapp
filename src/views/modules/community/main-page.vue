@@ -34,7 +34,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <app-directory-item-list :rightSlotAction="1" :data="directories" class="q-my-sm" />
+        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -50,19 +50,23 @@
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
+  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
+
   // .ts file
-  import { URL } from "@/constants";
+  import { ENTITY_URL, EntityURLKey, URL } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
 
   const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
 
   const { t } = useI18n({ useScope: "global" });
+  const entityKey: EntityURLKey = "COMMUNITY";
 
   const { fetchMemberPoints, setPoints } = useUserStore();
+  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const advertisements = ref<AdvertisementView[]>([]);
-  const directories = ref<CommunityDirectory[]>([]);
+  const directoryData = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
   const news = ref<CommunityNews[]>([]);
   const notices = ref<CommunityNotice[]>([]);
@@ -70,6 +74,7 @@
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
+  const isDialogOpen = ref(false);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
@@ -85,6 +90,12 @@
   ]);
 
   provide("memberConfig", memberConfig);
+
+  async function onDirectoryItem(communityDirectory: CommunityDirectory) {
+    if (isDialogOpen.value) return;
+
+    // openCategoryItemDialog(isDialogOpen, communityDirectory);
+  }
 
   onMounted(() => {
     eventBus.on("DialogStatus", (status, emitter) => {
@@ -128,7 +139,7 @@
     advertisements.value = advertisementResponse.data.filter(
       (adv: AdvertisementView) => adv.status === 1
     );
-    directories.value = directoryResponse.data.filter(
+    directoryData.value = directoryResponse.data.filter(
       (directory: Directory) => directory.status === 1
     );
     events.value = eventResponse.data.filter((comEve: CommunityEventView) => comEve.status === 1);

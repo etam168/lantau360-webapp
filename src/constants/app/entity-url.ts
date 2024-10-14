@@ -9,7 +9,8 @@ export const ENTITY_URL = {
   BUSINESS_VOUCHER: `/BusinessVoucher/Datatable`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
-  WEATHER: `/Weather`
+  WEATHER: `/Weather`,
+  COMMUNITY: `/Community`
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

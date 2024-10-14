@@ -29,7 +29,7 @@
           {{ $t("errors.noSaveSiteRecord") }}
         </div>
 
-        <app-grouped-item-list :list-items="siteItems" v-else />
+        <app-category-list-items v-else :categoryItems="siteItems" :checkIns :entityKey="'SITE'" />
       </q-tab-panel>
 
       <q-tab-panel name="business" class="q-pa-none">
@@ -39,7 +39,12 @@
         >
           {{ $t("errors.noSaveBusinessRecord") }}
         </div>
-        <app-grouped-item-list v-else :list-items="businessItems" />
+        <app-category-list-items
+          v-else
+          :categoryItems="businessItems"
+          :checkIns
+          :entityKey="'BUSINESS'"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="coupon">
@@ -53,14 +58,17 @@
   import { LocalStorage } from "quasar";
 
   // Interface files
-  import { BusinessView } from "@/interfaces/models/views/business-view";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { TabItem } from "@/interfaces/tab-item";
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { TabItem } from "@/interfaces/tab-item";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
 
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
 
   const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
+
+  const checkIns: Ref<CheckIn[]> = ref([]);
 
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<BusinessView[]>(
