@@ -79,9 +79,9 @@
   const i18nKey = "community";
 
   const tabItems = ref<TabItem[]>([
-    { name: "events", label: t(`${i18nKey}.tabItems.events`) },
-    { name: "notice", label: t(`${i18nKey}.tabItems.notice`) },
-    { name: "directory", label: t(`${i18nKey}.tabItems.directory`) }
+    { name: "events", label: t(`${i18nKey}.tabItem.events`) },
+    { name: "notice", label: t(`${i18nKey}.tabItem.notice`) },
+    { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
 
   provide("memberConfig", memberConfig);

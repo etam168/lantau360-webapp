@@ -79,8 +79,8 @@
   const i18nKey = "favourite";
 
   const tabItems = ref<TabItem[]>([
-    { name: "location", label: t(`${i18nKey}.tabItems.location`) },
-    { name: "business", label: t(`${i18nKey}.tabItems.business`) }
+    { name: "location", label: t(`${i18nKey}.tabItem.location`) },
+    { name: "business", label: t(`${i18nKey}.tabItem.business`) }
   ]);
 
   onMounted(() => {

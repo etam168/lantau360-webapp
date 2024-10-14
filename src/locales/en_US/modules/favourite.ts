@@ -2,7 +2,7 @@ export default {
   title: "Saved Item",
   advertisement: "Advertisement",
 
-  tabItems: {
+  tabItem: {
     location: "Home",
     business: "Business",
     coupon: "Coupon"

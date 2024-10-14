@@ -4,7 +4,7 @@
     <q-input
       v-bind="$attrs"
       :model-value="keyword"
-      :placeholder="$t('home.searchBar.placeholder')"
+      :placeholder="$t(`${i18nKey}.searchBar.placeholder`)"
       class="q-pl-md bg-grey-3 full-width"
       borderless
       dense
@@ -41,7 +41,7 @@
   });
 
   const keyword = ref(props.query);
-
+  const i18nKey = "home";
   function handleSearch() {
     if (keyword.value.length < 3) {
       notify(t("errors.minimum3letter"), "negative");

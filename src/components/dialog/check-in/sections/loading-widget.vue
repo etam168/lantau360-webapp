@@ -3,11 +3,15 @@
     <q-card-section class="location-card-section">
       <q-item>
         <q-spinner-rings color="primary" size="5em" />
-        <div class="loading-message">{{ $t("home.loadingRefreshLocation") }}</div>
+        <div class="loading-message">{{ $t(`${i18nKey}.loadingRefreshLocation`) }}</div>
       </q-item>
     </q-card-section>
   </q-card>
 </template>
+
+<script setup lang="ts">
+  const i18nKey = "home";
+</script>
 
 <style scoped>
   .location-card {

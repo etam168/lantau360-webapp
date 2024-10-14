@@ -44,7 +44,9 @@
             </q-list>
           </q-card-section>
           <q-card-section v-else>
-            <q-item-label class="text-caption">{{ $t("home.contactnotavailable") }}</q-item-label>
+            <q-item-label class="text-caption">{{
+              $t(`${i18nKey}.contactnotavailable`)
+            }}</q-item-label>
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -63,6 +65,7 @@
     }
   });
 
+  const i18nKey = "home";
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
   const businessItem = computed(() => props?.item as BusinessView);
 </script>

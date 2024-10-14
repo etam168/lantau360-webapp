@@ -36,7 +36,7 @@
         </div>
 
         <q-item-label class="text-caption" style="margin-left: 70px"
-          >{{ distance + " " + $t("home.metersAway") }}
+          >{{ distance + " " + $t(`${i18nKey}.metersAway`) }}
         </q-item-label>
         <q-item v-if="props.distance && props.distance > 10">
           <q-item-label style="color: red">
@@ -47,7 +47,7 @@
           <div v-if="!configLoading && isPermitToPost">
             <q-item class="q-mt-lg q-pa-none">
               <q-item-section class="q-pa-none">
-                <vee-input type="textarea" :label="$t('home.review')" name="description" />
+                <vee-input type="textarea" :label="$t(`${i18nKey}.review`)" name="description" />
               </q-item-section>
             </q-item>
             <q-card-actions class="q-mt-xs q-pa-none">
@@ -118,13 +118,18 @@
   const isPermitToPost = ref(false);
   const timeUntilNextCheckIn = ref();
   const error = ref<string | null>(null);
+  const i18nKey = "home";
   const form = ref();
+
   const initialValues = ref({
     description: ""
   });
 
   const schema = yup.object({
-    description: yup.string().required().label(t("home.description"))
+    description: yup
+      .string()
+      .required()
+      .label(t(`${i18nKey}.description`))
   });
 
   const isSubmitReviewEnabled = computed(() => {
@@ -132,8 +137,8 @@
   });
 
   const locationData = computed(() => [
-    { lable: t("home.curentLocation"), address: props.currentAddress },
-    { lable: t("home.destinationAddress"), address: props.destinationAddress }
+    { lable: t(`${i18nKey}.curentLocation`), address: props.currentAddress },
+    { lable: t(`${i18nKey}.destinationAddress`), address: props.destinationAddress }
   ]);
 
   function onSubmit(values: any) {

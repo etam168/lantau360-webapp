@@ -9,7 +9,7 @@
     >
       <template v-slot:header>
         <q-item-section class="text-h6">
-          {{ $t("home.location") }}
+          {{ $t(`${i18nKey}.location`) }}
         </q-item-section>
 
         <q-item-section side v-if="canCheckIn">
@@ -65,6 +65,7 @@
   const { translate } = useUtilities();
   const $q = useQuasar();
 
+  const i18nKey = "home";
   const address = computed(() => translate(props.item.subtitle1, props.item.meta, "subtitle1"));
 
   const zoom = computed(() => {

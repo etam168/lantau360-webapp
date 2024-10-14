@@ -24,7 +24,7 @@ export default {
     gotoAccount: "Go to Account"
   },
 
-  tabItems: {
+  tabItem: {
     events: "Events",
     news: "News",
     notice: "Notice",

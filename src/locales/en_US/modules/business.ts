@@ -5,7 +5,7 @@ export default {
   businessSearch: "Business Search",
   subtitle1: "Address",
 
-  tabItems: {
+  tabItem: {
     promotion: "Promotions",
     voucher: "Vouchers",
     directory: "Business Directory",

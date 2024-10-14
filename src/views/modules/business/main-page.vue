@@ -65,8 +65,8 @@
   const tab = ref("promotion");
   const i18nKey = "business";
   const tabItems = ref<TabItem[]>([
-    { name: "promotion", label: t(`${i18nKey}.tabItems.promotion`) },
-    { name: "directory", label: t(`${i18nKey}.tabItems.directory`) }
+    { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
+    { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
 
   function handleSearchDialog(value: any) {

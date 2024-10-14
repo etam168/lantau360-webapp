@@ -4,7 +4,7 @@
       <q-expansion-item group="itemGroup" dense dense-toggle>
         <template v-slot:header>
           <q-item-section class="text-h6">
-            {{ $t("home.description") }}
+            {{ $t(`${i18nKey}.description`) }}
           </q-item-section>
 
           <q-item-section side>
@@ -43,6 +43,7 @@
 
   const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
 
+  const i18nKey = "home";
   const translatedContent = ref(props.descriptionContent ?? "");
   const isFavourite = ref(isFavouriteItem(props.item));
 
