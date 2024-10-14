@@ -29,7 +29,7 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <app-directory-item-list :data="directoriesData" class="q-my-sm" />
+        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -58,12 +58,13 @@
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 
   const advertisements = ref<AdvertisementView[]>([]);
-  const directoriesData = ref<Directory[]>([]);
+  const businessDirectories = ref<Directory[]>([]);
   const businessPromotion = ref<BusinessPromotionView[]>([]);
   const businessVoucher = ref<BusinessVoucherView[]>([]);
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
+  const isDialogOpen = ref(false);
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("promotion");
@@ -72,6 +73,10 @@
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
+
+  const directoryData = computed(() =>
+    businessDirectories.value.filter((dir: Directory) => dir.groupId == 2)
+  );
 
   function handleSearchDialog(value: any) {
     $q.dialog({
@@ -106,13 +111,17 @@
 
   async function fetchAllData() {
     try {
-      const [advertisementResponse, promotionsResponse, voucherResponse, directoriesResponse] =
-        await Promise.all([
-          fetchData(URL.ADVERTISEMENT),
-          fetchData(URL.BUSINESS_PROMOTION),
-          fetchData(URL.BUSINESS_VOUCHER),
-          fetchData<Directory[]>(URL.BUSINESS_DIRECTORIES)
-        ]);
+      const [
+        advertisementResponse,
+        promotionsResponse,
+        voucherResponse,
+        businessDirectoryResponse
+      ] = await Promise.all([
+        fetchData(URL.ADVERTISEMENT),
+        fetchData(URL.BUSINESS_PROMOTION),
+        fetchData(URL.BUSINESS_VOUCHER),
+        fetchData(URL.BUSINESS_DIRECTORIES)
+      ]);
 
       advertisements.value = advertisementResponse.filter(
         (adv: AdvertisementView) => adv.status === 1
@@ -126,7 +135,9 @@
         (voucher: BusinessVoucherView) => voucher.status === 1
       );
 
-      directoriesData.value = directoriesResponse.filter((dir: Directory) => dir.status === 1);
+      businessDirectories.value = businessDirectoryResponse.filter(
+        (dir: Directory) => dir.status === 1
+      );
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {
@@ -138,6 +149,12 @@
         error.value = t("errors.anUnexpectedError");
       }
     }
+  }
+
+  async function onDirectoryItem(directory: Directory) {
+    if (isDialogOpen.value) return;
+
+    openCategoryItemDialog(isDialogOpen, directory);
   }
 
   await fetchAllData();
