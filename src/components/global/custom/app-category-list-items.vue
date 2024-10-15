@@ -1,6 +1,6 @@
 <template>
   <q-list>
-    <q-item clickable v-for="(item, index) in categoryItems" :key="index">
+    <q-item clickable @click="handleDetail(item)" v-for="(item, index) in categoryItems" :key="index">
       <q-item-section avatar>
         <q-avatar size="64px" square>
           <q-img ratio="1" :src="getImageURL(item.iconPath)">
@@ -40,6 +40,8 @@
   import { BusinessView } from "@/interfaces/models/views/business-view";
 
   const { getEntityName, getImageURL, translate } = useUtilities();
+
+  const emits = defineEmits(["on-detail"]);
 
   // Props
   const {
@@ -109,4 +111,8 @@
         return false;
     }
   };
+
+  function handleDetail(item: any) {
+    emits("on-detail", item);
+  }
 </script>

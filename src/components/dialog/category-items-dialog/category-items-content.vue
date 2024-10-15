@@ -26,7 +26,7 @@
       </q-tab-panels>
     </template>
 
-    <app-category-list-items v-else :categoryItems :checkIns :entityKey />
+    <app-category-list-items v-else :categoryItems :checkIns :entityKey @on-detail="handleDetail" />
   </q-card>
 </template>
 
@@ -40,6 +40,7 @@
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { Dialog } from "quasar";
 
   // Props
   const { directory, entityKey } = defineProps<{
@@ -49,6 +50,7 @@
 
   const { groupBy, translate, eventBus } = useUtilities();
   const { fetchData } = useApi();
+  const $q = useQuasar();
 
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
   const checkIns: Ref<CheckIn[]> = ref([]);
@@ -112,6 +114,17 @@
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
 
+  async function handleDetail(item: any) {
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
+      ),
+      componentProps: {
+        category: item,
+        entityKey: entityKey
+      }
+    });
+  }
   /**
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data

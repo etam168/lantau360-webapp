@@ -1,5 +1,5 @@
 <template>
-  <gallery-section :item="category" />
+  <gallery-section :item="category"  :galleryItems/>
 
   <q-list class="q-pa-md" style="background-color: #f6f6f6">
     <q-list class="rounded-borders">
@@ -32,11 +32,13 @@
   // UI Components
   import GallerySection from "@/components/dialog/renderer/common/gallery-section.vue";
   import { EntityURLKey } from "@/constants";
+import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // Props
-  const { category, entityKey } = defineProps<{
+  const { category, entityKey , galleryItems } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
+    galleryItems: GalleryImageType[];
   }>();
 
   const $q = useQuasar();
@@ -47,7 +49,7 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
       componentProps: {
-        item: props.item
+        item: category
       }
     });
   };

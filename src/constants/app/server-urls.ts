@@ -22,7 +22,7 @@ export const URL = {
   COMMUNITY_NOTICE_GALLERY: `${BASE_URL}/CommunityNoticeImage/GetCommunityNoticeImages`,
   POSTING_GALLERY: `${BASE_URL}/PostingImage/GetPostingImages`,
   SITE_DIRECTORIES: `${BASE_URL}/Directory/DirectoryGroupsData/1`,
-  SITE_GALLERY: `${BASE_URL}/SiteImage/GetSiteImages`,
+  SITE_GALLERY: `${BASE_URL}/SiteImage/GalleryImages`,
   WEATHER_URL: `${BASE_URL}/Weather`,
   ADVERTISEMENT_GALLERY: `${BASE_URL}/AdvertisementImage/GetAdvertisementImages`,
   BUSINESS_VOUCHER_GALLERY_URL: `${BASE_URL}/BusinessVoucherImage/GetBusinessVoucherImages`,
