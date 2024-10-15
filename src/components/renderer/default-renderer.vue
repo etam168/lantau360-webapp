@@ -9,9 +9,7 @@
       :item="category"
       :can-check-in="true"
       @check-in="openCheckInDialog"
-      :default-tooltip="
-        translate(`${category[entityName]}Name`, category.meta, `${category[entityName]}Name`)
-      "
+      :default-tooltip="translate(`${entityName}Name`, category.meta, `${entityName}Name`)"
       @open-map="openGoogleMaps"
     />
     <contact-section v-else-if="item.type === 'contact'" :item="category" />
@@ -82,4 +80,12 @@
         return [];
     }
   });
+
+  const openGoogleMaps = () => {
+    if (category.meta?.["hasMap"]) {
+      window.open(category.meta?.["mapLink"], "_blank");
+    } else {
+      notify(t("errors.mapLinkNotAvailable"), "negative");
+    }
+  };
 </script>

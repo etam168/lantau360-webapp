@@ -10,6 +10,7 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
+        <!-- <pre>{{ category }}</pre> -->
         <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
@@ -69,10 +70,10 @@
   const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
 
-  alert(JSON.stringify(`${[entityName]}Name`));
-  const dialogTitle = computed(() =>
-    translate(`${[entityName]}Name`, category.meta, `${[entityName]}Name`)
-  );
+  const dialogTitle = computed(() => {
+    const nameKey = `${entityName}Name` as keyof CategoryTypes; // Type assertion
+    return translate(category[nameKey] as string, category.meta, nameKey);
+  });
 
   /**
    * Handles the closing of the dialog
