@@ -1,5 +1,5 @@
 <template>
-  <gallery-section :item="category"  :galleryItems/>
+  <gallery-image-list :image-list="galleryItems" />
 
   <q-list class="q-pa-md" style="background-color: #f6f6f6">
     <q-list class="rounded-borders">
