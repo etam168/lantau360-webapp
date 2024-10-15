@@ -33,7 +33,13 @@
           {{ $t("errors.noSaveSiteRecord") }}
         </div>
 
-        <app-category-list-items v-else :categoryItems="siteItems" :checkIns :entityKey="'SITE'" />
+        <app-category-list-items
+          v-else
+          :categoryItems="siteItems"
+          :checkIns
+          :entityKey="'SITE'"
+          @on-detail="handleDetail"
+        />
       </q-tab-panel>
 
       <q-tab-panel name="business" class="q-pa-none">
@@ -48,6 +54,7 @@
           :categoryItems="businessItems"
           :checkIns
           :entityKey="'BUSINESS'"
+          @on-detail="handleDetail"
         />
       </q-tab-panel>
 
@@ -69,9 +76,11 @@
 
   // .ts file
   import { URL, STORAGE_KEYS } from "@/constants";
+  import { CarouselTypes } from "@/interfaces/types/carousel-types";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 
   const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
-
+  const $q = useQuasar();
   const checkIns: Ref<CheckIn[]> = ref([]);
 
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
@@ -142,5 +151,17 @@
     } else {
       error.value = t("errors.anErrorOccured");
     }
+  }
+
+  async function handleDetail(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
+      ),
+      componentProps: {
+        category: item,
+        entityKey: item.siteId ? "SITE" : "BUSINESS"
+      }
+    });
   }
 </script>

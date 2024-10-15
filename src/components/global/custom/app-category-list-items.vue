@@ -1,6 +1,11 @@
 <template>
   <q-list>
-    <q-item clickable @click="handleDetail(item)" v-for="(item, index) in categoryItems" :key="index">
+    <q-item
+      clickable
+      @click="handleDetail(item)"
+      v-for="(item, index) in categoryItems"
+      :key="index"
+    >
       <q-item-section avatar>
         <q-avatar size="64px" square>
           <q-img ratio="1" :src="getImageURL(item.iconPath)">

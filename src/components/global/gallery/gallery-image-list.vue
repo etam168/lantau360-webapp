@@ -21,7 +21,7 @@
         v-show="virtualScrollIndex > 0"
         round
         dense
-        icon="chevron_left"
+        icon="mdi-chevron-left"
         color="grey-9"
         @click="scrollLeft"
       />
@@ -75,7 +75,7 @@
         v-show="virtualScrollIndex < galleryImages.length - 1"
         round
         dense
-        icon="chevron_right"
+        icon="mdi-chevron-right"
         color="grey-9"
         @click="scrollRight"
       />

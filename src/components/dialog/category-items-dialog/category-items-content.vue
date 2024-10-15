@@ -21,6 +21,7 @@
             :categoryItems="filterGroupedArray(item.name)"
             :checkIns
             :entityKey
+            @on-detail="handleDetail"
           />
         </q-tab-panel>
       </q-tab-panels>

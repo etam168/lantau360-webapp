@@ -92,8 +92,7 @@
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    alert("Community Dialog");
-    // openCategoryItemDialog(isDialogOpen, communityDirectory);
+    openCategoryItemDialog(isDialogOpen, communityDirectory);
   }
 
   onMounted(() => {
