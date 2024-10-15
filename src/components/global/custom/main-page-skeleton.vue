@@ -5,6 +5,12 @@
       <app-skeleton-search v-else-if="item.type === 'search'" />
       <app-skeleton-tab-items v-else-if="item.type === 'tabItems'" :item-count="item.itemCount" />
       <app-skeleton-weather v-else-if="item.type === 'weather'" />
+      <app-skeleton-directory-item-list
+        v-else-if="item.type === 'directory'"
+        :item-count="item.itemCount"
+      />
+      <app-skeleton-toolbar v-else-if="item.type === 'toolbar'" :item-count="item.itemCount" />
+      <app-skeleton-card v-else-if="item.type === 'cards'" :item-count="item.itemCount" />
 
       <!-- <q-item v-else-if="item.type === 'chips'" class="q-px-md q-gutter-sm">
       <app-skeleton-chips v-for="chips in 3" :key="chips" />
@@ -54,8 +60,19 @@
       case "BUSINESS":
         return [
           { name: "carousel", type: "carousel" },
-          { name: "toolbar", type: "toolbar" },
-          { name: "cards", type: "cards" }
+          { name: "toolbar", type: "toolbar", itemCount: 2 },
+          { name: "cards", type: "cards", itemCount: 2 }
+        ];
+      case "COMMUNITY":
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "toolbar", type: "toolbar", itemCount: 3 },
+          { name: "cards", type: "cards", itemCount: 1 }
+        ];
+      case "FAVOURITE":
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "toolbar", type: "toolbar", itemCount: 2 }
         ];
       case "SITE":
         return [
@@ -63,7 +80,7 @@
           { name: "weather", type: "weather" },
           { name: "tabItems", type: "tabItems", itemCount: 3 },
           { name: "search", type: "search" },
-          { name: "directory", type: "directory" }
+          { name: "directory", type: "directory", itemCount: 14 }
         ];
       default:
         return [];

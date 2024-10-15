@@ -320,6 +320,7 @@
     "MaybeRefOrGetter": true,
     "useApi": true,
     "useCategoryItemListFetcherService": true,
-    "useCategoryItemService": true
+    "useCategoryItemService": true,
+    "usePwaInstallService": true
   }
 }

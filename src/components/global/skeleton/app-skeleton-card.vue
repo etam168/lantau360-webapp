@@ -1,6 +1,6 @@
 <template>
-  <div class="col-md-3 col-sm-4 col-6">
-    <q-card class="my-card">
+  <div class="row q-gutter-sm">
+    <q-card v-for="index in itemCount" :key="index" class="col-md-3 col-sm-4 col-6 my-card">
       <q-responsive :ratio="11 / 8">
         <q-skeleton height="170px" square animation="fade" />
       </q-responsive>
@@ -13,3 +13,9 @@
     </q-card>
   </div>
 </template>
+
+<script setup lang="ts">
+  const { itemCount = 1 } = defineProps<{
+    itemCount?: number;
+  }>();
+</script>

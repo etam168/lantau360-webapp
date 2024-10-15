@@ -11,6 +11,7 @@ export const ENTITY_URL = {
   COMMUNITY_DIRECTORY: `/CommunityDirectory`,
   COMMUNITY_NEWS_CURRENT: `/CommunityNews/CommunityNewsCurrent`,
   COMMUNITY_NOTICE_CURRENT: `/CommunityNotice/CommunityNoticeCurrent`,
+  FAVOURITE: `favourite`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,

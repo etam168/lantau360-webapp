@@ -7,14 +7,17 @@
     <template v-slot:action>
       <!-- Center the chips -->
       <q-toolbar v-bind="$attrs" class="q-gutter-x-sm" :class="tabSelectClass">
-        <q-skeleton type="QChip" width="99.38px" />
-        <q-skeleton type="QChip" width="141.14" />
+        <q-skeleton v-for="index in itemCount" :key="index" type="QChip" width="99.38px" />
       </q-toolbar>
     </template>
   </q-banner>
 </template>
 
 <script setup lang="ts">
+  const { itemCount = 1 } = defineProps<{
+    itemCount?: number;
+  }>();
+
   const { isSmallScreen } = useUtilities();
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 </script>
