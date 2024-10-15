@@ -10,15 +10,15 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="all">
-        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
 
       <q-tab-panel name="resources">
-        <generic-directory-item-list :data="resourcesData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
 
       <q-tab-panel name="tripAdvisor">
-        <generic-directory-item-list :data="tripAdvisorData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="tripAdvisorData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -31,15 +31,17 @@
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 
-  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
-
   // .ts file
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Custom Components
-  const weatherSection = defineAsyncComponent(() => import("./section/weather-section.vue"));
+  const weatherSection = defineAsyncComponent(() => import("./components/weather-section.vue"));
 
-  const entityKey: EntityURLKey = "SITE";
+  // Props
+  const { entityKey } = defineProps<{
+    entityKey: EntityURLKey;
+  }>();
+
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
@@ -79,7 +81,9 @@
 
   function handleSearchDialog(value: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/catergory-items-search-dialog/index.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
+      ),
       componentProps: {
         query: { searchKeyword: value },
         entityKey: "SITE"
