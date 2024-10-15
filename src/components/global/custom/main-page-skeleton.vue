@@ -46,7 +46,7 @@
   }
 
   const { entityKey } = defineProps<{
-    entityKey: EntityURLKey;
+    entityKey?: EntityURLKey;
   }>();
 
   const renderItems = computed((): RenderItem[] => {

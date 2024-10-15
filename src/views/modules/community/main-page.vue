@@ -34,7 +34,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -49,8 +49,6 @@
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
-
-  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
   import { ENTITY_URL, EntityURLKey, URL } from "@/constants";

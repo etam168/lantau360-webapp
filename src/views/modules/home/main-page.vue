@@ -1,6 +1,6 @@
 <template>
   <q-page>
-    <app-carousel-section :data="attractions" :aspect-ratio="aspectRatio()" />
+    <app-carousel-section :data="attractions" @image-click="onImageClick" />
     <weather-section :data="weatherData" />
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
@@ -118,6 +118,18 @@
       }
     }
   }
+
+  // Updated onImageClick function to handle both Site and Advertisement
+  const onImageClick = (item: SiteView) => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-detail-dialog.vue")
+      ),
+      componentProps: {
+        item: item as SiteView
+      }
+    });
+  };
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;

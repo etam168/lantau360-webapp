@@ -18,16 +18,12 @@
 <script setup lang="ts">
   import { EntityURLKey } from "@/constants/app/entity-url";
   import listItem from "./list-item.vue";
+
   import { QTable } from "quasar";
-  import { ref } from "vue";
 
   const qTableRef = ref(null);
 
   const emits = defineEmits(["on-contact", "on-detail", "on-pagination"]);
-
-  // defineProps({
-  //   hidePagination: { type: Boolean, default: false }
-  // });
 
   // Props
   const { entityKey } = defineProps<{

@@ -7,16 +7,14 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    AppAvatar: typeof import('./components/global/app-avatar.vue')['default']
+    AppAvatar: typeof import('./components/global/widgets/app-avatar.vue')['default']
     AppBulletinItemList: typeof import('./components/global/widgets/app-bulletin-item-list.vue')['default']
     AppButton: typeof import('./components/global/widgets/app-button.vue')['default']
     AppButtonRounded: typeof import('./components/global/widgets/app-button-rounded.vue')['default']
     AppCarouselSection: typeof import('./components/global/app-carousel-section.vue')['default']
     AppCategoryListItems: typeof import('./components/global/custom/app-category-list-items.vue')['default']
     AppDialogTitle: typeof import('./components/global/app-dialog-title.vue')['default']
-    AppDirectoryItemList: typeof import('./components/global/app-directory-item-list.vue')['default']
     AppDirectoryItems: typeof import('./components/global/custom/app-directory-items.vue')['default']
-    AppGroupedItemList: typeof import('./components/global/app-grouped-item-list.vue')['default']
     AppMapComponent: typeof import('./components/global/app-map-component.vue')['default']
     AppMarketingItemList: typeof import('./components/global/app-marketing-item-list.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']

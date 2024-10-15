@@ -7,13 +7,12 @@
 
     <!-- "fallback" slot belongs to Suspense -->
     <template #fallback>
-      <favourite-skeleton />
+      <main-page-skeleton />
     </template>
   </suspense>
 </template>
 
 <script setup lang="ts">
-  import favouriteSkeleton from "./favourite-skeleton.vue";
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500

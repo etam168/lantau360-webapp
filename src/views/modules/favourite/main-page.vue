@@ -4,7 +4,11 @@
       <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
+    <app-carousel-section
+      :data="advertisements"
+      :aspect-ratio="aspectRatio()"
+      @image-click="onImageClick"
+    />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
@@ -90,6 +94,29 @@
     { name: "location", label: t(`${i18nKey}.tabItem.location`) },
     { name: "business", label: t(`${i18nKey}.tabItem.business`) }
   ]);
+
+  // Updated onImageClick function to handle both Site and Advertisement
+  const onImageClick = (item: CarouselTypes) => {
+    if (isAdvertisement(item)) {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/marketing-detail-dialog.vue")
+        ),
+        componentProps: {
+          item: item as AdvertisementView
+        }
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/category-detail-dialog.vue")
+        ),
+        componentProps: {
+          item: item as SiteView
+        }
+      });
+    }
+  };
 
   onMounted(() => {
     eventBus.on("favoriteUpdated", item => {

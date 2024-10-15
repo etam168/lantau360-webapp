@@ -29,7 +29,7 @@
           <app-search-bar @on-search="handleSearchDialog" />
         </q-card-actions>
 
-        <generic-directory-item-list :data="directoryData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -42,8 +42,6 @@
   import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
-
-  import GenericDirectoryItemList from "@/components/custom/generic-directory-item-list.vue";
 
   // .ts file
   import { ENTITY_URL, EntityURLKey } from "@/constants";

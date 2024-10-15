@@ -51,6 +51,7 @@
     </q-page-sticky>
   </q-page>
 </template>
+
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
