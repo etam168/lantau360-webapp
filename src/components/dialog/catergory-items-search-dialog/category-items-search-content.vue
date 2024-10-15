@@ -14,9 +14,6 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
-  import { SiteView } from "@/interfaces/models/views/site-view";
-
   // .ts files
   import useDataTable from "@/composable/use-data-table";
 
@@ -39,9 +36,10 @@
     switch (entityKey) {
       case "SITE":
         return { url: "/Site/Datatable", key: "siteId" };
-      // Add more cases as needed
+      case "BUSINESS":
+        return { url: "/Business/Datatable", key: "businessId" };
       default:
-        return { url: "/Site/Datatable", key: "siteId" }; // Default case
+        return { url: "", key: "" }; // Default case
     }
   });
 
@@ -66,7 +64,7 @@
         () => import("@/components/dialog/category-detail-dialog.vue")
       ),
       componentProps: {
-        item: item as SiteView
+        item: item
       }
     });
   }

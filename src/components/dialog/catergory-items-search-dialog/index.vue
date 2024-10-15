@@ -48,12 +48,13 @@
 
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const isDialogVisible = ref();
-  const i18nKey = "home";
 
   const dialogTitle = computed(() => {
     switch (entityKey) {
       case "SITE":
-        return t(`${i18nKey}.siteSearch`);
+        return t(`home.siteSearch`);
+      case "BUSINESS":
+        return t(`business.businessSearch`);
       default:
         break;
     }

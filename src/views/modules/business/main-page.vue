@@ -84,9 +84,12 @@
 
   function handleSearchDialog(value: any) {
     $q.dialog({
-      component: defineAsyncComponent(() => import("./search-business/index.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
+      ),
       componentProps: {
-        query: { searchKeyword: value }
+        query: { searchKeyword: value },
+        entityKey: "BUSINESS"
       }
     });
   }
