@@ -5,7 +5,7 @@
       <app-skeleton-search v-else-if="item.type === 'search'" />
       <app-skeleton-tab-items v-else-if="item.type === 'tabItems'" :item-count="item.itemCount" />
       <app-skeleton-weather v-else-if="item.type === 'weather'" />
-      <app-skeleton-directory-item-list
+      <app-skeleton-directory-items
         v-else-if="item.type === 'directory'"
         :item-count="item.itemCount"
       />

@@ -43,7 +43,6 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
@@ -62,17 +61,17 @@
   }>();
 
   // Composable function calls
-  const { eventBus, translate } = useUtilities();
+  const { eventBus, translate, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const entityName = useChangeCase(entityKey, "camelCase").value;
+  const entityName = getEntityName(entityKey);
 
-  const dialogTitle = computed(
-    () => "ddd"
-    //translate(category.directoryName, category.meta, "directoryName")
+  alert(JSON.stringify(`${[entityName]}Name`));
+  const dialogTitle = computed(() =>
+    translate(`${[entityName]}Name`, category.meta, `${[entityName]}Name`)
   );
 
   /**

@@ -10,7 +10,7 @@
           <q-item-section side>
             <app-button-rounded
               :text-color="isFavourite ? 'red' : 'white'"
-              icon="favorite"
+              icon="mdi-heart"
               @click="onBtnFavClick"
             />
           </q-item-section>
@@ -34,17 +34,13 @@
     item: {
       type: Object as PropType<CategoryTypes>,
       required: true
-    },
-    descriptionContent: {
-      type: [String, null] as PropType<string | null>,
-      required: true
     }
   });
 
-  const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
+  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const i18nKey = "home";
-  const translatedContent = ref(props.descriptionContent ?? "");
+  const translatedContent = ref(translate(props.item.description, props.item.meta, "description"));
   const isFavourite = ref(isFavouriteItem(props.item));
 
   function onBtnFavClick() {
