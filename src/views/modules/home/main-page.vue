@@ -45,7 +45,7 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { aspectRatio, eventBus } = useUtilities();
+  const { eventBus } = useUtilities();
   const { openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const attractions = ref<SiteView[]>([]);

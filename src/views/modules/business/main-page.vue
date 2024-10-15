@@ -4,7 +4,7 @@
       <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
     </q-bar>
 
-    <app-carousel-section :data="advertisements" :aspect-ratio="aspectRatio()" />
+    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
@@ -51,7 +51,7 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { aspectRatio, eventBus, isSmallScreen } = useUtilities();
+  const { eventBus, isSmallScreen } = useUtilities();
   const { openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
@@ -133,6 +133,18 @@
       }
     }
   }
+
+  // Function to handle Advertisement
+  const onImageClick = (item: AdvertisementView) => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/marketing-detail-dialog.vue")
+      ),
+      componentProps: {
+        item: item as AdvertisementView
+      }
+    });
+  };
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
