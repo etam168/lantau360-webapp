@@ -2,7 +2,7 @@
   <suspense>
     <!-- "default" slot belongs to Suspense -->
     <template #default>
-      <main-page />
+      <main-page :entityKey />
     </template>
 
     <!-- "fallback" slot belongs to Suspense -->
@@ -13,11 +13,11 @@
 </template>
 
 <script setup lang="ts">
-  // .ts file
-  import MainPageSkeleton from "@/components/global/skeleton/main-page-skeleton.vue";
   import { EntityURLKey } from "@/constants";
 
   const entityKey: EntityURLKey = "SITE";
+
+  // Async Component
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 100

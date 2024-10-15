@@ -1,6 +1,6 @@
 <template>
   <q-responsive :ratio="aspectRatio()">
-    <q-skeleton height="566.55px" width="100%" />
+    <q-skeleton type="rect" width="100%" />
   </q-responsive>
 </template>
 

@@ -1,7 +1,6 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
@@ -20,9 +19,8 @@
           <template #default>
             <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entity-key />
+            <category-detail-content :category :entity-key />
           </template>
-
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
             <div class="row justify-center items-center" style="height: 500px">
@@ -42,14 +40,14 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Composables Imports
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import CategoryItemsContent from "./category-items-content.vue";
+  import CategoryDetailContent from "./category-detail-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
@@ -58,8 +56,8 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { directory, entityKey } = defineProps<{
-    directory: DirectoryTypes;
+  const { category, entityKey } = defineProps<{
+    category: CategoryTypes;
     entityKey: EntityURLKey;
   }>();
 
@@ -72,8 +70,9 @@
   const errorMessage = ref<string | null>(null);
   const entityName = useChangeCase(entityKey, "camelCase").value;
 
-  const dialogTitle = computed(() =>
-    translate(directory.directoryName, directory.meta, "directoryName")
+  const dialogTitle = computed(
+    () => "ddd"
+    //translate(category.directoryName, category.meta, "directoryName")
   );
 
   /**

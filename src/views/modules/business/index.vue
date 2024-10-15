@@ -13,7 +13,6 @@
 </template>
 
 <script setup lang="ts">
-  import MainPageSkeleton from "@/components/global/skeleton/main-page-skeleton.vue";
   import { EntityURLKey } from "@/constants";
 
   const entityKey: EntityURLKey = "BUSINESS";
