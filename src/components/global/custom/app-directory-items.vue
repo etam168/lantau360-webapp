@@ -55,7 +55,6 @@
   });
 
   function handleClick(item: any) {
-    debugger;
     emit("on-directory-item", item);
   }
 </script>

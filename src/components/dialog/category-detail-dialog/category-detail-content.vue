@@ -4,6 +4,7 @@
       <gallery-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
       <contact-section v-else-if="item.type === 'contact'" :category />
       <description-section v-else-if="item.type === 'description'" :category />
+      <expansion-description-section v-else-if="item.type === 'expansion-description'" :category />
       <favourite-section v-else-if="item.type === 'favourite'" :category />
 
       <location-section
@@ -33,6 +34,7 @@
   // UI Components
   import ContactSection from "./renderer/contact-section.vue";
   import DescriptionSection from "./renderer/description-section.vue";
+  import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
   import promotionSection from "./renderer/promotion-section.vue";
@@ -106,6 +108,7 @@
     type:
       | "carousel"
       | "gallery"
+      | "expansion-description"
       | "description"
       | "favourite"
       | "location"
@@ -126,7 +129,7 @@
       case RENDERER.SITE:
         return [
           { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" },
+          { name: "expansion-description", type: "expansion-description" },
           { name: "location", type: "location" },
           { name: "contact", type: "contact" }
         ];
@@ -140,15 +143,18 @@
       case RENDERER.EVENT:
         return [
           { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" }
+          { name: "expansion-description", type: "expansion-description" }
         ];
       case RENDERER.POSTING:
         return [
           { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" }
+          { name: "expansion-description", type: "expansion-description" }
         ];
       case RENDERER.PROMOTION:
-        return [{ name: "promotion", type: "promotion" }];
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "promotion", type: "promotion" }
+        ];
       case RENDERER.TAXI:
         return [
           { name: "carousel", type: "carousel" },
@@ -207,7 +213,6 @@
   }
 
   const template = computed(() => {
-    alert(entityKey);
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;

@@ -56,10 +56,11 @@
   const onItemClick = (item: BusinessPromotionView) => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/marketing-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
-        item: item
+        category: item,
+        entityKey: "BUSINESS"
       }
     });
   };

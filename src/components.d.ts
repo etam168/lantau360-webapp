@@ -21,7 +21,6 @@ declare module 'vue' {
     AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
     AppSkeletonCard: typeof import('./components/global/widgets/app-skeleton-card.vue')['default']
     AppSkeletonCarousel: typeof import('./components/global/widgets/app-skeleton-carousel.vue')['default']
-    AppSkeletonDirectoryItemList: typeof import('./components/global/skeleton/app-skeleton-directory-item-list.vue')['default']
     AppSkeletonDirectoryItems: typeof import('./components/global/widgets/app-skeleton-directory-items.vue')['default']
     AppSkeletonSearch: typeof import('./components/global/widgets/app-skeleton-search.vue')['default']
     AppSkeletonTabItems: typeof import('./components/global/widgets/app-skeleton-tab-items.vue')['default']
