@@ -46,7 +46,7 @@
 
   const { getEntityName, getImageURL, translate } = useUtilities();
 
-  const emits = defineEmits(["on-detail"]);
+  const emits = defineEmits(["on-category-detail"]);
 
   // Props
   const {
@@ -118,6 +118,6 @@
   };
 
   function handleDetail(item: any) {
-    emits("on-detail", item);
+    emits("on-category-detail", item);
   }
 </script>

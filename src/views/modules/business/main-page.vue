@@ -52,7 +52,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { eventBus, isSmallScreen } = useUtilities();
-  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
+  const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryItemService(entityKey);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
@@ -136,14 +136,7 @@
 
   // Function to handle Advertisement
   const onImageClick = (item: AdvertisementView) => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/marketing-detail-dialog.vue")
-      ),
-      componentProps: {
-        item: item as AdvertisementView
-      }
-    });
+    openCategoryDetailDialog(item);
   };
 
   async function onDirectoryItem(directory: Directory) {

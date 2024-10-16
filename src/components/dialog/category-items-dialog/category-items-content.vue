@@ -21,13 +21,19 @@
             :categoryItems="filterGroupedArray(item.name)"
             :checkIns
             :entityKey
-            @on-detail="handleDetail"
+            @on-category-detail="handleDetail"
           />
         </q-tab-panel>
       </q-tab-panels>
     </template>
 
-    <app-category-list-items v-else :categoryItems :checkIns :entityKey @on-detail="handleDetail" />
+    <app-category-list-items
+      v-else
+      :categoryItems
+      :checkIns
+      :entityKey
+      @on-category-detail="handleDetail"
+    />
   </q-card>
 </template>
 
@@ -41,7 +47,6 @@
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
-  import { Dialog } from "quasar";
 
   // Props
   const { directory, entityKey } = defineProps<{
@@ -49,8 +54,9 @@
     entityKey: EntityURLKey;
   }>();
 
-  const { groupBy, translate, eventBus } = useUtilities();
+  const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
+  const { openCategoryDetailDialog } = useCategoryItemService(entityKey);
   const $q = useQuasar();
 
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
@@ -116,16 +122,9 @@
   }
 
   async function handleDetail(item: any) {
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        category: item,
-        entityKey: entityKey
-      }
-    });
+    openCategoryDetailDialog(item);
   }
+
   /**
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data

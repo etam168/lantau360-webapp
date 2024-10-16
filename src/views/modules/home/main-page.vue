@@ -46,7 +46,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { eventBus } = useUtilities();
-  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
+  const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryItemService(entityKey);
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);
@@ -119,16 +119,8 @@
     }
   }
 
-  // Updated onImageClick function to handle both Site and Advertisement
   const onImageClick = (item: SiteView) => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog.vue")
-      ),
-      componentProps: {
-        item: item as SiteView
-      }
-    });
+    openCategoryDetailDialog(item);
   };
 
   async function onDirectoryItem(directory: Directory) {
