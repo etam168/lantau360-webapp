@@ -207,6 +207,7 @@
       case TEMPLATE.NEWS.value:
       case TEMPLATE.NOTICE.value:
         return RENDERER.EVENT;
+
       default:
         return RENDERER.BUSINESS;
     }

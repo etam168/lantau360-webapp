@@ -23,19 +23,16 @@
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
+  import { ENTITY_URL } from "@/constants";
 
   // .ts files
-
-  const props = defineProps({
-    item: {
-      type: Object as PropType<BulletinTypes>,
-      required: true
-    }
-  });
+  const { item } = defineProps<{
+    item: BulletinTypes;
+  }>();
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
-  const newsItem = computed(() => props.item as CommunityNews);
+  const newsItem = computed(() => item as CommunityNews);
 
   const translatedContent: any = ref(
     translate(newsItem.value.description, newsItem.value.meta, "description")
@@ -50,16 +47,17 @@
     return modifiedAt;
   };
 
-  function onItemClick() {
+  const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
-        item: props.item
+        category: item,
+        entityKey: ENTITY_URL.COMMUNITY
       }
     });
-  }
+  };
 
   const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

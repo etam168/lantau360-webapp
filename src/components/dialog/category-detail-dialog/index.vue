@@ -62,8 +62,8 @@
   }>();
 
   // Composable function calls
-  const { eventBus, translate, getEntityName } = useUtilities();
-  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+  const { translate, getEntityName } = useUtilities();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);

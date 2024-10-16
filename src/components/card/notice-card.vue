@@ -22,15 +22,13 @@
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import { ENTITY_URL } from "@/constants";
 
-  const props = defineProps({
-    item: {
-      type: Object as PropType<BulletinTypes>,
-      required: true
-    }
-  });
+  const { item } = defineProps<{
+    item: BulletinTypes;
+  }>();
 
-  const noticeItem = computed(() => props.item as CommunityNotice);
+  const noticeItem = computed(() => item as CommunityNotice);
   const { getTimeAgo, translate } = useUtilities();
   const $q = useQuasar();
 
@@ -45,10 +43,11 @@
   function onItemClick() {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
-        item: props.item
+        category: item,
+        entityKey: ENTITY_URL.COMMUNITY
       }
     });
   }

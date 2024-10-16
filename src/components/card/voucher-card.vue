@@ -23,25 +23,24 @@
   // Interface file
   import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import { MarketingType } from "@/interfaces/types/marketing-types";
+  import { ENTITY_URL } from "@/constants";
 
   const $q = useQuasar();
   const { getImageURL } = useUtilities();
-  const props = defineProps({
-    item: {
-      type: Object as PropType<MarketingType>,
-      required: true
-    }
-  });
+  const { item } = defineProps<{
+    item: MarketingType;
+  }>();
 
-  const voucherItem = computed(() => props.item as BusinessVoucherView);
+  const voucherItem = computed(() => item as BusinessVoucherView);
 
   const onItemClick = (item: BusinessVoucherView) => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/marketing-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
-        query: { businessVoucherId: item.businessVoucherId }
+        category: item,
+        entityKey: ENTITY_URL.COMMUNITY
       }
     });
   };

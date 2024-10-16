@@ -34,28 +34,27 @@
 
   // .ts files
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
+  import { ENTITY_URL } from "@/constants";
 
-  const props = defineProps({
-    item: {
-      type: Object as PropType<BulletinTypes>,
-      required: true
-    }
-  });
+  const { item } = defineProps<{
+    item: BulletinTypes;
+  }>();
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
 
-  const eventItem = computed(() => props.item as CommunityEventView);
+  const eventItem = computed(() => item as CommunityEventView);
 
   const translatedTitle: any = ref(translate(eventItem.value.title, eventItem.value.meta, "title"));
 
   const onItemClick = () => {
     $q.dialog({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/bulletin-detail-dialog.vue")
+        () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
-        item: props.item
+        category: item,
+        entityKey: ENTITY_URL.COMMUNITY
       }
     });
   };
