@@ -15,13 +15,11 @@
         @open-map="openGoogleMaps"
       />
 
-      <subtitle-favourite-section v-else-if="item.type === 'subtitle-favourite'" :item="category" />
-
-      <timetable-image-section
-        v-else-if="item.type === 'imagePath' || item.type === 'bannerPath'"
+      <subtitle1-favourite-image-section
+        v-else-if="item.type === 'subtitle1-favourite-image'"
         :item="category"
-        :type="item.type"
       />
+      <subtitle2-image-section v-else-if="item.type === 'subtitle2-image'" :item="category" />
     </template>
   </q-page>
 </template>
@@ -45,8 +43,8 @@
   import DescriptionSection from "./renderer/description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
-  import SubtitleFavouriteSection from "./renderer/subtitle-favourite-section.vue";
-  import TimetableImageSection from "./renderer/timetable-image-section.vue";
+  import Subtitle1FavouriteImageSection from "./renderer/subtitle1-favourite-image-section.vue";
+  import Subtitle2ImageSection from "./renderer/subtitle2-image-section.vue";
 
   // Props
   const props = defineProps<{
@@ -120,7 +118,8 @@
       | "favourite"
       | "location"
       | "contact"
-      | "subtitle-favourite"
+      | "subtitle1-favourite-image"
+      | "subtitle2-image"
       | "bannerPath"
       | "imagePath";
   }
@@ -155,10 +154,8 @@
         ];
       case RENDERER.TIMETABLE:
         return [
-          { name: "subtitle-favourite", type: "subtitle-favourite" },
-          { name: "bannerPath", type: "bannerPath" },
-          { name: "subtitle-favourite", type: "subtitle-favourite" },
-          { name: "imagePath", type: "imagePath" }
+          { name: "subtitle1-favourite-image", type: "subtitle1-favourite-image" },
+          { name: "subtitle2-image", type: "subtitle2-image" }
         ];
       default:
         return [];
