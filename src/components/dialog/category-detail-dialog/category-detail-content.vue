@@ -14,6 +14,7 @@
         @check-in="openCheckInDialog"
         @open-map="openGoogleMaps"
       />
+      <promotion-section v-else-if="item.type === 'promotion'" :category />
 
       <timetable-section v-else-if="item.type === 'timetable'" :category />
     </template>
@@ -34,6 +35,7 @@
   import DescriptionSection from "./renderer/description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
+  import promotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
 
   // Props
@@ -109,8 +111,7 @@
       | "location"
       | "contact"
       | "timetable"
-      | "bannerPath"
-      | "imagePath";
+      | "promotion";
   }
 
   const renderItems = computed((): RenderItem[] => {
@@ -136,11 +137,18 @@
           { name: "carousel", type: "carousel" },
           { name: "favourite", type: "favourite" }
         ];
+      case RENDERER.EVENT:
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "description", type: "description" }
+        ];
       case RENDERER.POSTING:
         return [
           { name: "carousel", type: "carousel" },
           { name: "description", type: "description" }
         ];
+      case RENDERER.PROMOTION:
+        return [{ name: "promotion", type: "promotion" }];
       case RENDERER.TAXI:
         return [
           { name: "carousel", type: "carousel" },
@@ -180,10 +188,15 @@
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
+      case TEMPLATE.ADVERTISEMENT.value:
+        return RENDERER.ADVERTISEMENT;
+      case TEMPLATE.PROMOTION.value:
+      case TEMPLATE.VOUCHER.value:
+        return RENDERER.PROMOTION;
       case TEMPLATE.EVENT.value:
       case TEMPLATE.NEWS.value:
       case TEMPLATE.NOTICE.value:
-        return RENDERER.ADVERTISEMENT;
+        return RENDERER.EVENT;
       default:
         return RENDERER.BUSINESS;
     }
@@ -193,10 +206,6 @@
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
-      case "ADVERTISEMENT":
-      case "BUSINESS_PROMOTION":
-      case "BUSINESS_VOUCHER":
-        return RENDERER.ADVERTISEMENT;
       case "BUSINESS":
         return getBusinessTemplate();
       case "SITE":

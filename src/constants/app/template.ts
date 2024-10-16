@@ -10,6 +10,9 @@ const Template = {
   NOTICE: { value: 8, mask: 7 },
   EVENT: { value: 8, mask: 7 },
   TUITION: { value: 9, mask: 7 },
-  PROPERTY: { value: 10, mask: 7 }
+  PROPERTY: { value: 10, mask: 7 },
+  ADVERTISEMENT: { value: 8, mask: 7 },
+  PROMOTION: { value: 9, mask: 7 },
+  VOUCHER: { value: 10, mask: 7 }
 };
 export default Template;
