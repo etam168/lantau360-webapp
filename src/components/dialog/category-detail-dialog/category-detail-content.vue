@@ -2,34 +2,25 @@
   <q-page>
     <template v-for="(item, index) in renderItems" :key="index">
       <gallery-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
-      <contact-section v-else-if="item.type === 'contact'" :item="category" />
-      <description-section v-else-if="item.type === 'description'" :item="category" />
-      <favourite-section v-else-if="item.type === 'favourite'" :item="category" />
+      <contact-section v-else-if="item.type === 'contact'" :category />
+      <description-section v-else-if="item.type === 'description'" :category />
+      <favourite-section v-else-if="item.type === 'favourite'" :category />
 
       <location-section
         v-else-if="item.type === 'location'"
-        :category="category"
-        :entity-key="entityKey"
+        :category
+        :entityKey
         :has-check-in="true"
         @check-in="openCheckInDialog"
         @open-map="openGoogleMaps"
       />
 
-      <subtitle1-favourite-image-section
-        v-else-if="item.type === 'subtitle1-favourite-image'"
-        :item="category"
-      />
-      <subtitle2-image-section v-else-if="item.type === 'subtitle2-image'" :item="category" />
+      <timetable-section v-else-if="item.type === 'timetable'" :category />
     </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, defineAsyncComponent } from "vue";
-  import { useQuasar } from "quasar";
-  import { useI18n } from "vue-i18n";
-  import axios from "axios";
-
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
@@ -43,11 +34,10 @@
   import DescriptionSection from "./renderer/description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
-  import Subtitle1FavouriteImageSection from "./renderer/subtitle1-favourite-image-section.vue";
-  import Subtitle2ImageSection from "./renderer/subtitle2-image-section.vue";
+  import TimetableSection from "./renderer/timetable-section.vue";
 
   // Props
-  const props = defineProps<{
+  const { category, entityKey } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
   }>();
@@ -60,12 +50,12 @@
 
   const fetchAllData = async () => {
     try {
-      switch (props.entityKey) {
+      switch (entityKey) {
         case "SITE":
-          await loadData(`${URL.SITE_GALLERY}/${(props.category as SiteView).siteId}`);
+          await loadData(`${URL.SITE_GALLERY}/${(category as SiteView).siteId}`);
           break;
         default:
-          console.warn(`Unsupported entity type: ${props.entityKey}`);
+          console.warn(`Unsupported entity type: ${entityKey}`);
       }
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -88,7 +78,7 @@
       try {
         const [galleryResponse] = await Promise.all([axios.get<GalleryImageType[]>(galleryUrl)]);
 
-        const maskValue = getMaskValue(props.category.directoryTemplate || 0);
+        const maskValue = getMaskValue(category.directoryTemplate || 0);
         galleryItems.value = galleryResponse.data
           .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
           .sort((a, b) => a.ranking - b.ranking);
@@ -102,7 +92,7 @@
     $q.dialog({
       component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
       componentProps: {
-        item: props.category
+        item: category
       }
     });
   };
@@ -118,8 +108,7 @@
       | "favourite"
       | "location"
       | "contact"
-      | "subtitle1-favourite-image"
-      | "subtitle2-image"
+      | "timetable"
       | "bannerPath"
       | "imagePath";
   }
@@ -153,25 +142,22 @@
           { name: "favourite", type: "favourite" }
         ];
       case RENDERER.TIMETABLE:
-        return [
-          { name: "subtitle1-favourite-image", type: "subtitle1-favourite-image" },
-          { name: "subtitle2-image", type: "subtitle2-image" }
-        ];
+        return [{ name: "timetable", type: "timetable" }];
       default:
         return [];
     }
   });
 
   const openGoogleMaps = () => {
-    if (props.category.meta?.["hasMap"]) {
-      window.open(props.category.meta?.["mapLink"], "_blank");
+    if (category.meta?.["hasMap"]) {
+      window.open(category.meta?.["mapLink"], "_blank");
     } else {
       notify(t("errors.mapLinkNotAvailable"), "negative");
     }
   };
 
   function getSiteTemplate() {
-    switch (props.category?.directoryTemplate) {
+    switch (category?.directoryTemplate) {
       case TEMPLATE.ATM.value:
         return RENDERER.ATM;
       case TEMPLATE.TIMETABLE.value:
@@ -186,7 +172,7 @@
   }
 
   function getBusinessTemplate() {
-    switch (props.category?.directoryTemplate) {
+    switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
       default:
@@ -195,7 +181,7 @@
   }
 
   const template = computed(() => {
-    switch (props.entityKey) {
+    switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
       case "BUSINESS":

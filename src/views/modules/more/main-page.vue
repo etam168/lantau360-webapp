@@ -26,7 +26,7 @@
             dense
             flat
             round
-            icon="arrow_forward"
+            icon="mdi-chevron-right"
             v-close-popup
             @click="throttledHandleContentDialog(item)"
           ></q-btn>

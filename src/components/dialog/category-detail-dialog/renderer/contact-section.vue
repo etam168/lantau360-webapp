@@ -13,7 +13,7 @@
           <q-card-section
             class="q-pa-none"
             :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
-            v-if="item.contactPhone || item.contactWhatsApp"
+            v-if="category.contactPhone || category.contactWhatsApp"
           >
             <q-list class="q-pa-none">
               <q-item v-if="businessItem.contactPhone" class="q-pa-none">
@@ -58,14 +58,12 @@
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const props = defineProps({
-    item: {
-      type: Object as PropType<CategoryTypes>,
-      required: true
-    }
-  });
+  // Props
+  const { category } = defineProps<{
+    category: CategoryTypes;
+  }>();
 
   const i18nKey = "home";
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
-  const businessItem = computed(() => props?.item as BusinessView);
+  const businessItem = computed(() => category as BusinessView);
 </script>

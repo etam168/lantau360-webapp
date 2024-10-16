@@ -15,16 +15,17 @@
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const { item } = defineProps<{
-    item: CategoryTypes;
+  // Props
+  const { category } = defineProps<{
+    category: CategoryTypes;
   }>();
 
   const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
-  const isFavourite = ref(isFavouriteItem(item));
+  const isFavourite = ref(isFavouriteItem(category));
 
   function onBtnFavClick() {
-    toggleItemFavStatus(item, isFavourite.value);
+    toggleItemFavStatus(category, isFavourite.value);
     isFavourite.value = !isFavourite.value;
-    eventBus.emit("favoriteUpdated", item);
+    eventBus.emit("favoriteUpdated", category);
   }
 </script>

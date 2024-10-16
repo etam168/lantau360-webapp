@@ -30,22 +30,20 @@
 <script setup lang="ts">
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const props = defineProps({
-    item: {
-      type: Object as PropType<CategoryTypes>,
-      required: true
-    }
-  });
+  // Props
+  const { category } = defineProps<{
+    category: CategoryTypes;
+  }>();
 
   const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
   const i18nKey = "home";
-  const translatedContent = ref(translate(props.item.description, props.item.meta, "description"));
-  const isFavourite = ref(isFavouriteItem(props.item));
+  const translatedContent = ref(translate(category.description, category.meta, "description"));
+  const isFavourite = ref(isFavouriteItem(category));
 
   function onBtnFavClick() {
-    toggleItemFavStatus(props.item, isFavourite.value);
+    toggleItemFavStatus(category, isFavourite.value);
     isFavourite.value = !isFavourite.value;
-    eventBus.emit("favoriteUpdated", props.item);
+    eventBus.emit("favoriteUpdated", category);
   }
 </script>
