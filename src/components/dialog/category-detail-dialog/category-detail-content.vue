@@ -185,14 +185,18 @@
   }
 
   function getBusinessTemplate() {
+    if ("advertisementId" in category) {
+      return RENDERER.ADVERTISEMENT;
+    }
+    if ("businessVoucherId" in category) {
+      return RENDERER.VOUCHER;
+    }
+    if ("businessPromotionId" in category) {
+      return RENDERER.PROMOTION;
+    }
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
-      case TEMPLATE.ADVERTISEMENT.value:
-        return RENDERER.ADVERTISEMENT;
-      case TEMPLATE.PROMOTION.value:
-      case TEMPLATE.VOUCHER.value:
-        return RENDERER.PROMOTION;
       case TEMPLATE.EVENT.value:
       case TEMPLATE.NEWS.value:
       case TEMPLATE.NOTICE.value:
@@ -203,6 +207,7 @@
   }
 
   const template = computed(() => {
+    alert(entityKey);
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
