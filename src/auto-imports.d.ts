@@ -139,6 +139,7 @@ declare global {
   const useBroadcastChannel: typeof import('@vueuse/core')['useBroadcastChannel']
   const useBrowserLocation: typeof import('@vueuse/core')['useBrowserLocation']
   const useCached: typeof import('@vueuse/core')['useCached']
+  const useCategoryDialogService: typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']
   const useCategoryItemListFetcherService: typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']
   const useCategoryItemService: typeof import('./composable/services/use-category-item-service')['useCategoryItemService']
   const useCategoryService: typeof import('./composable/services/use-category-item-service')['useCategoryService']
@@ -456,8 +457,8 @@ declare module 'vue' {
     readonly useBroadcastChannel: UnwrapRef<typeof import('@vueuse/core')['useBroadcastChannel']>
     readonly useBrowserLocation: UnwrapRef<typeof import('@vueuse/core')['useBrowserLocation']>
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
+    readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
     readonly useCategoryItemListFetcherService: UnwrapRef<typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']>
-    readonly useCategoryItemService: UnwrapRef<typeof import('./composable/services/use-category-item-service')['useCategoryItemService']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>

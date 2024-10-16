@@ -321,6 +321,7 @@
     "useApi": true,
     "useCategoryItemListFetcherService": true,
     "useCategoryItemService": true,
-    "usePwaInstallService": true
+    "usePwaInstallService": true,
+    "useCategoryDialogService": true
   }
 }
