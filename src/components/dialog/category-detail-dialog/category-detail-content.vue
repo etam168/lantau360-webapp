@@ -115,6 +115,11 @@
 
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {
+      case RENDERER.ADVERTISEMENT:
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "description", type: "description" }
+        ];
       case RENDERER.ATM:
       case RENDERER.BUSINESS:
       case RENDERER.SITE:
@@ -175,6 +180,10 @@
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
+      case TEMPLATE.EVENT.value:
+      case TEMPLATE.NEWS.value:
+      case TEMPLATE.NOTICE.value:
+        return RENDERER.ADVERTISEMENT;
       default:
         return RENDERER.BUSINESS;
     }
@@ -184,6 +193,10 @@
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
+      case "ADVERTISEMENT":
+      case "BUSINESS_PROMOTION":
+      case "BUSINESS_VOUCHER":
+        return RENDERER.ADVERTISEMENT;
       case "BUSINESS":
         return getBusinessTemplate();
       case "SITE":
