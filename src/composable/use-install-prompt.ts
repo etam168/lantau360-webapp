@@ -18,6 +18,14 @@ export function useInstallPrompt() {
     });
   };
 
+  const isPWAInstallSupported = () => {
+    return "BeforeInstallPromptEvent" in window;
+  }
+
+  const isStandaloneModeSupported = () =>{
+    return "standalone" in window.navigator || "standalone" in (window.navigator as any);
+  }
+
   const isInStandaloneMode = () =>
     window.matchMedia("(display-mode: standalone)").matches ||
     ("standalone" in window.navigator && window.navigator.standalone);
@@ -90,15 +98,31 @@ export function useInstallPrompt() {
     }
   }
 
+  async function checkInstalledRelatedApps() {
+    debugger;
+    alert("Ds");
+    if ('getInstalledRelatedApps' in navigator) {
+    alert("inside");
+
+        const relatedApps = await navigator.getInstalledRelatedApps;
+
+        debugger;
+        // isAppInstalled.value = relatedApps.length > 0; // Check if any related apps are installed
+    }
+  }
+
   return {
     appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
+    isStandaloneModeSupported,
+    isPWAInstallSupported,
     notifyNativeInstall,
     promptInstall,
     shouldShowInstallButton,
     showAppInstallButton,
-    showPlatformGuidance
+    showPlatformGuidance,
+    checkInstalledRelatedApps
   };
 }
