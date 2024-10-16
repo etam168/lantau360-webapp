@@ -1,8 +1,8 @@
 <template>
   <q-page>
-    <default-renderer :category :entityKey :galleryItems/>
+    <category-detail-renderer :category :entityKey :galleryItems />
   </q-page>
-</template>  
+</template>
 
 <script setup lang="ts">
   // Interface files
@@ -10,10 +10,11 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // .ts files
-  import { EntityURLKey, RENDERER, TEMPLATE, URL } from "@/constants";
+  import { EntityURLKey, TEMPLATE, URL } from "@/constants";
 
   // Custom Components
-  import DefaultRenderer from "@/components/renderer/default-renderer.vue";
+  // import DefaultRenderer from "@/components/renderer/default-renderer.vue";
+  import CategoryDetailRenderer from "./category-detail-renderer.vue";
   import { SiteView } from "@/interfaces/models/views/site-view";
 
   // Props

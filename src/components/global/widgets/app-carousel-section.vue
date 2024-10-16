@@ -43,7 +43,7 @@
     ratio?: number;
   }>();
 
-  const { aspectRatio, getImageURL, isAdvertisement } = useUtilities();
+  const { aspectRatio, getImageURL } = useUtilities();
 
   // Computed property for ratio
   const computedRatio = computed(() => ratio ?? aspectRatio());
@@ -54,7 +54,7 @@
   const slide = ref(0);
 
   // Function to extract ID from the item
-  function getId(item: CarouselTypes): number {
-    return isAdvertisement(item) ? item.advertisementId : item.siteId;
-  }
+  // function getId(item: CarouselTypes): number {
+  //   return isAdvertisement(item) ? item.advertisementId : item.siteId;
+  // }
 </script>

@@ -62,7 +62,7 @@
   const entityKey: EntityURLKey = "COMMUNITY";
 
   const { fetchMemberPoints, setPoints } = useUserStore();
-  const { openCategoryItemDialog } = useCategoryItemService(entityKey);
+  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directoryData = ref<CommunityDirectory[]>([]);

@@ -106,25 +106,25 @@
 
   // Updated onImageClick function to handle both Site and Advertisement
   const onImageClick = (item: CarouselTypes) => {
-    if (isAdvertisement(item)) {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/marketing-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item as AdvertisementView
-        }
-      });
-    } else {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-detail-dialog.vue")
-        ),
-        componentProps: {
-          item: item as SiteView
-        }
-      });
-    }
+    // if (isAdvertisement(item)) {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("@/components/dialog/marketing-detail-dialog.vue")
+    //     ),
+    //     componentProps: {
+    //       item: item as AdvertisementView
+    //     }
+    //   });
+    // } else {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("@/components/dialog/category-detail-dialog.vue")
+    //     ),
+    //     componentProps: {
+    //       item: item as SiteView
+    //     }
+    //   });
+    // }
   };
 
   onMounted(() => {

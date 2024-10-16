@@ -46,7 +46,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { eventBus } = useUtilities();
-  const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryItemService(entityKey);
+  const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);

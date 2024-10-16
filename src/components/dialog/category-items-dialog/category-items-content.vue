@@ -56,7 +56,7 @@
 
   const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryItemService(entityKey);
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const $q = useQuasar();
 
   const categoryItems: Ref<CategoryTypes[]> = ref([]);

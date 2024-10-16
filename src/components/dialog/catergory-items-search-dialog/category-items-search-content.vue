@@ -59,14 +59,14 @@
   }
 
   async function handleDialog(item: any) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog.vue")
-      ),
-      componentProps: {
-        item: item
-      }
-    });
+    // $q.dialog({
+    //   component: defineAsyncComponent(
+    //     () => import("@/components/dialog/category-detail-dialog.vue")
+    //   ),
+    //   componentProps: {
+    //     item: item
+    //   }
+    // });
   }
 
   onBeforeUnmount(() => {

@@ -90,14 +90,14 @@
   };
 
   const onItemClick = (item: any) => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/checkin-detail-dialog.vue")
-      ),
-      componentProps: {
-        item: item
-      }
-    });
+    // $q.dialog({
+    //   component: defineAsyncComponent(
+    //     () => import("@/components/dialog/checkin-detail-dialog.vue")
+    //   ),
+    //   componentProps: {
+    //     item: item
+    //   }
+    // });
   };
 
   const throttledHandleDialog = throttle(onItemClick, 2000);

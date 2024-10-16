@@ -1,11 +1,10 @@
-// useCategoryItemService.ts
-import type { Directory } from "@/interfaces/models/entities/directory";
+// useCategoryDialogService.ts
 import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 
-export function useCategoryDeatialService(entityKey: EntityURLKey) {
+export function useCategoryDialogService(entityKey: EntityURLKey) {
   async function openCategoryItemDialog(isDialogOpen: Ref<Boolean>, directory: DirectoryTypes) {
     if (isDialogOpen.value) return;
 

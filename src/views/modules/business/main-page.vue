@@ -52,7 +52,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { eventBus, isSmallScreen } = useUtilities();
-  const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryItemService(entityKey);
+  const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryDialogService(entityKey);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
