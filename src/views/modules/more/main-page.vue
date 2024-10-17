@@ -1,47 +1,51 @@
 <template>
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
+
     <template v-for="(item, index) in renderItems" :key="index">
       <log-in-section v-if="item.type === 'login'" />
       <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
+
       <language-section v-if="item.type === 'language'" />
-      <more-item-section
-        v-if="item.type === 'privacy'"
-        :name="'privacy'"
-        :icon="ICONS.PRIVACY"
-        :title="'more.privacy'"
-        :content-key="'Privacy'"
-        @on-dialog="throttledHandleContentDialog" 
+
+      <app-more-item
+        v-if="item.type === 'moreItem'"
+        :icon="item.icon"
+        :title="item.title"
+        @on-dialog="handDialog(item.name)"
       />
-      <more-item-section
+
+      <!-- <more-item-section
         v-if="item.type === 'terms'"
         :name="'terms'"
         :icon="ICONS.TNC"
         :title="'more.terms'"
         :content-key="'Terms'"
-        @on-dialog="throttledHandleContentDialog" 
+        @on-dialog="throttledHandleContentDialog"
       />
+
       <more-item-section
         v-if="item.type === 'profileSetting'"
         :name="'profileSetting'"
         :icon="ICONS.PROFILE"
         :title="'more.profile'"
-        @on-dialog="throttledHandleContentDialog" 
+        @on-dialog="throttledHandleContentDialog"
       />
+
       <more-item-section
         v-if="item.type === 'account'"
         :name="'account'"
         :icon="ICONS.ACCOUNT"
         :title="'more.account.title'"
-        @on-dialog="throttledHandleContentDialog" 
+        @on-dialog="throttledHandleContentDialog"
       />
       <more-item-section
         v-if="item.type === 'checkIn'"
         :name="'checkIn'"
         :icon="ICONS.ACCOUNT"
         :title="'more.checkIn.title'"
-        @on-dialog="throttledHandleContentDialog" 
-      />
+        @on-dialog="throttledHandleContentDialog"
+      /> -->
       <install-button v-else-if="item.type === 'install'" />
       <footer-section v-else-if="item.type === 'footer'" />
     </template>
@@ -60,7 +64,6 @@
   import moreItemSection from "./section/more-item-section.vue";
 
   import FooterSection from "./section/footer-section.vue";
-  import MenuSection from "./section/menu-section.vue";
   import InstallButton from "./section/install-button.vue";
 
   import { Content } from "@/interfaces/models/entities/content";
@@ -79,36 +82,30 @@
   const throttledHandleContentDialog = throttle(showDialog, 2000);
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const key = computed(() => {
-    return userStore.isUserLogon() ? "login" : "logout";
-  });
-
   const renderItems = computed(() => {
-    switch (key.value) {
-      case "login":
+    switch (userStore.isUserLogon()) {
+      case true:
         return [
-          { type: "login" },
-          { type: "language" },
-          { type: "privacy" },
-          { type: "terms" },
-          { type: "profileSetting" },
-          { type: "account" },
-          { type: "checkIn" },
-          { type: "install" },
-          { type: "footer" }
-        ];
-      case "logout":
-        return [
-          { type: "logout" },
-          { type: "language" },
-          { type: "privacy" },
-          { type: "terms" },
-          { type: "install" },
-          { type: "footer" }
+          { name: "login", type: "login" },
+          { name: "language", type: "language" },
+          { name: "privacy", type: "privacy" },
+          { name: "terms", type: "terms" },
+          { name: "profileSetting", type: "profileSetting" },
+          { name: "account", type: "account" },
+          { name: "checkIn", type: "checkIn" },
+          { name: "install", type: "install" },
+          { name: "footer", type: "footer" }
         ];
 
       default:
-        return [];
+        return [
+          { name: "logout", type: "logout" },
+          { name: "language", type: "language" },
+          { name: "privacy", type: "privacy" },
+          { name: "terms", type: "terms" },
+          { name: "install", type: "install" },
+          { name: "footer", type: "footer" }
+        ];
     }
   });
 
