@@ -14,7 +14,7 @@ import router from "@/router";
 import veeValidate from "./vee-validate/index";
 import Vue3QTelInput from "vue3-q-tel-input";
 import InternetConnectionPlugin from "./internet-connection-plugin";
-import "vue3-q-tel-input/dist/vue3-q-tel-input.esm.css";
+import "vue3-q-tel-input/dist/style.css";
 // Types
 import type { App } from "vue";
 

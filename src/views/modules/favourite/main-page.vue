@@ -1,14 +1,8 @@
 <template>
   <q-page>
-    <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
-    </q-bar>
+    <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
 
-    <app-carousel-section
-      :data="advertisements"
-      :aspect-ratio="aspectRatio()"
-      @image-click="onImageClick"
-    />
+    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
@@ -66,20 +60,25 @@
 </template>
 
 <script setup lang="ts">
-  import { LocalStorage } from "quasar";
-
-  // Interface files
+  // Types
   import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { CarouselTypes } from "@/interfaces/types/carousel-types";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
 
-  // .ts file
-  import { URL, STORAGE_KEYS } from "@/constants";
-  import { CarouselTypes } from "@/interfaces/types/carousel-types";
-  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  // Constants
+  import { URL, STORAGE_KEYS, EntityURLKey } from "@/constants";
 
-  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
+  // Composables
+  import { LocalStorage } from "quasar";
+
+  // Props
+  const { entityKey } = defineProps<{
+    entityKey: EntityURLKey;
+  }>();
+
+  const { eventBus, isSmallScreen, aspectRatio, getEntityName } = useUtilities();
   const $q = useQuasar();
   const checkIns: Ref<CheckIn[]> = ref([]);
 
@@ -97,7 +96,7 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("location");
-  const i18nKey = "favourite";
+  const i18nKey = getEntityName(entityKey);
 
   const tabItems = ref<TabItem[]>([
     { name: "location", label: t(`${i18nKey}.tabItem.location`) },

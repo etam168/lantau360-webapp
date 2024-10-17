@@ -13,10 +13,9 @@
     isPWAInstallSupported,
     isInStandaloneMode,
     isStandaloneModeSupported,
-    checkInstalledRelatedApps,
     notifyNativeInstall,
     showPlatformGuidance
-  } = useInstallPrompt();
+  } = usePwaInstallService();
 
   function handleBeforeinstallprompt(event: Event) {
     event.preventDefault();

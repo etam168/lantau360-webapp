@@ -1,8 +1,9 @@
 <template>
   <q-page>
-    <q-bar dense class="bg-primary text-white">
+    <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
+    <!-- <q-bar dense class="bg-primary text-white">
       <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
-    </q-bar>
+    </q-bar> -->
 
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
@@ -46,12 +47,15 @@
   // .ts file
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
-  const entityKey: EntityURLKey = "BUSINESS";
+  // Props
+  const { entityKey } = defineProps<{
+    entityKey: EntityURLKey;
+  }>();
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { eventBus, isSmallScreen } = useUtilities();
+  const { eventBus, isSmallScreen, getEntityName } = useUtilities();
   const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryDialogService(entityKey);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
@@ -67,7 +71,7 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("promotion");
-  const i18nKey = "business";
+  const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
 
@@ -87,7 +91,7 @@
       ),
       componentProps: {
         query: { searchKeyword: value },
-        entityKey: "BUSINESS"
+        entityKey: entityKey
       }
     });
   }

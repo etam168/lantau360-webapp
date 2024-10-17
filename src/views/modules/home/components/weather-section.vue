@@ -4,10 +4,6 @@
       <q-item-section>
         <q-item class="q-pa-none">
           <q-item-section>
-            <!-- <q-avatar size="56px">
-              <q-img :src="iconPath" />
-            </q-avatar> -->
-
             <q-avatar size="56px">
               <img :src="iconPath" />
             </q-avatar>

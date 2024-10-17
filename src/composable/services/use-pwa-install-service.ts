@@ -1,5 +1,3 @@
-// usePwaInstallService.ts
-
 import { Dialog, Notify } from "quasar";
 import InstallEdgeDialog from "@/components/dialog/install-edge-dialog.vue";
 import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
@@ -11,12 +9,21 @@ import { Platform } from "quasar";
 const beforeInstallPromptEvent = ref();
 const isAppInstalled = ref(false);
 const showAppInstallButton = ref(false);
+const userAgent = window.navigator.userAgent;
 
 export function usePwaInstallService() {
   const appInstalledPrompt = () => {
     Dialog.create({
       component: InstallCompleteDialog
     });
+  };
+
+  const isPWAInstallSupported = () => {
+    return "BeforeInstallPromptEvent" in window;
+  };
+
+  const isStandaloneModeSupported = () => {
+    return "standalone" in window.navigator || "standalone" in (window.navigator as any);
   };
 
   const isInStandaloneMode = () =>
@@ -91,15 +98,31 @@ export function usePwaInstallService() {
     }
   }
 
+  async function checkInstalledRelatedApps() {
+    debugger;
+    alert("Ds");
+    if ("getInstalledRelatedApps" in navigator) {
+      alert("inside");
+
+      const relatedApps = await navigator.getInstalledRelatedApps;
+
+      debugger;
+      // isAppInstalled.value = relatedApps.length > 0; // Check if any related apps are installed
+    }
+  }
+
   return {
     appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
+    isStandaloneModeSupported,
+    isPWAInstallSupported,
     notifyNativeInstall,
     promptInstall,
     shouldShowInstallButton,
     showAppInstallButton,
-    showPlatformGuidance
+    showPlatformGuidance,
+    checkInstalledRelatedApps
   };
 }
