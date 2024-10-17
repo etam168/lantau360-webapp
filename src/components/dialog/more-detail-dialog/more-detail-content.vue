@@ -1,6 +1,7 @@
 <template>
   <q-page>
     <template v-for="(item, index) in renderItems" :key="index">
+      <gallery-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
       <checkin-section v-if="item.type === 'checkin'" :moreData="moreData" />
       <content-section v-else-if="item.type === 'content'" :moreData="moreData" />
       <profile-section v-else-if="item.type === 'profile'" :moreData="moreData" />
@@ -17,6 +18,7 @@
   import { ENTITY_URL, MENU } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   import CheckinSection from "./section/checkin-section.vue";
   import ContentSection from "./section/content-section.vue";
@@ -34,6 +36,7 @@
 
   const isDialogVisible = ref();
   const moreData = ref();
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const fetchAllData = async () => {
     const contentKey = useChangeCase(category.name, "capitalCase").value;
@@ -69,7 +72,7 @@
 
   interface RenderItem {
     name: string;
-    type: "content" | "checkin" | "profile" | "point-balance" | "transactions-tabs";
+    type: "carousel" | "content" | "checkin" | "profile" | "point-balance" | "transactions-tabs";
   }
 
   const renderItems = computed((): RenderItem[] => {

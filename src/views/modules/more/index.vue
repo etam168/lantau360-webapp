@@ -21,11 +21,8 @@
 </template>
 
 <script setup lang="ts">
-  import type { Content } from "@/interfaces/models/entities/content";
-
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { ENTITY_URL } from "@/constants";
 
   // Custom Components
   import LogInSection from "./section/login-section.vue";
@@ -36,17 +33,12 @@
   import InstallButton from "./section/install-button.vue";
 
   const $q = useQuasar();
-  const { t } = useI18n({ useScope: "global" });
-
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
-  const error = ref<string | null>(null);
-  const i18nKey = "more";
-
-  const trHistory = ref();
-  const trRecent = ref();
-  const memberConfig = ref<Content>();
+  const { fetchTransactionData } = useTransactionsFunctions();
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
+
+  const i18nKey = "more";
 
   interface RenderItem {
     name: string;
@@ -131,54 +123,16 @@
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
         tabValue: tabValue,
-        callback: initTransactionData
+        callback: fetchTransactionData
       }
     });
-  }
-
-  async function initTransactionData() {
-    try {
-      if (userStore.isUserLogon()) {
-        const [transactionHistory, recentTransactions, memberConfigResponse] = await Promise.all([
-          axios.get(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${userStore.userId}`),
-          axios.get(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${userStore.userId}`),
-          axios.get(ENTITY_URL.MEMBER_CONFIG)
-        ]);
-
-        trRecent.value = recentTransactions?.data ?? [];
-        trHistory.value = transactionHistory?.data ?? [];
-        memberConfig.value = memberConfigResponse.data;
-
-        userStore.setPoints(
-          memberConfig.value?.meta.postPoint ?? 50,
-          memberConfig.value?.meta.requestFreePoints ?? 100
-        );
-
-        // Sync user points.
-        userStore.fetchMemberPoints();
-      }
-    } catch (err) {
-      handleError(err);
-    }
-  }
-
-  function handleError(err: any) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
-      } else {
-        error.value = t("errors.anErrorOccured");
-      }
-    } else {
-      error.value = t("errors.anErrorOccured");
-    }
   }
 
   onMounted(() => {
     eventBus.on("refresh-transaction-data", () => {
-      initTransactionData();
+      fetchTransactionData();
     });
   });
 
-  initTransactionData();
+  fetchTransactionData();
 </script>
