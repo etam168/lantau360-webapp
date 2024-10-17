@@ -2,11 +2,45 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
     <template v-for="(item, index) in renderItems" :key="index">
-      <log-in-section v-if="item.type === 'login'" @on-dialog="throttledHandleLoginDialog" />
+      <log-in-section v-if="item.type === 'login'" />
       <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
-      <menu-section
-        v-else-if="item.type === 'menu'"
-        :throttled-handle-content-dialog="throttledHandleContentDialog"
+      <language-section v-if="item.type === 'language'" />
+      <more-item-section
+        v-if="item.type === 'privacy'"
+        :name="'privacy'"
+        :icon="ICONS.PRIVACY"
+        :title="'more.privacy'"
+        :content-key="'Privacy'"
+        @on-dialog="throttledHandleContentDialog" 
+      />
+      <more-item-section
+        v-if="item.type === 'terms'"
+        :name="'terms'"
+        :icon="ICONS.TNC"
+        :title="'more.terms'"
+        :content-key="'Terms'"
+        @on-dialog="throttledHandleContentDialog" 
+      />
+      <more-item-section
+        v-if="item.type === 'profileSetting'"
+        :name="'profileSetting'"
+        :icon="ICONS.PROFILE"
+        :title="'more.profile'"
+        @on-dialog="throttledHandleContentDialog" 
+      />
+      <more-item-section
+        v-if="item.type === 'account'"
+        :name="'account'"
+        :icon="ICONS.ACCOUNT"
+        :title="'more.account.title'"
+        @on-dialog="throttledHandleContentDialog" 
+      />
+      <more-item-section
+        v-if="item.type === 'checkIn'"
+        :name="'checkIn'"
+        :icon="ICONS.ACCOUNT"
+        :title="'more.checkIn.title'"
+        @on-dialog="throttledHandleContentDialog" 
       />
       <install-button v-else-if="item.type === 'install'" />
       <footer-section v-else-if="item.type === 'footer'" />
@@ -17,16 +51,19 @@
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { URL, MENU } from "@/constants";
+  import { URL, MENU, ICONS } from "@/constants";
 
   // Custom Components
+  import LogInSection from "./section/login-section.vue";
+  import LogOffSection from "./section/logoff-section.vue";
+  import languageSection from "./section/language-section.vue";
+  import moreItemSection from "./section/more-item-section.vue";
+
   import FooterSection from "./section/footer-section.vue";
   import MenuSection from "./section/menu-section.vue";
   import InstallButton from "./section/install-button.vue";
-  import LogOffSection from "./section/logoff-section.vue";
 
   import { Content } from "@/interfaces/models/entities/content";
-  import LogInSection from "./section/login-section.vue";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
@@ -42,18 +79,35 @@
   const throttledHandleContentDialog = throttle(showDialog, 2000);
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const key = computed( () => {
-    return userStore.isUserLogon() ? "login" : "logout"
+  const key = computed(() => {
+    return userStore.isUserLogon() ? "login" : "logout";
   });
 
   const renderItems = computed(() => {
     switch (key.value) {
       case "login":
-        return [{ type: "login" }, { type: "menu" }, { type: "install" }, { type: "footer" }];
+        return [
+          { type: "login" },
+          { type: "language" },
+          { type: "privacy" },
+          { type: "terms" },
+          { type: "profileSetting" },
+          { type: "account" },
+          { type: "checkIn" },
+          { type: "install" },
+          { type: "footer" }
+        ];
       case "logout":
-        return [{ type: "logout" }, { type: "menu" }, { type: "install" }, { type: "footer" }];
+        return [
+          { type: "logout" },
+          { type: "language" },
+          { type: "privacy" },
+          { type: "terms" },
+          { type: "install" },
+          { type: "footer" }
+        ];
+
       default:
-        // Handle any unexpected cases
         return [];
     }
   });
@@ -67,6 +121,7 @@
   });
 
   async function showDialog(item: any) {
+    alert(JSON.stringify(item));
     if (item.contentKey) {
       OpenDialog(
         import("./section/content-dialog.vue"),
