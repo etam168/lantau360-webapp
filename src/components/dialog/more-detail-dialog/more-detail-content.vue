@@ -4,6 +4,11 @@
       <checkin-section v-if="item.type === 'checkin'" :moreData="moreData" />
       <content-section v-else-if="item.type === 'content'" :moreData="moreData" />
       <profile-section v-else-if="item.type === 'profile'" :moreData="moreData" />
+      <point-balance-section v-else-if="item.type === 'point-balance'" :moreData="moreData" />
+      <transactions-tabs-section
+        v-else-if="item.type === 'transactions-tabs'"
+        :moreData="moreData"
+      />
     </template>
   </q-page>
 </template>
@@ -16,13 +21,14 @@
   import CheckinSection from "./section/checkin-section.vue";
   import ContentSection from "./section/content-section.vue";
   import ProfileSection from "./section/profile-section.vue";
+  import PointBalanceSection from "./section/point-balance-section.vue";
+  import TransactionsTabsSection from "./section/transactions-tabs-section.vue";
 
   // Props
   const { category } = defineProps<{
     category: any;
   }>();
 
-  const { translate } = useUtilities();
   const userStore = useUserStore();
   const { api } = useApi();
 
@@ -31,10 +37,12 @@
 
   const fetchAllData = async () => {
     const contentKey = useChangeCase(category.name, "capitalCase").value;
-    alert(category.name);
     try {
       let requestUrl;
       switch (category.name) {
+        case MENU.ACCOUNT:
+          requestUrl = `${ENTITY_URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
+          break;
         case MENU.PRIVACY:
         case MENU.TERMS:
           requestUrl = `${ENTITY_URL.CONTENT_NAME}/${contentKey}`;
@@ -52,7 +60,6 @@
 
       const response = await api.get(requestUrl);
       moreData.value = response.data;
-      alert(JSON.stringify(moreData.value));
       isDialogVisible.value = true;
     } catch (error) {
       console.error("Error fetching data:", error);
@@ -62,11 +69,16 @@
 
   interface RenderItem {
     name: string;
-    type: "content" | "checkin" | "profile";
+    type: "content" | "checkin" | "profile" | "point-balance" | "transactions-tabs";
   }
 
   const renderItems = computed((): RenderItem[] => {
     switch (category.name) {
+      case MENU.ACCOUNT:
+        return [
+          { name: "point-balance", type: "point-balance" },
+          { name: "transactions-tabs", type: "transactions-tabs" }
+        ];
       case MENU.PRIVACY:
       case MENU.TERMS:
         return [{ name: "content", type: "content" }];

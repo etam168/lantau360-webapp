@@ -37,7 +37,6 @@
 
   import type { EntityFields } from "@/interfaces/types/form-structure-types";
 
-  import ProfileImageSection from "./profile-image-section.vue";
   import ProfileEntityFieldsList from "./profile-entity-fields-list.vue";
 
   // Props
@@ -81,13 +80,20 @@
           {
             name: "name",
             subFields: [
-              { name: "firstName", value: moreData.contactPhone },
-              { name: "lastName", value: moreData.contactWhatsApp }
+              { name: "firstName", value: moreData.firstName },
+              { name: "lastName", value: moreData.lastName }
             ]
           },
           {
             name: "phone",
-            subFields: [{ name: "phone", value: moreData.contactPhone, type: "tel" }]
+            subFields: [
+              {
+                name: "phone",
+                value: moreData.contactPhone,
+                type: "tel",
+                icon: "fa-solid fa-phone"
+              }
+            ]
           }
         ]
       }

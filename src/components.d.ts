@@ -31,6 +31,8 @@ declare module 'vue' {
     AppSpinner: typeof import('./components/global/widgets/app-spinner.vue')['default']
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
     AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
+    AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
+    copy: typeof import('./components/global/custom/app-category-list-items copy.vue')['default']
     GalleryImageList: typeof import('./components/global/custom/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/language-select.vue')['default']
     MainPageSkeleton: typeof import('./components/global/custom/main-page-skeleton.vue')['default']

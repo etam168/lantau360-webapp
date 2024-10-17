@@ -11,6 +11,7 @@
 
           <vee-q-tel-input
             v-else-if="subField.type === 'tel'"
+            :icon="subField.icon"
             defaultIso="HK"
             :name="subField.name"
             :label="$t(subField.label as string)"
