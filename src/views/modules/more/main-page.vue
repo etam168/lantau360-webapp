@@ -1,81 +1,38 @@
 <template>
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
-
-    <login-signup @on-dialog="throttledHandleLoginDialog" />
-
-    <q-card-section class="q-pt-none q-qb-xl">
-      <q-item v-for="(item, index) in menuItems" :key="index" class="shadow-1 q-mb-md q-pl-sm">
-        <q-item-section avatar>
-          <q-avatar size="36px" square>
-            <img :src="item.icon" />
-          </q-avatar>
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label class="text-subtitle1 text-weight-medium">
-            {{ $t(item.title) }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side v-if="item.name == MENU.LANGUAGE">
-          <language-select />
-        </q-item-section>
-        <q-item-section side v-else>
-          <q-btn
-            dense
-            flat
-            round
-            icon="mdi-chevron-right"
-            v-close-popup
-            @click="throttledHandleContentDialog(item)"
-          ></q-btn>
-        </q-item-section>
-      </q-item>
-    </q-card-section>
-
-    <q-card-section v-if="shouldShowInstallButton()" class="q-pt-none">
-      <q-btn rounded class="bg-primary text-white" @click="installApp">{{
-        $t("notification.installApp")
-      }}</q-btn>
-    </q-card-section>
-
-    <q-card-section v-if="$q.screen.height < 700" class="q-pt-none">
-      <q-item-label class="text-center">{{ appVersion }}</q-item-label>
-      <q-item-label class="text-center">{{ copyright }}</q-item-label>
-    </q-card-section>
-
-    <q-page-sticky position="bottom" :offset="[0, 18]" v-else>
-      <q-item-label class="text-center">{{ appVersion }}</q-item-label>
-      <q-item-label class="text-center">{{ copyright }}</q-item-label>
-    </q-page-sticky>
+    <template v-for="(item, index) in renderItems" :key="index">
+      <login-signup v-if="item.type === 'login'" @on-dialog="throttledHandleLoginDialog" />
+      <menu-section
+        v-else-if="item.type === 'menu'"
+        :throttled-handle-content-dialog="throttledHandleContentDialog"
+      />
+      <install-button v-else-if="item.type === 'install'" />
+      <footer-section v-else-if="item.type === 'footer'" />
+    </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { URL, LOGGED_ON_USER_MENU, DEFAULT_MENU, MENU } from "@/constants";
-  import { useInstallPrompt } from "@/composable/use-install-prompt";
-  import { Platform } from "quasar";
+  import { URL, MENU } from "@/constants";
 
   // Custom Components
+  import FooterSection from "./section/footer-section.vue";
   import LoginSignup from "./section/login-signup.vue";
+  import MenuSection from "./section/menu-section.vue";
+  import InstallButton from "./section/install-button.vue";
+
   import { Content } from "@/interfaces/models/entities/content";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { isInStandaloneMode, promptInstall, shouldShowInstallButton, showPlatformGuidance } =
-    useInstallPrompt();
+
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const error = ref<string | null>(null);
   const i18nKey = "more";
-
-  const appVersion = computed(() => t(`${i18nKey}.footer.version`, { version: __APP_VERSION__ }));
-  const copyright = computed(() =>
-    t(`${i18nKey}.footer.copyright`, { currentYear: new Date().getFullYear() })
-  );
 
   const trHistory = ref();
   const trRecent = ref();
@@ -83,9 +40,12 @@
   const throttledHandleContentDialog = throttle(showDialog, 2000);
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const menuItems = computed(() => {
-    return userStore.isUserLogon() ? LOGGED_ON_USER_MENU : DEFAULT_MENU;
-  });
+  const renderItems = computed(() => [
+    { type: "login" },
+    { type: "menu" },
+    { type: "install" },
+    { type: "footer" }
+  ]);
 
   initTransactionData();
 
@@ -93,8 +53,6 @@
     eventBus.on("refresh-transaction-data", () => {
       initTransactionData();
     });
-
-    shouldShowInstallButton();
   });
 
   async function showDialog(item: any) {
@@ -187,24 +145,6 @@
       }
     } catch (err) {
       handleError(err);
-    }
-  }
-
-  function installApp() {
-    if (!isInStandaloneMode()) {
-      switch (true) {
-        case Platform.is.ios:
-        case Platform.is.firefox:
-        case Platform.is.opera:
-        case Platform.is.edge:
-          showPlatformGuidance();
-          break;
-        case Platform.is.chrome:
-          promptInstall();
-          break;
-        default:
-        //   // To be impemented: Handle unknown browsers with a generic message or action
-      }
     }
   }
 
