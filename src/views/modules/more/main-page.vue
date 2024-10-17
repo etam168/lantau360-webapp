@@ -2,7 +2,8 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
     <template v-for="(item, index) in renderItems" :key="index">
-      <login-signup v-if="item.type === 'login'" @on-dialog="throttledHandleLoginDialog" />
+      <log-in-section v-if="item.type === 'login'" @on-dialog="throttledHandleLoginDialog" />
+      <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
       <menu-section
         v-else-if="item.type === 'menu'"
         :throttled-handle-content-dialog="throttledHandleContentDialog"
@@ -20,11 +21,12 @@
 
   // Custom Components
   import FooterSection from "./section/footer-section.vue";
-  import LoginSignup from "./section/login-signup.vue";
   import MenuSection from "./section/menu-section.vue";
   import InstallButton from "./section/install-button.vue";
+  import LogOffSection from "./section/logoff-section.vue";
 
   import { Content } from "@/interfaces/models/entities/content";
+  import LogInSection from "./section/login-section.vue";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
@@ -40,12 +42,21 @@
   const throttledHandleContentDialog = throttle(showDialog, 2000);
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const renderItems = computed(() => [
-    { type: "login" },
-    { type: "menu" },
-    { type: "install" },
-    { type: "footer" }
-  ]);
+  const key = computed( () => {
+    return userStore.isUserLogon() ? "login" : "logout"
+  });
+
+  const renderItems = computed(() => {
+    switch (key.value) {
+      case "login":
+        return [{ type: "login" }, { type: "menu" }, { type: "install" }, { type: "footer" }];
+      case "logout":
+        return [{ type: "logout" }, { type: "menu" }, { type: "install" }, { type: "footer" }];
+      default:
+        // Handle any unexpected cases
+        return [];
+    }
+  });
 
   initTransactionData();
 

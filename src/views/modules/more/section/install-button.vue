@@ -10,10 +10,9 @@
 <script setup lang="ts">
   import { Platform } from "quasar";
   
-  import { useInstallPrompt } from "@/composable/use-install-prompt";
 
   const { isInStandaloneMode, promptInstall, shouldShowInstallButton, showPlatformGuidance } =
-    useInstallPrompt();
+  usePwaInstallService();
 
   function installApp() {
     if (!isInStandaloneMode()) {
