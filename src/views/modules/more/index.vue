@@ -3,10 +3,9 @@
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
     <template v-for="(item, index) in renderItems" :key="index">
+      <language-section v-if="item.type === 'language'" />
       <log-in-section v-if="item.type === 'login'" />
       <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
-
-      <language-section v-if="item.type === 'language'" />
 
       <app-more-item
         v-if="item.type === 'moreItem'"
@@ -16,17 +15,17 @@
       />
 
       <install-button v-else-if="item.type === 'install'" />
-      <!-- <footer-section v-else-if="item.type === 'footer'" /> -->
     </template>
     <footer-section />
   </q-page>
 </template>
 
 <script setup lang="ts">
+  import type { Content } from "@/interfaces/models/entities/content";
+
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { URL, MENU, ENTITY_URL } from "@/constants";
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
+  import { ENTITY_URL } from "@/constants";
 
   // Custom Components
   import LogInSection from "./section/login-section.vue";
@@ -35,8 +34,6 @@
 
   import FooterSection from "./section/footer-section.vue";
   import InstallButton from "./section/install-button.vue";
-
-  import { Content } from "@/interfaces/models/entities/content";
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
@@ -118,14 +115,6 @@
     }
   });
 
-  initTransactionData();
-
-  onMounted(() => {
-    eventBus.on("refresh-transaction-data", () => {
-      initTransactionData();
-    });
-  });
-
   const onItemClick = (item: any) => {
     $q.dialog({
       component: defineAsyncComponent(
@@ -137,47 +126,6 @@
     });
   };
 
-  // function handleDialog(item: any) {
-  //   const contentKey = useChangeCase(item.name, "capitalCase").value;
-
-  //   switch (item.name) {
-  //     case MENU.PRIVACY:
-  //     case MENU.TERMS:
-  //       OpenDialog(
-  //         import("./section/content-dialog.vue"),
-  //         { title: t(item.title) },
-  //         contentKey,
-  //         "content"
-  //       );
-  //       break;
-
-  //     case MENU.PROFILE:
-  //       OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, undefined, "profile");
-  //       break;
-
-  //     case MENU.CHECKIN:
-  //       OpenDialog(import("./section/profile-checkin-dialog.vue"), undefined);
-  //       break;
-
-  //     case MENU.ACCOUNT:
-  //       if (trHistory.value && trRecent.value) {
-  //         OpenDialog(
-  //           import("./section/profile-account-dialog/index.vue"),
-  //           {
-  //             trHistory: trHistory,
-  //             trRecent: trRecent
-  //           },
-  //           "profile"
-  //         );
-  //       }
-  //       break;
-
-  //     default:
-  //       // Handle any other cases if needed
-  //       break;
-  //   }
-  // }
-
   function showLoginDialog(tabValue: string) {
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
@@ -188,44 +136,13 @@
     });
   }
 
-  async function OpenDialog(
-    component: any,
-    componentProps?: any,
-    contentKey?: string,
-    requestType?: string
-  ) {
-    let requestUrl;
-    switch (requestType) {
-      case "content":
-        requestUrl = `${URL.CONTENT_NAME_URL}/${contentKey}`;
-        break;
-      case "profile":
-        requestUrl = `${URL.MEMBER_URL}/${userStore.userId}`;
-        break;
-      default:
-        requestUrl = `${URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
-        break;
-    }
-    const response = await axios.get(requestUrl).catch(err => {
-      handleError(err);
-    });
-
-    $q.dialog({
-      component: defineAsyncComponent(() => component),
-      componentProps: {
-        data: response?.data || [],
-        ...componentProps
-      }
-    });
-  }
-
   async function initTransactionData() {
     try {
       if (userStore.isUserLogon()) {
         const [transactionHistory, recentTransactions, memberConfigResponse] = await Promise.all([
-          axios.get(`${URL.MEMBER_TRANSACTIONS_URL}/${userStore.userId}`),
-          axios.get(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${userStore.userId}`),
-          axios.get(URL.MEMBER_CONFIG)
+          axios.get(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${userStore.userId}`),
+          axios.get(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${userStore.userId}`),
+          axios.get(ENTITY_URL.MEMBER_CONFIG)
         ]);
 
         trRecent.value = recentTransactions?.data ?? [];
@@ -256,4 +173,12 @@
       error.value = t("errors.anErrorOccured");
     }
   }
+
+  onMounted(() => {
+    eventBus.on("refresh-transaction-data", () => {
+      initTransactionData();
+    });
+  });
+
+  initTransactionData();
 </script>

@@ -16,6 +16,8 @@ export const ENTITY_URL = {
   FAVOURITE: `posting`,
   MEMBER_BY_ID: `/Member/MemberById`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
+  MEMBER_TRANSACTIONS: `/Transactoin/MemberTransactions`,
+  MEMBER_RECENT_TRANSACTIONS: `/Transactoin/MemberRecentTransactions`,
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
