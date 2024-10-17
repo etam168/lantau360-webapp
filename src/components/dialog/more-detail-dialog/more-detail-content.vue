@@ -3,6 +3,7 @@
     <template v-for="(item, index) in renderItems" :key="index">
       <checkin-section v-if="item.type === 'checkin'" :moreData="moreData" />
       <content-section v-else-if="item.type === 'content'" :moreData="moreData" />
+      <profile-section v-else-if="item.type === 'profile'" :moreData="moreData" />
     </template>
   </q-page>
 </template>
@@ -14,6 +15,7 @@
 
   import CheckinSection from "./section/checkin-section.vue";
   import ContentSection from "./section/content-section.vue";
+  import ProfileSection from "./section/profile-section.vue";
 
   // Props
   const { category } = defineProps<{
@@ -29,6 +31,7 @@
 
   const fetchAllData = async () => {
     const contentKey = useChangeCase(category.name, "capitalCase").value;
+    alert(category.name);
     try {
       let requestUrl;
       switch (category.name) {
@@ -37,7 +40,7 @@
           requestUrl = `${ENTITY_URL.CONTENT_NAME}/${contentKey}`;
           break;
         case MENU.PROFILE:
-          requestUrl = `${ENTITY_URL.MEMBER}/${userStore.userId}`;
+          requestUrl = `${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`;
           break;
         case MENU.CHECKIN:
           requestUrl = `${ENTITY_URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
@@ -59,7 +62,7 @@
 
   interface RenderItem {
     name: string;
-    type: "content" | "checkin";
+    type: "content" | "checkin" | "profile";
   }
 
   const renderItems = computed((): RenderItem[] => {
@@ -69,6 +72,8 @@
         return [{ name: "content", type: "content" }];
       case MENU.CHECKIN:
         return [{ name: "checkin", type: "checkin" }];
+      case MENU.PROFILE:
+        return [{ name: "profile", type: "profile" }];
       default:
         return [];
     }

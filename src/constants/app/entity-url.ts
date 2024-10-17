@@ -14,14 +14,14 @@ export const ENTITY_URL = {
   COMMUNITY_NOTICE_CURRENT: `/CommunityNotice/CommunityNoticeCurrent`,
   CONTENT_NAME: `/Content/ContentByName`,
   FAVOURITE: `posting`,
-  MEMBER: `/Member`,
+  MEMBER_BY_ID: `/Member/MemberById`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   WEATHER: `/Weather`,
   COMMUNITY: `/Community`,
-  MORE: `/More`
+  MEMBER_IMAGE: `/MemberImage`
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

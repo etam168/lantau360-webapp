@@ -2,19 +2,19 @@
 <template>
   <q-tel-input
     v-bind="$attrs"
-    v-model="value"
+    v-model:tel="normalizedValue"
     stack-label
     standout="bg-grey-7 text-white"
     :default-country="defaultIso"
     :dropdown-options="options"
     @country="selectedCountry"
   >
-    <!-- <template v-slot:prepend>
-      <q-icon name="fa-solid fa-phone" />
+    <!-- <template v-slot:before>
+      <q-item-label>{{ country.emoji }}</q-item-label>
     </template> -->
 
     <template v-slot:append>
-      <q-icon name="fa-solid fa-phone" />
+      <q-icon :name="icon" />
     </template>
   </q-tel-input>
 </template>
@@ -23,22 +23,19 @@
   import { useField } from "vee-validate";
   import QTelInput from "vue3-q-tel-input";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    },
-    inputType: {
-      type: String as PropType<any> | undefined,
-      default: "text"
-    },
-    defaultIso: {
-      type: String,
-      default: "HK"
-    }
-  });
+  const {
+    name,
+    inputType = "text",
+    defaultIso = "HK",
+    icon
+  } = defineProps<{
+    name: string;
+    inputType?: string | undefined;
+    defaultIso?: string;
+    icon?: string;
+  }>();
 
-  const { value: untypedValue } = useField(() => props.name);
+  const { value: untypedValue } = useField(() => name);
   const value = untypedValue as Ref<string | number | null>;
   const country = ref();
 
@@ -50,8 +47,14 @@
     showFlags: false,
     showSearchBox: true
   };
-</script>
 
+  const normalizedValue = computed({
+    get: () => (value.value === null ? "" : value.value),
+    set: newValue => {
+      value.value = newValue;
+    }
+  });
+</script>
 <style>
   .v3-q-tel-input--country {
     .q-field__control {

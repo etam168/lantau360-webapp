@@ -50,15 +50,11 @@
   // .ts files
   import { BLOB_URL, IMAGES } from "@/constants";
   import { useUserStore } from "@/stores/user";
-  import { useMoreInput } from "../use-more-input";
 
-  // Props
-  const { moreData } = defineProps<{
-    moreData: any;
-  }>();
+  // Emits
+  const emit = defineEmits(["avatar-upload"]);
 
   const userStore = useUserStore();
-  const { handleUpdateMemberAvatar } = useMoreInput();
 
   const imageRef = ref();
   const imagePath = ref(null);
@@ -68,7 +64,7 @@
   }
 
   function uploadImage() {
-    handleUpdateMemberAvatar(imagePath.value);
+    emit("avatar-upload", imagePath.value);
   }
 
   const avatar = computed(() => {
