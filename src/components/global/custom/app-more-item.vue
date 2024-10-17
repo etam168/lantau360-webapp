@@ -19,7 +19,7 @@
           dense
           flat
           round
-          icon="mdi-chevron-right"
+          icon="fa-solid fa-angle-right"
           @click="$emit('on-item-click')"
           v-close-popup
         ></q-btn>
@@ -31,8 +31,8 @@
 <script setup lang="ts">
   const emit = defineEmits(["on-item-click"]);
 
-  const { icon, title } = defineProps<{
-    icon: string;
-    title: string;
+  const { icon = "fa fa-house", title = "" } = defineProps<{
+    icon?: string;
+    title?: string;
   }>();
 </script>

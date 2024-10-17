@@ -19,7 +19,13 @@
           </q-img>
 
           <q-badge class="absolute-bottom-left" color="transparent">
-            <app-button round color="black" icon="photo_camera" size="xs" @click="onImageUpload" />
+            <app-button
+              round
+              color="black"
+              icon="fa-solid fa-camera"
+              size="xs"
+              @click="onImageUpload"
+            />
           </q-badge>
         </q-avatar>
 

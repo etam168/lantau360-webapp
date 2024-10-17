@@ -19,7 +19,7 @@
               <q-item v-if="businessItem.contactPhone" class="q-pa-none">
                 <q-item-section avatar @click="navigateToPhone(businessItem.contactPhone)">
                   <q-avatar>
-                    <q-icon name="phone" color="primary" />
+                    <q-icon name="fa-solid fa-phone" color="primary" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>

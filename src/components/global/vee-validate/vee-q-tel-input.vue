@@ -14,7 +14,7 @@
     </template> -->
 
     <template v-slot:append>
-      <q-icon name="phone" />
+      <q-icon name="fa-solid fa-phone" />
     </template>
   </q-tel-input>
 </template>

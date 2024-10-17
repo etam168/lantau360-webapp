@@ -16,12 +16,12 @@
         <div class="q-gutter-md">
           <app-button-rounded
             v-if="category.contactPhone"
-            icon="mdi-phone"
+            icon="fa-solid fa-phone"
             @click="navigateToPhone(category.contactPhone)"
           />
           <app-button-rounded
             v-if="category.contactWhatsApp"
-            icon="mdi-whatsapp"
+            icon="fa-brands fa-whatsapp"
             @click="navigateToWhatsApp(category.contactWhatsApp)"
           />
         </div>
