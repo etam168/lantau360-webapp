@@ -8,6 +8,11 @@
     :dark="false"
     :error="!!errorMessage"
     :error-message="errorMessage"
+    :autogrow="autoGrow"
+    :maxlength="maxLenght"
+    :counter="counter"
+    :disable="disable"
+    :type="inputType"
   >
     <template v-for="(value, slotName) in $slots" :key="slotName">
       <slot :name="slotName" />
@@ -16,16 +21,24 @@
 </template>
 
 <script setup lang="ts">
-  // Vue Import
   import { useField } from "vee-validate";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    }
-  });
+  const {
+    name,
+    autoGrow,
+    maxLenght,
+    counter,
+    disable,
+    inputType = "text"
+  } = defineProps<{
+    name: string;
+    autoGrow?: boolean;
+    maxLenght?: number;
+    counter?: boolean;
+    disable?: boolean;
+    inputType?: string | undefined;
+  }>();
 
-  const { errorMessage, value: untypedValue } = useField(() => props.name);
+  const { errorMessage, value: untypedValue } = useField(() => name);
   const value = untypedValue as Ref<string | number | null>;
 </script>

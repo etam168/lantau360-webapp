@@ -12,7 +12,7 @@
         v-if="item.type === 'moreItem'"
         :icon="item.icon"
         :title="item.title"
-        @on-item-click="handleDialog(item)"
+        @on-item-click="onItemClick(item)"
       />
 
       <install-button v-else-if="item.type === 'install'" />
@@ -25,14 +25,13 @@
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { URL, MENU, ICONS } from "@/constants";
+  import { URL, MENU, ENTITY_URL } from "@/constants";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 
   // Custom Components
   import LogInSection from "./section/login-section.vue";
   import LogOffSection from "./section/logoff-section.vue";
   import languageSection from "./section/language-section.vue";
-  import moreItemSection from "./section/more-item-section.vue";
 
   import FooterSection from "./section/footer-section.vue";
   import InstallButton from "./section/install-button.vue";
@@ -127,46 +126,57 @@
     });
   });
 
-  function handleDialog(item: any) {
-    const contentKey = useChangeCase(item.name, "capitalCase").value;
+  const onItemClick = (item: any) => {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/more-detail-dialog/index.vue")
+      ),
+      componentProps: {
+        category: item
+      }
+    });
+  };
 
-    switch (item.name) {
-      case MENU.PRIVACY:
-      case MENU.TERMS:
-        OpenDialog(
-          import("./section/content-dialog.vue"),
-          { title: t(item.title) },
-          contentKey,
-          "content"
-        );
-        break;
+  // function handleDialog(item: any) {
+  //   const contentKey = useChangeCase(item.name, "capitalCase").value;
 
-      case MENU.PROFILE:
-        OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, undefined, "profile");
-        break;
+  //   switch (item.name) {
+  //     case MENU.PRIVACY:
+  //     case MENU.TERMS:
+  //       OpenDialog(
+  //         import("./section/content-dialog.vue"),
+  //         { title: t(item.title) },
+  //         contentKey,
+  //         "content"
+  //       );
+  //       break;
 
-      case MENU.CHECKIN:
-        OpenDialog(import("./section/profile-checkin-dialog.vue"), undefined);
-        break;
+  //     case MENU.PROFILE:
+  //       OpenDialog(import("./section/profile-setting-dialog.vue"), undefined, undefined, "profile");
+  //       break;
 
-      case MENU.ACCOUNT:
-        if (trHistory.value && trRecent.value) {
-          OpenDialog(
-            import("./section/profile-account-dialog/index.vue"),
-            {
-              trHistory: trHistory,
-              trRecent: trRecent
-            },
-            "profile"
-          );
-        }
-        break;
+  //     case MENU.CHECKIN:
+  //       OpenDialog(import("./section/profile-checkin-dialog.vue"), undefined);
+  //       break;
 
-      default:
-        // Handle any other cases if needed
-        break;
-    }
-  }
+  //     case MENU.ACCOUNT:
+  //       if (trHistory.value && trRecent.value) {
+  //         OpenDialog(
+  //           import("./section/profile-account-dialog/index.vue"),
+  //           {
+  //             trHistory: trHistory,
+  //             trRecent: trRecent
+  //           },
+  //           "profile"
+  //         );
+  //       }
+  //       break;
+
+  //     default:
+  //       // Handle any other cases if needed
+  //       break;
+  //   }
+  // }
 
   function showLoginDialog(tabValue: string) {
     $q.dialog({

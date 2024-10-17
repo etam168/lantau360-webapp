@@ -7,17 +7,21 @@ export const ENTITY_URL = {
   BUSINESS_DIRECTORIES: `/Directory/DirectoryGroupsData/2`,
   BUSINESS_PROMOTION: `/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `/BusinessVoucher/Datatable`,
+  CHECKIN_BY_MEMBER: `/CheckIn/GetByMemberId`,
   COMMUNITY_EVENT_CURRENT: `/CommunityEvent/CommunityEventCurrent`,
   COMMUNITY_DIRECTORY: `/CommunityDirectory`,
   COMMUNITY_NEWS_CURRENT: `/CommunityNews/CommunityNewsCurrent`,
   COMMUNITY_NOTICE_CURRENT: `/CommunityNotice/CommunityNoticeCurrent`,
+  CONTENT_NAME: `/Content/ContentByName`,
   FAVOURITE: `posting`,
+  MEMBER: `/Member`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   WEATHER: `/Weather`,
-  COMMUNITY: `/Community`
+  COMMUNITY: `/Community`,
+  MORE: `/More`
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;
