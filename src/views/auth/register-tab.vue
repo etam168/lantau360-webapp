@@ -10,19 +10,19 @@
     <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.register.email')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="email"
         placeholder="user@example.com"
       />
       <vee-input
         :label="$t('auth.register.firstName')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="firstName"
         :placeholder="$t('auth.register.firstName')"
       />
       <vee-input
         :label="$t('auth.register.lastName')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="lastName"
         :placeholder="$t('auth.register.lastName')"
       />
@@ -30,7 +30,7 @@
       <vee-q-tel-input name="phone" defaultIso="HK" />
       <!-- <vee-input
         :label="$t('auth.register.phone')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="phone"
         placeholder="Phone"
       /> -->

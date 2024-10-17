@@ -8,7 +8,7 @@
   >
     <q-card class="q-pa-md">
       <q-card-section class="text-center">
-        <q-icon name="report_problem" size="4rem" color="red" />
+        <q-icon name="fa-solid fa-triangle-exclamation" size="4rem" color="red" />
         <div class="text-h6">{{ $t("community.createPost.confirmation") }}</div>
         <div class="text-body2" v-if="haveEnoughPoints">
           {{ $t("community.createPost.confirmationQuestion", { pointsPerPost: pointsPerPost }) }}

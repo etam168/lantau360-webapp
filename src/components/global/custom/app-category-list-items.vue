@@ -25,8 +25,8 @@
 
       <q-item-section side>
         <div class="q-gutter-sm">
-          <q-icon name="mdi-map-marker" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon name="mdi-heart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+          <q-icon name="fa-solid fa-location-dot" size="xs" v-if="isCheckedIn(item)" />
+          <q-icon name="fa-solid fa-heart" color="red" size="xs" v-if="isFavoriteItem(item)" />
         </div>
       </q-item-section>
     </q-item>

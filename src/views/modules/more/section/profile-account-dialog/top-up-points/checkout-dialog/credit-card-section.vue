@@ -15,7 +15,7 @@
       <vee-input
         class="q-mt-md"
         :label="$t('more.creditCard.cardNumber')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="number"
         placeholder="XXXXXXXXXXXX8014"
       />
@@ -24,7 +24,7 @@
           <div class="col">
             <vee-input-slot
               :label="$t('more.creditCard.expiryDate')"
-              icon="mdi-account"
+              icon="fa-solid fa-user"
               name="expiryDate"
               placeholder="08/26"
               :slotImage="IMAGES.CREDIT_CARD_FRONT"
@@ -34,7 +34,7 @@
             <vee-input-slot
               class="q-pl-md"
               :label="$t('more.creditCard.cvv')"
-              icon="mdi-account"
+              icon="fa-solid fa-user"
               name="csv"
               placeholder="XXX"
               :slotImage="IMAGES.CREDIT_CARD_BACK"

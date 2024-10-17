@@ -20,7 +20,7 @@
             :flat="$q.screen.lt.sm"
           >
             <q-btn
-              icon="close"
+              icon="fa-solid fa-xmark"
               flat
               round
               dense

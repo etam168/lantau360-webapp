@@ -23,7 +23,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/business/index.vue"),
         meta: {
           title: "route.drawerComponents.business",
-          icon: "mdi-briefcase-check",
+          icon: "fa-solid fa-briefcase",
           group: "common"
         }
       },
@@ -33,7 +33,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/community/index.vue"),
         meta: {
           title: "route.drawerComponents.community",
-          icon: "mdi-briefcase-check",
+          icon: "fa-solid fa-briefcase",
           group: "common"
         }
       },
@@ -43,7 +43,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/favourite/index.vue"),
         meta: {
           title: "route.drawerComponents.favourites",
-          icon: "mdi-briefcase-check",
+          icon: "fa-solid fa-briefcase",
           group: "common"
         }
       },
@@ -53,7 +53,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/more/index.vue"),
         meta: {
           title: "route.drawerComponents.more",
-          icon: "mdi-briefcase-check",
+          icon: "fa-solid fa-briefcase",
           group: "common"
         }
       },
@@ -63,7 +63,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
       //   component: () => import("@/views/auth/email-confirmation.vue"),
       //   meta: {
       //     title: "route.drawerComponents.more",
-      //     icon: "mdi-briefcase-check",
+      //     icon: "fa-solid fa-briefcase",
       //     group: "common"
       //   }
       // },

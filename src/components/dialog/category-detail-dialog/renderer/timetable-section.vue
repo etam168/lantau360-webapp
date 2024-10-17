@@ -19,7 +19,7 @@
         <q-toolbar v-bind="$attrs" class="q-gutter-x-sm">
           <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
-            icon="mdi-heart"
+            icon="fa-solid fa-heart"
             @click="onBtnFavClick"
           />
         </q-toolbar>

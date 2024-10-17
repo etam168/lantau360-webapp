@@ -19,7 +19,7 @@
           dense
           flat
           round
-          icon="mdi-chevron-right"
+          icon="fa-solid fa-chevron-right"
           @click="showDialog()"
           v-close-popup
         ></q-btn>

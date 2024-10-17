@@ -10,7 +10,7 @@
     @country="selectedCountry"
   >
     <!-- <template v-slot:prepend>
-      <q-icon name="phone" />
+      <q-icon name="fa-solid fa-phone" />
     </template> -->
 
     <template v-slot:append>

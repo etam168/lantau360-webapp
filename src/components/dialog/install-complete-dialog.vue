@@ -8,7 +8,7 @@
           }}</span></q-toolbar-title
         >
 
-        <q-btn flat round dense icon="close" v-close-popup />
+        <q-btn flat round dense icon="fa-solid fa-xmark" v-close-popup />
       </q-toolbar>
 
       <q-card-section>

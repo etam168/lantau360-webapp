@@ -4,7 +4,7 @@
     <q-item-section side>
       <app-button-rounded
         :text-color="isFavourite ? 'red' : 'white'"
-        icon="mdi-heart"
+        icon="fa-solid fa-heart"
         @click="onBtnFavClick"
       />
     </q-item-section>

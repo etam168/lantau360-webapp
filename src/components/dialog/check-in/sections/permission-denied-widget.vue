@@ -2,7 +2,7 @@
   <q-card flat class="location-card">
     <q-card-section class="location-card-section">
       <div class="warning-content">
-        <q-icon name="warning" class="warning-icon" color="negative" />
+        <q-icon name="fa-solid fa-triangle-exclamation" class="warning-icon" color="negative" />
         <div class="warning-message">{{ $t("errors.locationPermissionDenied") }}</div>
       </div>
     </q-card-section>

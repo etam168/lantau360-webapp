@@ -3,7 +3,7 @@
     <q-card class="q-mb-md">
       <q-item clickable v-ripple @click="createPosting">
         <q-item-section avatar>
-          <q-avatar color="green-1" text-color="primary" icon="add" />
+          <q-avatar color="green-1" text-color="primary" icon="fa-solid fa-plus" />
         </q-item-section>
 
         <q-item-section>

@@ -10,7 +10,7 @@
     <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.forgotPassword.otp')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="otp"
         placeholder="123 456"
       />

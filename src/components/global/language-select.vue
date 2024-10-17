@@ -7,7 +7,7 @@
     split
     padding="1px"
     style="overflow: hidden; width: 108px"
-    dropdown-icon="mdi-chevron-down"
+    dropdown-icon="fa-solid fa-chevron-down"
   >
     <template v-slot:label>
       <div class="text-caption">

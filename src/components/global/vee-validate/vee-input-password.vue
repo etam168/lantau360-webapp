@@ -11,7 +11,7 @@
   >
     <template v-slot:append>
       <q-icon
-        :name="showPassword ? 'visibility_off' : 'visibility'"
+        :name="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
         class="cursor-pointer"
         @click="showPassword = !showPassword"
       />

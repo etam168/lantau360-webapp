@@ -23,7 +23,7 @@
                 dense
                 rounded
                 color="primary"
-                icon="location_on"
+                icon="fa-solid fa-location-dot"
                 text-color="white"
                 size="sm"
               />

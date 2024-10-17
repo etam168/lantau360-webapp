@@ -13,7 +13,7 @@
     </q-item-section>
 
     <q-item-section side v-if="isFavoriteItem(item)">
-      <q-icon name="favorite" size="2em" color="red" />
+      <q-icon name="fa-solid fa-heart" size="2em" color="red" />
     </q-item-section>
   </q-item>
 </template>

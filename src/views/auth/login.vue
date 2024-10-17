@@ -10,7 +10,7 @@
     <q-card-section class="bg-secondary q-ma-none q-pa-xs">
       <vee-input
         :label="$t('auth.login.userName')"
-        icon="mdi-account"
+        icon="fa-solid fa-user"
         name="userName"
         placeholder="user@example.com"
         @update:model-value="onUpdateFormfield"
