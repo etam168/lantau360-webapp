@@ -10,13 +10,17 @@
   >
     <q-card class="bg-white">
       <q-layout view="hHh lpR fFf">
-        <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" />
+        <app-dialog-bar :barTitle="$t(`${entityName}.dialog.create`)" />
         <q-page-container>
           <!-- Suspense wrapper for async component loading -->
           <Suspense>
             <template #default>
-              <!-- Main edit dialog content -->
-              <edit-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
+              <!-- Main input dialog content -->
+              <input-dialog-content
+                :entity-key
+                :initializationData
+                @close-dialog="handleCloseDialog"
+              />
             </template>
             <template #fallback>
               <!-- Loading spinner shown while content is loading -->
@@ -37,44 +41,44 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  // import type { DatatableType } from "@/interfaces/types/datatable-types";
-
+  //Types
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import EditDialogContent from "./edit-dialog-content.vue";
+  import InputDialogContent from "./input-dialog-content.vue";
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { row, entityKey } = defineProps<{
-    row: any;
+  const { entityKey, previewComponent, initializationData } = defineProps<{
     entityKey: EntityURLKey;
+    previewComponent?: Component;
+    initializationData?: CategoryTypes;
   }>();
 
   // Composable function calls
-  const { eventBus } = useUtilities();
-  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+  const { eventBus, getEntityName } = useUtilities();
+  const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const entityName = useChangeCase(entityKey, "camelCase").value;
+  const entityName = getEntityName(entityKey);
 
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    isDialogVisible.value = false;
+    // isDialogVisible.value = false;
     setTimeout(() => {
       try {
-        onDialogCancel();
+        // onDialogCancel();
+        onDialogOK();
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }

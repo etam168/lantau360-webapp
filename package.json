@@ -51,6 +51,7 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^5.2.0",
     "@quasar/vite-plugin": "^1.7.0",
+    "@ryoppippi/unplugin-typia": "npm:@jsr/ryoppippi__unplugin-typia@^1.0.6",
     "@types/leaflet": "^1.9.12",
     "@types/node": "^22.7.6",
     "@types/vue-tel-input": "^2.1.7",
@@ -66,7 +67,7 @@
     "prettier": "^3.3.3",
     "sass": "^1.80.2",
     "ts-patch": "^3.2.1",
-    "typescript": "5.6.3",
+    "typescript": "5.6.2",
     "unplugin-auto-import": "^0.18.3",
     "unplugin-remove": "^1.0.3",
     "unplugin-vue-components": "^0.27.4",

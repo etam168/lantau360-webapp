@@ -1,3 +1,4 @@
+export const INPUT_PANE_WIDTH = 480;
 export const NONE = "none";
 export const AREA_NAME = "areaName";
 
@@ -11,5 +12,6 @@ export { default as TEMPLATE } from "./app/template";
 
 export * from "./app/entity-url";
 export * from "./app/server-urls";
+export * from "./app/image-url";
 export * from "./app/more-page";
 export * from "./app/image-icon";

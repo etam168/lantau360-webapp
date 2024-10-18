@@ -23,6 +23,7 @@ export const ENTITY_URL = {
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   WEATHER: `/Weather`,
   COMMUNITY: `/Community`,
+  MEMBER: '/Member',
   MEMBER_IMAGE: `/MemberImage`
 };
 

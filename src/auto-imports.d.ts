@@ -152,6 +152,7 @@ declare global {
   const useContent: (typeof import("./composable/use-content"))["default"]
   const useContentInput: typeof import('./composable/use-content')['useContentInput']
   const useCounter: typeof import('@vueuse/core')['useCounter']
+  const useCrudService: typeof import('./composable/services/use-crud-service')['useCrudService']
   const useCssModule: typeof import('vue')['useCssModule']
   const useCssVar: typeof import('@vueuse/core')['useCssVar']
   const useCssVars: typeof import('vue')['useCssVars']
@@ -179,6 +180,8 @@ declare global {
   const useElementHover: typeof import('@vueuse/core')['useElementHover']
   const useElementSize: typeof import('@vueuse/core')['useElementSize']
   const useElementVisibility: typeof import('@vueuse/core')['useElementVisibility']
+  const useEntityDataHandlingService: typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']
+  const useEntityImageService: typeof import('./composable/services/use-entity-image-service')['useEntityImageService']
   const useEventBus: typeof import('@vueuse/core')['useEventBus']
   const useEventListener: typeof import('@vueuse/core')['useEventListener']
   const useEventSource: typeof import('@vueuse/core')['useEventSource']
@@ -190,6 +193,7 @@ declare global {
   const useFocus: typeof import('@vueuse/core')['useFocus']
   const useFocusWithin: typeof import('@vueuse/core')['useFocusWithin']
   const useFormChild: typeof import('quasar')['useFormChild']
+  const useFormMapperFunctions: typeof import('./composable/use-form-mapper-functions')['useFormMapperFunctions']
   const useFps: typeof import('@vueuse/core')['useFps']
   const useFullscreen: typeof import('@vueuse/core')['useFullscreen']
   const useGamepad: typeof import('@vueuse/core')['useGamepad']
@@ -212,6 +216,8 @@ declare global {
   const useMediaControls: typeof import('@vueuse/core')['useMediaControls']
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMember: typeof import('./composable/use-member')['useMember']
+  const useMemberFormContents: typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']
+  const useMemberFormMapper: typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']
   const useMemberInput: (typeof import("./composable/use-member"))["useMemberInput"]
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
@@ -258,10 +264,13 @@ declare global {
   const useSessionStorage: typeof import('@vueuse/core')['useSessionStorage']
   const useShare: typeof import('@vueuse/core')['useShare']
   const useShowCrudDialogs: (typeof import("./composable/use-show-crud-dialogs"))["default"]
+  const useSiteFormContents: typeof import('./composable/form-mappers/form-contents/use-site-form-contents')['useSiteFormContents']
   const useSlots: typeof import('vue')['useSlots']
   const useSorted: typeof import('@vueuse/core')['useSorted']
   const useSpeechRecognition: typeof import('@vueuse/core')['useSpeechRecognition']
   const useSpeechSynthesis: typeof import('@vueuse/core')['useSpeechSynthesis']
+  const useStaffFormContents: typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormContents']
+  const useStaffFormMapper: typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormMapper']
   const useStepper: typeof import('@vueuse/core')['useStepper']
   const useStorage: typeof import('@vueuse/core')['useStorage']
   const useStorageAsync: typeof import('@vueuse/core')['useStorageAsync']
@@ -468,6 +477,7 @@ declare module 'vue' {
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
+    readonly useCrudService: UnwrapRef<typeof import('./composable/services/use-crud-service')['useCrudService']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
     readonly useCssVar: UnwrapRef<typeof import('@vueuse/core')['useCssVar']>
     readonly useCssVars: UnwrapRef<typeof import('vue')['useCssVars']>
@@ -493,6 +503,8 @@ declare module 'vue' {
     readonly useElementHover: UnwrapRef<typeof import('@vueuse/core')['useElementHover']>
     readonly useElementSize: UnwrapRef<typeof import('@vueuse/core')['useElementSize']>
     readonly useElementVisibility: UnwrapRef<typeof import('@vueuse/core')['useElementVisibility']>
+    readonly useEntityDataHandlingService: UnwrapRef<typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']>
+    readonly useEntityImageService: UnwrapRef<typeof import('./composable/services/use-entity-image-service')['useEntityImageService']>
     readonly useEventBus: UnwrapRef<typeof import('@vueuse/core')['useEventBus']>
     readonly useEventListener: UnwrapRef<typeof import('@vueuse/core')['useEventListener']>
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
@@ -504,6 +516,7 @@ declare module 'vue' {
     readonly useFocus: UnwrapRef<typeof import('@vueuse/core')['useFocus']>
     readonly useFocusWithin: UnwrapRef<typeof import('@vueuse/core')['useFocusWithin']>
     readonly useFormChild: UnwrapRef<typeof import('quasar')['useFormChild']>
+    readonly useFormMapperFunctions: UnwrapRef<typeof import('./composable/use-form-mapper-functions')['useFormMapperFunctions']>
     readonly useFps: UnwrapRef<typeof import('@vueuse/core')['useFps']>
     readonly useFullscreen: UnwrapRef<typeof import('@vueuse/core')['useFullscreen']>
     readonly useGamepad: UnwrapRef<typeof import('@vueuse/core')['useGamepad']>
@@ -525,6 +538,8 @@ declare module 'vue' {
     readonly useMediaControls: UnwrapRef<typeof import('@vueuse/core')['useMediaControls']>
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMember: UnwrapRef<typeof import('./composable/use-member')['useMember']>
+    readonly useMemberFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']>
+    readonly useMemberFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
     readonly useMeta: UnwrapRef<typeof import('quasar')['useMeta']>
@@ -572,6 +587,8 @@ declare module 'vue' {
     readonly useSorted: UnwrapRef<typeof import('@vueuse/core')['useSorted']>
     readonly useSpeechRecognition: UnwrapRef<typeof import('@vueuse/core')['useSpeechRecognition']>
     readonly useSpeechSynthesis: UnwrapRef<typeof import('@vueuse/core')['useSpeechSynthesis']>
+    readonly useStaffFormContents: UnwrapRef<typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormContents']>
+    readonly useStaffFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormMapper']>
     readonly useStepper: UnwrapRef<typeof import('@vueuse/core')['useStepper']>
     readonly useStorage: UnwrapRef<typeof import('@vueuse/core')['useStorage']>
     readonly useStorageAsync: UnwrapRef<typeof import('@vueuse/core')['useStorageAsync']>

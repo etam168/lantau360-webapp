@@ -1,3 +1,5 @@
+import typia from "typia";
+
 export interface Member {
   memberId: number;
   alias: string;
@@ -21,3 +23,9 @@ export interface Member {
   modifiedBy: number;
   meta: Record<string, unknown>;
 }
+
+export const randomMember = () => typia.random<Member>();
+
+const { resetObject } = useUtilities();
+
+export const newMember: Member = resetObject(typia.random<Member>());

@@ -27,8 +27,8 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { DatatableType } from "@/interfaces/types/datatable-types";
-  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
+  // import type { DatatableType } from "@/interfaces/types/datatable-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import type { EntityType } from "@/interfaces/types/entity-type";
 
   // Component imports
@@ -39,14 +39,7 @@
 
   // Constant imports
   import { EntityURLKey, ImageURLKey, INPUT_PANE_WIDTH } from "@/constants";
-  import { newAdvertisementImage } from "@/interfaces/models/entities/advertisement-image";
-  import { newBusinessImage } from "@/interfaces/models/entities/business-image";
-  import { newBusinessPromotionImage } from "@/interfaces/models/entities/business-promotion-image";
-  import { newBusinessVoucherImage } from "@/interfaces/models/entities/business-voucher-image";
-  import { newCommunityEventImage } from "@/interfaces/models/entities/community-event-image";
-  import { newCommunityNewsImage } from "@/interfaces/models/entities/community-news-image";
-  import { newCommunityNoticeImage } from "@/interfaces/models/entities/community-notice-image";
-  import { newSiteImage } from "@/interfaces/models/entities/site-image";
+  import { newSiteImage } from "@/interfaces/models/entities/member-image";
 
   // Emits
   const emit = defineEmits(["close-dialog"]);

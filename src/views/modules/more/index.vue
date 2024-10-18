@@ -45,7 +45,10 @@
   const { fetchTransactionData } = useTransactionsFunctions();
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
+  const { handleCreate } = useEntityDataHandlingService("MEMBER");
+
   const i18nKey = "more";
+  const isDialogOpen = ref(false);
 
   interface RenderItem {
     name: string;
@@ -87,14 +90,38 @@
   }
 
   const onItemClick = (item: any) => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/more-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        category: item
-      }
-    });
+    if (item.name == "profile") {
+      //load member data object from api and open edit dialog
+      handleCreate(isDialogOpen, undefined, undefined);
+      // $q.dialog({
+      //   component: defineAsyncComponent(
+      //     () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+      //   ),
+      //   componentProps: {
+      //     // entityKey: "MEMBER"
+      //     category: item
+
+      //   }
+      // });
+      // $q.dialog({
+      //   component: defineAsyncComponent(
+      //     () => import("@/components/dialog/more-detail-dialog/index.vue")
+      //   ),
+      //   componentProps: {
+      //     category: item
+      //   }
+      // });
+    } 
+    else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/more-detail-dialog/index.vue")
+        ),
+        componentProps: {
+          category: item
+        }
+      });
+    }
   };
 
   function showLoginDialog(tabValue: string) {

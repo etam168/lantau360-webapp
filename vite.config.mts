@@ -14,6 +14,8 @@ import { defineConfig } from "vite";
 import { fileURLToPath } from "url";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import { version } from "./package.json";
+import UnpluginTypia from "@ryoppippi/unplugin-typia/vite";
+
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -124,6 +126,7 @@ export default defineConfig({
     chunkSizeWarningLimit: 600
   },
   plugins: [
+    UnpluginTypia({}),
     vue({
       template: { transformAssetUrls }
     }),

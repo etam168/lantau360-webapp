@@ -1,53 +1,59 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
-    maximized
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    maximized
   >
-    <q-card class="bg-white">
-      <q-layout view="hHh lpR fFf">
-        <app-dialog-bar :barTitle="$t(`${entityName}.dialog.create`)" />
-        <q-page-container>
-          <!-- Suspense wrapper for async component loading -->
-          <Suspense>
-            <template #default>
-              <!-- Main input dialog content -->
-              <input-dialog-content
+    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
+      <q-header bordered class="bg-transparent text-dark">
+        <!-- <pre>{{ category }}</pre> -->
+        <!-- <app-dialog-title>{{ category.title }}</app-dialog-title> -->
+         <div>Title</div>
+      </q-header>
+
+      <q-page-container>
+        <!-- Suspense wrapper for async component loading -->
+        <Suspense>
+          <template #default>
+            <input-dialog-content
                 :entity-key
                 :initializationData
                 @close-dialog="handleCloseDialog"
               />
-            </template>
-            <template #fallback>
-              <!-- Loading spinner shown while content is loading -->
-              <div class="row justify-center items-center" style="height: 500px">
-                <app-spinner size="10em" />
-              </div>
-            </template>
-          </Suspense>
-          <!-- Error message display -->
-          <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-            {{ errorMessage }}
-            <p>{{ $t("common.contactAdminMessage") }}</p>
-          </div>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+          </template>
+          <template #fallback>
+            <!-- Loading spinner shown while content is loading -->
+            <div class="row justify-center items-center" style="height: 500px">
+              <app-spinner size="10em" />
+            </div>
+          </template>
+        </Suspense>
+        <!-- Error message display -->
+        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
+          {{ errorMessage }}
+          <p>{{ $t("common.contactAdminMessage") }}</p>
+        </div>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-  //Types
-  import type { DatatableType } from "@/interfaces/types/datatable-types";
+  // Type imports
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
   // Components
+  // import MoreDetailContent from "./more-detail-content.vue";
   import InputDialogContent from "./input-dialog-content.vue";
+
+  // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Emits
@@ -57,28 +63,26 @@
   const { entityKey, previewComponent, initializationData } = defineProps<{
     entityKey: EntityURLKey;
     previewComponent?: Component;
-    initializationData?: DatatableType;
+    initializationData?: CategoryTypes;
   }>();
 
   // Composable function calls
-  const { eventBus, getEntityName } = useUtilities();
-  const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent();
+  const { translate, getEntityName } = useUtilities();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const entityName = getEntityName(entityKey);
 
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    // isDialogVisible.value = false;
+    isDialogVisible.value = false;
     setTimeout(() => {
       try {
-        // onDialogCancel();
-        onDialogOK();
+        onDialogCancel();
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }
@@ -111,8 +115,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    eventBus("CloseDialog").on(() => {
-      isDialogVisible.value = false;
-    });
+    // eventBus("CloseDialog").on(() => {
+    //   isDialogVisible.value = false;
+    // });
   });
 </script>
