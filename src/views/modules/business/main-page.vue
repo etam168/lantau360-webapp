@@ -1,12 +1,10 @@
 <template>
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
-    <!-- <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
-    </q-bar> -->
-
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
+
     <q-separator size="4px" color="primary" />
+
     <q-banner :inline-actions="!isSmallScreen">
       <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 

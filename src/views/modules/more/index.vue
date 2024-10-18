@@ -2,20 +2,27 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
-    <template v-for="(item, index) in renderItems" :key="index">
-      <language-section v-if="item.type === 'language'" />
-      <log-in-section v-if="item.type === 'login'" />
-      <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
+    <q-card-section>
+      <template v-for="(item, index) in renderItems" :key="index">
+        <language-section v-if="item.type === 'language'" />
+        <log-in-section v-if="item.type === 'login'" />
+        <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
 
-      <app-more-item
-        v-if="item.type === 'moreItem'"
-        :icon="item.icon"
-        :title="item.title"
-        @on-item-click="onItemClick(item)"
-      />
+        <app-more-item
+          v-if="item.type === 'moreItem'"
+          :icon="item.icon"
+          :title="item.title"
+          @on-item-click="onItemClick(item)"
+        />
 
-      <install-button v-else-if="item.type === 'install'" />
-    </template>
+        <!-- <install-button v-if="item.type === 'install'" /> -->
+      </template>
+    </q-card-section>
+
+    <q-card-section class="q-py-none">
+      <app-button-outline @click="handleInstall"> Install App</app-button-outline>
+    </q-card-section>
+
     <footer-section />
   </q-page>
 </template>
@@ -47,42 +54,20 @@
     type: "moreItem" | "login" | "logout" | "language" | "install";
   }
 
+  const iconTerms = "./resources/icons/ic_terms_conditions.svg";
+  const iconPrivacy = "./resources/icons/ic_privacy.svg";
+
   const renderItems = computed((): RenderItem[] => {
     switch (userStore.isUserLogon()) {
       case true:
         return [
           { name: "login", type: "login" },
           { name: "language", type: "language" },
-          {
-            name: "terms",
-            type: "moreItem",
-            icon: "./resources/icons/ic_terms_conditions.svg",
-            title: "Terms & Conditions"
-          },
-          {
-            name: "privacy",
-            type: "moreItem",
-            icon: "./resources/icons/ic_privacy.svg",
-            title: "Privacy Policy"
-          },
-          {
-            name: "profileSetting",
-            type: "moreItem",
-            icon: "./resources/icons/ic_privacy.svg",
-            title: "Profile"
-          },
-          {
-            name: "account",
-            type: "moreItem",
-            icon: "./resources/icons/ic_privacy.svg",
-            title: "Account"
-          },
-          {
-            name: "checkIn",
-            type: "moreItem",
-            icon: "./resources/icons/ic_privacy.svg",
-            title: "My Check-In"
-          },
+          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` },
+          { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
+          { name: "profile", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.profile` },
+          { name: "account", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.account` },
+          { name: "checkIn", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.checkin` },
           { name: "install", type: "install" }
         ];
 
@@ -90,22 +75,16 @@
         return [
           { name: "logout", type: "logout" },
           { name: "language", type: "language" },
-          {
-            name: "privacy",
-            type: "moreItem",
-            icon: "./resources/icons/ic_privacy.svg",
-            title: "Privacy"
-          },
-          {
-            name: "terms",
-            type: "moreItem",
-            icon: "./resources/icons/ic_terms_conditions.svg",
-            title: "Terms & Conditions"
-          },
+          { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
+          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` },
           { name: "install", type: "install" }
         ];
     }
   });
+
+  function handleInstall() {
+    alert("handleInstall");
+  }
 
   const onItemClick = (item: any) => {
     $q.dialog({
