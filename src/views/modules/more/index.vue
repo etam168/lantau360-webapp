@@ -38,7 +38,7 @@
 
   import FooterSection from "./section/footer-section.vue";
   import InstallButton from "./section/install-button.vue";
-  import { EntityURLKey } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   const $q = useQuasar();
   const { eventBus } = useUtilities();
@@ -46,10 +46,11 @@
   const { fetchTransactionData } = useTransactionsFunctions();
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const { handleCreate, handleOpenDialog } = useEntityDataHandlingService("MEMBER");
+  const { handleOpenDialog } = useEntityDataHandlingService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
+  const lookUpEntityTypes = ["MEMBER"];
 
   interface RenderItem {
     name: string;
@@ -91,42 +92,48 @@
   }
 
   const onItemClick = (item: any) => {
-    if (item.name == "profile") {
-      //load member data object from api and open edit dialog
-      handleCreate(isDialogOpen, undefined, undefined);
-      // $q.dialog({
-      //   component: defineAsyncComponent(
-      //     () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
-      //   ),
-      //   componentProps: {
-      //     // entityKey: "MEMBER"
-      //     category: item
+    const { name } = item;
+    let component;
+    let props;
+    let entityKey;
 
-      //   }
-      // });
-      // $q.dialog({
-      //   component: defineAsyncComponent(
-      //     () => import("@/components/dialog/more-detail-dialog/index.vue")
-      //   ),
-      //   componentProps: {
-      //     category: item
-      //   }
-      // });
-    } else if (item.name === "privacy" || item.name === "terms") {
-      const props = { category: item };
-      const defaultComponent = defineAsyncComponent(
-        () => import("@/components/dialog/content-detail-dialog/index.vue")
-      );
-      handleOpenDialog(undefined, defaultComponent, props, isDialogOpen.value);
-    } else {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/more-detail-dialog/index.vue")
-        ),
-        componentProps: {
-          category: item
-        }
-      });
+    switch (name) {
+      case "profile":
+        entityKey = "MEMBER" as EntityURLKey;
+        props = { category: item, entityKey: entityKey };
+        component = defineAsyncComponent(
+          () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+        );
+        handleOpenDialog(
+          undefined,
+          component,
+          component,
+          props,
+          isDialogOpen.value,
+          lookUpEntityTypes,
+          entityKey
+        );
+        break;
+
+      case "privacy":
+      case "terms":
+        props = { category: item };
+        component = defineAsyncComponent(
+          () => import("@/components/dialog/content-detail-dialog/index.vue")
+        );
+        handleOpenDialog(undefined, component, component, props, isDialogOpen.value);
+        break;
+
+      default:
+        $q.dialog({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/more-detail-dialog/index.vue")
+          ),
+          componentProps: {
+            category: item
+          }
+        });
+        break;
     }
   };
 

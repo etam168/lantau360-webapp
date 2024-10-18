@@ -330,6 +330,7 @@
     "useEntityImageService": true,
     "useFormMapperFunctions": true,
     "useMemberFormContents": true,
-    "useMemberFormMapper": true
+    "useMemberFormMapper": true,
+    "useEntityDataHandlingService2": true
   }
 }

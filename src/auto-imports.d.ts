@@ -181,6 +181,7 @@ declare global {
   const useElementSize: typeof import('@vueuse/core')['useElementSize']
   const useElementVisibility: typeof import('@vueuse/core')['useElementVisibility']
   const useEntityDataHandlingService: typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']
+  const useEntityDataHandlingService2: typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService2']
   const useEntityImageService: typeof import('./composable/services/use-entity-image-service')['useEntityImageService']
   const useEventBus: typeof import('@vueuse/core')['useEventBus']
   const useEventListener: typeof import('@vueuse/core')['useEventListener']
