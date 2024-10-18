@@ -51,15 +51,15 @@
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
-  import { ENTITY_URL, EntityURLKey, URL } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
   import { useUserStore } from "@/stores/user";
   import { Content } from "@/interfaces/models/entities/content";
 
-  const { eventBus, isSmallScreen, aspectRatio } = useUtilities();
+  const { eventBus, isSmallScreen } = useUtilities();
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const entityKey: EntityURLKey = "COMMUNITY";
+  const entityKey: EntityURLKey = "COMMUNITY_DIRECTORY";
 
   const { fetchMemberPoints, setPoints } = useUserStore();
   const { openCategoryItemDialog } = useCategoryDialogService(entityKey);

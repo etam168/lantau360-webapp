@@ -9,13 +9,12 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     if (isDialogOpen.value) return;
 
     isDialogOpen.value = true;
-    if (entityKey === "COMMUNITY") {
-      alert("COMMUNITY DIALOG");
+    if (entityKey === "COMMUNITY_DIRECTORY") {
       Dialog.create({
         component: defineAsyncComponent(
-          () => import("@/components/dialog/category-items-dialog/index.vue")
+          () => import("@/components/dialog/community-detail-dialog/index.vue")
         ),
-        componentProps: { directory: directory, entityKey: entityKey }
+        componentProps: { community: directory, entityKey: entityKey }
       })
         .onCancel(() => {
           // Reset dialog state when it is dismissed/closed
