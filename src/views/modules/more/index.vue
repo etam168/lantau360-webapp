@@ -38,6 +38,7 @@
 
   import FooterSection from "./section/footer-section.vue";
   import InstallButton from "./section/install-button.vue";
+  import { EntityURLKey } from "@/constants";
 
   const $q = useQuasar();
   const { eventBus } = useUtilities();
@@ -45,7 +46,7 @@
   const { fetchTransactionData } = useTransactionsFunctions();
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
-  const { handleCreate } = useEntityDataHandlingService("MEMBER");
+  const { handleCreate, handleOpenDialog } = useEntityDataHandlingService("MEMBER");
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -111,8 +112,13 @@
       //     category: item
       //   }
       // });
-    } 
-    else {
+    } else if (item.name === "privacy" || item.name === "terms") {
+      const props = { category: item };
+      const defaultComponent = defineAsyncComponent(
+        () => import("@/components/dialog/content-detail-dialog/index.vue")
+      );
+      handleOpenDialog(undefined, defaultComponent, props, isDialogOpen.value);
+    } else {
       $q.dialog({
         component: defineAsyncComponent(
           () => import("@/components/dialog/more-detail-dialog/index.vue")

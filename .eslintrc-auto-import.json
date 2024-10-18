@@ -324,6 +324,12 @@
     "usePwaInstallService": true,
     "useCategoryDialogService": true,
     "useRenderersFunctions": true,
-    "useTransactionsFunctions": true
+    "useTransactionsFunctions": true,
+    "useCrudService": true,
+    "useEntityDataHandlingService": true,
+    "useEntityImageService": true,
+    "useFormMapperFunctions": true,
+    "useMemberFormContents": true,
+    "useMemberFormMapper": true
   }
 }

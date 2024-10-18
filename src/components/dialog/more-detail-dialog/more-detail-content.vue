@@ -94,36 +94,5 @@
     }
   });
 
-  //   async function OpenDialog(
-  //     component: any,
-  //     componentProps?: any,
-  //     contentKey?: string,
-  //     requestType?: string
-  //   ) {
-  //     let requestUrl;
-  //     switch (requestType) {
-  //       case "content":
-  //         requestUrl = `${ENTITY_URL.CONTENT_NAME}/${contentKey}`;
-  //         break;
-  //       case "profile":
-  //         requestUrl = `${ENTITY_URL.MEMBER}/${userStore.userId}`;
-  //         break;
-  //       default:
-  //         requestUrl = `${ENTITY_URL.CHECKIN_BY_MEMBER}/${userStore.userId}`;
-  //         break;
-  //     }
-  //     const response = await axios.get(requestUrl).catch(err => {
-  //       handleError(err);
-  //     });
-
-  //     $q.dialog({
-  //       component: defineAsyncComponent(() => component),
-  //       componentProps: {
-  //         data: response?.data || [],
-  //         ...componentProps
-  //       }
-  //     });
-  //   }
-
   await fetchAllData();
 </script>

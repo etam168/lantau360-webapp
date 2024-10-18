@@ -587,8 +587,6 @@ declare module 'vue' {
     readonly useSorted: UnwrapRef<typeof import('@vueuse/core')['useSorted']>
     readonly useSpeechRecognition: UnwrapRef<typeof import('@vueuse/core')['useSpeechRecognition']>
     readonly useSpeechSynthesis: UnwrapRef<typeof import('@vueuse/core')['useSpeechSynthesis']>
-    readonly useStaffFormContents: UnwrapRef<typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormContents']>
-    readonly useStaffFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-staff-form-mapper')['useStaffFormMapper']>
     readonly useStepper: UnwrapRef<typeof import('@vueuse/core')['useStepper']>
     readonly useStorage: UnwrapRef<typeof import('@vueuse/core')['useStorage']>
     readonly useStorageAsync: UnwrapRef<typeof import('@vueuse/core')['useStorageAsync']>

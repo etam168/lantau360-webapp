@@ -8,22 +8,16 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
-        <!-- <app-dialog-title>{{ category.title }}</app-dialog-title> -->
-        <div>Title</div>
+        <app-dialog-title>{{ category.title }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
-        <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <input-dialog-content
-              :entity-key
-              :initializationData
-              @close-dialog="handleCloseDialog"
-            />
+            <!-- <div>dialog</div> -->
+            <!-- Main content dialog content -->
+            <content-detail-content :category />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -32,62 +26,32 @@
             </div>
           </template>
         </Suspense>
-        <!-- Error message display -->
-        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-          {{ errorMessage }}
-          <p>{{ $t("common.contactAdminMessage") }}</p>
-        </div>
       </q-page-container>
     </q-layout>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
-  // import MoreDetailContent from "./more-detail-content.vue";
-  import InputDialogContent from "./input-dialog-content.vue";
-
-  // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import ContentDetailContent from "./content-detail-content.vue";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { entityKey, previewComponent, initializationData } = defineProps<{
-    entityKey: EntityURLKey;
-    previewComponent?: Component;
-    initializationData?: CategoryTypes;
+  const { category } = defineProps<{
+    category: any;
   }>();
 
   // Composable function calls
-  const { translate, getEntityName } = useUtilities();
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
+  const { translate } = useUtilities();
+  const { dialogRef } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    isDialogVisible.value = false;
-    setTimeout(() => {
-      try {
-        onDialogCancel();
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
 
   /**
    * Updates the dialog's visibility state
