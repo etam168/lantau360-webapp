@@ -1,7 +1,7 @@
 <template>
   <!-- Check if moreData exists and is not empty -->
-  <div v-if="moreData && moreData.length">
-    <q-card v-for="item in moreData" :key="item.checkInId" class="q-ma-md">
+  <div v-if="contentData && contentData.length">
+    <q-card v-for="item in contentData" :key="item.checkInId" class="q-ma-md">
       <q-card-section class="q-pa-none">
         <q-list>
           <q-item clickable @click="throttledHandleDialog(item)">
@@ -54,13 +54,12 @@
   import { IMAGES } from "@/constants";
 
   // Props
-  const { moreData } = defineProps<{
-    moreData: any;
+  const { contentData } = defineProps<{
+    contentData: Record<string, any>;
   }>();
 
   const { dateFormatter, getImageURL } = useUtilities();
   const $q = useQuasar();
-  const { t } = useI18n({ useScope: "global" });
 
   const computeIconPath = (item: any) => {
     return getImageURL(item.iconPath);

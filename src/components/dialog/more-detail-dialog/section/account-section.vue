@@ -1,6 +1,35 @@
 <template>
-  <pre>{{ moreData }}</pre>
-  <!-- <q-card bordered style="min-height: 280px">
+  <q-card class="q-ma-md q-py-md text-white bg-primary">
+    <q-card-section class="row items-center justify-between">
+      <!-- Points Balance Section -->
+      <div>
+        <div class="text-subtitle1">
+          {{
+            $t("more.profileSetting.availablePoints", {
+              availablePoints: userStore.availabelPoints
+            })
+          }}
+        </div>
+        <div class="text-caption">
+          {{
+            $t("more.profileSetting.bythisTimeText", {
+              spentPoints: userStore.spendPoints
+            })
+          }}
+        </div>
+      </div>
+      <!-- Top-up Points Button -->
+      <q-btn
+        dense
+        rounded
+        @click="onBtnBuyPoints"
+        class="text-primary bg-grey-1 text-caption q-px-md"
+        >{{ $t("more.profileSetting.buyPoints") }}</q-btn
+      >
+    </q-card-section>
+  </q-card>
+
+  <q-card flat style="min-height: 280px">
     <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
     <q-separator spaced />
@@ -48,29 +77,32 @@
         </q-list>
       </q-tab-panel>
     </q-tab-panels>
-  </q-card> -->
+  </q-card>
 </template>
 
 <script setup lang="ts">
+  import { useUserStore } from "@/stores/user";
+
   // Props
-  const { moreData } = defineProps<{
-    moreData: any;
+  const { contentData } = defineProps<{
+    contentData: Record<string, any>;
   }>();
 
+  const userStore = useUserStore();
   const { t } = useI18n({ useScope: "global" });
   const { dateFormatter } = useUtilities();
   const i18nKey = `more.account`;
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("recentTransactions");
-  // const tabItems = ref([
-  //   {
-  //     name: "recentTransactions",
-  //     label: t(`${i18nKey}.recentTransactions`),
-  //     subItems: moreData.trRecent || []
-  //   },
-  //   { name: "history", label: t(`${i18nKey}.history`), subItems: moreData.trHistory || [] }
-  // ]);
+  const tabItems = ref([
+    {
+      name: "recentTransactions",
+      label: t(`${i18nKey}.recentTransactions`),
+      subItems: contentData.trRecent || []
+    },
+    { name: "history", label: t(`${i18nKey}.history`), subItems: contentData || [] }
+  ]);
 
   function handleItemClick(item: any) {
     // if (item.postingId) {
@@ -88,4 +120,13 @@
     //   });
     // }
   }
+
+  const onBtnBuyPoints = () => {
+    alert("TOP UP POINTS");
+    // $q.dialog({
+    //   component: defineAsyncComponent(
+    //     () => import("./top-up-points/purchase-options-dialog/index.vue")
+    //   )
+    // });
+  };
 </script>

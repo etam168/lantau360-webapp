@@ -114,9 +114,15 @@
         );
         break;
 
+      case "account":
+        handleMoreDialog(name);
+        break;
+      case "account":
+        handleMoreDialog(name);
+        break;
       case "privacy":
       case "terms":
-        handleContentDialog(name);
+        handleMoreDialog(name);
         break;
 
       default:
@@ -124,13 +130,13 @@
     }
   };
 
-  function handleContentDialog(contentName: string) {
+  function handleMoreDialog(name: string) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
       componentProps: {
-        contentName: contentName
+        contentName: name
       }
     });
   }
