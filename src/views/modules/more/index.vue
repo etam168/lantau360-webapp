@@ -30,15 +30,13 @@
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
+  import { EntityURLKey } from "@/constants";
 
   // Custom Components
-  import LogInSection from "./section/login-section.vue";
-  import LogOffSection from "./section/logoff-section.vue";
-  import languageSection from "./section/language-section.vue";
-
-  import FooterSection from "./section/footer-section.vue";
-  import InstallButton from "./section/install-button.vue";
-  import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import languageSection from "./components/language-section.vue";
+  import LogInSection from "./components/login-section.vue";
+  import LogOffSection from "./components/logoff-section.vue";
+  import FooterSection from "./components/footer-section.vue";
 
   const $q = useQuasar();
   const { eventBus } = useUtilities();
@@ -93,6 +91,7 @@
 
   const onItemClick = (item: any) => {
     const { name } = item;
+    alert(JSON.stringify(name));
     let component;
     let props;
     let entityKey;
@@ -117,25 +116,24 @@
 
       case "privacy":
       case "terms":
-        props = { category: item };
-        component = defineAsyncComponent(
-          () => import("@/components/dialog/content-detail-dialog/index.vue")
-        );
-        handleOpenDialog(undefined, component, component, props, isDialogOpen.value);
+        handleContentDialog(name);
         break;
 
       default:
-        $q.dialog({
-          component: defineAsyncComponent(
-            () => import("@/components/dialog/more-detail-dialog/index.vue")
-          ),
-          componentProps: {
-            category: item
-          }
-        });
         break;
     }
   };
+
+  function handleContentDialog(contentName: string) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/more-detail-dialog/index.vue")
+      ),
+      componentProps: {
+        contentName: contentName
+      }
+    });
+  }
 
   function showLoginDialog(tabValue: string) {
     $q.dialog({

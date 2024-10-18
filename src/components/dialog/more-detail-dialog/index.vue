@@ -10,17 +10,15 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
-        <app-dialog-title>{{ category.title }}</app-dialog-title>
+        <app-dialog-title>{{ contentName }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
-            <!-- Main edit dialog content -->
-            <more-detail-content :category />
+            <!-- Main more-detail content -->
+            <more-detail-content :contentName />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -40,9 +38,6 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
@@ -53,8 +48,8 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { category } = defineProps<{
-    category: CategoryTypes;
+  const { contentName } = defineProps<{
+    contentName: string;
   }>();
 
   // Composable function calls
