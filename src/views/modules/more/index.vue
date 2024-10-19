@@ -16,10 +16,10 @@
         />
       </template>
     </q-card-section>
-
+<!-- 
     <q-card-section>
       <app-button-outline @click="handleInstall"> Install App</app-button-outline>
-    </q-card-section>
+    </q-card-section> -->
 
     <more-page-footer />
   </q-page>
@@ -138,6 +138,20 @@
   }
 
   onMounted(() => {
+    $q.notify({
+      message: "Install App",
+      color: "primary",
+      actions: [
+        {
+          label: "Install",
+          color: "white",
+          handler: () => {
+            handleInstall();
+          }
+        }
+      ]
+    });
+
     eventBus.on("refresh-transaction-data", () => {
       fetchTransactionData();
     });
