@@ -1,5 +1,6 @@
 // useCategoryDialogService.ts
 import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
@@ -9,37 +10,20 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     if (isDialogOpen.value) return;
 
     isDialogOpen.value = true;
-    if (entityKey === "COMMUNITY_DIRECTORY") {
-      Dialog.create({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/community-detail-dialog/index.vue")
-        ),
-        componentProps: { community: directory, entityKey: entityKey }
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/category-items-dialog/index.vue")
+      ),
+      componentProps: { directory: directory, entityKey: entityKey }
+    })
+      .onCancel(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
       })
-        .onCancel(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        })
-        .onOk(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        });
-    } else {
-      Dialog.create({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/category-items-dialog/index.vue")
-        ),
-        componentProps: { directory: directory, entityKey: entityKey }
-      })
-        .onCancel(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        })
-        .onOk(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        });
-    }
+      .onOk(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
+      });
   }
 
   function openCategoryDetailDialog(item: any) {
@@ -54,8 +38,28 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     });
   }
 
+  function openCommunityItemDialog(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+    if (isDialogOpen.value) return;
+
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/community-items-dialog/index.vue")
+      ),
+      componentProps: { community: directory, entityKey: entityKey }
+    })
+      .onCancel(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
+      })
+      .onOk(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
+      });
+  }
+
   return {
     openCategoryDetailDialog,
-    openCategoryItemDialog
+    openCategoryItemDialog,
+    openCommunityItemDialog
   };
 }

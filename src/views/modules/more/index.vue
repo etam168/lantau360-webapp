@@ -2,28 +2,26 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
-    <q-card-section>
+    <q-card-section class="q-gutter-md">
       <template v-for="(item, index) in renderItems" :key="index">
-        <language-section v-if="item.type === 'language'" />
-        <log-in-section v-if="item.type === 'login'" />
-        <log-off-section v-if="item.type === 'logout'" @on-dialog="throttledHandleLoginDialog" />
+        <more-page-language v-if="item.type === 'language'" />
+        <more-page-logoff v-if="item.type === 'logoff'" @on-dialog="throttledHandleLoginDialog" />
+        <more-page-logon v-if="item.type === 'logon'" />
 
-        <app-more-item
+        <more-page-item
           v-if="item.type === 'moreItem'"
-          :icon="item.icon"
+          :img-src="item.icon"
           :title="item.title"
           @on-item-click="onItemClick(item)"
         />
-
-        <!-- <install-button v-if="item.type === 'install'" /> -->
       </template>
     </q-card-section>
 
-    <q-card-section class="q-py-none">
+    <q-card-section>
       <app-button-outline @click="handleInstall"> Install App</app-button-outline>
     </q-card-section>
 
-    <footer-section />
+    <more-page-footer />
   </q-page>
 </template>
 
@@ -32,19 +30,13 @@
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey } from "@/constants";
 
-  // Custom Components
-  import languageSection from "./components/language-section.vue";
-  import LogInSection from "./components/login-section.vue";
-  import LogOffSection from "./components/logoff-section.vue";
-  import FooterSection from "./components/footer-section.vue";
-
   const $q = useQuasar();
-  const { eventBus } = useUtilities();
   const userStore = useUserStore();
+  const { eventBus } = useUtilities();
   const { fetchTransactionData } = useTransactionsFunctions();
-  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
-
   const { handleOpenDialog } = useEntityDataHandlingService();
+
+  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -54,7 +46,7 @@
     name: string;
     icon?: string;
     title?: string;
-    type: "moreItem" | "login" | "logout" | "language" | "install";
+    type: "language" | "logoff" | "logon" | "moreItem";
   }
 
   const iconTerms = "./resources/icons/ic_terms_conditions.svg";
@@ -64,23 +56,21 @@
     switch (userStore.isUserLogon()) {
       case true:
         return [
-          { name: "login", type: "login" },
+          { name: "logoff", type: "logoff" },
           { name: "language", type: "language" },
           { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` },
           { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
           { name: "profile", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.profile` },
           { name: "account", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.account` },
-          { name: "checkIn", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.checkin` },
-          { name: "install", type: "install" }
+          { name: "checkIn", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.checkin` }
         ];
 
       default:
         return [
-          { name: "logout", type: "logout" },
+          { name: "logon", type: "logon" },
           { name: "language", type: "language" },
           { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
-          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` },
-          { name: "install", type: "install" }
+          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` }
         ];
     }
   });
@@ -117,9 +107,7 @@
       case "account":
         handleMoreDialog(name);
         break;
-      case "account":
-        handleMoreDialog(name);
-        break;
+
       case "privacy":
       case "terms":
         handleMoreDialog(name);

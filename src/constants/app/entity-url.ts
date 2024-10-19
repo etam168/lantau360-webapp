@@ -9,12 +9,15 @@ export const ENTITY_URL = {
   BUSINESS_VOUCHER: `/BusinessVoucher/Datatable`,
   CHECKIN: `/CheckIn`,
   CHECKIN_BY_MEMBER: `/CheckIn/GetByMemberId`,
+  COMMUNITY: `/Community`,
   COMMUNITY_EVENT_CURRENT: `/CommunityEvent/CommunityEventCurrent`,
   COMMUNITY_DIRECTORY: `/CommunityDirectory`,
   COMMUNITY_NEWS_CURRENT: `/CommunityNews/CommunityNewsCurrent`,
   COMMUNITY_NOTICE_CURRENT: `/CommunityNotice/CommunityNoticeCurrent`,
   CONTENT_NAME: `/Content/ContentByName`,
   FAVOURITE: `posting`,
+  MEMBER: "/Member",
+  MEMBER_IMAGE: `/MemberImage`,
   MEMBER_BY_ID: `/Member/MemberById`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   MEMBER_TRANSACTIONS: `/Transactoin/MemberTransactions`,
@@ -22,10 +25,7 @@ export const ENTITY_URL = {
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
-  WEATHER: `/Weather`,
-  COMMUNITY: `/Community`,
-  MEMBER: "/Member",
-  MEMBER_IMAGE: `/MemberImage`
+  WEATHER: `/Weather`
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

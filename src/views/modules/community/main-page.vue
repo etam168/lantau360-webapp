@@ -62,7 +62,7 @@
   const entityKey: EntityURLKey = "COMMUNITY_DIRECTORY";
 
   const { fetchMemberPoints, setPoints } = useUserStore();
-  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
+  const { openCommunityItemDialog } = useCategoryDialogService(entityKey);
 
   const advertisements = ref<AdvertisementView[]>([]);
   const directoryData = ref<CommunityDirectory[]>([]);
@@ -92,7 +92,7 @@
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    openCategoryItemDialog(isDialogOpen, communityDirectory);
+    openCommunityItemDialog(isDialogOpen, communityDirectory);
   }
 
   onMounted(() => {

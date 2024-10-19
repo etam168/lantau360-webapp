@@ -19,7 +19,7 @@
           <template #default>
             <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entity-key />
+            <community-items-content :directory :entity-key />
           </template>
 
           <template #fallback>
@@ -41,14 +41,13 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import CategoryItemsContent from "./category-items-content.vue";
+  import CommunityItemsContent from "./community-items-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
@@ -58,7 +57,7 @@
 
   // Props
   const { directory, entityKey } = defineProps<{
-    directory: DirectoryTypes;
+    directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 

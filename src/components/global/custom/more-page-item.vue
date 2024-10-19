@@ -1,24 +1,29 @@
-<!-- MenuSection.vue -->
+<!-- more-page-item.vue -->
 <template>
-  <q-item class="shadow-1 q-mb-md">
+  <q-item class="shadow-1">
     <q-item-section avatar>
       <q-avatar size="36px" square>
-        <img :src="ICONS.SETTING" />
+        <img :src="imgSrc" />
       </q-avatar>
     </q-item-section>
 
     <q-item-section>
       <q-item-label class="text-subtitle1 text-weight-medium">
-        {{ $t("more.language") }}
+        {{ $t(title) }}
       </q-item-label>
     </q-item-section>
 
     <q-item-section side>
-      <language-select />
+      <app-button-flat round icon="fa-solid fa-angle-right" @click="$emit('on-item-click')" />
     </q-item-section>
   </q-item>
 </template>
 
 <script setup lang="ts">
-  import { ICONS } from "@/constants/app/image-icon";
+  const emit = defineEmits(["on-item-click"]);
+
+  const { imgSrc, title = "" } = defineProps<{
+    imgSrc?: string;
+    title?: string;
+  }>();
 </script>
