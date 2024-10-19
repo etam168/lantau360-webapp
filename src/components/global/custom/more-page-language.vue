@@ -2,9 +2,7 @@
 <template>
   <q-item class="shadow-1">
     <q-item-section avatar>
-      <q-avatar size="36px" square>
-        <img :src="ICONS.SETTING" />
-      </q-avatar>
+      <q-avatar square :icon="ICONS.SETTING" font-size="36px"></q-avatar>
     </q-item-section>
 
     <q-item-section>

@@ -1,9 +1,9 @@
 export const ICONS = {
-  ACCOUNT: "./resources/icons/ic_privacy.svg",
-  PRIVACY: "./resources/icons/ic_privacy.svg",
-  PROFILE: "./resources/icons/ic_privacy.svg",
-  SETTING: "./resources/icons/ic_language_setting.svg",
-  TNC: "./resources/icons/ic_terms_conditions.svg"
+  ACCOUNT: "img:resources/icons/ic_privacy.svg",
+  PRIVACY: "img:resources/icons/ic_privacy.svg",
+  PROFILE: "img:resources/icons/ic_privacy.svg",
+  SETTING: "img:resources/icons/ic_language_setting.svg",
+  TNC: "img:resources/icons/ic_terms_conditions.svg"
 };
 
 export const IMAGES = {

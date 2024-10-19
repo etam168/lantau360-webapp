@@ -61,17 +61,6 @@
 
   const entityName = getEntityName(entityKey);
 
-  const items = computed(() => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return ["business"];
-      case "SITE":
-        return ["site"];
-      default:
-        return ["N/A"];
-    }
-  });
-
   const favoriteItems = computed((): CategoryTypes[] => {
     switch (entityKey) {
       case "BUSINESS":

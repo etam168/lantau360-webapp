@@ -21,7 +21,6 @@ declare module 'vue' {
     AppDirectoryItems: typeof import('./components/global/custom/app-directory-items.vue')['default']
     AppMapComponent: typeof import('./components/global/app-map-component.vue')['default']
     AppMarketingItemList: typeof import('./components/global/custom/app-marketing-item-list.vue')['default']
-    AppMoreItem: typeof import('./components/global/custom/app-more-item.vue')['default']
     AppPageTitle: typeof import('./components/global/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
     AppSkeletonCard: typeof import('./components/global/widgets/app-skeleton-card.vue')['default']

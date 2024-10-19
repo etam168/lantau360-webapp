@@ -10,7 +10,7 @@
 
         <more-page-item
           v-if="item.type === 'moreItem'"
-          :img-src="item.icon"
+          :icon="item.icon"
           :title="item.title"
           @on-item-click="onItemClick(item)"
         />
@@ -28,7 +28,7 @@
 <script setup lang="ts">
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
-  import { EntityURLKey } from "@/constants";
+  import { EntityURLKey, ICONS } from "@/constants";
 
   const $q = useQuasar();
   const userStore = useUserStore();
@@ -49,28 +49,25 @@
     type: "language" | "logoff" | "logon" | "moreItem";
   }
 
-  const iconTerms = "./resources/icons/ic_terms_conditions.svg";
-  const iconPrivacy = "./resources/icons/ic_privacy.svg";
-
   const renderItems = computed((): RenderItem[] => {
     switch (userStore.isUserLogon()) {
       case true:
         return [
           { name: "logoff", type: "logoff" },
           { name: "language", type: "language" },
-          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` },
-          { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
-          { name: "profile", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.profile` },
-          { name: "account", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.account` },
-          { name: "checkIn", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.checkin` }
+          { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` },
+          { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
+          { name: "profile", type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
+          { name: "account", type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account` },
+          { name: "checkIn", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkin` }
         ];
 
       default:
         return [
           { name: "logon", type: "logon" },
           { name: "language", type: "language" },
-          { name: "privacy", type: "moreItem", icon: iconPrivacy, title: `${i18nKey}.privacy` },
-          { name: "terms", type: "moreItem", icon: iconTerms, title: `${i18nKey}.terms` }
+          { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
+          { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
         ];
     }
   });

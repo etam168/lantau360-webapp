@@ -2,9 +2,7 @@
 <template>
   <q-item class="shadow-1">
     <q-item-section avatar>
-      <q-avatar size="36px" square>
-        <img :src="imgSrc" />
-      </q-avatar>
+      <q-avatar square :icon font-size="36px"></q-avatar>
     </q-item-section>
 
     <q-item-section>
@@ -22,8 +20,8 @@
 <script setup lang="ts">
   const emit = defineEmits(["on-item-click"]);
 
-  const { imgSrc, title = "" } = defineProps<{
-    imgSrc?: string;
+  const { icon, title = "" } = defineProps<{
+    icon?: string;
     title?: string;
   }>();
 </script>
