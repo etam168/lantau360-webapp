@@ -41,8 +41,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   function openCommunityItemDialog(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
-    alert(JSON.stringify(directory));
-    alert(entityKey);
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-items-dialog/index.vue")

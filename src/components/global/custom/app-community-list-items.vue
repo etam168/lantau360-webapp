@@ -1,9 +1,10 @@
 <template>
   <q-list>
+    <pre>{{ communityItems }}</pre>
     <q-item
       clickable
       @click="handleDetail(item)"
-      v-for="(item, index) in categoryItems"
+      v-for="(item, index) in communityItems"
       :key="index"
     >
       <q-item-section avatar>
@@ -22,13 +23,6 @@
         <q-item-label> {{ line1(item) }} </q-item-label>
         <q-item-label> {{ line2(item) }} </q-item-label>
       </q-item-section>
-
-      <q-item-section side>
-        <div class="q-gutter-sm">
-          <q-icon name="fa-solid fa-location-dot" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon name="fa-solid fa-heart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-        </div>
-      </q-item-section>
     </q-item>
   </q-list>
 </template>
@@ -38,24 +32,15 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { EntityURLKey, STORAGE_KEYS, TEMPLATE } from "@/constants";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { LocalStorage } from "quasar";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
+  import { EntityURLKey } from "@/constants";
 
   const { getEntityName, getImageURL, translate } = useUtilities();
 
   const emits = defineEmits(["on-category-detail"]);
 
   // Props
-  const {
-    categoryItems,
-    checkIns = [],
-    entityKey
-  } = defineProps<{
-    categoryItems: CategoryTypes[];
-    checkIns?: CheckIn[];
+  const { communityItems, entityKey } = defineProps<{
+    communityItems: CategoryTypes[];
     entityKey: EntityURLKey;
   }>();
 
@@ -63,23 +48,10 @@
 
   const items = computed(() => {
     switch (entityKey) {
-      case "BUSINESS":
-        return ["business"];
-      case "SITE":
-        return ["site"];
+      case "POSTING":
+        return ["posting"];
       default:
         return ["N/A"];
-    }
-  });
-
-  const favoriteItems = computed((): CategoryTypes[] => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
-      case "SITE":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      default:
-        return [];
     }
   });
 
@@ -92,30 +64,6 @@
   function line2(item: CategoryTypes) {
     return translate(item.subtitle1, item.meta, "subtitle1");
   }
-
-  const isCheckedIn = (item: CategoryTypes): boolean => {
-    if (entityKey == "SITE") {
-      return checkIns.some(
-        checkInItem => (checkInItem as CheckIn).siteId === (item as SiteView).siteId
-      );
-    }
-    return false;
-  };
-
-  const isFavoriteItem = (item: CategoryTypes): boolean => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return favoriteItems.value.some(
-          favItem => (favItem as BusinessView).businessId === (item as BusinessView).businessId
-        );
-      case "SITE":
-        return favoriteItems.value.some(
-          favItem => (favItem as SiteView).siteId === (item as SiteView).siteId
-        );
-      default:
-        return false;
-    }
-  };
 
   function handleDetail(item: any) {
     emits("on-category-detail", item);

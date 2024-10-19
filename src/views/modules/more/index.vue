@@ -6,7 +6,7 @@
       <template v-for="(item, index) in renderItems" :key="index">
         <more-page-language v-if="item.type === 'language'" />
         <more-page-logoff v-if="item.type === 'logoff'" @on-dialog="throttledHandleLoginDialog" />
-        <more-page-logon v-if="item.type === 'logon'" />
+        <more-page-logon v-if="item.type === 'logon'" @on-dialog="throttledHandleLoginDialog" />
 
         <more-page-item
           v-if="item.type === 'moreItem'"
@@ -130,6 +130,7 @@
   }
 
   function showLoginDialog(tabValue: string) {
+    alert("YES");
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {

@@ -32,9 +32,8 @@
           :name="item.name"
           class="q-pa-none"
         >
-          <app-category-list-items
-            :categoryItems="filterGroupedArray(item.name)"
-            :checkIns
+          <app-community-list-items
+            :communityItems="filterGroupedArray(item.name)"
             :entityKey
             @on-category-detail="handleDetail"
           />
@@ -42,10 +41,9 @@
       </q-tab-panels>
     </template>
 
-    <app-category-list-items
+    <app-community-list-items
       v-else
-      :categoryItems
-      :checkIns
+      :communityItems
       :entityKey
       @on-category-detail="handleDetail"
     />
@@ -55,12 +53,11 @@
 <script setup lang="ts">
   // Interface
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
-  import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { AREA_NAME, EntityURLKey, NONE } from "@/constants";
 
   // Props
   const { community, entityKey } = defineProps<{
@@ -73,8 +70,7 @@
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const $q = useQuasar();
 
-  const categoryItems: Ref<CategoryTypes[]> = ref([]);
-  const checkIns: Ref<CheckIn[]> = ref([]);
+  const communityItems: Ref<CategoryTypes[]> = ref([]);
 
   const directoryId: ComputedRef<number> = computed(() => {
     switch (entityKey) {
@@ -110,7 +106,7 @@
       return translate(itemValue, metaData, key);
     };
 
-    const validItems = categoryItems.value.filter(
+    const validItems = communityItems.value.filter(
       (item: CategoryTypes) => key in item && item[key as keyof CategoryTypes] !== undefined
     );
 
@@ -150,16 +146,14 @@
     try {
       switch (entityKey) {
         case "COMMUNITY_DIRECTORY":
-          categoryItems.value = await fetchData(
-            `${ENTITY_URL[entityKey]}/CommunityDirectoryById/${directoryId.value}`
-          );
-          alert(JSON.stringify(categoryItems.value));
+          communityItems.value = await fetchData(`Posting/ByDirectoryId/${directoryId.value}`);
+          alert(JSON.stringify(communityItems.value));
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
 
       // Set the initial tab value after data is fetched
-      if (categoryItems.value.length > 0 && groupBykey.value) {
+      if (communityItems.value.length > 0 && groupBykey.value) {
         tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
       }
     } catch (error) {
