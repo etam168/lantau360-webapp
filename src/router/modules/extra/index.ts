@@ -6,12 +6,6 @@ const emailConfirmationRoute: RouteRecordRaw = {
   component: () => import("@/views/auth/email-confirmation.vue")
 };
 
-const offlineModeRoute: RouteRecordRaw = {
-  path: "/offline-page",
-  name: "offlinePage",
-  component: () => import("@/views/modules/offline-mode/index.vue")
-};
-
 // const stripetTranactionSuccessPage: RouteRecordRaw = {
 //   path: "/stripe-success",
 //   name: "stripeSuccess",
@@ -31,8 +25,8 @@ const offlineModeRoute: RouteRecordRaw = {
 // };
 
 const extraRoutes = [
-  emailConfirmationRoute,
-  offlineModeRoute
+  emailConfirmationRoute
+
   // stripetTranactionSuccessPage,
   // stripeTransactionCancelledPage
 ];
