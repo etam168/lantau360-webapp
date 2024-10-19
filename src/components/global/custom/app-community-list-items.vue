@@ -7,8 +7,8 @@
       :key="index"
     >
       <q-item-section avatar>
-        <q-avatar size="64px" square>
-          <q-img ratio="1" :src="getImageURL(item.iconPath)">
+        <q-avatar size="64px" circle>
+          <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
             <template v-slot:error>
               <div class="absolute-full flex flex-center bg-negative text-white">
                 {{ $t("errors.cannotLoadImage") }}
@@ -32,6 +32,7 @@
 
   // .ts files
   import { EntityURLKey } from "@/constants";
+import { PostingView } from "@/interfaces/models/views/posting-view";
 
   const { getEntityName, getImageURL, translate } = useUtilities();
 
