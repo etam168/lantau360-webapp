@@ -8,7 +8,7 @@
           }}</span></q-toolbar-title
         >
 
-        <q-btn flat round dense icon="fa-solid fa-xmark" v-close-popup />
+        <q-btn flat round dense :icon="fasXmark" v-close-popup />
       </q-toolbar>
 
       <q-card-section>
@@ -26,6 +26,7 @@
 
 <script setup lang="ts">
   import { PLATFORM } from "@/constants";
+  import { fasXmark } from "@quasar/extras/fontawesome-v6";
 
   const { dialogRef } = useDialogPluginComponent();
 </script>

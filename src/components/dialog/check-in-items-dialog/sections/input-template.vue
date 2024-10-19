@@ -23,7 +23,7 @@
                 dense
                 rounded
                 color="primary"
-                icon="fa-solid fa-location-dot"
+                :icon="fasLocationDot"
                 text-color="white"
                 size="sm"
               />
@@ -72,6 +72,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasLocationDot } from "@quasar/extras/fontawesome-v6";
+
   // Third party imports
   import { Form } from "vee-validate";
   import * as yup from "yup";

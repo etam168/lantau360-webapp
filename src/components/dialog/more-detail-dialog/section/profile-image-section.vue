@@ -19,13 +19,7 @@
           </q-img>
 
           <q-badge class="absolute-bottom-left" color="transparent">
-            <app-button
-              round
-              color="black"
-              icon="fa-solid fa-camera"
-              size="xs"
-              @click="onImageUpload"
-            />
+            <app-button round color="black" :icon="fasCamera" size="xs" @click="onImageUpload" />
           </q-badge>
         </q-avatar>
 
@@ -47,6 +41,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasCamera } from "@quasar/extras/fontawesome-v6";
   // .ts files
   import { BLOB_URL, IMAGES } from "@/constants";
   import { useUserStore } from "@/stores/user";

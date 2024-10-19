@@ -10,19 +10,19 @@
     <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.register.email')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="email"
         placeholder="user@example.com"
       />
       <vee-input
         :label="$t('auth.register.firstName')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="firstName"
         :placeholder="$t('auth.register.firstName')"
       />
       <vee-input
         :label="$t('auth.register.lastName')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="lastName"
         :placeholder="$t('auth.register.lastName')"
       />
@@ -30,7 +30,7 @@
       <vee-q-tel-input name="phone" defaultIso="HK" />
       <!-- <vee-input
         :label="$t('auth.register.phone')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="phone"
         placeholder="Phone"
       /> -->
@@ -63,6 +63,7 @@
   import { Form } from "vee-validate";
   import { LocalStorage } from "quasar";
   import * as yup from "yup";
+  import { fasUser } from "@quasar/extras/fontawesome-v6";
 
   // .ts files
   import { STORAGE_KEYS } from "@/constants";

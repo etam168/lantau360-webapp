@@ -7,7 +7,7 @@
     split
     padding="1px"
     style="overflow: hidden; width: 108px"
-    dropdown-icon="fa-solid fa-chevron-down"
+    :dropdown-icon="fasChevronDown"
   >
     <template v-slot:label>
       <div class="text-caption">
@@ -32,6 +32,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
+
   const { locale } = useI18n({ useScope: "global" });
 
   const languageOptions = [

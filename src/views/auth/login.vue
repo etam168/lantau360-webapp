@@ -10,7 +10,7 @@
     <q-card-section class="bg-secondary q-ma-none q-pa-xs">
       <vee-input
         :label="$t('auth.login.userName')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="userName"
         placeholder="user@example.com"
         @update:model-value="onUpdateFormfield"
@@ -61,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasUser } from "@quasar/extras/fontawesome-v6";
   // 3rd Party Import
   import { Form } from "vee-validate";
   import { LocalStorage } from "quasar";

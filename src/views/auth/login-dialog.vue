@@ -20,7 +20,7 @@
             :flat="$q.screen.lt.sm"
           >
             <q-btn
-              icon="fa-solid fa-xmark"
+              :icon="fasXmark"
               flat
               round
               dense
@@ -71,6 +71,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasXmark } from "@quasar/extras/fontawesome-v6";
   //Custom Components
   import Login from "./login.vue";
   import Register from "./register-tab.vue";

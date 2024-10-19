@@ -12,12 +12,13 @@
     </q-item-section>
 
     <q-item-section side>
-      <app-button-flat round icon="fa-solid fa-angle-right" @click="$emit('on-item-click')" />
+      <app-button-flat round :icon="fasAngleRight" @click="$emit('on-item-click')" />
     </q-item-section>
   </q-item>
 </template>
 
 <script setup lang="ts">
+  import { fasAngleRight } from "@quasar/extras/fontawesome-v6";
   const emit = defineEmits(["on-item-click"]);
 
   const { icon, title = "" } = defineProps<{

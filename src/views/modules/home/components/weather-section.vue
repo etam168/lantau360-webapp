@@ -34,6 +34,7 @@
 
 <script setup lang="ts">
   import { date, useQuasar } from "quasar";
+  import { fasArrowUp, fasArrowDown } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import { Weather } from "@/interfaces/models/entities/weather";
@@ -76,12 +77,12 @@
     },
     {
       size: "md",
-      iconRight: "fa-solid fa-arrow-up",
+      iconRight: fasArrowUp,
       content: `${props.data?.maxTemp}°${props.data?.unit}`
     },
     {
       size: "md",
-      iconRight: "fa-solid fa-arrow-down",
+      iconRight: fasArrowDown,
       content: `${props.data?.minTemp}°${props.data?.unit}`
     }
   ]);

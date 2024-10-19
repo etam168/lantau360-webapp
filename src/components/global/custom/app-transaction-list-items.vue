@@ -13,8 +13,8 @@
 
       <q-item-section side>
         <div class="q-gutter-sm">
-          <q-icon name="fa-solid fa-location-dot" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon name="fa-solid fa-heart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+          <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
+          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
         </div>
       </q-item-section>
     </q-item>
@@ -22,6 +22,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 

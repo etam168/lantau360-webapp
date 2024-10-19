@@ -16,7 +16,7 @@
         <div class="q-gutter-md">
           <app-button-rounded
             v-if="category.contactPhone"
-            icon="fa-solid fa-phone"
+            :icon="fasPhone"
             @click="navigateToPhone(category.contactPhone)"
           />
           <app-button-rounded
@@ -31,6 +31,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasPhone } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 

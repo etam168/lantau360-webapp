@@ -1,5 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import Error404 from "@/views/modules/errors/error-404.vue";
+import { fasBriefcase } from "@quasar/extras/fontawesome-v6";
 
 const drawerRouter: Array<RouteRecordRaw> = [
   {
@@ -23,7 +24,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/business/index.vue"),
         meta: {
           title: "route.drawerComponents.business",
-          icon: "fa-solid fa-briefcase",
+          icon: fasBriefcase,
           group: "common"
         }
       },
@@ -33,7 +34,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/community/index.vue"),
         meta: {
           title: "route.drawerComponents.community",
-          icon: "fa-solid fa-briefcase",
+          icon: fasBriefcase,
           group: "common"
         }
       },
@@ -43,7 +44,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/favourite/index.vue"),
         meta: {
           title: "route.drawerComponents.favourites",
-          icon: "fa-solid fa-briefcase",
+          icon: fasBriefcase,
           group: "common"
         }
       },
@@ -53,7 +54,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/more/index.vue"),
         meta: {
           title: "route.drawerComponents.more",
-          icon: "fa-solid fa-briefcase",
+          icon: fasBriefcase,
           group: "common"
         }
       },
@@ -63,7 +64,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
       //   component: () => import("@/views/auth/email-confirmation.vue"),
       //   meta: {
       //     title: "route.drawerComponents.more",
-      //     icon: "fa-solid fa-briefcase",
+      //     icon: fasBriefcase,
       //     group: "common"
       //   }
       // },

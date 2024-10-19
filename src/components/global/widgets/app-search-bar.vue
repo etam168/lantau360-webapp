@@ -15,12 +15,12 @@
       @update:model-value="updateModelValue"
     >
       <template v-slot:append>
-        <q-btn v-if="keyword" icon="fa-solid fa-xmark" flat round dense @click="clearInput" />
+        <q-btn v-if="keyword" :icon="fasXmark" flat round dense @click="clearInput" />
       </template>
 
       <template v-slot:after>
         <q-btn square unelevated padding="md 18px" color="primary" @click="handleSearch">
-          <q-icon size="sm" name="fa-solid fa-magnifying-glass" />
+          <q-icon size="sm" :name="fasMagnifyingGlass" />
         </q-btn>
       </template>
     </q-input>
@@ -28,6 +28,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasXmark, fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
+
   const { notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const emit = defineEmits(["on-search"]);

@@ -3,7 +3,7 @@
     <q-card class="q-mb-md">
       <q-item clickable v-ripple @click="createPosting">
         <q-item-section avatar>
-          <q-avatar color="green-1" text-color="primary" icon="fa-solid fa-plus" />
+          <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
         </q-item-section>
 
         <q-item-section>
@@ -19,6 +19,8 @@
   </div>
 </template>
 <script setup lang="ts">
+  import { fasPlus } from "@quasar/extras/fontawesome-v6";
+
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
   import { useUserStore } from "@/stores/user";

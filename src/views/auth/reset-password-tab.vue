@@ -10,7 +10,7 @@
     <q-card-section class="bg-secondary">
       <vee-input
         :label="$t('auth.forgotPassword.otp')"
-        icon="fa-solid fa-user"
+        :icon="fasUser"
         name="otp"
         placeholder="123 456"
       />
@@ -40,6 +40,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasUser } from "@quasar/extras/fontawesome-v6";
+
   // 3rd Party Import
   import { Form } from "vee-validate";
   import * as yup from "yup";

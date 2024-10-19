@@ -21,7 +21,7 @@
         v-show="virtualScrollIndex > 0"
         round
         dense
-        icon="fa-solid fa-chevron-left"
+        :icon="fasChevronLeft"
         color="grey-9"
         @click="scrollLeft"
       />
@@ -75,7 +75,7 @@
         v-show="virtualScrollIndex < galleryImages.length - 1"
         round
         dense
-        icon="fa-solid fa-chevron-right"
+        :icon="fasChevronRight"
         color="grey-9"
         @click="scrollRight"
       />
@@ -86,6 +86,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
+
   import { IMAGES } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 

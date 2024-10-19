@@ -4,7 +4,7 @@
     <q-item-section side>
       <app-button-rounded
         :text-color="isFavourite ? 'red' : 'white'"
-        icon="fa-solid fa-heart"
+        :icon="fasHeart"
         @click="onBtnFavClick"
       />
     </q-item-section>
@@ -12,6 +12,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 

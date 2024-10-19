@@ -35,6 +35,8 @@
   import * as yup from "yup";
   import { Form } from "vee-validate";
 
+  import { fasPhone } from "@quasar/extras/fontawesome-v6";
+
   import type { EntityFields } from "@/interfaces/types/form-structure-types";
 
   import ProfileEntityFieldsList from "./profile-entity-fields-list.vue";
@@ -91,7 +93,7 @@
                 name: "phone",
                 value: moreData.contactPhone,
                 type: "tel",
-                icon: "fa-solid fa-phone"
+                icon: fasPhone
               }
             ]
           }

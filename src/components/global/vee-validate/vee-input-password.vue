@@ -11,7 +11,7 @@
   >
     <template v-slot:append>
       <q-icon
-        :name="showPassword ? 'fa-solid fa-eye-slash' : 'fa-solid fa-eye'"
+        :name="showPassword ? fasEyeSlash : fasEye"
         class="cursor-pointer"
         @click="showPassword = !showPassword"
       />
@@ -20,6 +20,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasEyeSlash, fasEye } from "@quasar/extras/fontawesome-v6";
   import { useField } from "vee-validate";
 
   const props = defineProps({

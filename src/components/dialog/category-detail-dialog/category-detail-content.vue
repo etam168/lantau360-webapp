@@ -23,6 +23,8 @@
 </template>
 
 <script setup lang="ts">
+ 
+  import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
@@ -127,7 +129,7 @@
           message: "Please login first to check in.",
           color: "negative",
           position: "center",
-          icon: "fa fa-triangle-exclamation",
+          icon: fasTriangleExclamation,
           actions: [
             {
               label: "Login",

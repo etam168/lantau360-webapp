@@ -19,7 +19,7 @@
               <q-item v-if="businessItem.contactPhone" class="q-pa-none">
                 <q-item-section avatar @click="navigateToPhone(businessItem.contactPhone)">
                   <q-avatar>
-                    <q-icon name="fa-solid fa-phone" color="primary" />
+                    <q-icon :name="fasPhone" color="primary" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
@@ -32,7 +32,7 @@
               <q-item v-if="businessItem.contactWhatsApp" class="q-pa-none">
                 <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
                   <q-avatar>
-                    <q-icon name="fab fa-whatsapp" color="primary" />
+                    <q-icon name="fa-brands fa-whatsapp" color="primary" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
@@ -55,6 +55,8 @@
 </template>
 
 <script setup lang="ts">
+  import { fasPhone } from "@quasar/extras/fontawesome-v6";
+
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 

@@ -2,13 +2,14 @@
   <q-card flat class="location-card">
     <q-card-section class="location-card-section">
       <div class="warning-content">
-        <q-icon name="fa-solid fa-triangle-exclamation" class="warning-icon" color="negative" />
+        <q-icon :name="fasTriangleExclamation" class="warning-icon" color="negative" />
         <div class="warning-message">{{ errorMessage }}</div>
       </div>
     </q-card-section>
   </q-card>
 </template>
 <script setup lang="ts">
+  import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   import GeoLocationError from "@/interfaces/geo-location-error";
   import i18n from "@/plugins/i18n/i18n";
 

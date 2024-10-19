@@ -13,12 +13,13 @@
     </q-item-section>
 
     <q-item-section side v-if="isFavoriteItem(item)">
-      <q-icon name="fa-solid fa-heart" size="2em" color="red" />
+      <q-icon :name="fasHeart" size="2em" color="red" />
     </q-item-section>
   </q-item>
 </template>
 
 <script setup lang="ts">
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
