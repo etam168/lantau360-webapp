@@ -1,6 +1,5 @@
 <template>
   <q-list>
-    <pre>{{ communityItems }}</pre>
     <q-item
       clickable
       @click="handleDetail(item)"

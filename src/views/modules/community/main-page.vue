@@ -92,7 +92,7 @@
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    openCommunityItemDialog(isDialogOpen, communityDirectory);
+    openCommunityItemDialog(isDialogOpen, "POSTING" ,communityDirectory);
   }
 
   onMounted(() => {

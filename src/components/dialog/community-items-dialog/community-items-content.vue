@@ -74,6 +74,7 @@
 
   const directoryId: ComputedRef<number> = computed(() => {
     switch (entityKey) {
+      case "POSTING":
       case "COMMUNITY_DIRECTORY":
         return (community as CommunityDirectory).communityDirectoryId;
       default:
@@ -145,9 +146,10 @@
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
+        case "POSTING":
         case "COMMUNITY_DIRECTORY":
           communityItems.value = await fetchData(`Posting/ByDirectoryId/${directoryId.value}`);
-          alert(JSON.stringify(communityItems.value));
+          // alert(JSON.stringify(communityItems.value));
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
