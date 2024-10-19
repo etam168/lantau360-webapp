@@ -78,7 +78,6 @@
 
   const onItemClick = (item: any) => {
     const { name } = item;
-    alert(JSON.stringify(name));
     let component;
     let props;
     let entityKey;
@@ -107,6 +106,7 @@
 
       case "privacy":
       case "terms":
+      case "checkIn":
         handleMoreDialog(name);
         break;
 

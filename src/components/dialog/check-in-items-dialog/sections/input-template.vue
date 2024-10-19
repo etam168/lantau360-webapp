@@ -23,7 +23,7 @@
                 dense
                 rounded
                 color="primary"
-                :icon="fasLocationDot"
+                 :icon="fasLocationDot"
                 text-color="white"
                 size="sm"
               />
@@ -38,12 +38,12 @@
         <q-item-label class="text-caption" style="margin-left: 70px"
           >{{ distance + " " + $t(`${i18nKey}.metersAway`) }}
         </q-item-label>
-        <q-item v-if="props.distance && props.distance > 10">
+        <q-item v-if="distance && distance > 10">
           <q-item-label style="color: red">
             {{ $t("errors.under10MeterDistance") }}
           </q-item-label>
         </q-item>
-        <div v-if="props.distance <= 10">
+        <div v-if="distance <= 10">
           <div v-if="!configLoading && isPermitToPost">
             <q-item class="q-mt-lg q-pa-none">
               <q-item-section class="q-pa-none">
@@ -78,36 +78,28 @@
   import { Form } from "vee-validate";
   import * as yup from "yup";
 
-  // Interface files
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { Content } from "@/interfaces/models/entities/content";
-
   import { useCheckInService } from "@/composable/services/use-checkin-dialog-service";
 
   //.ts files
   import i18n from "@/plugins/i18n/i18n";
   import { useUserStore } from "@/stores/user";
-  import { URL } from "@/constants";
 
-  const props = defineProps({
-    itemId: {
-      type: Number,
-      required: true
-    },
-    currentAddress: {
-      type: String,
-      required: false
-    },
-    destinationAddress: {
-      type: String,
-      required: false
-    },
-    distance: {
-      type: Number,
-      required: false,
-      default: 11
-    }
-  });
+  // Props
+  const {
+    itemId,
+    currentAddress,
+    destinationAddress,
+    distance = 11,
+    memberConfig,
+    checkInData
+  } = defineProps<{
+    itemId: number;
+    currentAddress?: string;
+    destinationAddress?: string;
+    distance?: number;
+    memberConfig: any;
+    checkInData: any;
+  }>();
 
   const { t } = i18n.global;
 
@@ -136,19 +128,19 @@
   });
 
   const isSubmitReviewEnabled = computed(() => {
-    return props.currentAddress && props.destinationAddress && props.distance != undefined;
+    return currentAddress && destinationAddress && distance != undefined;
   });
 
   const locationData = computed(() => [
-    { lable: t(`${i18nKey}.curentLocation`), address: props.currentAddress },
-    { lable: t(`${i18nKey}.destinationAddress`), address: props.destinationAddress }
+    { lable: t(`${i18nKey}.curentLocation`), address: currentAddress },
+    { lable: t(`${i18nKey}.destinationAddress`), address: destinationAddress }
   ]);
 
   function onSubmit(values: any) {
     form.value.validate().then(async (isValid: any) => {
       if (isValid) {
         loading.value = true;
-        const responseStatus = await submitCheckIn(props.itemId, values.description);
+        const responseStatus = await submitCheckIn(itemId, values.description);
         if (responseStatus) {
           eventBus.emit("refresh-directory-checkin-items");
           eventBus.emit("close-check-in-dialog");
@@ -158,45 +150,34 @@
     });
   }
 
-  try {
-    const [memberConfig, checkInData] = await Promise.all([
-      axios.get<Content>(URL.MEMBER_CONFIG),
-      axios.get<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${props.itemId}`)
-    ]);
 
-    const config = memberConfig.data;
-    const checkIn = checkInData.data;
+  onMounted(() => {
+    try {
+      const config = memberConfig;
+      const checkIn = checkInData;
 
-    const configTimeDifferenceInHours = config?.meta?.checkInTimeDifferenceInHours ?? 1;
-    const configTimeDifferenceInMinutes = configTimeDifferenceInHours * 60;
+      const configTimeDifferenceInHours = config?.meta?.checkInTimeDifferenceInHours ?? 1;
+      const configTimeDifferenceInMinutes = configTimeDifferenceInHours * 60;
 
-    const checkInModifiedAt = checkIn?.modifiedAt ? new Date(checkIn.modifiedAt).getTime() : 0;
-    const currentTime = new Date().getTime();
-    const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
-    const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
+      const checkInModifiedAt = checkIn?.modifiedAt ? new Date(checkIn.modifiedAt).getTime() : 0;
+      const currentTime = new Date().getTime();
+      const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
+      const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
 
-    const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
+      const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
 
-    if (minutesLeftToRecheckIn <= 0) {
-      isPermitToPost.value = true;
-      timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
-    } else {
-      isPermitToPost.value = false;
-      timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
-    }
-
-    configLoading.value = false;
-  } catch (err) {
-    configLoading.value = false;
-    isPermitToPost.value = true;
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
+      if (minutesLeftToRecheckIn <= 0) {
+        isPermitToPost.value = true;
+        timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
       } else {
-        error.value = t("errors.anErrorOccured");
+        isPermitToPost.value = false;
+        timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
       }
-    } else {
-      error.value = t("errors.anErrorOccured");
+
+      configLoading.value = false;
+    } catch (err) {
+      configLoading.value = false;
+      isPermitToPost.value = true;
     }
-  }
+  });
 </script>

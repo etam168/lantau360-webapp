@@ -12,10 +12,23 @@
       </q-header>
 
       <q-page-container>
-        <q-page>
-          <!-- Content here -->
-          <checkin-items-content :item="item" @on-cancel="handleCancel" />
-        </q-page>
+        <Suspense>
+          <template #default>
+            <!-- <div>dialog</div> -->
+            <!-- Main edit dialog content -->
+            <q-page>
+              <!-- Content here -->
+              <checkin-items-content :item="item" @on-cancel="handleCancel" />
+            </q-page>
+          </template>
+
+          <template #fallback>
+            <!-- Loading spinner shown while content is loading -->
+            <div class="row justify-center items-center" style="height: 500px">
+              <app-spinner size="10em" />
+            </div>
+          </template>
+        </Suspense>
       </q-page-container>
     </q-layout>
   </q-dialog>
