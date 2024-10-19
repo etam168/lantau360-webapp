@@ -1,8 +1,4 @@
 import { Dialog, Notify } from "quasar";
-import InstallEdgeDialog from "@/components/dialog/install-edge-dialog.vue";
-import InstallIosDialog from "@/components/dialog/install-ios-dialog.vue";
-import InstallOperaDialog from "@/components/dialog/install-opera-dialog.vue";
-import InstallCompleteDialog from "@/components/dialog/install-complete-dialog.vue";
 import i18n from "@/plugins/i18n/i18n";
 import { Platform } from "quasar";
 
@@ -12,11 +8,11 @@ const showAppInstallButton = ref(false);
 const userAgent = window.navigator.userAgent;
 
 export function usePwaInstallService() {
-  const appInstalledPrompt = () => {
-    Dialog.create({
-      component: InstallCompleteDialog
-    });
-  };
+  // const appInstalledPrompt = () => {
+  //   Dialog.create({
+  //     component: InstallCompleteDialog
+  //   });
+  // };
 
   const isPWAInstallSupported = () => {
     return "BeforeInstallPromptEvent" in window;
@@ -77,25 +73,11 @@ export function usePwaInstallService() {
   }
 
   function showPlatformGuidance() {
-    switch (true) {
-      case Platform.is.ios:
-        Dialog.create({
-          component: InstallIosDialog
-        });
-        break;
-      case Platform.is.opera:
-        Dialog.create({
-          component: InstallOperaDialog
-        });
-        break;
-      case Platform.is.edge:
-        Dialog.create({
-          component: InstallEdgeDialog
-        });
-        break;
-      default:
-      // To be implemented: Handle unknown browsers with a generic message or action
-    }
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/install-items-dialog/index.vue")
+      )
+    });
   }
 
   async function checkInstalledRelatedApps() {
@@ -112,7 +94,7 @@ export function usePwaInstallService() {
   }
 
   return {
-    appInstalledPrompt,
+    // appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,

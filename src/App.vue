@@ -7,7 +7,7 @@
   import { Platform } from "quasar";
 
   const {
-    appInstalledPrompt,
+    // appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isPWAInstallSupported,
@@ -56,7 +56,7 @@
 
     window.addEventListener("appinstalled", () => {
       isAppInstalled.value = true;
-      appInstalledPrompt();
+      showPlatformGuidance();
     });
   });
 </script>
