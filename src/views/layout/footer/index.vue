@@ -23,6 +23,13 @@
 </template>
 
 <script setup lang="ts">
+  import {
+    fasEllipsis,
+    fasHeart,
+    fasMoneyCheckDollar,
+    fasPeopleGroup
+  } from "@quasar/extras/fontawesome-v6";
+
   const { t } = useI18n();
   const router = useRouter();
   const { eventBus } = useUtilities();
@@ -40,24 +47,28 @@
     { name: "home", icon: "fas fa-home", label: t("footer.home"), route: "/home" },
     {
       name: "business",
-      icon: "fa-solid fa-money-check-dollar",
+      icon: fasMoneyCheckDollar,
+      // icon: "fa-solid fa-money-check-dollar",
       label: t("footer.business"),
       route: "/business"
     },
     {
       name: "community",
-      icon: "fa-solid fa-people-group",
+      icon: fasPeopleGroup,
+      // icon: "fa-solid fa-people-group",
       label: t("footer.community"),
       route: "/community"
     },
     {
       name: "favourites",
-      icon: "fa-solid fa-heart",
+      icon: fasHeart,
+      // icon: "fa-solid fa-heart",
       label: t("footer.favourite"),
       route: "/favourite"
     },
 
-    { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
+    { name: "more", icon: fasEllipsis, label: t("footer.more"), route: "/more" }
+    // { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
 
   onMounted(() => {

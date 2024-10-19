@@ -3,7 +3,7 @@
   <q-card>
     <q-item clickable v-ripple @click="createPosting">
       <q-item-section avatar>
-        <q-avatar color="green-1" text-color="primary" icon="fa-solid fa-plus" />
+        <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
       </q-item-section>
 
       <q-item-section>
@@ -58,6 +58,7 @@
 
   // Constants
   import { AREA_NAME, EntityURLKey, NONE } from "@/constants";
+  import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
   // Props
   const { community, entityKey } = defineProps<{
@@ -149,7 +150,7 @@
         case "POSTING":
         case "COMMUNITY_DIRECTORY":
           communityItems.value = await fetchData(`Posting/ByDirectoryId/${directoryId.value}`);
-          // alert(JSON.stringify(communityItems.value));
+        // alert(JSON.stringify(communityItems.value));
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
