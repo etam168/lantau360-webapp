@@ -8,7 +8,7 @@
 
       <q-item-section>
         <q-item-label>{{
-          $t("action.createDirectory", { directoryName: directory.directoryName })
+          $t("action.createDirectory", { directoryName: community.directoryName })
         }}</q-item-label>
         <q-item-label caption>{{
           $t("community.createPost.addGalleryDescription")
@@ -56,16 +56,15 @@
   // Interface
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
-  import type { Directory } from "@/interfaces/models/entities/directory";
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
 
   // Props
-  const { directory, entityKey } = defineProps<{
-    directory: DirectoryTypes;
+  const { community, entityKey } = defineProps<{
+    community: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 
@@ -79,9 +78,8 @@
 
   const directoryId: ComputedRef<number> = computed(() => {
     switch (entityKey) {
-      case "BUSINESS":
-      case "SITE":
-        return (directory as Directory).directoryId;
+      case "COMMUNITY_DIRECTORY":
+        return (community as CommunityDirectory).communityDirectoryId;
       default:
         return 0;
     }
@@ -89,8 +87,8 @@
 
   const groupBykey: ComputedRef<string | null> = computed(() => {
     switch (true) {
-      case directory.meta?.groupByKey !== NONE:
-        return directory.meta?.groupByKey ?? null;
+      case community.meta?.groupByKey !== NONE:
+        return community.meta?.groupByKey ?? null;
       default:
         return null;
     }
@@ -151,10 +149,11 @@
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
-        case "COMMUNITY":
+        case "COMMUNITY_DIRECTORY":
           categoryItems.value = await fetchData(
-            `${ENTITY_URL[entityKey]}/ByDirectoryId/${directoryId.value}`
+            `${ENTITY_URL[entityKey]}/CommunityDirectoryById/${directoryId.value}`
           );
+          alert(JSON.stringify(categoryItems.value));
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
