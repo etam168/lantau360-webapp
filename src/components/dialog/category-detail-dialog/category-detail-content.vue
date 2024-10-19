@@ -94,7 +94,9 @@
 
   const openCheckInDialog = () => {
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/check-in/index.vue")),
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/check-in-items-dialog/index.vue")
+      ),
       componentProps: {
         item: category
       }

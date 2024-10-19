@@ -14,7 +14,7 @@
       <q-page-container>
         <q-page>
           <!-- Content here -->
-          <check-in :item="item" @on-cancel="handleCancel" />
+          <checkin-items-content :item="item" @on-cancel="handleCancel" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -26,7 +26,7 @@
   import { useDialogPluginComponent } from "quasar";
   import { ref } from "vue";
 
-  import CheckIn from "@/components/dialog/check-in/sections/index.vue";
+  import CheckinItemsContent from "./check-in-items-content.vue";
 
   defineProps({
     item: {
