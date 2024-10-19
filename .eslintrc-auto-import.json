@@ -331,6 +331,7 @@
     "useFormMapperFunctions": true,
     "useMemberFormContents": true,
     "useMemberFormMapper": true,
-    "useEntityDataHandlingService2": true
+    "useEntityDataHandlingService2": true,
+    "useCheckInService": true
   }
 }

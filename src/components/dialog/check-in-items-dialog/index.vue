@@ -24,7 +24,6 @@
 <script setup lang="ts">
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { useDialogPluginComponent } from "quasar";
-  import { ref } from "vue";
 
   import CheckinItemsContent from "./check-in-items-content.vue";
 

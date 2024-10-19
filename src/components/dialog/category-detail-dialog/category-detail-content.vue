@@ -27,7 +27,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
-
+  import { useUserStore } from "@/stores/user";
   // .ts files
   import { EntityURLKey, TEMPLATE, URL, RENDERER } from "@/constants";
 
@@ -49,6 +49,7 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { notify } = useUtilities();
+  const userStore = useUserStore();
 
   const galleryItems = ref<GalleryImageType[]>([]);
 
@@ -92,15 +93,61 @@
     }
   }
 
+  // const openCheckInDialog = () => {
+  //   $q.dialog({
+  //     component: defineAsyncComponent(
+  //       () => import("@/components/dialog/check-in-items-dialog/index.vue")
+  //     ),
+  //     componentProps: {
+  //       item: category
+  //     }
+  //   });
+  // };
+
   const openCheckInDialog = () => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/check-in-items-dialog/index.vue")
-      ),
-      componentProps: {
-        item: category
-      }
-    });
+    // Check if the user is logged in
+    const isLoggedIn = userStore.isUserLogon(); // This will return true or false
+
+    switch (isLoggedIn) {
+      case true:
+        // Open the check-in dialog if the user is logged in
+        $q.dialog({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/check-in-items-dialog/index.vue")
+          ),
+          componentProps: {
+            item: category
+          }
+        });
+        break;
+
+      case false:
+        // Notify the user to log in
+        $q.notify({
+          message: "Please login first to check in.",
+          color: "negative",
+          position: "center",
+          icon: "fa fa-triangle-exclamation",
+          actions: [
+            {
+              label: "Login",
+              color: "white bg-primary",
+              handler: () => {
+                $q.dialog({
+                  component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+                });
+              }
+            }
+          ],
+          timeout: Math.random() * 100000
+        });
+        break;
+
+      default:
+        // This case should not happen, but just in case
+        console.error("Unexpected value for isLoggedIn");
+        break;
+    }
   };
 
   interface RenderItem {

@@ -1,22 +1,23 @@
 <template>
-  <template v-if="!isAuthenticated">
-    <login-widget @on-cancel="handleCancel" @on-login="onLoginSuccess" />
-  </template>
-  <template v-else-if="locationError != null">
-    <error-widget :error="locationError as GeoLocationError" />
-  </template>
-  <template v-else-if="loading">
-    <loading-widget />
-  </template>
-
-  <template v-else>
-    <input-template
-      :item-id="(item as SiteView).siteId"
-      :current-Address="currentLocationAddress"
-      :destination-address="destinationLocationAddress"
-      :distance="distanceToDestination"
-    />
-  </template>
+  <q-page>
+    <div>{{ isAuthenticated }}</div>
+    <template v-for="(section, index) in renderItems" :key="index">
+      <!-- <login-widget
+        v-if="section.type === 'login'"
+        @on-cancel="handleCancel"
+        @on-login="onLoginSuccess"
+      /> -->
+      <error-widget v-if="section.type === 'error'" :error="customLocationError" />
+      <loading-widget v-else-if="section.type === 'loading'" />
+      <input-template
+        v-else
+        :item-id="(item as SiteView).siteId"
+        :current-address="currentLocationAddress"
+        :destination-address="destinationLocationAddress"
+        :distance="distanceToDestination"
+      />
+    </template>
+  </q-page>
 </template>
 
 <script setup lang="ts">
@@ -27,18 +28,16 @@
 
   import LoadingWidget from "./sections/loading-widget.vue";
   import InputTemplate from "./sections/input-template.vue";
-  import LoginWidget from "./sections/login-widget.vue";
+  // import LoginWidget from "./sections/login-widget.vue";
   import ErrorWidget from "./sections/error-widget.vue";
   import { useGeolocation } from "@vueuse/core";
   import GeoLocationError from "@/interfaces/geo-location-error";
   import { useUserStore } from "@/stores/user";
 
-  const props = defineProps({
-    item: {
-      type: Object as PropType<CategoryTypes>,
-      required: true
-    }
-  });
+  // Props
+  const { item } = defineProps<{
+    item: CategoryTypes;
+  }>();
 
   const emits = defineEmits(["on-cancel"]);
   const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
@@ -47,13 +46,31 @@
   const destinationLocationAddress = ref();
   const distanceToDestination = ref(0);
   const loading = ref(true);
+  const $q = useQuasar();
 
   const userStore = useUserStore();
   const isAuthenticated = ref(userStore.isUserLogon());
   const { eventBus } = useUtilities();
+  const customLocationError = ref<GeoLocationError | null>(null);
 
   const addressErrorCode = 5;
   const deviceSupportErrorCode = 4;
+
+  interface RenderItem {
+    name: string;
+    type: "error" | "loading" | "login";
+  }
+
+  const renderItems = computed((): RenderItem[] => {
+    switch (true) {
+      case locationError.value != null:
+        return [{ name: "error", type: "error" }];
+      case loading.value:
+        return [{ name: "loading", type: "loading" }];
+      default:
+        return [];
+    }
+  });
 
   onMounted(() => {
     eventBus.on("on-login-success", () => {
@@ -69,7 +86,7 @@
   }
 
   async function getLocationDetails() {
-    const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
+    const { latitude: siteLatitude, longitude: siteLongitude } = item;
     await calculateDistance();
     await getAddressFromCoordinates(
       userLocation.value.latitude,
@@ -81,7 +98,7 @@
   }
 
   async function calculateDistance() {
-    const { latitude: siteLatitude, longitude: siteLongitude } = props.item;
+    const { latitude: siteLatitude, longitude: siteLongitude } = item;
     const sourceCoords = {
       latitude: userLocation.value.latitude,
       longitude: userLocation.value.longitude
@@ -109,7 +126,7 @@
       }
     } catch (error) {
       loading.value = false;
-      locationError.value = { code: addressErrorCode } as GeoLocationError;
+      customLocationError.value = { code: addressErrorCode } as GeoLocationError;
     }
   }
 
@@ -125,7 +142,7 @@
     () => isSupported,
     () => {
       if (!isSupported.value)
-        locationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
+        customLocationError.value = { code: deviceSupportErrorCode } as GeoLocationError;
       loading.value = false;
     },
     { deep: true }

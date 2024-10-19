@@ -80,9 +80,10 @@
   import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { Content } from "@/interfaces/models/entities/content";
 
+  import { useCheckInService } from "@/composable/services/use-checkin-dialog-service";
+
   //.ts files
   import i18n from "@/plugins/i18n/i18n";
-  import { useCheckInInput } from "./use-checkin-input";
   import { useUserStore } from "@/stores/user";
   import { URL } from "@/constants";
 
@@ -108,7 +109,7 @@
 
   const { t } = i18n.global;
 
-  const { submitCheckIn } = useCheckInInput();
+  const { submitCheckIn } = useCheckInService();
   const { eventBus } = useUtilities();
   const userStore = useUserStore();
   const $q = useQuasar();

@@ -8,7 +8,7 @@ const { notify } = useUtilities();
 const userStore = useUserStore();
 const { t } = i18n.global;
 
-export function useCheckInInput() {
+export function useCheckInService() {
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
   }
@@ -39,6 +39,6 @@ export function useCheckInInput() {
 
   return {
     submitCheckIn,
-    useCheckInInput
+    useCheckInService
   };
 }
