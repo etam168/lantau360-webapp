@@ -156,6 +156,9 @@
       alert("oncancel");
       isLoading.value = false;
       resetItemLoading(name);
+    }).onOk(() =>{
+      // alert("OnOk");
+      resetItemLoading(name);
     });
   }
 

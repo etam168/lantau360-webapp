@@ -10,7 +10,7 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title>{{ contentName }}</app-dialog-title>
+        <app-dialog-title @dialog-closed="handleDialogClose">{{ contentName }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -60,14 +60,14 @@
   const tempLoading = ref(isLoading.value);
 
   // Composable function calls
-  const { dialogRef } = useDialogPluginComponent();
+  const { dialogRef, onDialogOK } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
 
   function handleLoadingChange() {
-    alert("isLoading: " + tempLoading.value);
+    // alert("isLoading: " + tempLoading.value);
     isLoading.value = tempLoading.value;
   }
 
@@ -77,6 +77,10 @@
    */
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
+  }
+
+  function handleDialogClose() {
+    onDialogOK();
   }
 
   /**
@@ -97,7 +101,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
+    // eventBus.on("dialogClosed", () => {
+    //   alert("closedialogevent");
     //   isDialogVisible.value = false;
     // });
   });
