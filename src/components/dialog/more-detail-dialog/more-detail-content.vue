@@ -1,23 +1,15 @@
 <template>
   <q-page>
     <template v-for="(item, index) in renderItems" :key="index">
-      <checkin-section
-        v-if="item.type === 'checkin'"
-        :contentData="contentData[contentName.toUpperCase()]"
-      />
-      <content-section
-        v-else-if="item.type === 'content'"
-        :contentData="contentData[contentName.toUpperCase()]"
-      />
-      <account-section
-        v-else-if="item.type === 'account'"
-        :contentData="contentData[contentName.toUpperCase()]"
-      />
+      <checkin-section v-if="item.type === 'checkin'" :contentData="item.data" />
+      <app-html-item v-else-if="item.type === 'content'" :contentData="item.data" />
+      <account-section v-else-if="item.type === 'account'" :contentData="item.data" />
     </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
+  import { ref, computed, defineProps, defineModel } from "vue";
   import { useUserStore } from "@/stores/user";
   import { ENTITY_URL, EntityURLKey, MENU } from "@/constants";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
@@ -34,6 +26,7 @@
     entityKey?: EntityURLKey;
   }>();
 
+  const { translate } = useUtilities();
   const { fetchData } = useApi();
   const userStore = useUserStore();
   const isDialogVisible = ref();
@@ -60,9 +53,8 @@
           contentData.value.CHECKIN = await fetchData(
             `${ENTITY_URL.CHECKIN_BY_MEMBER}/${userStore.userId}`
           );
-
+          break;
         default:
-          "";
           break;
       }
       isDialogVisible.value = true;
@@ -75,22 +67,32 @@
   interface RenderItem {
     name: string;
     type: "account" | "checkin" | "content";
+    data: any;
   }
 
   const renderItems = computed((): RenderItem[] => {
+    const upperContentName = contentName.toUpperCase();
+    const data = contentData.value[upperContentName];
+
     switch (contentName) {
       case MENU.ACCOUNT:
-        return [{ name: "account", type: "account" }];
+        return [{ name: "account", type: "account", data }];
       case MENU.CHECKIN:
-        return [{ name: "checkin", type: "checkin" }];
+        return [{ name: "checkin", type: "checkin", data }];
       case MENU.PRIVACY:
       case MENU.TERMS:
-        return [{ name: "content", type: "content" }];
-
+        return [
+          {
+            name: "content",
+            type: "content",
+            data: translate(data?.contentData, data?.meta, "contentData")
+          }
+        ];
       default:
         return [];
     }
   });
 
-  await fetchAllData();
+  // Fetch data when component is created
+  fetchAllData();
 </script>
