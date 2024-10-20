@@ -29,6 +29,7 @@
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
   import MorePageItem from "@/components/global/custom/more-page-item.vue";
+  import { Member } from "@/interfaces/models/entities/member";
 
   const $q = useQuasar();
   const userStore = useUserStore();
@@ -37,6 +38,8 @@
   const { handleOpenDialog } = useEntityDataHandlingService();
 
   const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
+
+  const { openMemberItemDialog } = useMemberItemDialogService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -103,13 +106,22 @@
         );
         break;
 
-      case "account":
       case "privacy":
       case "terms":
-      case "checkIn":
         handleMoreDialog(name);
         break;
 
+      case "account":
+      case "checkIn":
+        alert(name.toUpperCase());
+        if (isDialogOpen.value) return;
+        openMemberItemDialog(
+          isDialogOpen,
+          { memberId: userStore.userId } as Member,
+          name.toUpperCase()
+        );
+        resetItemLoading(name);
+        break;
       default:
         break;
     }
@@ -152,14 +164,16 @@
         contentName: name,
         isLoading: isLoading
       }
-    }).onCancel(() => {
-      alert("oncancel");
-      isLoading.value = false;
-      resetItemLoading(name);
-    }).onOk(() =>{
-      // alert("OnOk");
-      resetItemLoading(name);
-    });
+    })
+      .onCancel(() => {
+        alert("oncancel");
+        isLoading.value = false;
+        resetItemLoading(name);
+      })
+      .onOk(() => {
+        // alert("OnOk");
+        resetItemLoading(name);
+      });
   }
 
   function resetItemLoading(name: string) {

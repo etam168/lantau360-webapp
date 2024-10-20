@@ -25,7 +25,8 @@ export const ENTITY_URL = {
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
-  WEATHER: `/Weather`
+  WEATHER: `/Weather`,
+  ACCOUNT:"Account"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;
