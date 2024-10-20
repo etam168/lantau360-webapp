@@ -11,11 +11,7 @@
 
         <more-page-item
           v-if="['moreItem', 'language'].includes(item.type)"
-          :ref="
-            el => {
-              if (el) itemRefs[item.name] = el as ComponentPublicInstance;
-            }
-          "
+          :ref="el => setItemRef(item.name, el)"
           :type="item.type"
           :icon="item.icon!"
           :title="item.title"
@@ -76,7 +72,7 @@
     }
   });
 
-  const itemRefs = ref<{ [key: string]: ComponentPublicInstance | null }>({});
+  // const itemRefs = ref<{ [key: string]: ComponentPublicInstance | null }>({});
   const childComponent = ref<InstanceType<typeof MorePageItem> | null>(null);
 
   function handleInstall() {
@@ -135,21 +131,39 @@
   //   });
   // }
 
+  const itemRefs = ref<{ [key: string]: any }>({});
+
+  const setItemRef = (name: string, el: any) => {
+    if (el) {
+      itemRefs.value[name] = el;
+    }
+  };
+
   function handleMoreDialog(name: string) {
     isLoading.value = true;
 
     // Introduce a delay of 1000 milliseconds (1 second)
-    // setTimeout(() => {
-    //   $q.dialog({
-    //     component: defineAsyncComponent(
-    //       () => import("@/components/dialog/more-detail-dialog/index.vue")
-    //     ),
-    //     componentProps: {
-    //       contentName: name,
-    //       isLoading: isLoading
-    //     }
-    //   });
-    // }, 10000); // You can adjust this value to change the delay duration
+
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/more-detail-dialog/index.vue")
+      ),
+      componentProps: {
+        contentName: name,
+        isLoading: isLoading
+      }
+    }).onCancel(() => {
+      alert("oncancel");
+      isLoading.value = false;
+      resetItemLoading(name);
+    });
+  }
+
+  function resetItemLoading(name: string) {
+    const item = itemRefs.value[name];
+    if (item && typeof item.resetLoading === "function") {
+      item.resetLoading();
+    }
   }
 
   function showLoginDialog(tabValue: string) {
@@ -162,18 +176,6 @@
       }
     });
   }
-
-  // Add watch for test
-  watch(isLoading, (newVal, oldVal) => {
-    if (newVal !== oldVal) {
-      alert(`New value for isLoading: ${newVal}`);
-      // Object.values(itemRefs.value).forEach(component => {
-      //   if (component && typeof component.resetLoading === "function") {
-      //     component.resetLoading();
-      //   }
-      // });
-    }
-  });
 
   onMounted(() => {
     $q.notify({
