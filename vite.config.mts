@@ -15,7 +15,7 @@ import { fileURLToPath } from "url";
 import { VitePWA, VitePWAOptions } from "vite-plugin-pwa";
 import { version } from "./package.json";
 import UnpluginTypia from "@ryoppippi/unplugin-typia/vite";
-
+import path from "path";
 
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
@@ -93,7 +93,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
           cacheName: "manifest-cache",
           expiration: {
             maxEntries: 1,
-            maxAgeSeconds: 60 // 1 Day
+            maxAgeSeconds: 24 * 60 * 60 // 1 Day
           }
         }
       }
@@ -137,8 +137,9 @@ export default defineConfig({
       runtimeOnly: false
     }),
     quasar({
-      sassVariables: "src/css/quasar.variables.scss"
+      sassVariables: "@/css/quasar.variables.scss"
     }),
+
     VitePWA(pwaOptions),
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
@@ -189,12 +190,25 @@ export default defineConfig({
       }
     })
   ],
+  css: {
+    preprocessorOptions: {
+      scss: {
+        additionalData: `@import "src/css/quasar.variables.scss";`
+      }
+    }
+  },
   define: {
     __APP_VERSION__: JSON.stringify(version)
   },
+  // resolve: {
+  //   alias: {
+  //     "@": fileURLToPath(new URL("./src", import.meta.url))
+  //   }
+  // },
   resolve: {
     alias: {
-      "@": fileURLToPath(new URL("./src", import.meta.url))
+      "@": path.resolve(__dirname, "./src"),
+      src: path.resolve(__dirname, "./src")
     }
   },
   server: {

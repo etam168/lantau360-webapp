@@ -26,6 +26,7 @@
   import {
     fasEllipsis,
     fasHeart,
+    fasHouse,
     fasMoneyCheckDollar,
     fasPeopleGroup
   } from "@quasar/extras/fontawesome-v6";
@@ -44,7 +45,7 @@
   };
 
   const tabs = computed(() => [
-    { name: "home", icon: "fas fa-home", label: t("footer.home"), route: "/home" },
+    { name: "home", icon: fasHouse, label: t("footer.home"), route: "/home" },
     {
       name: "business",
       icon: fasMoneyCheckDollar,

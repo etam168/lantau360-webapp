@@ -26,6 +26,8 @@
   import checkinSection from "./section/checkin-section.vue";
   import ContentSection from "./section/content-section.vue";
 
+  const isLoading = defineModel("isLoading", { type: Boolean });
+
   // Props
   const { contentName } = defineProps<{
     contentName: string;
@@ -44,6 +46,7 @@
       switch (contentName) {
         case MENU.PRIVACY:
           contentData.value.PRIVACY = await fetchData(`${ENTITY_URL.CONTENT_NAME}/${contentKey}`);
+          isLoading.value = false;
           break;
         case MENU.TERMS:
           contentData.value.TERMS = await fetchData(`${ENTITY_URL.CONTENT_NAME}/${contentKey}`);

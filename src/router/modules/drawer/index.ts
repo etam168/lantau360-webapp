@@ -1,6 +1,6 @@
 import { RouteRecordRaw } from "vue-router";
 import Error404 from "@/views/modules/errors/error-404.vue";
-import { fasBriefcase } from "@quasar/extras/fontawesome-v6";
+import { fasBriefcase, fasHouse } from "@quasar/extras/fontawesome-v6";
 
 const drawerRouter: Array<RouteRecordRaw> = [
   {
@@ -14,7 +14,7 @@ const drawerRouter: Array<RouteRecordRaw> = [
         component: () => import("@/views/modules/home/index.vue"),
         meta: {
           title: "route.drawerComponents.home",
-          icon: "home",
+          icon: fasHouse,
           group: "common"
         }
       },

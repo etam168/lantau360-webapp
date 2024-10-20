@@ -18,7 +18,11 @@
         <Suspense>
           <template #default>
             <!-- Main more-detail content -->
-            <more-detail-content :contentName />
+            <more-detail-content
+              :contentName
+              v-model:is-loading="tempLoading"
+              @update:is-loading="handleLoadingChange"
+            />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -48,9 +52,12 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { contentName } = defineProps<{
+  const { contentName, isLoading } = defineProps<{
     contentName: string;
+    isLoading: Ref<boolean>;
   }>();
+
+  const tempLoading = ref(isLoading.value);
 
   // Composable function calls
   const { dialogRef } = useDialogPluginComponent();
@@ -58,6 +65,11 @@
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
+
+  function handleLoadingChange() {
+    alert("isLoading: " + tempLoading.value);
+    isLoading.value = tempLoading.value;
+  }
 
   /**
    * Updates the dialog's visibility state

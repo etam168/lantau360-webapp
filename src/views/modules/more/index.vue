@@ -2,24 +2,27 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
+    <pre>{{ isLoading }}</pre>
+
     <q-card-section class="q-gutter-md">
       <template v-for="(item, index) in renderItems" :key="index">
-        <more-page-language v-if="item.type === 'language'" />
         <more-page-logoff v-if="item.type === 'logoff'" @on-dialog="throttledHandleLoginDialog" />
         <more-page-logon v-if="item.type === 'logon'" @on-dialog="throttledHandleLoginDialog" />
 
         <more-page-item
-          v-if="item.type === 'moreItem'"
-          :icon="item.icon"
+          v-if="['moreItem', 'language'].includes(item.type)"
+          :ref="
+            el => {
+              if (el) itemRefs[item.name] = el as ComponentPublicInstance;
+            }
+          "
+          :type="item.type"
+          :icon="item.icon!"
           :title="item.title"
           @on-item-click="onItemClick(item)"
         />
       </template>
     </q-card-section>
-<!-- 
-    <q-card-section>
-      <app-button-outline @click="handleInstall"> Install App</app-button-outline>
-    </q-card-section> -->
 
     <more-page-footer />
   </q-page>
@@ -29,6 +32,7 @@
   import { throttle } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
+  import MorePageItem from "@/components/global/custom/more-page-item.vue";
 
   const $q = useQuasar();
   const userStore = useUserStore();
@@ -54,7 +58,7 @@
       case true:
         return [
           { name: "logoff", type: "logoff" },
-          { name: "language", type: "language" },
+          { name: "language", icon: ICONS.SETTING, type: "language", title: `${i18nKey}.language` },
           { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` },
           { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
           { name: "profile", type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
@@ -65,12 +69,15 @@
       default:
         return [
           { name: "logon", type: "logon" },
-          { name: "language", type: "language" },
+          { name: "language", icon: ICONS.SETTING, type: "language", title: `${i18nKey}.language` },
           { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
           { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
         ];
     }
   });
+
+  const itemRefs = ref<{ [key: string]: ComponentPublicInstance | null }>({});
+  const childComponent = ref<InstanceType<typeof MorePageItem> | null>(null);
 
   function handleInstall() {
     alert("handleInstall");
@@ -101,9 +108,6 @@
         break;
 
       case "account":
-        handleMoreDialog(name);
-        break;
-
       case "privacy":
       case "terms":
       case "checkIn":
@@ -115,15 +119,37 @@
     }
   };
 
+  const isLoading = ref(false);
+
+  // function handleMoreDialog(name: string) {
+  //   isLoading.value = true;
+
+  //   $q.dialog({
+  //     component: defineAsyncComponent(
+  //       () => import("@/components/dialog/more-detail-dialog/index.vue")
+  //     ),
+  //     componentProps: {
+  //       contentName: name,
+  //       isLoading: isLoading
+  //     }
+  //   });
+  // }
+
   function handleMoreDialog(name: string) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/more-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        contentName: name
-      }
-    });
+    isLoading.value = true;
+
+    // Introduce a delay of 1000 milliseconds (1 second)
+    // setTimeout(() => {
+    //   $q.dialog({
+    //     component: defineAsyncComponent(
+    //       () => import("@/components/dialog/more-detail-dialog/index.vue")
+    //     ),
+    //     componentProps: {
+    //       contentName: name,
+    //       isLoading: isLoading
+    //     }
+    //   });
+    // }, 10000); // You can adjust this value to change the delay duration
   }
 
   function showLoginDialog(tabValue: string) {
@@ -136,6 +162,18 @@
       }
     });
   }
+
+  // Add watch for test
+  watch(isLoading, (newVal, oldVal) => {
+    if (newVal !== oldVal) {
+      alert(`New value for isLoading: ${newVal}`);
+      // Object.values(itemRefs.value).forEach(component => {
+      //   if (component && typeof component.resetLoading === "function") {
+      //     component.resetLoading();
+      //   }
+      // });
+    }
+  });
 
   onMounted(() => {
     $q.notify({

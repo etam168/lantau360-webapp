@@ -33,5 +33,13 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/no-useless-constructor": "error",
     "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }]
+  },
+  settings: {
+    "import/resolver": {
+      alias: {
+        map: [["@", "./src"]],
+        extensions: [".ts", ".js", ".jsx", ".json"]
+      }
+    }
   }
 };
