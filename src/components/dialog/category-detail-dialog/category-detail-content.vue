@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
- 
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -136,7 +135,12 @@
               color: "white bg-primary",
               handler: () => {
                 $q.dialog({
-                  component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue"))
+                  component: defineAsyncComponent(
+                    () => import("@/components/dialog/auth-dialog/index.vue")
+                  ),
+                  componentProps: {
+                    mode: "login"
+                  }
                 });
               }
             }
