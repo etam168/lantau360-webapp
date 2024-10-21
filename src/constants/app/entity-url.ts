@@ -30,6 +30,7 @@ export const ENTITY_URL = {
   WEATHER: `/Weather`,
   SIGN_IN: "/MemberAuth/SignIn",
   SIGN_UP: "/MemberAuth/SignUp",
+  RESET_PASSWORD: "/MemberAuth/RecoverPassword"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

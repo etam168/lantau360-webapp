@@ -107,8 +107,29 @@ export function useAuthService() {
     }
   }
 
+  async function recoverPassword(email: string, newPassword: string, otp: string) {
+    try {
+      const response = await api.create(`${ENTITY_URL.RESET_PASSWORD}`, {
+        email: email,
+        newPassword: newPassword,
+        otp: otp
+      });
+      
+      notify(t("auth.login.passwordResetSuccessfully"), "positive");
+      return response.data;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        notify(err.message, "negative");
+      } else {
+        notify(t("errors.anUnExpectedError"), "negative");
+      }
+      throw err;
+    }
+  }
+
   return {
     loginRequest,
     registerRequest,
+    recoverPassword,
   };
 }

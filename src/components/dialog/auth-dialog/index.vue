@@ -37,6 +37,9 @@
               @submit="onSubmit"
               v-slot="{ meta, values }"
             >
+              <div>{{ setFormValues(values) }}</div>
+
+              {{renderItems}}
               <template v-for="(item, index) in renderItems" :key="index">
                 <auth-avatar v-if="item.type === 'avatar'" />
 
@@ -78,7 +81,6 @@
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
   import { Form } from "vee-validate";
-  import  { AxiosError } from "axios";
 
   // .ts files
   import { SubField } from "@/interfaces/types/form-structure-types";
@@ -94,7 +96,7 @@
 
   const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
 
-  const { loginRequest, registerRequest } = useAuthService();
+  const { loginRequest, registerRequest , recoverPassword} = useAuthService();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const { t } = i18n.global;
   const $q = useQuasar();
@@ -108,17 +110,21 @@
   const i18nKey = "auth";
   const error = ref(false);
 
+  const userName = ref("");
+
   const initialValues = ref({
     userName: "",
     password: "",
     firstName: "",
     lastName: "",
-    phone: ""
+    phone: "",
+    otp:""
   });
 
   const schema = yup.object({
-    userName: yup.string().required().label(t("auth.login.userName")),
-    password: yup.string().required().min(4).label(t("auth.login.password"))
+    // otp:  yup.string().required().label(t("auth.login.userName")),
+    // userName: yup.string().required().label(t("auth.login.userName")),
+    // password: yup.string().required().min(4).label(t("auth.login.password"))
   });
 
   const authStyle = computed(() =>
@@ -176,6 +182,10 @@
     }));
   });
 
+  function setFormValues(values: any) {
+    userName.value = values.userName;
+  }
+
   function updateDialogState(status: boolean) {
     isDialogVisible.value = status;
   }
@@ -207,25 +217,36 @@
             closeDialog();
           } catch {}
         }
+        else if( renderMode.value == "reset")
+        {
+          try{
+            alert(JSON.stringify(values));
+            await recoverPassword(userName.value, values.password, values.otp);
+            // renderMode.value = "login";
+          } catch{}
+
+        }
       }
     });
   }
-  function handleClick(itemName: string) {
+  async function handleClick(itemName: string) {
     renderMode.value = "reset";
-  }
-
-  const handleAxiosError = (err: AxiosError) => {
-    if (err.response) {
-      const { data } = err.response;
-      if (data === "email_not_verified") {
-        // shoulShowResendButton.value = true;
-      }
-      message.value = messages[data as string] || messages.email_send_failed;
-    } else {
-      message.value = messages.email_send_failed;
+    form.value.resetForm({ values: initialValues.value });
+    if (userName.value == "") {
       error.value = true;
+      message.value = messages.username_required;
+      return;
     }
-  };
+    try {
+      loading.value = true;
+      await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
+      // emits("on-forgotPassword", userName.value);
+      notify(t("auth.forgotPassword.otpMessage"), "positive");
+    } catch (e: any) {
+      notify(e.message, "negative");
+    }
+    // loading.value = false;
+  }
 </script>
 
 <style scoped>
