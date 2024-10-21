@@ -7,7 +7,7 @@
     <q-card-section class="q-gutter-md">
       <template v-for="(item, index) in renderItems" :key="index">
         <more-page-logoff v-if="item.type === 'logoff'" />
-        <more-page-logon v-if="item.type === 'logon'" @on-dialog="handleAuthDialog" />
+        <more-page-logon v-if="item.type === 'logon'" @on-auth-dialog="handleAuthDialog" />
 
         <more-page-item
           v-if="['moreItem', 'language'].includes(item.type)"
@@ -79,26 +79,9 @@
   const member = newMember;
 
   const onItemClick = (itemName: string) => {
-    let component;
-    let props;
-    let entityKey;
-
     switch (itemName) {
       case "profile":
-        entityKey = "MEMBER" as EntityURLKey;
-        props = { category: itemName, entityKey: entityKey };
-        component = defineAsyncComponent(
-          () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
-        );
-        handleOpenDialog(
-          undefined,
-          component,
-          component,
-          props,
-          isDialogOpen.value,
-          lookUpEntityTypes,
-          entityKey
-        );
+        handleProfileDialog(itemName);
         break;
 
       case "privacy":
@@ -134,6 +117,12 @@
       openMemberItemDialog(isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
+  }
+
+  function handleProfileDialog(name: string) {
+    let entityKey = "MEMBER" as EntityURLKey;
+    let props = { category: name, entityKey: entityKey };
+    handleOpenDialog(props, isDialogOpen.value, lookUpEntityTypes, entityKey);
   }
 
   function handleContentDialog(name: string) {

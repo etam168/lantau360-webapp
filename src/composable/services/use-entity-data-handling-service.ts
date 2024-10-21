@@ -8,9 +8,6 @@ export function useEntityDataHandlingService() {
   const { fetchData } = useApi();
 
   function handleOpenDialog(
-    userComponent: Component | undefined,
-    lookupComponent: Component,
-    defaultComponent: Component,
     props: Record<string, any>,
     isDialogOpen: Boolean,
     lookUpEntityTypes?: Array<string>,
@@ -23,31 +20,15 @@ export function useEntityDataHandlingService() {
 
     // Set the dialog state to open
     isDialogOpen = true;
-    switch (true) {
-      case !!userComponent:
-        Dialog.create({ component: userComponent, componentProps: props }).onDismiss(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen = false;
-        });
-        break;
-
-      case lookUpEntityTypes?.includes(entityKey as string):
-        Dialog.create({ component: lookupComponent, componentProps: props }).onDismiss(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen = false;
-        });
-        break;
-
-      default:
-        Dialog.create({
-          component: defaultComponent,
-          componentProps: props
-        }).onDismiss(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen = false;
-        });
-        break;
-    }
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+      ),
+      componentProps: props
+    }).onDismiss(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen = false;
+    });
   }
 
   return {
