@@ -5,7 +5,6 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
-    :maximized="$q.screen.lt.sm"
   >
     <q-layout
       view="lHh lpr lFf"
@@ -13,247 +12,95 @@
       :class="{ 'bg-secondary': $q.screen.lt.sm }"
     >
       <q-page-container>
-        <q-page class="column items-center justify-center q-pa-none">
-          <q-card
-            class="bg-secondary q-pt-none q-pa-md q-ma-none"
-            :style="authStyle"
-            :flat="$q.screen.lt.sm"
-          >
-            <q-btn
-              :icon="fasXmark"
-              flat
-              round
-              dense
-              v-close-popup
-              class="q-mr-md"
-              v-if="$q.screen.gt.xs"
-            />
-
-            <Form
-              ref="form"
-              class="full-height"
-              :initial-values="initialValues"
-              :validation-schema="schema"
-              @submit="onSubmit"
-              v-slot="{ meta, values }"
-            >
-              <div>{{ setFormValues(values) }}</div>
-
-              {{renderItems}}
-              <template v-for="(item, index) in renderItems" :key="index">
-                <auth-avatar v-if="item.type === 'avatar'" />
-
-                <vee-input-password
-                  v-if="item.type === 'password'"
-                  :name="item.name"
-                  :label="$t('auth.login.password')"
-                />
-
-                <app-button
-                  v-if="item.type === 'submit'"
-                  class="full-width"
-                  color="primary"
-                  :label="item.label"
-                  type="submit"
-                />
-
-                <app-button-flat
-                  v-if="item.type === 'flatButton'"
-                  :label="item.label"
-                  @click="handleClick(item.name)"
-                />
-
-                <vee-q-tel-input v-if="item.type === 'phone'" :name="item.name" defaultIso="HK" />
-
-                <vee-input v-if="item.type === 'input'" :name="item.name" :label="item.label" />
-              </template>
-              <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
-            </Form>
-          </q-card>
-        </q-page>
+        <!-- Suspense wrapper for async component loading -->
+        <Suspense>
+          <template #default>
+            <!-- <div>dialog</div> -->
+            <!-- Main auth detail content -->
+            <auth-detail-content :mode />
+          </template>
+          <template #fallback>
+            <!-- Loading spinner shown while content is loading -->
+            <div class="row justify-center items-center" style="height: 500px">
+              <app-spinner size="10em" />
+            </div>
+          </template>
+        </Suspense>
+        <!-- Error message display -->
+        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
+          {{ errorMessage }}
+          <p>{{ $t("common.contactAdminMessage") }}</p>
+        </div>
       </q-page-container>
     </q-layout>
   </q-dialog>
 </template>
 
 <script setup lang="ts">
-  import { fasXmark } from "@quasar/extras/fontawesome-v6";
-  import * as yup from "yup";
-  import i18n from "@/plugins/i18n/i18n";
-  import { Form } from "vee-validate";
+  // Composables Imports
+  import { useDialogPluginComponent } from "quasar";
 
-  // .ts files
-  import { SubField } from "@/interfaces/types/form-structure-types";
+  // Components
+  import AuthDetailContent from "./auth-detail-content.vue";
 
-  import AuthAvatar from "./auth-avatar.vue";
+  // Emits
+  defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
   const { mode = "login" } = defineProps<{
-    mode?: AuthMode;
+    mode?: string;
   }>();
 
-  type AuthMode = "login" | "register" | "reset";
-
-  const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
-
-  const { loginRequest, registerRequest , recoverPassword} = useAuthService();
+  // Composable function calls
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-  const { t } = i18n.global;
-  const $q = useQuasar();
-  const { notify } = useUtilities();
-  const isDialogVisible = ref(false);
 
-  const form = ref();
-  const loading = ref(false);
-  const resendEmaiLoading = ref(false);
-  const message = ref("");
-  const i18nKey = "auth";
-  const error = ref(false);
+  // Reactive variables
+  const isDialogVisible = ref(true);
+  const errorMessage = ref<string | null>(null);
 
-  const userName = ref("");
-
-  const initialValues = ref({
-    userName: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    phone: "",
-    otp:""
-  });
-
-  const schema = yup.object({
-    // otp:  yup.string().required().label(t("auth.login.userName")),
-    // userName: yup.string().required().label(t("auth.login.userName")),
-    // password: yup.string().required().min(4).label(t("auth.login.password"))
-  });
-
-  const authStyle = computed(() =>
-    $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "90%" }
-  );
-
-  const messages: any = {
-    invalid_user: t("auth.emailMessages.invalidUser"),
-    email_not_verified: t("errors.emailNotVerified"),
-    invalid_credentials: t("errors.invalidCredentials"),
-    invalid_username: t("errors.invalidUsername"),
-    email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
-    email_send_failed: t("auth.emailMessages.emailSendFailed"),
-    username_required: t("errors.usernameRequired"),
-    email_already_verified: t("auth.emailMessages.emailAlreadyVerified")
-  };
-
-  const renderMode = ref(mode);
-
-  const renderItems = computed<SubField[]>(() => {
-    const getItems = (): SubField[] => {
-      switch (renderMode.value) {
-        case "register":
-          return [
-            { name: "avatar", type: "avatar" },
-            { name: "userName", type: "input" },
-            { name: "firstName", type: "input" },
-            { name: "lastName", type: "input" },
-            { name: "phone", type: "phone" },
-            { name: "password", type: "password" },
-            { name: "register", type: "submit" }
-          ];
-        case "reset":
-          return [
-            { name: "avatar", type: "avatar" },
-            { name: "otp", type: "input" },
-            { name: "password", type: "password" },
-            { name: "resetPassword", type: "submit" }
-          ];
-        default:
-          // Default is login
-          return [
-            { name: "avatar", type: "avatar" },
-            { name: "userName", type: "input" },
-            { name: "password", type: "password" },
-            { name: "signIn", type: "submit" },
-            { name: "forgetPassword", type: "flatButton" }
-          ];
-      }
-    };
-
-    return getItems().map(item => ({
-      ...item,
-      label: `${i18nKey}.${item.name}`
-    }));
-  });
-
-  function setFormValues(values: any) {
-    userName.value = values.userName;
-  }
-
-  function updateDialogState(status: boolean) {
-    isDialogVisible.value = status;
-  }
-
-  function closeDialog() {
+  /**
+   * Handles the closing of the dialog
+   * Sets visibility to false and triggers the cancel action after a delay
+   */
+  function handleCloseDialog(): void {
+    isDialogVisible.value = false;
     setTimeout(() => {
-      onDialogCancel();
+      try {
+        onDialogCancel();
+      } catch (error) {
+        console.error("Error while closing dialog:", error);
+      }
     }, 1200);
   }
 
-  function onSubmit(values: any) {
-    if (resendEmaiLoading.value) {
-      return;
-    }
-
-    form.value.validate().then(async (isValid: any) => {
-      if (isValid) {
-        loading.value = true;
-        error.value = false;
-
-        if (renderMode.value == "login") {
-          try {
-            await loginRequest(values.userName, values.password);
-            closeDialog();
-          } catch {}
-        } else if (renderMode.value == "register") {
-          try {
-            await registerRequest(values);
-            closeDialog();
-          } catch {}
-        }
-        else if( renderMode.value == "reset")
-        {
-          try{
-            alert(JSON.stringify(values));
-            await recoverPassword(userName.value, values.password, values.otp);
-            // renderMode.value = "login";
-          } catch{}
-
-        }
-      }
-    });
+  /**
+   * Updates the dialog's visibility state
+   * @param status - The new visibility state
+   */
+  function updateDialogState(status: boolean): void {
+    isDialogVisible.value = status;
   }
-  async function handleClick(itemName: string) {
-    renderMode.value = "reset";
-    form.value.resetForm({ values: initialValues.value });
-    if (userName.value == "") {
-      error.value = true;
-      message.value = messages.username_required;
-      return;
+
+  /**
+   * Error handling for the component
+   * Captures errors and sets an appropriate error message
+   */
+  onErrorCaptured((e: unknown): boolean => {
+    if (e instanceof Error) {
+      errorMessage.value = e.message;
+    } else if (typeof e === "string") {
+      errorMessage.value = e;
+    } else {
+      errorMessage.value = "An unknown error occurred";
     }
-    try {
-      loading.value = true;
-      await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
-      // emits("on-forgotPassword", userName.value);
-      notify(t("auth.forgotPassword.otpMessage"), "positive");
-    } catch (e: any) {
-      notify(e.message, "negative");
-    }
-    // loading.value = false;
-  }
+    return true;
+  });
+
+  // Lifecycle hooks
+  onMounted(() => {
+    // Set up event listener for closing dialog
+    // eventBus("CloseDialog").on(() => {
+    //   isDialogVisible.value = false;
+    // });
+  });
 </script>
-
-<style scoped>
-  .forgot-password-link {
-    color: green;
-    text-decoration: underline;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-</style>

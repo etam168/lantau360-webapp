@@ -132,6 +132,7 @@ declare global {
   const useAsyncQueue: typeof import('@vueuse/core')['useAsyncQueue']
   const useAsyncState: typeof import('@vueuse/core')['useAsyncState']
   const useAttrs: typeof import('vue')['useAttrs']
+  const useAuthService: typeof import('./composable/services/use-auth-service')['useAuthService']
   const useBase64: typeof import('@vueuse/core')['useBase64']
   const useBattery: typeof import('@vueuse/core')['useBattery']
   const useBluetooth: typeof import('@vueuse/core')['useBluetooth']
@@ -221,6 +222,7 @@ declare global {
   const useMemberFormContents: typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']
   const useMemberFormMapper: typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']
   const useMemberInput: (typeof import("./composable/use-member"))["useMemberInput"]
+  const useMemberItemDialogService: typeof import('./composable/services/use-member-item-dialog-service')['useMemberItemDialogService']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
   const useMemory: typeof import('@vueuse/core')['useMemory']
   const useMeta: typeof import('quasar')['useMeta']
@@ -463,6 +465,7 @@ declare module 'vue' {
     readonly useAsyncQueue: UnwrapRef<typeof import('@vueuse/core')['useAsyncQueue']>
     readonly useAsyncState: UnwrapRef<typeof import('@vueuse/core')['useAsyncState']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
+    readonly useAuthService: UnwrapRef<typeof import('./composable/services/use-auth-service')['useAuthService']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>
     readonly useBluetooth: UnwrapRef<typeof import('@vueuse/core')['useBluetooth']>
@@ -543,6 +546,7 @@ declare module 'vue' {
     readonly useMember: UnwrapRef<typeof import('./composable/use-member')['useMember']>
     readonly useMemberFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']>
     readonly useMemberFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']>
+    readonly useMemberItemDialogService: UnwrapRef<typeof import('./composable/services/use-member-item-dialog-service')['useMemberItemDialogService']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
     readonly useMeta: UnwrapRef<typeof import('quasar')['useMeta']>
