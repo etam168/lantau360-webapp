@@ -1,40 +1,10 @@
-<!-- category-items-content.vue -->
+<!-- member-items-content.vue -->
 <template>
   <q-card>
-    <template v-if="groupBykey">
-      <q-card class="q-ma-md q-py-md text-white bg-primary">
-        <q-card-section class="row items-center justify-between">
-          <!-- Points Balance Section -->
-          <div>
-            <div class="text-subtitle1">
-              {{
-                $t("more.profileSetting.availablePoints", {
-                  availablePoints: 50
-                })
-              }}
-            </div>
-            <div class="text-caption">
-              {{
-                $t("more.profileSetting.bythisTimeText", {
-                  spentPoints: 50
-                })
-              }}
-            </div>
-          </div>
-          <!-- Top-up Points Button -->
-          <q-btn dense rounded class="text-primary bg-grey-1 text-caption q-px-md">{{
-            $t("more.profileSetting.buyPoints")
-          }}</q-btn>
-        </q-card-section>
-      </q-card>
+    <member-points v-if="points" />
 
-      <app-tab-select
-        :tab-items="tabItems"
-        :current-tab="tab"
-        @update:currentTab="setTab"
-        :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
-        :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
-      />
+    <template v-if="groupBykey">
+      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
       <q-tab-panels v-model="tab">
         <q-tab-panel
@@ -43,103 +13,87 @@
           :name="item.name"
           class="q-pa-none"
         >
-          <app-category-list-items
-            :categoryItems="filterGroupedArray(item.name)"
-            :checkIns="checkIns"
-            :entityKey="entityKey"
-            @on-category-detail="handleDetail"
-          />
+          <template v-if="filterGroupedArray(item.name).length > 0">
+            <app-member-list-items
+              :memberItems="filterGroupedArray(item.name)"
+              :entityKey="entityKey"
+              @on-member-detail="handleDetail"
+            />
+          </template>
+
+          <template v-else>
+            <div class="text-center q-pa-md">No data</div>
+          </template>
         </q-tab-panel>
       </q-tab-panels>
     </template>
 
-    <app-category-list-items
-      v-else
-      :categoryItems="categoryItems"
-      :checkIns="checkIns"
-      :entityKey="entityKey"
-      @on-category-detail="handleDetail"
-    />
+    <app-member-list-items v-else :memberItems :entityKey @on-member-detail="handleDetail" />
   </q-card>
 </template>
 
 <script setup lang="ts">
   // Interface
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { Member } from "@/interfaces/models/entities/member";
   import type { TabItem } from "@/interfaces/tab-item";
-  import type { MemberTypes } from "@/interfaces/types/member-types";
+  import type { Transaction } from "@/interfaces/models/entities/transaction";
 
   // Constants
-  import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE, URL } from "@/constants";
-
-  // Composables
-  import { useQuasar } from "quasar";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Props
-  const props = defineProps<{
-    member: MemberTypes;
+  const { member, entityKey, points } = defineProps<{
+    member: Member;
     entityKey: EntityURLKey;
+    points?: Record<string, any>;
   }>();
 
-  const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryDialogService(props.entityKey);
-  const $q = useQuasar();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
-  const categoryItems = ref<CategoryTypes[]>([]);
-  const checkIns = ref<CheckIn[]>([]);
+  const memberItems = ref<CategoryTypes[]>([]);
+  const historyItems = ref<Transaction[]>([]);
+  const recentItems = ref<Transaction[]>([]);
 
   const groupBykey = computed<string | null>(() => {
-    switch (props.entityKey) {
-      case "ACCOUNT":
-        return "transactionType";
+    switch (entityKey) {
+      case "TRANSACTION":
+        return "transaction";
       // Add other cases here if needed
       default:
         return null;
     }
   });
 
-  const groupedArray = computed(() => {
-    if (groupBykey.value == null) {
-      return [];
+  // Define an interface for the group object
+  interface GroupedItems {
+    group: string | number;
+    items: CategoryTypes[];
+  }
+
+  const groupedArray = computed<GroupedItems[]>(() => {
+    switch (groupBykey.value) {
+      case "transaction":
+        return [
+          { group: "recent", items: recentItems.value },
+          { group: "history", items: historyItems.value }
+        ];
+
+      default:
+        return [];
     }
-
-    const key = groupBykey.value;
-    const getTranslatedKey = (item: CategoryTypes): string | number => {
-      if (!(key in item)) {
-        return "Invalid!"; // Or any default value you prefer
-      }
-
-      const itemValue = item[key as keyof CategoryTypes] as string;
-      const metaData = key === AREA_NAME ? (item as any).areaNameAlt : item.meta;
-      return translate(itemValue, metaData, key);
-    };
-
-    const validItems = categoryItems.value.filter(
-      (item: CategoryTypes) => key in item && item[key as keyof CategoryTypes] !== undefined
-    );
-
-    return groupBy(validItems, getTranslatedKey);
   });
-
-  //   // Define tabItems as a computed property
-  //   const tabItems = computed(() => {
-  //   return groupedArray.value.map(group => ({
-  //     name: group.group,
-  //     label: group.group
-  //   })) as TabItem[];
-  // });
 
   // New computed property for tabItems
   const tabItems = computed(() => {
-    if (props.entityKey === "ACCOUNT") {
+    if (entityKey === "TRANSACTION") {
       return [
         { name: "recent", label: "Recent" },
         { name: "history", label: "History" }
       ];
     }
+
     return groupedArray.value.map(group => ({
       name: group.group,
       label: group.group
@@ -149,15 +103,7 @@
   const tab = ref("");
   const setTab = (val: string) => (tab.value = val);
 
-  // function filterGroupedArray(groupName: string) {
-  //   const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
-  //   return items.sort((a: any, b: any) => a.rank - b.rank);
-  // }
-
   function filterGroupedArray(groupName: string) {
-    if (props.entityKey === "ACCOUNT") {
-      return categoryItems.value.filter(item => item.transactionType === groupName);
-    }
     const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
@@ -166,40 +112,32 @@
     openCategoryDetailDialog(item);
   }
 
+  const addField = (transactions: any[], type: string) =>
+    transactions.map(item => ({ ...item, transactionType: type }));
+
   const fetchAllData = async () => {
     try {
-      switch (props.entityKey) {
+      switch (entityKey) {
         case "CHECKIN":
-          categoryItems.value = await fetchData(
-            `${URL.CHECKIN_BY_MEMBER}/${props.member.memberId}`
-          );
+          memberItems.value = await fetchData(`${ENTITY_URL.CHECKIN_BY_MEMBER}/${member.memberId}`);
           break;
-        case "ACCOUNT":
+
+        case "TRANSACTION":
           // Fetch data from two different APIs concurrently
-          const [transactions, recentTransactions] = await Promise.all([
-            fetchData(`${URL.MEMBER_TRANSACTIONS_URL}/${props.member.memberId}`),
-            fetchData(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${props.member.memberId}`)
+          const [history, recent] = await Promise.all([
+            fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
+            fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${member.memberId}`)
           ]);
 
-          // Add a transactionType property to each item
-          const historyTransactions = transactions.map((item: any) => ({
-            ...item,
-            transactionType: "history"
-          }));
-          const recentTransactionsWithType = recentTransactions.map((item: any) => ({
-            ...item,
-            transactionType: "recent"
-          }));
-
-          // Combine the results into categoryItems
-          categoryItems.value = [...recentTransactionsWithType, ...historyTransactions];
-          break;
+          historyItems.value = history;
+          recentItems.value = recent;
+          memberItems.value = [...recent, ...history];
         default:
-          console.warn(`Unsupported entity type: ${props.entityKey}`);
+          console.warn(`Unsupported entity type: ${entityKey}`);
       }
 
       // Set the initial tab value after data is fetched
-      if (categoryItems.value.length > 0 && groupBykey.value) {
+      if (memberItems.value.length > 0 && groupBykey.value) {
         tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
       }
     } catch (error) {

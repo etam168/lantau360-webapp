@@ -38,14 +38,18 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     });
   }
 
-  function openCommunityItemDialog(isDialogOpen: Ref<Boolean>,entityKey: EntityURLKey, directory: CommunityDirectory) {
+  function openCommunityItemDialog(
+    isDialogOpen: Ref<Boolean>,
+    entityKey: EntityURLKey,
+    directory: CommunityDirectory
+  ) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-items-dialog/index.vue")
       ),
-      componentProps: { community: directory, entityKey: entityKey }
+      componentProps: { directory: directory, entityKey: entityKey }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed

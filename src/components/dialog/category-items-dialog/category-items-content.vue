@@ -1,6 +1,7 @@
 <!-- category-items-content.vue -->
 <template>
   <q-card>
+    <pre>{{ groupedArray }}</pre>
     <template v-if="groupBykey">
       <app-tab-select
         :tab-items="tabItems"

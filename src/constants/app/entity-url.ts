@@ -1,6 +1,7 @@
 // entity-url.ts
 
 export const ENTITY_URL = {
+  ACCOUNT: "Account",
   ADVERTISEMENT: `/Advertisement`,
   ATTRACTION: `/Site/ByDirectoryId/1`,
   BUSINESS: `/Business`,
@@ -20,13 +21,13 @@ export const ENTITY_URL = {
   MEMBER_IMAGE: `/MemberImage`,
   MEMBER_BY_ID: `/Member/MemberById`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
-  MEMBER_TRANSACTIONS: `/Transactoin/MemberTransactions`,
-  MEMBER_RECENT_TRANSACTIONS: `/Transactoin/MemberRecentTransactions`,
+  MEMBER_TRANSACTIONS: `/Transaction/MemberTransactions`,
+  MEMBER_RECENT_TRANSACTIONS: `/Transaction/MemberRecentTransactions`,
   POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
-  WEATHER: `/Weather`,
-  ACCOUNT:"Account"
+  TRANSACTION: `/Transactoin/MemberTransactions`,
+  WEATHER: `/Weather`
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

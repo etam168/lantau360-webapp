@@ -19,7 +19,7 @@
           <template #default>
             <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <community-items-content :community :entity-key />
+            <community-items-content :directory :entity-key />
           </template>
 
           <template #fallback>
@@ -56,8 +56,8 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { community, entityKey } = defineProps<{
-    community: CommunityDirectory;
+  const { directory, entityKey } = defineProps<{
+    directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 
@@ -70,7 +70,7 @@
   const errorMessage = ref<string | null>(null);
 
   const dialogTitle = computed(() =>
-    translate(community.directoryName, community.meta, "directoryName")
+    translate(directory.directoryName, directory.meta, "directoryName")
   );
 
   /**

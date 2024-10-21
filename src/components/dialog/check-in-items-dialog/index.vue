@@ -56,6 +56,7 @@
       handleCancel();
     });
   });
+
   function handleCancel() {
     onDialogCancel();
   }

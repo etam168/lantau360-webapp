@@ -8,7 +8,7 @@
 
       <q-item-section>
         <q-item-label>{{
-          $t("action.createDirectory", { directoryName: community.directoryName })
+          $t("action.createDirectory", { directoryName: directory.directoryName })
         }}</q-item-label>
         <q-item-label caption>{{
           $t("community.createPost.addGalleryDescription")
@@ -61,8 +61,8 @@
   import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
   // Props
-  const { community, entityKey } = defineProps<{
-    community: CommunityDirectory;
+  const { directory, entityKey } = defineProps<{
+    directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 
@@ -77,7 +77,7 @@
     switch (entityKey) {
       case "POSTING":
       case "COMMUNITY_DIRECTORY":
-        return (community as CommunityDirectory).communityDirectoryId;
+        return (directory as CommunityDirectory).communityDirectoryId;
       default:
         return 0;
     }
@@ -85,8 +85,8 @@
 
   const groupBykey: ComputedRef<string | null> = computed(() => {
     switch (true) {
-      case community.meta?.groupByKey !== NONE:
-        return community.meta?.groupByKey ?? null;
+      case directory.meta?.groupByKey !== NONE:
+        return directory.meta?.groupByKey ?? null;
       default:
         return null;
     }

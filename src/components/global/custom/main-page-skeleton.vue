@@ -11,24 +11,6 @@
       />
       <app-skeleton-toolbar v-else-if="item.type === 'toolbar'" :item-count="item.itemCount" />
       <app-skeleton-card v-else-if="item.type === 'cards'" :item-count="item.itemCount" />
-
-      <!-- <q-item v-else-if="item.type === 'chips'" class="q-px-md q-gutter-sm">
-      <app-skeleton-chips v-for="chips in 3" :key="chips" />
-    </q-item>
-
-    <q-item v-else-if="item.type === 'directory'" class="row q-gutter-y-md" style="flex-wrap: wrap">
-      <app-skeleton-directory-item-list
-        v-for="index in 14"
-        :key="index"
-        class="col-12 col-sm-6 col-md-3 col-lg-3"
-      />
-    </q-item>
-
-    <div v-else-if="item.type === 'cards'" class="q-pa-sm">
-      <div class="row q-col-gutter-sm">
-        <app-skeleton-card v-for="index in 2" :key="index" class="col-md-3 col-sm-4 col-6" />
-      </div>
-    </div> -->
     </template>
   </q-card>
 </template>

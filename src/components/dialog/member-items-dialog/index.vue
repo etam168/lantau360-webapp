@@ -17,9 +17,8 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <member-items-content :member :entity-key />
+            <member-items-content :member :entity-key :points />
           </template>
 
           <template #fallback>
@@ -41,10 +40,9 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { MemberTypes } from "@/interfaces/types/member-types";
+  import type { Member } from "@/interfaces/models/entities/member";
 
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
@@ -59,36 +57,27 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { member, entityKey } = defineProps<{
-    member: MemberTypes;
+  const { member, entityKey, points } = defineProps<{
+    member: Member;
     entityKey: EntityURLKey;
+    points?: Record<string, any>;
   }>();
 
   // Composable function calls
   const { t } = i18n.global;
 
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+  const { getEntityName } = useUtilities();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-
-  // const dialogTitle = computed(() =>
-  //   translate(directory.directoryName, directory.meta, "directoryName")
-  // );
-  // Updated dialogTitle computed property
+  const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
-    switch (entityKey) {
-      case "CHECKIN":
-        return t("more.checkIn.title");
-      case "ACCOUNT":
-        return t("more.account.title");
-      // Add more cases as needed for other entityKey values
-      default:
-        return ""; // Or a default title if needed
-    }
+    return t(`${entityName}.title`);
   });
+
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay

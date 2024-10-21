@@ -6,8 +6,8 @@
 
     <q-card-section class="q-gutter-md">
       <template v-for="(item, index) in renderItems" :key="index">
-        <more-page-logoff v-if="item.type === 'logoff'" @on-dialog="throttledHandleLoginDialog" />
-        <more-page-logon v-if="item.type === 'logon'" @on-dialog="throttledHandleLoginDialog" />
+        <more-page-logoff v-if="item.type === 'logoff'" />
+        <more-page-logon v-if="item.type === 'logon'" @on-dialog="handleAuthDialog" />
 
         <more-page-item
           v-if="['moreItem', 'language'].includes(item.type)"
@@ -15,7 +15,7 @@
           :type="item.type"
           :icon="item.icon!"
           :title="item.title"
-          @on-item-click="onItemClick(item)"
+          @on-item-click="onItemClick(item.name)"
         />
       </template>
     </q-card-section>
@@ -25,19 +25,16 @@
 </template>
 
 <script setup lang="ts">
-  import { throttle } from "quasar";
+  import { newMember } from "@/interfaces/models/entities/member";
+
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
-  import MorePageItem from "@/components/global/custom/more-page-item.vue";
-  import { Member } from "@/interfaces/models/entities/member";
 
   const $q = useQuasar();
   const userStore = useUserStore();
   const { eventBus } = useUtilities();
   const { fetchTransactionData } = useTransactionsFunctions();
   const { handleOpenDialog } = useEntityDataHandlingService();
-
-  const throttledHandleLoginDialog = throttle(showLoginDialog, 2000);
 
   const { openMemberItemDialog } = useMemberItemDialogService();
 
@@ -75,23 +72,21 @@
     }
   });
 
-  // const itemRefs = ref<{ [key: string]: ComponentPublicInstance | null }>({});
-  const childComponent = ref<InstanceType<typeof MorePageItem> | null>(null);
-
   function handleInstall() {
     alert("handleInstall");
   }
 
-  const onItemClick = (item: any) => {
-    const { name } = item;
+  const member = newMember;
+
+  const onItemClick = (itemName: string) => {
     let component;
     let props;
     let entityKey;
 
-    switch (name) {
+    switch (itemName) {
       case "profile":
         entityKey = "MEMBER" as EntityURLKey;
-        props = { category: item, entityKey: entityKey };
+        props = { category: itemName, entityKey: entityKey };
         component = defineAsyncComponent(
           () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
         );
@@ -108,19 +103,14 @@
 
       case "privacy":
       case "terms":
-        handleMoreDialog(name);
+        handleContentDialog(itemName);
         break;
 
       case "account":
+        handleMemberDialog("TRANSACTION", itemName);
+        break;
       case "checkIn":
-        alert(name.toUpperCase());
-        if (isDialogOpen.value) return;
-        openMemberItemDialog(
-          isDialogOpen,
-          { memberId: userStore.userId } as Member,
-          name.toUpperCase()
-        );
-        resetItemLoading(name);
+        handleMemberDialog("CHECKIN", itemName);
         break;
       default:
         break;
@@ -128,21 +118,6 @@
   };
 
   const isLoading = ref(false);
-
-  // function handleMoreDialog(name: string) {
-  //   isLoading.value = true;
-
-  //   $q.dialog({
-  //     component: defineAsyncComponent(
-  //       () => import("@/components/dialog/more-detail-dialog/index.vue")
-  //     ),
-  //     componentProps: {
-  //       contentName: name,
-  //       isLoading: isLoading
-  //     }
-  //   });
-  // }
-
   const itemRefs = ref<{ [key: string]: any }>({});
 
   const setItemRef = (name: string, el: any) => {
@@ -151,19 +126,24 @@
     }
   };
 
-  function handleMoreDialog(name: string) {
+  function handleMemberDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
+    member.memberId = userStore.userId;
 
-    // Introduce a delay of 1000 milliseconds (1 second)
+    if (!isDialogOpen.value) {
+      openMemberItemDialog(isDialogOpen, member, entityKey);
+      resetItemLoading(itemName);
+    }
+  }
+
+  function handleContentDialog(name: string) {
+    isLoading.value = true;
 
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
-      componentProps: {
-        contentName: name,
-        isLoading: isLoading
-      }
+      componentProps: { contentName: name, isLoading: isLoading }
     })
       .onCancel(() => {
         alert("oncancel");
@@ -171,7 +151,6 @@
         resetItemLoading(name);
       })
       .onOk(() => {
-        // alert("OnOk");
         resetItemLoading(name);
       });
   }
@@ -183,8 +162,8 @@
     }
   }
 
-  function showLoginDialog(tabValue: string) {
-    alert("YES");
+  function handleAuthDialog(tabValue: string) {
+    isLoading.value = true;
     $q.dialog({
       component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       componentProps: {
