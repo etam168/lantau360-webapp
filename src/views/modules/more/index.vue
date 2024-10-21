@@ -92,9 +92,11 @@
       case "account":
         handleMemberDialog("TRANSACTION", itemName);
         break;
+
       case "checkIn":
         handleMemberDialog("CHECKIN", itemName);
         break;
+
       default:
         break;
     }
@@ -120,8 +122,8 @@
   }
 
   function handleProfileDialog(name: string) {
-    let entityKey = "MEMBER" as EntityURLKey;
-    let props = { category: name, entityKey: entityKey };
+    const entityKey = "MEMBER" as EntityURLKey;
+    const props = { category: name, entityKey: entityKey };
     handleOpenDialog(props, isDialogOpen.value, lookUpEntityTypes, entityKey);
   }
 
@@ -154,11 +156,12 @@
   function handleAuthDialog(tabValue: string) {
     isLoading.value = true;
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
-      componentProps: {
-        tabValue: tabValue,
-        callback: fetchTransactionData
-      }
+      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue"))
+      // component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
+      // componentProps: {
+      //   mode: tabValue,
+      //   callback: fetchTransactionData
+      // }
     });
   }
 

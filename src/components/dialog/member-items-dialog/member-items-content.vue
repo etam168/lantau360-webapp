@@ -56,6 +56,8 @@
   const historyItems = ref<Transaction[]>([]);
   const recentItems = ref<Transaction[]>([]);
 
+  const entityData = ref<Record<string, any>>({});
+
   const groupBykey = computed<string | null>(() => {
     switch (entityKey) {
       case "TRANSACTION":
@@ -124,14 +126,19 @@
 
         case "TRANSACTION":
           // Fetch data from two different APIs concurrently
-          const [history, recent] = await Promise.all([
+          const [history, recent, mem] = await Promise.all([
             fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
-            fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${member.memberId}`)
+            fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${member.memberId}`),
+            fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${member.memberId}`)
           ]);
 
           historyItems.value = history;
           recentItems.value = recent;
           memberItems.value = [...recent, ...history];
+
+          entityData.value.history = history;
+          entityData.value.recent = recent;
+          entityData.value.member = mem;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
