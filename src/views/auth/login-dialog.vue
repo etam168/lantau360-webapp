@@ -29,40 +29,27 @@
               v-if="$q.screen.gt.xs"
             />
 
-            <q-card-section align="center" class="q-pa-none">
-              <!-- Move the avatar to the center -->
-              <div class="q-mb-md text-h6 q-gutter-md">
-                <q-avatar size="128px" square>
-                  <q-img :src="IMAGES.LOGO" />
-                </q-avatar>
-              </div>
-            </q-card-section>
-
-            <q-tabs v-model="tab" class="text-transparent hidden">
-              <q-tab name="login" />
-              <q-tab name="register" />
-            </q-tabs>
-
-            <q-tab-panels v-model="tab" animated class="q-pa-none">
-              <q-tab-panel name="login" class="q-pa-none">
-                <Login
-                  @close-dialog="closeDialog"
-                  @on-register="showRegister"
-                  @on-forgot-password="handleForgotPassword"
-                  @on-login-success="onLoginSuccess"
-                />
-              </q-tab-panel>
-              <q-tab-panel name="register" class="q-pa-none">
-                <Register @close-dialog="closeDialog" @on-login="showlogin" />
-              </q-tab-panel>
-              <q-tab-panel class="q-pa-none" name="reset">
-                <ResetPassword
-                  @close-dialog="closeDialog"
-                  @on-login="showlogin"
-                  :email="userName"
-                />
-              </q-tab-panel>
-            </q-tab-panels>
+            <template v-for="(item, index) in renderItems" :key="index">
+              <auth-avatar v-if="item.type === 'avatar'" />
+              <login
+                v-if="item.type === 'login'"
+                @close-dialog="closeDialog"
+                @on-register="showRegister"
+                @on-forgot-password="handleForgotPassword"
+                @on-login-success="onLoginSuccess"
+              />
+              <register
+                v-if="item.type === 'register'"
+                @close-dialog="closeDialog"
+                @on-login="showLogin"
+              />
+              <reset-password
+                v-if="item.type === 'reset'"
+                @close-dialog="closeDialog"
+                @on-login="showLogin"
+                :email="userName"
+              />
+            </template>
           </q-card>
         </q-page>
       </q-page-container>
@@ -76,61 +63,63 @@
   import Login from "./login.vue";
   import Register from "./register-tab.vue";
   import ResetPassword from "./reset-password-tab.vue";
+  import AuthAvatar from "./auth-avatar.vue";
 
-  import { IMAGES } from "@/constants";
-  const props = defineProps({
-    tabValue: {
-      type: String,
-      default: "login"
-    },
-    callback: {
-      type: Function,
-      default: null
-    }
-  });
+  // Props
+  const { tabValue = "login", callback = null } = defineProps<{
+    tabValue?: string;
+    callback?: (() => void) | null;
+  }>();
 
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const { eventBus } = useUtilities();
 
   const $q = useQuasar();
-  const isDialogVisible = ref();
-  const tab = ref(props.tabValue);
-  const userName = ref();
+  const isDialogVisible = ref(false);
+  const currentTab = ref(tabValue);
+  const userName = ref("");
+
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "90%" }
   );
 
-  function updateDialogState(status: any) {
+  const renderItems = computed(() => {
+    switch (currentTab.value) {
+      case "login":
+        return [{ type: "avatar" }, { type: "login" }];
+      case "register":
+        return [{ type: "avatar" }, { type: "register" }];
+      case "reset":
+        return [{ type: "avatar" }, { type: "reset" }];
+        break;
+    }
+  });
+
+  function updateDialogState(status: boolean) {
     isDialogVisible.value = status;
   }
-  const closeDialog = () => {
+
+  function closeDialog() {
     setTimeout(() => {
       onDialogCancel();
     }, 1200);
-  };
+  }
 
   function onLoginSuccess() {
     eventBus.emit("on-login-success");
-    if (props.callback != null) props.callback();
+    if (callback) callback();
   }
 
   function showRegister() {
-    tab.value = "register";
+    currentTab.value = "register";
   }
 
-  function showlogin() {
-    tab.value = "login";
+  function showLogin() {
+    currentTab.value = "login";
   }
 
-  function handleForgotPassword(value: any) {
+  function handleForgotPassword(value: string) {
     userName.value = value;
-    tab.value = "reset";
+    currentTab.value = "reset";
   }
 </script>
-
-<style scoped>
-  .q-tab {
-    cursor: default !important;
-    pointer-events: none;
-  }
-</style>
