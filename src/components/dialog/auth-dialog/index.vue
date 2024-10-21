@@ -38,21 +38,33 @@
               v-slot="{ meta, values }"
             >
               <template v-for="(item, index) in renderItems" :key="index">
+                <auth-avatar v-if="item.type === 'avatar'" />
+
                 <vee-input-password
                   v-if="item.type === 'password'"
-                  name="item.name"
+                  :name="item.name"
                   :label="$t('auth.login.password')"
                 />
 
                 <app-button
                   v-if="item.type === 'submit'"
                   class="full-width"
+                  color="primary"
                   :label="item.label"
                   type="submit"
                 />
 
-                <vee-input v-else :name="item.name" :label="item.label" />
+                <app-button-flat
+                  v-if="item.type === 'flatButton'"
+                  :label="item.label"
+                  @click="handleClick(item.name)"
+                />
+
+                <vee-q-tel-input v-if="item.type === 'phone'" :name="item.name" defaultIso="HK" />
+
+                <vee-input v-if="item.type === 'input'" :name="item.name" :label="item.label" />
               </template>
+              <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
             </Form>
           </q-card>
         </q-page>
@@ -62,14 +74,16 @@
 </template>
 
 <script setup lang="ts">
-  import { fasXmark, fasUser } from "@quasar/extras/fontawesome-v6";
+  import { fasXmark } from "@quasar/extras/fontawesome-v6";
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
   import { Form } from "vee-validate";
+  import  { AxiosError } from "axios";
 
   // .ts files
-  import { useUserStore } from "@/stores/user";
   import { SubField } from "@/interfaces/types/form-structure-types";
+
+  import AuthAvatar from "./auth-avatar.vue";
 
   // Props
   const { mode = "login" } = defineProps<{
@@ -80,20 +94,26 @@
 
   const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
 
+  const { loginRequest, registerRequest } = useAuthService();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-  const userStore = useUserStore();
   const { t } = i18n.global;
   const $q = useQuasar();
   const { notify } = useUtilities();
   const isDialogVisible = ref(false);
 
   const form = ref();
+  const loading = ref(false);
   const resendEmaiLoading = ref(false);
+  const message = ref("");
   const i18nKey = "auth";
+  const error = ref(false);
 
   const initialValues = ref({
     userName: "",
-    password: ""
+    password: "",
+    firstName: "",
+    lastName: "",
+    phone: ""
   });
 
   const schema = yup.object({
@@ -123,16 +143,17 @@
       switch (renderMode.value) {
         case "register":
           return [
-            // { name: "avatar", type: "avatar" },
-            { name: "email", type: "input" },
+            { name: "avatar", type: "avatar" },
+            { name: "userName", type: "input" },
             { name: "firstName", type: "input" },
             { name: "lastName", type: "input" },
+            { name: "phone", type: "phone" },
             { name: "password", type: "password" },
             { name: "register", type: "submit" }
           ];
         case "reset":
           return [
-            // { name: "avatar", type: "avatar" },
+            { name: "avatar", type: "avatar" },
             { name: "otp", type: "input" },
             { name: "password", type: "password" },
             { name: "resetPassword", type: "submit" }
@@ -140,11 +161,11 @@
         default:
           // Default is login
           return [
-            // { name: "avatar", type: "avatar" },
+            { name: "avatar", type: "avatar" },
             { name: "userName", type: "input" },
             { name: "password", type: "password" },
             { name: "signIn", type: "submit" },
-            { name: "toReset", type: "flatButton" }
+            { name: "forgetPassword", type: "flatButton" }
           ];
       }
     };
@@ -171,26 +192,40 @@
     }
 
     form.value.validate().then(async (isValid: any) => {
-      // if (isValid) {
-      //   loading.value = true;
-      //   error.value = false;
-      //   await axios
-      //     .post("/MemberAuth/SignIn", { login: values.userName, password: values.password })
-      //     .then(async response => {
-      //       userStore.SetUserInfo(response.data);
-      //       notify(t("auth.login.successFulLoginMessage"), "positive");
-      //       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      //       emits("close-dialog");
-      //       emits("on-login-success");
-      //     })
-      //     .catch(err => {
-      //       handleAxiosError(err as any);
-      //       error.value = true;
-      //       loading.value = false;
-      //     });
-      // }
+      if (isValid) {
+        loading.value = true;
+        error.value = false;
+
+        if (renderMode.value == "login") {
+          try {
+            await loginRequest(values.userName, values.password);
+            closeDialog();
+          } catch {}
+        } else if (renderMode.value == "register") {
+          try {
+            await registerRequest(values);
+            closeDialog();
+          } catch {}
+        }
+      }
     });
   }
+  function handleClick(itemName: string) {
+    renderMode.value = "reset";
+  }
+
+  const handleAxiosError = (err: AxiosError) => {
+    if (err.response) {
+      const { data } = err.response;
+      if (data === "email_not_verified") {
+        // shoulShowResendButton.value = true;
+      }
+      message.value = messages[data as string] || messages.email_send_failed;
+    } else {
+      message.value = messages.email_send_failed;
+      error.value = true;
+    }
+  };
 </script>
 
 <style scoped>

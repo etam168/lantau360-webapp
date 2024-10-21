@@ -156,7 +156,10 @@
   function handleAuthDialog(tabValue: string) {
     isLoading.value = true;
     $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue"))
+      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue")),
+      componentProps: {
+        mode: tabValue
+      }
       // component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
       // componentProps: {
       //   mode: tabValue,

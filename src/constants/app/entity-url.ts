@@ -27,7 +27,9 @@ export const ENTITY_URL = {
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
-  WEATHER: `/Weather`
+  WEATHER: `/Weather`,
+  SIGN_IN: "/MemberAuth/SignIn",
+  SIGN_UP: "/MemberAuth/SignUp",
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;
