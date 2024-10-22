@@ -54,6 +54,7 @@
   }>();
 
   const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
+  const { handleOpenDialog } = useEntityDataHandlingService();
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { notify } = useUtilities();
@@ -112,7 +113,9 @@
     try {
       const [memberConfigRes, checkInDataRes] = await Promise.all([
         fetchData<Content>(URL.MEMBER_CONFIG),
-        fetchData<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`)
+        fetchData<CheckIn>(
+          `${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`
+        )
       ]);
 
       memberConfig.value = memberConfigRes;
@@ -121,39 +124,39 @@
       console.error("Error fetching data:", error);
       throw error;
     }
-  };
-
-  async function PerformCheckIn() {
-    await checkRecentCheckInStatus();
-
-    if (timeUntilNextCheckIn.value > 0) {
-        $q.notify({
-            message: `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
-            color: "primary",
-            multiLine: true
-        });
-        return; // Exit if the user can't check in yet
-    }
-
-    await getDistanceToDestination();
-    if (distanceToDestination.value > 100) {
-      $q.notify({
-        message: "You must be under 100 meters of location for checkin",
-        color: "primary",
-        multiLine: true
-      });
-    } else {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/check-in-items-dialog/index.vue")
-        ),
-        componentProps: {
-          category: category,
-          entityKey: entityKey
-        }
-      });
-    }
   }
+
+  // async function PerformCheckIn() {
+  //   await checkRecentCheckInStatus();
+
+  //   if (timeUntilNextCheckIn.value > 0) {
+  //     $q.notify({
+  //       message: `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
+  //       color: "primary",
+  //       multiLine: true
+  //     });
+  //     return; // Exit if the user can't check in yet
+  //   }
+
+  //   await getDistanceToDestination();
+  //   if (distanceToDestination.value > 100) {
+  //     $q.notify({
+  //       message: "You must be under 100 meters of location for checkin",
+  //       color: "primary",
+  //       multiLine: true
+  //     });
+  //   } else {
+  //     $q.dialog({
+  //       component: defineAsyncComponent(
+  //         () => import("@/components/dialog/check-in-items-dialog/index.vue")
+  //       ),
+  //       componentProps: {
+  //         category: category,
+  //         entityKey: entityKey
+  //       }
+  //     });
+  //   }
+  // }
 
   async function getDistanceToDestination() {
     const { latitude: siteLatitude, longitude: siteLongitude } = category;
@@ -174,7 +177,9 @@
       const configTimeDifferenceInHours = config?.value.meta?.checkInTimeDifferenceInHours ?? 1;
       const configTimeDifferenceInMinutes = configTimeDifferenceInHours * 60;
 
-      const checkInModifiedAt = checkIn?.value.modifiedAt ? new Date(checkIn.value.modifiedAt).getTime() : 0;
+      const checkInModifiedAt = checkIn?.value.modifiedAt
+        ? new Date(checkIn.value.modifiedAt).getTime()
+        : 0;
       const currentTime = new Date().getTime();
       const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
       const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
@@ -186,8 +191,7 @@
       } else {
         timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
       }
-    } catch (err) {
-    }
+    } catch (err) {}
   }
 
   const openCheckInDialog = () => {
@@ -196,7 +200,8 @@
 
     switch (isLoggedIn) {
       case true:
-        PerformCheckIn();
+        // PerformCheckIn();
+        handleCheckIn();
         break;
 
       case false:
@@ -306,6 +311,23 @@
       notify(t("errors.mapLinkNotAvailable"), "negative");
     }
   };
+
+  function handleCheckIn() {
+    alert("YESSSS!!!!!");
+    const isDialogOpen = ref(false);
+    const props = { entityKey: entityKey };
+
+    handleOpenDialog(props, isDialogOpen.value, ["CHECKIN"], "CHECKIN");
+    // $q.dialog({
+    //   component: defineAsyncComponent(
+    //     () => import("@/components/dialog/check-in-items-dialog/index.vue")
+    //   ),
+    //   componentProps: {
+    //     category: category,
+    //     entityKey: entityKey
+    //   }
+    // });
+  }
 
   function getSiteTemplate() {
     switch (category?.directoryTemplate) {

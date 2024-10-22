@@ -33,22 +33,7 @@ export function useEntityDataHandlingService() {
     });
   }
 
-  function handleOpenDialog2(isDialogOpen: Boolean, entityKey?: EntityURLKey) {
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
-      ),
-      componentProps: {
-        entityKey: entityKey
-      }
-    }).onDismiss(() => {
-      // Reset dialog state when it is dismissed/closed
-      isDialogOpen = false;
-    });
-  }
-
   return {
-    handleOpenDialog,
-    handleOpenDialog2
+    handleOpenDialog
   };
 }

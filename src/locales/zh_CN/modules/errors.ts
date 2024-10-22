@@ -39,5 +39,6 @@ export default {
   pleaseCheckConnection: "Please check your connection and try again.",
   emailNotVerified: "Email is not verified, please verify it first",
   retry: "Retry",
-  mapLinkNotAvailable: "Map link not available"
+  mapLinkNotAvailable: "Map link not available",
+  photosRemaining: "Photos {count}/{limit} (max) "
 };

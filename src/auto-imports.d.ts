@@ -145,6 +145,8 @@ declare global {
   const useCategoryItemService: typeof import('./composable/services/use-category-item-service')['useCategoryItemService']
   const useCategoryService: typeof import('./composable/services/use-category-item-service')['useCategoryService']
   const useCheckInService: typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']
+  const useCheckinFormContents: typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']
+  const useCheckinFormMapper: typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']
   const useClipboard: typeof import('@vueuse/core')['useClipboard']
   const useClipboardItems: typeof import('@vueuse/core')['useClipboardItems']
   const useCloned: typeof import('@vueuse/core')['useCloned']
@@ -479,6 +481,8 @@ declare module 'vue' {
     readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
     readonly useCategoryItemListFetcherService: UnwrapRef<typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']>
     readonly useCheckInService: UnwrapRef<typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']>
+    readonly useCheckinFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']>
+    readonly useCheckinFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>

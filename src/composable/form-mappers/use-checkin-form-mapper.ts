@@ -1,35 +1,31 @@
 /**
- * @file use-posting-form-mapper.ts
- * @description Composable function for managing Posting form mapping.
+ * @file use-checkin-form-mapper.ts
+ * @description Composable function for managing Checkin form mapping.
  * Provides utilities for initializing form values, preparing entity records,
- * and handling image data for Posting entities. Used in conjunction with
+ * and handling image data for Checkin entities. Used in conjunction with
  * the form-mappers-store for centralized form management.
  */
 
-import type { Posting } from "@/interfaces/models/entities/posting";
-import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-import type { PostingImage } from "@/interfaces/models/entities/posting-image";
+import type { CheckIn } from "@/interfaces/models/entities/checkin";
 import type { EntityFormMappers } from "@/interfaces/stores/entity-form-mappers";
 import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import { NotImplementedException } from "@/helpers/not-implemented-exception";
 
-import { usePostingFormContents } from "./form-contents/use-posting-form-contents";
+import { useCheckinFormContents } from "./form-contents/use-checkin-form-contents";
 import typia from "typia";
 import { CategoryTypes } from "@/interfaces/types/category-types";
 
-export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes> {
+export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes> {
   // Constants and reactive references
   const { resetObject } = useUtilities();
-  const { formStructure } = usePostingFormContents();
+  const { formStructure } = useCheckinFormContents();
 
   /**
    * Creates a new image object for a community event
    */
-  function getEntityImage(entityId: number): GalleryImageType {
-    const newPostingImage: PostingImage = resetObject(typia.random<PostingImage>());
-    const imageData = newPostingImage;
-    imageData.postingId = entityId;
-
-    return imageData;
+  function getEntityImage(_entityId: number): GalleryImageType {
+    console.log(_entityId);
+    throw new NotImplementedException();
   }
 
   /**
@@ -37,8 +33,8 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
    */
   function getDefaultValues(): Record<string, any> {
     return {
-      postingId: 0,
-      postingName: "",
+      checkInId: 0,
+      directoryName: "",
       title: "",
       description: "",
       status: 1,
@@ -75,20 +71,20 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
    * Prepares the entity record for submission by merging form data with existing entity data
    */
   function prepareEntityRecord(
-    entity: Posting | undefined,
+    entity: CheckIn | undefined,
     formData: Record<string, any>
-  ): Posting {
-    const newPosting: Posting = resetObject(typia.random<Posting>());
+  ): CheckIn {
+    const newCheckIn: CheckIn = resetObject(typia.random<CheckIn>());
 
     // If the entity is null, empty, or undefined, create a new record with default values
-    const entityCopy: Posting = entity ? { ...entity } : { ...newPosting };
+    const entityCopy: CheckIn = entity ? { ...entity } : { ...newCheckIn };
 
     // Then, remove extra fields from entityCopy record
-    const prunePosting = typia.misc.createPrune<Posting>();
-    prunePosting(entityCopy);
+    const pruneCheckin = typia.misc.createPrune<CheckIn>();
+    pruneCheckin(entityCopy);
 
     // Define the structure for the result
-    const result: Posting = {
+    const result: CheckIn = {
       ...entityCopy,
       ...Object.fromEntries(
         Object.entries(formData).filter(([key]) => key in entityCopy && key !== "meta")
