@@ -51,6 +51,7 @@ declare module 'vue' {
     VeeInput: typeof import('./components/global/vee-validate/vee-input.vue')['default']
     VeeInputPassword: typeof import('./components/global/vee-validate/vee-input-password.vue')['default']
     VeeInputSlot: typeof import('./components/global/vee-validate/vee-input-slot.vue')['default']
+    VeeOtpInput: typeof import('./components/global/vee-validate/vee-otp-input.vue')['default']
     VeeQTelInput: typeof import('./components/global/vee-validate/vee-q-tel-input.vue')['default']
   }
 }

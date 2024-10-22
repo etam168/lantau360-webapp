@@ -334,6 +334,7 @@
     "useEntityDataHandlingService2": true,
     "useCheckInService": true,
     "useMemberItemDialogService": true,
-    "useAuthService": true
+    "useAuthService": true,
+    "usePostingFormContents": true
   }
 }

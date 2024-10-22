@@ -220,7 +220,7 @@ declare global {
   const useMediaQuery: typeof import('@vueuse/core')['useMediaQuery']
   const useMember: typeof import('./composable/use-member')['useMember']
   const useMemberFormContents: typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']
-  const useMemberFormMapper: typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']
+  const useMemberFormMapper: typeof import('./composable/form-mappers/use-posting-form-mapper')['useMemberFormMapper']
   const useMemberInput: (typeof import("./composable/use-member"))["useMemberInput"]
   const useMemberItemDialogService: typeof import('./composable/services/use-member-item-dialog-service')['useMemberItemDialogService']
   const useMemoize: typeof import('@vueuse/core')['useMemoize']
@@ -246,6 +246,7 @@ declare global {
   const usePointer: typeof import('@vueuse/core')['usePointer']
   const usePointerLock: typeof import('@vueuse/core')['usePointerLock']
   const usePointerSwipe: typeof import('@vueuse/core')['usePointerSwipe']
+  const usePostingFormContents: typeof import('./composable/form-mappers/form-contents/use-posting-form-contents')['usePostingFormContents']
   const usePreferredColorScheme: typeof import('@vueuse/core')['usePreferredColorScheme']
   const usePreferredContrast: typeof import('@vueuse/core')['usePreferredContrast']
   const usePreferredDark: typeof import('@vueuse/core')['usePreferredDark']
@@ -545,7 +546,7 @@ declare module 'vue' {
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
     readonly useMember: UnwrapRef<typeof import('./composable/use-member')['useMember']>
     readonly useMemberFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']>
-    readonly useMemberFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']>
+    readonly useMemberFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-posting-form-mapper')['useMemberFormMapper']>
     readonly useMemberItemDialogService: UnwrapRef<typeof import('./composable/services/use-member-item-dialog-service')['useMemberItemDialogService']>
     readonly useMemoize: UnwrapRef<typeof import('@vueuse/core')['useMemoize']>
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
@@ -570,6 +571,7 @@ declare module 'vue' {
     readonly usePointer: UnwrapRef<typeof import('@vueuse/core')['usePointer']>
     readonly usePointerLock: UnwrapRef<typeof import('@vueuse/core')['usePointerLock']>
     readonly usePointerSwipe: UnwrapRef<typeof import('@vueuse/core')['usePointerSwipe']>
+    readonly usePostingFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-posting-form-contents')['usePostingFormContents']>
     readonly usePreferredColorScheme: UnwrapRef<typeof import('@vueuse/core')['usePreferredColorScheme']>
     readonly usePreferredContrast: UnwrapRef<typeof import('@vueuse/core')['usePreferredContrast']>
     readonly usePreferredDark: UnwrapRef<typeof import('@vueuse/core')['usePreferredDark']>
