@@ -24,7 +24,23 @@ export function useEntityDataHandlingService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
       ),
-      componentProps: props
+      componentProps: {
+        entityKey: entityKey
+      }
+    }).onDismiss(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen = false;
+    });
+  }
+
+  function handleOpenDialog2(isDialogOpen: Boolean, entityKey?: EntityURLKey) {
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+      ),
+      componentProps: {
+        entityKey: entityKey
+      }
     }).onDismiss(() => {
       // Reset dialog state when it is dismissed/closed
       isDialogOpen = false;
@@ -32,6 +48,7 @@ export function useEntityDataHandlingService() {
   }
 
   return {
-    handleOpenDialog
+    handleOpenDialog,
+    handleOpenDialog2
   };
 }

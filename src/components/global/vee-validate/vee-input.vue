@@ -8,8 +8,7 @@
     :dark="false"
     :error="!!errorMessage"
     :error-message="errorMessage"
-    :autogrow="autoGrow"
-    :maxlength="maxLenght"
+    :autogrow="inputType == 'textarea' ? undefined : autoGrow"
     :counter="counter"
     :disable="disable"
     :type="inputType"
@@ -21,27 +20,31 @@
 </template>
 
 <script setup lang="ts">
-  import { QInputProps } from "quasar";
   import { useField } from "vee-validate";
 
-  const {
-    name,
-    autoGrow,
-    maxLenght,
-    counter,
-    disable,
-    inputType = "text"
-  } = defineProps<{
-    name: string;
-    autoGrow?: boolean;
-    maxLenght?: number;
-    counter?: boolean;
-    disable?: boolean;
-    inputType?: QInputProps["type"];
-  }>();
+  const props = defineProps({
+    name: {
+      type: String,
+      required: true
+    },
+    autoGrow: {
+      type: Boolean,
+      default: true
+    },
+    counter: {
+      type: Boolean,
+      default: false
+    },
+    disable: {
+      type: Boolean,
+      default: false
+    },
+    inputType: {
+      type: String as PropType<any> | undefined,
+      default: "text"
+    }
+  });
 
-  const fieldName = computed(() => name);
-  const { errorMessage, value: untypedValue } = useField(fieldName);
-
+  const { errorMessage, value: untypedValue } = useField(() => props.name);
   const value = untypedValue as Ref<string | number | null>;
 </script>

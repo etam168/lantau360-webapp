@@ -26,9 +26,17 @@ export function usePostingFormContents() {
         fields: [
           // { name: "galleryImages", subFields: [{ name: "galleryImages", type: "avatar" }] },
           {
-            name: "name",
-            subFields: [{ name: "postingName", maxlength: 25 }]
+            name: "galleryImages",
+            subFields: [{ name: "galleryImages", type: "gallery" }]
           },
+          {
+            name: "title",
+            subFields: [{ name: "title", maxlength: 25 }]
+          },
+          {
+            name: "description",
+            subFields: [{ name: "description", maxlength: 25, type: "textarea" }]
+          }
         ]
       }
     ].map(section => ({

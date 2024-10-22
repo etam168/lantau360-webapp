@@ -335,6 +335,8 @@
     "useCheckInService": true,
     "useMemberItemDialogService": true,
     "useAuthService": true,
-    "usePostingFormContents": true
+    "usePostingFormContents": true,
+    "usePostingFormMapper": true,
+    "useImageFunctions": true
   }
 }

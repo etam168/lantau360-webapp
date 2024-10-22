@@ -8,22 +8,17 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
+      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.create`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
         <!-- <pre>{{ category }}</pre> -->
-        <!-- <app-dialog-title>{{ category.title }}</app-dialog-title> -->
-        <div>Title</div>
+        <app-dialog-title>{{ $t(`${entityName}.dialog.create`) }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <input-dialog-content
-              :entity-key
-              :initializationData
-              @close-dialog="handleCloseDialog"
-            />
+            <input-dialog-content :entity-key @close-dialog="handleCloseDialog" />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -43,9 +38,6 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
@@ -60,19 +52,18 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { entityKey, previewComponent, initializationData } = defineProps<{
+  const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
-    previewComponent?: Component;
-    initializationData?: CategoryTypes;
   }>();
 
   // Composable function calls
-  const { translate, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
+  const { getEntityName } = useUtilities();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
+  const entityName = getEntityName(entityKey);
 
   /**
    * Handles the closing of the dialog

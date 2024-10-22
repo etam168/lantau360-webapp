@@ -6,7 +6,6 @@
       v-model:row="rowData"
       :entityKey="entityKey"
       :entityOptions="entityOptions"
-      :initializationData
       @close-dialog="$emit('close-dialog', $event)"
       @after-entity-created="onAfterEntityCreated"
     />
@@ -16,7 +15,6 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { EntityType } from "@/interfaces/types/entity-type";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
@@ -34,15 +32,14 @@
   const emit = defineEmits(["close-dialog"]);
 
   // Props
-  const { entityKey, previewComponent } = defineProps<{
+  const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
-    previewComponent?: Component;
   }>();
 
-  const supportedEntityTypes = ["MEMBER","POSTING"];
+  const supportedEntityTypes = ["MEMBER", "POSTING"];
 
   // Composable function calls
-  const { eventBus, getEntityId, getEntityName, getImageUrlKey, notify } = useUtilities();
+  const { getEntityName, getImageUrlKey } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
   const { fetchData } = useApi();
@@ -91,29 +88,7 @@
     MEMBER: newMemberImage
   };
 
-  async function onAfterEntityCreated(payload: Record<string, any>) {
-    // switch (entityKey) {
-    //   case "ADVERTISEMENT":
-    //   case "BUSINESS":
-    //   case "BUSINESS_PROMOTION":
-    //   case "BUSINESS_VOUCHER":
-    //   case "COMMUNITY_EVENT":
-    //   case "COMMUNITY_NEWS":
-    //   case "COMMUNITY_NOTICE":
-    //   case "SITE":
-    //   case "STAFF":
-    //     const entityId = getEntityId(payload.entityCreated as Record<string, any>, entityName);
-    //     const newImage = newImageMap[entityKey as keyof typeof newImageMap];
-    //     // Dynamically assign the entityId to the appropriate property of newImage
-    //     const assignedEntityId = `${entityName}Id`;
-    //     (newImage as any)[assignedEntityId] = entityId;
-    //     await updateGalleryImages(payload.formData.galleryImages, newImage, entityId);
-    //     break;
-    // }
-    // emit("close-dialog");
-    // notify(t(`${entityName}.message.createSuccess`), "positive");
-    // eventBus("LoadData").emit();
-  }
+  async function onAfterEntityCreated(payload: Record<string, any>) {}
 
   /**
    * Fetch data as part of the setup

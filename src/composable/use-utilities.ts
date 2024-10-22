@@ -25,7 +25,6 @@ import { ImageURLKey } from "@/constants/app/image-url";
 const eventBus = new EventBus();
 // const eventBus = (key: string) => useEventBus<any>(key);
 
-
 export function useUtilities() {
   const { t } = i18n.global;
   const isSmallScreen = computed(() => Screen.lt.sm);
@@ -45,7 +44,7 @@ export function useUtilities() {
         return 2 / 1;
     }
   }
-  
+
   function getEntityId(row: Record<string, any>, entityName: string): number {
     return row[`${entityName}Id`] as number;
   }

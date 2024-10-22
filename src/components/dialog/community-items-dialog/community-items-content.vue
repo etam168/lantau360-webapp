@@ -72,7 +72,7 @@
   const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { handleOpenDialog } = useEntityDataHandlingService();
+  const { handleOpenDialog, handleOpenDialog2 } = useEntityDataHandlingService();
 
   const $q = useQuasar();
   const isDialogOpen = ref(false);

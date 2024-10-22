@@ -1,4 +1,5 @@
 export default {
+  addPhoto: "添加照片",
   createDirectory: "创建 {directoryName}",
   cancel: "Cancel",
   close: "关闭",

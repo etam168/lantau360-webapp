@@ -59,9 +59,9 @@ export default {
     rank: "Rank"
   },
 
-  dialoge: {
+  dialog: {
     edit: "Edit Post Dialogue",
-    create: "Create Post Dialogue",
+    create: "Create Posting",
     save: "Save"
   },
   message: {

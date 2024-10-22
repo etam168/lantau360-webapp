@@ -1,4 +1,5 @@
 export default {
+  addPhoto: "Add Photo",
   createDirectory: "Create {directoryName}",
   cancel: "Cancel",
   close: "Close",
