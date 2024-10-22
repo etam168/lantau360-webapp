@@ -1,7 +1,7 @@
 <!-- member-items-content.vue -->
 <template>
   <q-card>
-    <member-points v-if="points" />
+    <member-points @top-up-points="handleTopUpPoints" />
 
     <template v-if="groupBykey">
       <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
@@ -56,6 +56,7 @@
   const historyItems = ref<Transaction[]>([]);
   const recentItems = ref<Transaction[]>([]);
 
+  const $q = useQuasar();
   const entityData = ref<Record<string, any>>({});
 
   const groupBykey = computed<string | null>(() => {
@@ -112,6 +113,15 @@
 
   async function handleDetail(item: any) {
     openCategoryDetailDialog(item);
+  }
+
+  function handleTopUpPoints() {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/top-up-detail-dialog/index.vue")
+      ),
+      componentProps: { entityKey: entityKey }
+    });
   }
 
   const addField = (transactions: any[], type: string) =>

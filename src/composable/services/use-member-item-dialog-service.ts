@@ -5,8 +5,14 @@ import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 
 export function useMemberItemDialogService() {
-  async function openMemberItemDialog(isDialogOpen: Ref<Boolean>, member: Member,entityKey: EntityURLKey) {
+  async function openMemberItemDialog(
+    isDialogOpen: Ref<Boolean>,
+    member: Member,
+    entityKey: EntityURLKey
+  ) {
     if (isDialogOpen.value) return;
+
+    alert(JSON.stringify(member));
 
     isDialogOpen.value = true;
     Dialog.create({
@@ -25,8 +31,7 @@ export function useMemberItemDialogService() {
       });
   }
 
-
   return {
-    openMemberItemDialog,
+    openMemberItemDialog
   };
 }

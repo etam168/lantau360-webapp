@@ -20,9 +20,13 @@
       </div>
 
       <!-- Top-up Points Button -->
-      <q-btn dense rounded class="text-primary bg-grey-1 text-caption q-px-md">{{
-        $t("more.profileSetting.buyPoints")
-      }}</q-btn>
+      <q-btn
+        dense
+        rounded
+        class="text-primary bg-grey-1 text-caption q-px-md"
+        @click="handleTopUpPoints"
+        >{{ $t("more.profileSetting.buyPoints") }}</q-btn
+      >
     </q-card-section>
   </q-card>
 </template>
@@ -32,7 +36,7 @@
 
   const emit = defineEmits(["top-up-points"]);
 
-  const emitCloseEvent = () => {
+  const handleTopUpPoints = () => {
     emit("top-up-points");
   };
 </script>
