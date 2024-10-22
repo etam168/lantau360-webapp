@@ -60,12 +60,15 @@
   import { AREA_NAME, EntityURLKey, NONE } from "@/constants";
   import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
+  import { useUserStore } from "@/stores/user";
+
   // Props
   const { directory, entityKey } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 
+  const userStore = useUserStore();
   const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
@@ -136,10 +139,35 @@
   }
 
   function createPosting() {
-    // To be implemented
-    const entityKey = "POSTING" as EntityURLKey;
-    const props = { entityKey: entityKey };
-    handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
+    if (userStore.isUserLogon()) {
+      // To be implemented
+      const entityKey = "POSTING" as EntityURLKey;
+      const props = { entityKey: entityKey };
+      handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
+    } else {
+      $q.notify({
+        message: "Please login first to check in.",
+        color: "negative",
+        position: "center",
+        actions: [
+          {
+            label: "Login",
+            color: "white bg-primary",
+            handler: () => {
+              $q.dialog({
+                component: defineAsyncComponent(
+                  () => import("@/components/dialog/auth-dialog/index.vue")
+                ),
+                componentProps: {
+                  mode: "login"
+                }
+              });
+            }
+          }
+        ],
+        timeout: Math.random() * 100000
+      });
+    }
   }
 
   async function handleDetail(item: any) {
