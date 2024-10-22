@@ -24,11 +24,17 @@
 
 <script setup lang="ts">
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
+  import { useGeolocation } from "@vueuse/core";
+  import * as geolib from "geolib";
+
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { useUserStore } from "@/stores/user";
+  import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { Content } from "@/interfaces/models/entities/content";
+
   // .ts files
   import { EntityURLKey, TEMPLATE, URL, RENDERER } from "@/constants";
 
@@ -47,10 +53,17 @@
     entityKey: EntityURLKey;
   }>();
 
+  const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { notify } = useUtilities();
   const userStore = useUserStore();
+  const { fetchData } = useApi();
+
+  const memberConfig = ref();
+  const checkInData = ref();
+  const distanceToDestination = ref(0);
+  const timeUntilNextCheckIn = ref();
 
   const galleryItems = ref<GalleryImageType[]>([]);
 
@@ -59,6 +72,7 @@
       switch (entityKey) {
         case "SITE":
           await loadData(`${URL.SITE_GALLERY}/${(category as SiteView).siteId}`);
+          await loadMemberCheckInDetail();
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
@@ -94,16 +108,87 @@
     }
   }
 
-  // const openCheckInDialog = () => {
-  //   $q.dialog({
-  //     component: defineAsyncComponent(
-  //       () => import("@/components/dialog/check-in-items-dialog/index.vue")
-  //     ),
-  //     componentProps: {
-  //       item: category
-  //     }
-  //   });
-  // };
+  async function loadMemberCheckInDetail() {
+    try {
+      const [memberConfigRes, checkInDataRes] = await Promise.all([
+        fetchData<Content>(URL.MEMBER_CONFIG),
+        fetchData<CheckIn>(`${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`)
+      ]);
+
+      memberConfig.value = memberConfigRes;
+      checkInData.value = checkInDataRes;
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  };
+
+  async function PerformCheckIn() {
+    await checkRecentCheckInStatus();
+
+    if (timeUntilNextCheckIn.value > 0) {
+        $q.notify({
+            message: `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
+            color: "primary",
+            multiLine: true
+        });
+        return; // Exit if the user can't check in yet
+    }
+
+    await getDistanceToDestination();
+    if (distanceToDestination.value > 100) {
+      $q.notify({
+        message: "You must be under 100 meters of location for checkin",
+        color: "primary",
+        multiLine: true
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/check-in-items-dialog/index.vue")
+        ),
+        componentProps: {
+          category: category,
+          entityKey: entityKey
+        }
+      });
+    }
+  }
+
+  async function getDistanceToDestination() {
+    const { latitude: siteLatitude, longitude: siteLongitude } = category;
+    const sourceCoords = {
+      latitude: userLocation.value.latitude,
+      longitude: userLocation.value.longitude
+    };
+    const destinationCoords = { latitude: siteLatitude, longitude: siteLongitude };
+
+    distanceToDestination.value = await geolib.getDistance(sourceCoords, destinationCoords);
+  }
+
+  async function checkRecentCheckInStatus() {
+    try {
+      const config = memberConfig;
+      const checkIn = checkInData;
+
+      const configTimeDifferenceInHours = config?.value.meta?.checkInTimeDifferenceInHours ?? 1;
+      const configTimeDifferenceInMinutes = configTimeDifferenceInHours * 60;
+
+      const checkInModifiedAt = checkIn?.value.modifiedAt ? new Date(checkIn.value.modifiedAt).getTime() : 0;
+      const currentTime = new Date().getTime();
+      const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
+      const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
+
+      const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
+
+      if (minutesLeftToRecheckIn >= 0) {
+        timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
+      } else {
+        timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
+      }
+    } catch (err) {
+    }
+  }
 
   const openCheckInDialog = () => {
     // Check if the user is logged in
@@ -111,15 +196,7 @@
 
     switch (isLoggedIn) {
       case true:
-        // Open the check-in dialog if the user is logged in
-        $q.dialog({
-          component: defineAsyncComponent(
-            () => import("@/components/dialog/check-in-items-dialog/index.vue")
-          ),
-          componentProps: {
-            item: category
-          }
-        });
+        PerformCheckIn();
         break;
 
       case false:

@@ -18,7 +18,7 @@
             <!-- Main edit dialog content -->
             <q-page>
               <!-- Content here -->
-              <checkin-items-content :item="item" @on-cancel="handleCancel" />
+              <checkin-items-content :category :entityKey @on-cancel="handleCancel" />
             </q-page>
           </template>
 
@@ -39,13 +39,13 @@
   import { useDialogPluginComponent } from "quasar";
 
   import CheckinItemsContent from "./check-in-items-content.vue";
+  import { EntityURLKey } from "@/constants";
 
-  defineProps({
-    item: {
-      type: Object as PropType<CategoryTypes>,
-      required: true
-    }
-  });
+  // Props
+  const { category, entityKey } = defineProps<{
+    category: CategoryTypes;
+    entityKey: EntityURLKey;
+  }>();
   const { eventBus } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
   const isDialogVisible = ref();
