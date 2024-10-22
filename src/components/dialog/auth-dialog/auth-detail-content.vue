@@ -23,9 +23,6 @@
         @submit="onSubmit"
         v-slot="{ meta, values }"
       >
-        <div>{{ setFormValues(values) }}</div>
-
-        {{ renderItems }}
         <template v-for="(item, index) in renderItems" :key="index">
           <app-auth-avatar v-if="item.type === 'avatar'" />
 
@@ -50,7 +47,7 @@
           />
 
           <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" defaultIso="HK" />
-
+          <vee-otp-input v-if="item.type === 'otp'" :name="item.name" :label="item.label" />
           <vee-input v-else-if="item.type === 'input'" :name="item.name" :label="item.label" />
         </template>
         <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
@@ -141,7 +138,7 @@
         case "reset":
           return [
             { name: "avatar", type: "avatar" },
-            { name: "otp", type: "input" },
+            { name: "otp", type: "otp" },
             { name: "password", type: "password" },
             { name: "resetPassword", type: "submit" }
           ];
@@ -163,9 +160,6 @@
     }));
   });
 
-  function setFormValues(values: any) {
-    userName.value = values.userName;
-  }
 
   function updateDialogState(status: boolean) {
     isDialogVisible.value = status;
@@ -208,22 +202,23 @@
     });
   }
   async function handleClick(itemName: string) {
-    renderMode.value = "reset";
-    form.value.resetForm({ values: initialValues.value });
-    if (userName.value == "") {
-      error.value = true;
-      message.value = messages.username_required;
-      return;
+    if (itemName == "forgetPassword") {
+     userName.value = form.value.values.userName;
+      if (userName.value == "") {
+        error.value = true;
+        message.value = messages.username_required;
+      } else {
+        error.value = false;
+        //Call api and on succeed change rendermode
+        try {
+          await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
+          notify(t("auth.forgotPassword.otpMessage"), "positive");
+          renderMode.value = "reset";
+        } catch (e: any) {
+          notify(e.message, "negative");
+        }
+      }
     }
-    try {
-      loading.value = true;
-      await axios.post(`/MemberAuth/SendOtp/${userName.value}`);
-      // emits("on-forgotPassword", userName.value);
-      notify(t("auth.forgotPassword.otpMessage"), "positive");
-    } catch (e: any) {
-      notify(e.message, "negative");
-    }
-    // loading.value = false;
   }
 </script>
 
