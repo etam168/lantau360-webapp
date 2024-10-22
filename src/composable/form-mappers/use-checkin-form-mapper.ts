@@ -21,7 +21,7 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
   const { formStructure } = useCheckinFormContents();
 
   /**
-   * Creates a new image object for a community event
+   * Creates a new image object for a checkin
    */
   function getEntityImage(_entityId: number): GalleryImageType {
     console.log(_entityId);
@@ -29,7 +29,7 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
   }
 
   /**
-   * Returns the default values for a new CommunityEvent
+   * Returns the default values for a new Checkin
    */
   function getDefaultValues(): Record<string, any> {
     return {

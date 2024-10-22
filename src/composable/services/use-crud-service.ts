@@ -23,6 +23,7 @@ export function useCrudService<T extends EntityType>(entityUrlKey: EntityURLKey)
   }
 
   async function createEntity(payload: T): Promise<T> {
+    alert("PAYLOAD " + JSON.stringify(payload));
     try {
       const response = await api.create<T>(entityUrl, payload);
       return response.data;

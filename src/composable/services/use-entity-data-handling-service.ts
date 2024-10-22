@@ -25,7 +25,8 @@ export function useEntityDataHandlingService() {
         () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
       ),
       componentProps: {
-        entityKey: entityKey
+        entityKey: entityKey,
+        data: props
       }
     }).onDismiss(() => {
       // Reset dialog state when it is dismissed/closed

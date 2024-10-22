@@ -1,6 +1,7 @@
 import action from "./modules/action";
 import auth from "./modules/auth";
 import business from "./modules/business";
+import checkin from "./modules/checkin";
 import community from "./modules/community";
 import errors from "./modules/errors";
 import favourite from "./modules/favourite";
@@ -14,6 +15,7 @@ export default {
   action,
   auth,
   business,
+  checkin,
   community,
   errors,
   favourite,

@@ -16,7 +16,6 @@
 <script setup lang="ts">
   // Type imports
   import type { EntityType } from "@/interfaces/types/entity-type";
-  import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
   // Component imports
   import GenericEntityCreateForm from "@/components/forms/generic-entity-create-form.vue";
@@ -36,7 +35,7 @@
     entityKey: EntityURLKey;
   }>();
 
-  const supportedEntityTypes = ["MEMBER", "POSTING"];
+  const supportedEntityTypes = ["MEMBER", "POSTING", "CHECKIN"];
 
   // Composable function calls
   const { getEntityName, getImageUrlKey } = useUtilities();
@@ -49,7 +48,7 @@
 
   // Property Listing Service Composable
   // const { fetchBusiness, fetchSiteOrBusiness } = useEntityOptionsFetcherService();
-  const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
+  // const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
 
   // Reactive variables
   const splitterModel = ref(INPUT_PANE_WIDTH);
@@ -71,10 +70,10 @@
           const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
           initializationData.value = memberData;
           break;
+        case "CHECKIN":
         case "POSTING":
           entityOptions.value.galleryImages = [];
           break;
-
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }

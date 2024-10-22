@@ -53,39 +53,8 @@
             />
           </template>
 
-          <vee-input-date
-            v-else-if="subField.type === 'date'"
-            :name="subField.name"
-            :label="$t(subField.label as string)"
-          />
-
-          <vee-select
-            v-else-if="subField.type === 'select'"
-            :label="$t(subField.label!)"
-            :name="subField.name"
-            :options="getOptionsForField(subField.name)"
-          />
-
-          <vee-input-date-time
-            v-else-if="subField.type === 'date-time'"
-            :name="subField.name"
-            :label="$t(subField.label as string)"
-          />
-
-          <vee-input-time
-            v-else-if="subField.type === 'time'"
-            :name="subField.name"
-            :label="$t(subField.label as string)"
-          />
-
           <vee-gallery-images
             v-else-if="subField.type === 'gallery'"
-            :name="subField.name"
-            :options="getOptionsForField(subField.name)"
-          />
-
-          <vee-avatar
-            v-else-if="subField.type === 'avatar'"
             :name="subField.name"
             :options="getOptionsForField(subField.name)"
           />
