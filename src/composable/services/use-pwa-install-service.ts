@@ -82,7 +82,7 @@ export function usePwaInstallService() {
 
   async function checkInstalledRelatedApps() {
     debugger;
-    alert("Ds");
+
     if ("getInstalledRelatedApps" in navigator) {
       alert("inside");
 

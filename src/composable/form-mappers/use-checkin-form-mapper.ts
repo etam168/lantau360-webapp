@@ -34,10 +34,9 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
   function getDefaultValues(): Record<string, any> {
     return {
       checkInId: 0,
-      directoryName: "",
-      title: "",
-      description: "",
-      status: 1,
+      memberId: 0,
+      siteId: 0,
+      checkInfo: "",
       meta: {} // Keep this for any other metadata
     };
   }

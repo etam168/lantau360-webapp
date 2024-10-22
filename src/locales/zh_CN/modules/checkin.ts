@@ -60,7 +60,7 @@ export default {
   },
 
   dialog: {
-    edit: "Edit Post Dialogue",
+    edit: "Edit Post",
     create: "Create Posting",
     save: "Save"
   },

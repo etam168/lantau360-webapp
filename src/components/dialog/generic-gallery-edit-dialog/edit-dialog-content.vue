@@ -1,27 +1,17 @@
 <template>
-  <q-card class="bg-transparent" flat>
-    <q-splitter
-      v-model="splitterModel"
-      unit="px"
-      :limits="[INPUT_PANE_WIDTH, INPUT_PANE_WIDTH]"
-      class="bg-transparent"
-      style="height: calc(100vh - 32px)"
-    >
-      <!-- Edit form slot -->
-      <template v-slot:before>
-        <component
-          v-if="supportedEntityTypes.includes(entityKey)"
-          :is="GenericEntityEditForm<EntityType>"
-          v-model:row="rowData"
-          :entityKey="entityKey"
-          :entityOptions="entityOptions"
-          @close-dialog="$emit('close-dialog', $event)"
-          @after-entity-updated="onAfterEntityUpdated"
-        />
-        <div v-else>No matching entity type found.</div>
-      </template>
-      <template v-slot:after><app-description-input :row="rowData" /></template>
-    </q-splitter>
+  <q-card class="bg-transparent" flat style="height: calc(100vh - 32px)">
+    <!-- Edit form slot -->
+
+    <component
+      v-if="supportedEntityTypes.includes(entityKey)"
+      :is="GenericEntityEditForm<EntityType>"
+      v-model:row="rowData"
+      :entityKey="entityKey"
+      :entityOptions="entityOptions"
+      @close-dialog="$emit('close-dialog', $event)"
+      @after-entity-updated="onAfterEntityUpdated"
+    />
+    <div v-else>No matching entity type found.</div>
   </q-card>
 </template>
 
@@ -30,89 +20,64 @@
   // import type { DatatableType } from "@/interfaces/types/datatable-types";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
   import type { EntityType } from "@/interfaces/types/entity-type";
+  // import { newSiteImage } from "@/interfaces/models/entities/comm";
 
   // Component imports
   import GenericEntityEditForm from "@/components/forms/generic-entity-edit-form.vue";
 
-  // Composables imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
-
   // Constant imports
-  import { EntityURLKey, ImageURLKey, INPUT_PANE_WIDTH } from "@/constants";
-  import { newSiteImage } from "@/interfaces/models/entities/member-image";
+  import { ENTITY_URL, EntityURLKey, ImageURLKey, INPUT_PANE_WIDTH } from "@/constants";
 
   // Emits
   const emit = defineEmits(["close-dialog"]);
 
   // Props
   const { row, entityKey } = defineProps<{
-    row: DatatableType;
+    row: any;
     entityKey: EntityURLKey;
   }>();
-
-  import {roleOptions } from "@/constants";
-import { newStaffImage } from "@/interfaces/models/entities/staff-image";
 
   //const entityName = useChangeCase(entityKey, "camelCase").value;
   // const entityId = (row as any)[`${entityName}Id`];
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
 
-  const supportedEntityTypes = [
-    "ADVERTISEMENT",
-    "BUSINESS",
-    "BUSINESS_PROMOTION",
-    "BUSINESS_VOUCHER",
-    "COMMUNITY_EVENT",
-    "COMMUNITY_NEWS",
-    "COMMUNITY_NOTICE",
-    "SITE",
-    "STAFF"
-  ];
+  const supportedEntityTypes = ["POSTING"];
 
   // Composable function calls
   const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
-  const { fetchBusiness, fetchSiteOrBusiness, fetchGalleryImages } =
-    useEntityOptionsFetcherService();
   const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
 
   // Reactive variables
   const splitterModel = ref(INPUT_PANE_WIDTH);
   const rowData = ref({ ...row });
+  const initialization = ref();
+  const { fetchData } = useApi();
   const entityOptions = ref<Record<string, any>>({});
   const entityName = getEntityName(entityKey);
   const entityId = getEntityId(rowData.value, entityName);
 
-  const newImageMap = {
-    ADVERTISEMENT: newAdvertisementImage,
-    BUSINESS: newBusinessImage,
-    BUSINESS_PROMOTION: newBusinessPromotionImage,
-    BUSINESS_VOUCHER: newBusinessVoucherImage,
-    COMMUNITY_EVENT: newCommunityEventImage,
-    COMMUNITY_NEWS: newCommunityNewsImage,
-    COMMUNITY_NOTICE: newCommunityNoticeImage,
-    SITE: newSiteImage,
-    STAFF: newStaffImage
-  };
+  // const newImageMap = {
+  //   POSTING: newSiteImage
+  // };
 
   /**
    * Handles the update of an entity after the edit form is submitted.
    * @param formData - The data submitted from the edit form.
    */
   async function onAfterEntityUpdated(formData: any) {
-    const newImage = newImageMap[entityKey as keyof typeof newImageMap];
-    if (newImage) {
-      const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
-      (newImage as any)[idKey] = entityId;
-      await updateGalleryImages(formData.galleryImages, newImage, entityId);
-    } else {
-      console.warn(`Unsupported entity type: ${entityKey}`);
-    }
-
-    emit("close-dialog");
-    notify(t(`${entityName}.message.updateSuccess`), "positive");
-    eventBus("LoadData").emit();
+    // const newImage = newImageMap[entityKey as keyof typeof newImageMap];
+    // if (newImage) {
+    //   const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
+    //   (newImage as any)[idKey] = entityId;
+    //   await updateGalleryImages(formData.galleryImages, newImage, entityId);
+    // } else {
+    //   console.warn(`Unsupported entity type: ${entityKey}`);
+    // }
+    // emit("close-dialog");
+    // notify(t(`${entityName}.message.updateSuccess`), "positive");
+    // eventBus("LoadData").emit();
   }
 
   /**
@@ -123,22 +88,15 @@ import { newStaffImage } from "@/interfaces/models/entities/staff-image";
     entityOptions.value = {};
     try {
       switch (entityKey) {
-        case "ADVERTISEMENT":
-        case "BUSINESS_PROMOTION":
-        case "BUSINESS_VOUCHER":
-          entityOptions.value = await fetchBusiness(entityKey, "update", entityId);
-        case "COMMUNITY_EVENT":
-        case "COMMUNITY_NEWS":
-        case "COMMUNITY_NOTICE":
-          entityOptions.value.galleryImages = await fetchGalleryImages(entityKey, entityId);
+        case "MEMBER":
+          entityOptions.value.galleryImages = [];
+          const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
+          initialization.value = memberData;
           break;
-        case "BUSINESS":
-        case "SITE":
-          entityOptions.value = await fetchSiteOrBusiness(entityKey, "update", entityId);
+        case "CHECKIN":
+        case "POSTING":
+          entityOptions.value.galleryImages = [];
           break;
-        case "STAFF":
-          entityOptions.value.galleryImages =  await fetchGalleryImages(entityKey, entityId);
-          entityOptions.value.roleCode = roleOptions;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }

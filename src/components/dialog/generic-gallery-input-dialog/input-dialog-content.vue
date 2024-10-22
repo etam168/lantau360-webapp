@@ -5,6 +5,7 @@
       :is="GenericEntityCreateForm<EntityType>"
       v-model:row="rowData"
       :entityKey="entityKey"
+      :entityId="entityId"
       :entityOptions="entityOptions"
       @close-dialog="$emit('close-dialog', $event)"
       @after-entity-created="onAfterEntityCreated"
@@ -31,8 +32,9 @@
   const emit = defineEmits(["close-dialog"]);
 
   // Props
-  const { entityKey } = defineProps<{
+  const { entityKey, entityId } = defineProps<{
     entityKey: EntityURLKey;
+    entityId?: any;
   }>();
 
   const supportedEntityTypes = ["MEMBER", "POSTING", "CHECKIN"];
@@ -58,7 +60,7 @@
   };
 
   const rowData = ref(newEntityMap[entityKey as keyof typeof newEntityMap] || {});
-  const initializationData = ref();
+  const initialization = ref();
   const entityOptions = ref<Record<string, any>>({});
 
   const fetchAllData = async () => {
@@ -68,7 +70,7 @@
         case "MEMBER":
           entityOptions.value.galleryImages = [];
           const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
-          initializationData.value = memberData;
+          initialization.value = memberData;
           break;
         case "CHECKIN":
         case "POSTING":

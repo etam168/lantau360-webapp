@@ -1,5 +1,5 @@
 export interface CheckIn {
-  checkInId?: number;
+  checkInId: number;
   memberId: number;
   siteId: number;
   directoryId: number;

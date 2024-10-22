@@ -42,7 +42,6 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
 <script setup lang="ts" generic="EntityT extends EntityType">
   // Types
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { EntityType } from "@/interfaces/types/entity-type";
 
   // Other imports
@@ -74,10 +73,10 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // const row = defineModel<CategoryTypes>("row", { required: true });
 
   // Props
-  const { entityKey, entityOptions, initializationData } = defineProps<{
+  const { entityKey, entityOptions, entityId } = defineProps<{
     entityKey: EntityURLKey;
     entityOptions?: Record<string, any>;
-    initializationData?: CategoryTypes;
+    entityId?: any;
   }>();
 
   // Composables and store instantiation
@@ -112,7 +111,18 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
     if (result.valid && formMappers.value) {
       try {
-        debugger;
+        if (entityKey === "CHECKIN") {
+          console.log("Assigning values.siteId from initializationData.category.siteId");
+
+          values = {
+            ...values, // Spread existing values
+            siteId: entityId || 0, // Assign siteId from initializationData
+            memberId: userStore?.userId || 0 // Assign memberId from userStore
+          };
+
+          console.log("Values after assignment:", values); // Log values after assignment
+        }
+
         // Create the entity record
         const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;
         newEntity.createdBy = userStore.userId;

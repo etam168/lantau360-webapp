@@ -1,11 +1,6 @@
 <template>
   <q-list>
-    <q-item
-      clickable
-      @click="handleDetail(item)"
-      v-for="(item, index) in communityItems"
-      :key="index"
-    >
+    <q-item v-for="(item, index) in communityItems" :key="index">
       <q-item-section avatar>
         <q-avatar size="64px" circle>
           <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
@@ -22,17 +17,32 @@
         <q-item-label> {{ line1(item) }} </q-item-label>
         <q-item-label> {{ line2(item) }} </q-item-label>
       </q-item-section>
+
+      <q-item-section side>
+        <div class="text-grey-8 q-gutter-xs">
+          <q-btn
+            class="gt-xs"
+            size="xs"
+            dense
+            flat
+            :icon="fasCircleInfo"
+            @click="handleDetail(item)"
+          />
+          <q-btn class="gt-xs" size="xs" dense flat :icon="fasPen" @click="handleEdit(item)" />
+        </div>
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
 
 <script setup lang="ts">
+  import { fasCircleInfo, fasPen } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
   import { EntityURLKey } from "@/constants";
-import { PostingView } from "@/interfaces/models/views/posting-view";
+  import { PostingView } from "@/interfaces/models/views/posting-view";
 
   const { getEntityName, getImageURL, translate } = useUtilities();
 
@@ -44,16 +54,8 @@ import { PostingView } from "@/interfaces/models/views/posting-view";
     entityKey: EntityURLKey;
   }>();
 
+  const $q = useQuasar();
   const entityName = getEntityName(entityKey);
-
-  const items = computed(() => {
-    switch (entityKey) {
-      case "POSTING":
-        return ["posting"];
-      default:
-        return ["N/A"];
-    }
-  });
 
   function line1(item: CategoryTypes) {
     const name = `${entityName}Name` as keyof CategoryTypes;
@@ -66,6 +68,16 @@ import { PostingView } from "@/interfaces/models/views/posting-view";
   }
 
   function handleDetail(item: any) {
+    alert(JSON.stringify(item));
     emits("on-category-detail", item);
+  }
+
+  function handleEdit(item: any) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+      ),
+      componentProps: { row: item, entityKey: entityKey }
+    });
   }
 </script>

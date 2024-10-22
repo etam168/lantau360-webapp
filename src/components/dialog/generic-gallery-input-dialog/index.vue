@@ -18,7 +18,7 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <input-dialog-content :entity-key @close-dialog="handleCloseDialog" />
+            <input-dialog-content :entity-key :entityId @close-dialog="handleCloseDialog" />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -52,8 +52,9 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { entityKey } = defineProps<{
+  const { entityKey, entityId } = defineProps<{
     entityKey: EntityURLKey;
+    entityId?: any;
   }>();
 
   // Composable function calls

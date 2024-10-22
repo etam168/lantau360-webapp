@@ -31,11 +31,11 @@ export function usePostingFormContents() {
           },
           {
             name: "title",
-            subFields: [{ name: "title", maxlength: 25 }]
+            subFields: [{ name: "title" }]
           },
           {
             name: "description",
-            subFields: [{ name: "description", maxlength: 25, type: "textarea" }]
+            subFields: [{ name: "description", type: "textarea" }]
           }
         ]
       }

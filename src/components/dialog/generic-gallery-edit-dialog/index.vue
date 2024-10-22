@@ -1,38 +1,38 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
-    maximized
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
+    maximized
   >
-    <q-card class="bg-white">
-      <q-layout view="hHh lpR fFf">
-        <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" />
-        <q-page-container>
-          <!-- Suspense wrapper for async component loading -->
-          <Suspense>
-            <template #default>
-              <!-- Main edit dialog content -->
-              <edit-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
-            </template>
-            <template #fallback>
-              <!-- Loading spinner shown while content is loading -->
-              <div class="row justify-center items-center" style="height: 500px">
-                <app-spinner size="10em" />
-              </div>
-            </template>
-          </Suspense>
-          <!-- Error message display -->
-          <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-            {{ errorMessage }}
-            <p>{{ $t("common.contactAdminMessage") }}</p>
-          </div>
-        </q-page-container>
-      </q-layout>
-    </q-card>
+    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+      <q-header bordered class="bg-transparent text-dark">
+        <!-- <pre>{{ category }}</pre> -->
+        <app-dialog-title>{{ $t(`${entityName}.dialog.edit`) }}</app-dialog-title>
+      </q-header>
+      <q-page-container>
+        <!-- Suspense wrapper for async component loading -->
+        <Suspense>
+          <template #default>
+            <!-- Main edit dialog content -->
+            <edit-dialog-content :row :entity-key @close-dialog="handleCloseDialog" />
+          </template>
+          <template #fallback>
+            <!-- Loading spinner shown while content is loading -->
+            <div class="row justify-center items-center" style="height: 500px">
+              <app-spinner size="10em" />
+            </div>
+          </template>
+        </Suspense>
+        <!-- Error message display -->
+        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
+          {{ errorMessage }}
+          <p>{{ $t("common.contactAdminMessage") }}</p>
+        </div>
+      </q-page-container>
+    </q-layout>
   </q-dialog>
 </template>
 

@@ -313,9 +313,8 @@
   };
 
   function handleCheckIn() {
-    alert(JSON.stringify(category));
     const isDialogOpen = ref(false);
-    const props = { category: category, entityKey: entityKey };
+    const props = { entityId: category.siteId, entityKey: entityKey };
 
     handleOpenDialog(props, isDialogOpen.value, ["CHECKIN"], "CHECKIN");
     // $q.dialog({
