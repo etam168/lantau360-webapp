@@ -1,13 +1,13 @@
 // @/interfaces/stores/entity-form-mappers.ts
 
-import type { DatatableType } from "../types/datatable-types";
+import type { CategoryTypes } from "../types/category-types";
 import type { EntityType } from "@/interfaces/types/entity-type";
 import type { FormStructure } from "../types/form-structure-types";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
 export interface EntityFormMappers<
   T extends EntityType = EntityType,
-  U extends DatatableType = DatatableType
+  U extends CategoryTypes = CategoryTypes
 > {
   formStructure: FormStructure;
   getEntityImage: (entityId: number) => GalleryImageType;

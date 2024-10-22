@@ -23,14 +23,14 @@ export const ENTITY_URL = {
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   MEMBER_TRANSACTIONS: `/Transaction/MemberTransactions`,
   MEMBER_RECENT_TRANSACTIONS: `/Transaction/MemberRecentTransactions`,
-  POSTING: `favourite`,
   SITE: `/Site`,
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
   WEATHER: `/Weather`,
   SIGN_IN: "/MemberAuth/SignIn",
   SIGN_UP: "/MemberAuth/SignUp",
-  RESET_PASSWORD: "/MemberAuth/RecoverPassword"
+  RESET_PASSWORD: "/MemberAuth/RecoverPassword",
+  POSTING:"/Posting"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

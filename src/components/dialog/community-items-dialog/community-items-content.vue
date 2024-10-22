@@ -69,7 +69,10 @@
   const { groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { handleOpenDialog } = useEntityDataHandlingService();
+
   const $q = useQuasar();
+  const isDialogOpen = ref(false);
 
   const communityItems: Ref<CategoryTypes[]> = ref([]);
 
@@ -134,6 +137,9 @@
 
   function createPosting() {
     // To be implemented
+    const entityKey = "POSTING" as EntityURLKey;
+    const props = { entityKey: entityKey };
+    handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
   }
 
   async function handleDetail(item: any) {

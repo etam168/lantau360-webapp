@@ -39,7 +39,7 @@
     previewComponent?: Component;
   }>();
 
-  const supportedEntityTypes = ["MEMBER"];
+  const supportedEntityTypes = ["MEMBER","POSTING"];
 
   // Composable function calls
   const { eventBus, getEntityId, getEntityName, getImageUrlKey, notify } = useUtilities();
@@ -73,6 +73,11 @@
           entityOptions.value.galleryImages = [];
           const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
           initializationData.value = memberData;
+          break;
+        case "POSTING":
+          entityOptions.value.galleryImages = [];
+          break;
+
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
