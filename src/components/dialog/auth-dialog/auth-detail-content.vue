@@ -193,7 +193,6 @@
           } catch {}
         } else if (renderMode.value == "reset") {
           try {
-            alert(JSON.stringify(values));
             await recoverPassword(userName.value, values.password, values.otp);
             // renderMode.value = "login";
           } catch {}
