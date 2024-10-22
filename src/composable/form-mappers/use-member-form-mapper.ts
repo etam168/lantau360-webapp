@@ -7,15 +7,16 @@
  */
 
 import type { Member } from "@/interfaces/models/entities/member";
-import type { MemberDatatable } from "@/interfaces/datatable/member-datatable";
+// import type { MemberDatatable } from "@/interfaces/datatable/member-datatable";
+import { CategoryTypes } from "@/interfaces/types/category-types";
 import type { MemberImage } from "@/interfaces/models/entities/member-image";
 import type { EntityFormMappers } from "@/interfaces/stores/entity-form-mappers";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
 
 import { useMemberFormContents } from "./form-contents/use-member-form-contents";
 import typia from "typia";
 
-export function useMemberFormMapper(): EntityFormMappers<Member, MemberDatatable> {
+export function useMemberFormMapper(): EntityFormMappers<Member, CategoryTypes> {
   // Constants and reactive references
   const { resetObject } = useUtilities();
   const { formStructure } = useMemberFormContents();
@@ -62,7 +63,7 @@ export function useMemberFormMapper(): EntityFormMappers<Member, MemberDatatable
   /**
    * Returns initial values for the form, based on existing data or default values
    */
-  function getInitialValues(row?: MemberDatatable): Record<string, any> {
+  function getInitialValues(row?: CategoryTypes): Record<string, any> {
     const defaultValues = getDefaultValues();
 
     if (!row) {
@@ -100,9 +101,9 @@ export function useMemberFormMapper(): EntityFormMappers<Member, MemberDatatable
     // If the entity is null, empty, or undefined, create a new record with default values
     const entityCopy: Member = entity ? { ...entity } : { ...newMember };
 
-     // Then, remove extra fields from entityCopy record
-     const pruneAdvertisement = typia.misc.createPrune<Member>();
-     pruneAdvertisement(entityCopy);
+    // Then, remove extra fields from entityCopy record
+    const pruneAdvertisement = typia.misc.createPrune<Member>();
+    pruneAdvertisement(entityCopy);
 
     // Define the structure for the result
     const result: Member = {

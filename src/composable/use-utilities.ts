@@ -7,7 +7,6 @@ import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-
 import { CategoryTypes } from "@/interfaces/types/category-types";
 import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-import { CommunityNewsView } from "@/interfaces/models/views/community-news-view";
 import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
@@ -137,10 +136,6 @@ export function useUtilities() {
     return false;
   }
 
-  function isCommunityNews(item: BulletinTypes): item is CommunityNewsView {
-    return (item as CommunityNewsView).communityNewsId !== undefined;
-  }
-
   function isCommunityNotice(item: BulletinTypes): item is CommunityNoticeView {
     return (item as CommunityNoticeView).communityNoticeId !== undefined;
   }
@@ -198,11 +193,6 @@ export function useUtilities() {
       items: grouped[key as K] // Type assertion here
     }));
   }
-
-  // function translate(label: string, meta: any, key: string) {
-  //   const { locale } = useI18n({ useScope: "global" });
-  //   return meta?.i18n?.[locale.value]?.[key] || label;
-  // }
 
   function translate(label: string, meta: any, key: string) {
     const { locale } = i18n.global;
@@ -322,7 +312,6 @@ export function useUtilities() {
     isBusinessVoucher,
     isCommunityDirectory,
     isCommunityEvent,
-    isCommunityNews,
     isCommunityNotice,
     isDirectory,
     isFavouriteItem,

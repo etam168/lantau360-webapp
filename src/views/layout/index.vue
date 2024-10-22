@@ -15,5 +15,5 @@
 </template>
 
 <script setup lang="ts">
-  import FooterComponent from "./footer/index.vue";
+  import FooterComponent from "./footer.vue";
 </script>

@@ -1,6 +1,6 @@
 <!-- app-search-bar.vue -->
 <template>
-  <q-toolbar style="max-width: 800px">
+  <q-toolbar style="max-width: 720px">
     <q-input
       v-bind="$attrs"
       :model-value="keyword"

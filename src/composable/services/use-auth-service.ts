@@ -1,9 +1,10 @@
-import { ENTITY_URL } from "@/constants";
-import { useUserStore } from "@/stores/user";
 import { AxiosError } from "axios";
-import i18n from "@/plugins/i18n/i18n";
 import { LocalStorage } from "quasar";
-import { STORAGE_KEYS } from "@/constants";
+import { object } from "yup";
+import { useUserStore } from "@/stores/user";
+import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
+
+import i18n from "@/plugins/i18n/i18n";
 
 const { notify } = useUtilities();
 const { api } = useApi();
@@ -11,9 +12,29 @@ const { api } = useApi();
 const { t } = i18n.global;
 
 export function useAuthService() {
-  const route = useRoute();
-  const router = useRouter();
   const userStore = useUserStore();
+
+  const initialValues = ref({
+    userName: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    phone: "",
+    otp: ""
+  });
+
+  const schema = object({});
+
+  const messages: any = {
+    invalid_user: t("auth.emailMessages.invalidUser"),
+    email_not_verified: t("errors.emailNotVerified"),
+    invalid_credentials: t("errors.invalidCredentials"),
+    invalid_username: t("errors.invalidUsername"),
+    email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
+    email_send_failed: t("auth.emailMessages.emailSendFailed"),
+    username_required: t("errors.usernameRequired"),
+    email_already_verified: t("auth.emailMessages.emailAlreadyVerified")
+  };
 
   function handleError(err: any) {
     let errorMessage = t("errors.anExpectedError");
@@ -51,7 +72,6 @@ export function useAuthService() {
       userStore.SetUserInfo(response.data);
       notify(t("auth.message.loginSuccessMessage"), "positive");
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-
     } catch (err: any) {
       if (
         err.response &&
@@ -66,47 +86,6 @@ export function useAuthService() {
     }
   }
 
-  async function registerRequest(values: {
-    email: string;
-    firstName: string;
-    lastName: string;
-    phone: string;
-    password: string;
-    userName: string;
-  }) {
-    try {
-      const response = await api.create(`${ENTITY_URL.SIGN_UP}`, {
-        email: values.email,
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: values.phone,
-        password: values.password,
-        userName: values.userName,
-        status: 1
-      });
-
-      notify(t("auth.emailMessages.emailSentSuccessfully"), "positive");
-      LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
-      return response;
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response?.status === 400 && err.response?.data === "email_already_exists") {
-          notify(t("errors.emialAreadyExists"), "negative");
-        } else if (
-          err.response?.status === 400 &&
-          err.response?.data === "something_went_wrong"
-        ) {
-          notify(t("errors.anErrorOccured"), "negative");
-        } else {
-          notify(t("errors.anUnExpectedError"), "negative");
-        }
-      } else {
-        notify((err as any).message, "negative");
-      }
-      throw err;
-    }
-  }
-
   async function recoverPassword(email: string, newPassword: string, otp: string) {
     try {
       const response = await api.create(`${ENTITY_URL.RESET_PASSWORD}`, {
@@ -114,7 +93,7 @@ export function useAuthService() {
         newPassword: newPassword,
         otp: otp
       });
-      
+
       notify(t("auth.login.passwordResetSuccessfully"), "positive");
       return response.data;
     } catch (err) {
@@ -127,9 +106,59 @@ export function useAuthService() {
     }
   }
 
+  async function registerRequest(values: Record<string, any>) {
+    try {
+      const response = await api.create(`${ENTITY_URL.SIGN_UP}`, {
+        email: values.email || values.userName, // Assuming email might be the same as userName
+        firstName: values.firstName,
+        lastName: values.lastName,
+        phone: values.phone,
+        password: values.password,
+        userName: values.userName,
+        status: 1
+      });
+
+      notify(t("auth.emailMessages.emailSentSuccessfully"), "positive");
+      LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
+
+      return response;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response?.status === 400) {
+          switch (err.response?.data) {
+            case "email_already_exists":
+              notify(t("errors.emialAreadyExists"), "negative");
+              break;
+            case "something_went_wrong":
+              notify(t("errors.anErrorOccured"), "negative");
+              break;
+            default:
+              notify(t("errors.anUnExpectedError"), "negative");
+          }
+        } else {
+          notify(t("errors.anUnExpectedError"), "negative");
+        }
+      } else {
+        notify((err as Error).message, "negative");
+      }
+      throw err;
+    }
+  }
+
+  async function sendOtp(userName: string) {
+    try {
+      await axios.post(`/MemberAuth/SendOtp/${userName}`);
+    } catch (err) {
+      throw err;
+    }
+  }
+
   return {
+    initialValues,
+    schema,
     loginRequest,
-    registerRequest,
     recoverPassword,
+    registerRequest,
+    sendOtp
   };
 }

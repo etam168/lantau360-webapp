@@ -1,10 +1,10 @@
 <template>
-  <q-card class="text-white bg-primary q-ma-md" :class="classWeather">
+  <q-card class="bg-primary text-white q-ma-md q-pa-sm">
     <q-item>
       <q-item-section>
         <q-item class="q-pa-none">
           <q-item-section>
-            <q-avatar size="56px">
+            <q-avatar size="56px" class="q-mb-sm">
               <img :src="iconPath" />
             </q-avatar>
             <q-item-label class="text -weight-medium text-subtitle1">{{ caption }}</q-item-label>
@@ -33,13 +33,12 @@
 </template>
 
 <script setup lang="ts">
-  import { date, useQuasar } from "quasar";
+  import { date } from "quasar";
   import { fasArrowUp, fasArrowDown } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import { Weather } from "@/interfaces/models/entities/weather";
 
-  const $q = useQuasar();
   const { translate } = useUtilities();
 
   const props = defineProps({
@@ -63,10 +62,6 @@
   const weatherDate = computed(() =>
     date.formatDate(props.data?.forecastDateTime, "YYYY-MM-DD HH:MM")
   );
-
-  const classWeather = computed(() => {
-    return $q.screen.gt.xs ? "q-pa-sm" : "q-pa-none";
-  });
 
   const chips = computed(() => [
     {

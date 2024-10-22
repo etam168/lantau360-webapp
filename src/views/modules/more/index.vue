@@ -26,7 +26,6 @@
 
 <script setup lang="ts">
   import { newMember } from "@/interfaces/models/entities/member";
-
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
 
@@ -160,11 +159,6 @@
       componentProps: {
         mode: tabValue
       }
-      // component: defineAsyncComponent(() => import("@/views/auth/login-dialog.vue")),
-      // componentProps: {
-      //   mode: tabValue,
-      //   callback: fetchTransactionData
-      // }
     });
   }
 

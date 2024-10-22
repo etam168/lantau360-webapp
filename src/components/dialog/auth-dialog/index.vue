@@ -12,30 +12,8 @@
       :class="{ 'bg-secondary': $q.screen.lt.sm }"
       style="max-width: 640px"
     >
-      <!-- style="max-width: 1024px"
-      :class="{ 'bg-secondary': $q.screen.lt.sm }" -->
       <q-page-container>
-        <!-- Suspense wrapper for async component loading -->
-        <Suspense>
-          <template #default>
-            <!-- <div>hello</div> -->
-            <!-- Main auth detail content -->
-            <auth-detail-content :mode />
-          </template>
-
-          <template #fallback>
-            <!-- Loading spinner shown while content is loading -->
-            <div class="row justify-center items-center" style="height: 500px">
-              <app-spinner size="10em" />
-            </div>
-          </template>
-        </Suspense>
-
-        <!-- Error message display -->
-        <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-          {{ errorMessage }}
-          <p>{{ $t("common.contactAdminMessage") }}</p>
-        </div>
+        <auth-detail-content :mode />
       </q-page-container>
     </q-layout>
   </q-dialog>
@@ -48,7 +26,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import AuthDetailContent from "./auth-detail-content.vue";
+  import AuthDetailContent from "./auth-content.vue";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);

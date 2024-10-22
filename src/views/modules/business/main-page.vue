@@ -53,8 +53,8 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { eventBus, isSmallScreen, getEntityName } = useUtilities();
   const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryDialogService(entityKey);
+  const { eventBus, isSmallScreen, getEntityName } = useUtilities();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));

@@ -45,8 +45,8 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { eventBus } = useUtilities();
   const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { eventBus } = useUtilities();
 
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<Directory[]>([]);
@@ -90,10 +90,6 @@
       }
     });
   }
-
-  // function closeDialog() {
-  //   isDialogOpen.value = false;
-  // }
 
   async function fetchAllData() {
     try {

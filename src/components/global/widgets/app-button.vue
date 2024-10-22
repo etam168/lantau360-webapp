@@ -1,5 +1,5 @@
 <template>
-  <q-btn v-bind="$attrs">
+  <q-btn v-bind="$attrs" color="primary">
     <!-- Dynamically inherit slots from parent -->
 
     <template v-for="slot in parentSlots" #[slot]>
