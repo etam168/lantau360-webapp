@@ -145,27 +145,8 @@
       const props = { entityKey: entityKey };
       handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
     } else {
-      $q.notify({
-        message: "Please login first to check in.",
-        color: "negative",
-        position: "center",
-        actions: [
-          {
-            label: "Login",
-            color: "white bg-primary",
-            handler: () => {
-              $q.dialog({
-                component: defineAsyncComponent(
-                  () => import("@/components/dialog/auth-dialog/index.vue")
-                ),
-                componentProps: {
-                  mode: "login"
-                }
-              });
-            }
-          }
-        ],
-        timeout: Math.random() * 100000
+      $q.dialog({
+        component: defineAsyncComponent(() => import("./login-alert-dialog.vue"))
       });
     }
   }

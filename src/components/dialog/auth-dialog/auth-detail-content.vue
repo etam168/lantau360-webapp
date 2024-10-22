@@ -55,7 +55,6 @@
 <script setup lang="ts">
   import type { AuthMode } from "@/interfaces/types/auth-mode";
 
-  import { fasXmark } from "@quasar/extras/fontawesome-v6";
   import * as yup from "yup";
   import { Form } from "vee-validate";
 
