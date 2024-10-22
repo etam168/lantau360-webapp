@@ -21,6 +21,7 @@
 </template>
 
 <script setup lang="ts">
+  import { QInputProps } from "quasar";
   import { useField } from "vee-validate";
 
   const {
@@ -36,9 +37,11 @@
     maxLenght?: number;
     counter?: boolean;
     disable?: boolean;
-    inputType?: string | undefined;
+    inputType?: QInputProps["type"];
   }>();
 
-  const { errorMessage, value: untypedValue } = useField(() => name);
+  const fieldName = computed(() => name);
+  const { errorMessage, value: untypedValue } = useField(fieldName);
+
   const value = untypedValue as Ref<string | number | null>;
 </script>

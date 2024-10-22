@@ -5,24 +5,20 @@
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
-    maximized
   >
     <q-layout
       view="lHh lpr lFf"
+      style="max-width: 1024px"
       :class="{ 'bg-secondary': $q.screen.lt.sm }"
-      style="max-width: 640px"
     >
-      <!-- style="max-width: 1024px"
-      :class="{ 'bg-secondary': $q.screen.lt.sm }" -->
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>hello</div> -->
+            <!-- <div>dialog</div> -->
             <!-- Main auth detail content -->
             <auth-detail-content :mode />
           </template>
-
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
             <div class="row justify-center items-center" style="height: 500px">
@@ -30,7 +26,6 @@
             </div>
           </template>
         </Suspense>
-
         <!-- Error message display -->
         <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
           {{ errorMessage }}
@@ -42,8 +37,6 @@
 </template>
 
 <script setup lang="ts">
-  import type { AuthMode } from "@/interfaces/types/auth-mode";
-
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
@@ -55,7 +48,7 @@
 
   // Props
   const { mode = "login" } = defineProps<{
-    mode?: AuthMode;
+    mode?: string;
   }>();
 
   // Composable function calls

@@ -1,65 +1,62 @@
 <template>
-  <q-page class="column items-center justify-center q-pa-none">
-    <q-card
-      class="bg-secondary q-pt-none q-pa-md q-ma-none"
-      :style="authStyle"
-      :flat="$q.screen.lt.sm"
-    >
-      <q-btn
-        :icon="fasXmark"
-        flat
-        round
-        dense
-        v-close-popup
-        class="q-mr-md"
-        v-if="$q.screen.gt.xs"
-      />
+  <q-page class="column items-center justify-center">
+    <q-card class="bg-secondary" :style="authStyle" :flat="$q.screen.lt.sm">
+      <app-bar-dialog-close v-if="$q.screen.gt.xs" />
+      <app-auth-avatar class="q-my-md" />
 
       <Form
         ref="form"
-        class="full-height"
+        class="full-height bg-transparent"
         :initial-values="initialValues"
         :validation-schema="schema"
         @submit="onSubmit"
         v-slot="{ meta, values }"
       >
-        <template v-for="(item, index) in renderItems" :key="index">
-          <app-auth-avatar v-if="item.type === 'avatar'" />
+        <q-list class="q-px-md">
+          <q-item v-for="(item, index) in renderItems" :key="index" dense>
+            <q-item-section>
+              <vee-input-password
+                v-if="item.type === 'password'"
+                :name="item.name"
+                :label="$t('auth.login.password')"
+              />
 
-          <vee-input-password
-            v-else-if="item.type === 'password'"
-            :name="item.name"
-            :label="$t('auth.login.password')"
-          />
+              <app-button
+                v-else-if="item.type === 'submit'"
+                class="full-width"
+                color="primary"
+                :label="item.label"
+                type="submit"
+              />
 
-          <app-button
-            v-else-if="item.type === 'submit'"
-            class="full-width"
-            color="primary"
-            :label="item.label"
-            type="submit"
-          />
+              <app-button-flat
+                v-else-if="item.type === 'flatButton'"
+                :label="item.label"
+                @click="handleClick(item.name)"
+              />
 
-          <app-button-flat
-            v-else-if="item.type === 'flatButton'"
-            :label="item.label"
-            @click="handleClick(item.name)"
-          />
+              <vee-q-tel-input
+                v-else-if="item.type === 'phone'"
+                :name="item.name"
+                defaultIso="HK"
+              />
+              <!-- <vee-otp-input v-if="item.type === 'otp'" :name="item.name" :label="item.label" /> -->
+              <vee-input v-else-if="item.type === 'input'" :name="item.name" :label="item.label" />
+            </q-item-section>
+          </q-item>
 
-          <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" defaultIso="HK" />
-          <vee-otp-input v-if="item.type === 'otp'" :name="item.name" :label="item.label" />
-          <vee-input v-else-if="item.type === 'input'" :name="item.name" :label="item.label" />
-        </template>
-        <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
+          <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
+        </q-list>
       </Form>
     </q-card>
   </q-page>
 </template>
 
 <script setup lang="ts">
+  import type { AuthMode } from "@/interfaces/types/auth-mode";
+
   import { fasXmark } from "@quasar/extras/fontawesome-v6";
   import * as yup from "yup";
-  import i18n from "@/plugins/i18n/i18n";
   import { Form } from "vee-validate";
 
   // .ts files
@@ -67,19 +64,15 @@
 
   // Props
   const { mode } = defineProps<{
-    mode?: string;
+    mode?: AuthMode;
   }>();
-
-  //   type AuthMode = "login" | "register" | "reset";
 
   const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
 
   const { loginRequest, registerRequest, recoverPassword } = useAuthService();
-  const { onDialogCancel } = useDialogPluginComponent();
-  const { t } = i18n.global;
+  const { t } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { notify } = useUtilities();
-  const isDialogVisible = ref(false);
 
   const form = ref();
   const loading = ref(false);
@@ -99,11 +92,7 @@
     otp: ""
   });
 
-  const schema = yup.object({
-    // otp:  yup.string().required().label(t("auth.login.userName")),
-    // userName: yup.string().required().label(t("auth.login.userName")),
-    // password: yup.string().required().min(4).label(t("auth.login.password"))
-  });
+  const schema = yup.object({});
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "90%" }
@@ -127,7 +116,6 @@
       switch (renderMode.value) {
         case "register":
           return [
-            { name: "avatar", type: "avatar" },
             { name: "userName", type: "input" },
             { name: "firstName", type: "input" },
             { name: "lastName", type: "input" },
@@ -137,15 +125,13 @@
           ];
         case "reset":
           return [
-            { name: "avatar", type: "avatar" },
-            { name: "otp", type: "otp" },
+            { name: "otp", type: "input" },
             { name: "password", type: "password" },
             { name: "resetPassword", type: "submit" }
           ];
         default:
           // Default is login
           return [
-            { name: "avatar", type: "avatar" },
             { name: "userName", type: "input" },
             { name: "password", type: "password" },
             { name: "signIn", type: "submit" },
@@ -160,17 +146,6 @@
     }));
   });
 
-
-  function updateDialogState(status: boolean) {
-    isDialogVisible.value = status;
-  }
-
-  function closeDialog() {
-    setTimeout(() => {
-      onDialogCancel();
-    }, 1200);
-  }
-
   function onSubmit(values: any) {
     if (resendEmaiLoading.value) {
       return;
@@ -184,12 +159,12 @@
         if (renderMode.value == "login") {
           try {
             await loginRequest(values.userName, values.password);
-            closeDialog();
+            // closeDialog();
           } catch {}
         } else if (renderMode.value == "register") {
           try {
             await registerRequest(values);
-            closeDialog();
+            // closeDialog();
           } catch {}
         } else if (renderMode.value == "reset") {
           try {
@@ -200,14 +175,16 @@
       }
     });
   }
+
   async function handleClick(itemName: string) {
     if (itemName == "forgetPassword") {
-     userName.value = form.value.values.userName;
+      userName.value = form.value.values.userName;
       if (userName.value == "") {
         error.value = true;
         message.value = messages.username_required;
       } else {
         error.value = false;
+
         //Call api and on succeed change rendermode
         try {
           await axios.post(`/MemberAuth/SendOtp/${userName.value}`);

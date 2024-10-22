@@ -1,14 +1,10 @@
 <!-- auth-avatar.vue -->
 <template>
-    <q-card-section align="center" class="q-pa-none">
-      <div class="q-mb-md text-h6 q-gutter-md">
-        <q-avatar size="128px" square>
-          <q-img :src="IMAGES.LOGO" />
-        </q-avatar>
-      </div>
-    </q-card-section>
-  </template>
-  
-  <script setup lang="ts">
+  <q-card-actions align="center" c>
+    <q-avatar square :icon="IMAGES.LOGO" size="136px" font-size="128px"></q-avatar>
+  </q-card-actions>
+</template>
+
+<script setup lang="ts">
   import { IMAGES } from "@/constants";
-  </script>
+</script>

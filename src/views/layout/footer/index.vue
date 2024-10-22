@@ -49,27 +49,23 @@
     {
       name: "business",
       icon: fasMoneyCheckDollar,
-      // icon: "fa-solid fa-money-check-dollar",
       label: t("footer.business"),
       route: "/business"
     },
     {
       name: "community",
       icon: fasPeopleGroup,
-      // icon: "fa-solid fa-people-group",
       label: t("footer.community"),
       route: "/community"
     },
     {
       name: "favourites",
       icon: fasHeart,
-      // icon: "fa-solid fa-heart",
       label: t("footer.favourite"),
       route: "/favourite"
     },
 
     { name: "more", icon: fasEllipsis, label: t("footer.more"), route: "/more" }
-    // { name: "more", icon: "fa-solid fa-ellipsis", label: t("footer.more"), route: "/more" }
   ]);
 
   onMounted(() => {
