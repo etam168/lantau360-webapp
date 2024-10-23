@@ -48,5 +48,19 @@ export default {
     emailAlreadyVerified: "Your email is already verified",
     confimationSucessfull:
       "Thank you for verifying your email address.\nYour email has been successfully verified."
+  },
+
+  schema: {
+    invalidEmail: "Email is invalid",
+    emailRequired: "Email is Required",
+    emailExceedLimit: "Email must not exceed 255 characters",
+    firstName: "First Name is Required",
+    lastName: "Last Name is Required",
+    phone: "Phone is Required",
+    password: "Password is Required",
+    passwordMinLength: "Password must be at least 8 characters",
+    otpRequired: "OTP is Required",
+    userNameRequired: "Email is Required",
+    invalidUserName: "Username is invalid"
   }
 };

@@ -51,5 +51,19 @@ export default {
     otp: "验证码",
     update: "更新密码",
     otpMessage: "Otp sent to your email"
+  },
+
+  schema: {
+    invalidEmail: "电子邮件无效",
+    emailRequired: "电子邮件是必填项",
+    emailExceedLimit: "电子邮件不得超过255个字符",
+    firstName: "名字是必填项",
+    lastName: "姓氏是必填项",
+    phone: "电话是必填项",
+    password: "密码是必填项",
+    passwordMinLength: "密码至少需要8个字符",
+    otpRequired: "OTP是必填项",
+    userNameRequired: "电子邮件是必填项",
+    invalidUserName: "用户名无效"
   }
 };

@@ -1,6 +1,6 @@
 import { AxiosError } from "axios";
 import { LocalStorage } from "quasar";
-import { object } from "yup";
+import { object, string } from "yup";
 import { useUserStore } from "@/stores/user";
 import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
 
@@ -24,7 +24,26 @@ export function useAuthService() {
     otp: ""
   });
 
-  const schema = object({});
+  const schema = object({
+    email: string()
+      .email(t("auth.schema.invalidEmail"))
+      .required(t("auth.schema.emailRequired"))
+      .max(255, t("auth.schema.emailExceedLimit")),
+    firstName: string().required(t("auth.schema.firstName")),
+    lastName: string().required(t("auth.schema.lastName")),
+    phone: string().required(t("auth.schema.phone")),
+    userName: string()
+      .email(t("auth.schema.invalidUserName"))
+      .required(t("auth.schema.userNameRequired")),
+    password: string()
+      .required(t("auth.schema.password"))
+      .min(8, t("auth.schema.passwordMinLength", { length: 8 })),
+    otp: string().when("$mode", {
+      is: "reset",
+      then: schema => schema.required(t("auth.schema.otpRequired")),
+      otherwise: schema => schema.optional()
+    })
+  });
 
   const messages: any = {
     invalid_user: t("auth.emailMessages.invalidUser"),
