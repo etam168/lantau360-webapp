@@ -74,17 +74,6 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
     }
   });
 
-  const messages: any = {
-    invalid_user: t("auth.emailMessages.invalidUser"),
-    email_not_verified: t("errors.emailNotVerified"),
-    invalid_credentials: t("errors.invalidCredentials"),
-    invalid_username: t("errors.invalidUsername"),
-    email_sent_successfully: t("auth.emailMessages.emailSentSuccessfully"),
-    email_send_failed: t("auth.emailMessages.emailSendFailed"),
-    username_required: t("errors.usernameRequired"),
-    email_already_verified: t("auth.emailMessages.emailAlreadyVerified")
-  };
-
   function handleError(err: any) {
     let errorMessage = t("errors.anExpectedError");
 

@@ -38,9 +38,10 @@
               <app-button
                 v-else-if="item.type === 'submit'"
                 :label="$t(`${i18nKey}.button.${item.name}`)"
-                type="submit"
+                @click="handleClick(item.name)"
               />
 
+              <!-- type="submit" -->
               <app-button-auth-flat
                 v-else-if="item.type === 'flatButton'"
                 :label="$t(`${i18nKey}.button.${item.name}`)"
@@ -49,7 +50,7 @@
             </q-item-section>
           </q-item>
 
-          <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label>
+          <!-- <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label> -->
         </q-list>
       </Form>
     </q-card>
@@ -75,21 +76,14 @@
   const renderMode = ref(mode);
 
   const { t } = useI18n({ useScope: "global" });
+  const { handleSubmit } = useForm();
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode!);
-
-  const { handleSubmit } = useForm();
-  //   {
-  //   initialValues,
-  //   validationSchema: schema
-  // }
 
   const $q = useQuasar();
   const form = ref();
   const loading = ref(false);
-  const message = ref("");
   const i18nKey = "auth";
-  const error = ref(false);
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "100%" }
@@ -135,12 +129,8 @@
     const { validate } = form.value;
     const result = await validate();
 
-    alert("submiot");
-
     if (result.valid) {
-      alert("validate");
       loading.value = true;
-      error.value = false;
 
       try {
         switch (renderMode.value) {
@@ -165,7 +155,7 @@
         alert(error);
         console.error("An error occurred:", error);
 
-        renderMode.value = renderMode.value == "sendOtp" ? renderMode.value : "login";
+        //renderMode.value = renderMode.value == "sendOtp" ? "login" : renderMode.value;
         // Add more specific error handling here if needed
       } finally {
         loading.value = false;
@@ -176,15 +166,13 @@
   function handleClick(itemName: string) {
     switch (itemName) {
       case "forgotPassword":
-        alert("forgotPassword");
         renderMode.value = "sendOtp";
-        // submitForm();
         handleSubmit(onSubmit)();
-        //form.value.submitForm();
         break;
 
       case "signIn":
         renderMode.value = "login";
+        handleSubmit(onSubmit)();
         break;
       // Other cases to be added
     }

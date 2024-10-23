@@ -51,16 +51,16 @@ export default {
   },
 
   schema: {
-    invalidEmail: "Email is invalid",
-    emailRequired: "Email is Required",
+    emailRequired: "Please enter your Email..",
     emailExceedLimit: "Email must not exceed 255 characters",
     firstName: "First Name is Required",
+    invalidEmail: "Email is invalid",
+    invalidUserName: "Username is invalid",
     lastName: "Last Name is Required",
-    phoneRequired: "Phone is Required",
+    otpRequired: "OTP is Required",
     password: "Password is Required",
     passwordMinLength: "Password must be at least 8 characters",
-    otpRequired: "OTP is Required",
-    userNameRequired: "Email is Required",
-    invalidUserName: "Username is invalid"
+    phoneRequired: "Phone is Required",
+    userNameRequired: "Your Email address is Required!!"
   }
 };
