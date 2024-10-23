@@ -28,7 +28,7 @@
             :icon="fasCircleInfo"
             @click="handleDetail(item)"
           />
-          <q-btn class="gt-xs" size="xs" dense flat :icon="fasPen" @click="handleEdit(item)" />
+          <q-btn class="gt-xs" size="xs" dense flat :icon="fasPencil" @click="handleEdit(item)" />
         </div>
       </q-item-section>
     </q-item>
@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import { fasCircleInfo, fasPen } from "@quasar/extras/fontawesome-v6";
+  import { fasCircleInfo, fasPencil } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 

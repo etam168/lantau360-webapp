@@ -31,7 +31,8 @@ export const ENTITY_URL = {
   SIGN_IN: "/MemberAuth/SignIn",
   SIGN_UP: "/MemberAuth/SignUp",
   RESET_PASSWORD: "/MemberAuth/RecoverPassword",
-  POSTING: "/Posting"
+  POSTING: "/Posting",
+  SEND_OTP: "/MemberAuth/SendOtp"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

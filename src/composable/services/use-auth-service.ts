@@ -14,6 +14,8 @@ const { api } = useApi();
 
 export function useAuthService(renderMode: Ref<AuthMode>) {
   const userStore = useUserStore();
+  const i18nKeyError = "errors";
+  const i18nKey = "auth";
 
   const initialValues = ref({
     email: "",
@@ -81,16 +83,16 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         const { data, status } = response;
 
         if (status === 404) {
-          errorMessage = t("errors.notFound");
+          errorMessage = t(`${i18nKeyError}.notFound`);
         } else if (
           ["invalidUsernamePassword", "invalidUsername", "accountBlocked"].includes(data)
         ) {
-          errorMessage = t(`errors.${data}`);
+          errorMessage = t(`${i18nKeyError}.${data}`);
         } else {
-          errorMessage = t("errors.anErrorOccured");
+          errorMessage = t(`${i18nKeyError}.anErrorOccured`);
         }
       } else {
-        errorMessage = t("errors.anErrorOccured");
+        errorMessage = t(`${i18nKeyError}.anErrorOccured`);
       }
     }
 
@@ -105,7 +107,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
       });
 
       userStore.SetUserInfo(response.data);
-      notify(t("auth.message.loginSuccessMessage"), "positive");
+      notify(t(`${i18nKey}.message.loginSuccessMessage`), "positive");
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
     } catch (err: any) {
       if (
@@ -113,7 +115,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         err.response.status === 400 &&
         err.response.data === "Invalid username or password."
       ) {
-        notify(t("auth.message.invalidUserPassword"), "negative");
+        notify(t(`${i18nKey}.message.invalidUserPassword`), "negative");
       } else {
         handleError(err);
       }
@@ -129,13 +131,13 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         otp: otp
       });
 
-      notify(t("auth.label.passwordResetSuccessfully"), "positive");
+      notify(t(`${i18nKey}.label.passwordResetSuccessfully`), "positive");
       return response.data;
     } catch (err) {
       if (err instanceof AxiosError) {
         notify(err.message, "negative");
       } else {
-        notify(t("errors.anUnExpectedError"), "negative");
+        notify(t(`${i18nKeyError}.anUnExpectedError`), "negative");
       }
       throw err;
     }
@@ -153,7 +155,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         status: 1
       });
 
-      notify(t("auth.emailMessages.emailSentSuccessfully"), "positive");
+      notify(t(`${i18nKeyError}.emailMessages.emailSentSuccessfully`), "positive");
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
 
       return response;
@@ -162,16 +164,16 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         if (err.response?.status === 400) {
           switch (err.response?.data) {
             case "email_already_exists":
-              notify(t("errors.emialAreadyExists"), "negative");
+              notify(t(`${i18nKeyError}.emialAreadyExists`), "negative");
               break;
             case "something_went_wrong":
-              notify(t("errors.anErrorOccured"), "negative");
+              notify(t(`${i18nKeyError}.anErrorOccured`), "negative");
               break;
             default:
-              notify(t("errors.anUnExpectedError"), "negative");
+              notify(t(`${i18nKeyError}.anUnExpectedError`), "negative");
           }
         } else {
-          notify(t("errors.anUnExpectedError"), "negative");
+          notify(t(`${i18nKeyError}.anUnExpectedError`), "negative");
         }
       } else {
         notify((err as Error).message, "negative");
@@ -182,7 +184,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
 
   async function sendOtp(userName: string) {
     try {
-      await axios.post(`/MemberAuth/SendOtp/${userName}`);
+      await api.create(`${ENTITY_URL.SEND_OTP}/${userName}`);
     } catch (err) {
       throw err;
     }
