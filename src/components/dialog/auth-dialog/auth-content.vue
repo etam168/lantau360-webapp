@@ -19,10 +19,21 @@
                 v-if="item.type === 'password'"
                 :name="item.name"
                 :label="item.label"
+                class="q-mb-sm"
               />
 
-              <vee-input v-else-if="item.type === 'input'" :name="item.name" :label="item.label" />
-              <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" />
+              <vee-input
+                v-else-if="item.type === 'input'"
+                :name="item.name"
+                :label="item.label"
+                class="q-mb-sm"
+              />
+
+              <vee-q-tel-input
+                v-else-if="item.type === 'phone'"
+                :name="item.name"
+                class="q-mb-sm"
+              />
 
               <app-button
                 v-else-if="item.type === 'submit'"
@@ -58,17 +69,20 @@
 
   // Props
   const { mode } = defineProps<{
-    mode?: AuthMode;
+    mode: AuthMode;
   }>();
+
+  const renderMode = ref(mode);
 
   const { t } = useI18n({ useScope: "global" });
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
-    useAuthService();
+    useAuthService(renderMode!);
 
-  const { handleSubmit } = useForm({
-    initialValues,
-    validationSchema: schema
-  });
+  const { handleSubmit } = useForm();
+  //   {
+  //   initialValues,
+  //   validationSchema: schema
+  // }
 
   const $q = useQuasar();
   const form = ref();
@@ -80,8 +94,6 @@
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "100%" }
   );
-
-  const renderMode = ref(mode);
 
   const renderItems = computed<SubField[]>(() => {
     const getItems = (): SubField[] => {
@@ -123,7 +135,10 @@
     const { validate } = form.value;
     const result = await validate();
 
+    alert("submiot");
+
     if (result.valid) {
+      alert("validate");
       loading.value = true;
       error.value = false;
 
@@ -158,11 +173,14 @@
     }
   }
 
-  async function handleClick(itemName: string) {
+  function handleClick(itemName: string) {
     switch (itemName) {
       case "forgotPassword":
+        alert("forgotPassword");
         renderMode.value = "sendOtp";
+        // submitForm();
         handleSubmit(onSubmit)();
+        //form.value.submitForm();
         break;
 
       case "signIn":

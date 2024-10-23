@@ -9,9 +9,11 @@ import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
 import i18n from "@/plugins/i18n/i18n";
 
 const { notify } = useUtilities();
-const { t } = i18n.global;
 const { api } = useApi();
 
+const { t } = i18n.global;
+
+// export function useAuthService() {
 export function useAuthService(renderMode: Ref<AuthMode>) {
   const userStore = useUserStore();
 
