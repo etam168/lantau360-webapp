@@ -3,7 +3,7 @@
     <q-card-section :style="$q.screen.gt.xs ? 'width: 300px' : 'width : 100%'">
       <q-img :src="IMAGES.CHECK_IN" />
       <q-item-label style="font-weight: 600" class="text-caption text-grey-8 text-center q-mt-sm">
-        {{ $t("auth.login.checkInCaption") }}
+        {{ $t("auth.label.checkInCaption") }}
       </q-item-label>
       <q-card-actions class="q-px-none no-wrap">
         <!-- <div class="row"> -->
@@ -18,7 +18,7 @@
 
         <app-button
           class="full-width"
-          :label="$t('auth.login.button')"
+          :label="$t('auth.button.login')"
           color="primary"
           type="submit"
           @click="showLoginDialog"

@@ -38,16 +38,13 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
 
       case "register":
         return object({
-          userName: string()
-            .email(t(`${i18nKey}.invalidUserName`))
-            .required(t(`${i18nKey}.userNameRequired`)),
           email: string()
             .email(t(`${i18nKey}.invalidEmail`))
             .required(t(`${i18nKey}.emailRequired`))
             .max(255, t(`${i18nKey}.emailExceedLimit`)),
           password: string()
             .required(t(`${i18nKey}.password`))
-            .min(8, t(`${i18nKey}.passwordMinLength`, { length: 8 })),
+            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 })),
           firstName: string().required(t(`${i18nKey}.firstName`)),
           lastName: string().required(t(`${i18nKey}.lastName`)),
           phone: string().required(t(`${i18nKey}.phone`))
@@ -132,7 +129,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         otp: otp
       });
 
-      notify(t("auth.login.passwordResetSuccessfully"), "positive");
+      notify(t("auth.label.passwordResetSuccessfully"), "positive");
       return response.data;
     } catch (err) {
       if (err instanceof AxiosError) {

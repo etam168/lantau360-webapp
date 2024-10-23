@@ -152,7 +152,7 @@
         }
       } catch (error) {
         // Handle all errors here
-        alert(error);
+
         console.error("An error occurred:", error);
 
         //renderMode.value = renderMode.value == "sendOtp" ? "login" : renderMode.value;
@@ -172,6 +172,11 @@
 
       case "signIn":
         renderMode.value = "login";
+        handleSubmit(onSubmit)();
+        break;
+
+      case "register":
+        renderMode.value = "register";
         handleSubmit(onSubmit)();
         break;
       // Other cases to be added
