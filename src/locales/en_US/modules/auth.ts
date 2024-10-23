@@ -56,7 +56,7 @@ export default {
     emailExceedLimit: "Email must not exceed 255 characters",
     firstName: "First Name is Required",
     lastName: "Last Name is Required",
-    phone: "Phone is Required",
+    phoneRequired: "Phone is Required",
     password: "Password is Required",
     passwordMinLength: "Password must be at least 8 characters",
     otpRequired: "OTP is Required",

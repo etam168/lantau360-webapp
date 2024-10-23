@@ -1,68 +1,64 @@
 export default {
+  button: {
+    forgotPassword: "忘記密碼",
+    login: "登入",
+    joinNow: "立即加入",
+    register: "註冊",
+    resetPassword: "重設密碼",
+    signIn: "登入"
+  },
+
+  label: {
+    email: "電子郵件 (登入用)",
+    firstName: "名字",
+    lastName: "姓氏",
+    otp: "一次性密碼",
+    newPassword: "新密碼",
+    password: "密碼",
+    registerPassword: "密碼",
+    userName: "用戶名 (電子郵件)"
+  },
+
   login: {
     button: "登入",
-    checkInCaption: "For checkIn please signIn first",
-    newAccount: "之前沒有帳戶嗎？",
+    checkInCaption: "要進行簽到，請先登入",
+    newAccount: "還沒有帳戶？",
     password: "密碼",
     register: "註冊",
-    userName: "使用者名稱",
+    userName: "用戶名",
     oldPassword: "舊密碼",
     newPassword: "新密碼",
     forgotPassword: "忘記密碼",
     submit: "提交",
     logout: "登出",
-    successFulLoginMessage: "Login successful",
-    pleaseCheckMails:
-      "Please check your mails, If you havn't received an email then please contact the administrator"
-  },
-
-  register: {
-    login: "登入",
-    joinNow: "立即加入",
-    alias: "別名",
-    firstName: "名字",
-    lastName: "姓氏",
-    name: "名稱",
-    email: "電子郵件",
-    register: "註冊",
-    phone: "電話",
-    password: "密碼",
-    confirm: "確認密碼",
-    sex: "性別",
-    ageGroup: "年齡組別",
-    haveAccount: "已經有帳戶？"
+    successFulLoginMessage: "登入成功",
+    pleaseCheckMails: "請檢查您的郵件。如果沒有收到郵件，請聯繫管理員。",
+    passwordResetSuccessfully: "密碼重設成功"
   },
 
   emailMessages: {
-    tokenOrUseridMissing: "Invalid link, please resend the link to verify",
-    invalidUser: "Invalid data, please provide the correct data",
-    invalidToken: "Invalid link, please resend the link to verify",
-    tokenExpired: "The link has expired, please try with a new link",
-    emailConfirmationFailed: "Email confirmation failed, please try with a new link",
-    emailSendFailed: "Unable to send email, please try again",
-    emailSentSuccessfully: "Please check your email for the confirmation link",
-    emailAlreadyVerified: "Your email is already verified",
-    confimationSucessfull:
-      "Thank you for verifying your email address.\nYour email has been successfully verified."
-  },
-
-  forgotPassword: {
-    otp: "驗證碼",
-    update: "更新密碼",
-    otpMessage: "Otp sent to your email"
+    tokenOrUseridMissing: "連結無效，請重新發送驗證連結",
+    invalidUser: "資料無效，請提供正確的資料",
+    invalidToken: "連結無效，請重新發送驗證連結",
+    tokenExpired: "連結已過期，請重新取得新的連結",
+    emailConfirmationFailed: "電子郵件確認失敗，請重試",
+    emailSendFailed: "無法發送電子郵件，請再試一次",
+    emailSentSuccessfully: "請檢查您的電子郵件以取得確認連結",
+    emailAlreadyVerified: "您的電子郵件已經驗證",
+    confimationSucessfull: "感謝您驗證您的電子郵件地址。\n您的電子郵件已成功驗證。"
   },
 
   schema: {
     invalidEmail: "電子郵件無效",
-    emailRequired: "電子郵件是必填項",
-    emailExceedLimit: "電子郵件不得超過255個字符",
-    firstName: "名字是必填項",
-    lastName: "姓氏是必填項",
-    phone: "電話是必填項",
-    password: "密碼是必填項",
-    passwordMinLength: "密碼至少需要8個字符",
-    otpRequired: "OTP是必填項",
-    userNameRequired: "電子郵件是必填項",
+    emailRequired: "必須填寫電子郵件",
+    emailExceedLimit: "電子郵件長度不可超過255個字元",
+    firstName: "必須填寫名字",
+    lastName: "必須填寫姓氏",
+    phoneRequired: "必須填寫電話號碼",
+    password: "必須填寫密碼",
+    passwordMinLength: "密碼長度至少為8個字元",
+    otpRequired: "必須填寫一次性密碼",
+    userNameRequired: "必須填寫電子郵件",
     invalidUserName: "用戶名無效"
   }
 };

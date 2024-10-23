@@ -31,7 +31,7 @@ export function useAuthService() {
       .max(255, t("auth.schema.emailExceedLimit")),
     firstName: string().required(t("auth.schema.firstName")),
     lastName: string().required(t("auth.schema.lastName")),
-    phone: string().required(t("auth.schema.phone")),
+    phone: string().required(t("auth.schema.phoneRequired")),
     userName: string()
       .email(t("auth.schema.invalidUserName"))
       .required(t("auth.schema.userNameRequired")),
