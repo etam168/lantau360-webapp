@@ -13,7 +13,9 @@
       style="max-width: 640px"
     >
       <q-page-container>
-        <auth-detail-content :mode />
+        <q-page class="column items-center justify-center">
+          <auth-content :mode />
+        </q-page>
       </q-page-container>
     </q-layout>
   </q-dialog>
@@ -26,7 +28,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import AuthDetailContent from "./auth-content.vue";
+  import AuthContent from "./auth-content.vue";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);

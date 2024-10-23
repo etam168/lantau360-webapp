@@ -15,6 +15,7 @@ export function useAuthService() {
   const userStore = useUserStore();
 
   const initialValues = ref({
+    email: "",
     userName: "",
     password: "",
     firstName: "",

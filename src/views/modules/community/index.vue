@@ -17,7 +17,7 @@
 
   const entityKey: EntityURLKey = "COMMUNITY";
   const MainPage = defineAsyncComponent({
-    loader: () => import("./main-page.vue"),
-    delay: 500
+    loader: () => import("./main-page.vue")
+    // delay: 500
   });
 </script>

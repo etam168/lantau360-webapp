@@ -21,13 +21,20 @@
                 :label="item.label"
               />
 
-              <app-button v-else-if="item.type === 'submit'" :label="item.label" type="submit" />
               <vee-input v-else-if="item.type === 'input'" :name="item.name" :label="item.label" />
               <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" />
 
-              <div v-else-if="item.type === 'flatButton'">
-                <app-button-flat :label="item.label" @click="handleClick(item.name)" />
-              </div>
+              <app-button
+                v-else-if="item.type === 'submit'"
+                :label="$t(`${i18nKey}.button.${item.name}`)"
+                type="submit"
+              />
+
+              <app-button-auth-flat
+                v-else-if="item.type === 'flatButton'"
+                :label="$t(`${i18nKey}.button.${item.name}`)"
+                @click="handleClick(item.name)"
+              />
             </q-item-section>
           </q-item>
 
@@ -44,23 +51,28 @@
   import type { SubField } from "@/interfaces/types/form-structure-types";
 
   // Composables
-  import { Form } from "vee-validate";
+  import { Form, useForm } from "vee-validate";
 
   // Emits
-  const emits = defineEmits(["close-dialog", "on-forgotPassword", "on-login-success"]);
+  const emits = defineEmits(["close-dialog"]);
 
   // Props
   const { mode } = defineProps<{
     mode?: AuthMode;
   }>();
 
+  const { t } = useI18n({ useScope: "global" });
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService();
+
+  const { handleSubmit } = useForm({
+    initialValues,
+    validationSchema: schema
+  });
 
   const $q = useQuasar();
   const form = ref();
   const loading = ref(false);
-  const resendEmaiLoading = ref(false);
   const message = ref("");
   const i18nKey = "auth";
   const error = ref(false);
@@ -76,7 +88,7 @@
       switch (renderMode.value) {
         case "register":
           return [
-            { name: "userName", type: "input" },
+            { name: "email", type: "input" },
             { name: "firstName", type: "input" },
             { name: "lastName", type: "input" },
             { name: "phone", type: "phone" },
@@ -86,8 +98,9 @@
         case "reset":
           return [
             { name: "otp", type: "input" },
-            { name: "password", type: "password" },
-            { name: "resetPassword", type: "submit" }
+            { name: "newPassword", type: "password" },
+            { name: "resetPassword", type: "submit" },
+            { name: "signIn", type: "flatButton" }
           ];
         default:
           // Default is login
@@ -95,25 +108,20 @@
             { name: "userName", type: "input" },
             { name: "password", type: "password" },
             { name: "signIn", type: "submit" },
-            { name: "forgetPassword", type: "flatButton" }
+            { name: "forgotPassword", type: "flatButton" }
           ];
       }
     };
 
     return getItems().map(item => ({
       ...item,
-      label: `${i18nKey}.${item.name}`
+      label: t(`${i18nKey}.label.${item.name}`)
     }));
   });
 
   async function onSubmit(values: Record<string, any>) {
-    if (resendEmaiLoading.value) {
-      return;
-    }
-
     const { validate } = form.value;
     const result = await validate();
-    const savedMode = renderMode.value;
 
     if (result.valid) {
       loading.value = true;
@@ -139,9 +147,11 @@
         }
       } catch (error) {
         // Handle all errors here
-        renderMode.value = savedMode;
+        alert(error);
         console.error("An error occurred:", error);
-        // You can add more specific error handling here if needed
+
+        renderMode.value = renderMode.value == "sendOtp" ? renderMode.value : "login";
+        // Add more specific error handling here if needed
       } finally {
         loading.value = false;
       }
@@ -150,9 +160,13 @@
 
   async function handleClick(itemName: string) {
     switch (itemName) {
-      case "forgetPassword":
+      case "forgotPassword":
         renderMode.value = "sendOtp";
-        form.value.submitForm();
+        handleSubmit(onSubmit)();
+        break;
+
+      case "signIn":
+        renderMode.value = "login";
         break;
       // Other cases to be added
     }

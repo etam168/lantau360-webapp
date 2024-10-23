@@ -20,6 +20,6 @@
   // Async Component
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
-    delay: 100
+    delay: 0
   });
 </script>

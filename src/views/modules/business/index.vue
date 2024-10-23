@@ -17,7 +17,7 @@
 
   const entityKey: EntityURLKey = "BUSINESS";
   const MainPage = defineAsyncComponent({
-    loader: () => import("./main-page.vue"),
-    delay: 100
+    loader: () => import("./main-page.vue")
+    // delay: 100
   });
 </script>

@@ -163,19 +163,19 @@
   }
 
   onMounted(() => {
-    $q.notify({
-      message: "Install App",
-      color: "primary",
-      actions: [
-        {
-          label: "Install",
-          color: "white",
-          handler: () => {
-            handleInstall();
-          }
-        }
-      ]
-    });
+    // $q.notify({
+    //   message: "Install App",
+    //   color: "primary",
+    //   actions: [
+    //     {
+    //       label: "Install",
+    //       color: "white",
+    //       handler: () => {
+    //         handleInstall();
+    //       }
+    //     }
+    //   ]
+    // });
 
     eventBus.on("refresh-transaction-data", () => {
       fetchTransactionData();

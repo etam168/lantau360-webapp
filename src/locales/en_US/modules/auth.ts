@@ -1,4 +1,24 @@
 export default {
+  button: {
+    forgotPassword: "Forgot Password",
+    login: "Sign in",
+    joinNow: "Join now",
+    register: "Register",
+    resetPassword: "Reset Password",
+    signIn: "Sign in"
+  },
+
+  label: {
+    email: "Email (For Logon)",
+    firstName: "First Name",
+    lastName: "Last Name",
+    otp: "One Time Password",
+    newPassword: "New Password",
+    password: "Password",
+    registerPassword: "Password",
+    userName: "User Name (Email)"
+  },
+
   login: {
     button: "Sign in",
     checkInCaption: "For checkIn please signIn first",
@@ -17,23 +37,6 @@ export default {
     passwordResetSuccessfully: "Password reset successfully"
   },
 
-  register: {
-    login: "Sign in",
-    joinNow: "Join now",
-    alias: "Alias",
-    firstName: "First Name",
-    lastName: "Last Name",
-    name: "名稱",
-    email: "Email",
-    register: "Register",
-    phone: "Phone",
-    password: "Password",
-    confirm: "確認密碼",
-    sex: "性別",
-    ageGroup: "年齡組別",
-    haveAccount: "Already have an account? "
-  },
-
   emailMessages: {
     tokenOrUseridMissing: "Invalid link, please resend the link to verify",
     invalidUser: "Invalid data, please provide the correct data",
@@ -45,11 +48,5 @@ export default {
     emailAlreadyVerified: "Your email is already verified",
     confimationSucessfull:
       "Thank you for verifying your email address.\nYour email has been successfully verified."
-  },
-
-  forgotPassword: {
-    otp: "Otp",
-    update: "Update Password",
-    otpMessage: "Otp sent to your email"
   }
 };
