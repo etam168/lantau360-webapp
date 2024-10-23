@@ -31,7 +31,7 @@ export default {
     lastName: "姓氏为必填项",
     otpRequired: "一次性密码为必填项",
     password: "密码为必填项",
-    passwordMinLength: "密码长度必须至少为 8 个字符",
+    passwordMinLength: "密码长度必须至少为 6 个字符",
     phoneRequired: "电话号码为必填项",
     userNameRequired: "您的电子邮件地址为必填项!!"
   }

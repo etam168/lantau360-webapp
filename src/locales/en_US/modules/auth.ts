@@ -31,7 +31,7 @@ export default {
     lastName: "Last Name is Required",
     otpRequired: "OTP is Required",
     password: "Password is Required",
-    passwordMinLength: "Password must be at least 8 characters",
+    passwordMinLength: "Password must be at least 6 characters",
     phoneRequired: "Phone is Required",
     userNameRequired: "Your Email address is Required!!"
   }

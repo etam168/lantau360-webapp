@@ -23,7 +23,6 @@
 </template>
 
 <script setup lang="ts">
-  import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   import { useGeolocation } from "@vueuse/core";
   import * as geolib from "geolib";
 
@@ -36,7 +35,7 @@
   import { Content } from "@/interfaces/models/entities/content";
 
   // .ts files
-  import { EntityURLKey, TEMPLATE, URL, RENDERER } from "@/constants";
+  import { EntityURLKey, ENTITY_URL, TEMPLATE, URL, RENDERER } from "@/constants";
 
   // UI Components
   import ContactSection from "./renderer/contact-section.vue";
@@ -73,7 +72,9 @@
       switch (entityKey) {
         case "SITE":
           await loadData(`${URL.SITE_GALLERY}/${(category as SiteView).siteId}`);
-          await loadMemberCheckInDetail();
+          if (userStore.isUserLogon()) {
+            await loadMemberCheckInDetail();
+          }
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
@@ -114,7 +115,7 @@
       const [memberConfigRes, checkInDataRes] = await Promise.all([
         fetchData<Content>(URL.MEMBER_CONFIG),
         fetchData<CheckIn>(
-          `${URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`
+          `${ENTITY_URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`
         )
       ]);
 
@@ -206,29 +207,7 @@
 
       case false:
         // Notify the user to log in
-        $q.notify({
-          message: "Please login first to check in.",
-          color: "negative",
-          position: "center",
-          icon: fasTriangleExclamation,
-          actions: [
-            {
-              label: "Login",
-              color: "white bg-primary",
-              handler: () => {
-                $q.dialog({
-                  component: defineAsyncComponent(
-                    () => import("@/components/dialog/auth-dialog/index.vue")
-                  ),
-                  componentProps: {
-                    mode: "login"
-                  }
-                });
-              }
-            }
-          ],
-          timeout: Math.random() * 100000
-        });
+        handleLoginAlert();
         break;
 
       default:
@@ -317,15 +296,15 @@
     const props = { entityId: category.siteId, entityKey: entityKey };
 
     handleOpenDialog(props, isDialogOpen.value, ["CHECKIN"], "CHECKIN");
-    // $q.dialog({
-    //   component: defineAsyncComponent(
-    //     () => import("@/components/dialog/check-in-items-dialog/index.vue")
-    //   ),
-    //   componentProps: {
-    //     category: category,
-    //     entityKey: entityKey
-    //   }
-    // });
+  }
+
+  function handleLoginAlert() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
+      componentProps: {
+        mode: "login"
+      }
+    });
   }
 
   function getSiteTemplate() {

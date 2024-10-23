@@ -44,23 +44,23 @@
   import * as yup from "yup";
   import i18n from "@/plugins/i18n/i18n";
 
-  import InputTemplate from "./sections/input-template.vue";
-import { EntityURLKey } from "@/constants";
-import { BusinessView } from "@/interfaces/models/views/business-view";
+  import { EntityURLKey } from "@/constants";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
-  // Props
+  //Emit
+  const emits = defineEmits(["on-cancel"]);
+
   // Props
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
   }>();
 
-  const { t } = i18n.global;
-  const { submitCheckIn } = useCheckInService();
-  const { eventBus } = useUtilities();
   const $q = useQuasar();
+  const { t } = i18n.global;
+  const { submitCheckIn, schema } = useCheckInService();
+  const { eventBus } = useUtilities();
 
-  const emits = defineEmits(["on-cancel"]);
   const initialValues = ref({
     description: ""
   });
@@ -69,21 +69,13 @@ import { BusinessView } from "@/interfaces/models/views/business-view";
   const i18nKey = "home";
   const form = ref();
 
-  const schema = yup.object({
-    description: yup
-      .string()
-      .required()
-      .label(t(`${i18nKey}.description`))
-  });
-
   // Computed property to get itemId based on item type
   const itemId = computed(() => {
     if (entityKey === "SITE") {
       return (category as SiteView).siteId;
     } else if (entityKey == "BUSINESS") {
-      return (category as BusinessView).businessId; 
-    }
-    else{
+      return (category as BusinessView).businessId;
+    } else {
       return 0;
     }
   });

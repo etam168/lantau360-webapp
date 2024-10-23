@@ -54,7 +54,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         return object({
           password: string()
             .required(t(`${i18nKey}.password`))
-            .min(8, t(`${i18nKey}.passwordMinLength`, { length: 8 })),
+            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 })),
           otp: string().required(t(`${i18nKey}.otpRequired`))
         });
 
@@ -66,7 +66,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
             .required(t(`${i18nKey}.userNameRequired`)),
           password: string()
             .required(t(`${i18nKey}.password`))
-            .min(8, t(`${i18nKey}.passwordMinLength`, { length: 8 }))
+            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 }))
         });
     }
   });

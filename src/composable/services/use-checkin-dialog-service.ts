@@ -1,5 +1,6 @@
 import axios from "axios";
 import i18n from "@/plugins/i18n/i18n";
+import { object, string } from "yup";
 
 // .ts files
 import { useUserStore } from "@/stores/user";
@@ -7,8 +8,14 @@ import { useUserStore } from "@/stores/user";
 const { notify } = useUtilities();
 const userStore = useUserStore();
 const { t } = i18n.global;
+const i18nKey = "home";
 
 export function useCheckInService() {
+  const schema = object({
+    description: string()
+      .required()
+      .label(t(`${i18nKey}.description`))
+  });
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
   }
@@ -38,6 +45,7 @@ export function useCheckInService() {
   }
 
   return {
+    schema,
     submitCheckIn,
     useCheckInService
   };
