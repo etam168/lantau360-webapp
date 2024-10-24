@@ -2,10 +2,16 @@ export default {
   button: {
     forgotPassword: "Forgot Password",
     login: "Sign in",
+    logon: "Log In",
     joinNow: "Join now",
     register: "Register",
     resetPassword: "Reset Password",
-    signIn: "Sign in"
+    signIn: "Go back to Sign in"
+  },
+
+  hint: {
+    otp: "(Step 1 - enter the one time password from your email)",
+    newPassword: "(Step 2 - enter your new password and click reset)"
   },
 
   label: {
@@ -16,7 +22,7 @@ export default {
     newPassword: "New Password",
     password: "Password",
     registerPassword: "Password",
-    userName: "User Name (Email)",
+    userName: "User Name",
     checkInCaption: "For checkIn please signIn first",
     passwordResetSuccessfully: "Password reset successfully",
     emailSentSuccessfully: "Please check your email for the confirmation link"
@@ -27,7 +33,7 @@ export default {
     emailExceedLimit: "Email must not exceed 255 characters",
     firstName: "First Name is Required",
     invalidEmail: "Email is invalid",
-    invalidUserName: "Username is invalid",
+    invalidUserName: "Please enter your email here",
     lastName: "Last Name is Required",
     otpRequired: "OTP is Required",
     password: "Password is Required",

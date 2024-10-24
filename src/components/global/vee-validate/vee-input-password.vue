@@ -8,10 +8,11 @@
     :dark="false"
     :error-message="errorMessage"
     :error="!!errorMessage"
+    :autocomplete="'new-password'"
   >
     <template v-slot:append>
       <q-icon
-        :name="showPassword ? fasEyeSlash : fasEye"
+        :name="showPassword ? fasEye : fasEyeSlash"
         class="cursor-pointer"
         @click="showPassword = !showPassword"
       />
@@ -37,3 +38,17 @@
     value: Ref<string | number | null | undefined>;
   };
 </script>
+
+<!-- <style>
+  input {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+  }
+</style> -->
+
+<!-- <style scoped>
+  :deep(input) {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+  }
+</style> -->

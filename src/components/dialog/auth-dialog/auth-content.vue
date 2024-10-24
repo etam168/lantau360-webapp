@@ -1,60 +1,63 @@
 <template>
-  <q-page class="column items-center justify-center">
-    <q-card class="bg-secondary" :style="authStyle" :flat="$q.screen.lt.sm">
-      <app-bar-dialog-close v-if="$q.screen.gt.xs" />
-      <app-auth-avatar class="q-my-md" />
+  <q-card class="bg-secondary" :style="authStyle" :flat="$q.screen.lt.sm">
+    <app-bar-dialog-close v-if="$q.screen.gt.xs" />
+    <app-auth-avatar class="q-my-md" />
 
-      <Form
-        ref="form"
-        class="full-height bg-transparent"
-        :initial-values="initialValues"
-        :validation-schema="schema"
-        @submit="onSubmit"
-        v-slot="{ meta, values }"
-      >
-        <q-list class="q-pa-md">
-          <q-item v-for="(item, index) in renderItems" :key="index" dense>
-            <q-item-section>
-              <vee-input-password
-                v-if="item.type === 'password'"
-                :name="item.name"
-                :label="item.label"
-                class="q-mb-sm"
-              />
+    <Form
+      ref="form"
+      class="full-height bg-transparent"
+      :initial-values="initialValues"
+      :validation-schema="schema"
+      @submit="onSubmit"
+      v-slot="{ meta, values }"
+    >
+      <q-list class="q-pa-md">
+        <q-item v-for="(item, index) in renderItems" :key="index" dense>
+          <q-item-section>
+            <vee-input-password
+              v-if="item.type === 'password'"
+              :name="item.name"
+              :label="item.label"
+              :hint="item.hint"
+              class="q-mb-md"
+            />
 
-              <vee-input
-                v-else-if="item.type === 'input'"
-                :name="item.name"
-                :label="item.label"
-                class="q-mb-sm"
-              />
+            <vee-input
+              v-else-if="item.type === 'input'"
+              :name="item.name"
+              :label="item.label"
+              :hint="item.hint"
+              class="q-mb-md"
+            />
 
-              <vee-q-tel-input
-                v-else-if="item.type === 'phone'"
-                :name="item.name"
-                class="q-mb-sm"
-              />
+            <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" class="q-mb-md" />
 
-              <app-button
-                v-else-if="item.type === 'submit'"
-                :label="$t(`${i18nKey}.button.${item.name}`)"
-                @click="handleClick(item.name)"
-              />
+            <app-button
+              v-else-if="item.type === 'submit'"
+              :label="item.label"
+              @click="handleClick(item.name)"
+            />
 
-              <!-- type="submit" -->
-              <app-button-auth-flat
-                v-else-if="item.type === 'flatButton'"
-                :label="$t(`${i18nKey}.button.${item.name}`)"
-                @click="handleClick(item.name)"
-              />
-            </q-item-section>
-          </q-item>
+            <app-button-timeout
+              v-else-if="item.type === 'timeoutButton'"
+              :label="item.label"
+              @timeout-expired="onTimeoutExpired"
+              @click="handleClick(item.name)"
+            />
 
-          <!-- <q-item-label v-if="error" class="text-red q-mt-md">{{ message }}</q-item-label> -->
-        </q-list>
-      </Form>
-    </q-card>
-  </q-page>
+            <app-button-auth-flat
+              v-else-if="item.type === 'flatButton'"
+              :label="item.label"
+              @click="handleClick(item.name)"
+            />
+          </q-item-section>
+        </q-item>
+
+        <!-- Filler to occupy space for small screen -->
+        <div v-if="$q.screen.lt.sm && renderMode != 'register'" style="height: 25vh"></div>
+      </q-list>
+    </Form>
+  </q-card>
 </template>
 
 <script setup lang="ts">
@@ -76,6 +79,7 @@
   const renderMode = ref(mode);
 
   const { t } = useI18n({ useScope: "global" });
+  const { eventBus } = useUtilities();
   const { handleSubmit } = useForm();
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode!);
@@ -86,7 +90,7 @@
   const i18nKey = "auth";
 
   const authStyle = computed(() =>
-    $q.screen.lt.sm ? { width: "100%", opacity: "100%" } : { width: "520px", opacity: "100%" }
+    $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }
   );
 
   const renderItems = computed<SubField[]>(() => {
@@ -103,17 +107,25 @@
           ];
         case "reset":
           return [
-            { name: "otp", type: "input" },
-            { name: "newPassword", type: "password" },
-            { name: "resetPassword", type: "submit" },
-            { name: "signIn", type: "flatButton" }
+            {
+              name: "otp",
+              type: "input",
+              hint: t(`${i18nKey}.hint.otp`)
+            },
+            {
+              name: "newPassword",
+              type: "password",
+              hint: t(`${i18nKey}.hint.newPassword`)
+            },
+            { name: "resetPassword", type: "timeoutButton" },
+            { name: "backToSignIn", type: "flatButton" }
           ];
         default:
           // Default is login
           return [
-            { name: "userName", type: "input" },
+            { name: "userName", type: "input", hint: "(Please enter your email)" },
             { name: "password", type: "password" },
-            { name: "signIn", type: "submit" },
+            { name: "logon", type: "submit" },
             { name: "forgotPassword", type: "flatButton" }
           ];
       }
@@ -121,7 +133,7 @@
 
     return getItems().map(item => ({
       ...item,
-      label: t(`${i18nKey}.label.${item.name}`)
+      label: item.label || t(`${i18nKey}.label.${item.name}`)
     }));
   });
 
@@ -145,17 +157,16 @@
             break;
           case "sendOtp":
             await sendOtp(values.userName);
-            renderMode.value = "reset";
+            eventBus.emit("otpSent", "reset");
+
+            //renderMode.value = "reset";
             break;
           default:
             throw new Error(`Unknown render mode: ${renderMode.value}`);
         }
       } catch (error) {
         // Handle all errors here
-
         console.error("An error occurred:", error);
-
-        //renderMode.value = renderMode.value == "sendOtp" ? "login" : renderMode.value;
         // Add more specific error handling here if needed
       } finally {
         loading.value = false;
@@ -170,16 +181,37 @@
         handleSubmit(onSubmit)();
         break;
 
-      case "signIn":
+      case "backToSignIn":
+        handleResetForm();
         renderMode.value = "login";
-        handleSubmit(onSubmit)();
         break;
 
       case "register":
-        renderMode.value = "register";
         handleSubmit(onSubmit)();
         break;
       // Other cases to be added
     }
+  }
+
+  function handleResetForm() {
+    if (form.value) {
+      form.value.resetForm();
+    }
+  }
+
+  onMounted(() => {
+    eventBus.on("otpSent", (mode: AuthMode) => {
+      alert("on otp change");
+
+      if (form.value) {
+        form.value.resetForm();
+      }
+      renderMode.value = mode;
+    });
+  });
+
+  function onTimeoutExpired() {
+    alert("timeout");
+    renderMode.value = "login";
   }
 </script>

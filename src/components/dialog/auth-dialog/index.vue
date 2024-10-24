@@ -9,9 +9,14 @@
   >
     <q-layout
       view="lHh lpr lFf"
+      container
       :class="{ 'bg-secondary': $q.screen.lt.sm }"
       style="max-width: 640px"
     >
+      <q-header v-if="$q.screen.lt.sm" bordered class="bg-transparent text-dark">
+        <app-toolbar-dialog-title />
+      </q-header>
+
       <q-page-container>
         <q-page class="column items-center justify-center">
           <auth-content :mode />

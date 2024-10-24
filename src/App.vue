@@ -60,3 +60,15 @@
     });
   });
 </script>
+
+<style lang="scss">
+  /*
+   * Global fix for password manager auto-fill interference
+   * Prevents password managers from applying unwanted background styles
+   * that can interfere with the application's input field styling
+   */
+  input {
+    background-clip: text !important;
+    -webkit-background-clip: text !important;
+  }
+</style>

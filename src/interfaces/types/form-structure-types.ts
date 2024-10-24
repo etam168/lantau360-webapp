@@ -7,6 +7,7 @@ export interface SubField {
   label?: string;
   maxlength?: number;
   type?: string;
+  hint?: string;
   icon?: string;
   side?: boolean;
   locale?: "En" | "Cn" | "Hk";

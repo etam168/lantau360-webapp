@@ -71,9 +71,9 @@
     }
   });
 
-  function handleInstall() {
-    alert("handleInstall");
-  }
+  // function handleInstall() {
+  //   alert("handleInstall");
+  // }
 
   const member = newMember;
 
@@ -182,5 +182,5 @@
     });
   });
 
-  fetchTransactionData();
+  // fetchTransactionData();
 </script>
