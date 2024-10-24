@@ -7,7 +7,6 @@
       ref="form"
       class="full-height bg-transparent"
       :initial-values="initialValues"
-      :validation-schema="schema"
       @submit="onSubmit"
       v-slot="{ meta, values }"
     >
@@ -138,6 +137,7 @@
   });
 
   async function onSubmit(values: Record<string, any>) {
+    alert(JSON.stringify(values));
     const { validate } = form.value;
     const result = await validate();
 
@@ -175,10 +175,12 @@
   }
 
   function handleClick(itemName: string) {
+    alert(itemName);
     switch (itemName) {
       case "forgotPassword":
+        onSubmit(form.value.values);
+        // handleSubmit(onSubmit)();
         renderMode.value = "sendOtp";
-        handleSubmit(onSubmit)();
         break;
 
       case "backToSignIn":
@@ -186,8 +188,15 @@
         renderMode.value = "login";
         break;
 
+      case "resetPassword":
+        onSubmit(form.value.values);
+        break;
+        
+      case "logon":
       case "register":
-        handleSubmit(onSubmit)();
+        alert("login");
+        onSubmit(form.value.values);
+        // handleSubmit(onSubmit)();
         break;
       // Other cases to be added
     }

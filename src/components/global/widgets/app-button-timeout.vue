@@ -41,7 +41,7 @@
 
       if (elapsed >= duration) {
         pause();
-        emit("timeout-expired");
+        // emit("timeout-expired");
       }
     },
     immediate: true
