@@ -89,7 +89,7 @@
   import { fasChevronLeft, fasChevronRight } from "@quasar/extras/fontawesome-v6";
 
   import { IMAGES } from "@/constants";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   const { getImageURL } = useUtilities();
   const props = defineProps({

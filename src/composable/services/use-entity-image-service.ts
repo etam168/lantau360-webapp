@@ -1,5 +1,5 @@
 import type { EntityImageService } from "@/interfaces/stores/entity-image-service";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import type { ImageUploadPayload } from "@/interfaces/types/image-upload-payload";
 import type { OperationMode } from "@/interfaces/types/operation-mode";
 

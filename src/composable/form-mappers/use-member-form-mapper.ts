@@ -11,7 +11,7 @@ import type { Member } from "@/interfaces/models/entities/member";
 import { CategoryTypes } from "@/interfaces/types/category-types";
 import type { MemberImage } from "@/interfaces/models/entities/member-image";
 import type { EntityFormMappers } from "@/interfaces/stores/entity-form-mappers";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { useMemberFormContents } from "./form-contents/use-member-form-contents";
 import typia from "typia";

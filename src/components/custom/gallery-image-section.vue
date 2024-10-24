@@ -7,7 +7,7 @@
 <script setup lang="ts">
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // .ts files
   import { TEMPLATE, URL } from "@/constants";

@@ -57,11 +57,11 @@
 </template>
 
 <script setup lang="ts">
-  import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // Composables
   import { useField } from "vee-validate";
-  // import { useTemplateRef } from "vue";
+  import { useTemplateRef } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
   import { VueDraggable } from "vue-draggable-plus";
   import { useImageFunctions } from "@/composable/use-image-functions";
@@ -80,7 +80,7 @@
   const { notify } = useUtilities();
 
   const currentEditingIndex = ref<number | null>(null);
-  const imageRef = ref("image");
+  const imageRef = useTemplateRef("image");
   const imagePath = ref();
   const isInEdit = ref(false);
   const maxImages = 27;

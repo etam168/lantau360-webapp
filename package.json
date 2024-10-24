@@ -79,8 +79,5 @@
     "vue-eslint-parser": "^9.4.3",
     "vue-tsc": "^2.1.6"
   },
-  "resolutions": {
-    "vue": "^3.4.15"
-  },
   "packageManager": "yarn@4.5.0"
 }

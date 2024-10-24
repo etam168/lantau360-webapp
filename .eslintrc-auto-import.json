@@ -339,6 +339,7 @@
     "usePostingFormMapper": true,
     "useImageFunctions": true,
     "useCheckinFormMapper": true,
-    "useCheckinFormContents": true
+    "useCheckinFormContents": true,
+    "useAuthServiceCopy": true
   }
 }

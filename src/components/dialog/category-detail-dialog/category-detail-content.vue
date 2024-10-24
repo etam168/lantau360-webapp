@@ -28,7 +28,7 @@
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { useUserStore } from "@/stores/user";
   import { CheckIn } from "@/interfaces/models/entities/checkin";

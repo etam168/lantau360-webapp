@@ -4,4 +4,5 @@ export interface Posting extends BaseDirectoryItem {
   postingId: number;
   postingName: string;
   memberId: number;
+  expiryDate: Date;
 }

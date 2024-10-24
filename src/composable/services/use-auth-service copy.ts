@@ -12,7 +12,7 @@ const { notify } = useUtilities();
 const { t } = i18n.global;
 const { api } = useApi();
 
-export function useAuthService(renderMode: Ref<AuthMode>) {
+export function useAuthServiceCopy(renderMode: Ref<AuthMode>) {
   const userStore = useUserStore();
 
   const initialValues = ref({

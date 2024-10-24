@@ -1,6 +1,6 @@
 // useEntityDataHandlingService.ts
 import { Dialog } from "quasar";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import { EntityURLKey } from "@/constants";
 
 export function useEntityDataHandlingService() {

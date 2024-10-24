@@ -43,7 +43,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
 <script setup lang="ts" generic="EntityT extends EntityType">
   // Types
-  import type { DatatableType } from "@/interfaces/types/datatable-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { EntityType } from "@/interfaces/types/entity-type";
 
   // Other import
@@ -66,7 +66,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   const emits = defineEmits(["close-dialog", "after-entity-updated"]);
 
   // Model
-  const row = defineModel<DatatableType>("row", { required: true });
+  const row = defineModel<CategoryTypes>("row", { required: true });
 
   // Props
   const { entityKey, entityOptions } = defineProps<{

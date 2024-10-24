@@ -41,6 +41,7 @@ declare module 'vue' {
     AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
+    GalleryImageCard: typeof import('./components/global/custom/gallery-image-card.vue')['default']
     GalleryImageList: typeof import('./components/global/custom/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/custom/language-select.vue')['default']
     MainPageSkeleton: typeof import('./components/global/custom/main-page-skeleton.vue')['default']

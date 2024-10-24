@@ -7,10 +7,9 @@
  */
 
 import type { Posting } from "@/interfaces/models/entities/posting";
-import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 import type { PostingImage } from "@/interfaces/models/entities/posting-image";
 import type { EntityFormMappers } from "@/interfaces/stores/entity-form-mappers";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { usePostingFormContents } from "./form-contents/use-posting-form-contents";
 import typia from "typia";
@@ -42,6 +41,7 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
       title: "",
       description: "",
       status: 1,
+      directoryId: 0,
       meta: {} // Keep this for any other metadata
     };
   }

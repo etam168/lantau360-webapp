@@ -3,7 +3,7 @@
 import type { CategoryTypes } from "../types/category-types";
 import type { EntityType } from "@/interfaces/types/entity-type";
 import type { FormStructure } from "../types/form-structure-types";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 export interface EntityFormMappers<
   T extends EntityType = EntityType,

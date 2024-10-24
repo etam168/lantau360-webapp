@@ -18,7 +18,7 @@
 <script setup lang="ts">
   // Type imports
   // import type { DatatableType } from "@/interfaces/types/datatable-types";
-  import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
   // import { newSiteImage } from "@/interfaces/models/entities/comm";
 

@@ -133,6 +133,7 @@ declare global {
   const useAsyncState: typeof import('@vueuse/core')['useAsyncState']
   const useAttrs: typeof import('vue')['useAttrs']
   const useAuthService: typeof import('./composable/services/use-auth-service')['useAuthService']
+  const useAuthServiceCopy: typeof import('./composable/services/use-auth-service copy')['useAuthServiceCopy']
   const useBase64: typeof import('@vueuse/core')['useBase64']
   const useBattery: typeof import('@vueuse/core')['useBattery']
   const useBluetooth: typeof import('@vueuse/core')['useBluetooth']
@@ -471,6 +472,7 @@ declare module 'vue' {
     readonly useAsyncState: UnwrapRef<typeof import('@vueuse/core')['useAsyncState']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuthService: UnwrapRef<typeof import('./composable/services/use-auth-service')['useAuthService']>
+    readonly useAuthServiceCopy: UnwrapRef<typeof import('./composable/services/use-auth-service copy')['useAuthServiceCopy']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>
     readonly useBluetooth: UnwrapRef<typeof import('@vueuse/core')['useBluetooth']>

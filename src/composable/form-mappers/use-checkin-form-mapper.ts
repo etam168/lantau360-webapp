@@ -8,7 +8,7 @@
 
 import type { CheckIn } from "@/interfaces/models/entities/checkin";
 import type { EntityFormMappers } from "@/interfaces/stores/entity-form-mappers";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-types";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import { NotImplementedException } from "@/helpers/not-implemented-exception";
 
 import { useCheckinFormContents } from "./form-contents/use-checkin-form-contents";
