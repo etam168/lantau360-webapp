@@ -36,7 +36,9 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
       checkInId: 0,
       memberId: 0,
       siteId: 0,
-      checkInfo: "",
+      checkInfo: {},
+      description: "",
+      checkInAt: new Date(),
       meta: {} // Keep this for any other metadata
     };
   }
@@ -51,11 +53,16 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
       return defaultValues;
     }
 
+    alert(JSON.stringify(row));
+
     return {
       ...defaultValues,
       ...Object.fromEntries(
         Object.entries(row).filter(([key]) => key in defaultValues && key !== "meta")
-      )
+      ),
+
+      description: row?.checkInfo?.description ?? null,
+      checkInAt: row?.checkInfo?.checkInAt ?? null
     };
   }
 
@@ -87,7 +94,14 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
       ...entityCopy,
       ...Object.fromEntries(
         Object.entries(formData).filter(([key]) => key in entityCopy && key !== "meta")
-      )
+      ),
+
+      checkInfo: [
+        {
+          checkInAt: formData.checkInAt,
+          description: formData.description
+        }
+      ]
 
       // meta: {} // Simplified meta handling for now
     };

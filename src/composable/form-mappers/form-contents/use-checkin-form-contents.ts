@@ -26,8 +26,8 @@ export function useCheckinFormContents() {
         fields: [
           // { name: "galleryImages", subFields: [{ name: "galleryImages", type: "avatar" }] },
           {
-            name: "checkInfo",
-            subFields: [{ name: "checkInfo", type: "textarea" }]
+            name: "description",
+            subFields: [{ name: "description", type: "textarea" }]
           }
         ]
       }

@@ -17,7 +17,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   >
     <q-card class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
-        <q-card-section class="q-pa-none">
+        <q-card-section class="q-py-lg q-px-sm">
           <entity-form-content
             v-if="isFormMapperLoaded"
             :entityKey
@@ -162,8 +162,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
       }
 
       initialValues.value = {
-        ...formMappers.value!.getInitialValues(undefined, initializationData),
-        ...initializationData
+        ...formMappers.value!.getInitialValues(undefined, undefined)
       };
     } catch (error) {
       console.error("Error loading form mapper:", error);
