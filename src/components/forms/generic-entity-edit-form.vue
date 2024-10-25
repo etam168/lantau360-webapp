@@ -9,13 +9,13 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 <template>
   <Form
     ref="form"
-    class="full-height"
     :initial-values="initialValues"
     :validation-schema="schema"
     @submit="handleSubmit"
     v-slot="{ meta }"
+    :style="entityKey === 'POSTING' ? 'width: 520px;' : ''"
   >
-    <q-card class="full-height" style="display: grid; grid-template-rows: 1fr auto">
+    <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         <q-card-section class="q-pa-none">
           <entity-form-content

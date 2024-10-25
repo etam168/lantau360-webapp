@@ -3,6 +3,7 @@ export default {
     forgotPassword: "Forgot Password",
     login: "Sign in",
     logon: "Log In",
+    logout: "Logout",
     joinNow: "Join now",
     register: "Register",
     resetPassword: "Reset Password",

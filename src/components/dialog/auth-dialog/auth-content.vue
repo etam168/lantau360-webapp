@@ -137,7 +137,6 @@
   });
 
   async function onSubmit(values: Record<string, any>) {
-    alert(JSON.stringify(values));
     const { validate } = form.value;
     const result = await validate();
 
@@ -191,7 +190,7 @@
       case "resetPassword":
         onSubmit(form.value.values);
         break;
-        
+
       case "logon":
       case "register":
         alert("login");

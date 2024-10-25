@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-transparent" flat style="height: calc(100vh - 32px)">
+  <q-card class="bg-transparent row justify-center" flat style="height: calc(100vh - 51px)">
     <!-- Edit form slot -->
 
     <component
@@ -21,12 +21,13 @@
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
   // import { newSiteImage } from "@/interfaces/models/entities/comm";
+  import { useUserStore } from "@/stores/user";
 
   // Component imports
   import GenericEntityEditForm from "@/components/forms/generic-entity-edit-form.vue";
 
   // Constant imports
-  import { ENTITY_URL, EntityURLKey, ImageURLKey, INPUT_PANE_WIDTH } from "@/constants";
+  import { ENTITY_URL, EntityURLKey, ImageURLKey } from "@/constants";
 
   // Emits
   const emit = defineEmits(["close-dialog"]);
@@ -37,26 +38,22 @@
     entityKey: EntityURLKey;
   }>();
 
-  //const entityName = useChangeCase(entityKey, "camelCase").value;
-  // const entityId = (row as any)[`${entityName}Id`];
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
-
   const supportedEntityTypes = ["POSTING"];
 
   // Composable function calls
-  const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
-  const { t } = useI18n({ useScope: "global" });
+  const { getEntityId, getEntityName } = useUtilities();
 
   const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
 
   // Reactive variables
-  const splitterModel = ref(INPUT_PANE_WIDTH);
   const rowData = ref({ ...row });
   const initialization = ref();
   const { fetchData } = useApi();
   const entityOptions = ref<Record<string, any>>({});
   const entityName = getEntityName(entityKey);
   const entityId = getEntityId(rowData.value, entityName);
+  const userStore = useUserStore();
 
   // const newImageMap = {
   //   POSTING: newSiteImage

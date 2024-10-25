@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-transparent" flat style="height: calc(100vh - 51px)">
+  <q-card class="bg-transparent row justify-center" flat style="height: calc(100vh - 51px)">
     <component
       v-if="supportedEntityTypes.includes(entityKey)"
       :is="GenericEntityCreateForm<EntityType>"

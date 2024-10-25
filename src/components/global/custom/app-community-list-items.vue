@@ -1,6 +1,6 @@
 <template>
-  <q-list>
-    <q-item v-for="(item, index) in communityItems" :key="index">
+  <q-list class="q-list q-px-md q-pt-md q-pb-none">
+    <q-item v-for="(item, index) in communityItems" :key="index" class="shadow-1 q-pa-sm q-mb-md">
       <q-item-section avatar>
         <q-avatar size="64px" circle>
           <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
@@ -44,7 +44,7 @@
   import { EntityURLKey } from "@/constants";
   import { PostingView } from "@/interfaces/models/views/posting-view";
 
-  const { getEntityName, getImageURL, translate } = useUtilities();
+  const { getImageURL, translate } = useUtilities();
 
   const emits = defineEmits(["on-category-detail"]);
 
@@ -55,10 +55,9 @@
   }>();
 
   const $q = useQuasar();
-  const entityName = getEntityName(entityKey);
 
   function line1(item: CategoryTypes) {
-    const name = `${entityName}Name` as keyof CategoryTypes;
+    const name = `title` as keyof CategoryTypes;
 
     return translate(item[name] as string, item.meta, name);
   }
@@ -68,7 +67,6 @@
   }
 
   function handleDetail(item: any) {
-    alert(JSON.stringify(item));
     emits("on-category-detail", item);
   }
 

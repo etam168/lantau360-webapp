@@ -14,8 +14,9 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     :initial-values="initialValues"
     :validation-schema="schema"
     @submit="handleSubmit"
+    style="width: 520px;"
   >
-    <q-card class="full-height" style="display: grid; grid-template-rows: 1fr auto">
+    <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         <q-card-section class="q-py-lg q-px-sm">
           <entity-form-content

@@ -2,6 +2,7 @@ export default {
   button: {
     forgotPassword: "忘記密碼",
     login: "登入",
+    logout: "登出",
     joinNow: "立即加入",
     register: "註冊",
     resetPassword: "重設密碼",
