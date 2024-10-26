@@ -1,43 +1,88 @@
-import { useCommunication } from "@/composable/use-communication";
-import { useUserStore } from "@/stores/user";
-import axios from "axios";
+// Third-party imports
+import { storeToRefs } from "pinia";
 
-const { refreshToken } = useCommunication();
-axios.defaults.baseURL = import.meta.env.VITE_API_URL;
+// Local imports
+import { useUserStore } from "@/stores/user";
+import { URL } from "@/constants";
 
 // Create a new axios instance
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_API_URL
 });
 
+// Helper function to check refresh token expiry time
+function isRefreshTokenExpired(refreshTokenExpiry: string | null): boolean {
+  if (!refreshTokenExpiry) return true;
+  return new Date() > new Date(refreshTokenExpiry);
+}
+// Helper function to refresh token
+async function refreshToken() {
+  const userStore = useUserStore();
+  const { api } = useApi();
+  const { notify } = useUtilities();
+  try {
+    const response = await api.create(`${URL.REFRESH_TOKEN}`, {
+      accessToken: userStore.expiredToken,
+      refreshToken: userStore.refreshToken
+    });
+    const { accessToken, tokenRefresh } = response.data;
 
-axios.interceptors.request.use(
-  async config => {
-    const userStore = useUserStore();
-    if (userStore.token) {
-      config.headers.Authorization = `Bearer ${userStore.token}`;
+    if (tokenRefresh !== userStore.refreshToken) {
+      userStore.setExpiredToken(accessToken);
+      userStore.setRefreshToken(tokenRefresh);
     }
-    // config.headers["X-API-Key"] = "Ab]~#>)*g^23WV|{<O[LJCz5Q6n}5bi%;PeeYHDC5iJm,OC2LcU]IBZyUB7e=T9";
+    userStore.setToken(accessToken);
+
+    return accessToken;
+  } catch (error) {
+    notify("Error refreshing token: " + error, "negative");
+    throw error;
+  }
+}
+
+// Request interceptor
+axiosInstance.interceptors.request.use(
+  config => {
+    const userStore = useUserStore();
+    const { eventBus } = useUtilities();
+    const { token, refreshTokenExpiry } = storeToRefs(userStore);
+
+    // Check if the refresh token is expired
+    if (refreshTokenExpiry.value) {
+      if (isRefreshTokenExpired(refreshTokenExpiry.value)) {
+        // eventBus("logOut").emit();
+        // Reject the request with a custom error
+        return Promise.reject(new Error("Session expired"));
+      }
+    }
+
+    alert("Interceptor: " + token.value);
+
+    if (token.value) {
+      config.headers.Authorization = `Bearer ${token.value}`;
+    }
     return config;
   },
-  error => {
-    return Promise.reject(error);
-  }
+  error => Promise.reject(error)
 );
 
-axios.interceptors.response.use(
-  response => {
-    return response;
-  },
+// Response interceptor
+axiosInstance.interceptors.response.use(
+  response => response,
   async error => {
-    if (error.response.status === 401 && !error.config._retry) {
-      error.config._retry = true;
+    const userStore = useUserStore();
+    const originalRequest = error.config;
+
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true;
       try {
-        const token = await refreshToken();
-        error.config.headers.Authorization = `Bearer ${token}`;
-        return axios.request(error.config);
+        const newToken = await refreshToken();
+        originalRequest.headers.Authorization = `Bearer ${newToken}`;
+        return axiosInstance(originalRequest);
       } catch (refreshError) {
-        // console.error("Error refreshing token:", refreshError);
+        console.error("Error refreshing token:", refreshError);
+        userStore.logout();
+        return Promise.reject(refreshError);
       }
     }
     return Promise.reject(error);

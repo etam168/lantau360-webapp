@@ -128,7 +128,6 @@ Supports validation, custom form structures, and integrates with a CRUD service.
         const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;
         newEntity.createdBy = userStore.userId;
         const entityCreated = await crudService.createEntity(newEntity);
-
         // Use switch statement for handling other data
         switch (true) {
           case "galleryImages" in values:
@@ -137,7 +136,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
             break;
           default:
             // default actions after created the entity
-            eventBus("LoadData").emit();
+            // eventBus("LoadData").emit();
             notify(t(`${entityName}.message.createSuccess`), "positive");
             emits("close-dialog", entityCreated);
             break;

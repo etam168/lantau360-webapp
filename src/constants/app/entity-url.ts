@@ -8,7 +8,7 @@ export const ENTITY_URL = {
   BUSINESS_DIRECTORIES: `/Directory/DirectoryGroupsData/2`,
   BUSINESS_PROMOTION: `/BusinessPromotion/Datatable`,
   BUSINESS_VOUCHER: `/BusinessVoucher/Datatable`,
-  CHECKIN: `/CheckIn`,
+  CHECKIN: `/CheckIn/AddCheckIn`,
   CHECKIN_BY_MEMBER: `/CheckIn/GetByMemberId`,
   COMMUNITY: `/Community`,
   COMMUNITY_EVENT_CURRENT: `/CommunityEvent/CommunityEventCurrent`,

@@ -23,7 +23,8 @@ export const useUserStore = defineStore("user", {
       availabelPoints: 0,
       pointsPerPost: 0,
       topUpPoints: 0,
-      currentMonthFreeTransactionCount: 0
+      currentMonthFreeTransactionCount: 0,
+      refreshTokenExpiry: null
     },
 
   actions: {
@@ -51,6 +52,7 @@ export const useUserStore = defineStore("user", {
     SetUserInfo(payload: any) {
       const resetFields: Array<string> = [
         "token",
+        "expiredToken",
         "refreshToken",
         "roles",
         "user",
@@ -64,13 +66,21 @@ export const useUserStore = defineStore("user", {
         "code",
         "totalPoints",
         "spendPoints",
-        "availabelPoints"
+        "availabelPoints",
+        "refreshTokenExpiry"
       ];
 
       if (payload.logout) {
         resetFields.forEach(field => (this[field] = ""));
       } else {
         resetFields.forEach(field => (this[field] = payload[field] || this[field]));
+
+        this.expiredToken = payload.token;
+
+         // Set refresh token expiry to 7 days from now
+         if (payload.refreshToken) {
+          this.setRefreshTokenWithExpiry();
+        }
       }
 
       usePermissionStore().GenerateRoutes(payload);
@@ -81,7 +91,28 @@ export const useUserStore = defineStore("user", {
     setPoints(perPostPoints: number, freeTopUpPoints: number) {
       this.pointsPerPost = perPostPoints;
       this.topUpPoints = freeTopUpPoints;
-    }
+    },
+
+    setToken(token: string) {
+      this.token = token;
+    },
+
+    setExpiredToken(expiredToken: string) {
+      this.expiredToken = expiredToken;
+    },
+
+    setRefreshToken(refreshToken: string) {
+      this.refreshToken = refreshToken;
+      this.setRefreshTokenWithExpiry();
+    },
+
+    setRefreshTokenWithExpiry() {
+      const expiryDate = new Date();
+      expiryDate.setDate(expiryDate.getDate() + 6);
+      this.refreshTokenExpiry = expiryDate.toISOString();
+    },
+
+
   },
 
   persist: true
