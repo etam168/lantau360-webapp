@@ -19,7 +19,7 @@
 
       <q-page-container>
         <q-page class="column items-center justify-center">
-          <auth-content :mode />
+          <auth-content :mode @close-dialog="handleCloseDialog"/>
         </q-page>
       </q-page-container>
     </q-layout>

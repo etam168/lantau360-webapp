@@ -87,6 +87,7 @@
   const form = ref();
   const loading = ref(false);
   const i18nKey = "auth";
+  const userName = ref();
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }
@@ -147,12 +148,15 @@
         switch (renderMode.value) {
           case "login":
             await loginRequest(values.userName, values.password);
+            emits("close-dialog");
             break;
           case "register":
             await registerRequest(values);
+            emits("close-dialog");
             break;
           case "reset":
-            await recoverPassword(values.userName, values.password, values.otp);
+            await recoverPassword(userName.value, values.password, values.otp);
+            emits("close-dialog");
             break;
           case "sendOtp":
             await sendOtp(values.userName);
@@ -174,11 +178,10 @@
   }
 
   function handleClick(itemName: string) {
-    alert(itemName);
     switch (itemName) {
       case "forgotPassword":
+        userName.value = form.value.values.userName;
         onSubmit(form.value.values);
-        // handleSubmit(onSubmit)();
         renderMode.value = "sendOtp";
         break;
 
@@ -193,9 +196,7 @@
 
       case "logon":
       case "register":
-        alert("login");
         onSubmit(form.value.values);
-        // handleSubmit(onSubmit)();
         break;
       // Other cases to be added
     }
@@ -209,7 +210,6 @@
 
   onMounted(() => {
     eventBus.on("otpSent", (mode: AuthMode) => {
-      alert("on otp change");
 
       if (form.value) {
         form.value.resetForm();
@@ -219,7 +219,6 @@
   });
 
   function onTimeoutExpired() {
-    alert("timeout");
     renderMode.value = "login";
   }
 </script>

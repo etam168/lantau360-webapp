@@ -1,21 +1,29 @@
+import { message } from "typia/lib/protobuf";
+
 export default {
   button: {
-    forgotPassword: "Forgot Password",
     login: "Sign in",
-    logon: "Log In",
     logout: "Logout",
     joinNow: "Join now",
-    register: "Register",
-    resetPassword: "Reset Password",
-    signIn: "Go back to Sign in"
   },
 
   hint: {
     otp: "(Step 1 - enter the one time password from your email)",
     newPassword: "(Step 2 - enter your new password and click reset)"
   },
+  
+  message: {
+    invalidUserPassword: "Invalid username or password.",
+    emailSentSuccessfully: "Please check your email for the confirmation link"
+
+  },
 
   label: {
+    register: "Register",
+    backToSignIn: "Go back to Sign in",
+    resetPassword: "Reset Password",
+    logon: "Log In",
+    forgotPassword: "Forgot Password",
     email: "Email (For Logon)",
     firstName: "First Name",
     lastName: "Last Name",
@@ -26,7 +34,6 @@ export default {
     userName: "User Name",
     checkInCaption: "For checkIn please signIn first",
     passwordResetSuccessfully: "Password reset successfully",
-    emailSentSuccessfully: "Please check your email for the confirmation link"
   },
 
   schema: {

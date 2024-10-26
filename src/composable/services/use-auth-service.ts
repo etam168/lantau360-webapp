@@ -151,11 +151,11 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         lastName: values.lastName,
         phone: values.phone,
         password: values.password,
-        userName: values.userName,
+        userName: values.email || values.userName,// Assuming email might be the same as userName
         status: 1
       });
 
-      notify(t(`${i18nKeyError}.emailMessages.emailSentSuccessfully`), "positive");
+      notify(t(`${i18nKey}.message.emailSentSuccessfully`), "positive");
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
 
       return response;
