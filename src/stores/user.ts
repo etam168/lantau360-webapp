@@ -88,11 +88,18 @@ export const useUserStore = defineStore("user", {
     isUserLogon() {
       return this.token ? true : false;
     },
-    setPoints(perPostPoints: number, freeTopUpPoints: number) {
+
+    setPoints(
+      perPostPoints: number,
+      freeTopUpPoints: number,
+      purchasePrice: number,
+      purchasePoints: number
+    ) {
       this.pointsPerPost = perPostPoints;
       this.topUpPoints = freeTopUpPoints;
+      this.purchasePrice = purchasePrice;
+      this.purchasePoints = purchasePoints;
     },
-
     setToken(token: string) {
       this.token = token;
     },
@@ -112,7 +119,17 @@ export const useUserStore = defineStore("user", {
       this.refreshTokenExpiry = expiryDate.toISOString();
     },
 
-
+    setPointsInfo(payload: {
+      total: number;
+      spend: number;
+      available: number;
+      currentMonthTransactionCount: number;
+    }) {
+      this.totalPoints = payload.total;
+      this.spendPoints = payload.spend;
+      this.availabelPoints = payload.available;
+      this.currentMonthFreeTransactionCount = payload.currentMonthTransactionCount;
+    }
   },
 
   persist: true

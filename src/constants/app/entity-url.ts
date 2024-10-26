@@ -20,6 +20,7 @@ export const ENTITY_URL = {
   MEMBER: "/Member",
   MEMBER_IMAGE: `/MemberImage`,
   MEMBER_BY_ID: `/Member/MemberById`,
+  MEMBER_POINTS: `/Member/GetMemberPoints`,
   MEMBER_CONFIG: "/Content/ContentByName/MemberConfig",
   MEMBER_TRANSACTIONS: `/Transaction/MemberTransactions`,
   MEMBER_RECENT_TRANSACTIONS: `/Transaction/MemberRecentTransactions`,

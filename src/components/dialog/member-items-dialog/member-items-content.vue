@@ -38,6 +38,7 @@
   import type { Member } from "@/interfaces/models/entities/member";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Transaction } from "@/interfaces/models/entities/transaction";
+  import { useUserStore } from "@/stores/user";
 
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
@@ -49,6 +50,7 @@
     points?: Record<string, any>;
   }>();
 
+  const userStore = useUserStore();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
@@ -136,10 +138,12 @@
 
         case "TRANSACTION":
           // Fetch data from two different APIs concurrently
-          const [history, recent, mem] = await Promise.all([
+          const [history, recent, mem, memberPoints, memberConfig] = await Promise.all([
             fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
             fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${member.memberId}`),
-            fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${member.memberId}`)
+            fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${member.memberId}`),
+            fetchData(`${ENTITY_URL.MEMBER_POINTS}/${member.memberId}`),
+            fetchData(`${ENTITY_URL.MEMBER_CONFIG}`)
           ]);
 
           historyItems.value = history;
@@ -149,6 +153,17 @@
           entityData.value.history = history;
           entityData.value.recent = recent;
           entityData.value.member = mem;
+
+          const { total, spend, available, currentMonthTransactionCount } = memberPoints;
+          userStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
+
+          userStore.setPoints(
+            memberConfig.value?.meta.postPoint ?? 50,
+            memberConfig.value?.meta.requestFreePoints ?? 100,
+            memberConfig.value?.meta.purchsePrice ?? 100,
+            memberConfig.value?.meta.purchsePoints ?? 100
+          );
+
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }

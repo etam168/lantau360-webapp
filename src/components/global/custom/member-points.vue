@@ -6,14 +6,14 @@
         <div class="text-subtitle1">
           {{
             $t("more.profileSetting.availablePoints", {
-              availablePoints: 50
+              availablePoints: userStore.availabelPoints
             })
           }}
         </div>
         <div class="text-caption">
           {{
             $t("more.profileSetting.bythisTimeText", {
-              spentPoints: 50
+              spentPoints: userStore.spendPoints
             })
           }}
         </div>
@@ -33,6 +33,9 @@
 
 <script setup lang="ts">
   import { defineEmits } from "vue";
+  import { useUserStore } from "@/stores/user";
+
+  const userStore = useUserStore();
 
   const emit = defineEmits(["top-up-points"]);
 
