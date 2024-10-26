@@ -14,7 +14,8 @@ export default {
   
   message: {
     invalidUserPassword: "Invalid username or password.",
-    emailSentSuccessfully: "Please check your email for the confirmation link"
+    emailSentSuccessfully: "Please check your email for the confirmation link",
+    loginSuccessMessage:" Login successfully"
 
   },
 
