@@ -127,37 +127,37 @@
     }
   }
 
-  // async function PerformCheckIn() {
-  //   await checkRecentCheckInStatus();
+  async function PerformCheckIn() {
+    await checkRecentCheckInStatus();
 
-  //   if (timeUntilNextCheckIn.value > 0) {
-  //     $q.notify({
-  //       message: `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
-  //       color: "primary",
-  //       multiLine: true
-  //     });
-  //     return; // Exit if the user can't check in yet
-  //   }
+    if (timeUntilNextCheckIn.value > 0) {
+      $q.notify({
+        message: `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
+        color: "primary",
+        multiLine: true
+      });
+      return; // Exit if the user can't check in yet
+    }
 
-  //   await getDistanceToDestination();
-  //   if (distanceToDestination.value > 100) {
-  //     $q.notify({
-  //       message: "You must be under 100 meters of location for checkin",
-  //       color: "primary",
-  //       multiLine: true
-  //     });
-  //   } else {
-  //     $q.dialog({
-  //       component: defineAsyncComponent(
-  //         () => import("@/components/dialog/check-in-items-dialog/index.vue")
-  //       ),
-  //       componentProps: {
-  //         category: category,
-  //         entityKey: entityKey
-  //       }
-  //     });
-  //   }
-  // }
+    await getDistanceToDestination();
+    if (distanceToDestination.value > 100) {
+      $q.notify({
+        message: "You must be under 100 meters of location for checkin",
+        color: "primary",
+        multiLine: true
+      });
+    } else {
+      $q.dialog({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/check-in-items-dialog/index.vue")
+        ),
+        componentProps: {
+          category: category,
+          entityKey: entityKey
+        }
+      });
+    }
+  }
 
   async function getDistanceToDestination() {
     const { latitude: siteLatitude, longitude: siteLongitude } = category;
@@ -198,23 +198,23 @@
   const openCheckInDialog = () => {
     // Check if the user is logged in
     const isLoggedIn = userStore.isUserLogon(); // This will return true or false
-    handleCheckIn();
-    // switch (isLoggedIn) {
-    //   case true:
-    //     // PerformCheckIn();
-    //     handleCheckIn();
-    //     break;
+    // handleCheckIn();
+    switch (isLoggedIn) {
+      case true:
+        PerformCheckIn();
+        // handleCheckIn();
+        break;
 
-    //   case false:
-    //     // Notify the user to log in
-    //     handleLoginAlert();
-    //     break;
+      case false:
+        // Notify the user to log in
+        handleLoginAlert();
+        break;
 
-    //   default:
-    //     // This case should not happen, but just in case
-    //     console.error("Unexpected value for isLoggedIn");
-    //     break;
-    // }
+      default:
+        // This case should not happen, but just in case
+        console.error("Unexpected value for isLoggedIn");
+        break;
+    }
   };
 
   interface RenderItem {

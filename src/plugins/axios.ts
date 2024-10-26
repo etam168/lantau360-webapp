@@ -56,7 +56,6 @@ axiosInstance.interceptors.request.use(
       }
     }
 
-    alert("Interceptor: " + token.value);
 
     if (token.value) {
       config.headers.Authorization = `Bearer ${token.value}`;
