@@ -74,7 +74,7 @@
       tab.value = storedTab;
     }
 
-    eventBus.on("navigateToMore", () => {
+    eventBus("navigateToMore").on(() => {
       // Navigate to "/more" when the event is received
       navigateTo("/more", "more");
     });

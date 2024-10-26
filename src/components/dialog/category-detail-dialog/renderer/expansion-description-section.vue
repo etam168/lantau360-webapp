@@ -45,6 +45,7 @@
   function onBtnFavClick() {
     toggleItemFavStatus(category, isFavourite.value);
     isFavourite.value = !isFavourite.value;
-    eventBus.emit("favoriteUpdated", category);
+    eventBus("favoriteUpdated").emit(category);
+
   }
 </script>

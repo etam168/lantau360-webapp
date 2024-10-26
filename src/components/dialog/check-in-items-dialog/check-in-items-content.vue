@@ -86,8 +86,8 @@
         loading.value = true;
         const responseStatus = await submitCheckIn(itemId.value, values.description);
         if (responseStatus) {
-          eventBus.emit("refresh-directory-checkin-items");
-          eventBus.emit("close-check-in-dialog");
+          eventBus("refresh-directory-checkin-items").emit();
+          eventBus("close-check-in-dialog").emit();
         }
         loading.value = false;
       }

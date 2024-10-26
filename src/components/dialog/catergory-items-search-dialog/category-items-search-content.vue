@@ -70,11 +70,12 @@
   }
 
   onBeforeUnmount(() => {
-    eventBus.off("LoadData");
+    eventBus("LoadData").off(() => {
+    });
   });
 
   onMounted(() => {
-    eventBus.on("LoadData", () => {
+    eventBus("LoadData").on(() => {
       loadData({ pagination: pagination.value });
       onRefresh();
     });

@@ -177,7 +177,7 @@
     //   ]
     // });
 
-    eventBus.on("refresh-transaction-data", () => {
+    eventBus("refresh-transaction-data").on( () => {
       fetchTransactionData();
     });
   });

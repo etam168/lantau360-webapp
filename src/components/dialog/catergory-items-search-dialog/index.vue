@@ -61,13 +61,13 @@
   });
 
   onMounted(() => {
-    eventBus.on("SiteSearchDialog", () => {
+    eventBus("SiteSearchDialog").on(() => {
       isDialogVisible.value = false;
     });
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus.emit("DialogStatus", status, "SiteSearchDialog");
+    eventBus("DialogStatus").emit(status, "SiteSearchDialog");
   }
 </script>

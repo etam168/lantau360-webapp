@@ -21,8 +21,8 @@ import { BLOB_URL, EntityURLKey, IMAGES, STORAGE_KEYS } from "@/constants";
 import { date, EventBus, LocalStorage, Notify, Screen } from "quasar";
 import { ImageURLKey } from "@/constants/app/image-url";
 
-const eventBus = new EventBus();
-// const eventBus = (key: string) => useEventBus<any>(key);
+// const eventBus = new EventBus();
+const eventBus = (key: string) => useEventBus<any>(key);
 
 export function useUtilities() {
   const { t } = i18n.global;

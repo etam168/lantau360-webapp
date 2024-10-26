@@ -127,7 +127,7 @@
   };
 
   onMounted(() => {
-    eventBus.on("favoriteUpdated", item => {
+    eventBus("favoriteUpdated").on(item => {
       if ("siteId" in item) {
         siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as SiteView[];
       } else if ("businessId" in item) {

@@ -46,7 +46,7 @@
   const isDialogVisible = ref();
 
   onMounted(() => {
-    eventBus.on("BusinessPromotionDialog", () => {
+    eventBus("BusinessPromotionDialog").on(() => {
       isDialogVisible.value = false;
     });
   });

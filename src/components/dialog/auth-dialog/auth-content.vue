@@ -160,7 +160,9 @@
             break;
           case "sendOtp":
             await sendOtp(values.userName);
-            eventBus.emit("otpSent", "reset");
+            // eventBus.emit("otpSent", "reset");
+            eventBus("otpSent").emit("reset");
+
 
             //renderMode.value = "reset";
             break;
@@ -209,7 +211,7 @@
   }
 
   onMounted(() => {
-    eventBus.on("otpSent", (mode: AuthMode) => {
+    eventBus("otpSent").on((mode: AuthMode) => {
 
       if (form.value) {
         form.value.resetForm();

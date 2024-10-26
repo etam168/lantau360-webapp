@@ -96,7 +96,7 @@
   }
 
   onMounted(() => {
-    eventBus.on("DialogStatus", (status, emitter) => {
+    eventBus("DialogStatus").on((status, emitter) => {
       if (status) {
         dialogStack.value.push(emitter);
       } else {
@@ -108,7 +108,7 @@
   onBeforeRouteLeave((_to, _from, next) => {
     if (dialogStack.value.length > 0) {
       const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus.emit(emitter);
+      eventBus("").emit(emitter);
       dialogStack.value = dialogStack.value.filter(item => item != emitter);
 
       next(false);

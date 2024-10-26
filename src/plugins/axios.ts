@@ -50,7 +50,7 @@ axiosInstance.interceptors.request.use(
     // Check if the refresh token is expired
     if (refreshTokenExpiry.value) {
       if (isRefreshTokenExpired(refreshTokenExpiry.value)) {
-        // eventBus("logOut").emit();
+        eventBus("logOut").emit();
         // Reject the request with a custom error
         return Promise.reject(new Error("Session expired"));
       }

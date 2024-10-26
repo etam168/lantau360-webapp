@@ -52,7 +52,7 @@
   const i18nKey = "home";
 
   onMounted(() => {
-    eventBus.on("close-check-in-dialog", () => {
+    eventBus("close-check-in-dialog").on(() => {
       handleCancel();
     });
   });

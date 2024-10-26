@@ -136,7 +136,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
             break;
           default:
             // default actions after created the entity
-            // eventBus("LoadData").emit();
+            eventBus("LoadData").emit();
             notify(t(`${entityName}.message.createSuccess`), "positive");
             emits("close-dialog", entityCreated);
             break;
