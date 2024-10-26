@@ -147,15 +147,7 @@
         multiLine: true
       });
     } else {
-      $q.dialog({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/check-in-items-dialog/index.vue")
-        ),
-        componentProps: {
-          category: category,
-          entityKey: entityKey
-        }
-      });
+      handleCheckIn();
     }
   }
 
