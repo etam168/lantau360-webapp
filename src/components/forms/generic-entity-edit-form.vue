@@ -49,6 +49,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // Other import
   import { Form } from "vee-validate";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
+  import { useUserStore } from "@/stores/user";
 
   // Component
   import EntityFormContent from "@/components/forms/entity-form-content.vue";
@@ -77,6 +78,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // Composables and Store Instantiation
   const { t } = useI18n({ useScope: "global" });
   const { eventBus, notify } = useUtilities();
+  const userStore = useUserStore();
 
   // Reactive References
   const formMappersStore = useFormMappersStore();
@@ -106,6 +108,15 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
     if (result.valid) {
       try {
+        if (entityKey === "CHECKIN") {
+          values = {
+            ...values, // Spread existing values
+            siteId: entityId || 0, // Assign siteId from initializationData
+            memberId: userStore.userId || 0 // Assign memberId from userStore
+          };
+
+          console.log("Values after assignment:", values); // Log values after assignment
+        }
         const entity = formMappers.value!.prepareEntityRecord(row.value, values) as EntityT;
         await crudService.updateEntity(entityId, entity);
         // Use switch statement for handling galleryImages and avatarImage

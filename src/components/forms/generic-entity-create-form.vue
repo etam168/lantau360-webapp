@@ -14,7 +14,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     :initial-values="initialValues"
     :validation-schema="schema"
     @submit="handleSubmit"
-    style="width: 520px;"
+    style="width: 520px"
   >
     <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
@@ -112,21 +112,19 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
     if (result.valid && formMappers.value) {
       try {
-        if (entityKey === "CHECKIN") {
-          console.log("Assigning values.siteId from initializationData.category.siteId");
+        values = {
+          ...values,
+          [entityKey === "CHECKIN" ? "siteId" : "directoryId"]: entityId || 0
+        };
 
-          values = {
-            ...values, // Spread existing values
-            siteId: entityId || 0, // Assign siteId from initializationData
-            memberId: userStore?.userId || 0 // Assign memberId from userStore
-          };
-
-          console.log("Values after assignment:", values); // Log values after assignment
-        }
+        alert("Values after assignment:" + JSON.stringify(values));
 
         // Create the entity record
         const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;
         newEntity.createdBy = userStore.userId;
+        // Only set memberId if it exists, without direct assignment
+        "memberId" in newEntity && (newEntity.memberId = userStore.userId);
+
         const entityCreated = await crudService.createEntity(newEntity);
         // Use switch statement for handling other data
         switch (true) {
