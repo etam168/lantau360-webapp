@@ -1,112 +1,66 @@
 <template>
-  <q-list>
+  <q-list class="q-ma-md">
     <q-item
+      class="shadow-1 q-pa-md q-mb-md"
       clickable
       @click="handleDetail(item)"
-      v-for="(item, index) in categoryItems"
+      v-for="(item, index) in transactionItem"
       :key="index"
     >
       <q-item-section>
-        <q-item-label> {{ line1(item) }} </q-item-label>
-        <q-item-label> {{ line2(item) }} </q-item-label>
+        <q-item-label>{{ item.title }}</q-item-label>
+
+        <q-item-label v-if="item.directoryName !== null" caption>{{
+          item.directoryName + "   -  " + dateFormatter(item.createdAt)
+        }}</q-item-label>
+
+        <q-item-label v-else caption> {{ dateFormatter(item.createdAt) }}</q-item-label>
       </q-item-section>
 
       <q-item-section side>
-        <div class="q-gutter-sm">
-          <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-        </div>
+        <q-item-label :class="item.transactionType === 2 ? 'text-red' : ''">
+          {{ item.transactionType === 2 ? "-" + item.points : item.points }}</q-item-label
+        >
+        <q-item-label class="text-red" v-if="item.isPostExpired == true">{{
+          $t("more.profileSetting.expired")
+        }}</q-item-label>
       </q-item-section>
     </q-item>
   </q-list>
 </template>
 
 <script setup lang="ts">
-  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { EntityURLKey, STORAGE_KEYS, TEMPLATE } from "@/constants";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { LocalStorage } from "quasar";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
+  import { EntityURLKey } from "@/constants";
+  import { TransactionView } from "@/interfaces/models/views/trasaction-view";
+import { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const { getEntityName, getImageURL, translate } = useUtilities();
+  const { getEntityName, dateFormatter } = useUtilities();
 
-  const emits = defineEmits(["on-category-detail"]);
+  const emits = defineEmits(["on-member-detail"]);
 
   // Props
-  const {
-    categoryItems,
-    checkIns = [],
-    entityKey
-  } = defineProps<{
-    categoryItems: CategoryTypes[];
-    checkIns?: CheckIn[];
+  const { memberItems, entityKey } = defineProps<{
+    memberItems: CategoryTypes[];
     entityKey: EntityURLKey;
   }>();
 
   const entityName = getEntityName(entityKey);
 
+  const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[])
+
   const items = computed(() => {
     switch (entityKey) {
-      case "BUSINESS":
-        return ["business"];
-      case "SITE":
-        return ["site"];
+      case "POSTING":
+        return ["posting"];
       default:
         return ["N/A"];
     }
   });
 
-  const favoriteItems = computed((): CategoryTypes[] => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
-      case "SITE":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      default:
-        return [];
-    }
-  });
-
-  function line1(item: CategoryTypes) {
-    const name = `${entityName}Name` as keyof CategoryTypes;
-
-    return translate(item[name] as string, item.meta, name);
-  }
-
-  function line2(item: CategoryTypes) {
-    return translate(item.subtitle1, item.meta, "subtitle1");
-  }
-
-  const isCheckedIn = (item: CategoryTypes): boolean => {
-    if (entityKey == "SITE") {
-      return checkIns.some(
-        checkInItem => (checkInItem as CheckIn).siteId === (item as SiteView).siteId
-      );
-    }
-    return false;
-  };
-
-  const isFavoriteItem = (item: CategoryTypes): boolean => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return favoriteItems.value.some(
-          favItem => (favItem as BusinessView).businessId === (item as BusinessView).businessId
-        );
-      case "SITE":
-        return favoriteItems.value.some(
-          favItem => (favItem as SiteView).siteId === (item as SiteView).siteId
-        );
-      default:
-        return false;
-    }
-  };
-
   function handleDetail(item: any) {
-    emits("on-category-detail", item);
+    // emits("on-member-detail", item);
   }
 </script>

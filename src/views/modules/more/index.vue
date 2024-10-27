@@ -36,6 +36,7 @@
   const { handleOpenDialog } = useEntityDataHandlingService();
 
   const { openMemberItemDialog } = useMemberItemDialogService();
+  const { openTransactionItemDialog } = useTransactionItemDialogService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -57,8 +58,8 @@
           { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` },
           { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
           { name: "profile", type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
-          { name: "account", type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account` },
-          { name: "checkIn", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkin` }
+          { name: "account", type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account.title` },
+          { name: "checkIn", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkIn.title` }
         ];
 
       default:
@@ -89,7 +90,7 @@
         break;
 
       case "account":
-        handleMemberDialog("TRANSACTION", itemName);
+        handleTransactionDialog("TRANSACTION", itemName);
         break;
 
       case "checkIn":
@@ -109,6 +110,16 @@
       itemRefs.value[name] = el;
     }
   };
+
+  function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
+    isLoading.value = true;
+    member.memberId = userStore.userId;
+
+    if (!isDialogOpen.value) {
+      openTransactionItemDialog(isDialogOpen, member, entityKey);
+      resetItemLoading(itemName);
+    }
+  }
 
   function handleMemberDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
@@ -177,7 +188,7 @@
     //   ]
     // });
 
-    eventBus("refresh-transaction-data").on( () => {
+    eventBus("refresh-transaction-data").on(() => {
       fetchTransactionData();
     });
   });
