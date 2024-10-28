@@ -72,7 +72,7 @@
 
   // Composables
   import { LocalStorage } from "quasar";
-import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 
   // Props
   const { entityKey } = defineProps<{
@@ -109,11 +109,10 @@ import { AdvertisementView } from "@/interfaces/models/views/advertisement-view"
 
   // Updated onImageClick function to handle both Site and Advertisement
   const onImageClick = (item: CarouselTypes) => {
-    eventBus("DialogStatus").emit(true,  "FavDetail");
+    eventBus("DialogStatus").emit(true, "FavDetail");
     openCategoryDetailDialog(item, "FavDetail");
     // if (isAdvertisement(item)) {
-    
-     
+
     // } else {
     //   $q.dialog({
     //     component: defineAsyncComponent(
@@ -139,7 +138,6 @@ import { AdvertisementView } from "@/interfaces/models/views/advertisement-view"
     eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
-        alert(JSON.stringify(dialogStack));
       } else {
         dialogStack.value.pop();
       }

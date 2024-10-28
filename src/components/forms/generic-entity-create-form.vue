@@ -74,10 +74,10 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // const row = defineModel<CategoryTypes>("row", { required: true });
 
   // Props
-  const { entityKey, entityOptions, entityId } = defineProps<{
+  const { entityKey, entityOptions, associatedEntityId } = defineProps<{
     entityKey: EntityURLKey;
     entityOptions?: Record<string, any>;
-    entityId?: any;
+    associatedEntityId?: any;
   }>();
 
   // Composables and store instantiation
@@ -114,10 +114,8 @@ Supports validation, custom form structures, and integrates with a CRUD service.
       try {
         values = {
           ...values,
-          [entityKey === "CHECKIN" ? "siteId" : "directoryId"]: entityId || 0
+          [entityKey === "CHECKIN" ? "siteId" : "directoryId"]: associatedEntityId || 0
         };
-
-        alert("Values after assignment:" + JSON.stringify(values));
 
         // Create the entity record
         const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;

@@ -53,8 +53,6 @@ export function useCheckinFormMapper(): EntityFormMappers<CheckIn, CategoryTypes
       return defaultValues;
     }
 
-    alert(JSON.stringify(row));
-
     return {
       ...defaultValues,
       ...Object.fromEntries(

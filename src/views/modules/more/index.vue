@@ -155,10 +155,9 @@
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
-      componentProps: { contentName: name, isLoading: isLoading,dialogName: name  }
+      componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
     })
       .onCancel(() => {
-        alert("oncancel");
         isLoading.value = false;
         resetItemLoading(name);
       })
@@ -192,7 +191,6 @@
     eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
-        alert(JSON.stringify(dialogStack));
       } else {
         dialogStack.value.pop();
       }

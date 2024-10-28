@@ -139,22 +139,21 @@
   // Function to handle Advertisement
   const onImageClick = (item: AdvertisementView) => {
     const dialogName = "BusinessAdvertisementDetail";
-    eventBus("DialogStatus").emit(true,dialogName);
-    openCategoryDetailDialog(item,dialogName);
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
   };
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
     const dialogName = "BusinessItemListDialog";
-    eventBus("DialogStatus").emit(true,dialogName);
-    openCategoryItemDialog(isDialogOpen, directory,dialogName);
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryItemDialog(isDialogOpen, directory, dialogName);
   }
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
-        alert(JSON.stringify(dialogStack));
       } else {
         dialogStack.value.pop();
       }

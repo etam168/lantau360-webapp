@@ -124,7 +124,7 @@
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
     const dialogName = "SiteItemListDialog";
-    eventBus("DialogStatus").emit(true,dialogName);
+    eventBus("DialogStatus").emit(true, dialogName);
     openCategoryItemDialog(isDialogOpen, directory, dialogName);
   }
 
@@ -132,7 +132,6 @@
     eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
-        alert(JSON.stringify(dialogStack));
       } else {
         dialogStack.value.pop();
       }

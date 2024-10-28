@@ -147,7 +147,7 @@
     if (userStore.isUserLogon()) {
       // To be implemented
       const entityKey = "POSTING" as EntityURLKey;
-      const props = { entityId: directory.communityDirectoryId, entityKey: entityKey };
+      const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
       handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
     } else {
       $q.dialog({

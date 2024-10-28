@@ -52,10 +52,14 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { contentName, isLoading, dialogName ="DetailDialog" } = defineProps<{
+  const {
+    contentName,
+    isLoading,
+    dialogName = "DetailDialog"
+  } = defineProps<{
     contentName: string;
     isLoading: Ref<boolean>;
-    dialogName: string
+    dialogName: string;
   }>();
 
   const tempLoading = ref(isLoading.value);
@@ -69,7 +73,6 @@
   const errorMessage = ref<string | null>(null);
 
   function handleLoadingChange() {
-    // alert("isLoading: " + tempLoading.value);
     isLoading.value = tempLoading.value;
   }
 
@@ -82,7 +85,7 @@
   }
 
   function handleDialogClose() {
-    eventBus("DialogStatus").emit(false,dialogName);
+    eventBus("DialogStatus").emit(false, dialogName);
     onDialogOK();
   }
 

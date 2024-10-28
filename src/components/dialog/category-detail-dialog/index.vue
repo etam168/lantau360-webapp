@@ -56,10 +56,14 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { category, entityKey , dialogName ="Detail"} = defineProps<{
+  const {
+    category,
+    entityKey,
+    dialogName = "Detail"
+  } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string
+    dialogName: string;
   }>();
 
   // Composable function calls
@@ -83,7 +87,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
-    eventBus("DialogStatus").emit(false,dialogName);
+    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();
@@ -120,7 +124,6 @@
   onMounted(() => {
     // Set up event listener for closing dialog
     eventBus(dialogName).on(() => {
-      alert("Detail Dialog");
       isDialogVisible.value = false;
     });
   });

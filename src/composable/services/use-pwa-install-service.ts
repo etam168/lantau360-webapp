@@ -84,11 +84,8 @@ export function usePwaInstallService() {
     debugger;
 
     if ("getInstalledRelatedApps" in navigator) {
-      alert("inside");
-
       const relatedApps = await navigator.getInstalledRelatedApps;
 
-      debugger;
       // isAppInstalled.value = relatedApps.length > 0; // Check if any related apps are installed
     }
   }

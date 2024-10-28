@@ -12,8 +12,6 @@ export function useTransactionItemDialogService() {
   ) {
     if (isDialogOpen.value) return;
 
-    alert(JSON.stringify(member));
-
     isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(

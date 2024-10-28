@@ -26,7 +26,7 @@ export function useEntityDataHandlingService() {
       ),
       componentProps: {
         entityKey: entityKey,
-        entityId: props.entityId
+        associatedEntityId: props.associatedEntityId
       }
     }).onDismiss(() => {
       // Reset dialog state when it is dismissed/closed
