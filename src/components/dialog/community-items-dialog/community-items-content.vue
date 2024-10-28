@@ -57,7 +57,7 @@
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
-  import { AREA_NAME, EntityURLKey, NONE } from "@/constants";
+  import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
   import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
   import { useUserStore } from "@/stores/user";
@@ -74,7 +74,7 @@
   }>();
 
   const userStore = useUserStore();
-  const { eventBus,groupBy, translate } = useUtilities();
+  const { eventBus, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { handleOpenDialog } = useEntityDataHandlingService();
@@ -170,8 +170,18 @@
       switch (entityKey) {
         case "POSTING":
         case "COMMUNITY_DIRECTORY":
-          communityItems.value = await fetchData(`Posting/ByDirectoryId/${directoryId.value}`);
-        // alert(JSON.stringify(communityItems.value));
+          communityItems.value = await fetchData(
+            `${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`
+          );
+          const memberConfig = await fetchData(ENTITY_URL.MEMBER_CONFIG);
+
+          userStore.setPoints(
+            memberConfig.value?.meta.postPoint ?? 50,
+            memberConfig.value?.meta.requestFreePoints ?? 100,
+            memberConfig.value?.meta.purchsePrice ?? 100,
+            memberConfig.value?.meta.purchsePoints ?? 100
+          );
+          await userStore.fetchMemberPoints();
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
