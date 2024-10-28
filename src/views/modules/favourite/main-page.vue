@@ -68,17 +68,18 @@
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
-  import { URL, STORAGE_KEYS, EntityURLKey } from "@/constants";
+  import { URL, STORAGE_KEYS, EntityURLKey, ENTITY_URL } from "@/constants";
 
   // Composables
   import { LocalStorage } from "quasar";
+import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
 
-  const { eventBus, isSmallScreen, aspectRatio, getEntityName } = useUtilities();
+  const { eventBus, isSmallScreen, aspectRatio, getEntityName, isAdvertisement } = useUtilities();
   const $q = useQuasar();
   const checkIns: Ref<CheckIn[]> = ref([]);
 
@@ -91,9 +92,11 @@
   const error = ref<string | null>(null);
   const dialogStack = ref<string[]>([]);
 
+  const { fetchData } = useApi();
   const { t } = useI18n({ useScope: "global" });
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("location");
@@ -106,15 +109,11 @@
 
   // Updated onImageClick function to handle both Site and Advertisement
   const onImageClick = (item: CarouselTypes) => {
+    eventBus("DialogStatus").emit(true,  "FavDetail");
+    openCategoryDetailDialog(item, "FavDetail");
     // if (isAdvertisement(item)) {
-    //   $q.dialog({
-    //     component: defineAsyncComponent(
-    //       () => import("@/components/dialog/marketing-detail-dialog.vue")
-    //     ),
-    //     componentProps: {
-    //       item: item as AdvertisementView
-    //     }
-    //   });
+    
+     
     // } else {
     //   $q.dialog({
     //     component: defineAsyncComponent(
@@ -147,18 +146,20 @@
     });
   });
 
-  try {
-    const [advertisementResponse] = await Promise.all([axios.get(`${URL.ADVERTISEMENT}`)]);
-    advertisements.value = advertisementResponse.data;
-  } catch (err) {
-    if (err instanceof AxiosError) {
-      if (err.response && err.response.status === 404) {
-        error.value = t("errors.404");
+  async function fetchAllData() {
+    try {
+      const [advertisementResponse] = await Promise.all([fetchData(ENTITY_URL.ADVERTISEMENT)]);
+      advertisements.value = advertisementResponse;
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = t("errors.404");
+        } else {
+          error.value = t("errors.anErrorOccured");
+        }
       } else {
         error.value = t("errors.anErrorOccured");
       }
-    } else {
-      error.value = t("errors.anErrorOccured");
     }
   }
 
@@ -184,4 +185,6 @@
       next();
     }
   });
+
+  await fetchAllData();
 </script>
