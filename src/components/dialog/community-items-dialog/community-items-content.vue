@@ -63,13 +63,18 @@
   import { useUserStore } from "@/stores/user";
 
   // Props
-  const { directory, entityKey } = defineProps<{
+  const {
+    directory,
+    entityKey,
+    dialogName = "ItemListDialog"
+  } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
+    dialogName: string;
   }>();
 
   const userStore = useUserStore();
-  const { groupBy, translate } = useUtilities();
+  const { eventBus,groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { handleOpenDialog } = useEntityDataHandlingService();
@@ -152,7 +157,8 @@
   }
 
   async function handleDetail(item: any) {
-    openCategoryDetailDialog(item);
+    eventBus("DialogStatus").emit(true, dialogName + "Detail");
+    openCategoryDetailDialog(item, dialogName + "Detail");
   }
 
   /**

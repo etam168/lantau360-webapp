@@ -58,8 +58,18 @@
           { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` },
           { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
           { name: "profile", type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
-          { name: "account", type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account.title` },
-          { name: "checkIn", type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkIn.title` }
+          {
+            name: "account",
+            type: "moreItem",
+            icon: ICONS.ACCOUNT,
+            title: `${i18nKey}.account.title`
+          },
+          {
+            name: "checkIn",
+            type: "moreItem",
+            icon: ICONS.PRIVACY,
+            title: `${i18nKey}.checkIn.title`
+          }
         ];
 
       default:
@@ -102,6 +112,7 @@
     }
   };
 
+  const dialogStack = ref<string[]>([]);
   const isLoading = ref(false);
   const itemRefs = ref<{ [key: string]: any }>({});
 
@@ -139,12 +150,12 @@
 
   function handleContentDialog(name: string) {
     isLoading.value = true;
-
+    eventBus("DialogStatus").emit(true, name);
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
-      componentProps: { contentName: name, isLoading: isLoading }
+      componentProps: { contentName: name, isLoading: isLoading,dialogName: name  }
     })
       .onCancel(() => {
         alert("oncancel");
@@ -174,24 +185,29 @@
   }
 
   onMounted(() => {
-    // $q.notify({
-    //   message: "Install App",
-    //   color: "primary",
-    //   actions: [
-    //     {
-    //       label: "Install",
-    //       color: "white",
-    //       handler: () => {
-    //         handleInstall();
-    //       }
-    //     }
-    //   ]
-    // });
-
     eventBus("refresh-transaction-data").on(() => {
       fetchTransactionData();
     });
+
+    eventBus("DialogStatus").on((status: any, emitter: string) => {
+      if (status) {
+        dialogStack.value.push(emitter);
+        alert(JSON.stringify(dialogStack));
+      } else {
+        dialogStack.value.pop();
+      }
+    });
   });
 
+  onBeforeRouteLeave((_to, _from, next) => {
+    if (dialogStack.value.length > 0) {
+      const emitter = dialogStack.value[dialogStack.value.length - 1];
+      eventBus(emitter).emit();
+      dialogStack.value.pop();
+      next(false);
+    } else {
+      next();
+    }
+  });
   // fetchTransactionData();
 </script>

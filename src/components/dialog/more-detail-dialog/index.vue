@@ -52,14 +52,16 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { contentName, isLoading } = defineProps<{
+  const { contentName, isLoading, dialogName ="DetailDialog" } = defineProps<{
     contentName: string;
     isLoading: Ref<boolean>;
+    dialogName: string
   }>();
 
   const tempLoading = ref(isLoading.value);
 
   // Composable function calls
+  const { eventBus } = useUtilities();
   const { dialogRef, onDialogOK } = useDialogPluginComponent();
 
   // Reactive variables
@@ -80,6 +82,7 @@
   }
 
   function handleDialogClose() {
+    eventBus("DialogStatus").emit(false,dialogName);
     onDialogOK();
   }
 
@@ -101,9 +104,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus.on("dialogClosed", () => {
-    //   alert("closedialogevent");
-    //   isDialogVisible.value = false;
-    // });
+    eventBus(dialogName).on(() => {
+      isDialogVisible.value = false;
+    });
   });
 </script>

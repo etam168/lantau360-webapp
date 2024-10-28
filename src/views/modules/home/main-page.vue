@@ -116,21 +116,25 @@
   }
 
   const onImageClick = (item: SiteView) => {
-    openCategoryDetailDialog(item);
+    const dialogName = "SiteHeroDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
   };
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
-
-    openCategoryItemDialog(isDialogOpen, directory);
+    const dialogName = "SiteItemListDialog";
+    eventBus("DialogStatus").emit(true,dialogName);
+    openCategoryItemDialog(isDialogOpen, directory, dialogName);
   }
 
   onMounted(() => {
-    eventBus("DialogStatus").on( (status: any, emitter: string) => {
+    eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
+        alert(JSON.stringify(dialogStack));
       } else {
-        dialogStack.value = dialogStack.value.filter(item => item != emitter);
+        dialogStack.value.pop();
       }
     });
   });
@@ -138,9 +142,8 @@
   onBeforeRouteLeave((_to, _from, next) => {
     if (dialogStack.value.length > 0) {
       const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus("").emit(emitter);
-      dialogStack.value = dialogStack.value.filter(item => item != emitter);
-
+      eventBus(emitter).emit();
+      dialogStack.value.pop();
       next(false);
     } else {
       next();

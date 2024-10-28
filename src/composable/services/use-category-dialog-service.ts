@@ -6,7 +6,11 @@ import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 
 export function useCategoryDialogService(entityKey: EntityURLKey) {
-  async function openCategoryItemDialog(isDialogOpen: Ref<Boolean>, directory: DirectoryTypes,dialogName?: string) {
+  async function openCategoryItemDialog(
+    isDialogOpen: Ref<Boolean>,
+    directory: DirectoryTypes,
+    dialogName?: string
+  ) {
     if (isDialogOpen.value) return;
 
     isDialogOpen.value = true;
@@ -26,7 +30,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
-  function openCategoryDetailDialog(item: any,dialogName: string) {
+  function openCategoryDetailDialog(item: any, dialogName: string) {
     alert;
     Dialog.create({
       component: defineAsyncComponent(
@@ -35,7 +39,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       componentProps: {
         category: item,
         entityKey: entityKey,
-        dialogName: dialogName 
+        dialogName: dialogName
       }
     });
   }
@@ -43,7 +47,8 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   function openCommunityItemDialog(
     isDialogOpen: Ref<Boolean>,
     entityKey: EntityURLKey,
-    directory: CommunityDirectory
+    directory: CommunityDirectory,
+    dialogName: string
   ) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
@@ -51,7 +56,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-items-dialog/index.vue")
       ),
-      componentProps: { directory: directory, entityKey: entityKey }
+      componentProps: { directory: directory, entityKey: entityKey, dialogName: dialogName }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed

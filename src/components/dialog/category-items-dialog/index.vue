@@ -118,7 +118,6 @@
   onMounted(() => {
     // Set up event listener for closing dialog
     eventBus(dialogName).on(() => {
-      alert(dialogName)
       isDialogVisible.value = false;
     });
   });

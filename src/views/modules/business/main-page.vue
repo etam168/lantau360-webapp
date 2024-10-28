@@ -138,45 +138,34 @@
 
   // Function to handle Advertisement
   const onImageClick = (item: AdvertisementView) => {
-    // openCategoryDetailDialog(item);
+    const dialogName = "BusinessAdvertisementDetail";
+    eventBus("DialogStatus").emit(true,dialogName);
+    openCategoryDetailDialog(item,dialogName);
   };
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
-    eventBus("DialogStatus").emit(true,"BusinessItemListDialog");
-
-    openCategoryItemDialog(isDialogOpen, directory,"BusinessItemListDialog");
+    const dialogName = "BusinessItemListDialog";
+    eventBus("DialogStatus").emit(true,dialogName);
+    openCategoryItemDialog(isDialogOpen, directory,dialogName);
   }
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {
-      // alert(JSON.stringify(dialogStack));
-      // alert(status);
-      // alert(emitter);
       if (status) {
-        alert("added");
         dialogStack.value.push(emitter);
         alert(JSON.stringify(dialogStack));
       } else {
         dialogStack.value.pop();
-        // dialogStack.value = dialogStack.value.filter(item => item != emitter);
       }
     });
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
-    // alert("Business - onBeforeRouteLeave");
-    // alert(JSON.stringify(dialogStack));
-
     if (dialogStack.value.length > 0) {
-      // alert("Length: " + dialogStack.value.length);
       const emitter = dialogStack.value[dialogStack.value.length - 1];
-      // alert("Emit:" + emitter);
       eventBus(emitter).emit();
-      // dialogStack.value = dialogStack.value.filter(item => item != emitter);
-
       dialogStack.value.pop();
-
       next(false);
     } else {
       next();

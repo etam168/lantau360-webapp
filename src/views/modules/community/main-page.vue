@@ -92,15 +92,18 @@
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    openCommunityItemDialog(isDialogOpen, "POSTING" ,communityDirectory);
+    const dialogName = "PostingListDialog";
+    eventBus("DialogStatus").emit(true,dialogName);
+    openCommunityItemDialog(isDialogOpen, "POSTING", communityDirectory,dialogName);
   }
 
   onMounted(() => {
-    eventBus("DialogStatus").on((status, emitter) => {
+    eventBus("DialogStatus").on((status: any, emitter: string) => {
       if (status) {
         dialogStack.value.push(emitter);
+        alert(JSON.stringify(dialogStack));
       } else {
-        dialogStack.value = dialogStack.value.filter(item => item != emitter);
+        dialogStack.value.pop();
       }
     });
   });
@@ -108,9 +111,8 @@
   onBeforeRouteLeave((_to, _from, next) => {
     if (dialogStack.value.length > 0) {
       const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus("").emit(emitter);
-      dialogStack.value = dialogStack.value.filter(item => item != emitter);
-
+      eventBus(emitter).emit();
+      dialogStack.value.pop();
       next(false);
     } else {
       next();

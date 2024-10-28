@@ -89,6 +89,7 @@
 
   const advertisements = ref<any | null>(null);
   const error = ref<string | null>(null);
+  const dialogStack = ref<string[]>([]);
 
   const { t } = useI18n({ useScope: "global" });
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
@@ -135,6 +136,15 @@
           []) as BusinessView[];
       }
     });
+
+    eventBus("DialogStatus").on((status: any, emitter: string) => {
+      if (status) {
+        dialogStack.value.push(emitter);
+        alert(JSON.stringify(dialogStack));
+      } else {
+        dialogStack.value.pop();
+      }
+    });
   });
 
   try {
@@ -163,4 +173,15 @@
       }
     });
   }
+
+  onBeforeRouteLeave((_to, _from, next) => {
+    if (dialogStack.value.length > 0) {
+      const emitter = dialogStack.value[dialogStack.value.length - 1];
+      eventBus(emitter).emit();
+      dialogStack.value.pop();
+      next(false);
+    } else {
+      next();
+    }
+  });
 </script>
