@@ -70,9 +70,6 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     // "update-avatar-image",
   ]);
 
-  // Model
-  // const row = defineModel<CategoryTypes>("row", { required: true });
-
   // Props
   const { entityKey, entityOptions, associatedEntityId } = defineProps<{
     entityKey: EntityURLKey;

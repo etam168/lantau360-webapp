@@ -18,16 +18,16 @@
   // Type imports
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
-  import { newMemberImage } from "@/interfaces/models/entities/member-image";
+
   import { newMember } from "@/interfaces/models/entities/member";
   import { newPostingImage } from "@/interfaces/models/entities/posting-image";
-  import { useUserStore } from "@/stores/user";
 
   // Component imports
   import GenericEntityCreateForm from "@/components/forms/generic-entity-create-form.vue";
 
   // Constant imports
   import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import { useUserStore } from "@/stores/user";
 
   // Emits
   const emit = defineEmits(["close-dialog"]);
@@ -82,11 +82,6 @@
       console.error("Error fetching data:", error);
       throw error;
     }
-  };
-
-  const newImageMap = {
-    MEMBER: newMemberImage,
-    POSTING: newPostingImage
   };
 
   async function onAfterEntityCreated(payload: Record<string, any>) {

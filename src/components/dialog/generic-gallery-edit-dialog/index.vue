@@ -1,17 +1,18 @@
 <template>
   <q-dialog
+    maximized
     ref="dialogRef"
     transition-show="slide-up"
     transition-hide="slide-down"
-    @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
-    maximized
+    @hide="onDialogHide"
+    @update:model-value="updateDialogState"
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
         <app-dialog-title>{{ $t(`${entityName}.dialog.edit`) }}</app-dialog-title>
       </q-header>
+
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
@@ -38,10 +39,9 @@
 
 <script setup lang="ts">
   // Type imports
-  // import type { DatatableType } from "@/interfaces/types/datatable-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
@@ -53,19 +53,18 @@
 
   // Props
   const { row, entityKey } = defineProps<{
-    row: any;
+    row: CategoryTypes;
     entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
-  const { eventBus } = useUtilities();
+  const { eventBus, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const entityName = useChangeCase(entityKey, "camelCase").value;
-
+  const entityName = getEntityName(entityKey);
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
@@ -107,8 +106,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus("CloseDialog").on(() => {
+      isDialogVisible.value = false;
+    });
   });
 </script>

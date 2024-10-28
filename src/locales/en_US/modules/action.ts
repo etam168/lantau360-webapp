@@ -1,16 +1,18 @@
 export default {
   addPhoto: "Add Photo",
-  createDirectory: "Create {directoryName}",
+  appInstalledSuccessfully: "App Installed Successfully.",
+  appNotInstalledSuccessfully: "Oops!! App not installed successfully.",
   cancel: "Cancel",
   close: "Close",
+  createDirectory: "Create {directoryName}",
+  delete: "Delete",
+  edit: "Edit",
   emailVerification: "Email Verification",
+  galleryPhotos: 'Photos - "{imageLength}" / "10 - You can add up to 10 pics"',
   goToHome: "Go to Home",
-  resendLink: "Resend Link",
   ok: "OK",
   no: "No",
-  yes: "Yes",
+  resendLink: "Resend Link",
   save: "Save",
-  galleryPhotos: 'Photos - " {imageLength} "/" + "10 - You can add upto 10 pics',
-  appInstalledSuccessfully: "App Installed Successfully.",
-  appNotInstalledSuccessfully: "Oops!! App not installed successfully."
+  yes: "Yes"
 };

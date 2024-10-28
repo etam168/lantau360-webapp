@@ -1,16 +1,11 @@
 // useEntityDataHandlingService.ts
 import { Dialog } from "quasar";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import { EntityURLKey } from "@/constants";
 
 export function useEntityDataHandlingService() {
-  const { getEntityName } = useUtilities();
-  const { fetchData } = useApi();
-
   function handleOpenDialog(
     props: Record<string, any>,
     isDialogOpen: Boolean,
-    lookUpEntityTypes?: Array<string>,
     entityKey?: EntityURLKey
   ) {
     if (isDialogOpen) {

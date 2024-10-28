@@ -1,16 +1,15 @@
 <template>
   <q-dialog
+    maximized
     ref="dialogRef"
     transition-show="slide-up"
     transition-hide="slide-down"
-    @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
-    maximized
+    @hide="onDialogHide"
+    @update:model-value="updateDialogState"
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.create`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
         <app-dialog-title>{{ $t(`${entityName}.dialog.create`) }}</app-dialog-title>
       </q-header>
 
@@ -18,7 +17,12 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <input-dialog-content :entity-key :associatedEntityId @close-dialog="handleCloseDialog" />
+            <!-- Main input dialog content -->
+            <input-dialog-content
+              :entity-key
+              :associatedEntityId
+              @close-dialog="handleCloseDialog"
+            />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -42,7 +46,6 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  // import MoreDetailContent from "./more-detail-content.vue";
   import InputDialogContent from "./input-dialog-content.vue";
 
   // Constants
@@ -58,8 +61,8 @@
   }>();
 
   // Composable function calls
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-  const { getEntityName } = useUtilities();
+  const { eventBus, getEntityName } = useUtilities();
+  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
@@ -107,8 +110,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus("CloseDialog").on(() => {
+      isDialogVisible.value = false;
+    });
   });
 </script>
