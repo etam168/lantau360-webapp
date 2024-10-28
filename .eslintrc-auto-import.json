@@ -340,6 +340,8 @@
     "useImageFunctions": true,
     "useCheckinFormMapper": true,
     "useCheckinFormContents": true,
-    "useAuthServiceCopy": true
+    "useAuthServiceCopy": true,
+    "useTransactionItemDialogService": true,
+    "useEntityOptionsFetcherService": true
   }
 }

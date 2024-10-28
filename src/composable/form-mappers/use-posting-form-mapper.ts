@@ -58,7 +58,7 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
       latitude: 0,
       longitude: 0,
       rank: 0,
-      expiryDate: new Date(),
+      expiryDate: null,
       meta: {} // Keep this for any other metadata
     };
   }

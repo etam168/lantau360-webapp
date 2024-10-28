@@ -188,6 +188,7 @@ declare global {
   const useEntityDataHandlingService: typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']
   const useEntityDataHandlingService2: typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService2']
   const useEntityImageService: typeof import('./composable/services/use-entity-image-service')['useEntityImageService']
+  const useEntityOptionsFetcherService: typeof import('./composable/services/use-entity-options-fetcher-service')['useEntityOptionsFetcherService']
   const useEventBus: typeof import('@vueuse/core')['useEventBus']
   const useEventListener: typeof import('@vueuse/core')['useEventListener']
   const useEventSource: typeof import('@vueuse/core')['useEventSource']
@@ -304,6 +305,7 @@ declare global {
   const useToNumber: typeof import('@vueuse/core')['useToNumber']
   const useToString: typeof import('@vueuse/core')['useToString']
   const useToggle: typeof import('@vueuse/core')['useToggle']
+  const useTransactionItemDialogService: typeof import('./composable/services/use-transaction-item-dialog-service')['useTransactionItemDialogService']
   const useTransactionsFunctions: typeof import('./composable/use-transaction-functions')['useTransactionsFunctions']
   const useTransition: typeof import('@vueuse/core')['useTransition']
   const useUrlSearchParams: typeof import('@vueuse/core')['useUrlSearchParams']
@@ -520,6 +522,7 @@ declare module 'vue' {
     readonly useElementVisibility: UnwrapRef<typeof import('@vueuse/core')['useElementVisibility']>
     readonly useEntityDataHandlingService: UnwrapRef<typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']>
     readonly useEntityImageService: UnwrapRef<typeof import('./composable/services/use-entity-image-service')['useEntityImageService']>
+    readonly useEntityOptionsFetcherService: UnwrapRef<typeof import('./composable/services/use-entity-options-fetcher-service')['useEntityOptionsFetcherService']>
     readonly useEventBus: UnwrapRef<typeof import('@vueuse/core')['useEventBus']>
     readonly useEventListener: UnwrapRef<typeof import('@vueuse/core')['useEventListener']>
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
@@ -629,6 +632,7 @@ declare module 'vue' {
     readonly useToNumber: UnwrapRef<typeof import('@vueuse/core')['useToNumber']>
     readonly useToString: UnwrapRef<typeof import('@vueuse/core')['useToString']>
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
+    readonly useTransactionItemDialogService: UnwrapRef<typeof import('./composable/services/use-transaction-item-dialog-service')['useTransactionItemDialogService']>
     readonly useTransactionsFunctions: UnwrapRef<typeof import('./composable/use-transaction-functions')['useTransactionsFunctions']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>

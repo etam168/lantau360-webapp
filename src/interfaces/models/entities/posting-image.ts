@@ -7,3 +7,10 @@ export interface PostingImage extends BaseImage {
   imagePath: string;
   meta: Record<string, unknown>;
 }
+
+import typia from "typia";
+export const randomPostingImage = () => typia.random<PostingImage>();
+
+const { resetObject } = useUtilities();
+
+export const newPostingImage: PostingImage = resetObject(typia.random<PostingImage>());

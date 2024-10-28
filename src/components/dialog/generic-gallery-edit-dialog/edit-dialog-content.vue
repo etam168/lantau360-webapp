@@ -20,11 +20,14 @@
   // import type { DatatableType } from "@/interfaces/types/datatable-types";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
-  // import { newSiteImage } from "@/interfaces/models/entities/comm";
+  import { newPostingImage } from "@/interfaces/models/entities/posting-image";
   import { useUserStore } from "@/stores/user";
 
   // Component imports
   import GenericEntityEditForm from "@/components/forms/generic-entity-edit-form.vue";
+
+  // Composables imports
+  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 
   // Constant imports
   import { ENTITY_URL, EntityURLKey, ImageURLKey } from "@/constants";
@@ -42,7 +45,9 @@
   const supportedEntityTypes = ["POSTING"];
 
   // Composable function calls
-  const { getEntityId, getEntityName } = useUtilities();
+  const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
+  const { t } = useI18n({ useScope: "global" });
+  const { fetchGalleryImages } = useEntityOptionsFetcherService();
 
   const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
 
@@ -55,26 +60,26 @@
   const entityId = getEntityId(rowData.value, entityName);
   const userStore = useUserStore();
 
-  // const newImageMap = {
-  //   POSTING: newSiteImage
-  // };
+  const newImageMap = {
+    POSTING: newPostingImage
+  };
 
   /**
    * Handles the update of an entity after the edit form is submitted.
    * @param formData - The data submitted from the edit form.
    */
   async function onAfterEntityUpdated(formData: any) {
-    // const newImage = newImageMap[entityKey as keyof typeof newImageMap];
-    // if (newImage) {
-    //   const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
-    //   (newImage as any)[idKey] = entityId;
-    //   await updateGalleryImages(formData.galleryImages, newImage, entityId);
-    // } else {
-    //   console.warn(`Unsupported entity type: ${entityKey}`);
-    // }
-    // emit("close-dialog");
-    // notify(t(`${entityName}.message.updateSuccess`), "positive");
-    // eventBus("LoadData").emit();
+    const newImage = newImageMap[entityKey as keyof typeof newImageMap];
+    if (newImage) {
+      const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
+      (newImage as any)[idKey] = entityId;
+      await updateGalleryImages(formData.galleryImages, newImage, entityId);
+    } else {
+      console.warn(`Unsupported entity type: ${entityKey}`);
+    }
+    emit("close-dialog");
+    notify(t(`${entityName}.message.updateSuccess`), "positive");
+    eventBus("LoadData").emit();
   }
 
   /**
@@ -91,8 +96,10 @@
           initialization.value = memberData;
           break;
         case "CHECKIN":
-        case "POSTING":
           entityOptions.value.galleryImages = [];
+        case "POSTING":
+          entityOptions.value.galleryImages = await fetchGalleryImages(entityKey, entityId);
+          //
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
