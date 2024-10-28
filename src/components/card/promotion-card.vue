@@ -34,6 +34,7 @@
 
   // .ts files
 
+  const { eventBus } = useUtilities();
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
   const props = defineProps({
@@ -54,13 +55,15 @@
   );
 
   const onItemClick = (item: BusinessPromotionView) => {
+    eventBus("DialogStatus").emit(true,"BusinessPromotionDetail");
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
         category: item,
-        entityKey: "BUSINESS"
+        entityKey: "BUSINESS",
+        dialogName:"BusinessPromotionDetail"
       }
     });
   };

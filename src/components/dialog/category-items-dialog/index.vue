@@ -10,7 +10,7 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -19,7 +19,7 @@
           <template #default>
             <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entity-key />
+            <category-items-content :directory :entity-key :dialogName/>
           </template>
 
           <template #fallback>
@@ -57,13 +57,14 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { directory, entityKey } = defineProps<{
+  const { directory, entityKey, dialogName ="ItemListDialog" } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
+    dialogName: string
   }>();
 
   // Composable function calls
-  const { translate } = useUtilities();
+  const { translate,eventBus } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
@@ -80,6 +81,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
+    eventBus("DialogStatus").emit(false,dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();
@@ -115,8 +117,9 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus(dialogName).on(() => {
+      alert(dialogName)
+      isDialogVisible.value = false;
+    });
   });
 </script>

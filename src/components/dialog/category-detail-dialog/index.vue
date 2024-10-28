@@ -11,7 +11,7 @@
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
         <!-- <pre>{{ category }}</pre> -->
-        <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -56,12 +56,14 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { category, entityKey } = defineProps<{
+  const { category, entityKey , dialogName ="Detail"} = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
+    dialogName: string
   }>();
 
   // Composable function calls
+  const { eventBus } = useUtilities();
   const { translate, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
@@ -81,6 +83,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
+    eventBus("DialogStatus").emit(false,dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();
@@ -116,8 +119,9 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus(dialogName).on(() => {
+      alert("Detail Dialog");
+      isDialogVisible.value = false;
+    });
   });
 </script>

@@ -50,12 +50,17 @@
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
 
   // Props
-  const { directory, entityKey } = defineProps<{
+  const {
+    directory,
+    entityKey,
+    dialogName = "ItemListDialog"
+  } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
+    dialogName: string;
   }>();
 
-  const { groupBy, translate } = useUtilities();
+  const { groupBy, translate, eventBus } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const $q = useQuasar();
@@ -123,7 +128,8 @@
   }
 
   async function handleDetail(item: any) {
-    openCategoryDetailDialog(item);
+    eventBus("DialogStatus").emit(true, dialogName + "Detail");
+    openCategoryDetailDialog(item, dialogName + "Detail");
   }
 
   /**
