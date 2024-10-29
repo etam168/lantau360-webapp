@@ -168,7 +168,6 @@
   onBeforeRouteLeave((_to, _from, next) => {
     if (dialogStack.value.length > 0) {
       const emitter = dialogStack.value[dialogStack.value.length - 1];
-      alert(emitter);
       eventBus(emitter).emit();
       dialogStack.value.pop();
       next(false);
