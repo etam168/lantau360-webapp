@@ -32,7 +32,7 @@
           :categoryItems="siteItems"
           :checkIns
           :entityKey="'SITE'"
-          @on-detail="handleDetail"
+          @on-category-detail="handleDetail"
         />
       </q-tab-panel>
 
@@ -48,7 +48,7 @@
           :categoryItems="businessItems"
           :checkIns
           :entityKey="'BUSINESS'"
-          @on-detail="handleDetail"
+          @on-category-detail="handleDetail"
         />
       </q-tab-panel>
 
@@ -109,20 +109,9 @@
 
   // Updated onImageClick function to handle both Site and Advertisement
   const onImageClick = (item: CarouselTypes) => {
+    const dialogEntityKey = isAdvertisement(item) ? "BUSINESS" : "SITE";
     eventBus("DialogStatus").emit(true, "FavDetail");
-    openCategoryDetailDialog(item, "FavDetail");
-    // if (isAdvertisement(item)) {
-
-    // } else {
-    //   $q.dialog({
-    //     component: defineAsyncComponent(
-    //       () => import("@/components/dialog/category-detail-dialog.vue")
-    //     ),
-    //     componentProps: {
-    //       item: item as SiteView
-    //     }
-    //   });
-    // }
+    openCategoryDetailDialog(item, "FavDetail", dialogEntityKey);
   };
 
   onMounted(() => {
@@ -162,13 +151,16 @@
   }
 
   async function handleDetail(item: any) {
+    const dialogName = item.siteId ? "SITE_DETAIL_DILOAG" : "BUSINESS_DETAIL_DIALOG";
+    eventBus("DialogStatus").emit(true, dialogName);
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
         category: item,
-        entityKey: item.siteId ? "SITE" : "BUSINESS"
+        entityKey: item.siteId ? "SITE" : "BUSINESS",
+        dialogName: dialogName
       }
     });
   }
@@ -176,6 +168,7 @@
   onBeforeRouteLeave((_to, _from, next) => {
     if (dialogStack.value.length > 0) {
       const emitter = dialogStack.value[dialogStack.value.length - 1];
+      alert(emitter);
       eventBus(emitter).emit();
       dialogStack.value.pop();
       next(false);
