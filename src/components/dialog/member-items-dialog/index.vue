@@ -75,7 +75,7 @@
   const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
-    return t(`${entityName}.title`);
+    return t(`more.${entityName}.title`);
   });
 
   /**

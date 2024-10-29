@@ -14,6 +14,12 @@
         </template>
       </q-img>
     </q-avatar>
+    <div class="q-ml-md">
+      <div class="text-body1">{{ userStore.name }}</div>
+      <div class="text-caption">
+        {{ userStore.user }}
+      </div>
+    </div>
 
     <q-space />
 
@@ -24,7 +30,6 @@
 </template>
 
 <script setup lang="ts">
-  import { computed } from "vue";
   import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";

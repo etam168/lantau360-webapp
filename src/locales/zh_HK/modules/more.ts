@@ -10,7 +10,7 @@ export default {
   logout: "登出",
   loginName: "登入名稱",
 
-  checkIn: {
+  checkin: {
     title: "我的簽到",
     detail: "簽到信息詳細",
     history: "歷史",

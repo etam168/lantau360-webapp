@@ -68,7 +68,7 @@
             name: "checkIn",
             type: "moreItem",
             icon: ICONS.PRIVACY,
-            title: `${i18nKey}.checkIn.title`
+            title: `${i18nKey}.checkin.title`
           }
         ];
 
@@ -91,7 +91,7 @@
   const onItemClick = (itemName: string) => {
     switch (itemName) {
       case "profile":
-        handleProfileDialog(itemName);
+        handleProfileDialog("MEMBER", itemName);
         break;
 
       case "privacy":
@@ -100,7 +100,7 @@
         break;
 
       case "account":
-        handleTransactionDialog("TRANSACTION", itemName);
+        handleTransactionDialog("ACCOUNT", itemName);
         break;
 
       case "checkIn":
@@ -142,10 +142,9 @@
     }
   }
 
-  function handleProfileDialog(name: string) {
-    const entityKey = "MEMBER" as EntityURLKey;
-    const props = { category: name, entityKey: entityKey };
-    handleOpenDialog(props, isDialogOpen.value, lookUpEntityTypes, entityKey);
+  function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
+    const props = { dialogName: itemName };
+    handleOpenDialog(props, isDialogOpen.value, entityKey);
   }
 
   function handleContentDialog(name: string) {

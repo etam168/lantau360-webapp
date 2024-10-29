@@ -10,7 +10,7 @@ export default {
   logout: "Logout",
   loginName: "Login Name",
 
-  checkIn: {
+  checkin: {
     title: "My Check-In",
     detail: "CheckIn Info Detail",
     checkInList: "CheckIn List",
