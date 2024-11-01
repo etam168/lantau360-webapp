@@ -34,7 +34,7 @@
 
   // .ts files
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-  import { ENTITY_URL } from "@/constants";
+  import { EntityURLKey } from "@/constants";
 
   const { item } = defineProps<{
     item: BulletinTypes;
@@ -42,6 +42,7 @@
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
+  const entityKey: EntityURLKey = "COMMUNITY_EVENT";
 
   const eventItem = computed(() => item as CommunityEventView);
 
@@ -54,7 +55,7 @@
       ),
       componentProps: {
         category: item,
-        entityKey: ENTITY_URL.COMMUNITY
+        entityKey: entityKey
       }
     });
   };

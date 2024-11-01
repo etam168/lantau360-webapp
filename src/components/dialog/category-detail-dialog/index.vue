@@ -10,7 +10,6 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
         <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
@@ -18,7 +17,6 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
             <category-detail-content :category :entity-key />
           </template>

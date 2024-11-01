@@ -32,6 +32,7 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { useUserStore } from "@/stores/user";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
+  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { Content } from "@/interfaces/models/entities/content";
 
   // .ts files
@@ -76,6 +77,11 @@
             await loadMemberCheckInDetail();
           }
           break;
+        case "COMMUNITY_EVENT":
+          await loadData(
+            `${ENTITY_URL.COMMUNITY_EVENT_GALLERY}/${(category as CommunityEvent).communityEventId}`
+          );
+          break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
@@ -98,10 +104,11 @@
   async function loadData(galleryUrl: string) {
     if (galleryUrl) {
       try {
-        const [galleryResponse] = await Promise.all([axios.get<GalleryImageType[]>(galleryUrl)]);
+        const [galleryResponse] = await Promise.all([fetchData<GalleryImageType[]>(galleryUrl)]);
+        // const [galleryResponse] = await Promise.all([axios.get<GalleryImageType[]>(galleryUrl)]);
 
         const maskValue = getMaskValue(category.directoryTemplate || 0);
-        galleryItems.value = galleryResponse.data
+        galleryItems.value = galleryResponse
           .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
           .sort((a, b) => a.ranking - b.ranking);
       } catch (err) {
@@ -228,6 +235,7 @@
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {
       case RENDERER.ADVERTISEMENT:
+      case RENDERER.COMMUNITY:
         return [
           { name: "carousel", type: "carousel" },
           { name: "description", type: "description" }
@@ -341,6 +349,8 @@
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
+      case "COMMUNITY_EVENT":
+        return RENDERER.COMMUNITY;
       case "BUSINESS":
         return getBusinessTemplate();
       case "SITE":

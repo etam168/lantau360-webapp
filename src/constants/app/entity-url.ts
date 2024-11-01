@@ -11,8 +11,10 @@ export const ENTITY_URL = {
   CHECKIN: `/CheckIn/AddCheckIn`,
   CHECKIN_BY_MEMBER: `/CheckIn/GetByMemberId`,
   COMMUNITY: `/Community`,
-  COMMUNITY_EVENT_CURRENT: `/CommunityEvent/CommunityEventCurrent`,
   COMMUNITY_DIRECTORY: `/CommunityDirectory`,
+  COMMUNITY_EVENT: `/CommunityEvent`,
+  COMMUNITY_EVENT_CURRENT: `/CommunityEvent/CommunityEventCurrent`,
+  COMMUNITY_EVENT_GALLERY: `/CommunityEventImage/GalleryImages`,
   COMMUNITY_NEWS_CURRENT: `/CommunityNews/CommunityNewsCurrent`,
   COMMUNITY_NOTICE_CURRENT: `/CommunityNotice/CommunityNoticeCurrent`,
   CONTENT_NAME: `/Content/ContentByName`,
@@ -34,7 +36,7 @@ export const ENTITY_URL = {
   RESET_PASSWORD: "/MemberAuth/RecoverPassword",
   POSTING: "/Posting",
   SEND_OTP: "/MemberAuth/SendOtp",
-  POSTING_BY_DIRECTORY:"Posting/ByDirectoryId"
+  POSTING_BY_DIRECTORY: "Posting/ByDirectoryId"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

@@ -148,7 +148,7 @@
       // To be implemented
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      handleOpenDialog(props, isDialogOpen.value, ["POSTING"], entityKey);
+      handleOpenDialog(props, isDialogOpen.value, entityKey);
     } else {
       $q.dialog({
         component: defineAsyncComponent(() => import("./login-alert-dialog.vue"))

@@ -4,6 +4,7 @@ const Renderer = {
   TAXI: "Taxi",
   TIMETABLE: "Timetable",
   BUSINESS: "business",
+  COMMUNITY: "community",
   POSTING: "posting",
   ADVERTISEMENT: "advertisement",
   ATTRACTION: "attraction",
