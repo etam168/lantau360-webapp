@@ -46,6 +46,7 @@
   import LocationSection from "./renderer/location-section.vue";
   import promotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
+  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
   // Props
   const { category, entityKey } = defineProps<{
@@ -80,6 +81,11 @@
         case "COMMUNITY_EVENT":
           await loadData(
             `${ENTITY_URL.COMMUNITY_EVENT_GALLERY}/${(category as CommunityEvent).communityEventId}`
+          );
+          break;
+        case "COMMUNITY_NOTICE":
+          await loadData(
+            `${ENTITY_URL.COMMUNITY_NOTICE_GALLERY}/${(category as CommunityNotice).communityNoticeId}`
           );
           break;
         default:
@@ -350,6 +356,7 @@
       case "POSTING":
         return RENDERER.POSTING;
       case "COMMUNITY_EVENT":
+      case "COMMUNITY_NOTICE":
         return RENDERER.COMMUNITY;
       case "BUSINESS":
         return getBusinessTemplate();

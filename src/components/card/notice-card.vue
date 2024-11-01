@@ -22,7 +22,7 @@
   // Interface files
   import { BulletinTypes } from "@/interfaces/types/bulletin-types";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
-  import { ENTITY_URL } from "@/constants";
+  import { EntityURLKey } from "@/constants";
 
   const { item } = defineProps<{
     item: BulletinTypes;
@@ -31,6 +31,7 @@
   const noticeItem = computed(() => item as CommunityNotice);
   const { getTimeAgo, translate } = useUtilities();
   const $q = useQuasar();
+  const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
 
   const translatedContent: any = ref(
     translate(noticeItem.value.description, noticeItem.value.meta, "description")
@@ -47,7 +48,7 @@
       ),
       componentProps: {
         category: item,
-        entityKey: ENTITY_URL.COMMUNITY
+        entityKey: entityKey
       }
     });
   }
