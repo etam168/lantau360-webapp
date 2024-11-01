@@ -53,7 +53,6 @@
 
   // Reactive variables
   const rowData = ref({ ...row });
-  const initialization = ref();
   const { fetchData } = useApi();
   const entityOptions = ref<Record<string, any>>({});
   const entityName = getEntityName(entityKey);
@@ -93,7 +92,6 @@
         case "MEMBER":
           entityOptions.value.galleryImages = [];
           const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
-          initialization.value = memberData;
           break;
         case "CHECKIN":
           entityOptions.value.galleryImages = [];
