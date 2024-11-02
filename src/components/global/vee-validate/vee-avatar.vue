@@ -1,5 +1,5 @@
 <template>
-  <q-card-actions class="q-pt-md">
+  <q-card-actions class="q-pt-md justify-center">
     <q-btn v-bind="$attrs" round padding="1px" color="white" style="cursor: auto">
       <q-avatar size="128px">
         <avatar-image-card :image="localImages[0]" />
@@ -9,7 +9,7 @@
             v-if="localImages.length > 0"
             round
             color="black"
-            icon="fa-solid fa-camera"
+            :icon="fasCamera"
             size="sm"
             @click="handleEditImage(0)"
           />
@@ -18,7 +18,7 @@
             v-else
             round
             color="black"
-            icon="fa-solid fa-camera"
+            :icon="fasCamera"
             size="sm"
             @click="selectAndUploadNewImage"
           />
@@ -40,6 +40,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasCamera } from "@quasar/extras/fontawesome-v6";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   import avatarImageCard from "@/components/custom/avatar-image-card.vue";

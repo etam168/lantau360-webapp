@@ -1,12 +1,13 @@
-// useEntityDataHandlingService.ts
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
+import { defineAsyncComponent } from "vue"; // Ensure you import this
 
 export function useEntityDataHandlingService() {
   function handleOpenDialog(
     props: Record<string, any>,
     isDialogOpen: Boolean,
-    entityKey?: EntityURLKey
+    entityKey?: EntityURLKey,
+    mode?: string
   ) {
     if (isDialogOpen) {
       // Prevent opening another dialog if one is already open
@@ -15,19 +16,40 @@ export function useEntityDataHandlingService() {
 
     // Set the dialog state to open
     isDialogOpen = true;
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
-      ),
-      componentProps: {
-        entityKey: entityKey,
-        associatedEntityId: props.associatedEntityId,
-        dialogName: props.dialogName
+
+    switch (mode) {
+      case "edit": {
+        Dialog.create({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+          ),
+          componentProps: {
+            row: props.row, // Pass the row prop for the edit dialog
+            entityKey: entityKey
+          }
+        }).onDismiss(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen = false;
+        });
+        break;
       }
-    }).onDismiss(() => {
-      // Reset dialog state when it is dismissed/closed
-      isDialogOpen = false;
-    });
+      default: {
+        Dialog.create({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+          ),
+          componentProps: {
+            entityKey: entityKey,
+            associatedEntityId: props.associatedEntityId,
+            dialogName: props.dialogName
+          }
+        }).onDismiss(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen = false;
+        });
+        break;
+      }
+    }
   }
 
   return {

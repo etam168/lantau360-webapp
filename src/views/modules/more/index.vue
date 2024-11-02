@@ -144,7 +144,7 @@
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
     const props = { dialogName: itemName };
-    handleOpenDialog(props, isDialogOpen.value, entityKey);
+    handleOpenDialog(props, isDialogOpen.value, entityKey, "edit");
   }
 
   function handleContentDialog(name: string) {

@@ -58,7 +58,7 @@
             :name="subField.name"
             :options="getOptionsForField(subField.name)"
           />
-          
+
           <vee-avatar
             v-else-if="subField.type === 'avatar'"
             :name="subField.name"

@@ -301,7 +301,7 @@
     const isDialogOpen = ref(false);
     const props = { associatedEntityId: category.siteId, entityKey: entityKey };
 
-    handleOpenDialog(props, isDialogOpen.value, ["CHECKIN"], "CHECKIN");
+    handleOpenDialog(props, isDialogOpen.value, "CHECKIN");
   }
 
   function handleLoginAlert() {

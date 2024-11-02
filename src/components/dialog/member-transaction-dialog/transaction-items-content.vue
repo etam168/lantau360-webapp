@@ -21,7 +21,9 @@
         </template>
 
         <template v-else>
-          <div class="text-center q-pa-md">No data</div>
+          <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
+            {{ $t(errors.noRecord) }}
+          </div>
         </template>
       </q-tab-panel>
     </q-tab-panels>
@@ -40,6 +42,7 @@
 
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import errors from "@/locales/en_US/modules/errors";
 
   // Props
   const { member, entityKey, points } = defineProps<{
