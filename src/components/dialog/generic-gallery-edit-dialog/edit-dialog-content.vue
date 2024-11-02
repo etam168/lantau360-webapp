@@ -1,7 +1,6 @@
 <template>
   <q-card class="bg-transparent row justify-center" flat style="height: calc(100vh - 51px)">
     <!-- Edit form slot -->
-
     <component
       v-if="supportedEntityTypes.includes(entityKey)"
       :is="GenericEntityEditForm<EntityType>"
@@ -21,6 +20,8 @@
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
   import { newPostingImage } from "@/interfaces/models/entities/posting-image";
+  import { newMemberImage } from "@/interfaces/models/entities/member-image";
+
   import { useUserStore } from "@/stores/user";
 
   // Component imports
@@ -42,7 +43,7 @@
   }>();
 
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
-  const supportedEntityTypes = ["POSTING","MEMBER"];
+  const supportedEntityTypes = ["POSTING", "MEMBER"];
 
   // Composable function calls
   const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
@@ -56,11 +57,12 @@
   const { fetchData } = useApi();
   const entityOptions = ref<Record<string, any>>({});
   const entityName = getEntityName(entityKey);
-  const entityId = getEntityId(rowData.value, entityName);
   const userStore = useUserStore();
+  let entityId = getEntityId(rowData.value, entityName);
 
   const newImageMap = {
-    POSTING: newPostingImage
+    POSTING: newPostingImage,
+    MEMBER: newMemberImage
   };
 
   /**
@@ -69,6 +71,7 @@
    */
   async function onAfterEntityUpdated(formData: any) {
     const newImage = newImageMap[entityKey as keyof typeof newImageMap];
+
     if (newImage) {
       const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
       (newImage as any)[idKey] = entityId;
@@ -92,6 +95,8 @@
         case "MEMBER":
           entityOptions.value.galleryImages = [];
           rowData.value = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
+          entityOptions.value.galleryImages = await fetchGalleryImages(entityKey, userStore.userId);
+          entityId = getEntityId(rowData.value, entityName);
           break;
         case "CHECKIN":
           entityOptions.value.galleryImages = [];

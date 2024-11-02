@@ -58,6 +58,12 @@
             :name="subField.name"
             :options="getOptionsForField(subField.name)"
           />
+          
+          <vee-avatar
+            v-else-if="subField.type === 'avatar'"
+            :name="subField.name"
+            :options="getOptionsForField(subField.name)"
+          />
 
           <template v-else-if="subField.type === 'password'">
             <vee-input-password

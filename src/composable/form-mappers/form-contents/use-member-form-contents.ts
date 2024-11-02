@@ -24,7 +24,7 @@ export function useMemberFormContents() {
       {
         name: "additional",
         fields: [
-          // { name: "galleryImages", subFields: [{ name: "galleryImages", type: "avatar" }] },
+          { name: "galleryImages", subFields: [{ name: "galleryImages", type: "avatar" }] },
           {
             name: "alias",
             subFields: [{ name: "alias", maxlength: 25 }]
