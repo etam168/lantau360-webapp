@@ -10,6 +10,8 @@ import home from "./modules/home";
 import notification from "./modules/notification";
 import more from "./modules/more";
 import posting from "./modules/posting";
+import member from "./modules/member";
+
 
 export default {
   action,
@@ -23,5 +25,6 @@ export default {
   home,
   notification,
   more,
-  posting
+  posting,
+  member
 };

@@ -17,7 +17,7 @@ export function useEntityDataHandlingService() {
     isDialogOpen = true;
     Dialog.create({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
       ),
       componentProps: {
         entityKey: entityKey,

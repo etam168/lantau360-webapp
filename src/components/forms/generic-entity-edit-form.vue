@@ -13,7 +13,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     :validation-schema="schema"
     @submit="handleSubmit"
     v-slot="{ meta }"
-    :style="entityKey === 'POSTING' ? 'width: 520px;' : ''"
+    style="width: 520px"
   >
     <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>

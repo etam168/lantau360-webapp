@@ -42,7 +42,7 @@
   }>();
 
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
-  const supportedEntityTypes = ["POSTING"];
+  const supportedEntityTypes = ["POSTING","MEMBER"];
 
   // Composable function calls
   const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
@@ -91,7 +91,7 @@
       switch (entityKey) {
         case "MEMBER":
           entityOptions.value.galleryImages = [];
-          const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
+          rowData.value = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
           break;
         case "CHECKIN":
           entityOptions.value.galleryImages = [];
