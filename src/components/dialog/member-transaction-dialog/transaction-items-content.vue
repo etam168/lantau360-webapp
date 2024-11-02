@@ -1,35 +1,33 @@
 <!-- member-items-content.vue -->
 <template>
-  <q-card>
-    <member-points @top-up-points="handleTopUpPoints" />
+  <member-points @top-up-points="handleTopUpPoints" />
 
-    <template v-if="groupBykey">
-      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+  <template v-if="groupBykey">
+    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-      <q-tab-panels v-model="tab">
-        <q-tab-panel
-          v-for="(item, index) in tabItems"
-          :key="index"
-          :name="item.name"
-          class="q-pa-none"
-        >
-          <template v-if="filterGroupedArray(item.name).length > 0">
-            <app-transaction-list-items
-              :memberItems="filterGroupedArray(item.name)"
-              :entityKey="entityKey"
-              @on-member-detail="handleDetail"
-            />
-          </template>
+    <q-tab-panels v-model="tab">
+      <q-tab-panel
+        v-for="(item, index) in tabItems"
+        :key="index"
+        :name="item.name"
+        class="q-pa-none"
+      >
+        <template v-if="filterGroupedArray(item.name).length > 0">
+          <app-transaction-list-items
+            :memberItems="filterGroupedArray(item.name)"
+            :entityKey="entityKey"
+            @on-member-detail="handleDetail"
+          />
+        </template>
 
-          <template v-else>
-            <div class="text-center q-pa-md">No data</div>
-          </template>
-        </q-tab-panel>
-      </q-tab-panels>
-    </template>
+        <template v-else>
+          <div class="text-center q-pa-md">No data</div>
+        </template>
+      </q-tab-panel>
+    </q-tab-panels>
+  </template>
 
-    <app-transaction-list-items v-else :memberItems :entityKey @on-member-detail="handleDetail" />
-  </q-card>
+  <app-transaction-list-items v-else :memberItems :entityKey @on-member-detail="handleDetail" />
 </template>
 
 <script setup lang="ts">
@@ -63,8 +61,8 @@
 
   const groupBykey = computed<string | null>(() => {
     switch (entityKey) {
-      case "TRANSACTION":
-        return "transaction";
+      case "ACCOUNT":
+        return "account";
       // Add other cases here if needed
       default:
         return null;
@@ -79,7 +77,7 @@
 
   const groupedArray = computed<GroupedItems[]>(() => {
     switch (groupBykey.value) {
-      case "transaction":
+      case "account":
         return [
           { group: "recent", items: recentItems.value },
           { group: "history", items: historyItems.value }
@@ -92,7 +90,7 @@
 
   // New computed property for tabItems
   const tabItems = computed(() => {
-    if (entityKey === "TRANSACTION") {
+    if (entityKey === "ACCOUNT") {
       return [
         { name: "recent", label: "Recent" },
         { name: "history", label: "History" }
@@ -132,7 +130,7 @@
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
-        case "TRANSACTION":
+        case "ACCOUNT":
           // Fetch data from two different APIs concurrently
           const [history, recent, mem, memberPoints, memberConfig] = await Promise.all([
             fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
