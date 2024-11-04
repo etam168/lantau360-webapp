@@ -6,6 +6,7 @@
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
     maximized
+    persistent
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->

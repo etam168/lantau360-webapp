@@ -6,11 +6,13 @@ import type { CommunityNotice } from "@/interfaces/models/entities/community-not
 import type { PostingView } from "@/interfaces/models/views/posting-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
 import type { Transaction } from "@/interfaces/models/entities/transaction";
+import type { CheckInView } from "../models/views/checkin-view";
 
 export type CategoryTypes =
   | AdvertisementView
   | BusinessView
   | CheckIn
+  | CheckInView
   | CommunityEvent
   | CommunityNotice
   | PostingView

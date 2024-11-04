@@ -1,6 +1,6 @@
 <!-- member-items-content.vue -->
 <template>
-  <q-card>
+  <q-card class="q-ma-md">
     <app-member-list-items :memberItems :entityKey @on-member-detail="handleDetail" />
   </q-card>
 </template>
@@ -20,13 +20,26 @@
     points?: Record<string, any>;
   }>();
 
+  const $q = useQuasar();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const memberItems = ref<CategoryTypes[]>([]);
 
   async function handleDetail(item: any) {
-    openCategoryDetailDialog(item,"CheckInItemDetailDialog");
+
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/checkin-detail-dialog/index.vue")
+      ),
+      componentProps: {  item: item , dialogName: "checkinDetailDialog"}
+    })
+      .onCancel(() => {
+      })
+      .onOk(() => {
+      });
+
+    // openCategoryDetailDialog(item,"CheckInItemDetailDialog");
   }
 
   const fetchAllData = async () => {

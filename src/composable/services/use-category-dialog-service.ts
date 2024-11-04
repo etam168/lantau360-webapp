@@ -30,7 +30,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
-  function openCategoryDetailDialog(item: any, dialogName: string, customEntityKey?: EntityURLKey,) {
+  function openCategoryDetailDialog(item: any, dialogName: string, customEntityKey?: EntityURLKey) {
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")

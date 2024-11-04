@@ -1,15 +1,14 @@
 <template>
   <q-dialog
     ref="dialogRef"
-    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
     :model-value="isDialogVisible"
     maximized
-    persistent
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -19,9 +18,8 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <transaction-items-content :member :entity-key :points />
+            <check-in-detail-content :item />
           </template>
-
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
             <div class="row justify-center items-center" style="height: 500px">
@@ -41,42 +39,38 @@
 
 <script setup lang="ts">
   // Type imports
-  import type { Member } from "@/interfaces/models/entities/member";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
 
   // Composables Imports
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import TransactionItemsContent from "./transaction-items-content.vue";
+  import CheckInDetailContent from "./checkin-detail-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
-
-  import i18n from "@/plugins/i18n/i18n";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { member, entityKey, points } = defineProps<{
-    member: Member;
-    entityKey: EntityURLKey;
-    points?: Record<string, any>;
+  const { item, dialogName } = defineProps<{
+    item: CheckInView;
+    dialogName: string;
   }>();
 
   // Composable function calls
-  const { t } = i18n.global;
-
-  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
-  const { getEntityName } = useUtilities();
+  const { eventBus } = useUtilities();
+  const { translate, getEntityName } = useUtilities();
+  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
-    return t(`more.${entityName}.title`);
+    return translate(item.siteName, item.meta, "siteName");
   });
 
   /**
@@ -85,6 +79,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
+    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();
@@ -120,8 +115,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus(dialogName).on(() => {
+      isDialogVisible.value = false;
+    });
   });
 </script>

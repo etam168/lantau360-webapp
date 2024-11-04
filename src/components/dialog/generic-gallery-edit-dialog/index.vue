@@ -7,6 +7,7 @@
     :model-value="isDialogVisible"
     @hide="onDialogHide"
     @update:model-value="updateDialogState"
+    persistent
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">

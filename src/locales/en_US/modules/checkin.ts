@@ -1,8 +1,13 @@
+import checkin from "@/locales/zh_HK/modules/checkin";
+
 export default {
   edit: "Edit CheckIn",
   create: "Create CheckIn",
   delete: "Delete CheckIn",
   title: "CheckInings",
+  map: "Map",
+  checkInList: "CheckIn List",
+
 
   steps: {
     default: "Default",

@@ -2,8 +2,6 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
-    <pre>{{ isLoading }}</pre>
-
     <q-card-section class="q-gutter-md">
       <template v-for="(item, index) in renderItems" :key="index">
         <more-page-logoff v-if="item.type === 'logoff'" />

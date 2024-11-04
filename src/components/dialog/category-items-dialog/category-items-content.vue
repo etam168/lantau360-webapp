@@ -127,6 +127,7 @@
   }
 
   async function handleDetail(item: any) {
+    alert(JSON.stringify(item));
     eventBus("DialogStatus").emit(true, dialogName + "Detail");
     openCategoryDetailDialog(item, dialogName + "Detail");
   }

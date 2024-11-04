@@ -1,5 +1,5 @@
 <template>
-  <q-card v-for="(item, index) in memberItems" :key="index" class="q-ma-md">
+  <q-card v-for="(item, index) in memberItems" :key="index">
     <q-card-section class="q-pa-none">
       <q-list>
         <q-item clickable @click="handleDetail(item)">
@@ -16,7 +16,6 @@
           </q-item-section>
 
           <q-item-section>
-            <!-- <q-item-label> {{ line1(item) }} </q-item-label> -->
             <q-item-label>{{ item.siteName }}</q-item-label>
             <q-item-label lines="2"
               >{{
@@ -25,15 +24,6 @@
                 })
               }}
             </q-item-label>
-            <!-- <q-item-label>{{ item.siteName }}</q-item-label> -->
-
-            <!-- <q-item-label lines="2"
-          >{{
-            $t("more.checkIn.lastCheckIn", {
-              date: dateFormatter(item.modifiedAt)
-            })
-          }}
-        </q-item-label> -->
           </q-item-section>
         </q-item>
       </q-list>
