@@ -13,6 +13,7 @@ export interface SubField {
   locale?: "En" | "Cn" | "Hk";
   altField?: string;
   value?: string | number | Record<string, any>;
+  mask?: string;
 }
 
 export interface Field {

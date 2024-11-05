@@ -7,6 +7,7 @@
     stack-label
     standout="bg-grey-7 text-white"
     :dark="false"
+    :mask="mask"
     :error="!!errorMessage"
     :error-message="errorMessage"
   >
@@ -43,13 +44,15 @@
   // });
 
   const {
-    name
+    name,
+    mask
     // maxLenght,
     // counter,
     // disable,
     // inputType = "text"
   } = defineProps<{
     name: string;
+    mask?: string;
   }>();
   // maxLenght?: number;
   // counter?: boolean;
