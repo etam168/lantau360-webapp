@@ -1,6 +1,13 @@
 <!-- category-items-content.vue -->
 <template>
   <q-card>
+    <!-- Check if categoryItems is empty -->
+    <div
+      v-if="categoryItems.length === 0"
+      class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
+    >
+      {{ $t("errors.noRecord") }}
+    </div>
     <template v-if="groupBykey">
       <app-tab-select
         :tab-items="tabItems"

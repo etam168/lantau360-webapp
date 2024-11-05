@@ -50,7 +50,10 @@
   const userStore = useUserStore();
 
   // Property Listing Service Composable
-  const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
+  const updateGalleryImages =
+    entityKey !== "CHECKIN"
+      ? useEntityImageService<GalleryImageType>(imageUrlKey)?.updateGalleryImages
+      : null;
 
   // Reactive variables
 

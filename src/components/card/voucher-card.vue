@@ -40,7 +40,7 @@
       ),
       componentProps: {
         category: item,
-        entityKey: ENTITY_URL.COMMUNITY
+        entityKey: "BUSINESS_VOUCHER"
       }
     });
   };

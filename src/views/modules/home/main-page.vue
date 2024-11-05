@@ -122,6 +122,7 @@
   };
 
   async function onDirectoryItem(directory: Directory) {
+    alert("Directory" + JSON.stringify(directory));
     if (isDialogOpen.value) return;
     const dialogName = "SiteItemListDialog";
     eventBus("DialogStatus").emit(true, dialogName);

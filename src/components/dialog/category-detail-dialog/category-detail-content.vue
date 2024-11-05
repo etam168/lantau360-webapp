@@ -202,24 +202,24 @@
 
   const openCheckInDialog = () => {
     // Check if the user is logged in
-    const isLoggedIn = userStore.isUserLogon(); // This will return true or false
-    // handleCheckIn();
-    switch (isLoggedIn) {
-      case true:
-        PerformCheckIn();
-        // handleCheckIn();
-        break;
+    // const isLoggedIn = userStore.isUserLogon(); // This will return true or false
+    handleCheckIn();
+    // switch (isLoggedIn) {
+    //   case true:
+    //     PerformCheckIn();
+    //     // handleCheckIn();
+    //     break;
 
-      case false:
-        // Notify the user to log in
-        handleLoginAlert();
-        break;
+    //   case false:
+    //     // Notify the user to log in
+    //     handleLoginAlert();
+    //     break;
 
-      default:
-        // This case should not happen, but just in case
-        console.error("Unexpected value for isLoggedIn");
-        break;
-    }
+    //   default:
+    //     // This case should not happen, but just in case
+    //     console.error("Unexpected value for isLoggedIn");
+    //     break;
+    // }
   };
 
   interface RenderItem {
@@ -332,12 +332,7 @@
     if ("advertisementId" in category) {
       return RENDERER.ADVERTISEMENT;
     }
-    if ("businessVoucherId" in category) {
-      return RENDERER.VOUCHER;
-    }
-    if ("businessPromotionId" in category) {
-      return RENDERER.PROMOTION;
-    }
+
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
@@ -360,6 +355,10 @@
         return RENDERER.COMMUNITY;
       case "BUSINESS":
         return getBusinessTemplate();
+      case "BUSINESS_PROMOTION":
+        return RENDERER.PROMOTION;
+      case "BUSINESS_VOUCHER":
+        return RENDERER.VOUCHER;
       case "SITE":
         return getSiteTemplate();
       default:

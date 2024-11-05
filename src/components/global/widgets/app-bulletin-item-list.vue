@@ -1,7 +1,10 @@
 <template>
   <div :class="hasCommunityItems(items) ? 'row q-col-gutter-sm' : 'q-gutter-y-md'">
-    <div v-for="(item, index) in sortedItemsWithType" :key="index" class="col-md-3 col-sm-4 col-6">
-      <!-- <news-card v-if="isCommunityNews(item)" :item="item" /> -->
+    <div
+      v-for="(item, index) in sortedItemsWithType"
+      :key="index"
+      :class="isCommunityEvent(item) ? 'col-md-3 col-sm-4 col-6' : ''"
+    >
       <event-card v-if="isCommunityEvent(item)" :item="item" />
       <notice-card v-else-if="isCommunityNotice(item)" :item="item" />
     </div>

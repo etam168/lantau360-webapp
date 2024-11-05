@@ -55,15 +55,15 @@
   );
 
   const onItemClick = (item: BusinessPromotionView) => {
-    eventBus("DialogStatus").emit(true,"BusinessPromotionDetail");
+    eventBus("DialogStatus").emit(true, "BusinessPromotionDetail");
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")
       ),
       componentProps: {
         category: item,
-        entityKey: "BUSINESS",
-        dialogName:"BusinessPromotionDetail"
+        entityKey: "BUSINESS_PROMOTION",
+        dialogName: "BusinessPromotionDetail"
       }
     });
   };
