@@ -142,7 +142,10 @@
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
     const props = { dialogName: itemName };
-    handleOpenDialog(props, isDialogOpen.value, entityKey, "edit");
+    if (!isDialogOpen.value) {
+      handleOpenDialog(props, isDialogOpen, entityKey, "edit");
+      resetItemLoading(itemName);
+    }
   }
 
   function handleContentDialog(name: string) {

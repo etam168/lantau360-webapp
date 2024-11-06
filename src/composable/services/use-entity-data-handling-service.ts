@@ -5,17 +5,17 @@ import { defineAsyncComponent } from "vue"; // Ensure you import this
 export function useEntityDataHandlingService() {
   function handleOpenDialog(
     props: Record<string, any>,
-    isDialogOpen: Boolean,
+    isDialogOpen: Ref<Boolean>,
     entityKey?: EntityURLKey,
     mode?: string
   ) {
-    if (isDialogOpen) {
+    if (isDialogOpen.value) {
       // Prevent opening another dialog if one is already open
       return;
     }
 
     // Set the dialog state to open
-    isDialogOpen = true;
+    isDialogOpen.value = true;
 
     switch (mode) {
       case "edit": {
@@ -29,7 +29,7 @@ export function useEntityDataHandlingService() {
           }
         }).onDismiss(() => {
           // Reset dialog state when it is dismissed/closed
-          isDialogOpen = false;
+          isDialogOpen.value = false;
         });
         break;
       }
@@ -45,7 +45,7 @@ export function useEntityDataHandlingService() {
           }
         }).onDismiss(() => {
           // Reset dialog state when it is dismissed/closed
-          isDialogOpen = false;
+          isDialogOpen.value = false;
         });
         break;
       }
