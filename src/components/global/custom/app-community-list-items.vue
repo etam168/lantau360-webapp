@@ -28,7 +28,15 @@
             :icon="fasCircleInfo"
             @click="handleDetail(item)"
           />
-          <q-btn class="gt-xs" size="xs" dense flat :icon="fasPencil" @click="handleEdit(item)" />
+          <q-btn
+            class="gt-xs"
+            size="xs"
+            dense
+            flat
+            :icon="fasPencil"
+            v-if="userStore.userId === item.createdBy"
+            @click="handleEdit(item)"
+          />
         </div>
       </q-item-section>
     </q-item>
@@ -43,6 +51,7 @@
   // .ts files
   import { EntityURLKey } from "@/constants";
   import { PostingView } from "@/interfaces/models/views/posting-view";
+  import { useUserStore } from "@/stores/user";
 
   const { getImageURL, translate } = useUtilities();
 
@@ -55,6 +64,8 @@
   }>();
 
   const $q = useQuasar();
+  const userStore = useUserStore();
+  const roles = ref(userStore.roles);
 
   function line1(item: CategoryTypes) {
     const name = `title` as keyof CategoryTypes;

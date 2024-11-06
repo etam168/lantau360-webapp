@@ -38,7 +38,8 @@ export const ENTITY_URL = {
   RESET_PASSWORD: "/MemberAuth/RecoverPassword",
   POSTING: "/Posting",
   SEND_OTP: "/MemberAuth/SendOtp",
-  POSTING_BY_DIRECTORY: "Posting/ByDirectoryId"
+  POSTING_BY_DIRECTORY: "Posting/ByDirectoryId",
+  POSTING_GALLERY: "/PostingImage/GalleryImages"
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

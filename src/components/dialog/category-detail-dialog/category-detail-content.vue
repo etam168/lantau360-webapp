@@ -47,6 +47,7 @@
   import promotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import { Posting } from "@/interfaces/models/entities/posting";
 
   // Props
   const { category, entityKey } = defineProps<{
@@ -70,6 +71,7 @@
   const galleryItems = ref<GalleryImageType[]>([]);
 
   const fetchAllData = async () => {
+    alert(entityKey);
     try {
       switch (entityKey) {
         case "SITE":
@@ -87,6 +89,9 @@
           await loadData(
             `${ENTITY_URL.COMMUNITY_NOTICE_GALLERY}/${(category as CommunityNotice).communityNoticeId}`
           );
+          break;
+        case "POSTING":
+          await loadData(`${ENTITY_URL.POSTING_GALLERY}/${(category as Posting).postingId}`);
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
