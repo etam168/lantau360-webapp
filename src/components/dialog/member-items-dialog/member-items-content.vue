@@ -1,8 +1,6 @@
 <!-- member-items-content.vue -->
 <template>
-  <q-card class="q-ma-md">
-    <app-member-list-items :memberItems :entityKey @on-member-detail="handleDetail" />
-  </q-card>
+  <app-member-list-items :memberItems :entityKey @on-member-detail="handleDetail" />
 </template>
 
 <script setup lang="ts">

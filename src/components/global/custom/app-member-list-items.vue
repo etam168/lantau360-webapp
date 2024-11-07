@@ -1,5 +1,5 @@
 <template>
-  <q-card v-for="(item, index) in memberItems" :key="index">
+  <q-card v-for="(item, index) in memberItems" :key="index" class="q-ma-md">
     <q-card-section class="q-pa-none">
       <q-list>
         <q-item clickable @click="handleDetail(item)">
