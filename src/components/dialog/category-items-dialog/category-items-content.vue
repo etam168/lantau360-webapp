@@ -1,47 +1,45 @@
 <!-- category-items-content.vue -->
 <template>
-  <q-card>
-    <!-- Check if categoryItems is empty -->
-    <div
-      v-if="categoryItems.length === 0"
-      class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
-    >
-      {{ $t("errors.noRecord") }}
-    </div>
-    <template v-if="groupBykey">
-      <app-tab-select
-        :tab-items="tabItems"
-        :current-tab="tab"
-        @update:currentTab="setTab"
-        :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
-        :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
-      />
-
-      <q-tab-panels v-model="tab">
-        <q-tab-panel
-          v-for="(item, index) in tabItems"
-          :key="index"
-          :name="item.name"
-          class="q-pa-none"
-        >
-          <app-category-list-items
-            :categoryItems="filterGroupedArray(item.name)"
-            :checkIns
-            :entityKey
-            @on-category-detail="handleDetail"
-          />
-        </q-tab-panel>
-      </q-tab-panels>
-    </template>
-
-    <app-category-list-items
-      v-else
-      :categoryItems
-      :checkIns
-      :entityKey
-      @on-category-detail="handleDetail"
+  <!-- Check if categoryItems is empty -->
+  <div
+    v-if="categoryItems.length === 0"
+    class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
+  >
+    {{ $t("errors.noRecord") }}
+  </div>
+  <template v-if="groupBykey">
+    <app-tab-select
+      :tab-items="tabItems"
+      :current-tab="tab"
+      @update:currentTab="setTab"
+      :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
+      :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
     />
-  </q-card>
+
+    <q-tab-panels v-model="tab">
+      <q-tab-panel
+        v-for="(item, index) in tabItems"
+        :key="index"
+        :name="item.name"
+        class="q-pa-none"
+      >
+        <app-category-list-items
+          :categoryItems="filterGroupedArray(item.name)"
+          :checkIns
+          :entityKey
+          @on-category-detail="handleDetail"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
+  </template>
+
+  <app-category-list-items
+    v-else
+    :categoryItems
+    :checkIns
+    :entityKey
+    @on-category-detail="handleDetail"
+  />
 </template>
 
 <script setup lang="ts">

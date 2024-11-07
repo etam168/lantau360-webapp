@@ -303,9 +303,9 @@
 
   function handleCheckIn() {
     const isDialogOpen = ref(false);
-    const props = { associatedEntityId: category.siteId, entityKey: entityKey };
+    const props = { associatedEntityId: (category as SiteView).siteId, entityKey: entityKey };
 
-    handleOpenDialog(props, isDialogOpen.value, "CHECKIN");
+    handleOpenDialog(props, isDialogOpen, "CHECKIN");
   }
 
   function handleLoginAlert() {

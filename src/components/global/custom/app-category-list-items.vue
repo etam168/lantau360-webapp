@@ -1,36 +1,38 @@
 <template>
-  <q-list>
-    <q-item
-      clickable
-      @click="handleDetail(item)"
-      v-for="(item, index) in categoryItems"
-      :key="index"
-    >
-      <q-item-section avatar>
-        <q-avatar size="64px" square>
-          <q-img ratio="1" :src="getImageURL(item.iconPath)">
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                {{ $t("errors.cannotLoadImage") }}
-              </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
+  <q-card v-for="(item, index) in categoryItems" :key="index" class="q-ma-md">
+    <q-card-section class="q-pa-none">
+      <q-list>
+        <q-item
+          clickable
+          @click="handleDetail(item)"
+        >
+          <q-item-section avatar>
+            <q-avatar size="64px" square>
+              <q-img ratio="1" :src="getImageURL(item.iconPath)">
+                <template v-slot:error>
+                  <div class="absolute-full flex flex-center bg-negative text-white">
+                    {{ $t("errors.cannotLoadImage") }}
+                  </div>
+                </template>
+              </q-img>
+            </q-avatar>
+          </q-item-section>
 
-      <q-item-section>
-        <q-item-label> {{ line1(item) }} </q-item-label>
-        <q-item-label> {{ line2(item) }} </q-item-label>
-      </q-item-section>
+          <q-item-section>
+            <q-item-label> {{ line1(item) }} </q-item-label>
+            <q-item-label> {{ line2(item) }} </q-item-label>
+          </q-item-section>
 
-      <q-item-section side>
-        <div class="q-gutter-sm">
-          <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-        </div>
-      </q-item-section>
-    </q-item>
-  </q-list>
+          <q-item-section side>
+            <div class="q-gutter-sm">
+              <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
+              <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+            </div>
+          </q-item-section>
+        </q-item>
+      </q-list>
+    </q-card-section>
+  </q-card>
 </template>
 
 <script setup lang="ts">
