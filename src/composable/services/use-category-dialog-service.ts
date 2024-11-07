@@ -4,6 +4,7 @@ import type { CommunityDirectory } from "@/interfaces/models/entities/community-
 
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
+const { eventBus } = useUtilities();
 
 export function useCategoryDialogService(entityKey: EntityURLKey) {
   async function openCategoryItemDialog(
@@ -30,7 +31,11 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
-  function openCategoryDetailDialog(item: any, dialogName: string, customEntityKey?: EntityURLKey) {
+  async function openCategoryDetailDialog(
+    item: any,
+    dialogName: string,
+    customEntityKey?: EntityURLKey
+  ) {
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")
@@ -40,7 +45,12 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
         entityKey: customEntityKey || entityKey,
         dialogName: dialogName
       }
-    });
+    })
+      .onOk(() => {})
+      .onCancel(() => {
+        // Handle the Cancel action
+        eventBus("refreshData").emit();
+      });
   }
 
   function openCommunityItemDialog(

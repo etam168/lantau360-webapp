@@ -52,11 +52,8 @@
   </q-page>
 </template>
 <script setup lang="ts">
-  import { ref } from "vue";
-  import { CheckInView } from "@/interfaces/models/views/checkin-view";
-
   // Interface files
-
+  import { CheckInView } from "@/interfaces/models/views/checkin-view";
   // .ts files
   import { BLOB_URL } from "@/constants";
 
@@ -80,7 +77,13 @@
   const tab = ref("map");
 
   const checkInInfoList = computed(() => {
-    return checkInItem.value.checkInfo
+    // Step 1: Ensure checkInfoArray is a flat array of objects
+    const checkInfoArray = Array.isArray(checkInItem.value.checkInfo)
+      ? checkInItem.value.checkInfo.flat() // Flatten if nested arrays exist
+      : Object.values(checkInItem.value.checkInfo || {});
+
+    // Step 2: Process and format the array
+    return checkInfoArray
       .map((item: any) => ({
         ...item,
         checkInAt: new Date(item.checkInAt)

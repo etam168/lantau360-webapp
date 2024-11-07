@@ -1,6 +1,7 @@
 <template>
   <q-dialog
     ref="dialogRef"
+    @hide="onDialogHide"
     transition-show="slide-up"
     transition-hide="slide-down"
     @update:model-value="updateDialogState"
@@ -8,10 +9,9 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
-      <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
-      </q-header>
+      <!-- <q-header bordered class="bg-transparent text-dark"> -->
+      <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
+      <!-- </q-header> -->
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
@@ -27,6 +27,7 @@
             </div>
           </template>
         </Suspense>
+
         <!-- Error message display -->
         <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
           {{ errorMessage }}
@@ -46,13 +47,11 @@
 
   // Components
   import CategoryDetailContent from "./category-detail-content.vue";
-
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
-
   // Props
   const {
     category,
@@ -67,8 +66,7 @@
   // Composable function calls
   const { eventBus } = useUtilities();
   const { translate, getEntityName } = useUtilities();
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-
+  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
@@ -86,6 +84,7 @@
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
     eventBus("DialogStatus").emit(false, dialogName);
+    eventBus("refreshData").emit();
     setTimeout(() => {
       try {
         onDialogCancel();
@@ -102,7 +101,6 @@
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
   }
-
   /**
    * Error handling for the component
    * Captures errors and sets an appropriate error message

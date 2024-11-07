@@ -141,6 +141,7 @@
    * Populates the reactive variables with the fetched data
    */
   const fetchAllData = async () => {
+    alert("Function");
     try {
       switch (entityKey) {
         case "BUSINESS":
@@ -167,4 +168,10 @@
    * This ensures that the component is compatible with Suspense
    */
   await fetchAllData();
+
+  onBeforeMount(() => {
+    eventBus("refreshData").on(async () => {
+      await fetchAllData();
+    });
+  });
 </script>

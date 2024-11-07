@@ -59,7 +59,7 @@
   const { handleOpenDialog } = useEntityDataHandlingService();
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { notify } = useUtilities();
+  const { notify, eventBus } = useUtilities();
   const userStore = useUserStore();
   const { fetchData } = useApi();
 

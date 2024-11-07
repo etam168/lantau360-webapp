@@ -37,7 +37,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { EntityURLKey, STORAGE_KEYS, TEMPLATE, IMAGES } from "@/constants";
+  import { EntityURLKey, STORAGE_KEYS, IMAGES } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { LocalStorage } from "quasar";
