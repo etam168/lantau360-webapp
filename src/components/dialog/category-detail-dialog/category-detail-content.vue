@@ -71,7 +71,6 @@
   const galleryItems = ref<GalleryImageType[]>([]);
 
   const fetchAllData = async () => {
-    alert(entityKey);
     try {
       switch (entityKey) {
         case "SITE":
