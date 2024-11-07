@@ -2,17 +2,12 @@
   <q-card v-for="(item, index) in categoryItems" :key="index" class="q-ma-md">
     <q-card-section class="q-pa-none">
       <q-list>
-        <q-item
-          clickable
-          @click="handleDetail(item)"
-        >
+        <q-item clickable @click="handleDetail(item)">
           <q-item-section avatar>
             <q-avatar size="64px" square>
               <q-img ratio="1" :src="getImageURL(item.iconPath)">
                 <template v-slot:error>
-                  <div class="absolute-full flex flex-center bg-negative text-white">
-                    {{ $t("errors.cannotLoadImage") }}
-                  </div>
+                  <q-img ratio="1" :src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER"></q-img>
                 </template>
               </q-img>
             </q-avatar>
@@ -42,7 +37,7 @@
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
-  import { EntityURLKey, STORAGE_KEYS, TEMPLATE } from "@/constants";
+  import { EntityURLKey, STORAGE_KEYS, TEMPLATE, IMAGES } from "@/constants";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { LocalStorage } from "quasar";

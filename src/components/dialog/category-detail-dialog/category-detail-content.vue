@@ -206,24 +206,24 @@
 
   const openCheckInDialog = () => {
     // Check if the user is logged in
-    // const isLoggedIn = userStore.isUserLogon(); // This will return true or false
-    handleCheckIn();
-    // switch (isLoggedIn) {
-    //   case true:
-    //     PerformCheckIn();
-    //     // handleCheckIn();
-    //     break;
+    const isLoggedIn = userStore.isUserLogon(); // This will return true or false
+    // handleCheckIn();
+    switch (isLoggedIn) {
+      case true:
+        PerformCheckIn();
+        // handleCheckIn();
+        break;
 
-    //   case false:
-    //     // Notify the user to log in
-    //     handleLoginAlert();
-    //     break;
+      case false:
+        // Notify the user to log in
+        handleLoginAlert();
+        break;
 
-    //   default:
-    //     // This case should not happen, but just in case
-    //     console.error("Unexpected value for isLoggedIn");
-    //     break;
-    // }
+      default:
+        // This case should not happen, but just in case
+        console.error("Unexpected value for isLoggedIn");
+        break;
+    }
   };
 
   interface RenderItem {
