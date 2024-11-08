@@ -10,8 +10,7 @@
       <location-section
         v-else-if="item.type === 'location'"
         :category
-        :entityKey
-        :has-check-in="true"
+        :has-check-in="entityKey.includes('SITE')"
         @check-in="openCheckInDialog"
         @open-map="openGoogleMaps"
       />
@@ -51,6 +50,7 @@
 
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Posting } from "@/interfaces/models/entities/posting";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // Props
   const { category, entityKey } = defineProps<{
@@ -77,10 +77,13 @@
     try {
       switch (entityKey) {
         case "SITE":
-          await loadData(`${URL.SITE_GALLERY}/${(category as SiteView).siteId}`);
+          await loadData(`${ENTITY_URL.SITE_GALLERY}/${(category as SiteView).siteId}`);
           if (userStore.isUserLogon()) {
             await loadMemberCheckInDetail();
           }
+          break;
+        case "BUSINESS":
+          await loadData(`${ENTITY_URL.BUSINESS_GALLERY}/${(category as BusinessView).businessId}`);
           break;
         case "COMMUNITY_EVENT":
           await loadData(

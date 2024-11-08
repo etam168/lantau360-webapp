@@ -53,16 +53,9 @@
   const emits = defineEmits(["open-map", "check-in"]);
 
   // Props
-  const {
-    category,
-    entityKey,
-    hasCheckIn = false,
-    tooltip
-  } = defineProps<{
+  const { category, hasCheckIn = false } = defineProps<{
     category: CategoryTypes;
-    entityKey: EntityURLKey;
     hasCheckIn?: boolean;
-    tooltip?: string;
   }>();
 
   // const props = defineProps({

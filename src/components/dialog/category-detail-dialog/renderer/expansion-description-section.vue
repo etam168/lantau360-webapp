@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-md" v-if="translatedContent != null">
+  <q-card class="q-ma-md">
     <q-card-section class="q-pa-sm">
       <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasChevronDown">
         <template v-slot:header>
