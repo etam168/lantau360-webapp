@@ -190,16 +190,19 @@
       const checkInModifiedAt = checkIn?.value.modifiedAt
         ? new Date(checkIn.value.modifiedAt).getTime()
         : 0;
+
+
       const currentTime = new Date().getTime();
       const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
       const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
 
       const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
 
+
       if (minutesLeftToRecheckIn >= 0) {
-        timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
-      } else {
         timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
+      } else {
+        timeUntilNextCheckIn.value = 0; // or null, or some other indicator that they can post now
       }
     } catch (err) {}
   }
