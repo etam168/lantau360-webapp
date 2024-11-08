@@ -15,6 +15,7 @@
         @check-in="openCheckInDialog"
         @open-map="openGoogleMaps"
       />
+      <open-close-time-section v-else-if="item.type === 'time'" :category />
       <promotion-section v-else-if="item.type === 'promotion'" :category />
 
       <timetable-section v-else-if="item.type === 'timetable'" :category />
@@ -44,8 +45,10 @@
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
+  import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import promotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
+
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Posting } from "@/interfaces/models/entities/posting";
 
@@ -59,7 +62,7 @@
   const { handleOpenDialog } = useEntityDataHandlingService();
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { notify, eventBus } = useUtilities();
+  const { notify } = useUtilities();
   const userStore = useUserStore();
   const { fetchData } = useApi();
 
@@ -240,6 +243,7 @@
       | "location"
       | "contact"
       | "timetable"
+      | "time"
       | "promotion";
   }
 
@@ -252,10 +256,18 @@
           { name: "description", type: "description" }
         ];
       case RENDERER.ATM:
-      case RENDERER.BUSINESS:
       case RENDERER.SITE:
         return [
           { name: "carousel", type: "carousel" },
+          { name: "expansion-description", type: "expansion-description" },
+          { name: "location", type: "location" },
+          { name: "contact", type: "contact" }
+        ];
+
+      case RENDERER.BUSINESS:
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "time", type: "time" },
           { name: "expansion-description", type: "expansion-description" },
           { name: "location", type: "location" },
           { name: "contact", type: "contact" }
