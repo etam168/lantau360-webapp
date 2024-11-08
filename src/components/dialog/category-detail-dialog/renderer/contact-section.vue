@@ -1,9 +1,10 @@
 <template>
-  <q-card class="q-mt-md">
+  <q-card class="q-ma-md">
     <q-card-section class="q-pa-sm">
       <q-expansion-item
         :label="'Contact Info'"
         group="itemGroup"
+        :expand-icon="fasChevronDown"
         dense
         dense-toggle
         header-class="text-h6"
@@ -32,7 +33,7 @@
               <q-item v-if="businessItem.contactWhatsApp" class="q-pa-none">
                 <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
                   <q-avatar>
-                    <q-icon name="fa-brands fa-whatsapp" color="primary" />
+                    <q-icon :name="fabSquareWhatsapp" color="primary" />
                   </q-avatar>
                 </q-item-section>
                 <q-item-section>
@@ -55,7 +56,7 @@
 </template>
 
 <script setup lang="ts">
-  import { fasPhone } from "@quasar/extras/fontawesome-v6";
+  import { fasChevronDown, fasPhone, fabSquareWhatsapp } from "@quasar/extras/fontawesome-v6";
 
   import { BusinessView } from "@/interfaces/models/views/business-view";
   import { CategoryTypes } from "@/interfaces/types/category-types";

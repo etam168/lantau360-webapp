@@ -1,7 +1,7 @@
 <template>
-  <q-card class="q-mb-md" v-if="translatedContent != null">
+  <q-card class="q-ma-md" v-if="translatedContent != null">
     <q-card-section class="q-pa-sm">
-      <q-expansion-item group="itemGroup" dense dense-toggle>
+      <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasChevronDown">
         <template v-slot:header>
           <q-item-section class="text-h6">
             {{ $t(`${i18nKey}.description`) }}
@@ -28,7 +28,7 @@
 </template>
 
 <script setup lang="ts">
-  import { fasHeart } from "@quasar/extras/fontawesome-v6";
+  import { fasChevronDown, fasHeart } from "@quasar/extras/fontawesome-v6";
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
@@ -46,6 +46,5 @@
     toggleItemFavStatus(category, isFavourite.value);
     isFavourite.value = !isFavourite.value;
     eventBus("favoriteUpdated").emit(category);
-
   }
 </script>

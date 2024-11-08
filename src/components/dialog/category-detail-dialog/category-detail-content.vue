@@ -191,13 +191,11 @@
         ? new Date(checkIn.value.modifiedAt).getTime()
         : 0;
 
-
       const currentTime = new Date().getTime();
       const timeDifferenceInMilliseconds = currentTime - checkInModifiedAt;
       const timeDifferenceInMinutes = Math.abs(timeDifferenceInMilliseconds / (1000 * 60));
 
       const minutesLeftToRecheckIn = configTimeDifferenceInMinutes - timeDifferenceInMinutes;
-
 
       if (minutesLeftToRecheckIn >= 0) {
         timeUntilNextCheckIn.value = Math.ceil(minutesLeftToRecheckIn); // Round up to the nearest minute
@@ -265,10 +263,7 @@
       case RENDERER.DAYTRIP:
         return [{ name: "carousel", type: "carousel" }];
       case RENDERER.EMERGENCY:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "favourite", type: "favourite" }
-        ];
+        return [{ name: "contact", type: "contact" }];
       case RENDERER.EVENT:
         return [
           { name: "carousel", type: "carousel" },

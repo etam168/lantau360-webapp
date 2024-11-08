@@ -84,7 +84,6 @@
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
     eventBus("DialogStatus").emit(false, dialogName);
-    // eventBus("refreshData").emit();
     setTimeout(() => {
       try {
         onDialogCancel();

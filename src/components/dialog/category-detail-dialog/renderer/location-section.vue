@@ -1,9 +1,10 @@
 <template>
-  <q-card>
+  <q-card class="q-ma-md">
     <q-expansion-item
       group="itemGroup"
       class="q-px-sm"
       expand-icon-toggle
+      :expand-icon="fasChevronDown"
       dense-toggle
       default-opened
     >
@@ -45,6 +46,7 @@
 
 <script setup lang="ts">
   import { EntityURLKey } from "@/constants";
+  import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
   import { CategoryTypes } from "@/interfaces/types/category-types";
   import { LatLngExpression, latLng, latLngBounds } from "leaflet";
 

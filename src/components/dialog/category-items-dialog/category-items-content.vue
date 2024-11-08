@@ -132,8 +132,8 @@
   }
 
   async function handleDetail(item: any) {
-    eventBus("DialogStatus").emit(true, dialogName + "Detail");
-    openCategoryDetailDialog(item, dialogName + "Detail");
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
   }
 
   /**
@@ -141,7 +141,6 @@
    * Populates the reactive variables with the fetched data
    */
 
-   
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
