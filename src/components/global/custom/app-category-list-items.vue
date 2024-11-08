@@ -32,6 +32,7 @@
 
 <script setup lang="ts">
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
+  import { ref, watch } from 'vue';
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
@@ -60,16 +61,25 @@
 
   const entityName = getEntityName(entityKey);
 
-  const favoriteItems = computed((): CategoryTypes[] => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
-      case "SITE":
-        return (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      default:
-        return [];
-    }
-  });
+  const favoriteItems = ref([] as CategoryTypes[])
+
+  // Watch for changes in categoryItems and reload favorites
+  watch(
+    () => categoryItems,
+    () => {
+      switch (entityKey) {
+        case "BUSINESS":
+          favoriteItems.value = LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []
+          break
+        case "SITE":
+          favoriteItems.value = LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []
+          break
+        default:
+          favoriteItems.value = []
+      }
+    },
+    { immediate: true, deep: true }
+  )
 
   function line1(item: CategoryTypes) {
     const name = `${entityName}Name` as keyof CategoryTypes;

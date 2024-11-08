@@ -140,8 +140,9 @@
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
    */
+
+   
   const fetchAllData = async () => {
-    alert("Function");
     try {
       switch (entityKey) {
         case "BUSINESS":
