@@ -79,7 +79,7 @@
   ]);
 
   const directoryData = computed(() =>
-    businessDirectories.value.filter((dir: Directory) => dir.groupId == 2)
+    businessDirectories.value.filter((dir: Directory) => [2, 4].includes(dir.groupId))
   );
 
   function handleSearchDialog(value: any) {

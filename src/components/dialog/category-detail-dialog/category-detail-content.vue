@@ -48,10 +48,6 @@
   import promotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
 
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
-  import { Posting } from "@/interfaces/models/entities/posting";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
-
   // Props
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
@@ -62,7 +58,7 @@
   const { handleOpenDialog } = useEntityDataHandlingService();
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { notify } = useUtilities();
+  const { getEntityId, getEntityName, notify } = useUtilities();
   const userStore = useUserStore();
   const { fetchData } = useApi();
 
@@ -70,6 +66,9 @@
   const checkInData = ref();
   const distanceToDestination = ref(0);
   const timeUntilNextCheckIn = ref();
+
+  const entityName = getEntityName(entityKey);
+  const entityId = getEntityId(category as any, entityName);
 
   const galleryItems = ref<GalleryImageType[]>([]);
 
@@ -82,22 +81,22 @@
             await loadMemberCheckInDetail();
           }
           break;
+
         case "BUSINESS":
-          await loadData(`${ENTITY_URL.BUSINESS_GALLERY}/${(category as BusinessView).businessId}`);
-          break;
+        case "BUSINESS_PROMOTION":
         case "COMMUNITY_EVENT":
-          await loadData(
-            `${ENTITY_URL.COMMUNITY_EVENT_GALLERY}/${(category as CommunityEvent).communityEventId}`
-          );
-          break;
         case "COMMUNITY_NOTICE":
-          await loadData(
-            `${ENTITY_URL.COMMUNITY_NOTICE_GALLERY}/${(category as CommunityNotice).communityNoticeId}`
-          );
-          break;
         case "POSTING":
-          await loadData(`${ENTITY_URL.POSTING_GALLERY}/${(category as Posting).postingId}`);
+          // Handle each case dynamically
+          const entityUrl = ENTITY_URL[`${entityKey}_GALLERY`];
+
+          if (entityUrl && entityId) {
+            await loadData(`${entityUrl}/${entityId}`);
+          } else {
+            console.warn(`Missing ID or URL for: ${entityKey}`);
+          }
           break;
+
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
