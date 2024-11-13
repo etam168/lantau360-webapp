@@ -1,8 +1,8 @@
 export default {
-  edit: "Edit Post",
-  create: "Create Post",
-  delete: "Delete Post",
-  title: "Postings",
+  edit: "Edit CheckIn",
+  create: "Create CheckIn",
+  delete: "Delete CheckIn",
+  title: "CheckInings",
 
   steps: {
     default: "Default",
@@ -11,18 +11,18 @@ export default {
     image: "Image"
   },
   expansion: {
-    postListing: "Post Listing",
-    postContent: "Post Content",
-    postGallery: "Post Gallery"
+    postListing: "CheckIn Listing",
+    postContent: "CheckIn Content",
+    postGallery: "CheckIn Gallery"
   },
   gallery: {
     uploadNewImage: "Upload Image"
   },
   columns: {
     id: "ID.",
-    postingName: "Post Name",
-    postingNameHk: "Posting Name (HK)",
-    postingNameCn: "Posting Name (CN)",
+    postingName: "CheckIn Name",
+    postingNameHk: "CheckIning Name (HK)",
+    postingNameCn: "CheckIning Name (CN)",
     contactWhatsApp: "WhatsApp",
     contactPhone: "Contact Phone",
     contactOther: "Contact Other",
@@ -60,14 +60,15 @@ export default {
   },
 
   dialog: {
-    edit: "Edit Post",
-    create: "Create Posting",
+    edit: "Edit CheckIn",
+    create: "Create CheckIning",
     save: "Save"
   },
   message: {
-    created: "New Post Created.",
-    updated: "Post Info updated.",
-    deleted: "Post Deleted successfully",
+    createSucces: "CheckIn Created",
+    updateSuccess: "CheckIn updated",
+    updated: "CheckIn Info updated.",
+    deleted: "CheckIn Deleted successfully",
     uploadImage: "Image Uploaded Successfully",
     deleteImage: "Image Deleted Successfully"
   }

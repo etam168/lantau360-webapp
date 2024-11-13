@@ -91,8 +91,8 @@
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
     const dialogName = "PostingListDialog";
-    eventBus("DialogStatus").emit(true,dialogName);
-    openCommunityItemDialog(isDialogOpen, "POSTING", communityDirectory,dialogName);
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCommunityItemDialog(isDialogOpen, "POSTING", communityDirectory, dialogName);
   }
 
   onMounted(() => {
@@ -123,13 +123,13 @@
         directoryResponse,
         eventResponse,
         newsResponse,
-        noticeResponse,
+        noticeResponse
       ] = await Promise.all([
         fetchData(ENTITY_URL.ADVERTISEMENT),
         fetchData(ENTITY_URL.COMMUNITY_DIRECTORY),
         fetchData(ENTITY_URL.COMMUNITY_EVENT_CURRENT),
         fetchData(ENTITY_URL.COMMUNITY_NEWS_CURRENT),
-        fetchData(ENTITY_URL.COMMUNITY_NOTICE_CURRENT),
+        fetchData(ENTITY_URL.COMMUNITY_NOTICE_CURRENT)
       ]);
 
       advertisements.value = advertisementResponse.filter(
@@ -141,7 +141,6 @@
       events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
       news.value = newsResponse.filter((comNews: CommunityNews) => comNews.status === 1);
       notices.value = noticeResponse.filter((comNotice: CommunityNotice) => comNotice.status === 1);
-
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

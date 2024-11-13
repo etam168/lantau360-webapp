@@ -8,7 +8,6 @@ export default {
   map: "Map",
   checkInList: "CheckIn List",
 
-
   steps: {
     default: "Default",
     editor: "Editor",
@@ -70,9 +69,10 @@ export default {
     save: "Save"
   },
   message: {
-    created: "New CheckIn Created.",
     updated: "CheckIn Info updated.",
     deleted: "CheckIn Deleted successfully",
+    createSucces: "CheckIn Created",
+    updateSuccess: "CheckIn updated",
     uploadImage: "Image Uploaded Successfully",
     deleteImage: "Image Deleted Successfully"
   }

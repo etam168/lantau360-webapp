@@ -45,6 +45,7 @@
       <q-item v-for="field in section.fields" :key="field.name">
         <q-item-section v-for="subField in field.subFields" :key="subField.name">
           <!-- Render telephone input for 'tel' type fields -->
+
           <template v-if="subField.type === 'tel'">
             <vee-q-tel-input
               defaultIso="HK"

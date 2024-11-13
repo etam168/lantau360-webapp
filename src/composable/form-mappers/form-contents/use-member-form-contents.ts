@@ -38,7 +38,7 @@ export function useMemberFormContents() {
           },
           {
             name: "phone",
-            subFields: [{ name: "phone", icon: "phone", type: "tel" }]
+            subFields: [{ name: "phone", icon: "phone", type: "tel", maxlength: 16 }]
           }
         ]
       }

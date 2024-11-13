@@ -78,7 +78,8 @@ export function useMemberFormMapper(): EntityFormMappers<Member, CategoryTypes> 
       firstNameCn: row?.meta?.i18n?.["cn"]?.firstName ?? null,
       firstNameHk: row?.meta?.i18n?.["hk"]?.firstName ?? null,
       lastNameCn: row?.meta?.i18n?.["cn"]?.lastName ?? null,
-      lastNameHk: row?.meta?.i18n?.["hk"]?.lastName ?? null
+      lastNameHk: row?.meta?.i18n?.["hk"]?.lastName ?? null,
+      meta: { ...row.meta }
     };
   }
 
