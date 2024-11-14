@@ -11,34 +11,34 @@
     </q-card-section>
 
     <q-card-actions>
-      <q-space />
       <q-btn
         outline
         dense
         color="primary"
         :label="$t(`${i18nKey}.moreDetail`)"
         class="full-width"
-        @click="throttledHandleDialog(promotionItem)"
+        @click="onItemClick(promotionItem)"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
-  import { throttle, useQuasar } from "quasar";
-
   // Interface files
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
+
+  // Constants
+  import { EntityURLKey } from "@/constants";
 
   // Props
   const { item } = defineProps<{ item: CategoryTypes }>();
 
   const i18nKey = "business";
+  const entityKey: EntityURLKey = "BUSINESS_PROMOTION";
 
-  const $q = useQuasar();
   const { eventBus, getImageURL, translate } = useUtilities();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const promotionItem = computed(() => item as BusinessPromotionView);
 
@@ -51,18 +51,8 @@
   );
 
   const onItemClick = (item: BusinessPromotionView) => {
-    eventBus("DialogStatus").emit(true, "BusinessPromotionDetail");
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        category: item,
-        entityKey: "BUSINESS_PROMOTION",
-        dialogName: "BusinessPromotionDetail"
-      }
-    });
+    const dialogName = "BusinessPromotionDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
   };
-
-  const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="throttledHandleDialog">
+  <q-item clickable @click="onItemClick">
     <q-item-section>
       <q-item-label class="text-subtitle1">
         {{ translatedTitle }}
@@ -17,9 +17,6 @@
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
-  import { throttle, useQuasar } from "quasar";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityNotice } from "@/interfaces/models/entities/community-notice";
@@ -32,8 +29,8 @@
 
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
 
-  const $q = useQuasar();
-  const { getTimeAgo, translate } = useUtilities();
+  const { eventBus, getTimeAgo, translate } = useUtilities();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const noticeItem = computed(() => item as CommunityNotice);
 
@@ -45,17 +42,9 @@
     translate(noticeItem.value.title, noticeItem.value.meta, "title")
   );
 
-  function onItemClick() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        category: item,
-        entityKey: entityKey
-      }
-    });
-  }
-
-  const throttledHandleDialog = throttle(onItemClick, 2000);
+  const onItemClick = () => {
+    const dialogName = "NoticeDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
+  };
 </script>

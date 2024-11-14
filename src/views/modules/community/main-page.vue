@@ -115,7 +115,7 @@
   }
 
   const onImageClick = (item: AdvertisementView) => {
-    const dialogName = "BusinessAdvertisementDetail";
+    const dialogName = "CommunityAdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
     openCategoryDetailDialog(item, dialogName);
   };

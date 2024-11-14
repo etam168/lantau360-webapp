@@ -37,48 +37,42 @@
   import { fasArrowUp, fasArrowDown } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
-  import { Weather } from "@/interfaces/models/entities/weather";
+  import type { Weather } from "@/interfaces/models/entities/weather";
 
   const { translate } = useUtilities();
 
-  const props = defineProps({
-    data: {
-      type: Object as PropType<Weather | null>,
-      required: false,
-      default: null
-    }
-  });
+  const { data } = defineProps<{
+    data: Weather | null;
+  }>();
 
   const caption = computed(() => {
-    return translate(props.data?.caption ?? "", props.data?.meta, "caption");
+    return translate(data?.caption ?? "", data?.meta, "caption");
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const iconPath = computed(() => {
-    const fileNameWithoutExtension = props.data?.icon.split(".")[0];
+    const fileNameWithoutExtension = data?.icon.split(".")[0];
     return `/resources/weather/${fileNameWithoutExtension}.svg`;
   });
 
-  const weatherDate = computed(() =>
-    date.formatDate(props.data?.forecastDateTime, "YYYY-MM-DD HH:MM")
-  );
+  const weatherDate = computed(() => date.formatDate(data?.forecastDateTime, "YYYY-MM-DD HH:MM"));
 
   const chips = computed(() => [
     {
       class: "q-pa-none",
       size: "32px",
       iconRight: undefined,
-      content: `${props.data?.tempValue}°${props.data?.unit}`
+      content: `${data?.tempValue}°${data?.unit}`
     },
     {
       size: "md",
       iconRight: fasArrowUp,
-      content: `${props.data?.maxTemp}°${props.data?.unit}`
+      content: `${data?.maxTemp}°${data?.unit}`
     },
     {
       size: "md",
       iconRight: fasArrowDown,
-      content: `${props.data?.minTemp}°${props.data?.unit}`
+      content: `${data?.minTemp}°${data?.unit}`
     }
   ]);
 </script>

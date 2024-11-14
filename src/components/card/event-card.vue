@@ -19,16 +19,13 @@
         color="primary"
         :label="$t(`${i18nKey}.moreDetail`)"
         class="full-width"
-        @click="throttledHandleDialog"
+        @click="onItemClick"
       />
     </q-card-actions>
   </q-card>
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
-  import { throttle, useQuasar } from "quasar";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
@@ -42,24 +39,16 @@
   const i18nKey = "business";
   const entityKey: EntityURLKey = "COMMUNITY_EVENT";
 
-  const $q = useQuasar();
-  const { translate, getImageURL } = useUtilities();
+  const { eventBus, translate, getImageURL } = useUtilities();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const eventItem = computed(() => item as CommunityEventView);
 
   const translatedTitle: any = ref(translate(eventItem.value.title, eventItem.value.meta, "title"));
 
   const onItemClick = () => {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/category-detail-dialog/index.vue")
-      ),
-      componentProps: {
-        category: item,
-        entityKey: entityKey
-      }
-    });
+    const dialogName = "EventDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
   };
-
-  const throttledHandleDialog = throttle(onItemClick, 2000);
 </script>
