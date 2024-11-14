@@ -28,6 +28,8 @@
   }
 
   function showGuidance() {
+    alert("hasShownGuidance");
+    alert(!$q.sessionStorage.getItem("hasShownGuidance"));
     if (!$q.sessionStorage.getItem("hasShownGuidance")) {
       showPlatformGuidance();
       $q.sessionStorage.setItem("hasShownGuidance", "true");
@@ -41,16 +43,19 @@
           case Platform.is.chrome:
             window.addEventListener("beforeinstallprompt", handleBeforeinstallprompt);
             break;
+          default:
+          //   // To be impemented: Handle unknown browsers with a generic message or action
+        }
+      } else {
+        switch (true) {
           case Platform.is.edge:
           case Platform.is.ios:
           case Platform.is.opera:
             showGuidance();
             break;
           default:
-          //   // To be impemented: Handle unknown browsers with a generic message or action
+          //Dont need to do anything
         }
-      } else {
-        showGuidance();
       }
     }
 

@@ -18,14 +18,13 @@
 </template>
 
 <script setup lang="ts">
-import { fasHeart } from "@quasar/extras/fontawesome-v6";
 // Interface files
-import { CategoryTypes } from "@/interfaces/types/category-types";
-import { SiteView } from "@/interfaces/models/views/site-view";
+import type { CategoryTypes } from "@/interfaces/types/category-types";
 
+import { fasHeart } from "@quasar/extras/fontawesome-v6";
 import { LocalStorage } from "quasar";
 
-// .ts files
+// Constants import
 import { EntityURLKey, STORAGE_KEYS } from "@/constants";
 
 const { getEntityName, getImageURL, translate } = useUtilities();
