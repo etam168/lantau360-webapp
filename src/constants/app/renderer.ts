@@ -1,4 +1,4 @@
-const Renderer = {
+export const RENDERER = {
   ATM: "ATM",
   SITE: "Site",
   TAXI: "Taxi",
@@ -19,5 +19,3 @@ const Renderer = {
   DAYTRIP: "daytrip",
   EMERGENCY: "emergency"
 };
-
-export default Renderer;

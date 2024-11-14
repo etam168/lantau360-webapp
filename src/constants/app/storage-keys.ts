@@ -1,4 +1,4 @@
-const StorageKeys = {
+export const STORAGE_KEYS = {
   IsLogOn: "IsLogin",
 
   SAVED: {
@@ -7,5 +7,3 @@ const StorageKeys = {
     POSTING: "postingFavourites"
   }
 };
-
-export default StorageKeys;

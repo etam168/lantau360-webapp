@@ -71,7 +71,7 @@
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
-  import { AREA_NAME, EntityURLKey, URL } from "@/constants";
+  import { AREA_NAME, ENTITY_URL, EntityURLKey, URL } from "@/constants";
 
   // Composables
   import { useQuasar } from "quasar";
@@ -157,14 +157,14 @@
       switch (props.entityKey) {
         case "CHECKIN":
           categoryItems.value = await fetchData(
-            `${URL.CHECKIN_BY_MEMBER}/${props.member.memberId}`
+            `${ENTITY_URL.CHECKIN_BY_MEMBER}/${props.member.memberId}`
           );
           break;
         case "ACCOUNT":
           // Fetch data from two different APIs concurrently
           const [transactions, recentTransactions] = await Promise.all([
-            fetchData(`${URL.MEMBER_TRANSACTIONS_URL}/${props.member.memberId}`),
-            fetchData(`${URL.MEMBER_RECENT_RANSACTIONS_URL}/${props.member.memberId}`)
+            fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${props.member.memberId}`),
+            fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${props.member.memberId}`)
           ]);
 
           // Add a transactionType property to each item

@@ -1,4 +1,4 @@
-const DirectoryGroups = {
+export const DIRECTORY_GROUPS = {
   HOME: [1, 3, 5],
   BUSINESS: [2, 4],
   PROMOTIONS: 108,
@@ -7,5 +7,3 @@ const DirectoryGroups = {
   TIMETABLE: 24,
   TAXI: 26
 };
-
-export default DirectoryGroups;

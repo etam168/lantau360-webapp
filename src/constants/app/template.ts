@@ -1,4 +1,4 @@
-const Template = {
+export const TEMPLATE = {
   DEFAULT: { value: 1, mask: 1 },
   TAXI: { value: 2, mask: 1 },
   TIMETABLE: { value: 3, mask: 7 },
@@ -12,4 +12,3 @@ const Template = {
   TUITION: { value: 9, mask: 7 },
   PROPERTY: { value: 10, mask: 7 }
 };
-export default Template;

@@ -32,7 +32,6 @@
   import { SiteView } from "@/interfaces/models/views/site-view";
   import { useUserStore } from "@/stores/user";
   import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { CommunityEvent } from "@/interfaces/models/entities/community-event";
   import { Content } from "@/interfaces/models/entities/content";
 
   // .ts files
@@ -135,7 +134,7 @@
   async function loadMemberCheckInDetail() {
     try {
       const [memberConfigRes, checkInDataRes] = await Promise.all([
-        fetchData<Content>(URL.MEMBER_CONFIG),
+        fetchData<Content>(ENTITY_URL.MEMBER_CONFIG),
         fetchData<CheckIn>(
           `${ENTITY_URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`
         )

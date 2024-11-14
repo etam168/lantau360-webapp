@@ -10,7 +10,7 @@
   import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // .ts files
-  import { TEMPLATE, URL } from "@/constants";
+  import { TEMPLATE, ENTITY_URL } from "@/constants";
 
   const props = defineProps({
     item: {
@@ -62,11 +62,11 @@
   function getGalleryImageUrl() {
     const { item } = props;
     if (isSiteView(item)) {
-      return `${URL.SITE_GALLERY}/${item.siteId}`;
+      return `${ENTITY_URL.SITE_GALLERY}/${item.siteId}`;
     } else if (isBusinessView(item)) {
-      return `${URL.BUSINESS_GALLERY}/${item.businessId}`;
+      return `${ENTITY_URL.BUSINESS_GALLERY}/${item.businessId}`;
     } else if (isPostingView(item)) {
-      return `${URL.POSTING_GALLERY}/${item.postingId}`;
+      return `${ENTITY_URL.POSTING_GALLERY}/${item.postingId}`;
     }
     return null;
   }

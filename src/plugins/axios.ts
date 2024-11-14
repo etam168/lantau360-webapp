@@ -3,7 +3,7 @@ import { storeToRefs } from "pinia";
 
 // Local imports
 import { useUserStore } from "@/stores/user";
-import { URL } from "@/constants";
+import { ENTITY_URL } from "@/constants";
 
 // Create a new axios instance
 const axiosInstance = axios.create({
@@ -21,7 +21,7 @@ async function refreshToken() {
   const { api } = useApi();
   const { notify } = useUtilities();
   try {
-    const response = await api.create(`${URL.REFRESH_TOKEN}`, {
+    const response = await api.create(`${ENTITY_URL.REFRESH_TOKEN}`, {
       accessToken: userStore.expiredToken,
       refreshToken: userStore.refreshToken
     });
@@ -55,7 +55,6 @@ axiosInstance.interceptors.request.use(
         return Promise.reject(new Error("Session expired"));
       }
     }
-
 
     if (token.value) {
       config.headers.Authorization = `Bearer ${token.value}`;
