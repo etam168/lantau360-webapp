@@ -20,13 +20,11 @@
   import { throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { EntityURLKey } from "@/constants";
 
-  const { item } = defineProps<{
-    item: BulletinTypes;
-  }>();
+  const { item } = defineProps<{ item: CategoryTypes }>();
 
   const noticeItem = computed(() => item as CommunityNotice);
   const { getTimeAgo, translate } = useUtilities();

@@ -13,7 +13,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Custom Components
   import NoticeCard from "@/components/card/notice-card.vue";
@@ -21,15 +21,14 @@
   import EventCard from "@/components/card/event-card.vue";
 
   // Props
-  const { items } = defineProps<{
-    items: BulletinTypes[];
-  }>();
+
+  const { items } = defineProps<{ items: CategoryTypes[] }>();
 
   const { isCommunityNotice, isCommunityEvent } = useUtilities();
 
   const hasCommunityItems = (items: any) => {
     return items.some(
-      (item: BulletinTypes) =>
+      (item: CategoryTypes) =>
         // (isCommunityNews(item) && item.communityNewsId !== undefined) ||
         (isCommunityNotice(item) && item.communityNoticeId !== undefined) ||
         (isCommunityEvent(item) && item.communityEventId !== undefined)

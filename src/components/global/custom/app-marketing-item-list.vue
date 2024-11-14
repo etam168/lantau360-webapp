@@ -1,7 +1,7 @@
 <template>
   <div class="row q-col-gutter-sm" v-if="data.length > 0">
     <div v-for="(item, index) in sortedItems" :key="index" class="col-md-3 col-sm-4 col-6">
-      <div v-if="item.status !== 0">
+      <div v-if="item && 'status' in item && item.status !== 0">
         <promotion-card v-if="isBusinessPromotion(item)" :item="item" />
         <voucher-card v-else-if="isBusinessVoucher(item)" :item="item" />
       </div>
@@ -11,16 +11,14 @@
 
 <script setup lang="ts">
   // Interface files
-  import { MarketingType } from "@/interfaces/types/marketing-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Custom Components
   import PromotionCard from "@/components/card/promotion-card.vue";
   import VoucherCard from "@/components/card/voucher-card.vue";
 
   // Define props for this component
-  const { data } = defineProps<{
-    data: MarketingType[];
-  }>();
+  const { data } = defineProps<{ data: CategoryTypes[] }>();
 
   const { isBusinessPromotion, isBusinessVoucher } = useUtilities();
 

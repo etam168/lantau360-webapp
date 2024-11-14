@@ -22,14 +22,12 @@
 
   // Interface file
   import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-  import { MarketingType } from "@/interfaces/types/marketing-types";
-  import { ENTITY_URL } from "@/constants";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const $q = useQuasar();
   const { getImageURL } = useUtilities();
-  const { item } = defineProps<{
-    item: MarketingType;
-  }>();
+
+  const { item } = defineProps<{ item: CategoryTypes }>();
 
   const voucherItem = computed(() => item as BusinessVoucherView);
 

@@ -30,15 +30,13 @@
   import { throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import { EntityURLKey } from "@/constants";
 
-  const { item } = defineProps<{
-    item: BulletinTypes;
-  }>();
+  const { item } = defineProps<{ item: CategoryTypes }>();
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();

@@ -21,14 +21,11 @@
   import { date, throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { BulletinTypes } from "@/interfaces/types/bulletin-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { ENTITY_URL } from "@/constants";
 
-  // .ts files
-  const { item } = defineProps<{
-    item: BulletinTypes;
-  }>();
+  const { item } = defineProps<{ item: CategoryTypes }>();
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();

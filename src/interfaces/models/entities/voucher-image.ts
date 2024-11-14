@@ -1,5 +1,5 @@
 import { BaseImage } from "../base-entities/base-image";
 
-export interface voucherImage extends BaseImage {
+export interface VoucherImage extends BaseImage {
   businessVoucherId: number;
 }

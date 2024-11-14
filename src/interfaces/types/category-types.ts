@@ -2,12 +2,11 @@ import type { AdvertisementView } from "@/interfaces/models/views/advertisement-
 import type { BusinessView } from "@/interfaces/models/views/business-view";
 import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
 import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-import type { CheckIn } from "@/interfaces/models/entities/checkin";
-import type { CommunityEvent } from "@/interfaces/models/entities/community-event";
-import type { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
+import type { CommunityNewsView } from "@/interfaces/models/views/community-news-view";
+import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
 import type { PostingView } from "@/interfaces/models/views/posting-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
-import type { Transaction } from "@/interfaces/models/entities/transaction";
 import type { CheckInView } from "@/interfaces/models/views/checkin-view";
 
 export type CategoryTypes =
@@ -15,10 +14,9 @@ export type CategoryTypes =
   | BusinessView
   | BusinessPromotionView
   | BusinessVoucherView
-  // | CheckIn
   | CheckInView
-  | CommunityEvent
-  | CommunityNotice
+  | CommunityEventView
+  | CommunityNewsView
+  | CommunityNoticeView
   | PostingView
   | SiteView;
-  // | Transaction;

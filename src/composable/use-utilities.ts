@@ -1,6 +1,5 @@
 // interface files
 import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-import { BulletinTypes } from "@/interfaces/types/bulletin-types";
 import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
 import { BusinessView } from "@/interfaces/models/views/business-view";
 import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
@@ -10,7 +9,6 @@ import { CommunityEventView } from "@/interfaces/models/views/community-event-vi
 import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
 import { Directory } from "@/interfaces/models/entities/directory";
 import { DirectoryTypes } from "@/interfaces/types/directory-types";
-import { MarketingType } from "@/interfaces/types/marketing-types";
 import { PostingView } from "@/interfaces/models/views/posting-view";
 import { SiteView } from "@/interfaces/models/views/site-view";
 
@@ -100,7 +98,7 @@ export function useUtilities() {
   }
 
   // Type guard to determine if the item is an BusinessPromotionView
-  function isBusinessPromotion(item: MarketingType): item is BusinessPromotionView {
+  function isBusinessPromotion(item: CategoryTypes): item is BusinessPromotionView {
     return (item as BusinessPromotionView).businessPromotionId !== undefined;
   }
 
@@ -110,7 +108,7 @@ export function useUtilities() {
   }
 
   // Type guard to determine if the item is an BusinessVoucherView
-  function isBusinessVoucher(item: MarketingType): item is BusinessVoucherView {
+  function isBusinessVoucher(item: CategoryTypes): item is BusinessVoucherView {
     return (item as BusinessVoucherView).businessVoucherId !== undefined;
   }
 
@@ -120,7 +118,7 @@ export function useUtilities() {
   }
 
   // Type guard to determine if the item is an CommunityEvent
-  function isCommunityEvent(item: BulletinTypes): item is CommunityEventView {
+  function isCommunityEvent(item: CategoryTypes): item is CommunityEventView {
     return (item as CommunityEventView).communityEventId !== undefined;
   }
 
@@ -136,7 +134,7 @@ export function useUtilities() {
     return false;
   }
 
-  function isCommunityNotice(item: BulletinTypes): item is CommunityNoticeView {
+  function isCommunityNotice(item: CategoryTypes): item is CommunityNoticeView {
     return (item as CommunityNoticeView).communityNoticeId !== undefined;
   }
 

@@ -30,21 +30,16 @@
 
   // Interface files
   import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
-  import { MarketingType } from "@/interfaces/types/marketing-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
 
   const { eventBus } = useUtilities();
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
-  const props = defineProps({
-    item: {
-      type: Object as PropType<MarketingType>,
-      required: true
-    }
-  });
+  const { item } = defineProps<{ item: CategoryTypes }>();
 
-  const promotionItem = computed(() => props.item as BusinessPromotionView);
+  const promotionItem = computed(() => item as BusinessPromotionView);
 
   const translatedTitle: any = ref(
     translate(
