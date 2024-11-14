@@ -1,6 +1,6 @@
 // import api from "@/api/crud";
 
-const { httpMethods } = useCommunication();
+const { api } = useApi();
 const { notify } = useUtilities();
 
 export default function useDataTable(url: string, key: string) {
@@ -21,7 +21,7 @@ export default function useDataTable(url: string, key: string) {
 
   async function getDataTable(params: any) {
     try {
-      const { data } = await httpMethods.get(url, params);
+      const { data } = await api.get(url, params);
       return data || [];
     } catch (err: any) {
       if ((err as Error).message == "Network Error") {

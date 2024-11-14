@@ -8,7 +8,6 @@
 
     <q-item-section>
       <q-item-label> {{ line1(item) }} </q-item-label>
-
       <q-item-label> {{ line2(item) }} </q-item-label>
     </q-item-section>
 
@@ -19,54 +18,59 @@
 </template>
 
 <script setup lang="ts">
-  import { fasHeart } from "@quasar/extras/fontawesome-v6";
-  // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
+import { fasHeart } from "@quasar/extras/fontawesome-v6";
+// Interface files
+import { CategoryTypes } from "@/interfaces/types/category-types";
+import { SiteView } from "@/interfaces/models/views/site-view";
 
-  import { LocalStorage } from "quasar";
+import { LocalStorage } from "quasar";
 
-  // .ts files
-  import { EntityURLKey, STORAGE_KEYS } from "@/constants";
+// .ts files
+import { EntityURLKey, STORAGE_KEYS } from "@/constants";
 
-  const { getEntityName, getImageURL, translate } = useUtilities();
+const { getEntityName, getImageURL, translate } = useUtilities();
 
-  const { item, entityKey } = defineProps<{
-    item: CategoryTypes;
-    entityKey: EntityURLKey;
-  }>();
+const { item, entityKey } = defineProps<{
+  item: CategoryTypes;
+  entityKey: EntityURLKey;
+}>();
 
-  const entityName = getEntityName(entityKey);
+const entityName = getEntityName(entityKey);
 
-  function line1(item: CategoryTypes) {
-    const name = `${entityName}Name` as keyof CategoryTypes;
+function line1(item: CategoryTypes) {
+  const name = `${entityName}Name` as keyof CategoryTypes;
+  return translate(item[name] as string, item.meta, name);
+}
 
-    return translate(item[name] as string, item.meta, name);
-  }
+function line2(item: CategoryTypes) {
+  return translate(item.subtitle1, item.meta, "subtitle1");
+}
 
-  function line2(item: CategoryTypes) {
-    return translate(item.subtitle1, item.meta, "subtitle1");
-  }
+const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
+const emits = defineEmits(["on-detail"]);
 
-  const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
-  const emits = defineEmits(["on-detail"]);
-
-  const isFavoriteItem = (item: CategoryTypes): boolean => {
-    switch (entityKey) {
-      case "BUSINESS":
+const isFavoriteItem = (item: CategoryTypes): boolean => {
+  switch (entityKey) {
+    case "BUSINESS":
+      if ('businessId' in item) {
         return favoriteItems.value.some(
-          favItem => (favItem as BusinessView).businessId === (item as BusinessView).businessId
+          favItem => 'businessId' in favItem && favItem.businessId === item.businessId
         );
-      case "SITE":
+      }
+      return false;
+    case "SITE":
+      if ('siteId' in item) {
         return favoriteItems.value.some(
-          favItem => (favItem as SiteView).siteId === (item as SiteView).siteId
+          favItem => 'siteId' in favItem && favItem.siteId === item.siteId
         );
-      default:
-        return false;
-    }
-  };
-  function handleDetail() {
-    emits("on-detail");
+      }
+      return false;
+    default:
+      return false;
   }
+};
+
+function handleDetail() {
+  emits("on-detail");
+}
 </script>

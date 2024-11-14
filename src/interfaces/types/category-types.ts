@@ -15,10 +15,10 @@ export type CategoryTypes =
   | BusinessView
   | BusinessPromotionView
   | BusinessVoucherView
-  | CheckIn
+  // | CheckIn
   | CheckInView
   | CommunityEvent
   | CommunityNotice
   | PostingView
-  | SiteView
-  | Transaction;
+  | SiteView;
+  // | Transaction;
