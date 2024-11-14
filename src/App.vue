@@ -28,8 +28,6 @@
   }
 
   function showGuidance() {
-    alert("hasShownGuidance");
-    alert(!$q.sessionStorage.getItem("hasShownGuidance"));
     if (!$q.sessionStorage.getItem("hasShownGuidance")) {
       showPlatformGuidance();
       $q.sessionStorage.setItem("hasShownGuidance", "true");
