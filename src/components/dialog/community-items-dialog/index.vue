@@ -39,13 +39,13 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Interface files
+  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+
+  // Custom Components
   import CommunityItemsContent from "./community-items-content.vue";
 
   // Constants

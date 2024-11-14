@@ -15,7 +15,7 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
+  // Interface files
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
 

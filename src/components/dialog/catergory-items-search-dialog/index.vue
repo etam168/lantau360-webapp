@@ -28,17 +28,14 @@
 </template>
 
 <script setup lang="ts">
-  import { onMounted, ref } from "vue";
+  // Quasar Import
+  import { useDialogPluginComponent } from "quasar";
 
   // Custom Components
-  import { useDialogPluginComponent } from "quasar";
   import CategoryItemsSearchContent from "./category-items-search-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
-
-  const { eventBus } = useUtilities();
-  const { t } = useI18n({ useScope: "global" });
 
   // Props
   const { query, entityKey } = defineProps<{
@@ -46,7 +43,12 @@
     entityKey: EntityURLKey;
   }>();
 
+  // Composable function calls
+  const { eventBus } = useUtilities();
+  const { t } = useI18n({ useScope: "global" });
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+  // Reactive variables
   const isDialogVisible = ref();
 
   const dialogTitle = computed(() => {
@@ -60,14 +62,15 @@
     }
   });
 
+  function updateDialogState(status: any) {
+    isDialogVisible.value = status;
+    eventBus("DialogStatus").emit(status, "SiteSearchDialog");
+  }
+
+  // Lifecycle hooks
   onMounted(() => {
     eventBus("SiteSearchDialog").on(() => {
       isDialogVisible.value = false;
     });
   });
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-    eventBus("DialogStatus").emit(status, "SiteSearchDialog");
-  }
 </script>

@@ -42,10 +42,10 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 </template>
 
 <script setup lang="ts" generic="EntityT extends EntityType">
-  // Types
+  // Interface files
   import type { EntityType } from "@/interfaces/types/entity-type";
 
-  // Other imports
+  // Third party imports
   import { object } from "yup";
   import { Form } from "vee-validate";
   import { useUserStore } from "@/stores/user";

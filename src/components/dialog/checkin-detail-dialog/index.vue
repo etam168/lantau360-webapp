@@ -8,7 +8,6 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -17,7 +16,6 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- Main edit dialog content -->
             <check-in-detail-content :item />
           </template>
           <template #fallback>
@@ -38,20 +36,16 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
-
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Interface files
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+
+  // Custom Components
   import CheckInDetailContent from "./checkin-detail-content.vue";
 
-  // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
-
-  // Emits
+  // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
@@ -62,7 +56,7 @@
 
   // Composable function calls
   const { eventBus } = useUtilities();
-  const { translate, getEntityName } = useUtilities();
+  const { translate } = useUtilities();
   const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   // Reactive variables

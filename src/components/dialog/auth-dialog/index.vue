@@ -19,7 +19,7 @@
 
       <q-page-container>
         <q-page class="column items-center justify-center">
-          <auth-content :mode @close-dialog="handleCloseDialog"/>
+          <auth-content :mode @close-dialog="handleCloseDialog" />
         </q-page>
       </q-page-container>
     </q-layout>
@@ -27,12 +27,13 @@
 </template>
 
 <script setup lang="ts">
-  import type { AuthMode } from "@/interfaces/types/auth-mode";
-
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Interface files
+  import type { AuthMode } from "@/interfaces/types/auth-mode";
+
+  // Custom Components
   import AuthContent from "./auth-content.vue";
 
   // Emits
@@ -86,13 +87,5 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
-  });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
   });
 </script>

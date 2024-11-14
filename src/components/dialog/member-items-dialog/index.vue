@@ -40,11 +40,11 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { Member } from "@/interfaces/models/entities/member";
-
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
+
+  // Interface files
+  import type { Member } from "@/interfaces/models/entities/member";
 
   // Components
   import MemberItemsContent from "./member-items-content.vue";
@@ -54,7 +54,7 @@
 
   import i18n from "@/plugins/i18n/i18n";
 
-  // Emits
+  // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props

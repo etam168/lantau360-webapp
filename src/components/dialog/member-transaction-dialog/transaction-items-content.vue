@@ -33,7 +33,7 @@
 </template>
 
 <script setup lang="ts">
-  // Interface
+  // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { Member } from "@/interfaces/models/entities/member";
   import type { TabItem } from "@/interfaces/tab-item";
@@ -173,7 +173,9 @@
       throw error;
     }
   };
-
-  // Fetch data as part of the setup
+  /**
+   * Fetch data as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
   await fetchAllData();
 </script>

@@ -52,7 +52,7 @@
   import EditDialogContent from "./edit-dialog-content.vue";
   import { EntityURLKey } from "@/constants/app/entity-url";
 
-  // Emits
+  // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props

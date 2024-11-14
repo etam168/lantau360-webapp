@@ -52,27 +52,27 @@
   </q-page>
 </template>
 <script setup lang="ts">
-  // Interface files
-  import { CheckInView } from "@/interfaces/models/views/checkin-view";
-  // .ts files
-  import { BLOB_URL } from "@/constants";
-
-  // 3rd Party Import
+  // Third party imports
   import { LatLngExpression, latLngBounds } from "leaflet";
+
+  // Interface files
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+
+  // Constants
+  import { BLOB_URL } from "@/constants";
 
   // Props
   const { item } = defineProps<{
     item: CheckInView;
   }>();
 
-  const { translate, dateTimeFormatter } = useUtilities();
-  const { dialogRef } = useDialogPluginComponent();
-  const { locale, t } = useI18n({ useScope: "global" });
-  const checkInItem = computed(() => item as CheckInView);
-
-  const isDialogVisible = ref();
+  // Composable function calls
   const $q = useQuasar();
+  const { locale, t } = useI18n({ useScope: "global" });
+  const { translate, dateTimeFormatter } = useUtilities();
 
+  // Reactive variables
+  const checkInItem = computed(() => item as CheckInView);
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("map");
 
@@ -98,14 +98,6 @@
     { name: "map", label: t("checkin.map") },
     { name: "checkInList", label: t("checkin.checkInList") }
   ]);
-
-  const openGoogleMaps = () => {
-    if (checkInItem.value.siteMeta?.["hasMap"]) {
-      window.open(checkInItem.value.siteMeta?.["mapLink"], "_blank");
-    } else {
-      console.error(t("errors.mapLinkNotAvailable"));
-    }
-  };
 
   const bannerPath = computed(() => {
     return checkInItem.value.bannerPath
@@ -157,4 +149,12 @@
       return translate(checkInItem.value.siteName, item.siteMeta, "siteName");
     }
   });
+
+  const openGoogleMaps = () => {
+    if (checkInItem.value.siteMeta?.["hasMap"]) {
+      window.open(checkInItem.value.siteMeta?.["mapLink"], "_blank");
+    } else {
+      console.error(t("errors.mapLinkNotAvailable"));
+    }
+  };
 </script>

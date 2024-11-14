@@ -44,14 +44,14 @@
 </template>
 
 <script setup lang="ts">
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
   // Components
   import InputDialogContent from "./input-dialog-content.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);

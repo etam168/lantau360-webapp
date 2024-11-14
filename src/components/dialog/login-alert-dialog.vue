@@ -22,9 +22,10 @@
 </template>
 
 <script setup lang="ts">
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
+  // Third party imports
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
   // Emits
@@ -48,6 +49,7 @@
     });
   };
 
+  // Lifecycle hooks
   onMounted(() => {
     const timeout = Math.random() * 100000; // random timeout up to 100 seconds
     setTimeout(() => {

@@ -21,7 +21,7 @@
   import listTable from "./list-table.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
   const { eventBus } = useUtilities();
 
@@ -30,6 +30,19 @@
     query: any;
     entityKey: EntityURLKey;
   }>();
+
+  // Composable function calls
+  const $q = useQuasar();
+
+  // Reactive variables
+  const queryData = ref(query.searchKeyword);
+  const tableUrl = computed(() => urlAndKey.value.url);
+  const tableKey = computed(() => urlAndKey.value.key);
+
+  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
+    tableUrl.value,
+    tableKey.value
+  );
 
   // Dynamically set URL and key based on entityKey
   const urlAndKey = computed(() => {
@@ -42,16 +55,6 @@
         return { url: "", key: "" }; // Default case
     }
   });
-
-  const tableUrl = computed(() => urlAndKey.value.url);
-  const tableKey = computed(() => urlAndKey.value.key);
-
-  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
-    tableUrl.value,
-    tableKey.value
-  );
-  const queryData = ref(query.searchKeyword);
-  const $q = useQuasar();
 
   function updatePagination(val: any) {
     pagination.value.page = val;
@@ -69,9 +72,9 @@
     // });
   }
 
+  // Lifecycle hooks
   onBeforeUnmount(() => {
-    eventBus("LoadData").off(() => {
-    });
+    eventBus("LoadData").off(() => {});
   });
 
   onMounted(() => {

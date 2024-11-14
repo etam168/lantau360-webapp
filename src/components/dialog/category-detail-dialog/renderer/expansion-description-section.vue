@@ -28,7 +28,10 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasChevronDown, fasHeart } from "@quasar/extras/fontawesome-v6";
+
+  // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
@@ -36,8 +39,10 @@
     category: CategoryTypes;
   }>();
 
+  // Composable function calls
   const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
 
+  // Reactive variables
   const i18nKey = "home";
   const translatedContent = ref(translate(category.description, category.meta, "description"));
   const isFavourite = ref(isFavouriteItem(category));

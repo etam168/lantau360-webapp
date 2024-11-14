@@ -9,15 +9,12 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <q-header bordered class="bg-transparent text-dark"> -->
       <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
-      <!-- </q-header> -->
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- Main edit dialog content -->
             <category-detail-content :category :entity-key />
           </template>
           <template #fallback>
@@ -39,19 +36,21 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-
-  // Composables Imports
+  // Quasar  Imports
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Interface files
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+
+  // Custom Components
   import CategoryDetailContent from "./category-detail-content.vue";
+
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
   // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
+
   // Props
   const {
     category,
@@ -67,6 +66,7 @@
   const { eventBus } = useUtilities();
   const { translate, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);

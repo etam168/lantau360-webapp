@@ -45,7 +45,7 @@
 </template>
 
 <script setup lang="ts">
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
   // Components

@@ -5,6 +5,7 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
@@ -12,7 +13,9 @@
     category: CategoryTypes;
   }>();
 
+  // Composable function calls
   const { translate } = useUtilities();
 
+  // Reactive variables
   const translatedContent = ref(translate(category.description, category.meta, "description"));
 </script>

@@ -43,7 +43,7 @@
   import { fasCamera } from "@quasar/extras/fontawesome-v6";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
-  import avatarImageCard from "@/components/custom/avatar-image-card.vue";
+  import avatarImageCard from "@/components/card/avatar-image-card.vue";
   // Composables
   import { useField } from "vee-validate";
   import { useTemplateRef } from "vue";

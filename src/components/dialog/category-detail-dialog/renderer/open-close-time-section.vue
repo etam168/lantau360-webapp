@@ -11,8 +11,11 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasCircle } from "@quasar/extras/fontawesome-v6";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+
+  // Interface files
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
   const { category } = defineProps<{ category: CategoryTypes }>();
@@ -49,8 +52,6 @@
       return "Close now";
     }
   });
-
-  // Computed property for the icon to display (check or close icon)
 
   // Computed property for formatted times
   const formattedTimes = computed(() => {

@@ -45,11 +45,14 @@
 </template>
 
 <script setup lang="ts">
-  import { EntityURLKey } from "@/constants";
+  // Third party imports
   import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { LatLngExpression, latLng, latLngBounds } from "leaflet";
 
+  // Interface files
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+
+  //Emit
   const emits = defineEmits(["open-map", "check-in"]);
 
   // Props
@@ -58,25 +61,12 @@
     hasCheckIn?: boolean;
   }>();
 
-  // const props = defineProps({
-  //   item: {
-  //     type: Object as PropType<CategoryTypes>,
-  //     required: true
-  //   },
-  //   defaultTooltip: {
-  //     type: String,
-  //     required: true
-  //   },
-  //   canCheckIn: {
-  //     type: Boolean,
-  //     default: false
-  //   }
-  // });
-
-  const { locale } = useI18n({ useScope: "global" });
-  const { translate } = useUtilities();
+  // Composable function calls
   const $q = useQuasar();
+  const { translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
 
+  // Reactive variables
   const i18nKey = "home";
   const address = computed(() => translate(category.subtitle1, category.meta, "subtitle1"));
 

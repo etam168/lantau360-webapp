@@ -8,9 +8,7 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <!-- <pre>{{ category }}</pre> -->
         <app-dialog-title>{{}}</app-dialog-title>
       </q-header>
 
@@ -18,8 +16,6 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
-            <!-- Main edit dialog content -->
             <top-up-detail-content :entity-key />
           </template>
           <template #fallback>
@@ -40,14 +36,14 @@
 </template>
 
 <script setup lang="ts">
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Custom  Components
   import TopUpDetailContent from "./top-up-detail-content.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);

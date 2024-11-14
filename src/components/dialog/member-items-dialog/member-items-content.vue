@@ -4,7 +4,7 @@
 </template>
 
 <script setup lang="ts">
-  // Interface
+  // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { Member } from "@/interfaces/models/entities/member";
 
@@ -25,17 +25,14 @@
   const memberItems = ref<CategoryTypes[]>([]);
 
   async function handleDetail(item: any) {
-
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/checkin-detail-dialog/index.vue")
       ),
-      componentProps: {  item: item , dialogName: "checkinDetailDialog"}
+      componentProps: { item: item, dialogName: "checkinDetailDialog" }
     })
-      .onCancel(() => {
-      })
-      .onOk(() => {
-      });
+      .onCancel(() => {})
+      .onOk(() => {});
 
     // openCategoryDetailDialog(item,"CheckInItemDetailDialog");
   }
@@ -55,6 +52,9 @@
     }
   };
 
-  // Fetch data as part of the setup
+  /**
+   * Fetch data as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
   await fetchAllData();
 </script>

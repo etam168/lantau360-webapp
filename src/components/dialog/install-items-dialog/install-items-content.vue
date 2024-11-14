@@ -6,12 +6,15 @@
     <install-complete-section v-else />
   </template>
 </template>
+
 <script setup lang="ts">
+  // Quasar Import
+  import { Platform } from "quasar";
+
   import InstallCompleteSection from "./sections/install-complete-section.vue";
   import InstallEdgeSection from "./sections/install-edge-section.vue";
   import InstallIosSection from "./sections/install-ios-section.vue";
   import InstallOperaSection from "./sections/install-opera-section.vue";
-  import { Platform } from "quasar";
 
   interface RenderItem {
     name: string;

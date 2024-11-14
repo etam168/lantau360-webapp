@@ -21,18 +21,21 @@
 </template>
 
 <script setup lang="ts">
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
+  // Third party import
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
-  // Emits
+  // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
-  // Reactive variables
+  // Composable function calls
   const $q = useQuasar();
+  const { dialogRef } = useDialogPluginComponent();
+
+  // Reactive variables
   const isDialogVisible = ref(true);
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
 
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;

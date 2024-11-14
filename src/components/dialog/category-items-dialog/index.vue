@@ -38,17 +38,17 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
-
-  // Composables Imports
+  // Quasar Import
   import { useDialogPluginComponent } from "quasar";
 
-  // Components
+  // Interface files
+  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+
+  // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);

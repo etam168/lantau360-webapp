@@ -60,12 +60,12 @@
 </template>
 
 <script setup lang="ts">
-  // Types
+  // Interface files
   import type { AuthMode } from "@/interfaces/types/auth-mode";
   import type { SubField } from "@/interfaces/types/form-structure-types";
 
-  // Composables
-  import { Form, useForm } from "vee-validate";
+  // Third party imports
+  import { Form } from "vee-validate";
 
   // Emits
   const emits = defineEmits(["close-dialog"]);
@@ -75,18 +75,20 @@
     mode: AuthMode;
   }>();
 
+  const i18nKey = "auth";
   const renderMode = ref(mode);
 
+  // Composable function calls
   const { t } = useI18n({ useScope: "global" });
   const { eventBus } = useUtilities();
-  const { handleSubmit } = useForm();
-  const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
-    useAuthService(renderMode!);
+  const { initialValues, loginRequest, registerRequest, recoverPassword, sendOtp } = useAuthService(
+    renderMode!
+  );
 
+  // Reactive variables
   const $q = useQuasar();
   const form = ref();
   const loading = ref(false);
-  const i18nKey = "auth";
   const userName = ref();
 
   const authStyle = computed(() =>
@@ -160,11 +162,7 @@
             break;
           case "sendOtp":
             await sendOtp(values.userName);
-            // eventBus.emit("otpSent", "reset");
             eventBus("otpSent").emit("reset");
-
-
-            //renderMode.value = "reset";
             break;
           default:
             throw new Error(`Unknown render mode: ${renderMode.value}`);
@@ -210,17 +208,17 @@
     }
   }
 
+  function onTimeoutExpired() {
+    renderMode.value = "login";
+  }
+
+  // Lifecycle hooks
   onMounted(() => {
     eventBus("otpSent").on((mode: AuthMode) => {
-
       if (form.value) {
         form.value.resetForm();
       }
       renderMode.value = mode;
     });
   });
-
-  function onTimeoutExpired() {
-    renderMode.value = "login";
-  }
 </script>

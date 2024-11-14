@@ -43,7 +43,7 @@
 </template>
 
 <script setup lang="ts">
-  // Interface
+  // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { Directory } from "@/interfaces/models/entities/directory";
@@ -64,11 +64,13 @@
     dialogName: string;
   }>();
 
-  const { groupBy, translate, eventBus } = useUtilities();
-  const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  // Composable function calls
   const $q = useQuasar();
+  const { fetchData } = useApi();
+  const { groupBy, translate, eventBus } = useUtilities();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
+  // Reactive variables
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
   const checkIns: Ref<CheckIn[]> = ref([]);
 
@@ -163,15 +165,16 @@
     }
   };
 
-  /**
-   * Fetch data as part of the setup
-   * This ensures that the component is compatible with Suspense
-   */
-  await fetchAllData();
-
+  // Lifecycle hooks
   onBeforeMount(() => {
     eventBus("refreshData").on(async () => {
       await fetchAllData();
     });
   });
+
+  /**
+   * Fetch data as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
+  await fetchAllData();
 </script>

@@ -18,65 +18,68 @@
 </template>
 
 <script setup lang="ts">
-// Interface files
-import type { CategoryTypes } from "@/interfaces/types/category-types";
+  // Quasar Import
+  import { LocalStorage } from "quasar";
 
-import { fasHeart } from "@quasar/extras/fontawesome-v6";
-import { LocalStorage } from "quasar";
+  // Third party imports
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
 
-// Constants import
-import { EntityURLKey, STORAGE_KEYS } from "@/constants";
+  // Interface files
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-const { getEntityName, getImageURL, translate } = useUtilities();
+  // Constants
+  import { EntityURLKey, STORAGE_KEYS } from "@/constants";
 
-const { item, entityKey } = defineProps<{
-  item: CategoryTypes;
-  entityKey: EntityURLKey;
-}>();
+  // Emits
+  const emits = defineEmits(["on-detail"]);
 
-const entityName = getEntityName(entityKey);
+  // Props
+  const { item, entityKey } = defineProps<{
+    item: CategoryTypes;
+    entityKey: EntityURLKey;
+  }>();
 
-function line1(item: CategoryTypes) {
-  const name = `${entityName}Name` as keyof CategoryTypes;
-  return translate(item[name] as string, item.meta, name);
-}
+  // Composable function calls
+  const { getEntityName, getImageURL, translate } = useUtilities();
+  const entityName = getEntityName(entityKey);
 
-function line2(item: CategoryTypes) {
-  return translate(item.subtitle1, item.meta, "subtitle1");
-}
+  const storageKey = computed(() =>
+    entityKey === "BUSINESS" ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE
+  );
 
-const storageKey = computed(() => 
-  entityKey === "BUSINESS" ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE
-);
+  const favoriteItems = ref((LocalStorage.getItem(storageKey.value) || []) as CategoryTypes[]);
 
-const favoriteItems = ref(
-  (LocalStorage.getItem(storageKey.value) || []) as CategoryTypes[]
-);
+  const isFavoriteItem = (item: CategoryTypes): boolean => {
+    switch (entityKey) {
+      case "BUSINESS":
+        if ("businessId" in item) {
+          return favoriteItems.value.some(
+            favItem => "businessId" in favItem && favItem.businessId === item.businessId
+          );
+        }
+        return false;
+      case "SITE":
+        if ("siteId" in item) {
+          return favoriteItems.value.some(
+            favItem => "siteId" in favItem && favItem.siteId === item.siteId
+          );
+        }
+        return false;
+      default:
+        return false;
+    }
+  };
 
-const emits = defineEmits(["on-detail"]);
-
-const isFavoriteItem = (item: CategoryTypes): boolean => {
-  switch (entityKey) {
-    case "BUSINESS":
-      if ("businessId" in item) {
-        return favoriteItems.value.some(
-          favItem => "businessId" in favItem && favItem.businessId === item.businessId
-        );
-      }
-      return false;
-    case "SITE":
-      if ("siteId" in item) {
-        return favoriteItems.value.some(
-          favItem => "siteId" in favItem && favItem.siteId === item.siteId
-        );
-      }
-      return false;
-    default:
-      return false;
+  function line1(item: CategoryTypes) {
+    const name = `${entityName}Name` as keyof CategoryTypes;
+    return translate(item[name] as string, item.meta, name);
   }
-};
 
-function handleDetail() {
-  emits("on-detail");
-}
+  function line2(item: CategoryTypes) {
+    return translate(item.subtitle1, item.meta, "subtitle1");
+  }
+
+  function handleDetail() {
+    emits("on-detail");
+  }
 </script>

@@ -16,19 +16,25 @@
 </template>
 
 <script setup lang="ts">
-  import { EntityURLKey } from "@/constants/app/entity-url";
-  import listItem from "./list-item.vue";
-
+  // Quasar Import
   import { QTable } from "quasar";
 
-  const qTableRef = ref(null);
+  // Constants
+  import { EntityURLKey } from "@/constants";
 
+  // Custom Components
+  import listItem from "./list-item.vue";
+
+  // Emit
   const emits = defineEmits(["on-contact", "on-detail", "on-pagination"]);
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
+
+  // Reactive variables
+  const qTableRef = ref(null);
 
   function handleDetail(props: any) {
     emits("on-detail", props);

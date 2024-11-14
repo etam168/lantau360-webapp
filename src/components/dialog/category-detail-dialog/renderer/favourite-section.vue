@@ -12,16 +12,21 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasHeart } from "@quasar/extras/fontawesome-v6";
+
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
   const { category } = defineProps<{
     category: CategoryTypes;
   }>();
 
+  // Composable function calls
   const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
+
+  // Reactive variables
   const isFavourite = ref(isFavouriteItem(category));
 
   function onBtnFavClick() {

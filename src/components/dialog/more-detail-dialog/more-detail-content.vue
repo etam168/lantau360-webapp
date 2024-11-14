@@ -5,17 +5,20 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed, defineProps, defineModel } from "vue";
+  // Constants
   import { ENTITY_URL, EntityURLKey, MENU } from "@/constants";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 
+  // Model
   const isLoading = defineModel("isLoading", { type: Boolean });
 
+  // Props
   const props = defineProps<{
     contentName: string;
     entityKey?: EntityURLKey;
   }>();
 
+  // Composable function calls
   const { translate } = useUtilities();
   const { fetchData } = useApi();
 

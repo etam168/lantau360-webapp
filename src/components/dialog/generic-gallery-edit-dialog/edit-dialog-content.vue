@@ -16,12 +16,11 @@
 </template>
 
 <script setup lang="ts">
-  // Type imports
-  // import type { DatatableType } from "@/interfaces/types/datatable-types";
+  // Interface files
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
-  import { newPostingImage } from "@/interfaces/models/entities/posting-image";
-  import { newMemberImage } from "@/interfaces/models/entities/member-image";
+  import type { newPostingImage } from "@/interfaces/models/entities/posting-image";
+  import type { newMemberImage } from "@/interfaces/models/entities/member-image";
 
   import { useUserStore } from "@/stores/user";
 

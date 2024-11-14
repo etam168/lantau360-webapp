@@ -23,8 +23,10 @@
 </template>
 
 <script setup lang="ts">
-  import { useGeolocation } from "@vueuse/core";
+  // Third party imports
   import * as geolib from "geolib";
+  import { useGeolocation } from "@vueuse/core";
+  import { useUserStore } from "@/stores/user";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
@@ -33,9 +35,6 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { Content } from "@/interfaces/models/entities/content";
-
-  // .ts files
-  import { useUserStore } from "@/stores/user";
 
   // .ts files
   import { EntityURLKey, ENTITY_URL, TEMPLATE, RENDERER } from "@/constants";
@@ -56,14 +55,16 @@
     entityKey: EntityURLKey;
   }>();
 
+  // Composable function calls
+  const $q = useQuasar();
+  const userStore = useUserStore();
+  const { t } = useI18n({ useScope: "global" });
+  const { fetchData } = useApi();
+  const { getEntityId, getEntityName, notify } = useUtilities();
   const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
   const { handleOpenDialog } = useEntityDataHandlingService();
-  const $q = useQuasar();
-  const { t } = useI18n({ useScope: "global" });
-  const { getEntityId, getEntityName, notify } = useUtilities();
-  const userStore = useUserStore();
-  const { fetchData } = useApi();
 
+  // Reactive variables
   const memberConfig = ref();
   const checkInData = ref();
   const distanceToDestination = ref(0);
@@ -217,11 +218,9 @@
   const openCheckInDialog = () => {
     // Check if the user is logged in
     const isLoggedIn = userStore.isUserLogon(); // This will return true or false
-    // handleCheckIn();
     switch (isLoggedIn) {
       case true:
         PerformCheckIn();
-        // handleCheckIn();
         break;
 
       case false:
@@ -403,7 +402,9 @@
     }
   });
 
-  // Fetch data as part of the setup
-  // This ensures that the component is compatible with Suspense
+  /**
+   * Fetch data as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
   await fetchAllData();
 </script>

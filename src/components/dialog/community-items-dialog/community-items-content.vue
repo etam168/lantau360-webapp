@@ -51,16 +51,17 @@
 </template>
 
 <script setup lang="ts">
-  // Interface
+  // Third party imports
+  import { fasPlus } from "@quasar/extras/fontawesome-v6";
+  import { useUserStore } from "@/stores/user";
+
+  // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
-  import { fasPlus } from "@quasar/extras/fontawesome-v6";
-
-  import { useUserStore } from "@/stores/user";
 
   // Props
   const {
@@ -73,12 +74,14 @@
     dialogName: string;
   }>();
 
+  // Composable function calls
   const userStore = useUserStore();
   const { eventBus, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { handleOpenDialog } = useEntityDataHandlingService();
 
+  // Reactive variables
   const $q = useQuasar();
   const isDialogOpen = ref(false);
 

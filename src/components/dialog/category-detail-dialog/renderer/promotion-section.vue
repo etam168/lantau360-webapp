@@ -31,7 +31,9 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasPhone } from "@quasar/extras/fontawesome-v6";
+
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";
 
@@ -40,15 +42,18 @@
     category: CategoryTypes;
   }>();
 
+  // Composable function calls
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
   const { eventBus, translate } = useUtilities();
 
+  // Reactive variables
   const isDialogVisible = ref();
+  const translatedContent: any = ref(category.description);
 
+  // Lifecycle hooks
   onMounted(() => {
     eventBus("BusinessPromotionDialog").on(() => {
       isDialogVisible.value = false;
     });
   });
-  const translatedContent: any = ref(category.description);
 </script>

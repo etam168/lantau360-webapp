@@ -56,10 +56,12 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasChevronDown, fasPhone, fabSquareWhatsapp } from "@quasar/extras/fontawesome-v6";
 
-  import { BusinessView } from "@/interfaces/models/views/business-view";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Props
   const { category } = defineProps<{
@@ -67,6 +69,10 @@
   }>();
 
   const i18nKey = "home";
+
+  // Composable function calls
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
+
+  // Reactive variables
   const businessItem = computed(() => category as BusinessView);
 </script>

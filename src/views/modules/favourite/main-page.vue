@@ -171,5 +171,9 @@
     }
   });
 
+  /**
+   * Fetch data as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
   await fetchAllData();
 </script>

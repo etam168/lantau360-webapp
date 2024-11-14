@@ -49,17 +49,21 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
   import { fasHeart } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   const { category, itemCount = 1 } = defineProps<{
     category: CategoryTypes;
     itemCount?: number;
   }>();
 
+  // Composable function calls
   const { eventBus, getImageURL, isFavouriteItem, translate, toggleItemFavStatus } = useUtilities();
+
+  // Reactive variables
   const isFavourite = ref(isFavouriteItem(category));
 
   const isMaskValueOne = computed(() => {
