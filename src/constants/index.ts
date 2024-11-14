@@ -1,3 +1,5 @@
+export const BLOB_URL = import.meta.env.VITE_BLOB_URL;
+
 export const INPUT_PANE_WIDTH = 480;
 export const NONE = "none";
 export const AREA_NAME = "areaName";
