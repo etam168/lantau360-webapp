@@ -46,22 +46,29 @@ function line2(item: CategoryTypes) {
   return translate(item.subtitle1, item.meta, "subtitle1");
 }
 
-const favoriteItems = ref((LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]);
+const storageKey = computed(() => 
+  entityKey === "BUSINESS" ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE
+);
+
+const favoriteItems = ref(
+  (LocalStorage.getItem(storageKey.value) || []) as CategoryTypes[]
+);
+
 const emits = defineEmits(["on-detail"]);
 
 const isFavoriteItem = (item: CategoryTypes): boolean => {
   switch (entityKey) {
     case "BUSINESS":
-      if ('businessId' in item) {
+      if ("businessId" in item) {
         return favoriteItems.value.some(
-          favItem => 'businessId' in favItem && favItem.businessId === item.businessId
+          favItem => "businessId" in favItem && favItem.businessId === item.businessId
         );
       }
       return false;
     case "SITE":
-      if ('siteId' in item) {
+      if ("siteId" in item) {
         return favoriteItems.value.some(
-          favItem => 'siteId' in favItem && favItem.siteId === item.siteId
+          favItem => "siteId" in favItem && favItem.siteId === item.siteId
         );
       }
       return false;
