@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
-    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
+    <app-carousel-section :data="advertisements" />
 
     <q-separator size="4px" color="primary" />
 
@@ -39,7 +39,7 @@
   import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
@@ -53,7 +53,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog, openCommunityItemDialog } = useCategoryDialogService(
+  const { openCommunityItemDialog } = useCategoryDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
   const { eventBus, isSmallScreen } = useUtilities();
@@ -64,7 +64,7 @@
   const advertisements = ref<AdvertisementView[]>([]);
   const communityDirectories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
-  const notices = ref<CommunityNotice[]>([]);
+  const notices = ref<CommunityNoticeView[]>([]);
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
@@ -98,7 +98,9 @@
         (directory: Directory) => directory.status === 1
       );
       events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
-      notices.value = noticeResponse.filter((comNotice: CommunityNotice) => comNotice.status === 1);
+      notices.value = noticeResponse.filter(
+        (comNotice: CommunityNoticeView) => comNotice.status === 1
+      );
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {
@@ -111,12 +113,6 @@
       }
     }
   }
-
-  const onImageClick = (item: AdvertisementView) => {
-    const dialogName = "AdvertisementDetail";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
-  };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;

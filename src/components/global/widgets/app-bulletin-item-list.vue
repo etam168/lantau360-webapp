@@ -17,11 +17,9 @@
 
   // Custom Components
   import NoticeCard from "@/components/card/notice-card.vue";
-  // import NewsCard from "@/components/card/news-card.vue";
   import EventCard from "@/components/card/event-card.vue";
 
   // Props
-
   const { items } = defineProps<{ items: CategoryTypes[] }>();
 
   const { isCommunityNotice, isCommunityEvent } = useUtilities();
@@ -29,7 +27,6 @@
   const hasCommunityItems = (items: any) => {
     return items.some(
       (item: CategoryTypes) =>
-        // (isCommunityNews(item) && item.communityNewsId !== undefined) ||
         (isCommunityNotice(item) && item.communityNoticeId !== undefined) ||
         (isCommunityEvent(item) && item.communityEventId !== undefined)
     );
