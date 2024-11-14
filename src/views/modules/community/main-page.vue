@@ -1,10 +1,8 @@
 <template>
   <q-page>
-    <q-bar dense class="bg-primary text-white">
-      <div class="col text-center text-uppercase">{{ $t(`${i18nKey}.advertisement`) }}</div>
-    </q-bar>
+    <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
+    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
 
-    <app-carousel-section :data="advertisements" />
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">
@@ -21,10 +19,6 @@
     </q-banner>
 
     <q-tab-panels v-model="tab">
-      <!-- <q-tab-panel name="news">
-        <app-bulletin-item-list :items="news" />
-      </q-tab-panel> -->
-
       <q-tab-panel name="events" class="q-pa-sm">
         <app-bulletin-item-list :items="events" />
       </q-tab-panel>
@@ -34,7 +28,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="directory">
-        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+        <app-directory-items :data="communityDirectories" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -45,48 +39,84 @@
   import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-  import { CommunityNews } from "@/interfaces/models/entities/community-news";
   import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
   import { Directory } from "@/interfaces/models/entities/directory";
   import { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
   import { ENTITY_URL, EntityURLKey } from "@/constants";
-  import { useUserStore } from "@/stores/user";
-  import { Content } from "@/interfaces/models/entities/content";
 
-  const { eventBus, isSmallScreen } = useUtilities();
+  // Props
+  const { entityKey } = defineProps<{
+    entityKey: EntityURLKey;
+  }>();
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const entityKey: EntityURLKey = "COMMUNITY_DIRECTORY";
-
-  const { fetchMemberPoints, setPoints } = useUserStore();
-  const { openCommunityItemDialog } = useCategoryDialogService(entityKey);
-
-  const advertisements = ref<AdvertisementView[]>([]);
-  const directoryData = ref<CommunityDirectory[]>([]);
-  const events = ref<CommunityEventView[]>([]);
-  const news = ref<CommunityNews[]>([]);
-  const notices = ref<CommunityNotice[]>([]);
-  const memberConfig = ref<Content>();
-
-  const dialogStack = ref<string[]>([]);
-  const error = ref<string | null>(null);
-  const isDialogOpen = ref(false);
+  const { openCategoryDetailDialog, openCommunityItemDialog } = useCategoryDialogService(
+    `${entityKey}_DIRECTORY` as EntityURLKey
+  );
+  const { eventBus, isSmallScreen } = useUtilities();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 
+  const advertisements = ref<AdvertisementView[]>([]);
+  const communityDirectories = ref<CommunityDirectory[]>([]);
+  const events = ref<CommunityEventView[]>([]);
+  const notices = ref<CommunityNotice[]>([]);
+
+  const dialogStack = ref<string[]>([]);
+  const error = ref<string | null>(null);
+
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("events");
   const i18nKey = "community";
+
+  const isDialogOpen = ref(false);
 
   const tabItems = ref<TabItem[]>([
     { name: "events", label: t(`${i18nKey}.tabItem.events`) },
     { name: "notice", label: t(`${i18nKey}.tabItem.notice`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
+
+  async function fetchAllData() {
+    try {
+      const [advertisementResponse, directoryResponse, eventResponse, noticeResponse] =
+        await Promise.all([
+          fetchData(ENTITY_URL.ADVERTISEMENT),
+          fetchData(ENTITY_URL.COMMUNITY_DIRECTORY),
+          fetchData(ENTITY_URL.COMMUNITY_EVENT_CURRENT),
+          fetchData(ENTITY_URL.COMMUNITY_NOTICE_CURRENT)
+        ]);
+
+      advertisements.value = advertisementResponse.filter(
+        (adv: AdvertisementView) => adv.status === 1
+      );
+      communityDirectories.value = directoryResponse.filter(
+        (directory: Directory) => directory.status === 1
+      );
+      events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
+      notices.value = noticeResponse.filter((comNotice: CommunityNotice) => comNotice.status === 1);
+    } catch (err) {
+      if (err instanceof AxiosError) {
+        if (err.response && err.response.status === 404) {
+          error.value = t("errors.404");
+        } else {
+          error.value = t("errors.anErrorOccured");
+        }
+      } else {
+        error.value = t("errors.anErrorOccured");
+      }
+    }
+  }
+
+  const onImageClick = (item: AdvertisementView) => {
+    const dialogName = "AdvertisementDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
+  };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;
@@ -115,44 +145,6 @@
       next();
     }
   });
-
-  async function fetchAllData() {
-    try {
-      const [
-        advertisementResponse,
-        directoryResponse,
-        eventResponse,
-        newsResponse,
-        noticeResponse
-      ] = await Promise.all([
-        fetchData(ENTITY_URL.ADVERTISEMENT),
-        fetchData(ENTITY_URL.COMMUNITY_DIRECTORY),
-        fetchData(ENTITY_URL.COMMUNITY_EVENT_CURRENT),
-        fetchData(ENTITY_URL.COMMUNITY_NEWS_CURRENT),
-        fetchData(ENTITY_URL.COMMUNITY_NOTICE_CURRENT)
-      ]);
-
-      advertisements.value = advertisementResponse.filter(
-        (adv: AdvertisementView) => adv.status === 1
-      );
-      directoryData.value = directoryResponse.filter(
-        (directory: Directory) => directory.status === 1
-      );
-      events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
-      news.value = newsResponse.filter((comNews: CommunityNews) => comNews.status === 1);
-      notices.value = noticeResponse.filter((comNotice: CommunityNotice) => comNotice.status === 1);
-    } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          error.value = t("errors.404");
-        } else {
-          error.value = t("errors.anErrorOccured");
-        }
-      } else {
-        error.value = t("errors.anErrorOccured");
-      }
-    }
-  }
 
   await fetchAllData();
 </script>

@@ -17,9 +17,8 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entity-key :dialogName/>
+            <category-items-content :directory :entity-key :dialogName />
           </template>
 
           <template #fallback>
@@ -44,7 +43,6 @@
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Composables Imports
-  import { useChangeCase } from "@vueuse/integrations/useChangeCase";
   import { useDialogPluginComponent } from "quasar";
 
   // Components
@@ -57,14 +55,18 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { directory, entityKey, dialogName ="ItemListDialog" } = defineProps<{
+  const {
+    directory,
+    entityKey,
+    dialogName = "ItemListDialog"
+  } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string
+    dialogName: string;
   }>();
 
   // Composable function calls
-  const { translate,eventBus } = useUtilities();
+  const { translate, eventBus } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
@@ -81,7 +83,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
-    eventBus("DialogStatus").emit(false,dialogName);
+    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();

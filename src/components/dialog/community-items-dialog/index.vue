@@ -17,7 +17,6 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <!-- <div>dialog</div> -->
             <!-- Main edit dialog content -->
             <community-items-content :directory :entity-key :dialogName />
           </template>
@@ -56,14 +55,18 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { directory, entityKey,  dialogName ="ItemListDialog" } = defineProps<{
+  const {
+    directory,
+    entityKey,
+    dialogName = "ItemListDialog"
+  } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
-    dialogName: string
+    dialogName: string;
   }>();
 
   // Composable function calls
-  const {eventBus, translate } = useUtilities();
+  const { eventBus, translate } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
@@ -80,7 +83,7 @@
    */
   function handleCloseDialog(): void {
     isDialogVisible.value = false;
-    eventBus("DialogStatus").emit(false,dialogName);
+    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
         onDialogCancel();

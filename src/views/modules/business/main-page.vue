@@ -136,7 +136,6 @@
     }
   }
 
-  // Function to handle Advertisement
   const onImageClick = (item: AdvertisementView) => {
     const dialogName = "BusinessAdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);

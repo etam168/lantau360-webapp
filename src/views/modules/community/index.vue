@@ -2,7 +2,7 @@
   <suspense>
     <!-- "default" slot belongs to Suspense -->
     <template #default>
-      <main-page />
+      <main-page :entityKey />
     </template>
 
     <!-- "fallback" slot belongs to Suspense -->

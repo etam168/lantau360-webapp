@@ -16,8 +16,6 @@
   import { EntityURLKey } from "@/constants";
 
   const entityKey: EntityURLKey = "FAVOURITE";
-
-  // Async Component
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500
