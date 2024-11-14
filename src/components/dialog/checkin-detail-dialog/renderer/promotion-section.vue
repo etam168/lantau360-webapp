@@ -9,7 +9,7 @@
     </q-item>
 
     <q-item>
-      <app-text-editor v-model="translatedContent" />
+      <q-item-label> <div v-html="translatedContent"></div></q-item-label>
     </q-item>
     <q-item>
       <q-item-section>

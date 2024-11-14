@@ -19,7 +19,7 @@
 
         <q-card>
           <q-card-section class="q-pa-md">
-            <app-text-editor v-model="translatedContent" />
+            <div v-html="translatedContent"></div>
           </q-card-section>
         </q-card>
       </q-expansion-item>
@@ -46,6 +46,5 @@
     toggleItemFavStatus(category, isFavourite.value);
     isFavourite.value = !isFavourite.value;
     eventBus("favoriteUpdated").emit(category);
-
   }
 </script>

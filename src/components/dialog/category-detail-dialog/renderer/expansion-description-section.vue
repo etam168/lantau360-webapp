@@ -19,7 +19,7 @@
 
         <q-card>
           <q-card-section class="q-pa-md">
-            <app-text-editor v-model="translatedContent" />
+            <div v-html="translatedContent"></div>
           </q-card-section>
         </q-card>
       </q-expansion-item>
