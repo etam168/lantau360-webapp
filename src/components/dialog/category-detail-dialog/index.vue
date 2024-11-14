@@ -60,7 +60,7 @@
   } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
-    dialogName?: string;
+    dialogName: string;
   }>();
 
   // Composable function calls

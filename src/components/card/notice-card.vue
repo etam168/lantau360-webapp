@@ -17,19 +17,25 @@
 </template>
 
 <script setup lang="ts">
+  // Quasar Import
   import { throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CommunityNotice } from "@/interfaces/models/entities/community-notice";
+
+  // .ts files
   import { EntityURLKey } from "@/constants";
 
+  // Props
   const { item } = defineProps<{ item: CategoryTypes }>();
 
-  const noticeItem = computed(() => item as CommunityNotice);
-  const { getTimeAgo, translate } = useUtilities();
-  const $q = useQuasar();
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
+
+  const $q = useQuasar();
+  const { getTimeAgo, translate } = useUtilities();
+
+  const noticeItem = computed(() => item as CommunityNotice);
 
   const translatedContent: any = ref(
     translate(noticeItem.value.description, noticeItem.value.meta, "description")

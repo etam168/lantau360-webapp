@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
-    <app-carousel-section :data="advertisements" />
+    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
 
     <q-separator size="4px" color="primary" />
 
@@ -53,7 +53,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCommunityItemDialog } = useCategoryDialogService(
+  const { openCategoryDetailDialog, openCommunityItemDialog } = useCategoryDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
   const { eventBus, isSmallScreen } = useUtilities();
@@ -113,6 +113,12 @@
       }
     }
   }
+
+  const onImageClick = (item: AdvertisementView) => {
+    const dialogName = "BusinessAdvertisementDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName);
+  };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {
     if (isDialogOpen.value) return;

@@ -17,7 +17,7 @@
         outline
         dense
         color="primary"
-        :label="$t('business.moreDetail')"
+        :label="$t(`${i18nKey}.moreDetail`)"
         class="full-width"
         @click="throttledHandleDialog"
       />
@@ -30,17 +30,20 @@
   import { throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
 
   // .ts files
-  import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import { EntityURLKey } from "@/constants";
 
+  // Props
   const { item } = defineProps<{ item: CategoryTypes }>();
+
+  const i18nKey = "business";
+  const entityKey: EntityURLKey = "COMMUNITY_EVENT";
 
   const $q = useQuasar();
   const { translate, getImageURL } = useUtilities();
-  const entityKey: EntityURLKey = "COMMUNITY_EVENT";
 
   const eventItem = computed(() => item as CommunityEventView);
 

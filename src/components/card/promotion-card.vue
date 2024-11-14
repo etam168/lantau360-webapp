@@ -16,7 +16,7 @@
         outline
         dense
         color="primary"
-        :label="$t('business.moreDetail')"
+        :label="$t(`${i18nKey}.moreDetail`)"
         class="full-width"
         @click="throttledHandleDialog(promotionItem)"
       />
@@ -29,15 +29,16 @@
   import { throttle, useQuasar } from "quasar";
 
   // Interface files
-  import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-  // .ts files
-
-  const { eventBus } = useUtilities();
-  const $q = useQuasar();
-  const { translate, getImageURL } = useUtilities();
+  // Props
   const { item } = defineProps<{ item: CategoryTypes }>();
+
+  const i18nKey = "business";
+
+  const $q = useQuasar();
+  const { eventBus, getImageURL, translate } = useUtilities();
 
   const promotionItem = computed(() => item as BusinessPromotionView);
 

@@ -8,7 +8,7 @@
         outline
         dense
         color="primary"
-        :label="$t('business.moreDetail')"
+        :label="$t(`${i18nKey}.moreDetail`)"
         class="full-width"
         @click="throttledHandleDialog(voucherItem)"
       />
@@ -21,13 +21,16 @@
   import { throttle, useQuasar } from "quasar";
 
   // Interface file
-  import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+
+  // Props
+  const { item } = defineProps<{ item: CategoryTypes }>();
+
+  const i18nKey = "business";
 
   const $q = useQuasar();
   const { getImageURL } = useUtilities();
-
-  const { item } = defineProps<{ item: CategoryTypes }>();
 
   const voucherItem = computed(() => item as BusinessVoucherView);
 

@@ -8,11 +8,11 @@
 
         <q-item-section>
           <q-item-label>{{
-            $t("action.createDirectory", { directoryName: directoryName })
+            $t(`${i18nKeyAction}.createDirectory`, { directoryName: directoryName })
           }}</q-item-label>
-          <q-item-label caption>{{
-            $t("community.createPost.addGalleryDescription")
-          }}</q-item-label></q-item-section
+          <q-item-label caption>
+            {{ $t(`${i18nKey}.createPost.addGalleryDescription`) }}
+          </q-item-label></q-item-section
         >
       </q-item>
     </q-card>
@@ -20,25 +20,24 @@
 </template>
 
 <script setup lang="ts">
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import { DirectoryTypes } from "@/interfaces/types/directory-types";
-  import { useUserStore } from "@/stores/user";
+  // Interface files
+  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   import { fasPlus } from "@quasar/extras/fontawesome-v6";
+  import { useUserStore } from "@/stores/user";
 
-  const userStore = useUserStore();
+  // Props
+  const { directoryName, directory } = defineProps<{
+    directoryName: string;
+    directory: DirectoryTypes;
+  }>();
+
+  const i18nKey = "community";
+  const i18nKeyAction = "action";
+
   const $q = useQuasar();
-
-  const props = defineProps({
-    directoryName: {
-      type: String,
-      required: false
-    },
-    directory: {
-      type: Object as PropType<DirectoryTypes>,
-      required: true
-    }
-  });
+  const userStore = useUserStore();
 
   function createPosting() {
     if (!userStore.isUserLogon()) {
@@ -66,7 +65,7 @@
         () => import("@/views/modules/community/point-usage-confirmation-dialog.vue")
       ),
       componentProps: {
-        item: props.directory as CommunityDirectory
+        item: directory as CommunityDirectory
       }
     });
   }

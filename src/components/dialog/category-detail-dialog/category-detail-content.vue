@@ -27,15 +27,18 @@
   import * as geolib from "geolib";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
-  import { SiteView } from "@/interfaces/models/views/site-view";
-  import { useUserStore } from "@/stores/user";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { Content } from "@/interfaces/models/entities/content";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { Content } from "@/interfaces/models/entities/content";
 
   // .ts files
-  import { EntityURLKey, ENTITY_URL, TEMPLATE, URL, RENDERER } from "@/constants";
+  import { useUserStore } from "@/stores/user";
+
+  // .ts files
+  import { EntityURLKey, ENTITY_URL, TEMPLATE, RENDERER } from "@/constants";
 
   // UI Components
   import ContactSection from "./renderer/contact-section.vue";
@@ -80,7 +83,9 @@
             await loadMemberCheckInDetail();
           }
           break;
-
+        case "COMMUNITY_DIRECTORY":
+          await loadData(`${ENTITY_URL.BUSINESS_GALLERY}/${(category as BusinessView).businessId}`);
+          break;
         case "BUSINESS":
         case "BUSINESS_PROMOTION":
         case "COMMUNITY_EVENT":
@@ -361,13 +366,30 @@
     }
   }
 
+  function getCommunityTemplate() {
+    if ("advertisementId" in category) {
+      return RENDERER.ADVERTISEMENT;
+    }
+
+    switch (category?.directoryTemplate) {
+      case TEMPLATE.EVENT.value:
+      case TEMPLATE.NEWS.value:
+      case TEMPLATE.NOTICE.value:
+        return RENDERER.EVENT;
+
+      default:
+        return RENDERER.COMMUNITY;
+    }
+  }
+
   const template = computed(() => {
     switch (entityKey) {
       case "POSTING":
         return RENDERER.POSTING;
       case "COMMUNITY_EVENT":
       case "COMMUNITY_NOTICE":
-        return RENDERER.COMMUNITY;
+      case "COMMUNITY_DIRECTORY":
+        return getCommunityTemplate();
       case "BUSINESS":
         return getBusinessTemplate();
       case "BUSINESS_PROMOTION":
