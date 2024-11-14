@@ -30,7 +30,6 @@
         </Suspense>
         <!-- Error message display -->
         <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
-          {{ errorMessage }}
           <p>{{ $t("common.contactAdminMessage") }}</p>
         </div>
       </q-page-container>

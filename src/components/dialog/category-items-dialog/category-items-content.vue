@@ -27,7 +27,7 @@
           :categoryItems="filterGroupedArray(item.name)"
           :checkIns
           :entityKey
-          @on-category-detail="handleDetail"
+          @on-category-detail="onCategoryDetail"
         />
       </q-tab-panel>
     </q-tab-panels>
@@ -38,7 +38,7 @@
     :categoryItems
     :checkIns
     :entityKey
-    @on-category-detail="handleDetail"
+    @on-category-detail="onCategoryDetail"
   />
 </template>
 
@@ -131,7 +131,7 @@
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
 
-  async function handleDetail(item: any) {
+  async function onCategoryDetail(item: any) {
     eventBus("DialogStatus").emit(true, dialogName);
     openCategoryDetailDialog(item, dialogName);
   }

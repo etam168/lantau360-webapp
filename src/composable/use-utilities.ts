@@ -18,7 +18,7 @@ import { SiteView } from "@/interfaces/models/views/site-view";
 import i18n from "@/plugins/i18n/i18n";
 import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 import { BLOB_URL, EntityURLKey, IMAGES, STORAGE_KEYS } from "@/constants";
-import { date, EventBus, LocalStorage, Notify, Screen } from "quasar";
+import { date, LocalStorage, Notify, Screen } from "quasar";
 import { ImageURLKey } from "@/constants/app/image-url";
 
 // const eventBus = new EventBus();
@@ -195,7 +195,7 @@ export function useUtilities() {
   }
 
   function translate(label: string, meta: any, key: string) {
-    const { locale } = useI18n({ useScope: "global" });
+    const { locale } = i18n.global;
 
     switch (locale.value) {
       case "hk":
