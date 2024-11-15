@@ -44,17 +44,18 @@
 </template>
 
 <script setup lang="ts">
-  import { fasCircleInfo, fasPencil } from "@quasar/extras/fontawesome-v6";
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { PostingView } from "@/interfaces/models/views/posting-view";
 
-  // .ts files
+  // Constants
   import { EntityURLKey } from "@/constants";
-  import { PostingView } from "@/interfaces/models/views/posting-view";
+  import { fasCircleInfo, fasPencil } from "@quasar/extras/fontawesome-v6";
+
+  // Stores
   import { useUserStore } from "@/stores/user";
 
-  const { getImageURL, translate } = useUtilities();
-
+  // Emits
   const emits = defineEmits(["on-category-detail"]);
 
   // Props
@@ -63,9 +64,9 @@
     entityKey: EntityURLKey;
   }>();
 
+  const { getImageURL, translate } = useUtilities();
   const $q = useQuasar();
   const userStore = useUserStore();
-  const roles = ref(userStore.roles);
 
   function line1(item: CategoryTypes) {
     const name = `title` as keyof CategoryTypes;

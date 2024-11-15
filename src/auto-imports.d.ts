@@ -145,6 +145,7 @@ declare global {
   const useCategoryItemListFetcherService: typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']
   const useCategoryItemService: typeof import('./composable/services/use-category-item-service')['useCategoryItemService']
   const useCategoryService: typeof import('./composable/services/use-category-item-service')['useCategoryService']
+  const useCheckInDataService: typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']
   const useCheckInService: typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']
   const useCheckinFormContents: typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']
   const useCheckinFormMapper: typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']
@@ -155,6 +156,7 @@ declare global {
   const useCommunication: typeof import('./composable/use-communication')['useCommunication']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
   const useContent: (typeof import("./composable/use-content"))["default"]
+  const useContentDetailDataService: typeof import('./composable/services/use-content-detail-data-service')['useContentDetailDataService']
   const useContentInput: typeof import('./composable/use-content')['useContentInput']
   const useCounter: typeof import('@vueuse/core')['useCounter']
   const useCrudService: typeof import('./composable/services/use-crud-service')['useCrudService']
@@ -194,6 +196,7 @@ declare global {
   const useEventSource: typeof import('@vueuse/core')['useEventSource']
   const useEyeDropper: typeof import('@vueuse/core')['useEyeDropper']
   const useFavicon: typeof import('@vueuse/core')['useFavicon']
+  const useFavorite: typeof import('./composable/use-favorite')['useFavorite']
   const useFetch: typeof import('@vueuse/core')['useFetch']
   const useFileDialog: typeof import('@vueuse/core')['useFileDialog']
   const useFileSystemAccess: typeof import('@vueuse/core')['useFileSystemAccess']
@@ -346,6 +349,7 @@ declare global {
   export type { Component, ComponentPublicInstance, ComputedRef, DirectiveBinding, ExtractDefaultPropTypes, ExtractPropTypes, ExtractPublicPropTypes, InjectionKey, PropType, Ref, MaybeRef, MaybeRefOrGetter, VNode, WritableComputedRef } from 'vue'
   import('vue')
 }
+
 // for vue template auto import
 import { UnwrapRef } from 'vue'
 declare module 'vue' {
@@ -484,6 +488,7 @@ declare module 'vue' {
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
     readonly useCategoryItemListFetcherService: UnwrapRef<typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']>
+    readonly useCheckInDataService: UnwrapRef<typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']>
     readonly useCheckInService: UnwrapRef<typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']>
     readonly useCheckinFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']>
     readonly useCheckinFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']>
@@ -493,6 +498,7 @@ declare module 'vue' {
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
+    readonly useContentDetailDataService: UnwrapRef<typeof import('./composable/services/use-content-detail-data-service')['useContentDetailDataService']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
     readonly useCrudService: UnwrapRef<typeof import('./composable/services/use-crud-service')['useCrudService']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
@@ -528,6 +534,7 @@ declare module 'vue' {
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
     readonly useEyeDropper: UnwrapRef<typeof import('@vueuse/core')['useEyeDropper']>
     readonly useFavicon: UnwrapRef<typeof import('@vueuse/core')['useFavicon']>
+    readonly useFavorite: UnwrapRef<typeof import('./composable/use-favorite')['useFavorite']>
     readonly useFetch: UnwrapRef<typeof import('@vueuse/core')['useFetch']>
     readonly useFileDialog: UnwrapRef<typeof import('@vueuse/core')['useFileDialog']>
     readonly useFileSystemAccess: UnwrapRef<typeof import('@vueuse/core')['useFileSystemAccess']>

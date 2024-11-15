@@ -18,7 +18,6 @@
 </template>
 
 <script setup lang="ts">
-  import { ref, computed } from "vue";
   import { useInterval } from "@vueuse/core";
 
   const { duration = 10000, label } = defineProps<{

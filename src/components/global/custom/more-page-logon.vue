@@ -3,6 +3,7 @@
     <q-chip clickable @click="handleAuthDialog('login')" outline color="primary" text-color="white">
       {{ $t(`${i18nKey}.button.login`) }}
     </q-chip>
+
     <q-chip clickable @click="handleAuthDialog('register')" color="primary" text-color="white">
       {{ $t(`${i18nKey}.button.joinNow`) }}
     </q-chip>

@@ -31,20 +31,20 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+
+  // Constants
+  import { EntityURLKey, STORAGE_KEYS, IMAGES } from "@/constants";
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
 
-  // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
-
-  // .ts files
-  import { EntityURLKey, STORAGE_KEYS, IMAGES } from "@/constants";
-  import { CheckIn } from "@/interfaces/models/entities/checkin";
-  import { SiteView } from "@/interfaces/models/views/site-view";
+  // Composables
   import { LocalStorage } from "quasar";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
 
-  const { getEntityName, getImageURL, translate } = useUtilities();
-
+  // Emits
   const emits = defineEmits(["on-category-detail"]);
 
   // Props
@@ -58,6 +58,7 @@
     entityKey: EntityURLKey;
   }>();
 
+  const { getEntityName, getImageURL, translate } = useUtilities();
   const entityName = getEntityName(entityKey);
 
   const favoriteItems = ref([] as CategoryTypes[]);

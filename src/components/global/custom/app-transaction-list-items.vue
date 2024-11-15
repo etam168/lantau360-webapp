@@ -35,7 +35,7 @@
   // .ts files
   import { EntityURLKey } from "@/constants";
   import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-import { CategoryTypes } from "@/interfaces/types/category-types";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
 
   const { getEntityName, dateFormatter } = useUtilities();
 
@@ -47,9 +47,7 @@ import { CategoryTypes } from "@/interfaces/types/category-types";
     entityKey: EntityURLKey;
   }>();
 
-  const entityName = getEntityName(entityKey);
-
-  const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[])
+  const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
 
   const items = computed(() => {
     switch (entityKey) {

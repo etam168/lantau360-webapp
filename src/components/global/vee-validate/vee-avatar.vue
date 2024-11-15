@@ -14,12 +14,10 @@
             @click="handleEditImage(0)"
           />
 
-          <app-button
+          <app-button-rounded
             v-else
-            round
             color="black"
             :icon="fasCamera"
-            size="sm"
             @click="selectAndUploadNewImage"
           />
         </q-badge>
@@ -40,25 +38,24 @@
 </template>
 
 <script setup lang="ts">
-  import { fasCamera } from "@quasar/extras/fontawesome-v6";
+  // Types
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
-  import avatarImageCard from "@/components/card/avatar-image-card.vue";
   // Composables
   import { useField } from "vee-validate";
   import { useTemplateRef } from "vue";
   import { useUtilities } from "@/composable/use-utilities";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    },
-    options: {
-      type: Array as PropType<GalleryImageType[]>,
-      default: () => []
-    }
-  });
+  // Constants
+  import { fasCamera } from "@quasar/extras/fontawesome-v6";
+
+  // Component
+  import AvatarImageCard from "@/components/card/avatar-image-card.vue";
+
+  const { name, options = [] } = defineProps<{
+    name: string;
+    options?: GalleryImageType[];
+  }>();
 
   const { notify } = useUtilities();
 
@@ -69,9 +66,9 @@
   const maxImages = 27;
 
   const { compressImage } = useImageFunctions();
-  const { value, handleChange } = useField<(GalleryImageType | File)[]>(props.name);
+  const { value, handleChange } = useField<(GalleryImageType | File)[]>(name);
 
-  const localImages = ref<(GalleryImageType | File)[]>([...props.options]);
+  const localImages = ref<(GalleryImageType | File)[]>([...options]);
 
   // Sync the field value with localImages initially
   handleChange([...localImages.value]);

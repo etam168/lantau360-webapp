@@ -1,4 +1,4 @@
-<!-- vee-input.vue -->
+<!-- vee-q-tel-input.vue -->
 <template>
   <q-tel-input
     v-bind="$attrs"
@@ -9,10 +9,6 @@
     :dropdown-options="options"
     @country="selectedCountry"
   >
-    <!-- <template v-slot:before>
-      <q-item-label>{{ country.emoji }}</q-item-label>
-    </template> -->
-
     <template v-slot:append>
       <q-icon :name="icon" />
     </template>
@@ -25,12 +21,10 @@
 
   const {
     name,
-    inputType = "text",
     defaultIso = "HK",
     icon
   } = defineProps<{
     name: string;
-    inputType?: string | undefined;
     defaultIso?: string;
     icon?: string;
   }>();

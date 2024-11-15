@@ -51,17 +51,17 @@
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import { fasPlus } from "@quasar/extras/fontawesome-v6";
-  import { useUserStore } from "@/stores/user";
-
-  // Interface files
+  // Types
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
+  // Stores
+  import { useUserStore } from "@/stores/user";
+
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
   // Props
   const {

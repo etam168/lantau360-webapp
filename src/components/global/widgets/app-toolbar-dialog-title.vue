@@ -13,7 +13,6 @@
 
 <script setup lang="ts">
   import { fasArrowLeft } from "@quasar/extras/fontawesome-v6";
-  import { defineEmits } from "vue";
 
   const emit = defineEmits(["dialogClosed"]);
 

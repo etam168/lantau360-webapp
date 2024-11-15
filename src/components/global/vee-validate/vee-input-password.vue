@@ -24,31 +24,15 @@
   import { fasEyeSlash, fasEye } from "@quasar/extras/fontawesome-v6";
   import { useField } from "vee-validate";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    }
-  });
+  // Props
+  const { name } = defineProps<{
+    name: string;
+  }>();
 
   const showPassword = ref(false);
 
-  const { errorMessage, value } = useField(props.name) as {
+  const { errorMessage, value } = useField(name) as {
     errorMessage: Ref<string>;
     value: Ref<string | number | null | undefined>;
   };
 </script>
-
-<!-- <style>
-  input {
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-  }
-</style> -->
-
-<!-- <style scoped>
-  :deep(input) {
-    background-clip: text !important;
-    -webkit-background-clip: text !important;
-  }
-</style> -->

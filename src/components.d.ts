@@ -38,7 +38,6 @@ declare module 'vue' {
     AppSkeletonWeather: typeof import('./components/global/widgets/app-skeleton-weather.vue')['default']
     AppSpinner: typeof import('./components/global/widgets/app-spinner.vue')['default']
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
-    AppTextEditor: typeof import('./components/global/widgets/app-text-editor.vue')['default']
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
     GalleryImageCard: typeof import('./components/global/custom/gallery-image-card.vue')['default']
@@ -57,7 +56,6 @@ declare module 'vue' {
     VeeInput: typeof import('./components/global/vee-validate/vee-input.vue')['default']
     VeeInputPassword: typeof import('./components/global/vee-validate/vee-input-password.vue')['default']
     VeeInputSlot: typeof import('./components/global/vee-validate/vee-input-slot.vue')['default']
-    VeeOtpInput: typeof import('./components/global/vee-validate/vee-otp-input.vue')['default']
     VeeQTelInput: typeof import('./components/global/vee-validate/vee-q-tel-input.vue')['default']
   }
 }

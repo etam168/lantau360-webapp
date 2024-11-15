@@ -66,16 +66,10 @@
   import { VueDraggable } from "vue-draggable-plus";
   import { useImageFunctions } from "@/composable/use-image-functions";
 
-  const props = defineProps({
-    name: {
-      type: String,
-      required: true
-    },
-    options: {
-      type: Array as PropType<GalleryImageType[]>,
-      default: () => []
-    }
-  });
+  const { name, options = [] } = defineProps<{
+    name: string;
+    options?: GalleryImageType[];
+  }>();
 
   const { notify } = useUtilities();
 
@@ -87,9 +81,9 @@
   const waterMark = ref(true);
 
   const { applyWatermark, compressImage } = useImageFunctions();
-  const { value, handleChange } = useField<(GalleryImageType | File)[]>(props.name);
+  const { value, handleChange } = useField<(GalleryImageType | File)[]>(name);
 
-  const localImages = ref<(GalleryImageType | File)[]>([...props.options]);
+  const localImages = ref<(GalleryImageType | File)[]>([...options]);
 
   // Sync the field value with localImages initially
   handleChange([...localImages.value]);
@@ -101,6 +95,7 @@
     }
     return compressed;
   }
+
   function selectAndUploadNewImage() {
     if (localImages.value.length >= maxImages) {
       notify("You have reached the maximum number of photos.", "negative");

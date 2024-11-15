@@ -342,6 +342,9 @@
     "useCheckinFormContents": true,
     "useAuthServiceCopy": true,
     "useTransactionItemDialogService": true,
-    "useEntityOptionsFetcherService": true
+    "useEntityOptionsFetcherService": true,
+    "useCheckInDataService": true,
+    "useContentDetailDataService": true,
+    "useFavorite": true
   }
 }

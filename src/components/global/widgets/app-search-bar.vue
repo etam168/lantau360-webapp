@@ -34,15 +34,12 @@
   const { t } = useI18n({ useScope: "global" });
   const emit = defineEmits(["on-search"]);
 
-  const props = defineProps({
-    query: {
-      type: String,
-      required: false,
-      default: ""
-    }
-  });
+  // Props
+  const { query = "" } = defineProps<{
+    query?: string;
+  }>();
 
-  const keyword = ref(props.query);
+  const keyword = ref(query);
   const i18nKey = "home";
   function handleSearch() {
     if (keyword.value.length < 3) {

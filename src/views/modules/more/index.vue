@@ -38,7 +38,6 @@
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
-  const lookUpEntityTypes = ["MEMBER"];
 
   interface RenderItem {
     name: string;
@@ -79,10 +78,6 @@
         ];
     }
   });
-
-  // function handleInstall() {
-  //   alert("handleInstall");
-  // }
 
   const member = newMember;
 
@@ -207,5 +202,4 @@
       next();
     }
   });
-  // fetchTransactionData();
 </script>

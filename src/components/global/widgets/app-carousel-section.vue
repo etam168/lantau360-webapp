@@ -50,11 +50,5 @@
 
   // Initialize slide with the ID of the first item
   const slideInterval = 10000;
-  //const slide = ref(data?.[0] ? getId(data[0]) : 0);
   const slide = ref(0);
-
-  // Function to extract ID from the item
-  // function getId(item: CarouselTypes): number {
-  //   return isAdvertisement(item) ? item.advertisementId : item.siteId;
-  // }
 </script>

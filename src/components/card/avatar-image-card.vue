@@ -15,10 +15,10 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Types
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
-  // .ts files
+  // Constants
   import { PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   const { image } = defineProps<{

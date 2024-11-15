@@ -13,14 +13,18 @@
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-  // Custom Components
+  // Components
   import PromotionCard from "@/components/card/promotion-card.vue";
   import VoucherCard from "@/components/card/voucher-card.vue";
 
+  // Constants
   import { EntityURLKey } from "@/constants";
 
   // Define props for this component
-  const { data, entityKey } = defineProps<{ data: CategoryTypes[]; entityKey: EntityURLKey }>();
+  const { data, entityKey } = defineProps<{
+    data: CategoryTypes[];
+    entityKey: EntityURLKey;
+  }>();
 
   //Computed property to transform items into key/value pairs
   const sortedItems = computed(() => {

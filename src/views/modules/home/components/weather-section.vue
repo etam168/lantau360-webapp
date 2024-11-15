@@ -33,11 +33,9 @@
 </template>
 
 <script setup lang="ts">
+  import type { Weather } from "@/interfaces/models/entities/weather";
   import { date } from "quasar";
   import { fasArrowUp, fasArrowDown } from "@quasar/extras/fontawesome-v6";
-
-  // Interface files
-  import type { Weather } from "@/interfaces/models/entities/weather";
 
   const { translate } = useUtilities();
 

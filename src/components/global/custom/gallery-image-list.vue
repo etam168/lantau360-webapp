@@ -91,24 +91,21 @@
   import { IMAGES } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
-  const { getImageURL } = useUtilities();
-  const props = defineProps({
-    imageList: {
-      type: Array as PropType<GalleryImageType[]>,
-      required: true
-    }
-  });
+  const { imageList } = defineProps<{
+    imageList: GalleryImageType[];
+  }>();
 
-  const galleryImages = computed(() => props.imageList);
+  const { getImageURL } = useUtilities();
+  const galleryImages = computed(() => imageList);
   const slide = ref(0);
 
   const hasMultipleImage = computed(() => {
-    return props.imageList.length > 1;
+    return imageList.length > 1;
   });
 
   const image = computed(() => {
-    return props.imageList.length == 1
-      ? getImageURL(props.imageList[0].imagePath)
+    return imageList.length == 1
+      ? getImageURL(imageList[0].imagePath)
       : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
   });
 
@@ -156,7 +153,7 @@
   });
 
   function initvirtualScroll() {
-    slide.value = props.imageList.length > 0 ? props.imageList[0].imageId : 0;
+    slide.value = imageList.length > 0 ? imageList[0].imageId : 0;
 
     virtualScroll.value.reset();
     virtualScroll.value.refresh(0);

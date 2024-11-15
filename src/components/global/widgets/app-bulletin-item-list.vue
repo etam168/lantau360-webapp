@@ -15,13 +15,18 @@
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-  // Custom Components
+  // Components
   import NoticeCard from "@/components/card/notice-card.vue";
   import EventCard from "@/components/card/event-card.vue";
+
+  // Constants
   import { EntityURLKey } from "@/constants";
 
   // Props
-  const { items, entityKey } = defineProps<{ items: CategoryTypes[]; entityKey: EntityURLKey }>();
+  const { items, entityKey } = defineProps<{
+    items: CategoryTypes[];
+    entityKey: EntityURLKey;
+  }>();
 
   // Modify the sortedItemsWithType computation
   const sortedItemsWithType = computed(() => {

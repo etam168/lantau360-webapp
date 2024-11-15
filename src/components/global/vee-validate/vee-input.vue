@@ -20,48 +20,13 @@
 <script setup lang="ts">
   import { useField } from "vee-validate";
 
-  // const props = defineProps({
-  //   name: {
-  //     type: String,
-  //     required: true
-  //   },
-  //   autoGrow: {
-  //     type: Boolean,
-  //     default: true
-  //   },
-  //   counter: {
-  //     type: Boolean,
-  //     default: false
-  //   },
-  //   disable: {
-  //     type: Boolean,
-  //     default: false
-  //   },
-  //   inputType: {
-  //     type: String as PropType<any> | undefined,
-  //     default: "text"
-  //   }
-  // });
-
-  const {
-    name,
-    mask
-    // maxLenght,
-    // counter,
-    // disable,
-    // inputType = "text"
-  } = defineProps<{
+  const { name, mask } = defineProps<{
     name: string;
     mask?: string;
   }>();
-  // maxLenght?: number;
-  // counter?: boolean;
-  // disable?: boolean;
-  // inputType?: string | undefined;
 
   const { errorMessage, value: untypedValue } = useField(() => name);
   const value = untypedValue as Ref<string | number | null>;
-
 </script>
 
 <style scoped>

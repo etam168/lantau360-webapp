@@ -7,6 +7,7 @@
   >
     {{ $t("errors.noRecord") }}
   </div>
+
   <template v-if="groupBykey">
     <app-tab-select
       :tab-items="tabItems"
@@ -142,7 +143,6 @@
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
    */
-
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
