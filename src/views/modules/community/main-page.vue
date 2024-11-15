@@ -24,7 +24,7 @@
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'"/>
+        <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -53,7 +53,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog, openCommunityItemDialog } = useCategoryDialogService(
+  const { openCommunityDetailDialog, openCommunityItemDialog } = useCommunityDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
   const { eventBus, isSmallScreen } = useUtilities();
@@ -117,7 +117,7 @@
   const onImageClick = (item: AdvertisementView) => {
     const dialogName = "CommunityAdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCommunityDetailDialog(item, dialogName);
   };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {

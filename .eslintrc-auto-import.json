@@ -345,6 +345,7 @@
     "useEntityOptionsFetcherService": true,
     "useCheckInDataService": true,
     "useContentDetailDataService": true,
-    "useFavorite": true
+    "useFavorite": true,
+    "useCommunityDialogService": true
   }
 }

@@ -33,12 +33,14 @@
   // Composable function calls
   const $q = useQuasar();
   const { dialogRef } = useDialogPluginComponent();
+  const { eventBus } = useUtilities();
 
   // Reactive variables
   const isDialogVisible = ref(true);
 
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
+    eventBus("DialogStatus").emit(status);
   }
 
   const onLogin = () => {

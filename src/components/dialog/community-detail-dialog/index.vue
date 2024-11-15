@@ -9,17 +9,15 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
-      </q-header>
+      YESSSSSSSSSSSSS
+      <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <community-items-content :directory :entity-key :dialogName />
+            <community-detail-content :category :entity-key />
           </template>
-
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
             <div class="row justify-center items-center" style="height: 500px">
@@ -27,6 +25,7 @@
             </div>
           </template>
         </Suspense>
+
         <!-- Error message display -->
         <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
           {{ errorMessage }}
@@ -38,43 +37,52 @@
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
+  // Quasar  Imports
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
-  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Custom Components
-  import CommunityItemsContent from "./community-items-content.vue";
+  import CommunityDetailContent from "./community-detail-content.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
+  import { EntityURLKey } from "@/constants";
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
   const {
-    directory,
+    category,
     entityKey,
-    dialogName = "ItemListDialog"
+    dialogName = "Detail"
   } = defineProps<{
-    directory: CommunityDirectory;
+    category: CategoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
   }>();
 
   // Composable function calls
-  const { eventBus, translate } = useUtilities();
+  const { eventBus } = useUtilities();
+  const { translate, getEntityName } = useUtilities();
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
+  const entityName = getEntityName(entityKey);
 
-  const dialogTitle = computed(() =>
-    translate(directory.directoryName, directory.meta, "directoryName")
-  );
+  const dialogTitle = computed(() => {
+    const nameKey =
+      "postingId" in category
+        ? "title"
+        : "advertisementId" in category
+          ? "advertisementName"
+          : (`${entityName}Name` as keyof CategoryTypes);
+
+    return translate((category as Record<string, any>)[nameKey], category.meta, nameKey);
+  });
 
   /**
    * Handles the closing of the dialog
@@ -99,7 +107,6 @@
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
   }
-
   /**
    * Error handling for the component
    * Captures errors and sets an appropriate error message

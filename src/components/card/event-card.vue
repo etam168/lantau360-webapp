@@ -40,7 +40,7 @@
   const entityKey: EntityURLKey = "COMMUNITY_EVENT";
 
   const { eventBus, translate, getImageURL } = useUtilities();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const eventItem = computed(() => item as CommunityEventView);
 
@@ -49,6 +49,6 @@
   const onItemClick = () => {
     const dialogName = "EventDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCommunityDetailDialog(item, dialogName);
   };
 </script>

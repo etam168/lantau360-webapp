@@ -154,6 +154,7 @@ declare global {
   const useCloned: typeof import('@vueuse/core')['useCloned']
   const useColorMode: typeof import('@vueuse/core')['useColorMode']
   const useCommunication: typeof import('./composable/use-communication')['useCommunication']
+  const useCommunityDialogService: typeof import('./composable/services/use-community-dialog-service')['useCommunityDialogService']
   const useConfirmDialog: typeof import('@vueuse/core')['useConfirmDialog']
   const useContent: (typeof import("./composable/use-content"))["default"]
   const useContentDetailDataService: typeof import('./composable/services/use-content-detail-data-service')['useContentDetailDataService']
@@ -497,6 +498,7 @@ declare module 'vue' {
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>
     readonly useColorMode: UnwrapRef<typeof import('@vueuse/core')['useColorMode']>
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
+    readonly useCommunityDialogService: UnwrapRef<typeof import('./composable/services/use-community-dialog-service')['useCommunityDialogService']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
     readonly useContentDetailDataService: UnwrapRef<typeof import('./composable/services/use-content-detail-data-service')['useContentDetailDataService']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>

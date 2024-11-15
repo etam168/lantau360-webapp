@@ -78,7 +78,7 @@
   const userStore = useUserStore();
   const { eventBus, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
   const { handleOpenDialog } = useEntityDataHandlingService();
 
   // Reactive variables
@@ -171,7 +171,7 @@
 
   async function handleDetail(item: any) {
     eventBus("DialogStatus").emit(true, dialogName + "Detail");
-    openCategoryDetailDialog(item, dialogName + "Detail");
+    openCommunityDetailDialog(item, dialogName + "Detail");
   }
 
   /**

@@ -21,7 +21,7 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
-  import { formatTimeAgo } from '@vueuse/core'
+  import { formatTimeAgo } from "@vueuse/core";
   // .ts files
   import { EntityURLKey } from "@/constants";
 
@@ -31,7 +31,7 @@
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
 
   const { eventBus, translate } = useUtilities();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const noticeItem = computed(() => item as CommunityNotice);
 
@@ -46,6 +46,6 @@
   const onItemClick = () => {
     const dialogName = "NoticeDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCommunityDetailDialog(item, dialogName);
   };
 </script>
