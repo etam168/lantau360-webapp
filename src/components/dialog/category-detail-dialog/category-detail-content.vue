@@ -24,7 +24,8 @@
 
 <script setup lang="ts">
   // Third party imports
-  import * as geolib from "geolib";
+  // import * as geolib from "geolib";
+  import L from 'leaflet';
   import { useGeolocation } from "@vueuse/core";
   import { useUserStore } from "@/stores/user";
 
@@ -179,16 +180,13 @@
   }
 
   async function getDistanceToDestination() {
-    const { latitude: siteLatitude, longitude: siteLongitude } = category;
-    const sourceCoords = {
-      latitude: userLocation.value.latitude,
-      longitude: userLocation.value.longitude
-    };
-    const destinationCoords = { latitude: siteLatitude, longitude: siteLongitude };
+  const { latitude: siteLatitude, longitude: siteLongitude } = category;
+  const sourcePoint = L.latLng(userLocation.value.latitude, userLocation.value.longitude);
+  const destinationPoint = L.latLng(siteLatitude, siteLongitude);
 
-    distanceToDestination.value = await geolib.getDistance(sourceCoords, destinationCoords);
-  }
-
+  // Returns distance in meters
+  distanceToDestination.value = sourcePoint.distanceTo(destinationPoint);
+}
   async function checkRecentCheckInStatus() {
     try {
       const config = memberConfig;
