@@ -479,7 +479,6 @@ declare module 'vue' {
     readonly useAsyncState: UnwrapRef<typeof import('@vueuse/core')['useAsyncState']>
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuthService: UnwrapRef<typeof import('./composable/services/use-auth-service')['useAuthService']>
-    readonly useAuthServiceCopy: UnwrapRef<typeof import('./composable/services/use-auth-service copy')['useAuthServiceCopy']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>
     readonly useBluetooth: UnwrapRef<typeof import('@vueuse/core')['useBluetooth']>
@@ -488,7 +487,6 @@ declare module 'vue' {
     readonly useBrowserLocation: UnwrapRef<typeof import('@vueuse/core')['useBrowserLocation']>
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
-    readonly useCategoryItemListFetcherService: UnwrapRef<typeof import('./composable/services/use-catergory-item-fetch-service')['useCategoryItemListFetcherService']>
     readonly useCheckInDataService: UnwrapRef<typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']>
     readonly useCheckInService: UnwrapRef<typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']>
     readonly useCheckinFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']>

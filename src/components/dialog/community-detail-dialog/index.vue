@@ -74,11 +74,7 @@
 
   const dialogTitle = computed(() => {
     const nameKey =
-      "postingId" in category
-        ? "title"
-        : "advertisementId" in category
-          ? "advertisementName"
-          : (`${entityName}Name` as keyof CategoryTypes);
+      "postingId" in category ? "title" : (`${entityName}Name` as keyof CategoryTypes);
 
     return translate((category as Record<string, any>)[nameKey], category.meta, nameKey);
   });

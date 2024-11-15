@@ -14,6 +14,7 @@
 
   // .ts files
   import { EntityURLKey } from "@/constants";
+  import { RenderItem } from "@/composable/services/use-community-dialog-service";
 
   // UI Components
   import ContactSection from "./renderer/contact-section.vue";
@@ -27,13 +28,6 @@
 
   // Composable function calls
   const { galleryItems, fetchAllData } = useCommunityDialogService(entityKey, category);
-
-  interface RenderItem {
-    name: string;
-    hasCheckIn?: boolean;
-    itemCount?: number;
-    type: "carousel" | "description" | "contact";
-  }
 
   const renderItems = computed((): RenderItem[] => {
     return [

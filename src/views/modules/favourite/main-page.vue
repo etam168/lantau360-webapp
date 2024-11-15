@@ -126,8 +126,9 @@
   }
 
   const onImageClick = (item: CarouselTypes) => {
-    eventBus("DialogStatus").emit(true, "FavDetail");
-    openCategoryDetailDialog(item, "FavDetail", "BUSINESS");
+    const dialogName = "AdvertisementDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
   };
 
   async function onCategoryDetail(item: any) {

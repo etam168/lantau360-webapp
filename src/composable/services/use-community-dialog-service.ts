@@ -19,8 +19,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   const galleryItems = ref<GalleryImageType[]>([]);
   const { fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
-  const entityName = getEntityName(entityKey);
-  const entityId = getEntityId(category as any, entityName);
+
   const fetchAllData = async () => {
     try {
       switch (entityKey) {
@@ -56,6 +55,9 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   };
 
   const loadCommunityData = async (entityKey: EntityURLKey) => {
+    const entityName =
+      entityKey === "ADVERTISEMENT" ? getEntityName("BUSINESS") : getEntityName(entityKey);
+    const entityId = getEntityId(category as any, entityName);
     const entityUrl = ENTITY_URL[`${entityKey}_GALLERY`];
     if (entityUrl && entityId) {
       await loadData(`${entityUrl}/${entityId}`);

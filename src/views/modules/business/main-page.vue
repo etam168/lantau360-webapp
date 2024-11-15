@@ -20,7 +20,7 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
-        <app-marketing-item-list :data="businessPromotion" :entity-key="'BUSINESS_PROMOTION'"/>
+        <app-marketing-item-list :data="businessPromotion" :entity-key="'BUSINESS_PROMOTION'" />
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -137,9 +137,9 @@
   }
 
   const onImageClick = (item: AdvertisementView) => {
-    const dialogName = "BusinessAdvertisementDetail";
+    const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
   };
 
   async function onDirectoryItem(directory: Directory) {

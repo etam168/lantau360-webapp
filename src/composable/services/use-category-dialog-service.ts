@@ -1,8 +1,10 @@
-// useCategoryDialogService.ts
 import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+import type { CategoryTypes } from "@/interfaces/types/category-types";
+import type { CheckIn } from "@/interfaces/models/entities/checkin";
 
 import { Dialog } from "quasar";
-import { EntityURLKey } from "@/constants";
+import { ENTITY_URL, EntityURLKey } from "@/constants";
+import { useUserStore } from "@/stores/user";
 const { eventBus } = useUtilities();
 
 export interface RenderItem {
@@ -22,7 +24,45 @@ export interface RenderItem {
     | "promotion";
 }
 
+interface FetchSiteDataResult {
+  directoryItemsList: CategoryTypes[];
+  directoryCheckIns: CheckIn[];
+}
+
 export function useCategoryDialogService(entityKey: EntityURLKey) {
+  const { userId, isUserLogon } = useUserStore();
+
+  /**
+   * Fetches data for a directory, including directory items and user check-ins if applicable.
+   */
+  const fetchSiteData = async (directoryId: number): Promise<FetchSiteDataResult> => {
+    try {
+      const requestUrls: string[] = [];
+      requestUrls.push(`${ENTITY_URL.DIRECTORY_LIST.SITE}/${directoryId}`);
+
+      if (isUserLogon()) {
+        requestUrls.push(
+          `${ENTITY_URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${directoryId}`
+        );
+      }
+
+      const { api } = useApi();
+      const axiosRequests = requestUrls.map(url => api.get(url));
+      const [directoryResponse, checkInResponse] = await Promise.all(axiosRequests);
+
+      const directoryItemsList: CategoryTypes[] = directoryResponse?.data || [];
+      const directoryCheckIns: CheckIn[] = checkInResponse?.data || [];
+
+      return { directoryItemsList, directoryCheckIns };
+    } catch (error) {
+      console.error("Error fetching site data:", error);
+      throw error;
+    }
+  };
+
+  /**
+   * Opens a dialog for displaying category items.
+   */
   async function openCategoryItemDialog(
     isDialogOpen: Ref<Boolean>,
     directory: DirectoryTypes,
@@ -47,6 +87,9 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
+  /**
+   * Opens a dialog for displaying detailed information about a category.
+   */
   async function openCategoryDetailDialog(
     item: any,
     dialogName: string,
@@ -70,6 +113,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   }
 
   return {
+    fetchSiteData,
     openCategoryDetailDialog,
     openCategoryItemDialog
   };

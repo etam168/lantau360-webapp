@@ -73,11 +73,7 @@
   const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
-    const nameKey = category?.advertisementId
-      ? "advertisementName"
-      : (`${entityName}Name` as keyof CategoryTypes);
-
-    // Assuming translate is a function that handles the translation logic
+    const nameKey = `${entityName}Name` as keyof CategoryTypes;
     return translate(category[nameKey] as string, category.meta, nameKey);
   });
 

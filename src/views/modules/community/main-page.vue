@@ -1,6 +1,5 @@
 <template>
   <q-page>
-    <div>{{ entityKey }}</div>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
 
@@ -54,7 +53,10 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCommunityDetailDialog, openCommunityItemDialog } = useCommunityDialogService(
+  const { openCategoryDetailDialog } = useCategoryDialogService(
+    `${entityKey}_DIRECTORY` as EntityURLKey
+  );
+  const { openCommunityItemDialog } = useCommunityDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
   const { eventBus, isSmallScreen } = useUtilities();
@@ -116,9 +118,9 @@
   }
 
   const onImageClick = (item: AdvertisementView) => {
-    const dialogName = "CommunityAdvertisementDetail";
+    const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCommunityDetailDialog(item, dialogName);
+    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
   };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {

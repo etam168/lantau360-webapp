@@ -51,7 +51,7 @@
 </template>
 
 <script setup lang="ts">
-  // Types
+  // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";

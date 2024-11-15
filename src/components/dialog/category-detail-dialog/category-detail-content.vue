@@ -160,10 +160,6 @@
   }
 
   function getBusinessTemplate() {
-    if ("advertisementId" in category) {
-      return RENDERER.ADVERTISEMENT;
-    }
-
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
@@ -174,6 +170,8 @@
 
   const template = computed(() => {
     switch (entityKey) {
+      case "ADVERTISEMENT":
+        return RENDERER.ADVERTISEMENT;
       case "BUSINESS":
         return getBusinessTemplate();
       case "BUSINESS_PROMOTION":

@@ -14,7 +14,9 @@ export function useContentDetailDataService(category: CategoryTypes, entityKey: 
   const checkInData = ref();
   const { fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
-  const entityName = getEntityName(entityKey);
+  const entityName =
+    entityKey === "ADVERTISEMENT" ? getEntityName("BUSINESS") : getEntityName(entityKey);
+
   const entityId = getEntityId(category as any, entityName);
 
   const fetchAllData = async () => {
@@ -26,6 +28,8 @@ export function useContentDetailDataService(category: CategoryTypes, entityKey: 
             await loadMemberCheckInDetail();
           }
           break;
+        case "ADVERTISEMENT":
+          await loadBusinessData("BUSINESS");
         case "BUSINESS":
         case "BUSINESS_PROMOTION":
           await loadBusinessData(entityKey);
