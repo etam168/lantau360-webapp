@@ -6,7 +6,7 @@
           <l-map
             :use-global-leaflet="false"
             ref="map"
-            v-model:zoom="zoom"
+            v-model:zoom="localZoom"
             :center="mapCenter"
             :options="mapOptions"
             :bounds="bounds"
@@ -64,4 +64,7 @@
 
   const map = ref();
   const mapCenter = ref<any>(bounds.getCenter());
+
+  // Create a local reactive property for zoom
+  const localZoom = ref(zoom);
 </script>
