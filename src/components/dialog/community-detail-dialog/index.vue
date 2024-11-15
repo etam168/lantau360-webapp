@@ -9,7 +9,6 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
-      YESSSSSSSSSSSSS
       <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
 
       <q-page-container>

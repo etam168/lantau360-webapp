@@ -5,6 +5,23 @@ import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 const { eventBus } = useUtilities();
 
+export interface RenderItem {
+  name: string;
+  hasCheckIn?: boolean;
+  itemCount?: number;
+  type:
+    | "carousel"
+    | "gallery"
+    | "expansion-description"
+    | "description"
+    | "favourite"
+    | "location"
+    | "contact"
+    | "timetable"
+    | "time"
+    | "promotion";
+}
+
 export function useCategoryDialogService(entityKey: EntityURLKey) {
   async function openCategoryItemDialog(
     isDialogOpen: Ref<Boolean>,

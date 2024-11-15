@@ -1,20 +1,19 @@
 import { ref } from "vue";
 import { useUserStore } from "@/stores/user";
-import { ENTITY_URL, EntityURLKey,TEMPLATE } from "@/constants";
+import { ENTITY_URL, EntityURLKey, TEMPLATE } from "@/constants";
 import type { CategoryTypes } from "@/interfaces/types/category-types";
 import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
-import type { BusinessView } from "@/interfaces/models/views/business-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
 import type { CheckIn } from "@/interfaces/models/entities/checkin";
 import type { Content } from "@/interfaces/models/entities/content";
 
-export function useContentDetailDataService(category: CategoryTypes, entityKey:EntityURLKey) {
+export function useContentDetailDataService(category: CategoryTypes, entityKey: EntityURLKey) {
   const userStore = useUserStore();
   const galleryItems = ref<GalleryImageType[]>([]);
   const memberConfig = ref();
   const checkInData = ref();
   const { fetchData } = useApi();
-  const { getEntityId, getEntityName, notify } = useUtilities();
+  const { getEntityId, getEntityName } = useUtilities();
   const entityName = getEntityName(entityKey);
   const entityId = getEntityId(category as any, entityName);
 
@@ -27,14 +26,8 @@ export function useContentDetailDataService(category: CategoryTypes, entityKey:E
             await loadMemberCheckInDetail();
           }
           break;
-        case "COMMUNITY_DIRECTORY":
-          await loadData(`${ENTITY_URL.BUSINESS_GALLERY}/${(category as BusinessView).businessId}`);
-          break;
         case "BUSINESS":
         case "BUSINESS_PROMOTION":
-        case "COMMUNITY_EVENT":
-        case "COMMUNITY_NOTICE":
-        case "POSTING":
           await loadBusinessData(entityKey);
           break;
         default:

@@ -28,13 +28,13 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { useGeolocation } from "@vueuse/core";
   import { useUserStore } from "@/stores/user";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
+  import { RenderItem } from "@/composable/services/use-category-dialog-service";
   import { EntityURLKey, TEMPLATE, RENDERER } from "@/constants";
 
   // UI Components
@@ -62,8 +62,6 @@
   const userStore = useUserStore();
   const { t } = useI18n({ useScope: "global" });
   const { notify } = useUtilities();
-  const { coords: userLocation, isSupported, error: locationError } = useGeolocation();
-  const { handleOpenDialog } = useEntityDataHandlingService();
   const { galleryItems, fetchAllData } = useContentDetailDataService(category, entityKey);
   const { performCheckIn } = useCheckInDataService(memberConfig, checkInData);
 
@@ -85,27 +83,9 @@
     }
   };
 
-  interface RenderItem {
-    name: string;
-    hasCheckIn?: boolean;
-    itemCount?: number;
-    type:
-      | "carousel"
-      | "gallery"
-      | "expansion-description"
-      | "description"
-      | "favourite"
-      | "location"
-      | "contact"
-      | "timetable"
-      | "time"
-      | "promotion";
-  }
-
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {
       case RENDERER.ADVERTISEMENT:
-      case RENDERER.COMMUNITY:
         return [
           { name: "carousel", type: "carousel" },
           { name: "description", type: "description" }
@@ -118,7 +98,6 @@
           { name: "location", type: "location" },
           { name: "contact", type: "contact" }
         ];
-
       case RENDERER.BUSINESS:
         return [
           { name: "carousel", type: "carousel" },
@@ -131,16 +110,6 @@
         return [{ name: "carousel", type: "carousel" }];
       case RENDERER.EMERGENCY:
         return [{ name: "contact", type: "contact" }];
-      case RENDERER.EVENT:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "expansion-description", type: "expansion-description" }
-        ];
-      case RENDERER.POSTING:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "expansion-description", type: "expansion-description" }
-        ];
       case RENDERER.PROMOTION:
         return [
           { name: "carousel", type: "carousel" },
@@ -198,40 +167,13 @@
     switch (category?.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
-      case TEMPLATE.EVENT.value:
-      case TEMPLATE.NEWS.value:
-      case TEMPLATE.NOTICE.value:
-        return RENDERER.EVENT;
-
       default:
         return RENDERER.BUSINESS;
     }
   }
 
-  function getCommunityTemplate() {
-    if ("advertisementId" in category) {
-      return RENDERER.ADVERTISEMENT;
-    }
-
-    switch (category?.directoryTemplate) {
-      case TEMPLATE.EVENT.value:
-      case TEMPLATE.NEWS.value:
-      case TEMPLATE.NOTICE.value:
-        return RENDERER.EVENT;
-
-      default:
-        return RENDERER.COMMUNITY;
-    }
-  }
-
   const template = computed(() => {
     switch (entityKey) {
-      case "POSTING":
-        return RENDERER.POSTING;
-      case "COMMUNITY_EVENT":
-      case "COMMUNITY_NOTICE":
-      case "COMMUNITY_DIRECTORY":
-        return getCommunityTemplate();
       case "BUSINESS":
         return getBusinessTemplate();
       case "BUSINESS_PROMOTION":

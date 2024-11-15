@@ -1,5 +1,6 @@
 <template>
   <q-page>
+    <div>{{ entityKey }}</div>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
 

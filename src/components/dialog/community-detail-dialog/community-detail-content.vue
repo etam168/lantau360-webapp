@@ -26,7 +26,7 @@
   }>();
 
   // Composable function calls
-  const { galleryItems, fetchAllData } = useContentDetailDataService(category, entityKey);
+  const { galleryItems, fetchAllData } = useCommunityDialogService(entityKey, category);
 
   interface RenderItem {
     name: string;
