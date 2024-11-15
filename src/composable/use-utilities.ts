@@ -52,32 +52,6 @@ export function useUtilities() {
     return `${entityKey}_IMAGE` as ImageURLKey;
   }
 
-  const getTimeAgo = (dateTime: Date) => {
-    const currentDate = new Date();
-    const postDate = new Date(dateTime);
-    const timeDifference = currentDate.getTime() - postDate.getTime();
-    const seconds = Math.floor(timeDifference / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    const months = Math.floor(days / 30); // assuming 30 days per month
-    const years = Math.floor(days / 365); // assuming 365 days per year
-
-    if (years > 0) {
-      return `${years} ${years === 1 ? "y" : "y"} ago`;
-    } else if (months > 0) {
-      return `${months} ${months === 1 ? "m" : "m"} ago`;
-    } else if (days > 0) {
-      return `${days} ${days === 1 ? "d" : "d"} ago`;
-    } else if (hours > 0) {
-      return `${hours} ${hours === 1 ? "h" : "h"} ago`;
-    } else if (minutes > 0) {
-      return `${minutes} ${minutes === 1 ? "min" : "min"} ago`;
-    } else {
-      return "Just now";
-    }
-  };
-
   function isNotEmptyArray(arr: any) {
     return Array.isArray(arr) && arr.length > 0;
   }
@@ -200,7 +174,6 @@ export function useUtilities() {
     getEntityName,
     getImageURL,
     getImageUrlKey,
-    getTimeAgo,
     groupBy,
     isNotEmptyArray,
     isNthBitSet,

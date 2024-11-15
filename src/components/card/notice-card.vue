@@ -9,7 +9,7 @@
     </q-item-section>
 
     <q-item-section side>
-      <q-item-label>{{ getTimeAgo(noticeItem.createdAt) }}</q-item-label>
+      <q-item-label>{{ formatTimeAgo(new Date(noticeItem.createdAt)) }}</q-item-label>
     </q-item-section>
   </q-item>
 
@@ -21,6 +21,7 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityNotice } from "@/interfaces/models/entities/community-notice";
 
+  import { formatTimeAgo } from '@vueuse/core'
   // .ts files
   import { EntityURLKey } from "@/constants";
 
@@ -29,7 +30,7 @@
 
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
 
-  const { eventBus, getTimeAgo, translate } = useUtilities();
+  const { eventBus, translate } = useUtilities();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const noticeItem = computed(() => item as CommunityNotice);
