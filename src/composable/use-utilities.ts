@@ -1,22 +1,8 @@
-// interface files
-import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-import { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
-import { BusinessView } from "@/interfaces/models/views/business-view";
-import { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-import { CategoryTypes } from "@/interfaces/types/category-types";
-import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
-import { Directory } from "@/interfaces/models/entities/directory";
-import { DirectoryTypes } from "@/interfaces/types/directory-types";
-import { PostingView } from "@/interfaces/models/views/posting-view";
-import { SiteView } from "@/interfaces/models/views/site-view";
-
 // .ts file
 import i18n from "@/plugins/i18n/i18n";
 import { useChangeCase } from "@vueuse/integrations/useChangeCase";
-import { BLOB_URL, EntityURLKey, IMAGES, STORAGE_KEYS } from "@/constants";
-import { date, LocalStorage, Notify, Screen } from "quasar";
+import { BLOB_URL, EntityURLKey, IMAGES } from "@/constants";
+import { date, Notify, Screen } from "quasar";
 import { ImageURLKey } from "@/constants/app/image-url";
 
 // const eventBus = new EventBus();
@@ -92,72 +78,12 @@ export function useUtilities() {
     }
   };
 
-  // Type guard to determine if the item is an Advertisement
-  function isAdvertisement(item: any): item is AdvertisementView {
-    return (item as AdvertisementView).advertisementId !== undefined;
-  }
-
-  // Type guard to determine if the item is an BusinessPromotionView
-  function isBusinessPromotion(item: CategoryTypes): item is BusinessPromotionView {
-    return (item as BusinessPromotionView).businessPromotionId !== undefined;
-  }
-
-  // Type guard to determine if the item is an BusinessView
-  function isBusinessView(item: CategoryTypes): item is BusinessView {
-    return (item as BusinessView).businessId !== undefined;
-  }
-
-  // Type guard to determine if the item is an BusinessVoucherView
-  function isBusinessVoucher(item: CategoryTypes): item is BusinessVoucherView {
-    return (item as BusinessVoucherView).businessVoucherId !== undefined;
-  }
-
-  // Type guard to determine if the item is an Directory
-  function isDirectory(item: DirectoryTypes): item is Directory {
-    return (item as Directory).directoryId !== undefined;
-  }
-
-  // Type guard to determine if the item is an CommunityEvent
-  function isCommunityEvent(item: CategoryTypes): item is CommunityEventView {
-    return (item as CommunityEventView).communityEventId !== undefined;
-  }
-
-  // Check favaorite status of item
-  function isFavouriteItem(item: CategoryTypes): boolean {
-    if (isSiteView(item)) {
-      const favItems = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[];
-      return useArraySome(favItems, fav => fav.siteId == item.siteId).value;
-    } else if (isBusinessView(item)) {
-      const favItems = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[];
-      return useArraySome(favItems, fav => fav.businessId == item.businessId).value;
-    }
-    return false;
-  }
-
-  function isCommunityNotice(item: CategoryTypes): item is CommunityNoticeView {
-    return (item as CommunityNoticeView).communityNoticeId !== undefined;
-  }
-
-  function isCommunityDirectory(item: DirectoryTypes): item is CommunityDirectory {
-    return (item as CommunityDirectory).communityDirectoryId !== undefined;
-  }
-
   function isNotEmptyArray(arr: any) {
     return Array.isArray(arr) && arr.length > 0;
   }
 
   function isNthBitSet(value: number, n: number): boolean {
     return (value & (1 << (n - 1))) !== 0;
-  }
-
-  // Type guard to determine if the item is an isPostingView
-  function isPostingView(item: CategoryTypes): item is PostingView {
-    return (item as PostingView).postingId !== undefined;
-  }
-
-  // Type guard to determine if the item is an SiteView
-  function isSiteView(item: CategoryTypes): item is SiteView {
-    return (item as SiteView).siteId !== undefined;
   }
 
   function notify(message: string, type: string) {
@@ -205,17 +131,6 @@ export function useUtilities() {
     }
   }
 
-  function translateAltName(locale: string, meta: any, key: string) {
-    switch (locale) {
-      case "hk":
-        return meta?.i18n?.hk?.[key] ?? "";
-      case "cn":
-        return meta?.i18n?.cn?.[key] ?? "";
-      default:
-        return "";
-    }
-  }
-
   function translateAlt(label: string, altName: any, key: string) {
     const { locale } = i18n.global;
     return altName?.i18n?.[locale]?.[key] || label;
@@ -244,24 +159,6 @@ export function useUtilities() {
     });
   }
 
-  function toggleItemFavStatus(item: CategoryTypes, favStatus: boolean) {
-    const isBusiness = isBusinessView(item);
-    const id = isBusiness ? (item as BusinessView).businessId : (item as SiteView).siteId;
-    const storageKey = isBusiness ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE;
-
-    const favItems = (LocalStorage.getItem(storageKey) || []) as (BusinessView | SiteView)[];
-    const index = favItems.findIndex(
-      fav => (isBusiness ? (fav as BusinessView).businessId : (fav as SiteView).siteId) === id
-    );
-
-    if (favStatus && index !== -1) {
-      favItems.splice(index, 1);
-    } else if (!favStatus) {
-      favItems.push(item as BusinessView | SiteView);
-    }
-
-    LocalStorage.set(storageKey, favItems);
-  }
   function resetObject<T>(obj: T): T {
     if (typeof obj !== "object" || obj === null) {
       return obj;
@@ -305,26 +202,14 @@ export function useUtilities() {
     getImageUrlKey,
     getTimeAgo,
     groupBy,
-    isAdvertisement,
-    isBusinessPromotion,
-    isBusinessView,
-    isBusinessVoucher,
-    isCommunityDirectory,
-    isCommunityEvent,
-    isCommunityNotice,
-    isDirectory,
-    isFavouriteItem,
     isNotEmptyArray,
     isNthBitSet,
-    isPostingView,
-    isSiteView,
     isSmallScreen,
     isDevelopment,
     resetObject,
     notify,
     translate,
     translateAlt,
-    sortDirectoryItems,
-    toggleItemFavStatus
+    sortDirectoryItems
   };
 }

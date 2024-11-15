@@ -32,15 +32,19 @@
   import { fasChevronDown, fasHeart } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+import { EntityURLKey } from "@/constants";
 
   // Props
-  const { category } = defineProps<{
+  const { category, entityKey } = defineProps<{
     category: CategoryTypes;
+    entityKey: EntityURLKey
   }>();
 
   // Composable function calls
-  const { eventBus, isFavouriteItem, toggleItemFavStatus, translate } = useUtilities();
+  const { eventBus, translate } = useUtilities();
+  const {  isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+
 
   // Reactive variables
   const i18nKey = "home";

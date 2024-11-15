@@ -20,7 +20,7 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="promotion" class="q-pa-sm">
-        <app-marketing-item-list :data="businessPromotion" />
+        <app-marketing-item-list :data="businessPromotion" :entity-key="'BUSINESS_PROMOTION'"/>
       </q-tab-panel>
 
       <q-tab-panel name="directory">

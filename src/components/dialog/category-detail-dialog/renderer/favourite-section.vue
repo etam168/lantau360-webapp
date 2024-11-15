@@ -12,19 +12,22 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
+  import type { CategoryTypes } from "@/interfaces/types/category-types"
+
   // Third party imports
   import { fasHeart } from "@quasar/extras/fontawesome-v6";
-
-  // Interface files
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import { EntityURLKey } from "@/constants";
 
   // Props
-  const { category } = defineProps<{
+  const { category, entityKey } = defineProps<{
     category: CategoryTypes;
+    entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
-  const { eventBus, isFavouriteItem, toggleItemFavStatus } = useUtilities();
+  const { eventBus } = useUtilities();
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
 
   // Reactive variables
   const isFavourite = ref(isFavouriteItem(category));

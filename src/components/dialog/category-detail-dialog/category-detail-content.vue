@@ -4,8 +4,8 @@
       <gallery-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
       <contact-section v-else-if="item.type === 'contact'" :category />
       <description-section v-else-if="item.type === 'description'" :category />
-      <expansion-description-section v-else-if="item.type === 'expansion-description'" :category />
-      <favourite-section v-else-if="item.type === 'favourite'" :category />
+      <expansion-description-section v-else-if="item.type === 'expansion-description'" :category :entityKey />
+      <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
 
       <location-section
         v-else-if="item.type === 'location'"
@@ -17,7 +17,7 @@
       <open-close-time-section v-else-if="item.type === 'time'" :category />
       <promotion-section v-else-if="item.type === 'promotion'" :category />
 
-      <timetable-section v-else-if="item.type === 'timetable'" :category />
+      <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
     </template>
   </q-page>
 </template>

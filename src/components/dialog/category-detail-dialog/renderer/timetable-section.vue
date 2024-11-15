@@ -49,19 +49,26 @@
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import { fasHeart } from "@quasar/extras/fontawesome-v6";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const { category, itemCount = 1 } = defineProps<{
+  // Third party imports
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
+  import { EntityURLKey } from "@/constants";
+
+  const {
+    category,
+    itemCount = 1,
+    entityKey
+  } = defineProps<{
     category: CategoryTypes;
     itemCount?: number;
+    entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
-  const { eventBus, getImageURL, isFavouriteItem, translate, toggleItemFavStatus } = useUtilities();
+  const { eventBus, getImageURL, translate } = useUtilities();
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
 
   // Reactive variables
   const isFavourite = ref(isFavouriteItem(category));

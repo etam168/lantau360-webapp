@@ -2,8 +2,8 @@
   <div class="row q-col-gutter-sm" v-if="data.length > 0">
     <div v-for="(item, index) in sortedItems" :key="index" class="col-md-3 col-sm-4 col-6">
       <div v-if="item && 'status' in item && item.status !== 0">
-        <promotion-card v-if="isBusinessPromotion(item)" :item="item" />
-        <voucher-card v-else-if="isBusinessVoucher(item)" :item="item" />
+        <promotion-card v-if="entityKey == 'BUSINESS_PROMOTION'" :item="item" />
+        <voucher-card v-else-if="entityKey == 'BUSINESS_VOUCHER'" :item="item" />
       </div>
     </div>
   </div>
@@ -11,16 +11,16 @@
 
 <script setup lang="ts">
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Custom Components
   import PromotionCard from "@/components/card/promotion-card.vue";
   import VoucherCard from "@/components/card/voucher-card.vue";
 
-  // Define props for this component
-  const { data } = defineProps<{ data: CategoryTypes[] }>();
+  import { EntityURLKey } from "@/constants";
 
-  const { isBusinessPromotion, isBusinessVoucher } = useUtilities();
+  // Define props for this component
+  const { data, entityKey } = defineProps<{ data: CategoryTypes[]; entityKey: EntityURLKey }>();
 
   //Computed property to transform items into key/value pairs
   const sortedItems = computed(() => {

@@ -20,11 +20,11 @@
 
     <q-tab-panels v-model="tab">
       <q-tab-panel name="events" class="q-pa-sm">
-        <app-bulletin-item-list :items="events" />
+        <app-bulletin-item-list :items="events" :entity-key="'COMMUNITY_EVENT'" />
       </q-tab-panel>
 
       <q-tab-panel name="notice">
-        <app-bulletin-item-list :items="notices" />
+        <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'"/>
       </q-tab-panel>
 
       <q-tab-panel name="directory">
@@ -36,12 +36,12 @@
 
 <script setup lang="ts">
   // Interface files
-  import { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-  import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import { CommunityEventView } from "@/interfaces/models/views/community-event-view";
-  import { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
-  import { Directory } from "@/interfaces/models/entities/directory";
-  import { TabItem } from "@/interfaces/tab-item";
+  import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+  import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
+  import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
+  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { TabItem } from "@/interfaces/tab-item";
 
   // .ts file
   import { ENTITY_URL, EntityURLKey } from "@/constants";
