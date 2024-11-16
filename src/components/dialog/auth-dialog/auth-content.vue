@@ -7,6 +7,7 @@
       ref="form"
       class="full-height bg-transparent"
       :initial-values="initialValues"
+      :validation-schema="schema"
       @submit="onSubmit"
       v-slot="{ meta, values }"
     >
@@ -79,14 +80,14 @@
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
   const { eventBus } = useUtilities();
-  const { initialValues, loginRequest, registerRequest, recoverPassword, sendOtp } =
+  const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode);
 
   // Reactive variables
   const $q = useQuasar();
   const form = ref();
   const loading = ref(false);
-  // const userName = ref();
+  const userName = ref();
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }

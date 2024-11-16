@@ -15,7 +15,9 @@ const { api } = useApi();
 export function useAuthService(renderMode: Ref<AuthMode>) {
   const userStore = useUserStore();
   const i18nKeyError = "errors";
-  const i18nKey = "auth";
+  const i18nKey = "auth.validation";
+
+  const { passwordSchema } = useValidationSchemas(i18nKey);
 
   const initialValues = ref({
     email: "",
@@ -64,11 +66,12 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
       default:
         return object({
           userName: string()
-            .email(t(`${i18nKey}.invalidUserName`))
+            // .email(t(`${i18nKey}.invalidUserName`))
             .required(t(`${i18nKey}.userNameRequired`)),
-          password: string()
-            .required(t(`${i18nKey}.password`))
-            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 }))
+          password: passwordSchema
+          // password: string()
+          //   .required(t(`${i18nKey}.password`))
+          //   .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 }))
         });
     }
   });
@@ -151,7 +154,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         lastName: values.lastName,
         phone: values.phone,
         password: values.password,
-        userName: values.email || values.userName,// Assuming email might be the same as userName
+        userName: values.email || values.userName, // Assuming email might be the same as userName
         status: 1
       });
 
