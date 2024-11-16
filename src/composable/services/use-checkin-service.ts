@@ -16,6 +16,7 @@ export function useCheckInService() {
       .required()
       .label(t(`${i18nKey}.description`))
   });
+
   function successCallback(successMessage: string) {
     notify(successMessage, "positive");
   }

@@ -5,7 +5,11 @@ import type { CheckIn } from "@/interfaces/models/entities/checkin";
 import { Dialog } from "quasar";
 import { ENTITY_URL, EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
-const { eventBus } = useUtilities();
+
+import i18n from "@/plugins/i18n/i18n";
+
+const { eventBus, notify } = useUtilities();
+const { t } = i18n.global;
 
 export interface RenderItem {
   name: string;
@@ -112,9 +116,18 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
+  function openGoogleMaps(category: CategoryTypes) {
+    if (category.meta?.["hasMap"]) {
+      window.open(category.meta?.["mapLink"], "_blank");
+    } else {
+      notify(t("errors.mapLinkNotAvailable"), "negative");
+    }
+  }
+
   return {
     fetchSiteData,
     openCategoryDetailDialog,
-    openCategoryItemDialog
+    openCategoryItemDialog,
+    openGoogleMaps
   };
 }

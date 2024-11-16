@@ -43,7 +43,7 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
-  // .ts file
+  // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Props
@@ -52,14 +52,16 @@
   }>();
 
   const { t } = useI18n({ useScope: "global" });
+  const { eventBus, isSmallScreen } = useUtilities();
   const { fetchData } = useApi();
+
   const { openCategoryDetailDialog } = useCategoryDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
+
   const { openCommunityItemDialog } = useCommunityDialogService(
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
-  const { eventBus, isSmallScreen } = useUtilities();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));

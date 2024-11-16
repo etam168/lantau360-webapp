@@ -45,6 +45,7 @@ export const useUserStore = defineStore("user", {
         throw error;
       }
     },
+
     async LogOut() {
       this.SetUserInfo({ logout: true });
     },
@@ -77,14 +78,15 @@ export const useUserStore = defineStore("user", {
 
         this.expiredToken = payload.token;
 
-         // Set refresh token expiry to 7 days from now
-         if (payload.refreshToken) {
+        // Set refresh token expiry to 7 days from now
+        if (payload.refreshToken) {
           this.setRefreshTokenWithExpiry();
         }
       }
 
       usePermissionStore().GenerateRoutes(payload);
     },
+
     isUserLogon() {
       return this.token ? true : false;
     },
@@ -100,6 +102,7 @@ export const useUserStore = defineStore("user", {
       this.purchasePrice = purchasePrice;
       this.purchasePoints = purchasePoints;
     },
+
     setToken(token: string) {
       this.token = token;
     },

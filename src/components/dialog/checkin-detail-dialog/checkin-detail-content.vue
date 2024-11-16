@@ -51,6 +51,7 @@
     </q-list>
   </q-page>
 </template>
+
 <script setup lang="ts">
   // Third party imports
   import { LatLngExpression, latLngBounds } from "leaflet";
@@ -94,6 +95,7 @@
         checkInAt: dateTimeFormatter(new Date(item.checkInAt))
       }));
   });
+
   const tabItems = ref([
     { name: "map", label: t("checkin.map") },
     { name: "checkInList", label: t("checkin.checkInList") }

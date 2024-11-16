@@ -1,50 +1,48 @@
 <template>
   <q-page>
     <template v-for="(item, index) in renderItems" :key="index">
-      <gallery-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
+      <carousel-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
       <contact-section v-else-if="item.type === 'contact'" :category />
       <description-section v-else-if="item.type === 'description'" :category />
+      <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
+      <open-close-time-section v-else-if="item.type === 'time'" :category />
+      <promotion-section v-else-if="item.type === 'promotion'" :category />
+      <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
+
       <expansion-description-section
         v-else-if="item.type === 'expansion-description'"
         :category
         :entityKey
       />
-      <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
 
       <location-section
         v-else-if="item.type === 'location'"
         :category
         :has-check-in="entityKey.includes('SITE')"
-        @check-in="openCheckInDialog"
-        @open-map="openGoogleMaps"
+        @check-in="requestCheckIn(category)"
+        @open-map="openGoogleMaps(category)"
       />
-      <open-close-time-section v-else-if="item.type === 'time'" :category />
-      <promotion-section v-else-if="item.type === 'promotion'" :category />
-
-      <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
     </template>
   </q-page>
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import { useUserStore } from "@/stores/user";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
 
-  // .ts files
-  import { RenderItem } from "@/composable/services/use-category-dialog-service";
+  // Constants
   import { EntityURLKey, TEMPLATE, RENDERER } from "@/constants";
 
-  // UI Components
+  // Components
   import ContactSection from "./renderer/contact-section.vue";
   import DescriptionSection from "./renderer/description-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
-  import promotionSection from "./renderer/promotion-section.vue";
+  import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
 
   // Props
@@ -53,35 +51,26 @@
     entityKey: EntityURLKey;
   }>();
 
-  // Reactive variables
-  const memberConfig = ref();
-  const checkInData = ref();
+  interface RenderItem {
+    name: string;
+    hasCheckIn?: boolean;
+    itemCount?: number;
+    type:
+      | "carousel"
+      | "gallery"
+      | "expansion-description"
+      | "description"
+      | "favourite"
+      | "location"
+      | "contact"
+      | "timetable"
+      | "time"
+      | "promotion";
+  }
 
-  // Composable function calls
-  const $q = useQuasar();
-  const userStore = useUserStore();
-  const { t } = useI18n({ useScope: "global" });
-  const { notify } = useUtilities();
   const { galleryItems, fetchAllData } = useContentDetailDataService(category, entityKey);
-  const { performCheckIn } = useCheckInDataService(memberConfig, checkInData);
-
-  const openCheckInDialog = () => {
-    // Check if the user is logged in
-    const isLoggedIn = userStore.isUserLogon(); // This will return true or false
-    switch (isLoggedIn) {
-      case true:
-        performCheckIn(entityKey, category);
-        break;
-      case false:
-        // Notify the user to log in
-        handleLoginAlert();
-        break;
-      default:
-        // This case should not happen, but just in case
-        console.error("Unexpected value for isLoggedIn");
-        break;
-    }
-  };
+  const { requestCheckIn } = useCheckInDataService();
+  const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {
@@ -127,47 +116,6 @@
     }
   });
 
-  const openGoogleMaps = () => {
-    if (category.meta?.["hasMap"]) {
-      window.open(category.meta?.["mapLink"], "_blank");
-    } else {
-      notify(t("errors.mapLinkNotAvailable"), "negative");
-    }
-  };
-
-  function handleLoginAlert() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
-      componentProps: {
-        mode: "login"
-      }
-    });
-  }
-
-  function getSiteTemplate() {
-    switch (category?.directoryTemplate) {
-      case TEMPLATE.ATM.value:
-        return RENDERER.ATM;
-      case TEMPLATE.TIMETABLE.value:
-        return RENDERER.TIMETABLE;
-      case TEMPLATE.TAXI.value:
-        return RENDERER.TAXI;
-      case TEMPLATE.EMERGENCY.value:
-        return RENDERER.EMERGENCY;
-      default:
-        return RENDERER.SITE;
-    }
-  }
-
-  function getBusinessTemplate() {
-    switch (category?.directoryTemplate) {
-      case TEMPLATE.RESTAURANT.value:
-        return RENDERER.RESTAURANT;
-      default:
-        return RENDERER.BUSINESS;
-    }
-  }
-
   const template = computed(() => {
     switch (entityKey) {
       case "ADVERTISEMENT":
@@ -184,6 +132,32 @@
         return "";
     }
   });
+
+  function getBusinessTemplate() {
+    // we only need to process BusinessView data here
+    switch ((category as BusinessView).directoryTemplate) {
+      case TEMPLATE.RESTAURANT.value:
+        return RENDERER.RESTAURANT;
+      default:
+        return RENDERER.BUSINESS;
+    }
+  }
+
+  function getSiteTemplate() {
+    // we only need to process SiteView data here
+    switch ((category as SiteView).directoryTemplate) {
+      case TEMPLATE.ATM.value:
+        return RENDERER.ATM;
+      case TEMPLATE.TIMETABLE.value:
+        return RENDERER.TIMETABLE;
+      case TEMPLATE.TAXI.value:
+        return RENDERER.TAXI;
+      case TEMPLATE.EMERGENCY.value:
+        return RENDERER.EMERGENCY;
+      default:
+        return RENDERER.SITE;
+    }
+  }
 
   /**
    * Fetch data as part of the setup
