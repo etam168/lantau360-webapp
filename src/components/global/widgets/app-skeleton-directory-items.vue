@@ -1,17 +1,19 @@
 <template>
-  <q-item class="row q-gutter-y-md">
-    <div class="row wrap">
-      <div
-        v-for="index in 14"
-        :key="index"
-        class="column q-gutter-sm items-center q-mt-md"
-        :class="{ 'col-4': $q.screen.lt.sm, 'col-3': !$q.screen.lt.sm }"
-      >
-        <q-skeleton type="circle" size="64px" />
-        <q-skeleton type="text" width="74px" />
-      </div>
+  <div class="row q-col-gutter-md q-mt-sm q-px-md">
+    <div
+      v-for="index in itemCount"
+      :key="index"
+      :class="$q.screen.lt.sm ? 'col-4' : 'col-3'"
+      class="flex justify-center items-center"
+    >
+      <q-card flat>
+        <q-card-section class="text-center">
+          <q-skeleton type="circle" size="64px" />
+          <q-skeleton type="text" width="64px" />
+        </q-card-section>
+      </q-card>
     </div>
-  </q-item>
+  </div>
 </template>
 
 <script setup lang="ts">

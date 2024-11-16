@@ -99,11 +99,11 @@
         fetchData(ENTITY_URL.SITE_DIRECTORIES)
       ]);
 
+      weatherData.value = weatherResponse;
+      homeDirectories.value = homeDirectoryResponse.filter((dir: Directory) => dir.status === 1);
       attractions.value = attractionResponse
         .sort((a: any, b: any) => a.siteId - b.siteId)
         .slice(0, 10);
-      weatherData.value = weatherResponse;
-      homeDirectories.value = homeDirectoryResponse.filter((dir: Directory) => dir.status === 1);
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

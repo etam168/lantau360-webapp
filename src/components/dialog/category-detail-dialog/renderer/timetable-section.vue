@@ -1,42 +1,37 @@
 <template>
-  <q-banner inline-actions>
-    <q-toolbar-title>
-      <div class="text-h6 q-mb-none q-pb-none">
-        {{ formattedSubtitle1 }}
-      </div>
-    </q-toolbar-title>
+  <q-card flat square class="q-mt-xs">
+    <q-card-section>
+      <q-banner inline-actions>
+        <q-toolbar-title>
+          <div class="text-h6 q-mb-none q-pb-none">
+            {{ formattedSubtitle1 }}
+          </div>
+        </q-toolbar-title>
 
-    <template v-slot:action>
-      <!-- Center the chips -->
-      <q-toolbar v-bind="$attrs" class="q-gutter-x-sm">
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          :icon="fasHeart"
-          @click="onBtnFavClick"
-        />
-      </q-toolbar>
-    </template>
-  </q-banner>
-
-  <q-card-section class="q-pa-none">
-    <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
-  </q-card-section>
-
-  <template v-if="!isMaskValueOne">
-    <q-banner inline-actions>
-      <q-toolbar-title>
-        <div class="text-h6 q-mb-none q-pb-none">
-          {{ formattedSubtitle2 }}
-        </div>
-      </q-toolbar-title>
-    </q-banner>
+        <template v-slot:action>
+          <app-button-rounded
+            :text-color="isFavourite ? 'red' : 'white'"
+            :icon="fasHeart"
+            @click="onBtnFavClick"
+          />
+        </template>
+      </q-banner>
+      <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
+    </q-card-section>
 
     <!-- Display both bannerPath and imagePath if their conditions are met -->
+    <q-card-section v-if="!isMaskValueOne">
+      <q-banner inline-actions>
+        <q-toolbar-title>
+          <div class="text-h6 q-mb-none q-pb-none">
+            {{ formattedSubtitle2 }}
+          </div>
+        </q-toolbar-title>
+      </q-banner>
 
-    <q-card-section class="q-pa-none">
       <q-img class="rounded-borders" :src="getImageURL(category.imagePath)" />
     </q-card-section>
-  </template>
+  </q-card>
 </template>
 
 <script setup lang="ts">

@@ -71,9 +71,7 @@
   const emits = defineEmits(["close-dialog"]);
 
   // Props
-  const { mode } = defineProps<{
-    mode: AuthMode;
-  }>();
+  const { mode } = defineProps<{ mode: AuthMode }>();
 
   const i18nKey = "auth";
   const renderMode = ref(mode);
@@ -81,15 +79,14 @@
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
   const { eventBus } = useUtilities();
-  const { initialValues, loginRequest, registerRequest, recoverPassword, sendOtp } = useAuthService(
-    renderMode!
-  );
+  const { initialValues, loginRequest, registerRequest, recoverPassword, sendOtp } =
+    useAuthService(renderMode);
 
   // Reactive variables
   const $q = useQuasar();
   const form = ref();
   const loading = ref(false);
-  const userName = ref();
+  // const userName = ref();
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }
@@ -109,16 +106,8 @@
           ];
         case "reset":
           return [
-            {
-              name: "otp",
-              type: "input",
-              hint: t(`${i18nKey}.hint.otp`)
-            },
-            {
-              name: "newPassword",
-              type: "password",
-              hint: t(`${i18nKey}.hint.newPassword`)
-            },
+            { name: "otp", type: "input", hint: t(`${i18nKey}.hint.otp`) },
+            { name: "newPassword", type: "password", hint: t(`${i18nKey}.hint.newPassword`) },
             { name: "resetPassword", type: "timeoutButton" },
             { name: "backToSignIn", type: "flatButton" }
           ];
@@ -184,16 +173,13 @@
         onSubmit(form.value.values);
         renderMode.value = "sendOtp";
         break;
-
       case "backToSignIn":
         handleResetForm();
         renderMode.value = "login";
         break;
-
       case "resetPassword":
         onSubmit(form.value.values);
         break;
-
       case "logon":
       case "register":
         onSubmit(form.value.values);
