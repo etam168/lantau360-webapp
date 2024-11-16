@@ -68,7 +68,7 @@
       | "promotion";
   }
 
-  const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey, category);
+  const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
@@ -163,5 +163,5 @@
    * Fetch data as part of the setup
    * This ensures that the component is compatible with Suspense
    */
-  await fetchAllData();
+  await fetchAllData(category);
 </script>

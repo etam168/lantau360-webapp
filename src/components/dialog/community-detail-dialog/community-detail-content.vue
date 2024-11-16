@@ -27,7 +27,7 @@
   }>();
 
   // Composable function calls
-  const { galleryItems, fetchAllData } = useCommunityDialogService(entityKey, category);
+  const { galleryItems, fetchAllData } = useCommunityDialogService(entityKey);
 
   const renderItems = computed((): RenderItem[] => {
     return [
@@ -40,5 +40,5 @@
    * Fetch data as part of the setup
    * This ensures that the component is compatible with Suspense
    */
-  await fetchAllData();
+  await fetchAllData(category);
 </script>

@@ -1,11 +1,11 @@
 // useCommunityDialogService.ts
+import type { CategoryTypes } from "@/interfaces/types/category-types";
 import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
+import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { Dialog } from "quasar";
-import { ENTITY_URL, EntityURLKey, TEMPLATE } from "@/constants";
-import type { CategoryTypes } from "@/interfaces/types/category-types";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
-import type { BusinessView } from "@/interfaces/models/views/business-view";
+import { ENTITY_URL, EntityURLKey } from "@/constants";
+
 const { eventBus } = useUtilities();
 
 export interface RenderItem {
@@ -20,16 +20,18 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   const { fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
 
-  const fetchAllData = async () => {
+  async function fetchAllData(category: CategoryTypes) {
     try {
       switch (entityKey) {
-        case "COMMUNITY_DIRECTORY":
-          await loadData(`${ENTITY_URL.BUSINESS_GALLERY}/${(category as BusinessView).businessId}`);
-          break;
         case "COMMUNITY_EVENT":
         case "COMMUNITY_NOTICE":
         case "POSTING":
-          await loadCommunityData(entityKey);
+          const entityName = getEntityName(entityKey);
+          const id = getEntityId(category, entityName);
+          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
+          const finalUrl = `${baseUrl}/${id}`;
+          const response = await fetchData<GalleryImageType[]>(finalUrl);
+          galleryItems.value = response;
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
@@ -38,44 +40,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       console.error("Error fetching data:", error);
       throw error;
     }
-  };
-
-  const loadData = async (galleryUrl: string) => {
-    if (galleryUrl) {
-      try {
-        const [galleryResponse] = await Promise.all([fetchData<GalleryImageType[]>(galleryUrl)]);
-        const maskValue = getMaskValue(category.directoryTemplate || 0);
-        galleryItems.value = galleryResponse
-          .filter(element => !((maskValue >> (element.ranking - 1)) & 1))
-          .sort((a, b) => a.ranking - b.ranking);
-      } catch (err) {
-        console.error("Error fetching gallery data:", err);
-      }
-    }
-  };
-
-  const loadCommunityData = async (entityKey: EntityURLKey) => {
-    const entityName =
-      entityKey === "ADVERTISEMENT" ? getEntityName("BUSINESS") : getEntityName(entityKey);
-    const entityId = getEntityId(category as any, entityName);
-    const entityUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-    if (entityUrl && entityId) {
-      await loadData(`${entityUrl}/${entityId}`);
-    } else {
-      console.warn(`Missing ID or URL for: ${entityKey}`);
-    }
-  };
-
-  const getMaskValue = (templateValue: number, meta?: any) => {
-    // Assuming TEMPLATE is imported or available in the context
-    for (const make in TEMPLATE) {
-      if (TEMPLATE[make as keyof typeof TEMPLATE].value === templateValue) {
-        const modifier = meta?.["hasMap"] === true ? 2 : 0;
-        return TEMPLATE[make as keyof typeof TEMPLATE].mask + modifier;
-      }
-    }
-    return 0;
-  };
+  }
 
   async function openCommunityDetailDialog(
     item: any,

@@ -23,16 +23,16 @@ export function useUtilities() {
     }
   }
 
-  function getEntityId(row: Record<string, any>, entityName: string): number {
-    return row[`${entityName}Id`] as number;
-  }
-
   function dateFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD");
   }
 
   function dateTimeFormatter(value: string | number | Date) {
     return date.formatDate(value, "YYYY-MM-DD HH:mm:ss");
+  }
+
+  function getEntityId(row: Record<string, any>, entityName: string): number {
+    return row[`${entityName}Id`] as number;
   }
 
   function getEntityName(entityKey: EntityURLKey): string {
