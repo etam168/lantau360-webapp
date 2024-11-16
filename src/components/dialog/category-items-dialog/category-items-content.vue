@@ -16,7 +16,7 @@
       :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
       :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
     />
-
+    
     <q-tab-panels v-model="tab">
       <q-tab-panel
         v-for="(item, index) in tabItems"
@@ -168,7 +168,11 @@
   // Lifecycle hooks
   onBeforeMount(() => {
     eventBus("refreshData").on(async () => {
+      const lastSelectedTab = tab.value;
       await fetchAllData();
+      if (lastSelectedTab) {
+        tab.value = lastSelectedTab;
+      }
     });
   });
 
