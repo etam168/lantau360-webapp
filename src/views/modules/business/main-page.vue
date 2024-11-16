@@ -135,12 +135,11 @@
       }
     }
   }
-  const test = ref();
-  const onImageClick = (item: AdvertisementView) => {
-    test.value = item;
+
+  const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
+    openCategoryDetailDialog(category, dialogName, "ADVERTISEMENT");
   };
 
   async function onDirectoryItem(directory: Directory) {

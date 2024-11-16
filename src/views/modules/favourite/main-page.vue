@@ -61,8 +61,8 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
-  import type { CarouselTypes } from "@/interfaces/types/carousel-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
@@ -125,10 +125,10 @@
     }
   }
 
-  const onImageClick = (item: CarouselTypes) => {
+  const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
+    openCategoryDetailDialog(category, dialogName, "ADVERTISEMENT");
   };
 
   async function onCategoryDetail(item: any) {

@@ -119,10 +119,10 @@
     }
   }
 
-  const onImageClick = (item: AdvertisementView) => {
+  const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");
+    openCategoryDetailDialog(category, dialogName, "ADVERTISEMENT");
   };
 
   async function onDirectoryItem(communityDirectory: CommunityDirectory) {

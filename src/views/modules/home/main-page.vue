@@ -117,10 +117,10 @@
     }
   }
 
-  const onImageClick = (item: SiteView) => {
+  const onImageClick = (category: SiteView) => {
     const dialogName = "SiteHeroDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCategoryDetailDialog(category, dialogName);
   };
 
   async function onDirectoryItem(directory: Directory) {
