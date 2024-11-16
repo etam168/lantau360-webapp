@@ -40,6 +40,7 @@ declare module 'vue' {
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
+    CarouselImageList: typeof import('./components/global/custom/carousel-image-list.vue')['default']
     GalleryImageCard: typeof import('./components/global/custom/gallery-image-card.vue')['default']
     GalleryImageList: typeof import('./components/global/custom/gallery-image-list.vue')['default']
     LanguageSelect: typeof import('./components/global/custom/language-select.vue')['default']

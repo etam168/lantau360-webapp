@@ -135,8 +135,9 @@
       }
     }
   }
-
+  const test = ref();
   const onImageClick = (item: AdvertisementView) => {
+    test.value = item;
     const dialogName = "AdvertisementDetail";
     eventBus("DialogStatus").emit(true, dialogName);
     openCategoryDetailDialog(item, dialogName, "ADVERTISEMENT");

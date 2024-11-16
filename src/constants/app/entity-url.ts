@@ -3,6 +3,7 @@
 export const ENTITY_URL = {
   ACCOUNT: "Account",
   ADVERTISEMENT: `/Advertisement`,
+  ADVERTISEMENT_GALLERY: `/AdvertisementImage/GalleryImages`,
   ATTRACTION: `/Site/ByDirectoryId/1`,
   BUSINESS: `/Business`,
   BUSINESS_DIRECTORIES: `/Directory/DirectoryGroupsData/2`,

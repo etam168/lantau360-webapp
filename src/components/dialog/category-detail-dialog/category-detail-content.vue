@@ -68,7 +68,7 @@
       | "promotion";
   }
 
-  const { galleryItems, fetchAllData } = useContentDetailDataService(category, entityKey);
+  const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey, category);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 

@@ -146,7 +146,7 @@ declare global {
   const useCategoryItemService: typeof import('./composable/services/use-category-item-service')['useCategoryItemService']
   const useCategoryService: typeof import('./composable/services/use-category-item-service')['useCategoryService']
   const useCheckInDataService: typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']
-  const useCheckInService: typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']
+  const useCheckInService: typeof import('./composable/services/use-checkin-service')['useCheckInService']
   const useCheckinFormContents: typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']
   const useCheckinFormMapper: typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']
   const useClipboard: typeof import('@vueuse/core')['useClipboard']
@@ -488,7 +488,7 @@ declare module 'vue' {
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
     readonly useCheckInDataService: UnwrapRef<typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']>
-    readonly useCheckInService: UnwrapRef<typeof import('./composable/services/use-checkin-dialog-service')['useCheckInService']>
+    readonly useCheckInService: UnwrapRef<typeof import('./composable/services/use-checkin-service')['useCheckInService']>
     readonly useCheckinFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']>
     readonly useCheckinFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
@@ -498,7 +498,6 @@ declare module 'vue' {
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
     readonly useCommunityDialogService: UnwrapRef<typeof import('./composable/services/use-community-dialog-service')['useCommunityDialogService']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
-    readonly useContentDetailDataService: UnwrapRef<typeof import('./composable/services/use-content-detail-data-service')['useContentDetailDataService']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
     readonly useCrudService: UnwrapRef<typeof import('./composable/services/use-crud-service')['useCrudService']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
