@@ -5,8 +5,12 @@ import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { Dialog } from "quasar";
 import { ENTITY_URL, EntityURLKey } from "@/constants";
+import { useUserStore } from "@/stores/user";
 
 const { eventBus } = useUtilities();
+const userStore = useUserStore();
+const { isUserLogon } = userStore;
+const { handleOpenDialog } = useEntityDataHandlingService();
 
 export interface RenderItem {
   name: string;
@@ -88,55 +92,35 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       });
   }
 
-  function handleOpenDialog(props: Record<string, any>, isDialogOpen: Ref<Boolean>, mode?: string) {
-    if (isDialogOpen.value) {
-      // Prevent opening another dialog if one is already open
-      return;
-    }
-
-    // Set the dialog state to open
-    isDialogOpen.value = true;
-
-    switch (mode) {
-      case "edit": {
-        Dialog.create({
-          component: defineAsyncComponent(
-            () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
-          ),
-          componentProps: {
-            row: props.row, // Pass the row prop for the edit dialog
-            entityKey: entityKey,
-            dialogName: props.dialogName
-          }
-        }).onDismiss(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        });
-        break;
-      }
-      default: {
-        Dialog.create({
-          component: defineAsyncComponent(
-            () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
-          ),
-          componentProps: {
-            entityKey: entityKey,
-            associatedEntityId: props.associatedEntityId,
-            dialogName: props.dialogName
-          }
-        }).onDismiss(() => {
-          // Reset dialog state when it is dismissed/closed
-          isDialogOpen.value = false;
-        });
-        break;
-      }
+  function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+    if (isUserLogon()) {
+      // To be implemented
+      const entityKey = "POSTING" as EntityURLKey;
+      const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
+      handleOpenDialog(props, isDialogOpen, entityKey);
+    } else {
+      Dialog.create({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/community-items-dialog/login-alert-dialog.vue")
+        )
+      }).onOk(() => {
+        if (userStore.isUserLogon()) {
+          // To be implemented
+          const entityKey = "POSTING" as EntityURLKey;
+          const props = {
+            associatedEntityId: directory.communityDirectoryId,
+            entityKey: entityKey
+          };
+          handleOpenDialog(props, isDialogOpen, entityKey);
+        }
+      });
     }
   }
 
   return {
     galleryItems,
+    openCreatePosting,
     fetchAllData,
-    handleOpenDialog,
     openCommunityDetailDialog,
     openCommunityItemDialog
   };

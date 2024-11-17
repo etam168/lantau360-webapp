@@ -83,7 +83,7 @@
     }
     emit("close-dialog");
     notify(t(`${entityName}.message.updateSuccess`), "positive");
-    eventBus("LoadData").emit();
+    eventBus("refreshData").emit();
   }
 
   /**

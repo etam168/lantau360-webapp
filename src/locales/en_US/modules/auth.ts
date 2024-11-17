@@ -15,7 +15,8 @@ export default {
   message: {
     invalidUserPassword: "Invalid username or password.",
     emailSentSuccessfully: "Please check your email for the confirmation link",
-    loginSuccessMessage: " Login successfully"
+    loginSuccessMessage: " Login successfully",
+    passwordResetSuccessfully: "Password reset successfully"
   },
 
   label: {
@@ -32,8 +33,7 @@ export default {
     password: "Password",
     registerPassword: "Password",
     userName: "User Name",
-    checkInCaption: "For checkIn please signIn first",
-    passwordResetSuccessfully: "Password reset successfully"
+    checkInCaption: "For checkIn please signIn first"
   },
 
   validation: {

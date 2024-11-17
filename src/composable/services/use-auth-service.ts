@@ -15,9 +15,10 @@ const { api } = useApi();
 export function useAuthService(renderMode: Ref<AuthMode>) {
   const userStore = useUserStore();
   const i18nKeyError = "errors";
-  const i18nKey = "auth.validation";
+  const i18nKeySchema = "auth.validation";
+  const i18nKey = "auth";
 
-  const { emailSchema, passwordSchema } = useValidationSchemas(i18nKey);
+  const { emailSchema, passwordSchema } = useValidationSchemas(i18nKeySchema);
 
   const initialValues = ref({
     email: "",
@@ -34,29 +35,29 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
       case "sendOtp":
         return object({
           userName: string()
-            .email(t(`${i18nKey}.invalidUserName`))
-            .required(t(`${i18nKey}.userNameRequired`))
+            .email(t(`${i18nKeySchema}.invalidUserName`))
+            .required(t(`${i18nKeySchema}.userNameRequired`))
         });
 
       case "register":
         return object({
           email: emailSchema,
           password: passwordSchema,
-          firstName: string().required(t(`${i18nKey}.firstName`)),
-          lastName: string().required(t(`${i18nKey}.lastName`)),
-          phone: string().required(t(`${i18nKey}.phone`))
+          firstName: string().required(t(`${i18nKeySchema}.firstName`)),
+          lastName: string().required(t(`${i18nKeySchema}.lastName`)),
+          phone: string().required(t(`${i18nKeySchema}.phone`))
         });
 
       case "reset":
         return object({
           password: passwordSchema,
-          otp: string().required(t(`${i18nKey}.otpRequired`))
+          otp: string().required(t(`${i18nKeySchema}.otpRequired`))
         });
 
       case "login":
       default:
         return object({
-          userName: string().required(t(`${i18nKey}.userNameRequired`)),
+          userName: string().required(t(`${i18nKeySchema}.userNameRequired`)),
           password: passwordSchema
         });
     }
@@ -120,7 +121,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
         otp: otp
       });
 
-      notify(t(`${i18nKey}.label.passwordResetSuccessfully`), "positive");
+      notify(t(`${i18nKey}.message.passwordResetSuccessfully`), "positive");
       return response.data;
     } catch (err) {
       if (err instanceof AxiosError) {

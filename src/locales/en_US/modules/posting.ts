@@ -66,7 +66,7 @@ export default {
   },
   message: {
     createSuccess: "New Post Created.",
-    updated: "Post Info updated.",
+    updateSuccess: "Post Info updated.",
     deleted: "Post Deleted successfully",
     uploadImage: "Image Uploaded Successfully",
     deleteImage: "Image Deleted Successfully"

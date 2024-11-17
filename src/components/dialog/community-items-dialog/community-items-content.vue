@@ -1,7 +1,7 @@
 <!-- community-items-content.vue -->
 <template>
   <q-card>
-    <q-item clickable v-ripple @click="createPosting">
+    <q-item clickable v-ripple @click="onCreatePosting">
       <q-item-section avatar>
         <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
       </q-item-section>
@@ -78,8 +78,7 @@
   const userStore = useUserStore();
   const { eventBus, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
-  const { openCommunityDetailDialog, handleOpenDialog } = useCommunityDialogService(entityKey);
-  // const { handleOpenDialog } = useEntityDataHandlingService();
+  const { openCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   // Reactive variables
   const $q = useQuasar();
@@ -146,27 +145,11 @@
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
 
-  function createPosting() {
-    if (userStore.isUserLogon()) {
-      // To be implemented
-      const entityKey = "POSTING" as EntityURLKey;
-      const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      handleOpenDialog(props, isDialogOpen);
-    } else {
-      $q.dialog({
-        component: defineAsyncComponent(() => import("./login-alert-dialog.vue"))
-      }).onOk(() => {
-        if (userStore.isUserLogon()) {
-          // To be implemented
-          const entityKey = "POSTING" as EntityURLKey;
-          const props = {
-            associatedEntityId: directory.communityDirectoryId,
-            entityKey: entityKey
-          };
-          handleOpenDialog(props, isDialogOpen);
-        }
-      });
-    }
+  async function onCreatePosting() {
+    if (isDialogOpen.value) return;
+    const dialogName = "PostingListDialog";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCreatePosting(isDialogOpen, directory);
   }
 
   async function handleDetail(item: any) {
@@ -208,6 +191,12 @@
       throw error;
     }
   };
+
+  onBeforeMount(() => {
+    eventBus("refreshData").on(async () => {
+      await fetchAllData();
+    });
+  });
 
   /**
    * Fetch data as part of the setup

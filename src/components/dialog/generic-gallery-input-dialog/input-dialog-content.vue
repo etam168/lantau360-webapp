@@ -99,7 +99,7 @@
 
     emit("close-dialog");
     notify(t(`${entityName}.message.createSuccess`), "positive");
-    eventBus("LoadData").emit();
+    eventBus("refreshData").emit();
   }
 
   /**
