@@ -73,7 +73,7 @@
       ? ["logoff", "language", "terms", "privacy", "profile", "account", "checkIn"]
       : ["logon", "language", "privacy", "terms"];
 
-    return items.map(c => getItem(c)) as RenderItem[];
+    return items.map(key => getItem(key)) as RenderItem[];
   });
 
   const member = newMember;

@@ -9,36 +9,13 @@
       :initial-values="initialValues"
       :validation-schema="schema"
       @submit="onSubmit"
-      v-slot="{ meta, values }"
     >
       <q-list class="q-pa-md">
         <q-item v-for="(item, index) in renderItems" :key="index" dense>
           <q-item-section>
-            <!-- <component
-              :is="getComponentType(item.type!)"
-              :name="item.name"
-              v-bind="getOptionalProps(item)"
-              class="q-mb-md"
-              @click="item.type!.includes('Button') && handleClick(item.name)"
-              @timeout-expired="item.type === 'timeoutButton' && onTimeoutExpired"
-            /> -->
-            <vee-input-password
-              v-if="item.type === 'password'"
-              :name="item.name"
-              :label="item.label"
-              :hint="item.hint"
-              class="q-mb-md"
-            />
-
-            <vee-input
-              v-else-if="item.type === 'input'"
-              :name="item.name"
-              :label="item.label"
-              :hint="item.hint"
-              class="q-mb-md"
-            />
-
-            <vee-q-tel-input v-else-if="item.type === 'phone'" :name="item.name" class="q-mb-md" />
+            <vee-input-password v-if="item.type === 'password'" v-bind="getOptionalProps(item)" />
+            <vee-input v-else-if="item.type === 'input'" v-bind="getOptionalProps(item)" />
+            <vee-q-tel-input v-else-if="item.type === 'phone'" v-bind="getOptionalProps(item)" />
 
             <app-button
               v-else-if="item.type === 'submit'"
@@ -82,39 +59,18 @@
   // Props
   const { mode } = defineProps<{ mode: AuthMode }>();
 
+  const $q = useQuasar();
   const i18nKey = "auth";
+  const form = ref();
+  const loading = ref(false);
   const renderMode = ref(mode);
+  const userName = ref();
 
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
   const { eventBus } = useUtilities();
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode);
-
-  const getComponentType = (type: string): string => {
-    const componentMap: Record<string, string> = {
-      password: "vee-input-password",
-      input: "vee-input",
-      phone: "vee-q-tel-input",
-      submit: "app-button",
-      timeoutButton: "app-button-timeout",
-      flatButton: "app-button-auth-flat"
-    };
-    return componentMap[type];
-  };
-
-  const getOptionalProps = (item: SubField): Record<string, string> => {
-    const props: Record<string, string> = {};
-    if (item.label) props.label = item.label;
-    if (item.hint) props.hint = item.hint;
-    return props;
-  };
-
-  // Reactive variables
-  const $q = useQuasar();
-  const form = ref();
-  const loading = ref(false);
-  const userName = ref();
 
   const authStyle = computed(() =>
     $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }
@@ -155,6 +111,13 @@
       label: item.label || t(`${i18nKey}.label.${item.name}`)
     }));
   });
+
+  function getOptionalProps(item: SubField): SubField {
+    const props: SubField = { name: item.name };
+    if (item.label) props.label = item.label;
+    if (item.hint) props.hint = item.hint;
+    return props;
+  }
 
   async function onSubmit(values: Record<string, any>) {
     const { validate } = form.value;
@@ -201,7 +164,9 @@
         renderMode.value = "sendOtp";
         break;
       case "backToSignIn":
-        handleResetForm();
+        // if (form.value) {
+        form.value.resetForm();
+        //}
         renderMode.value = "login";
         break;
       case "resetPassword":
@@ -212,12 +177,6 @@
         onSubmit(form.value.values);
         break;
       // Other cases to be added
-    }
-  }
-
-  function handleResetForm() {
-    if (form.value) {
-      form.value.resetForm();
     }
   }
 

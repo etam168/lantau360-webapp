@@ -139,7 +139,6 @@
   const tab = ref("");
   const setTab = (val: string) => (tab.value = val);
 
-  // Function to filter groupedArray by group name
   function filterGroupedArray(groupName: string) {
     const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
     return items.sort((a: any, b: any) => a.rank - b.rank);
@@ -161,7 +160,6 @@
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
    */
-
   async function fetchAllData() {
     try {
       switch (entityKey) {

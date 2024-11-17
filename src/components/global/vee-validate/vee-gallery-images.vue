@@ -8,8 +8,12 @@
     </q-bar>
 
     <div class="grid-container">
-      <vue-draggable v-model="localImages" class="draggable-container" @end="onDragEnd">
-        <div v-for="(img, index) in localImages" :key="index" class="grid-item">
+      <vue-draggable v-model="localImages" style="display: contents" @end="onDragEnd">
+        <div
+          v-for="(img, index) in localImages"
+          :key="index"
+          class="flex justify-center items-center"
+        >
           <gallery-image-card
             :image="img"
             @delete="handleDelete(index)"
@@ -22,7 +26,8 @@
         flat
         bordered
         v-if="localImages.length < maxImages"
-        class="cursor-pointer add-photo-card"
+        class="cursor-pointer"
+        style="width: 136px; height: 142.8px"
         @click="selectAndUploadNewImage"
       >
         <q-card-section class="column items-center justify-center">
@@ -179,20 +184,5 @@
     grid-template-columns: repeat(auto-fill, minmax(136px, 1fr));
     gap: 10px;
     padding: 10px;
-  }
-
-  .draggable-container {
-    display: contents;
-  }
-
-  .grid-item {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .add-photo-card {
-    width: 136px;
-    height: 142.8px;
   }
 </style>
