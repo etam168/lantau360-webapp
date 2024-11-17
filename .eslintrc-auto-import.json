@@ -346,6 +346,9 @@
     "useCheckInDataService": true,
     "useContentDetailDataService": true,
     "useFavorite": true,
-    "useCommunityDialogService": true
+    "useCommunityDialogService": true,
+    "useMoreItemService": true,
+    "useMoreItemServiceCopy": true,
+    "useValidationSchemas": true
   }
 }

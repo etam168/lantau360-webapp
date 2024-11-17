@@ -236,6 +236,8 @@ declare global {
   const useMemory: typeof import('@vueuse/core')['useMemory']
   const useMeta: typeof import('quasar')['useMeta']
   const useModel: typeof import('vue')['useModel']
+  const useMoreItemService: typeof import('./composable/services/use-more-item-service')['useMoreItemService']
+  const useMoreItemServiceCopy: typeof import('./composable/services/use-more-item-service copy')['useMoreItemServiceCopy']
   const useMounted: typeof import('@vueuse/core')['useMounted']
   const useMouse: typeof import('@vueuse/core')['useMouse']
   const useMouseInElement: typeof import('@vueuse/core')['useMouseInElement']
@@ -317,6 +319,7 @@ declare global {
   const useUtilities: typeof import('./composable/use-utilities')['useUtilities']
   const useVModel: typeof import('@vueuse/core')['useVModel']
   const useVModels: typeof import('@vueuse/core')['useVModels']
+  const useValidationSchemas: typeof import('./composable/use-validation-schemas')['useValidationSchemas']
   const useVibrate: typeof import('@vueuse/core')['useVibrate']
   const useVirtualList: typeof import('@vueuse/core')['useVirtualList']
   const useWakeLock: typeof import('@vueuse/core')['useWakeLock']
@@ -569,6 +572,8 @@ declare module 'vue' {
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
     readonly useMeta: UnwrapRef<typeof import('quasar')['useMeta']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
+    readonly useMoreItemService: UnwrapRef<typeof import('./composable/services/use-more-item-service')['useMoreItemService']>
+    readonly useMoreItemServiceCopy: UnwrapRef<typeof import('./composable/services/use-more-item-service copy')['useMoreItemServiceCopy']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
     readonly useMouseInElement: UnwrapRef<typeof import('@vueuse/core')['useMouseInElement']>
@@ -637,14 +642,13 @@ declare module 'vue' {
     readonly useToNumber: UnwrapRef<typeof import('@vueuse/core')['useToNumber']>
     readonly useToString: UnwrapRef<typeof import('@vueuse/core')['useToString']>
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
-    readonly useTransactionItemDialogService: UnwrapRef<typeof import('./composable/services/use-transaction-item-dialog-service')['useTransactionItemDialogService']>
-    readonly useTransactionsFunctions: UnwrapRef<typeof import('./composable/use-transaction-functions')['useTransactionsFunctions']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>
     readonly useUtilities: UnwrapRef<typeof import('./composable/use-utilities')['useUtilities']>
     readonly useVModel: UnwrapRef<typeof import('@vueuse/core')['useVModel']>
     readonly useVModels: UnwrapRef<typeof import('@vueuse/core')['useVModels']>
+    readonly useValidationSchemas: UnwrapRef<typeof import('./composable/use-validation-schemas')['useValidationSchemas']>
     readonly useVibrate: UnwrapRef<typeof import('@vueuse/core')['useVibrate']>
     readonly useVirtualList: UnwrapRef<typeof import('@vueuse/core')['useVirtualList']>
     readonly useWakeLock: UnwrapRef<typeof import('@vueuse/core')['useWakeLock']>
