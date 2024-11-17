@@ -23,18 +23,16 @@
 </template>
 
 <script setup lang="ts">
-  import { newMember } from "@/interfaces/models/entities/member";
+  import type { newMember } from "@/interfaces/models/entities/member";
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
 
   const $q = useQuasar();
   const userStore = useUserStore();
   const { eventBus } = useUtilities();
-  const { fetchTransactionData } = useTransactionsFunctions();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
-  const { openMemberItemDialog } = useMemberItemDialogService();
-  const { openTransactionItemDialog } = useTransactionItemDialogService();
+  const { openContentDialog, openMemberItemDialog ,fetchTransactionData , openTransactionItemDialog } = useMemberItemDialogService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -161,22 +159,8 @@
   }
 
   function handleContentDialog(name: string) {
-    isLoading.value = true;
-    eventBus("DialogStatus").emit(true, name);
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/more-detail-dialog/index.vue")
-      ),
-      componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
-    })
-      .onCancel(() => {
-        isLoading.value = false;
-        resetItemLoading(name);
-      })
-      .onOk(() => {
-        resetItemLoading(name);
-      });
-  }
+  openContentDialog(isLoading, name, resetItemLoading);
+}
 
   function resetItemLoading(name: string) {
     const item = itemRefs.value[name];
