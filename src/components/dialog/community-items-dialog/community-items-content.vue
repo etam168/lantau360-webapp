@@ -161,36 +161,50 @@
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
    */
-  const fetchAllData = async () => {
+
+  async function fetchAllData() {
     try {
       switch (entityKey) {
         case "POSTING":
-        case "COMMUNITY_DIRECTORY":
-          communityItems.value = await fetchData(
-            `${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`
-          );
-          const memberConfig = await fetchData(ENTITY_URL.MEMBER_CONFIG);
+        case "COMMUNITY_DIRECTORY": {
+          // Use Promise.all to fetch data in parallel
+          const [communityResponse, memberConfig] = await Promise.all([
+            fetchData(`${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`),
+            fetchData(ENTITY_URL.MEMBER_CONFIG)
+          ]);
 
+          // Assign fetched data to `communityItems`
+          communityItems.value = communityResponse;
+
+          // Update user points using `memberConfig`
           userStore.setPoints(
             memberConfig.value?.meta.postPoint ?? 50,
             memberConfig.value?.meta.requestFreePoints ?? 100,
             memberConfig.value?.meta.purchsePrice ?? 100,
             memberConfig.value?.meta.purchsePoints ?? 100
           );
+
+          // Fetch additional member points
           await userStore.fetchMemberPoints();
+
+          // Set the initial tab value
+          if (communityItems.value.length > 0 && groupBykey.value) {
+            tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
+          }
+          break;
+        }
+
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
-      }
-
-      // Set the initial tab value after data is fetched
-      if (communityItems.value.length > 0 && groupBykey.value) {
-        tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
+          break;
       }
     } catch (error) {
       console.error("Error fetching data:", error);
+
+      // Optionally throw the error to handle it upstream
       throw error;
     }
-  };
+  }
 
   onBeforeMount(() => {
     eventBus("refreshData").on(async () => {
