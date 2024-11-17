@@ -17,7 +17,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
   const i18nKeyError = "errors";
   const i18nKey = "auth.validation";
 
-  const { passwordSchema } = useValidationSchemas(i18nKey);
+  const { emailSchema, passwordSchema } = useValidationSchemas(i18nKey);
 
   const initialValues = ref({
     email: "",
@@ -30,7 +30,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
   });
 
   const schema = computed(() => {
-    const i18nKey = "auth.schema";
+    const i18nKey = "validation";
 
     switch (renderMode.value) {
       case "sendOtp":
@@ -42,13 +42,8 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
 
       case "register":
         return object({
-          email: string()
-            .email(t(`${i18nKey}.invalidEmail`))
-            .required(t(`${i18nKey}.emailRequired`))
-            .max(255, t(`${i18nKey}.emailExceedLimit`)),
-          password: string()
-            .required(t(`${i18nKey}.password`))
-            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 })),
+          email: emailSchema,
+          password: passwordSchema,
           firstName: string().required(t(`${i18nKey}.firstName`)),
           lastName: string().required(t(`${i18nKey}.lastName`)),
           phone: string().required(t(`${i18nKey}.phone`))
@@ -56,22 +51,15 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
 
       case "reset":
         return object({
-          password: string()
-            .required(t(`${i18nKey}.password`))
-            .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 })),
+          password: passwordSchema,
           otp: string().required(t(`${i18nKey}.otpRequired`))
         });
 
       case "login":
       default:
         return object({
-          userName: string()
-            // .email(t(`${i18nKey}.invalidUserName`))
-            .required(t(`${i18nKey}.userNameRequired`)),
+          userName: string().required(t(`${i18nKey}.userNameRequired`)),
           password: passwordSchema
-          // password: string()
-          //   .required(t(`${i18nKey}.password`))
-          //   .min(6, t(`${i18nKey}.passwordMinLength`, { length: 6 }))
         });
     }
   });

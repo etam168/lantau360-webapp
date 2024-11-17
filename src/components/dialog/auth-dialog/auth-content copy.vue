@@ -14,14 +14,6 @@
       <q-list class="q-pa-md">
         <q-item v-for="(item, index) in renderItems" :key="index" dense>
           <q-item-section>
-            <!-- <component
-              :is="getComponentType(item.type!)"
-              :name="item.name"
-              v-bind="getOptionalProps(item)"
-              class="q-mb-md"
-              @click="item.type!.includes('Button') && handleClick(item.name)"
-              @timeout-expired="item.type === 'timeoutButton' && onTimeoutExpired"
-            /> -->
             <vee-input-password
               v-if="item.type === 'password'"
               :name="item.name"
@@ -91,25 +83,6 @@
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode);
 
-  const getComponentType = (type: string): string => {
-    const componentMap: Record<string, string> = {
-      password: "vee-input-password",
-      input: "vee-input",
-      phone: "vee-q-tel-input",
-      submit: "app-button",
-      timeoutButton: "app-button-timeout",
-      flatButton: "app-button-auth-flat"
-    };
-    return componentMap[type];
-  };
-
-  const getOptionalProps = (item: SubField): Record<string, string> => {
-    const props: Record<string, string> = {};
-    if (item.label) props.label = item.label;
-    if (item.hint) props.hint = item.hint;
-    return props;
-  };
-
   // Reactive variables
   const $q = useQuasar();
   const form = ref();
@@ -120,14 +93,27 @@
     $q.screen.lt.sm ? { width: "100vw" } : { width: "520px", opacity: "100%" }
   );
 
+  const ITEMS = {
+    email: { name: "email", type: "input" },
+    firstName: { name: "firstName", type: "input" },
+    lastName: { name: "lastName", type: "input" },
+    logon: { name: "logon", type: "submit" },
+    forgot: { name: "forgotPassword", type: "flatButton" },
+    password: { name: "password", type: "password" },
+    userName: { name: "userName", type: "input", hint: "(Please enter your email)" }
+  };
+
   const renderItems = computed<SubField[]>(() => {
     const getItems = (): SubField[] => {
       switch (renderMode.value) {
         case "register":
           return [
-            { name: "email", type: "input" },
-            { name: "firstName", type: "input" },
-            { name: "lastName", type: "input" },
+            ITEMS.email,
+            ITEMS.firstName,
+            ITEMS.lastName,
+            // { name: "email", type: "input" },
+            // { name: "firstName", type: "input" },
+            // { name: "lastName", type: "input" },
             { name: "phone", type: "phone" },
             { name: "password", type: "password" },
             { name: "register", type: "submit" }
@@ -141,12 +127,8 @@
           ];
         default:
           // Default is login
-          return [
-            { name: "userName", type: "input", hint: "(Please enter your email)" },
-            { name: "password", type: "password" },
-            { name: "logon", type: "submit" },
-            { name: "forgotPassword", type: "flatButton" }
-          ];
+          return [ITEMS.userName, ITEMS.password, ITEMS.lastName, ITEMS.logon, ITEMS.forgot];
+        // { name: "forgotPassword", type: "flatButton" }
       }
     };
 

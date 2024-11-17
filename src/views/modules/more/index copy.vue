@@ -27,14 +27,12 @@
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
 
-  const $q = useQuasar();
   const userStore = useUserStore();
   const { eventBus } = useUtilities();
   const { fetchTransactionData } = useTransactionsFunctions();
   const { handleOpenDialog } = useEntityDataHandlingService();
-
-  const { openMemberItemDialog } = useMemberItemDialogService();
-  const { openTransactionItemDialog } = useTransactionItemDialogService();
+  const { openAuthDialog, openContentDialog, openMemberItemDialog, openTransactionDialog } =
+    useMoreItemService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -46,14 +44,14 @@
     type: "language" | "logoff" | "logon" | "moreItem";
   }
 
-  const MORE_ITEMS: Record<string, RenderItem> = {
+  const ITEMS: Record<string, RenderItem> = {
     account: {
       name: "account",
       type: "moreItem",
       icon: ICONS.ACCOUNT,
       title: `${i18nKey}.account.title`
     },
-    checkIn: {
+    checkin: {
       name: "checkIn",
       type: "moreItem",
       icon: ICONS.PRIVACY,
@@ -73,7 +71,7 @@
       icon: ICONS.PRIVACY,
       title: `${i18nKey}.privacy`
     },
-    profile: {
+    propfile: {
       name: "profile",
       type: "moreItem",
       icon: ICONS.PROFILE,
@@ -82,19 +80,36 @@
     terms: { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
   };
 
-  const renderItems = computed(() =>
-    userStore.isUserLogon()
-      ? [
-          MORE_ITEMS.logoff,
-          MORE_ITEMS.language,
-          MORE_ITEMS.terms,
-          MORE_ITEMS.privacy,
-          MORE_ITEMS.profile,
-          MORE_ITEMS.account,
-          MORE_ITEMS.checkIn
-        ]
-      : [MORE_ITEMS.logon, MORE_ITEMS.language, MORE_ITEMS.privacy, MORE_ITEMS.terms]
-  );
+  const renderItems = computed((): RenderItem[] => {
+    switch (userStore.isUserLogon()) {
+      case true:
+        return [
+          ITEMS.logoff,
+          ITEMS.language,
+          ITEMS.terms,
+          ITEMS.privacy,
+          ITEMS.propfile,
+          ITEMS.account,
+          ITEMS.checkIn
+        ];
+      default:
+        return [ITEMS.logon, ITEMS.language, ITEMS.privacy, ITEMS.terms];
+    }
+  });
+
+  // const renderItems = computed(() =>
+  //   userStore.isUserLogon()
+  //     ? [
+  //         ITEMS.logoff,
+  //         ITEMS.language,
+  //         ITEMS.terms,
+  //         ITEMS.privacy,
+  //         ITEMS.propfile,
+  //         ITEMS.account,
+  //         ITEMS.checkIn
+  //       ]
+  //     : [ITEMS.logon, ITEMS.language, ITEMS.privacy, ITEMS.terms]
+  // );
 
   const member = newMember;
 
@@ -103,20 +118,16 @@
       case "profile":
         handleProfileDialog("MEMBER", itemName);
         break;
-
       case "privacy":
       case "terms":
         handleContentDialog(itemName);
         break;
-
       case "account":
         handleTransactionDialog("ACCOUNT", itemName);
         break;
-
       case "checkIn":
         handleMemberDialog("CHECKIN", itemName);
         break;
-
       default:
         break;
     }
@@ -137,7 +148,7 @@
     member.memberId = userStore.userId;
 
     if (!isDialogOpen.value) {
-      openTransactionItemDialog(isDialogOpen, member, entityKey);
+      openTransactionDialog(isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }
@@ -160,22 +171,26 @@
     }
   }
 
-  function handleContentDialog(name: string) {
-    isLoading.value = true;
-    eventBus("DialogStatus").emit(true, name);
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/more-detail-dialog/index.vue")
-      ),
-      componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
-    })
-      .onCancel(() => {
-        isLoading.value = false;
-        resetItemLoading(name);
-      })
-      .onOk(() => {
-        resetItemLoading(name);
-      });
+  function handleContentDialog(itemName: string) {
+    if (!isDialogOpen.value) {
+      openContentDialog(itemName, isDialogOpen, isLoading);
+      resetItemLoading(itemName);
+    }
+    // isLoading.value = true;
+    // eventBus("DialogStatus").emit(true, name);
+    // $q.dialog({
+    //   component: defineAsyncComponent(
+    //     () => import("@/components/dialog/more-detail-dialog/index.vue")
+    //   ),
+    //   componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
+    // })
+    //   .onCancel(() => {
+    //     isLoading.value = false;
+    //     resetItemLoading(name);
+    //   })
+    //   .onOk(() => {
+    //     resetItemLoading(name);
+    //   });
   }
 
   function resetItemLoading(name: string) {
@@ -187,12 +202,7 @@
 
   function handleAuthDialog(tabValue: string) {
     isLoading.value = true;
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue")),
-      componentProps: {
-        mode: tabValue
-      }
-    });
+    openAuthDialog(tabValue, isLoading);
   }
 
   onMounted(() => {
