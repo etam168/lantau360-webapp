@@ -19,8 +19,10 @@
   // Interface files
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
   import type { EntityType } from "@/interfaces/types/entity-type";
-  import type { newPostingImage } from "@/interfaces/models/entities/posting-image";
-  import type { newMemberImage } from "@/interfaces/models/entities/member-image";
+
+  //.ts
+  import  { newPostingImage } from "@/interfaces/models/entities/posting-image";
+  import  { newMemberImage } from "@/interfaces/models/entities/member-image";
 
   import { useUserStore } from "@/stores/user";
 
