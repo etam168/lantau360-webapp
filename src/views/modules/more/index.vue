@@ -32,7 +32,12 @@
   const { eventBus } = useUtilities();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
-  const { openContentDialog, openMemberItemDialog ,fetchTransactionData , openTransactionItemDialog } = useMemberItemDialogService();
+  const {
+    openContentDialog,
+    openMemberItemDialog,
+    fetchTransactionData,
+    openTransactionItemDialog
+  } = useMemberItemDialogService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);
@@ -44,55 +49,32 @@
     type: "language" | "logoff" | "logon" | "moreItem";
   }
 
-  const MORE_ITEMS: Record<string, RenderItem> = {
-    account: {
-      name: "account",
-      type: "moreItem",
-      icon: ICONS.ACCOUNT,
-      title: `${i18nKey}.account.title`
-    },
-    checkIn: {
-      name: "checkIn",
-      type: "moreItem",
-      icon: ICONS.PRIVACY,
-      title: `${i18nKey}.checkin.title`
-    },
-    language: {
-      name: "language",
-      icon: ICONS.SETTING,
-      type: "language",
-      title: `${i18nKey}.language`
-    },
-    logon: { name: "logon", type: "logon" },
-    logoff: { name: "logoff", type: "logoff" },
-    privacy: {
-      name: "privacy",
-      type: "moreItem",
-      icon: ICONS.PRIVACY,
-      title: `${i18nKey}.privacy`
-    },
-    profile: {
-      name: "profile",
-      type: "moreItem",
-      icon: ICONS.PROFILE,
-      title: `${i18nKey}.profile`
-    },
-    terms: { name: "terms", type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
+  const MORE_ITEMS: Record<string, Partial<RenderItem>> = {
+    account: { type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account.title` },
+    checkIn: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkin.title` },
+    language: { type: "language", icon: ICONS.SETTING, title: `${i18nKey}.language` },
+    logon: { type: "logon" },
+    logoff: { type: "logoff" },
+    privacy: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
+    profile: { type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
+    terms: { type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
   };
 
-  const renderItems = computed(() =>
-    userStore.isUserLogon()
-      ? [
-          MORE_ITEMS.logoff,
-          MORE_ITEMS.language,
-          MORE_ITEMS.terms,
-          MORE_ITEMS.privacy,
-          MORE_ITEMS.profile,
-          MORE_ITEMS.account,
-          MORE_ITEMS.checkIn
-        ]
-      : [MORE_ITEMS.logon, MORE_ITEMS.language, MORE_ITEMS.privacy, MORE_ITEMS.terms]
-  );
+  type MoreItemKey = keyof typeof MORE_ITEMS;
+
+  // Usage with name
+  const getItem = (key: MoreItemKey) => {
+    // we can get the name from the key
+    return { name: key, ...MORE_ITEMS[key] };
+  };
+
+  const renderItems = computed(() => {
+    const items = userStore.isUserLogon()
+      ? ["logoff", "language", "terms", "privacy", "profile", "account", "checkIn"]
+      : ["logon", "language", "privacy", "terms"];
+
+    return items.map(c => getItem(c)) as RenderItem[];
+  });
 
   const member = newMember;
 
@@ -101,20 +83,16 @@
       case "profile":
         handleProfileDialog("MEMBER", itemName);
         break;
-
       case "privacy":
       case "terms":
         handleContentDialog(itemName);
         break;
-
       case "account":
         handleTransactionDialog("ACCOUNT", itemName);
         break;
-
       case "checkIn":
         handleMemberDialog("CHECKIN", itemName);
         break;
-
       default:
         break;
     }
@@ -159,8 +137,8 @@
   }
 
   function handleContentDialog(name: string) {
-  openContentDialog(isLoading, name, resetItemLoading);
-}
+    openContentDialog(isLoading, name, resetItemLoading);
+  }
 
   function resetItemLoading(name: string) {
     const item = itemRefs.value[name];
