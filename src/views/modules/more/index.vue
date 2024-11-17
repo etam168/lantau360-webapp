@@ -23,7 +23,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { newMember } from "@/interfaces/models/entities/member";
+  import { newMember } from "@/interfaces/models/entities/member";
   import { useUserStore } from "@/stores/user";
   import { EntityURLKey, ICONS } from "@/constants";
 
