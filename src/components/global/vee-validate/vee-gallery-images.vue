@@ -1,4 +1,3 @@
-<!-- vee-gallery-images.vue -->
 <template>
   <q-card class="bg-transparent full-width">
     <q-bar dense class="bg-primary text-white">
@@ -6,15 +5,6 @@
         {{ $t("errors.photosRemaining", { count: localImages.length, limit: maxImages }) }}
       </div>
       <q-space />
-
-      <q-checkbox
-        keep-color
-        v-model="waterMark"
-        color="white"
-        label="Watermark"
-        checked-icon="fa fa-square-check"
-        unchecked-icon="fa fa-square"
-      />
     </q-bar>
 
     <div class="grid-container">
@@ -78,9 +68,8 @@
   const imagePath = ref();
   const isInEdit = ref(false);
   const maxImages = 27;
-  const waterMark = ref(true);
 
-  const { applyWatermark, compressImage } = useImageFunctions();
+  const { compressImage } = useImageFunctions();
   const { value, handleChange } = useField<(GalleryImageType | File)[]>(name);
 
   const localImages = ref<(GalleryImageType | File)[]>([...options]);
@@ -89,11 +78,7 @@
   handleChange([...localImages.value]);
 
   async function processImage(file: File) {
-    const compressed = await compressImage(file, 1920 * 1080, 0.7);
-    if (waterMark.value) {
-      return await applyWatermark(compressed, "Insight Property");
-    }
-    return compressed;
+    return await compressImage(file, 1920 * 1080, 0.7);
   }
 
   function selectAndUploadNewImage() {
