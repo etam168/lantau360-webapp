@@ -66,7 +66,7 @@ export default {
   },
 
   message: {
-    createSucces: "新帖子已創建",
+    createSuccess: "新帖子已創建",
     updated: "帖子信息已更新",
     deleted: "帖子已成功刪除",
     uploadImage: "圖片上傳成功",

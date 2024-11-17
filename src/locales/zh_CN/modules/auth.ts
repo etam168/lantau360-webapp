@@ -23,7 +23,7 @@ export default {
     emailSentSuccessfully: "请检查您的电子邮件以确认链接"
   },
 
-  schema: {
+  validation: {
     emailRequired: "请输入您的电子邮件..",
     emailExceedLimit: "电子邮件不得超过 255 个字符",
     firstName: "名字为必填项",

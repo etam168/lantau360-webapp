@@ -23,7 +23,7 @@ export default {
     emailSentSuccessfully: "請檢查您的電子郵件以確認鏈接"
   },
 
-  schema: {
+  validation: {
     emailRequired: "請輸入您的電子郵件..",
     emailExceedLimit: "電子郵件不得超過 255 個字元",
     firstName: "名字為必填項",

@@ -5,7 +5,7 @@
     <q-item-label class="text-center">{{ copyright }}</q-item-label>
   </q-card-section>
 
-  <q-page-sticky v-else position="bottom">
+  <q-page-sticky v-else position="bottom" class="q-pa-sm">
     <q-item-label class="text-center">{{ appVersion }}</q-item-label>
     <q-item-label class="text-center">{{ copyright }}</q-item-label>
   </q-page-sticky>

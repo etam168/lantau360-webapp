@@ -4,19 +4,18 @@ export default {
   button: {
     login: "Sign in",
     logout: "Logout",
-    joinNow: "Join now",
+    joinNow: "Join now"
   },
 
   hint: {
     otp: "(Step 1 - enter the one time password from your email)",
     newPassword: "(Step 2 - enter your new password and click reset)"
   },
-  
+
   message: {
     invalidUserPassword: "Invalid username or password.",
     emailSentSuccessfully: "Please check your email for the confirmation link",
-    loginSuccessMessage:" Login successfully"
-
+    loginSuccessMessage: " Login successfully"
   },
 
   label: {
@@ -34,10 +33,10 @@ export default {
     registerPassword: "Password",
     userName: "User Name",
     checkInCaption: "For checkIn please signIn first",
-    passwordResetSuccessfully: "Password reset successfully",
+    passwordResetSuccessfully: "Password reset successfully"
   },
 
-  schema: {
+  validation: {
     emailRequired: "Please enter your Email..",
     emailExceedLimit: "Email must not exceed 255 characters",
     firstName: "First Name is Required",

@@ -78,8 +78,8 @@
   const userStore = useUserStore();
   const { eventBus, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
-  const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
-  const { handleOpenDialog } = useEntityDataHandlingService();
+  const { openCommunityDetailDialog, handleOpenDialog } = useCommunityDialogService(entityKey);
+  // const { handleOpenDialog } = useEntityDataHandlingService();
 
   // Reactive variables
   const $q = useQuasar();
@@ -151,7 +151,7 @@
       // To be implemented
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      handleOpenDialog(props, isDialogOpen, entityKey);
+      handleOpenDialog(props, isDialogOpen);
     } else {
       $q.dialog({
         component: defineAsyncComponent(() => import("./login-alert-dialog.vue"))
@@ -163,7 +163,7 @@
             associatedEntityId: directory.communityDirectoryId,
             entityKey: entityKey
           };
-          handleOpenDialog(props, isDialogOpen, entityKey);
+          handleOpenDialog(props, isDialogOpen);
         }
       });
     }

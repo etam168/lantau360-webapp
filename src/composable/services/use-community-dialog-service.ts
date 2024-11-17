@@ -88,9 +88,55 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       });
   }
 
+  function handleOpenDialog(props: Record<string, any>, isDialogOpen: Ref<Boolean>, mode?: string) {
+    if (isDialogOpen.value) {
+      // Prevent opening another dialog if one is already open
+      return;
+    }
+
+    // Set the dialog state to open
+    isDialogOpen.value = true;
+
+    switch (mode) {
+      case "edit": {
+        Dialog.create({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+          ),
+          componentProps: {
+            row: props.row, // Pass the row prop for the edit dialog
+            entityKey: entityKey,
+            dialogName: props.dialogName
+          }
+        }).onDismiss(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        });
+        break;
+      }
+      default: {
+        Dialog.create({
+          component: defineAsyncComponent(
+            () => import("@/components/dialog/generic-gallery-input-dialog/index.vue")
+          ),
+          componentProps: {
+            entityKey: entityKey,
+            associatedEntityId: props.associatedEntityId,
+            dialogName: props.dialogName
+          }
+        }).onDismiss(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        });
+        break;
+      }
+    }
+  }
+
   return {
     galleryItems,
     fetchAllData,
+    handleOpenDialog,
     openCommunityDetailDialog,
     openCommunityItemDialog
   };

@@ -30,8 +30,6 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
   });
 
   const schema = computed(() => {
-    const i18nKey = "validation";
-
     switch (renderMode.value) {
       case "sendOtp":
         return object({
