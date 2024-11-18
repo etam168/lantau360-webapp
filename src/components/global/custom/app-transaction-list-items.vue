@@ -22,7 +22,7 @@
           {{ item.transactionType === 2 ? "-" + item.points : item.points }}</q-item-label
         >
         <q-item-label class="text-red" v-if="item.isPostExpired == true">{{
-          $t("more.profileSetting.expired")
+          $t(`${i18nKey}.account.expired`)
         }}</q-item-label>
       </q-item-section>
     </q-item>
@@ -31,13 +31,13 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { TransactionView } from "@/interfaces/models/views/trasaction-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // .ts files
   import { EntityURLKey } from "@/constants";
-  import { TransactionView } from "@/interfaces/models/views/trasaction-view";
-  import { CategoryTypes } from "@/interfaces/types/category-types";
 
-  const { getEntityName, dateFormatter } = useUtilities();
+  const { dateFormatter } = useUtilities();
 
   const emits = defineEmits(["on-member-detail"]);
 
@@ -48,6 +48,7 @@
   }>();
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
+  const i18nKey = "more.mainMenuDialog";
 
   const items = computed(() => {
     switch (entityKey) {

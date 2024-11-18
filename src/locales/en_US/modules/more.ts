@@ -24,6 +24,7 @@ export default {
     },
     account: {
       title: "Account",
+      expired: "Expired",
       availablePoints: "Points Balance : {availablePoints}",
       spentPoints: "By this time you spent {spentPoints}",
       topUpPoints: "Top-up Points",

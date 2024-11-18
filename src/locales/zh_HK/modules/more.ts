@@ -24,6 +24,7 @@ export default {
     },
     account: {
       title: "帳戶",
+      expired: "Expired",
       availablePoints: "積分餘額：{availablePoints}",
       spentPoints: "截至目前，您已花費 {spentPoints}",
       topUpPoints: "充值積分",

@@ -29,6 +29,7 @@
   const { item } = defineProps<{ item: CategoryTypes }>();
 
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
+  const isDialogOpen = ref(false);
 
   const { eventBus, translate } = useUtilities();
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
@@ -46,6 +47,6 @@
   const onItemClick = () => {
     const dialogName = "NoticeDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCommunityDetailDialog(item, dialogName);
+    openCommunityDetailDialog(isDialogOpen, item, dialogName);
   };
 </script>

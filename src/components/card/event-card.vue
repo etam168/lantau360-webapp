@@ -38,6 +38,7 @@
 
   const i18nKey = "business";
   const entityKey: EntityURLKey = "COMMUNITY_EVENT";
+  const isDialogOpen = ref(false);
 
   const { eventBus, translate, getImageURL } = useUtilities();
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
@@ -49,6 +50,6 @@
   const onItemClick = () => {
     const dialogName = "EventDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCommunityDetailDialog(item, dialogName);
+    openCommunityDetailDialog(isDialogOpen, item, dialogName);
   };
 </script>
