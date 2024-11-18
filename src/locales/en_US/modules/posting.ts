@@ -4,12 +4,15 @@ export default {
   delete: "Delete Post",
   title: "Postings",
 
+  createDirectory: "Create {directoryName}",
+
   steps: {
     default: "Default",
     editor: "Editor",
     localization: "Localization",
     image: "Image"
   },
+
   expansion: {
     postListing: "Post Listing",
     postContent: "Post Content",

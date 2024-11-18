@@ -7,13 +7,9 @@
       </q-item-section>
 
       <q-item-section>
-        <q-item-label>{{
-          $t("action.createDirectory", { directoryName: directory.directoryName })
-        }}</q-item-label>
-        <q-item-label caption>{{
-          $t("community.createPost.addGalleryDescription")
-        }}</q-item-label></q-item-section
-      >
+        <q-item-label>{{ createTitle }}</q-item-label>
+        <q-item-label caption>{{ createDescription }}</q-item-label>
+      </q-item-section>
     </q-item>
 
     <template v-if="groupBykey">
@@ -56,9 +52,6 @@
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
-  // Stores
-  import { useUserStore } from "@/stores/user";
-
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
   import { fasPlus } from "@quasar/extras/fontawesome-v6";
@@ -75,10 +68,10 @@
   }>();
 
   // Composable function calls
-  const userStore = useUserStore();
-  const { eventBus, groupBy, translate } = useUtilities();
+  const { eventBus, getEntityName, groupBy, translate } = useUtilities();
   const { fetchData } = useApi();
   const { openCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
+  const { t } = useI18n({ useScope: "global" });
 
   // Reactive variables
   const $q = useQuasar();
@@ -86,24 +79,21 @@
 
   const communityItems: Ref<CategoryTypes[]> = ref([]);
 
-  const directoryId: ComputedRef<number> = computed(() => {
-    switch (entityKey) {
-      case "POSTING":
-      case "COMMUNITY_DIRECTORY":
-        return (directory as CommunityDirectory).communityDirectoryId;
-      default:
-        return 0;
-    }
-  });
+  const i18nKey = getEntityName(entityKey);
+  const createDescription = computed(() => t(`${i18nKey}.createDescription`));
+  const createTitle = computed(() =>
+    t(`${i18nKey}.createDirectory`, { directoryName: directory.directoryName })
+  );
 
-  const groupBykey: ComputedRef<string | null> = computed(() => {
-    switch (true) {
-      case directory.meta?.groupByKey !== NONE:
-        return directory.meta?.groupByKey ?? null;
-      default:
-        return null;
-    }
-  });
+  const directoryId = computed<number>(() =>
+    ["POSTING", "COMMUNITY_DIRECTORY"].includes(entityKey)
+      ? (directory as CommunityDirectory).communityDirectoryId
+      : 0
+  );
+
+  const groupBykey = computed<string | null>(() =>
+    directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
+  );
 
   const groupedArray = computed(() => {
     if (groupBykey.value == null) {
@@ -152,7 +142,7 @@
 
   async function handleDetail(item: any) {
     eventBus("DialogStatus").emit(true, dialogName + "Detail");
-    openCommunityDetailDialog(isDialogOpen,item, dialogName + "Detail");
+    openCommunityDetailDialog(isDialogOpen, item, dialogName + "Detail");
   }
 
   /**
@@ -164,13 +154,9 @@
       switch (entityKey) {
         case "POSTING":
         case "COMMUNITY_DIRECTORY": {
-          // Use Promise.all to fetch data in parallel
-          const [communityResponse] = await Promise.all([
-            fetchData(`${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`)
-          ]);
-
-          // Assign fetched data to `communityItems`
-          communityItems.value = communityResponse;
+          communityItems.value = await fetchData(
+            `${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`
+          );
 
           // Set the initial tab value
           if (communityItems.value.length > 0 && groupBykey.value) {

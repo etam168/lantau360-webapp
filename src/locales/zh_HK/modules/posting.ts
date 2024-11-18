@@ -4,6 +4,8 @@ export default {
   delete: "刪除帖子",
   title: "發帖",
 
+  createDirectory: "創建 {directoryName}",
+
   steps: {
     default: "默認",
     editor: "編輯器",
