@@ -67,7 +67,7 @@
   const { locale } = useI18n({ useScope: "global" });
 
   // Reactive variables
-  const i18nKey = "home";
+  const i18nKey = "home.dialog";
   const address = computed(() => translate(category.subtitle1, category.meta, "subtitle1"));
 
   const zoom = computed(() => {

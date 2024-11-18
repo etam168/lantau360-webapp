@@ -33,21 +33,20 @@
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-import { EntityURLKey } from "@/constants";
+  import { EntityURLKey } from "@/constants";
 
   // Props
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
-    entityKey: EntityURLKey
+    entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
   const { eventBus, translate } = useUtilities();
-  const {  isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
-
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
 
   // Reactive variables
-  const i18nKey = "home";
+  const i18nKey = "home.dialog";
   const translatedContent = ref(translate(category.description, category.meta, "description"));
   const isFavourite = ref(isFavouriteItem(category));
 

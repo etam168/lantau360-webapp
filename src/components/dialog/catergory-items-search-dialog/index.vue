@@ -54,9 +54,9 @@
   const dialogTitle = computed(() => {
     switch (entityKey) {
       case "SITE":
-        return t(`home.siteSearch`);
+        return t(`home.searchBar.siteSearch`);
       case "BUSINESS":
-        return t(`business.businessSearch`);
+        return t(`business.searchBar.businessSearch`);
       default:
         break;
     }

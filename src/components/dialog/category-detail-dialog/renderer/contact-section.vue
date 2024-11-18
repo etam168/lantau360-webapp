@@ -2,7 +2,7 @@
   <q-card class="q-ma-md">
     <q-card-section class="q-pa-sm">
       <q-expansion-item
-        :label="'Contact Info'"
+        :label="$t(`${i18nKey}.contactInfo`)"
         group="itemGroup"
         :expand-icon="fasChevronDown"
         dense
@@ -68,7 +68,7 @@
     category: CategoryTypes;
   }>();
 
-  const i18nKey = "home";
+  const i18nKey = "home.dialog";
 
   // Composable function calls
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
