@@ -74,9 +74,10 @@
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
+  const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const dialogTitle = computed(() => {
-    return t(`more.${entityName}.title`);
+    return t(`${i18nKeyMoreDialog}.${entityName}.title`);
   });
 
   /**

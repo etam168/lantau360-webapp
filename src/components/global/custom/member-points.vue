@@ -4,14 +4,14 @@
       <q-card-section class="text-white q-pa-none">
         <div class="text-subtitle1">
           {{
-            $t("more.profileSetting.availablePoints", {
+            $t(`${i18nKeyMoreDialog}.availablePoints`, {
               availablePoints: userStore.availabelPoints
             })
           }}
         </div>
         <div class="text-caption">
           {{
-            $t("more.profileSetting.bythisTimeText", {
+            $t(`${i18nKeyMoreDialog}.spentPoints`, {
               spentPoints: userStore.spendPoints
             })
           }}
@@ -23,7 +23,7 @@
         rounded
         class="text-primary bg-grey-1 text-caption q-px-lg"
         @click="handleTopUpPoints"
-        >{{ $t("more.profileSetting.buyPoints") }}</q-btn
+        >{{ $t(`${i18nKeyMoreDialog}.topUpPoints`) }}</q-btn
       >
     </q-card-actions>
   </q-card>
@@ -34,6 +34,7 @@
   import { useUserStore } from "@/stores/user";
 
   const userStore = useUserStore();
+  const i18nKeyMoreDialog = "more.mainMenuDialog.account";
 
   const emit = defineEmits(["top-up-points"]);
 

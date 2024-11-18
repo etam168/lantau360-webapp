@@ -71,6 +71,7 @@
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
   const { translate, dateTimeFormatter } = useUtilities();
+  const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   // Reactive variables
   const checkInItem = computed(() => item as CheckInView);
@@ -97,8 +98,8 @@
   });
 
   const tabItems = ref([
-    { name: "map", label: t("checkin.map") },
-    { name: "checkInList", label: t("checkin.checkInList") }
+    { name: "map", label: t(`${i18nKeyMoreDialog}.checkin.map`) },
+    { name: "checkInList", label: t(`${i18nKeyMoreDialog}.checkin.checkInList`) }
   ]);
 
   const bannerPath = computed(() => {

@@ -50,9 +50,14 @@
     points?: Record<string, any>;
   }>();
 
+  const { t } = useI18n({ useScope: "global" });
   const userStore = useUserStore();
   const { fetchData } = useApi();
+  const { getEntityName } = useUtilities();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+
+  const entityName = getEntityName(entityKey);
+  const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const memberItems = ref<CategoryTypes[]>([]);
   const historyItems = ref<Transaction[]>([]);
@@ -94,8 +99,8 @@
   const tabItems = computed(() => {
     if (entityKey === "ACCOUNT") {
       return [
-        { name: "recent", label: "Recent" },
-        { name: "history", label: "History" }
+        { name: "recent", label: t(`${i18nKeyMoreDialog}.${entityName}.recent`) },
+        { name: "history", label: t(`${i18nKeyMoreDialog}.${entityName}.history`) }
       ];
     }
 

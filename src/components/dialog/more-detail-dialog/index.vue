@@ -65,7 +65,7 @@
     dialogName: string;
   }>();
 
-  const i18nKey = "more";
+  const i18nKey = "more.mainMenuDialog";
   const tempLoading = ref(isLoading.value);
 
   // Composable function calls

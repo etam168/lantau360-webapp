@@ -13,7 +13,11 @@
       <q-header bordered class="bg-transparent text-dark">
         <!-- <app-dialog-title>{{ $t(`${entityName}.dialog.edit`) }}</app-dialog-title> -->
         <app-dialog-title>
-          {{ dialogName ? $t(`more.${dialogName}`) : $t(`${entityName}.dialog.edit`) }}
+          {{
+            dialogName
+              ? $t(`${i18nKeyMoreDialog}.${dialogName}.title`)
+              : $t(`${entityName}.dialog.edit`)
+          }}
         </app-dialog-title>
       </q-header>
 
@@ -70,6 +74,7 @@
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
+  const i18nKeyMoreDialog = "more.mainMenuDialog";
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay

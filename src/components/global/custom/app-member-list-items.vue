@@ -19,7 +19,7 @@
             <q-item-label>{{ item.siteName }}</q-item-label>
             <q-item-label lines="2"
               >{{
-                $t("more.checkin.lastCheckIn", {
+                $t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, {
                   date: dateFormatter(item.modifiedAt)
                 })
               }}
@@ -50,6 +50,7 @@
   }>();
 
   const entityName = getEntityName(entityKey);
+  const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const items = computed(() => {
     switch (entityKey) {
