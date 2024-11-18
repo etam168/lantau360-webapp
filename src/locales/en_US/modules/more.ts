@@ -1,18 +1,22 @@
 export default {
   title: "More",
-  language: "Language",
-  aboutUs: "About",
-  terms: "Terms & Conditions",
-  privacy: "Privacy Policy",
-  locationPermission: "Location Permission",
-  login: "Login",
-  profile: "Profile",
-  logout: "Logout",
-  loginName: "Login Name",
+  mainMenu: {
+    logon: "Sign in",
+    logoff: "Logout",
+    joinNow: "Join now",
+    language: "Language",
+    terms: "Terms & Conditions",
+    privacy: "Privacy Policy",
+    profile: "Profile",
+    aboutUs: "About",
+    account: "Account",
+    myCheckin: "My Check-In"
+  },
+
+  
 
   checkin: {
     title: "My Check-In",
-    detail: "CheckIn Info Detail",
     checkInList: "CheckIn List",
     map: "Map",
     lastCheckIn: "Last CheckIn : {date}",

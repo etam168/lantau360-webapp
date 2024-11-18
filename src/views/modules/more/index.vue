@@ -50,14 +50,14 @@
   }
 
   const MORE_ITEMS: Record<string, Partial<RenderItem>> = {
-    account: { type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.account.title` },
-    checkIn: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.checkin.title` },
-    language: { type: "language", icon: ICONS.SETTING, title: `${i18nKey}.language` },
-    logon: { type: "logon" },
-    logoff: { type: "logoff" },
-    privacy: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.privacy` },
-    profile: { type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.profile` },
-    terms: { type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.terms` }
+    account: { type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.mainMenu.account` },
+    checkIn: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.mainMenu.myCheckin` },
+    language: { type: "language", icon: ICONS.SETTING, title: `${i18nKey}.mainMenu.language` },
+    logon: { type: "logon", title: `${i18nKey}.mainMenu.logon}` },
+    logoff: { type: "logoff", title: `${i18nKey}.mainMenu.logoff}` },
+    privacy: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.mainMenu.privacy` },
+    profile: { type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.mainMenu.profile` },
+    terms: { type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.mainMenu.terms` }
   };
 
   type MoreItemKey = keyof typeof MORE_ITEMS;

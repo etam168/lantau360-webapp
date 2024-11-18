@@ -1,5 +1,3 @@
-import checkin from "@/locales/zh_HK/modules/checkin";
-
 export default {
   edit: "Edit CheckIn",
   create: "Create CheckIn",
@@ -7,6 +5,7 @@ export default {
   title: "CheckInings",
   map: "Map",
   checkInList: "CheckIn List",
+  lastCheckIn: "Last CheckIn : {date}",
 
   steps: {
     default: "Default",

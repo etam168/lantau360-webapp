@@ -24,7 +24,7 @@
     <q-space />
 
     <q-chip clickable @click="logout()" outline color="primary" text-color="white">
-      {{ $t(`${i18nKey}.button.logout`) }}
+      {{ $t(`${i18nKey}.mainMenu.logoff`) }}
     </q-chip>
   </q-card-actions>
 </template>
@@ -35,7 +35,7 @@
   import { BLOB_URL, IMAGES, STORAGE_KEYS } from "@/constants";
 
   const userStore = useUserStore();
-  const i18nKey = "auth";
+  const i18nKey = "more";
 
   const avatar = computed(() => {
     if (userStore.profilePic != null) {
