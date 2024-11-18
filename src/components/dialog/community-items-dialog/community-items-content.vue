@@ -80,9 +80,9 @@
   const communityItems: Ref<CategoryTypes[]> = ref([]);
 
   const i18nKey = getEntityName(entityKey);
-  const createDescription = computed(() => t(`${i18nKey}.createDescription`));
+  const createDescription = computed(() => t(`${i18nKey}.mainMenu.addGalleryDescription`));
   const createTitle = computed(() =>
-    t(`${i18nKey}.createDirectory`, { directoryName: directory.directoryName })
+    t(`${i18nKey}.mainMenu.createDirectory`, { directoryName: directory.directoryName })
   );
 
   const directoryId = computed<number>(() =>
