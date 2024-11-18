@@ -146,9 +146,29 @@
 
   async function onCreatePosting() {
     if (isDialogOpen.value) return;
-    const dialogName = "PostingListDialog";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCreatePosting(isDialogOpen, directory);
+
+    try {
+      // Fetch memberConfig data
+      const memberConfig = await fetchData(ENTITY_URL.MEMBER_CONFIG);
+
+      // Update user points based on the fetched data
+      userStore.setPoints(
+        memberConfig.value?.meta.postPoint ?? 50,
+        memberConfig.value?.meta.requestFreePoints ?? 100,
+        memberConfig.value?.meta.purchsePrice ?? 100,
+        memberConfig.value?.meta.purchsePoints ?? 100
+      );
+
+      // Fetch additional member points
+      await userStore.fetchMemberPoints();
+
+      // Emit event to open the dialog
+      const dialogName = "PostingListDialog";
+      eventBus("DialogStatus").emit(true, dialogName);
+      openCreatePosting(isDialogOpen, directory);
+    } catch (error) {
+      console.error("Error fetching memberConfig or opening posting dialog:", error);
+    }
   }
 
   async function handleDetail(item: any) {
@@ -166,24 +186,12 @@
         case "POSTING":
         case "COMMUNITY_DIRECTORY": {
           // Use Promise.all to fetch data in parallel
-          const [communityResponse, memberConfig] = await Promise.all([
-            fetchData(`${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`),
-            fetchData(ENTITY_URL.MEMBER_CONFIG)
+          const [communityResponse] = await Promise.all([
+            fetchData(`${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`)
           ]);
 
           // Assign fetched data to `communityItems`
           communityItems.value = communityResponse;
-
-          // Update user points using `memberConfig`
-          userStore.setPoints(
-            memberConfig.value?.meta.postPoint ?? 50,
-            memberConfig.value?.meta.requestFreePoints ?? 100,
-            memberConfig.value?.meta.purchsePrice ?? 100,
-            memberConfig.value?.meta.purchsePoints ?? 100
-          );
-
-          // Fetch additional member points
-          await userStore.fetchMemberPoints();
 
           // Set the initial tab value
           if (communityItems.value.length > 0 && groupBykey.value) {
