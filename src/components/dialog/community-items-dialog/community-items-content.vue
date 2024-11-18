@@ -145,35 +145,14 @@
   }
 
   async function onCreatePosting() {
-    if (isDialogOpen.value) return;
-
-    try {
-      // Fetch memberConfig data
-      const memberConfig = await fetchData(ENTITY_URL.MEMBER_CONFIG);
-
-      // Update user points based on the fetched data
-      userStore.setPoints(
-        memberConfig.value?.meta.postPoint ?? 50,
-        memberConfig.value?.meta.requestFreePoints ?? 100,
-        memberConfig.value?.meta.purchsePrice ?? 100,
-        memberConfig.value?.meta.purchsePoints ?? 100
-      );
-
-      // Fetch additional member points
-      await userStore.fetchMemberPoints();
-
-      // Emit event to open the dialog
-      const dialogName = "PostingListDialog";
-      eventBus("DialogStatus").emit(true, dialogName);
-      openCreatePosting(isDialogOpen, directory);
-    } catch (error) {
-      console.error("Error fetching memberConfig or opening posting dialog:", error);
-    }
+    const dialogName = "PostingListDialog";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCreatePosting(isDialogOpen, directory);
   }
 
   async function handleDetail(item: any) {
     eventBus("DialogStatus").emit(true, dialogName + "Detail");
-    openCommunityDetailDialog(item, dialogName + "Detail");
+    openCommunityDetailDialog(isDialogOpen,item, dialogName + "Detail");
   }
 
   /**

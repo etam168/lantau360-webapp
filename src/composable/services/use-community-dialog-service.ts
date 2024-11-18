@@ -47,10 +47,13 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   }
 
   async function openCommunityDetailDialog(
+    isDialogOpen: Ref<Boolean>,
     item: any,
     dialogName: string,
     customEntityKey?: EntityURLKey
   ) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-detail-dialog/index.vue")
@@ -61,9 +64,12 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         dialogName: dialogName
       }
     })
-      .onOk(() => {})
+      .onOk(() => {
+        isDialogOpen.value = false;
+      })
       .onCancel(() => {
         // Handle the Cancel action
+        isDialogOpen.value = false;
         eventBus("refreshData").emit();
       });
   }
@@ -92,9 +98,11 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       });
   }
 
-  function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+  async function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     if (isUserLogon()) {
-      // To be implemented
+      // Fetch additional member points
+      await userStore.fetchMemberPoints();
+      alert("dataloaded")
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
       handleOpenDialog(props, isDialogOpen, entityKey);
@@ -103,17 +111,24 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         component: defineAsyncComponent(
           () => import("@/components/dialog/community-items-dialog/login-alert-dialog.vue")
         )
-      }).onOk(() => {
-        if (userStore.isUserLogon()) {
-          // To be implemented
-          const entityKey = "POSTING" as EntityURLKey;
-          const props = {
-            associatedEntityId: directory.communityDirectoryId,
-            entityKey: entityKey
-          };
-          handleOpenDialog(props, isDialogOpen, entityKey);
-        }
-      });
+      })
+        .onCancel(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        })
+        .onOk(() => {
+          if (userStore.isUserLogon()) {
+            // To be implemented
+            const entityKey = "POSTING" as EntityURLKey;
+            const props = {
+              associatedEntityId: directory.communityDirectoryId,
+              entityKey: entityKey
+            };
+            handleOpenDialog(props, isDialogOpen, entityKey);
+          }
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        });
     }
   }
 

@@ -1,7 +1,7 @@
 import { defineStore } from "pinia";
 import { usePermissionStore } from "./permission";
 const { notify } = useUtilities();
-
+const { api } = useApi();
 export const useUserStore = defineStore("user", {
   state: () =>
     <Record<string, any>>{
@@ -33,8 +33,18 @@ export const useUserStore = defineStore("user", {
         if (!this.token) {
           return;
         }
-        const response = await axios.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
-        const { total, spend, available, currentMonthTransactionCount } = response.data;
+        const response = await api.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
+        const { total, spend, available, currentMonthTransactionCount, memberConfig } =
+          response.data;
+
+        // Update user points based on the fetched data
+        this.setPoints(
+          memberConfig.value?.meta.postPoint ?? 50,
+          memberConfig.value?.meta.requestFreePoints ?? 100,
+          memberConfig.value?.meta.purchsePrice ?? 100,
+          memberConfig.value?.meta.purchsePoints ?? 100
+        );
+
         (this.totalPoints = total),
           (this.spendPoints = spend),
           (this.availabelPoints = available),
