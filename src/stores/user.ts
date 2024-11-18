@@ -1,67 +1,70 @@
 import { defineStore } from "pinia";
 import { usePermissionStore } from "./permission";
-const { notify } = useUtilities();
+import { ENTITY_URL } from "@/constants";
 const { api } = useApi();
-export const useUserStore = defineStore("user", {
-  state: () =>
-    <Record<string, any>>{
-      token: "",
-      refreshToken: "",
-      roles: [],
-      user: "",
-      userId: "",
-      staffId: "",
-      memberId: "",
-      name: "",
-      email: "",
-      phone: "",
-      profilePic: "",
-      status: "",
-      code: "",
-      totalPoints: 0,
-      spendPoints: 0,
-      availabelPoints: 0,
-      pointsPerPost: 0,
-      topUpPoints: 0,
-      currentMonthFreeTransactionCount: 0,
-      refreshTokenExpiry: null
-    },
+const { notify } = useUtilities();
 
-  actions: {
-    async fetchMemberPoints() {
+export const useUserStore = defineStore(
+  "user",
+  () => {
+    // State
+    const token = ref("");
+    const expiredToken = ref("");
+    const refreshToken = ref("");
+    const roles = ref([]);
+    const user = ref("");
+    const userId = ref(0);
+    const staffId = ref(0);
+    const memberId = ref(0);
+    const name = ref("");
+    const email = ref("");
+    const phone = ref("");
+    const profilePic = ref("");
+    const status = ref(0);
+    const code = ref("");
+    const totalPoints = ref(0);
+    const spendPoints = ref(0);
+    const availabelPoints = ref(0);
+    const pointsPerPost = ref(0);
+    const topUpPoints = ref(0);
+    const currentMonthFreeTransactionCount = ref(0);
+    const refreshTokenExpiry = ref<string | null>(null); // Fixed type here
+    const purchasePrice = ref(0);
+    const purchasePoints = ref(0);
+
+    // Actions
+    async function fetchMemberPoints() {
       try {
-        if (!this.token) {
+        if (!token.value) {
           return;
         }
-        const response = await api.get(`/Member/GetMemberPoints/${parseInt(this.userId)}`);
+        const response = await api.get(`${ENTITY_URL.MEMBER_POINTS}/${userId.value}`);
         const { total, spend, available, currentMonthTransactionCount, memberConfig } =
           response.data;
 
-        // Update user points based on the fetched data
-        this.setPoints(
+        setPoints(
           memberConfig.value?.meta.postPoint ?? 50,
           memberConfig.value?.meta.requestFreePoints ?? 100,
           memberConfig.value?.meta.purchsePrice ?? 100,
           memberConfig.value?.meta.purchsePoints ?? 100
         );
 
-        (this.totalPoints = total),
-          (this.spendPoints = spend),
-          (this.availabelPoints = available),
-          (this.currentMonthFreeTransactionCount = currentMonthTransactionCount);
+        totalPoints.value = total;
+        spendPoints.value = spend;
+        availabelPoints.value = available;
+        currentMonthFreeTransactionCount.value = currentMonthTransactionCount;
       } catch (error: any) {
         notify(error, "negative");
-
         throw error;
       }
-    },
+    }
 
-    async LogOut() {
-      this.SetUserInfo({ logout: true });
-    },
+    async function LogOut() {
+      SetUserInfo({ logout: true });
+    }
 
-    SetUserInfo(payload: any) {
-      const resetFields: Array<string> = [
+    function SetUserInfo(payload: any) {
+      const resetFields = [
         "token",
         "expiredToken",
         "refreshToken",
@@ -82,68 +85,113 @@ export const useUserStore = defineStore("user", {
       ];
 
       if (payload.logout) {
-        resetFields.forEach(field => (this[field] = ""));
+        resetFields.forEach(field => {
+          const refField = eval(field);
+          if (refField) refField.value = "";
+        });
       } else {
-        resetFields.forEach(field => (this[field] = payload[field] || this[field]));
+        resetFields.forEach(field => {
+          const refField = eval(field);
+          if (refField) refField.value = payload[field] || refField.value;
+        });
 
-        this.expiredToken = payload.token;
+        expiredToken.value = payload.token;
 
-        // Set refresh token expiry to 7 days from now
         if (payload.refreshToken) {
-          this.setRefreshTokenWithExpiry();
+          setRefreshTokenWithExpiry();
         }
       }
 
       usePermissionStore().GenerateRoutes(payload);
-    },
+    }
 
-    isUserLogon() {
-      return this.token ? true : false;
-    },
+    function isUserLogon() {
+      return token.value ? true : false;
+    }
 
-    setPoints(
+    function setPoints(
       perPostPoints: number,
       freeTopUpPoints: number,
-      purchasePrice: number,
-      purchasePoints: number
+      price: number,
+      points: number
     ) {
-      this.pointsPerPost = perPostPoints;
-      this.topUpPoints = freeTopUpPoints;
-      this.purchasePrice = purchasePrice;
-      this.purchasePoints = purchasePoints;
-    },
+      pointsPerPost.value = perPostPoints;
+      topUpPoints.value = freeTopUpPoints;
+      purchasePrice.value = price;
+      purchasePoints.value = points;
+    }
 
-    setToken(token: string) {
-      this.token = token;
-    },
+    function setToken(newToken: string) {
+      token.value = newToken;
+    }
 
-    setExpiredToken(expiredToken: string) {
-      this.expiredToken = expiredToken;
-    },
+    function setExpiredToken(newExpiredToken: string) {
+      expiredToken.value = newExpiredToken;
+    }
 
-    setRefreshToken(refreshToken: string) {
-      this.refreshToken = refreshToken;
-      this.setRefreshTokenWithExpiry();
-    },
+    function setRefreshToken(newRefreshToken: string) {
+      refreshToken.value = newRefreshToken;
+      setRefreshTokenWithExpiry();
+    }
 
-    setRefreshTokenWithExpiry() {
+    function setRefreshTokenWithExpiry() {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 6);
-      this.refreshTokenExpiry = expiryDate.toISOString();
-    },
+      refreshTokenExpiry.value = expiryDate.toISOString();
+    }
 
-    setPointsInfo(payload: {
+    function setPointsInfo(payload: {
       total: number;
       spend: number;
       available: number;
       currentMonthTransactionCount: number;
     }) {
-      this.totalPoints = payload.total;
-      this.spendPoints = payload.spend;
-      this.availabelPoints = payload.available;
-      this.currentMonthFreeTransactionCount = payload.currentMonthTransactionCount;
+      totalPoints.value = payload.total;
+      spendPoints.value = payload.spend;
+      availabelPoints.value = payload.available;
+      currentMonthFreeTransactionCount.value = payload.currentMonthTransactionCount;
     }
-  },
 
-  persist: true
-});
+    return {
+      // State
+      token,
+      refreshToken,
+      roles,
+      user,
+      userId,
+      staffId,
+      memberId,
+      name,
+      email,
+      phone,
+      profilePic,
+      status,
+      code,
+      totalPoints,
+      spendPoints,
+      availabelPoints,
+      pointsPerPost,
+      topUpPoints,
+      currentMonthFreeTransactionCount,
+      refreshTokenExpiry,
+      expiredToken,
+      purchasePrice,
+      purchasePoints,
+
+      // Actions
+      fetchMemberPoints,
+      LogOut,
+      SetUserInfo,
+      isUserLogon,
+      setPoints,
+      setToken,
+      setExpiredToken,
+      setRefreshToken,
+      setRefreshTokenWithExpiry,
+      setPointsInfo
+    };
+  },
+  {
+    persist: true
+  }
+);
