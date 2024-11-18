@@ -6,7 +6,7 @@ export default {
 
   dialog: {
     edit: "Edit Post",
-    create: "Create Posting",
+    create: "Create Post",
     title: "Title",
     description: "Description",
     save: "Save"

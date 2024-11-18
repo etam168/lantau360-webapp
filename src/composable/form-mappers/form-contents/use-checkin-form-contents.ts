@@ -13,7 +13,7 @@ export function useCheckinFormContents() {
   const entityKey: EntityURLKey = "CHECKIN";
   const entity = getEntityName(entityKey);
 
-  const createLabel = (name: string) => `${entity}.columns.${name}`;
+  const createLabel = (name: string) => `${entity}.dialog.${name}`;
 
   const localizedSection: LocalizedSection = {
     languages: []
