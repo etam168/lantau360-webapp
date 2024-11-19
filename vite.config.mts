@@ -27,7 +27,7 @@ const name = "Lantau360 Lite";
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
   base: "/",
-  registerType: "prompt",
+  registerType: "autoUpdate",
   injectRegister: "auto",
   includeAssets: ["favicon.svg"], // Included assets
   manifest: {
@@ -72,6 +72,10 @@ const pwaOptions: Partial<VitePWAOptions> = {
     ]
   },
   workbox: {
+    // Add skipWaiting and clientsClaim for faster updates
+    skipWaiting: true,
+    clientsClaim: true,
+
     // globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
     // Selectively cache critical assets
     globPatterns: ["index.html", "manifest.webmanifest", "resources/pwa/*", "favicon.svg"],

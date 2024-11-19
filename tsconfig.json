@@ -30,7 +30,7 @@
     ],
     "types": [
       "vite/client",
-      "vite-plugin-pwa/vue",
+      "vite-plugin-pwa/client",
       "@intlify/unplugin-vue-i18n/messages"
     ],
     "plugins": [
