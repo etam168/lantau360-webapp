@@ -16,7 +16,7 @@
       :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
       :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
     />
-    
+
     <q-tab-panels v-model="tab">
       <q-tab-panel
         v-for="(item, index) in tabItems"
@@ -48,7 +48,6 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { Directory } from "@/interfaces/models/entities/directory";
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
@@ -60,7 +59,7 @@
     entityKey,
     dialogName = "ItemListDialog"
   } = defineProps<{
-    directory: DirectoryTypes;
+    directory: Directory;
     entityKey: EntityURLKey;
     dialogName: string;
   }>();
@@ -75,24 +74,13 @@
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
   const checkIns: Ref<CheckIn[]> = ref([]);
 
-  const directoryId: ComputedRef<number> = computed(() => {
-    switch (entityKey) {
-      case "BUSINESS":
-      case "SITE":
-        return (directory as Directory).directoryId;
-      default:
-        return 0;
-    }
-  });
+  const directoryId = computed<number>(() =>
+    ["BUSINESS", "SITE"].includes(entityKey) ? directory.directoryId : 0
+  );
 
-  const groupBykey: ComputedRef<string | null> = computed(() => {
-    switch (true) {
-      case directory.meta?.groupByKey !== NONE:
-        return directory.meta?.groupByKey ?? null;
-      default:
-        return null;
-    }
-  });
+  const groupBykey = computed<string | null>(() =>
+    directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
+  );
 
   const groupedArray = computed(() => {
     if (groupBykey.value == null) {
@@ -136,7 +124,7 @@
 
   async function onCategoryDetail(item: any) {
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCategoryDetailDialog(item, dialogName, entityKey, directory.displayMask);
   }
 
   /**
@@ -151,6 +139,8 @@
           categoryItems.value = await fetchData(
             `${ENTITY_URL[entityKey]}/ByDirectoryId/${directoryId.value}`
           );
+          break;
+
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }

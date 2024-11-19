@@ -15,7 +15,7 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
-            <category-detail-content :category :entity-key />
+            <category-detail-content :category :entity-key :displayMask />
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
@@ -54,11 +54,13 @@
   const {
     category,
     entityKey,
-    dialogName = "Detail"
+    dialogName = "Detail",
+    displayMask
   } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
+    displayMask?: number;
   }>();
 
   // Composable function calls

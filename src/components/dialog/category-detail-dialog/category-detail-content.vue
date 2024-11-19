@@ -1,7 +1,7 @@
 <template>
   <q-page>
     <template v-for="(item, index) in renderItems" :key="index">
-      <carousel-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
+      <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
       <contact-section v-else-if="item.type === 'contact'" :category />
       <description-section v-else-if="item.type === 'description'" :category />
       <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
@@ -46,9 +46,14 @@
   import TimetableSection from "./renderer/timetable-section.vue";
 
   // Props
-  const { category, entityKey } = defineProps<{
+  const {
+    category,
+    entityKey,
+    displayMask = 0
+  } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
+    displayMask?: number;
   }>();
 
   interface RenderItem {
@@ -71,6 +76,17 @@
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
+
+  const maskGalleryItems = computed(() => {
+    // When displayMask is 0 or negative, all gallery items are shown
+    if (displayMask < 1) {
+      return galleryItems.value;
+    }
+
+    return galleryItems.value.filter((_, index) => {
+      return !(displayMask & (1 << index));
+    });
+  });
 
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {

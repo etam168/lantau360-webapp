@@ -23,7 +23,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   const galleryItems = ref<GalleryImageType[]>([]);
   const memberConfig = ref();
   const checkInData = ref();
-  const { fetchData } = useApi();
+  const { api, fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
 
   /**
@@ -40,7 +40,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
         );
       }
 
-      const { api } = useApi();
       const axiosRequests = requestUrls.map(url => api.get(url));
       const [directoryResponse, checkInResponse] = await Promise.all(axiosRequests);
 
@@ -110,7 +109,8 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   async function openCategoryDetailDialog(
     item: any,
     dialogName: string,
-    customEntityKey?: EntityURLKey
+    entityKey: EntityURLKey,
+    displayMask?: number
   ) {
     Dialog.create({
       component: defineAsyncComponent(
@@ -118,8 +118,9 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       ),
       componentProps: {
         category: item,
-        entityKey: customEntityKey || entityKey,
-        dialogName: dialogName
+        entityKey: entityKey,
+        dialogName: dialogName,
+        displayMask: displayMask
       }
     })
       .onOk(() => {})

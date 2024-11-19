@@ -153,21 +153,20 @@
     try {
       switch (entityKey) {
         case "POSTING":
-        case "COMMUNITY_DIRECTORY": {
+        case "COMMUNITY_DIRECTORY":
           communityItems.value = await fetchData(
             `${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`
           );
-
-          // Set the initial tab value
-          if (communityItems.value.length > 0 && groupBykey.value) {
-            tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
-          }
           break;
-        }
 
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
           break;
+      }
+
+      // Set the initial tab value
+      if (communityItems.value.length > 0 && groupBykey.value) {
+        tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
       }
     } catch (error) {
       console.error("Error fetching data:", error);
