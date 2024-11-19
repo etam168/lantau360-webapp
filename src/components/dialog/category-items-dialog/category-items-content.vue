@@ -139,6 +139,20 @@
           categoryItems.value = await fetchData(
             `${ENTITY_URL[entityKey]}/ByDirectoryId/${directoryId.value}`
           );
+
+          // Sort categoryItems.value first by rank, then alphabetically by title
+          categoryItems.value.sort((a: any, b: any) => {
+            // Sort by rank first
+            if (a.rank !== b.rank) {
+              return (a.rank || 0) - (b.rank || 0); // Default rank to 0 if undefined
+            }
+
+            // Sort alphabetically by title, handle missing or undefined titles
+            const titleA = a.title || ""; // Default to an empty string if title is undefined
+            const titleB = b.title || ""; // Default to an empty string if title is undefined
+            return titleA.localeCompare(titleB);
+          });
+
           break;
 
         default:
