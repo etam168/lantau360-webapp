@@ -27,7 +27,7 @@
           height: $q.screen.gt.xs ? '370px' : '100%'
         }"
       >
-        <q-card-section :style="mapComponentStyle">
+        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()">
           <app-map-component
             style="flex: 1"
             :zoom="zoom"
@@ -36,7 +36,6 @@
             :bounds="bounds"
             :tooltip="mapTooltip"
             :bottom-right-label="address"
-            @click="openGoogleMaps()"
           />
         </q-card-section>
       </q-card>
