@@ -80,12 +80,13 @@ export function useUtilities() {
   }
 
   function translate(label: string, meta: any, key: string) {
-    const { locale } = i18n.global;
+    const { locale } = useI18n({ useScope: "global" });
+    alert(locale.value);
 
-    switch (locale) {
+    switch (locale.value) {
       case "hk":
       case "cn":
-        return meta?.i18n?.[locale]?.[key] ?? label;
+        return meta?.i18n?.[locale.value]?.[key] ?? label;
       default:
         return label;
     }
