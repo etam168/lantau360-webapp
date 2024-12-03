@@ -3,7 +3,7 @@ export default {
   advertisement: "廣告",
   moreDetail: "更多細節",
 
-  tabItems: {
+  tabItem: {
     promotion: "市場推廣",
     voucher: "優惠券",
     directory: "商戶指南",

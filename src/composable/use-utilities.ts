@@ -81,7 +81,6 @@ export function useUtilities() {
 
   function translate(label: string, meta: any, key: string) {
     const { locale } = useI18n({ useScope: "global" });
-    alert(locale.value);
 
     switch (locale.value) {
       case "hk":
