@@ -58,7 +58,8 @@
     entityKey: EntityURLKey;
   }>();
 
-  const { getEntityName, getImageURL, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+  const { getEntityName, getImageURL, translate } = useUtilities(locale.value);
   const entityName = getEntityName(entityKey);
 
   const favoriteItems = ref([] as CategoryTypes[]);

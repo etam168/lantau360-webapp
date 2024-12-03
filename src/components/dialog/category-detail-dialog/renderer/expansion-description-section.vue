@@ -42,7 +42,9 @@
   }>();
 
   // Composable function calls
-  const { eventBus, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, translate } = useUtilities(locale.value);
   const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
 
   // Reactive variables

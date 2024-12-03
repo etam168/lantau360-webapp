@@ -6,7 +6,7 @@ import { date, Notify, Screen } from "quasar";
 
 const eventBus = (key: string) => useEventBus<any>(key);
 
-export function useUtilities() {
+export function useUtilities(locale?: string) {
   const { t } = i18n.global;
   const isSmallScreen = computed(() => Screen.lt.sm);
   const isDevelopment = import.meta.env.NODE_ENV === "development";
@@ -80,12 +80,10 @@ export function useUtilities() {
   }
 
   function translate(label: string, meta: any, key: string) {
-    const { locale } = useI18n({ useScope: "global" });
-
-    switch (locale.value) {
+    switch (locale) {
       case "hk":
       case "cn":
-        return meta?.i18n?.[locale.value]?.[key] ?? label;
+        return meta?.i18n?.[locale]?.[key] ?? label;
       default:
         return label;
     }

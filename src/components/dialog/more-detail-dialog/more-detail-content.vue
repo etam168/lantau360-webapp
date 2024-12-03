@@ -19,7 +19,8 @@
   }>();
 
   // Composable function calls
-  const { translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+  const { translate } = useUtilities(locale.value);
   const { fetchData } = useApi();
 
   const contentData = ref<Record<string, any> | null>(null);

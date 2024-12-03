@@ -31,7 +31,9 @@
   const entityKey: EntityURLKey = "COMMUNITY_NOTICE";
   const isDialogOpen = ref(false);
 
-  const { eventBus, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, translate } = useUtilities(locale.value);
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const noticeItem = computed(() => item as CommunityNotice);

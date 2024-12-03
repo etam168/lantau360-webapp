@@ -64,9 +64,10 @@
     entityKey: EntityURLKey;
   }>();
 
-  const { getImageURL, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const userStore = useUserStore();
+  const { getImageURL, translate } = useUtilities(locale.value);
 
   function line1(item: CategoryTypes) {
     const name = `title` as keyof CategoryTypes;

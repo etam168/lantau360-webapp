@@ -68,10 +68,10 @@
   }>();
 
   // Composable function calls
-  const { eventBus, getEntityName, groupBy, translate } = useUtilities();
+  const { locale, t } = useI18n({ useScope: "global" });
+  const { eventBus, getEntityName, groupBy, translate } = useUtilities(locale.value);
   const { fetchData } = useApi();
   const { openCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
-  const { t } = useI18n({ useScope: "global" });
 
   // Reactive variables
   const $q = useQuasar();

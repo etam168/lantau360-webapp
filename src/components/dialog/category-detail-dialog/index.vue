@@ -64,8 +64,9 @@
   }>();
 
   // Composable function calls
-  const { eventBus } = useUtilities();
-  const { translate, getEntityName } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, translate, getEntityName } = useUtilities(locale.value);
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables

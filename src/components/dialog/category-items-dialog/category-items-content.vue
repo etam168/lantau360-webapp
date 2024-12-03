@@ -65,9 +65,11 @@
   }>();
 
   // Composable function calls
+  const { locale } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const { fetchData } = useApi();
-  const { groupBy, translate, eventBus } = useUtilities();
+
+  const { groupBy, translate, eventBus } = useUtilities(locale.value);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   // Reactive variables

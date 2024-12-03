@@ -39,8 +39,9 @@
   const i18nKey = "business";
   const entityKey: EntityURLKey = "COMMUNITY_EVENT";
   const isDialogOpen = ref(false);
+  const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, translate, getImageURL } = useUtilities();
+  const { eventBus, translate, getImageURL } = useUtilities(locale.value);
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const eventItem = computed(() => item as CommunityEventView);

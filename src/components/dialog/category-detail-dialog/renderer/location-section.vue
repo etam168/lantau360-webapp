@@ -62,8 +62,9 @@
 
   // Composable function calls
   const $q = useQuasar();
-  const { translate } = useUtilities();
   const { locale } = useI18n({ useScope: "global" });
+
+  const { translate } = useUtilities(locale.value);
 
   // Reactive variables
   const i18nKey = "home.dialog";

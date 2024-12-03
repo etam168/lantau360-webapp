@@ -32,7 +32,9 @@
     data: DirectoryTypes[];
   }>();
 
-  const { translate, translateAlt } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { translate, translateAlt } = useUtilities(locale.value);
   const $q = useQuasar();
 
   function getDirectoryTitle(item: DirectoryTypes) {

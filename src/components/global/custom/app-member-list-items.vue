@@ -37,9 +37,6 @@
 
   // .ts files
   import { BLOB_URL, EntityURLKey } from "@/constants";
-  import { PostingView } from "@/interfaces/models/views/posting-view";
-
-  const { getEntityName, getImageURL, translate, dateFormatter } = useUtilities();
 
   const emits = defineEmits(["on-member-detail"]);
 
@@ -49,6 +46,9 @@
     entityKey: EntityURLKey;
   }>();
 
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { getEntityName, translate, dateFormatter } = useUtilities(locale.value);
   const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 

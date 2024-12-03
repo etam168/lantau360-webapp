@@ -37,14 +37,16 @@
   import { date } from "quasar";
   import { fasArrowUp, fasArrowDown } from "@quasar/extras/fontawesome-v6";
 
-  const { translate } = useUtilities();
-
   const { data } = defineProps<{
     data: Weather | null;
   }>();
 
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { translate } = useUtilities(locale.value);
+
   const caption = computed(() => {
-    return translate(data?.caption ?? "", data?.meta, "caption");
+    return translate(data?.caption ?? "", data?.meta, "Caption");
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars

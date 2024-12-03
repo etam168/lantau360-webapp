@@ -37,7 +37,9 @@
   const i18nKey = "business";
   const entityKey: EntityURLKey = "BUSINESS_PROMOTION";
 
-  const { eventBus, getImageURL, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, getImageURL, translate } = useUtilities(locale.value);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const promotionItem = computed(() => item as BusinessPromotionView);

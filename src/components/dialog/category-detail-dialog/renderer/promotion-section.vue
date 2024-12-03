@@ -43,8 +43,10 @@
   }>();
 
   // Composable function calls
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, translate } = useUtilities(locale.value);
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
-  const { eventBus, translate } = useUtilities();
 
   // Reactive variables
   const isDialogVisible = ref();

@@ -49,7 +49,9 @@
   }>();
 
   // Composable function calls
-  const { eventBus, getImageURL, translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+
+  const { eventBus, getImageURL, translate } = useUtilities(locale.value);
   const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
 
   // Reactive variables

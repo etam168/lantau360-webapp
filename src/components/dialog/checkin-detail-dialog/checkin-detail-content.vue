@@ -69,8 +69,9 @@
 
   // Composable function calls
   const $q = useQuasar();
+
   const { locale, t } = useI18n({ useScope: "global" });
-  const { translate, dateTimeFormatter } = useUtilities();
+  const { translate, dateTimeFormatter } = useUtilities(locale.value);
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   // Reactive variables

@@ -20,7 +20,7 @@
 
       <template v-slot:after>
         <q-btn square unelevated padding="md 18px" color="primary" @click="handleSearch">
-          <q-icon size="sm" :name="fasMagnifyingGlass" />
+          <q-icon size="xs" :name="fasMagnifyingGlass" />
         </q-btn>
       </template>
     </q-input>

@@ -14,7 +14,8 @@
   }>();
 
   // Composable function calls
-  const { translate } = useUtilities();
+  const { locale } = useI18n({ useScope: "global" });
+  const { translate } = useUtilities(locale.value);
 
   // Reactive variables
   const translatedContent = ref(translate(category.description, category.meta, "description"));

@@ -6,6 +6,7 @@
     outline
     split
     padding="1px"
+    size="sm"
     style="overflow: hidden; width: 108px"
     :dropdown-icon="fasChevronDown"
   >
