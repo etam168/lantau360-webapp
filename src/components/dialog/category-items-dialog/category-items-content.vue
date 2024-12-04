@@ -109,10 +109,12 @@
 
   // Define tabItems as a computed property
   const tabItems = computed(() => {
-    return groupedArray.value.map(group => ({
-      name: group.group,
-      label: group.group
-    })) as TabItem[];
+    return groupedArray.value
+      .filter(group => typeof group.group === "string" && group.group.trim() !== "") // Exclude empty or whitespace-only group
+      .map(group => ({
+        name: group.group,
+        label: group.group
+      })) as TabItem[];
   });
 
   const tab = ref("");
