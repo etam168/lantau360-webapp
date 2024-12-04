@@ -2,7 +2,6 @@
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
-
     <q-separator size="4px" color="primary" />
 
     <q-banner :inline-actions="!isSmallScreen">

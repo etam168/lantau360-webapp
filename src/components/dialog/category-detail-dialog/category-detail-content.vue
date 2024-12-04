@@ -3,6 +3,7 @@
     <template v-for="(item, index) in renderItems" :key="index">
       <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
       <contact-section v-else-if="item.type === 'contact'" :category />
+      <expansion-contact-section v-else-if="item.type === 'expansion-contact'" :category />
       <description-section v-else-if="item.type === 'description'" :category />
       <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
       <open-close-time-section v-else-if="item.type === 'time'" :category />
@@ -38,6 +39,7 @@
   // Components
   import ContactSection from "./renderer/contact-section.vue";
   import DescriptionSection from "./renderer/description-section.vue";
+  import ExpansionContactSection from "./renderer/expansion-contact-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
   import LocationSection from "./renderer/location-section.vue";
@@ -62,12 +64,13 @@
     itemCount?: number;
     type:
       | "carousel"
+      | "contact"
       | "gallery"
       | "expansion-description"
       | "description"
       | "favourite"
       | "location"
-      | "contact"
+      | "expansion-contact"
       | "timetable"
       | "time"
       | "promotion";
@@ -93,7 +96,8 @@
       case RENDERER.ADVERTISEMENT:
         return [
           { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" }
+          { name: "description", type: "description" },
+          { name: "contact", type: "contact" }
         ];
       case RENDERER.ATM:
       case RENDERER.SITE:
@@ -101,7 +105,7 @@
           { name: "carousel", type: "carousel" },
           { name: "expansion-description", type: "expansion-description" },
           { name: "location", type: "location" },
-          { name: "contact", type: "contact" }
+          { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.BUSINESS:
         return [
@@ -109,12 +113,12 @@
           { name: "time", type: "time" },
           { name: "expansion-description", type: "expansion-description" },
           { name: "location", type: "location" },
-          { name: "contact", type: "contact" }
+          { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.DAYTRIP:
         return [{ name: "carousel", type: "carousel" }];
       case RENDERER.EMERGENCY:
-        return [{ name: "contact", type: "contact" }];
+        return [{ name: "expansion-contact", type: "expansion-contact" }];
       case RENDERER.PROMOTION:
         return [
           { name: "carousel", type: "carousel" },
