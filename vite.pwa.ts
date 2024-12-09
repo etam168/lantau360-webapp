@@ -7,13 +7,13 @@ export const name = "Lantau360 Lite";
 export const pwaOptions: Partial<VitePWAOptions> = {
   mode: "production",
   base: "/",
-  registerType: "prompt",
-  injectRegister: "script",
+  registerType: "autoUpdate",
+  injectRegister: "auto",
   includeAssets: ["favicon.svg"],
   manifest: false,
   workbox: {
     cleanupOutdatedCaches: true,
-    skipWaiting: false,
+    skipWaiting: true,
     clientsClaim: true,
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",

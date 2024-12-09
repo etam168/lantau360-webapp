@@ -3,6 +3,7 @@ export default {
   workOffline: "work offline",
   updateAvailable: "Update Available",
   refreshApp: "A new version is available. Do you want to refresh?",
+  refresh: "Refresh",
   dismiss: "關閉",
   install: "安裝",
   appinstalled: "应用程序已安装"

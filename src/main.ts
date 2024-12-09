@@ -19,7 +19,7 @@ const updateSW = registerSW({
   onNeedRefresh() {
     Notify.create({
       message: t("notification.updateAvailable"),
-      color: "info",
+      color: "primary",
       position: "top",
       timeout: 0, // Set to 0 to prevent auto-dismiss
       actions: [
@@ -31,7 +31,7 @@ const updateSW = registerSW({
           }
         },
         {
-          label: t("common.dismiss"),
+          label: t("notification.dismiss"),
           color: "white",
           handler: () => {
             // Optional: Handle dismiss action
