@@ -7,7 +7,7 @@ export const ICONS = {
 };
 
 export const IMAGES = {
-  CAROUSEL_BACKGROUND: "./resources/images/home-bg.png",
+  CAROUSEL_BACKGROUND: "imag:resources/images/home-bg.png",
   CHECK_IN: "./resources/images/check_in.png",
   CREDIT_CARD_BACK: "./resources/images/visa_card_back.png",
   CREDIT_CARD_FRONT: "./resources/images/visa_card_front.png",
