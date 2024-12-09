@@ -3,17 +3,10 @@ import i18n from "@/plugins/i18n/i18n";
 import { Platform } from "quasar";
 
 const beforeInstallPromptEvent = ref();
-const isAppInstalled = ref(false);
+const isAppInstalled = ref(!!sessionStorage.getItem("isAppInstalled")); // Check if app is already installed from sessionStorage
 const showAppInstallButton = ref(false);
-const userAgent = window.navigator.userAgent;
 
 export function usePwaInstallService() {
-  // const appInstalledPrompt = () => {
-  //   Dialog.create({
-  //     component: InstallCompleteDialog
-  //   });
-  // };
-
   const isPWAInstallSupported = () => {
     return "BeforeInstallPromptEvent" in window;
   };
@@ -54,9 +47,9 @@ export function usePwaInstallService() {
       beforeInstallPromptEvent.value.prompt();
       beforeInstallPromptEvent.value.userChoice.then((choiceResult: any) => {
         if (choiceResult.outcome === "accepted") {
-          // console.log("User accepted the install prompt");
-        } else {
-          // console.log("User dismissed the install prompt");
+          // App installation accepted, mark it as installed
+          isAppInstalled.value = true;
+          sessionStorage.setItem("isAppInstalled", "true"); // Persist installation status
         }
         beforeInstallPromptEvent.value = null;
       });
@@ -64,20 +57,21 @@ export function usePwaInstallService() {
   };
 
   function shouldShowInstallButton() {
-    const result =
+    return (
       !isAppInstalled.value &&
       !isInStandaloneMode() &&
-      (Platform.is.ios || Platform.is.opera || Platform.is.edge || Platform.is.chrome);
-
-    return result;
+      (Platform.is.ios || Platform.is.opera || Platform.is.edge || Platform.is.chrome)
+    );
   }
 
   function showPlatformGuidance() {
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/install-items-dialog/index.vue")
-      )
-    });
+    if (!isAppInstalled.value) {
+      Dialog.create({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/install-items-dialog/index.vue")
+        )
+      });
+    }
   }
 
   async function checkInstalledRelatedApps() {
@@ -85,13 +79,16 @@ export function usePwaInstallService() {
 
     if ("getInstalledRelatedApps" in navigator) {
       const relatedApps = await navigator.getInstalledRelatedApps;
-
       // isAppInstalled.value = relatedApps.length > 0; // Check if any related apps are installed
     }
   }
 
+  window.addEventListener("appinstalled", () => {
+    isAppInstalled.value = true;
+    sessionStorage.setItem("isAppInstalled", "true"); // Persist installation status
+  });
+
   return {
-    // appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isInStandaloneMode,
