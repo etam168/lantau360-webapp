@@ -27,7 +27,7 @@ const name = "Lantau360 Lite";
 const pwaOptions: Partial<VitePWAOptions> = {
   mode: "development",
   base: "/",
-  registerType: "autoUpdate",
+  registerType: "prompt",
   injectRegister: "auto",
   includeAssets: ["favicon.svg"], // Included assets
   manifest: {
@@ -73,12 +73,19 @@ const pwaOptions: Partial<VitePWAOptions> = {
   },
   workbox: {
     // Add skipWaiting and clientsClaim for faster updates
+    cleanupOutdatedCaches: true,
     skipWaiting: true,
     clientsClaim: true,
 
     // globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
     // Selectively cache critical assets
-    globPatterns: ["index.html", "manifest.webmanifest", "resources/pwa/*", "favicon.svg"],
+    globPatterns: [
+      "**/*.{js,css,html,ico,png,svg,json,woff2}",
+      "index.html",
+      "manifest.webmanifest",
+      "resources/pwa/*",
+      "favicon.svg"
+    ],
     runtimeCaching: [
       {
         urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),
@@ -100,6 +107,28 @@ const pwaOptions: Partial<VitePWAOptions> = {
             maxAgeSeconds: 24 * 60 * 60 // 1 Day
           }
         }
+      },
+      {
+        urlPattern: /\.(?:js|css)$/i,
+        handler: "StaleWhileRevalidate",
+        options: {
+          cacheName: "static-resources",
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 24 * 60 * 60 // 1 Day
+          }
+        }
+      },
+      {
+        urlPattern: /^https:\/\/api(-dev)?\.[a-z0-9-]*lantau360[a-z0-9-]*\.com\/.*$/,
+        handler: "NetworkFirst",
+        options: {
+          cacheName: "api-cache",
+          expiration: {
+            maxEntries: 50,
+            maxAgeSeconds: 60 * 60 // 1 Hour
+          }
+        }
       }
       // {
       //   urlPattern: /\.(?:png|jpg|jpeg|svg|gif)$/,
@@ -115,7 +144,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     ]
   },
   devOptions: {
-    enabled: process.env.SW_DEV === "true",
+    enabled: true,
     type: "module",
     navigateFallback: "index.html",
     suppressWarnings: true
