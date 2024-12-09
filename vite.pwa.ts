@@ -1,4 +1,3 @@
-// vite.pwa.ts
 import { VitePWAOptions } from "vite-plugin-pwa";
 
 export const iconType = "icons";
@@ -18,7 +17,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",
       "index.html",
-      "manifest.webmanifest",
+      "manifest.json",
       "resources/pwa/*"
     ],
     navigateFallback: "index.html",
@@ -53,7 +52,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /\/manifest\.webmanifest/,
+        urlPattern: /\/manifest\.json/,
         handler: "NetworkFirst",
         options: {
           cacheName: "manifest-cache",

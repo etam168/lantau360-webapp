@@ -79,7 +79,7 @@ var pwaOptions = {
     clientsClaim: true,
     // globPatterns: ["**/*.{js,css,html,ico,png,svg,json,woff2}"],
     // Selectively cache critical assets
-    globPatterns: ["index.html", "manifest.webmanifest", "resources/pwa/*", "favicon.svg"],
+    globPatterns: ["index.html", "manifest.json",  "resources/pwa/*", "favicon.svg"],
     runtimeCaching: [
       {
         urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),

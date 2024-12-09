@@ -83,7 +83,7 @@ const pwaOptions: Partial<VitePWAOptions> = {
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2}",
       "index.html",
-      "manifest.webmanifest",
+      "manifest.json",
       "resources/pwa/*",
       "favicon.svg"
     ],
