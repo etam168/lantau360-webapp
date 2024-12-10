@@ -13,6 +13,7 @@ export default {
     email: "電子郵件 (用於登入)",
     firstName: "名字",
     lastName: "姓氏",
+    phone: "Phone",
     otp: "一次性密碼",
     newPassword: "新密碼",
     password: "密碼",

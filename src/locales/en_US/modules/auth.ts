@@ -28,6 +28,7 @@ export default {
     email: "Email (For Logon)",
     firstName: "First Name",
     lastName: "Last Name",
+    phone: "Phone",
     otp: "One Time Password",
     newPassword: "New Password",
     password: "Password",
