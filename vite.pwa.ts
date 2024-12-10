@@ -80,6 +80,22 @@ export const pwaOptions: Partial<VitePWAOptions> = {
             ignoreSearch: true
           }
         }
+      },
+      {
+        urlPattern: /^https:\/\/(?:[a-z]\.)?tile\.openstreetmap\.org\/\d+\/\d+\/\d+\.png$/,
+        handler: "CacheFirst",
+        options: {
+          cacheName: "map-cache",
+          expiration: {
+            maxEntries: 1000
+          },
+          cacheableResponse: {
+            statuses: [0, 200]
+          },
+          matchOptions: {
+            ignoreSearch: true
+          }
+        }
       }
     ]
   },

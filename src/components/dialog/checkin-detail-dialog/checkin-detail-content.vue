@@ -126,7 +126,7 @@
     checkInItem.value.latitude,
     checkInItem.value.longitude
   ]); //ref<LatLngExpression>([22.2544, 113.8642]);
-  const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
+  const localMapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
   const gtXsBounds = latLngBounds([
     [22.04, 113.7],

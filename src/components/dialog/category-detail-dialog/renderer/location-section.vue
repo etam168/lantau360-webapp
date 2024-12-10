@@ -83,7 +83,7 @@
 
   const markerPosition = computed<LatLngExpression>(() => [category.latitude, category.longitude]);
 
-  const localMapUrl = ref("/map-tiles/{z}/{x}/{y}.png");
+  const localMapUrl = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
   const gtXsBounds = latLngBounds(latLng(22.04, 113.7), latLng(22.5, 114.21));
   const ltSmBounds = latLngBounds(latLng(22.05, 113.66), latLng(22.51, 114.23));
   const bounds = computed(() => ($q.screen.lt.sm ? ltSmBounds : gtXsBounds));
