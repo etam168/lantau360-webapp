@@ -1,5 +1,4 @@
 <template>
-  <h1>{{ $t("name") }}</h1>
   <router-view />
 </template>
 
