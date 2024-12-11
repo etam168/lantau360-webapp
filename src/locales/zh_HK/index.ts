@@ -23,5 +23,6 @@ export default {
   home,
   notification,
   more,
-  posting
+  posting,
+  name: "Lantau360 輕巧版"
 };

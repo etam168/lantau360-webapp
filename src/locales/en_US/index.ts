@@ -25,5 +25,6 @@ export default {
   notification,
   more,
   posting,
-  member
+  member,
+  name: "Lantau360 Lite"
 };
