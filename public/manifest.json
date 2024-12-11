@@ -1,8 +1,9 @@
 {
   "name": "Lantau360 Lite",
   "short_name": "Lantau360",
-  "theme_color": "#e6171a",
-  "background_color": "#e6171a",
+  "version": "1.0.1",
+  "theme_color": "#a06ded",
+  "background_color": "#00652E",
   "start_url": "/?source=pwa",
   "display": "standalone",
   "icons": [

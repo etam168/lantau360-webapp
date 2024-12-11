@@ -6,13 +6,53 @@ export const name = "Lantau360 Lite";
 export const pwaOptions: Partial<VitePWAOptions> = {
   mode: "production",
   base: "/",
-  registerType: "autoUpdate",
-  injectRegister: "auto",
+  registerType: "prompt",
+  injectRegister: "script",
   includeAssets: ["favicon.svg"],
-  manifest: false,
+  manifest: {
+    id: "/?homescreen=1",
+    name: "Lantau360 Lite",
+    short_name: "Lantau360",
+    theme_color: "#a06ded",
+    background_color: "#00652E",
+    start_url: "/?source=pwa&v=1.0.1", // Include version in start_url
+    display: "standalone",
+    icons: [
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-48-48.png?v=6",
+        sizes: "48x48",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-72-72.png?v=6",
+        sizes: "72x72",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-96-96.png?v=6",
+        sizes: "96x96",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-144-144.png?v=6",
+        sizes: "144x144",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-192-192.png?v=6",
+        sizes: "192x192",
+        type: "image/png"
+      },
+      {
+        src: "./resources/pwa/icons/android/android-launchericon-512-512.png?v=6",
+        sizes: "512x512",
+        type: "image/png"
+      }
+    ]
+  },
   workbox: {
     cleanupOutdatedCaches: true,
-    skipWaiting: true,
+    skipWaiting: false,
     clientsClaim: true,
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",
@@ -30,7 +70,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
           cacheName: "pwa-assets",
           expiration: {
             maxEntries: 20,
-            maxAgeSeconds: 60 * 60 // 👈 CHANGE: Increase to 1 hour
+            maxAgeSeconds: 60 * 60 // 1 hour
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -44,7 +84,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
           cacheName: "static-resources",
           expiration: {
             maxEntries: 100,
-            maxAgeSeconds: 60 * 60 // 👈 CHANGE: Increase to 1 hour
+            maxAgeSeconds: 60 * 60 // 1 hour
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -52,14 +92,20 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /\/manifest\.json/,
+        urlPattern: /\/manifest\.json/, // Matches requests for manifest.json
         handler: "NetworkFirst",
         options: {
           cacheName: "manifest-cache",
-          networkTimeoutSeconds: 10,
+          networkTimeoutSeconds: 3,
           expiration: {
             maxEntries: 1,
-            maxAgeSeconds: 60 // 1 minute
+            maxAgeSeconds: 0
+          },
+          cacheableResponse: {
+            statuses: [0, 200]
+          },
+          matchOptions: {
+            ignoreSearch: false
           }
         }
       },
