@@ -12,7 +12,6 @@ import more from "./modules/more";
 import posting from "./modules/posting";
 import member from "./modules/member";
 
-
 export default {
   action,
   auth,
