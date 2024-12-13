@@ -108,6 +108,7 @@
           { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.BUSINESS:
+      case RENDERER.RESTAURANT:
         return [
           { name: "carousel", type: "carousel" },
           { name: "time", type: "time" },
