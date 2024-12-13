@@ -80,14 +80,19 @@
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
+  category as BusinessView;
+
   const maskGalleryItems = computed(() => {
+    // Use type assertion to assert category has displayMask
+    const categoryWithMask = category as { displayMask: number };
+
     // When displayMask is 0 or negative, all gallery items are shown
-    if (displayMask < 1) {
+    if (categoryWithMask.displayMask < 1) {
       return galleryItems.value;
     }
 
     return galleryItems.value.filter((_, index) => {
-      return !(displayMask & (1 << index));
+      return !(categoryWithMask.displayMask & (1 << index));
     });
   });
 
