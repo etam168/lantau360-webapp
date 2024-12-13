@@ -80,19 +80,29 @@
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
-  category as BusinessView;
-
   const maskGalleryItems = computed(() => {
-    // Use type assertion to assert category has displayMask
-    const categoryWithMask = category as { displayMask: number };
+    // Get the displayMask from props (default value)
+    const defaultDisplayMask = displayMask;
 
-    // When displayMask is 0 or negative, all gallery items are shown
-    if (categoryWithMask.displayMask < 1) {
+    // Check if category has a displayMask (category's displayMask should override prop if non-zero)
+    const categoryWithMask = category as { displayMask?: number };
+
+    // Determine the effective displayMask:
+    // - If category.displayMask is non-zero, use it
+    // - If category.displayMask is 0 or undefined, use the prop displayMask
+    const effectiveDisplayMask =
+      categoryWithMask.displayMask !== undefined && categoryWithMask.displayMask !== 0
+        ? categoryWithMask.displayMask
+        : defaultDisplayMask;
+
+    // If effectiveDisplayMask is less than 1, return all gallery items
+    if (effectiveDisplayMask < 1) {
       return galleryItems.value;
     }
 
+    // Filter gallery items based on the effective displayMask
     return galleryItems.value.filter((_, index) => {
-      return !(categoryWithMask.displayMask & (1 << index));
+      return !(effectiveDisplayMask & (1 << index)); // Hide item if the corresponding bit is 1
     });
   });
 
