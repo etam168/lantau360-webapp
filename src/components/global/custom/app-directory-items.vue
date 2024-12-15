@@ -4,8 +4,14 @@
     <div
       v-for="(item, index) in sortedData"
       :key="index"
-      :class="$q.screen.lt.sm ? 'col-4' : 'col-3'"
-      class="flex justify-center items-center"
+      :class="{
+        'col-12': item.groupId === 5, // Full width column for groupId 5
+        'col-4': $q.screen.lt.sm && item.groupId !== 5, // 3 columns for smaller screens (except groupId 5)
+        'col-3': !$q.screen.lt.sm && item.groupId !== 5, // 4 columns for larger screens (except groupId 5)
+        'justify-start': item.groupId === 5, // Justify-start for groupId 5
+        'justify-center': item.groupId !== 5 // Default justify-center for other groupIds
+      }"
+      class="flex items-center"
     >
       <q-card flat>
         <q-card-section class="text-center">

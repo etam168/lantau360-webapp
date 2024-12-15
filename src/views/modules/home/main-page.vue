@@ -17,8 +17,8 @@
         <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
 
-      <q-tab-panel name="tripAdvisor">
-        <app-directory-items :data="tripAdvisorData" @on-directory-item="onDirectoryItem" />
+      <q-tab-panel name="sightSeeing">
+        <app-directory-items :data="sightSeeingData" @on-directory-item="onDirectoryItem" />
       </q-tab-panel>
     </q-tab-panels>
   </q-page>
@@ -64,7 +64,7 @@
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
     { name: "resources", label: t(`${i18nKey}.tabItem.resources`) },
-    { name: "tripAdvisor", label: t(`${i18nKey}.tabItem.tripAdvisor`) }
+    { name: "sightSeeing", label: t(`${i18nKey}.tabItem.sightSeeing`) }
   ]);
 
   const directoryData = computed(() =>
@@ -75,7 +75,7 @@
     homeDirectories.value.filter((dir: Directory) => dir.groupId == 3)
   );
 
-  const tripAdvisorData = computed(() =>
+  const sightSeeingData = computed(() =>
     homeDirectories.value.filter((dir: Directory) => dir.groupId == 5)
   );
 

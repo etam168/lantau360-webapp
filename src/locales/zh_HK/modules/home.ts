@@ -11,7 +11,7 @@ export default {
   tabItem: {
     allLocations: "所有位置",
     resources: "資源",
-    tripAdvisor: "旅遊顧問"
+    sightSeeing: "旅遊顧問"
   },
   searchBar: {
     placeholder: "輸入關鍵詞",
