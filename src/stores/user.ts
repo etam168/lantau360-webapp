@@ -62,9 +62,9 @@ export const useUserStore = defineStore(
     async function LogOut() {
       SetUserInfo({ logout: true });
     }
-
     function SetUserInfo(payload: any) {
-      const resetFields = [
+      // Fields to reset
+      const resetFields: (keyof typeof fieldsMap)[] = [
         "token",
         "expiredToken",
         "refreshToken",
@@ -84,15 +84,40 @@ export const useUserStore = defineStore(
         "refreshTokenExpiry"
       ];
 
+      // A mapping of fields to their reactive references
+      const fieldsMap = {
+        token,
+        expiredToken,
+        refreshToken,
+        roles,
+        user,
+        userId,
+        staffId,
+        memberId,
+        name,
+        email,
+        phone,
+        profilePic,
+        code,
+        totalPoints,
+        spendPoints,
+        availabelPoints,
+        refreshTokenExpiry
+      };
+
       if (payload.logout) {
+        // Reset fields to empty string or null for token-related fields
         resetFields.forEach(field => {
-          const refField = eval(field);
+          const refField = fieldsMap[field];
           if (refField) refField.value = "";
         });
       } else {
+        // Update fields with the values from payload
         resetFields.forEach(field => {
-          const refField = eval(field);
-          if (refField) refField.value = payload[field] || refField.value;
+          const refField = fieldsMap[field];
+          if (refField) {
+            refField.value = payload[field] || refField.value;
+          }
         });
 
         expiredToken.value = payload.token;

@@ -58,7 +58,6 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",
       "index.html",
       "manifest.webmanifest",
-      "webmanifest",
       "resources/pwa/*"
     ],
     navigateFallback: "index.html",
