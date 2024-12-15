@@ -5,7 +5,7 @@
       v-for="(item, index) in sortedData"
       :key="index"
       :class="{
-        'col-12': item.groupId === 5, // Full width column for groupId 5
+        'col-6': item.groupId === 5, // Full width column for groupId 5
         'col-4': $q.screen.lt.sm && item.groupId !== 5, // 3 columns for smaller screens (except groupId 5)
         'col-3': !$q.screen.lt.sm && item.groupId !== 5, // 4 columns for larger screens (except groupId 5)
         'justify-start': item.groupId === 5, // Justify-start for groupId 5
@@ -13,7 +13,29 @@
       }"
       class="flex items-center"
     >
-      <q-card flat>
+      <!-- Use q-card for groupId 5 -->
+      <q-card v-if="item.groupId === 5" class="my-card full-width">
+        <q-img :ratio="11 / 8" :src="getImageURL(item.imagePath)" />
+        <q-card-section>
+          <q-item dense class="q-pa-none">
+            <q-item-section>
+              <q-item-label>{{ getDirectoryTitle(item) }}</q-item-label>
+            </q-item-section>
+          </q-item>
+        </q-card-section>
+        <q-card-actions>
+          <q-btn
+            outline
+            dense
+            color="primary"
+            :label="$t('moreDetail')"
+            class="full-width"
+            @click="handleClick(item)"
+          />
+        </q-card-actions>
+      </q-card>
+
+      <q-card flat v-else>
         <q-card-section class="text-center">
           <app-avatar :image-path="item.imagePath" @click="handleClick(item)" />
           <q-item-label class="q-mt-sm">{{ getDirectoryTitle(item) }}</q-item-label>
@@ -40,7 +62,7 @@
 
   const { locale } = useI18n({ useScope: "global" });
 
-  const { translate, translateAlt } = useUtilities(locale.value);
+  const { getImageURL, translate, translateAlt } = useUtilities(locale.value);
   const $q = useQuasar();
 
   function getDirectoryTitle(item: DirectoryTypes) {

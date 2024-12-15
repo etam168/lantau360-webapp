@@ -11,7 +11,7 @@ export default {
   tabItem: {
     allLocations: "All Location",
     resources: "Resources",
-    sightSeeing: "Sight Seeing"
+    sightSeeing: "Sightseeing"
   },
   searchBar: {
     placeholder: "Enter Keyword",
