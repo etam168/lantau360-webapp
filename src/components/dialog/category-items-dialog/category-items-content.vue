@@ -1,12 +1,19 @@
 <!-- category-items-content.vue -->
 <template>
   <!-- Check if categoryItems is empty -->
-  <div
+
+  <!-- <div
     v-if="categoryItems.length === 0"
     class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
   >
     {{ $t("errors.noRecord") }}
-  </div>
+  </div> -->
+
+  <q-item>
+    <q-item-section>
+      <q-item-label> <div v-html="translatedContent"></div></q-item-label>
+    </q-item-section>
+  </q-item>
 
   <template v-if="groupBykey">
     <app-tab-select
@@ -82,6 +89,10 @@
 
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
+  );
+
+  const translatedContent: any = ref(
+    translate(directory.description, directory.meta, "description")
   );
 
   const groupedArray = computed(() => {

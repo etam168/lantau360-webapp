@@ -1,17 +1,18 @@
-<!-- app-directory-items.vue -->
 <template>
   <div class="row q-col-gutter-md" v-if="data.length > 0">
     <div
       v-for="(item, index) in sortedData"
       :key="index"
-      :class="{
-        'col-6': item.groupId === 5, // Full width column for groupId 5
-        'col-4': $q.screen.lt.sm && item.groupId !== 5, // 3 columns for smaller screens (except groupId 5)
-        'col-3': !$q.screen.lt.sm && item.groupId !== 5, // 4 columns for larger screens (except groupId 5)
-        'justify-start': item.groupId === 5, // Justify-start for groupId 5
-        'justify-center': item.groupId !== 5 // Default justify-center for other groupIds
-      }"
-      class="flex items-center"
+      :class="[
+        item.groupId === 5
+          ? $q.screen.lt.sm
+            ? 'col-6'
+            : 'col-3' // For groupId 5, col-6 on small screens, col-3 on larger screens
+          : $q.screen.lt.sm
+            ? 'col-4'
+            : 'col-3' // For other items, col-4 on small screens, col-3 on larger screens
+      ]"
+      class="flex justify-center items-center"
     >
       <!-- Use q-card for groupId 5 -->
       <q-card v-if="item.groupId === 5" class="my-card full-width">
