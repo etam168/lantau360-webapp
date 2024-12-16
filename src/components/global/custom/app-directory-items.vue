@@ -20,7 +20,17 @@
         <q-card-section>
           <q-item dense class="q-pa-none">
             <q-item-section>
-              <q-item-label>{{ getDirectoryTitle(item) }}</q-item-label>
+              <q-item-label>{{ getDirectorySubTitle(item) }}</q-item-label>
+              <q-item-label class="text-caption">{{ getDirectoryTitle(item) }}</q-item-label>
+            </q-item-section>
+          </q-item>
+
+          <q-item dense class="q-pa-none">
+            <q-item-section>
+              <q-item-label
+                ><q-icon :name="fasClockRotateLeft" class="q-mr-sm"></q-icon>Est. 41m | 2.3
+                km</q-item-label
+              >
             </q-item-section>
           </q-item>
         </q-card-section>
@@ -29,7 +39,7 @@
             outline
             dense
             color="primary"
-            :label="$t('moreDetail')"
+            :label="$t('more Detail')"
             class="full-width"
             @click="handleClick(item)"
           />
@@ -51,6 +61,7 @@
 </template>
 
 <script setup lang="ts">
+  import { fasClockRotateLeft } from "@quasar/extras/fontawesome-v6";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Emits
@@ -72,6 +83,12 @@
     return shortNameAlt != null
       ? translateAlt(shortName, shortNameAlt, "shortName")
       : translate(shortName, meta, "shortName");
+  }
+
+  function getDirectorySubTitle(item: DirectoryTypes) {
+    const { directoryName, meta } = item;
+
+    return translate(directoryName, meta, "directoryName");
   }
 
   const sortedData = computed(() => {

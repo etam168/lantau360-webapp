@@ -2,18 +2,20 @@
 <template>
   <!-- Check if categoryItems is empty -->
 
-  <!-- <div
-    v-if="categoryItems.length === 0"
+  <div
+    v-if="directory.groupId !== 5 && categoryItems.length === 0"
     class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
   >
     {{ $t("errors.noRecord") }}
-  </div> -->
+  </div>
 
-  <q-item>
-    <q-item-section>
-      <q-item-label> <div v-html="translatedContent"></div></q-item-label>
-    </q-item-section>
-  </q-item>
+  <q-scroll-area style="height: calc(100vh - 280px)" v-if="directory.groupId === 5">
+    <q-item>
+      <q-item-section>
+        <q-item-label> <div v-html="translatedContent"></div></q-item-label>
+      </q-item-section>
+    </q-item>
+  </q-scroll-area>
 
   <template v-if="groupBykey">
     <app-tab-select
@@ -34,6 +36,7 @@
         <app-category-list-items
           :categoryItems="filterGroupedArray(item.name)"
           :checkIns
+          :directory
           :entityKey
           @on-category-detail="onCategoryDetail"
         />
@@ -45,6 +48,7 @@
     v-else
     :categoryItems
     :checkIns
+    :directory
     :entityKey
     @on-category-detail="onCategoryDetail"
   />

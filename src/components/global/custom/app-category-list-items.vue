@@ -16,6 +16,7 @@
           <q-item-section>
             <q-item-label> {{ line1(item) }} </q-item-label>
             <q-item-label> {{ line2(item) }} </q-item-label>
+            <q-item-label v-if="directory.groupId === 5"> {{ title(item) }} </q-item-label>
           </q-item-section>
 
           <q-item-section side>
@@ -35,6 +36,7 @@
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { Directory } from "@/interfaces/models/entities/directory";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
@@ -51,11 +53,13 @@
   const {
     categoryItems,
     checkIns = [],
-    entityKey
+    entityKey,
+    directory
   } = defineProps<{
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
     entityKey: EntityURLKey;
+    directory: Directory;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
@@ -90,6 +94,10 @@
 
   function line2(item: CategoryTypes) {
     return translate(item.subtitle1, item.meta, "subtitle1");
+  }
+
+  function title(item: CategoryTypes) {
+    return translate(item.title, item.meta, "title");
   }
 
   const isCheckedIn = (item: CategoryTypes): boolean => {
