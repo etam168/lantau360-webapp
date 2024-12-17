@@ -55,7 +55,6 @@
 </template>
 
 <script setup lang="ts">
-  import { fasClockRotateLeft } from "@quasar/extras/fontawesome-v6";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Emits
