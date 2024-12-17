@@ -132,7 +132,10 @@
           { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.DAYTRIP:
-        return [{ name: "carousel", type: "carousel" }];
+        return [
+          { name: "carousel", type: "carousel" },
+          { name: "description", type: "description" }
+        ];
       case RENDERER.EMERGENCY:
         return [{ name: "expansion-contact", type: "expansion-contact" }];
       case RENDERER.PROMOTION:
@@ -184,6 +187,8 @@
     switch ((category as SiteView).directoryTemplate) {
       case TEMPLATE.ATM.value:
         return RENDERER.ATM;
+      case TEMPLATE.DAYTRIP.value:
+        return RENDERER.DAYTRIP;
       case TEMPLATE.TIMETABLE.value:
         return RENDERER.TIMETABLE;
       case TEMPLATE.TAXI.value:

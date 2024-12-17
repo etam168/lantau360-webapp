@@ -9,13 +9,13 @@
     {{ $t("errors.noRecord") }}
   </div>
 
-  <q-scroll-area style="height: calc(100vh - 280px)" v-if="directory.groupId === 5">
-    <q-item>
-      <q-item-section>
-        <q-item-label> <div v-html="translatedContent"></div></q-item-label>
-      </q-item-section>
-    </q-item>
-  </q-scroll-area>
+  <q-card bordered flat v-if="directory.groupId === 5" class="q-ma-md">
+    <q-responsive :ratio="16 / 9">
+      <q-card-section>Mui Wo ↔ Tung Chung</q-card-section>
+    </q-responsive>
+  </q-card>
+
+  <expansion-description-section v-if="directory.groupId === 5" :directory />
 
   <template v-if="groupBykey">
     <app-tab-select
@@ -61,6 +61,8 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
+  import expansionDescriptionSection from "./expansion-description-section.vue";
+
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
 
@@ -93,10 +95,6 @@
 
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
-  );
-
-  const translatedContent: any = ref(
-    translate(directory.description, directory.meta, "description")
   );
 
   const groupedArray = computed(() => {

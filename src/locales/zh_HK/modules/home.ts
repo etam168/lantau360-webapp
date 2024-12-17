@@ -3,7 +3,8 @@ export default {
     description: "描述",
     location: "位置",
     contactInfo: "聯絡資訊",
-    contactnotavailable: "联系方式不可用"
+    contactnotavailable: "联系方式不可用",
+    tripDetail: "Trip Detail"
   },
 
   other: "其他",

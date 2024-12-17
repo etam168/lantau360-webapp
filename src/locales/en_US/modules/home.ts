@@ -3,7 +3,8 @@ export default {
     description: "Description",
     location: "Location",
     contactInfo: "Contact Info",
-    contactnotavailable: "Contact info not available"
+    contactnotavailable: "Contact info not available",
+    tripDetail: "Trip Detail"
   },
 
   other: "Other",

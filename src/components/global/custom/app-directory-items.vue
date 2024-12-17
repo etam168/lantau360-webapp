@@ -17,24 +17,18 @@
       <!-- Use q-card for groupId 5 -->
       <q-card v-if="item.groupId === 5" class="my-card full-width">
         <q-img :ratio="11 / 8" :src="getImageURL(item.imagePath)" />
-        <q-card-section>
+        <q-separator color="white" />
+        <q-card-section class="q-pa-sm">
           <q-item dense class="q-pa-none">
             <q-item-section>
-              <q-item-label>{{ getDirectorySubTitle(item) }}</q-item-label>
+              <q-item-label class="text-weight-medium">{{
+                getDirectorySubTitle(item)
+              }}</q-item-label>
               <q-item-label class="text-caption">{{ getDirectoryTitle(item) }}</q-item-label>
             </q-item-section>
           </q-item>
-
-          <q-item dense class="q-pa-none">
-            <q-item-section>
-              <q-item-label
-                ><q-icon :name="fasClockRotateLeft" class="q-mr-sm"></q-icon>Est. 41m | 2.3
-                km</q-item-label
-              >
-            </q-item-section>
-          </q-item>
         </q-card-section>
-        <q-card-actions>
+        <q-card-actions class="q-pt-none">
           <q-btn
             outline
             dense
