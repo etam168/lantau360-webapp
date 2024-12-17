@@ -9,49 +9,19 @@
   </div>
 
   <!-- Fixed Top Section and Scrollable Content -->
-  <div class="full-height">
+  <template class="full-height" v-if="directory.groupId === 5">
     <!-- Top Fixed Card -->
-    <q-card v-if="directory.groupId === 5" flat bordered class="q-ma-md">
+    <q-card flat bordered class="q-ma-md">
       <q-responsive :ratio="16 / 9">
         <q-card-section> Mui Wo ↔ Tung Chung </q-card-section>
       </q-responsive>
     </q-card>
 
     <!-- Scrollable Content Area -->
-    <q-scroll-area class="q-mx-md" style="height: calc(100vh - 286px)">
+    <q-scroll-area style="height: calc(100vh - 286px)">
       <expansion-description-section v-if="directory.groupId === 5" :directory />
 
-      <template v-if="groupBykey">
-        <!-- Tab Select -->
-        <app-tab-select
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-          class="q-pt-sm"
-        />
-
-        <!-- Tab Panels -->
-        <q-tab-panels v-model="tab">
-          <q-tab-panel
-            v-for="(item, index) in tabItems"
-            :key="index"
-            :name="item.name"
-            class="q-pa-none"
-          >
-            <app-category-list-items
-              :categoryItems="filterGroupedArray(item.name)"
-              :checkIns
-              :directory
-              :entityKey
-              @on-category-detail="onCategoryDetail"
-            />
-          </q-tab-panel>
-        </q-tab-panels>
-      </template>
-
-      <!-- Default List View -->
       <app-category-list-items
-        v-else
         :categoryItems
         :checkIns
         :directory
@@ -59,7 +29,47 @@
         @on-category-detail="onCategoryDetail"
       />
     </q-scroll-area>
-  </div>
+  </template>
+
+  <template v-else>
+    <template v-if="directory.groupId !== 5 && groupBykey">
+      <!-- Tab Select -->
+      <app-tab-select
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+        class="q-pt-sm"
+      />
+
+      <!-- Tab Panels -->
+      <q-tab-panels v-model="tab">
+        <q-tab-panel
+          v-for="(item, index) in tabItems"
+          :key="index"
+          :name="item.name"
+          class="q-pa-none"
+        >
+          <app-category-list-items
+            :categoryItems="filterGroupedArray(item.name)"
+            :checkIns
+            :directory
+            :entityKey
+            @on-category-detail="onCategoryDetail"
+          />
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
+
+    <!-- Default List View -->
+    <app-category-list-items
+      v-else
+      :categoryItems
+      :checkIns
+      :directory
+      :entityKey
+      @on-category-detail="onCategoryDetail"
+    />
+  </template>
 </template>
 
 <script setup lang="ts">
