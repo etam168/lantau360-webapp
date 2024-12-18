@@ -3,11 +3,12 @@
 </template>
 
 <script setup lang="ts">
-  const $q = useQuasar();
   import { Platform } from "quasar";
+  const $q = useQuasar();
+
+  $q.addressbarColor.set("#a2e3fa");
 
   const {
-    // appInstalledPrompt,
     beforeInstallPromptEvent,
     isAppInstalled,
     isPWAInstallSupported,

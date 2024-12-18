@@ -2,8 +2,8 @@ import { createApp } from "vue";
 import { registerSW } from "virtual:pwa-register";
 import { registerPlugins } from "@/plugins";
 import { Notify } from "quasar";
-import i18n from "@/plugins/i18n/i18n";
 
+import i18n from "@/plugins/i18n/i18n";
 import App from "@/App.vue";
 import "@/plugins/axios";
 import "quasar/src/css/index.sass";
@@ -40,25 +40,6 @@ const updateSW = registerSW({
       ]
     });
   },
-
-  //   // Just inform the user
-  //   Notify.create({
-  //     message: t("notification.updateAvailable"),
-  //     color: "info",
-  //     timeout: 2000,
-  //     actions: [
-  //       {
-  //         label: t("notification.refresh"),
-  //         color: "primary",
-  //         handler: () => {
-  //           updateSW(); // Trigger SW update
-  //         }
-  //       },
-  //       { icon: "close", color: "white" }
-  //     ]
-  //   });
-  //   updateSW();
-  // },
 
   onOfflineReady() {
     // Notify.create({

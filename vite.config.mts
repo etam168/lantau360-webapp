@@ -107,11 +107,6 @@ export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(version)
   },
-  // resolve: {
-  //   alias: {
-  //     "@": fileURLToPath(new URL("./src", import.meta.url))
-  //   }
-  // },
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "./src"),
