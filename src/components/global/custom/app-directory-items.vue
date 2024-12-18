@@ -33,7 +33,7 @@
             outline
             dense
             color="primary"
-            :label="$t('more Detail')"
+            :label="$t(`${i18nKey}.moreDetail`)"
             class="full-width"
             @click="handleClick(item)"
           />
@@ -69,6 +69,7 @@
 
   const { getImageURL, translate, translateAlt } = useUtilities(locale.value);
   const $q = useQuasar();
+  const i18nKey = "home";
 
   function getDirectoryTitle(item: DirectoryTypes) {
     const { shortName, shortNameAlt, meta } = item;

@@ -8,6 +8,7 @@ export default {
   },
 
   other: "Other",
+  moreDetail: "More Detail",
 
   tabItem: {
     allLocations: "All Location",

@@ -83,7 +83,9 @@ export function useUtilities(locale?: string) {
     switch (locale) {
       case "hk":
       case "cn":
-        return meta?.i18n?.[locale]?.[key] ?? label;
+        const translation = meta?.i18n?.[locale]?.[key];
+        return typeof translation === "string" && translation.trim() !== "" ? translation : label;
+
       default:
         return label;
     }
@@ -91,7 +93,9 @@ export function useUtilities(locale?: string) {
 
   function translateAlt(label: string, altName: any, key: string) {
     const { locale } = i18n.global;
-    return altName?.i18n?.[locale]?.[key] || label;
+    const translation = altName?.i18n?.[locale]?.[key];
+
+    return typeof translation === "string" && translation.trim() !== "" ? translation : label;
   }
 
   function resetObject<T>(obj: T): T {

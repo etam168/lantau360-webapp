@@ -4,10 +4,11 @@ export default {
     location: "位置",
     contactInfo: "联系信息",
     contactnotavailable: "联系方式不可用",
-    tripDetail: "Trip Detail"
+    tripDetail: "行程详细信息"
   },
 
   other: "其他",
+  moreDetail: "更多细节",
 
   tabItem: {
     allLocations: "地标",
