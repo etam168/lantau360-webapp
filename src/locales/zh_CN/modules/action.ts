@@ -8,6 +8,7 @@ export default {
   delete: "删除",
   edit: "编辑",
   emailVerification: "电子邮件验证",
+  fullScreen: "全屏",
   galleryPhotos: '相片 - "{imageLength}" / "10 - 您最多可以添加10张图片"',
   goToHome: "回到首页",
   ok: "确定",

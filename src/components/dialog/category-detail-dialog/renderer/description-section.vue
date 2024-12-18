@@ -1,7 +1,9 @@
 <template>
-  <q-item>
-    <q-item-label> <div v-html="translatedContent"></div></q-item-label>
-  </q-item>
+  <q-scroll-area style="height: calc(100vh - 262.75px)">
+    <q-item>
+      <q-item-label> <div v-html="translatedContent"></div></q-item-label>
+    </q-item>
+  </q-scroll-area>
 </template>
 
 <script setup lang="ts">

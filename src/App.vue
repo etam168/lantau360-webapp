@@ -6,7 +6,7 @@
   import { Platform } from "quasar";
   const $q = useQuasar();
 
-  $q.addressbarColor.set("#a2e3fa");
+  $q.addressbarColor.set("#478d45");
 
   const {
     beforeInstallPromptEvent,

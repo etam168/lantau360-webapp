@@ -1,30 +1,28 @@
 <template>
-  <q-page>
-    <template v-for="(item, index) in renderItems" :key="index">
-      <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
-      <contact-section v-else-if="item.type === 'contact'" :category />
-      <expansion-contact-section v-else-if="item.type === 'expansion-contact'" :category />
-      <description-section v-else-if="item.type === 'description'" :category />
-      <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
-      <open-close-time-section v-else-if="item.type === 'time'" :category />
-      <promotion-section v-else-if="item.type === 'promotion'" :category />
-      <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
+  <template v-for="(item, index) in renderItems" :key="index" class="full-height">
+    <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
+    <contact-section v-else-if="item.type === 'contact'" :category />
+    <expansion-contact-section v-else-if="item.type === 'expansion-contact'" :category />
+    <description-section v-else-if="item.type === 'description'" :category />
+    <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
+    <open-close-time-section v-else-if="item.type === 'time'" :category />
+    <promotion-section v-else-if="item.type === 'promotion'" :category />
+    <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
 
-      <expansion-description-section
-        v-else-if="item.type === 'expansion-description'"
-        :category
-        :entityKey
-      />
+    <expansion-description-section
+      v-else-if="item.type === 'expansion-description'"
+      :category
+      :entityKey
+    />
 
-      <location-section
-        v-else-if="item.type === 'location'"
-        :category
-        :has-check-in="entityKey.includes('SITE')"
-        @check-in="requestCheckIn(category)"
-        @open-map="openGoogleMaps(category)"
-      />
-    </template>
-  </q-page>
+    <location-section
+      v-else-if="item.type === 'location'"
+      :category
+      :has-check-in="entityKey.includes('SITE')"
+      @check-in="requestCheckIn(category)"
+      @open-map="openGoogleMaps(category)"
+    />
+  </template>
 </template>
 
 <script setup lang="ts">

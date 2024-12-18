@@ -8,6 +8,7 @@ export default {
   delete: "刪除",
   edit: "編輯",
   emailVerification: "電子郵件驗證",
+  fullScreen: "全螢幕",
   galleryPhotos: '相片 - "{imageLength}" / "10 - 您最多可以添加10張圖片"',
   goToHome: "回到首頁",
   ok: "確定",

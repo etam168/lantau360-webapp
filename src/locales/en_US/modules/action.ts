@@ -8,6 +8,7 @@ export default {
   delete: "Delete",
   edit: "Edit",
   emailVerification: "Email Verification",
+  fullScreen: "Full Screen",
   galleryPhotos: 'Photos - "{imageLength}" / "10 - You can add up to 10 pics"',
   goToHome: "Go to Home",
   ok: "OK",
