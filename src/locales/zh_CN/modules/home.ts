@@ -10,9 +10,9 @@ export default {
   other: "其他",
 
   tabItem: {
-    allLocations: "所有位置",
-    resources: "资源",
-    sightSeeing: "旅游顾问"
+    allLocations: "地标",
+    resources: "资讯",
+    sightSeeing: "畅游大屿山"
   },
   searchBar: {
     placeholder: "输入关键词",

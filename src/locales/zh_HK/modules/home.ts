@@ -10,9 +10,9 @@ export default {
   other: "其他",
 
   tabItem: {
-    allLocations: "所有位置",
-    resources: "資源",
-    sightSeeing: "旅遊顧問"
+    allLocations: "地標",
+    resources: "資訊 ",
+    sightSeeing: "暢遊大嶼山"
   },
   searchBar: {
     placeholder: "輸入關鍵詞",
