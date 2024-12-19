@@ -1,7 +1,7 @@
 <template>
   <q-card class="q-ma-md">
     <q-card-section class="q-pa-sm">
-      <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasChevronDown">
+      <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasAngleDown">
         <template v-slot:header>
           <q-item-section class="text-h6">
             {{ $t(`${i18nKey}.description`) }}
@@ -29,7 +29,7 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasChevronDown, fasHeart } from "@quasar/extras/fontawesome-v6";
+  import { fasAngleDown, fasHeart } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";

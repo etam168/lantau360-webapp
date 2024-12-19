@@ -4,7 +4,7 @@
       group="itemGroup"
       class="q-px-sm"
       expand-icon-toggle
-      :expand-icon="fasChevronDown"
+      :expand-icon="fasAngleDown"
       dense-toggle
       default-opened
     >
@@ -45,7 +45,7 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasChevronDown } from "@quasar/extras/fontawesome-v6";
+  import { fasAngleDown } from "@quasar/extras/fontawesome-v6";
   import { LatLngExpression, latLng, latLngBounds } from "leaflet";
 
   // Interface files

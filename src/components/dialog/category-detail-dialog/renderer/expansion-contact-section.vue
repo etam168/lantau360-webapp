@@ -4,7 +4,7 @@
       <q-expansion-item
         :label="$t(`${i18nKey}.contactInfo`)"
         group="itemGroup"
-        :expand-icon="fasChevronDown"
+        :expand-icon="fasAngleDown"
         dense
         dense-toggle
         header-class="text-h6"
@@ -57,7 +57,7 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasChevronDown, fasPhone, fabSquareWhatsapp } from "@quasar/extras/fontawesome-v6";
+  import { fasAngleDown, fasPhone, fabSquareWhatsapp } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import type { BusinessView } from "@/interfaces/models/views/business-view";
