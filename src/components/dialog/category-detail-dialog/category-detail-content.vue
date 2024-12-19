@@ -1,8 +1,11 @@
 <template>
   <template v-for="(item, index) in renderItems" :key="index" class="full-height">
     <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
-    <contact-section v-else-if="item.type === 'contact'" :category />
-    <expansion-contact-section v-else-if="item.type === 'expansion-contact'" :category />
+    <contact-section v-else-if="item.type === 'contact' && showContactSection" :category />
+    <expansion-contact-section
+      v-else-if="item.type === 'expansion-contact' && showContactSection"
+      :category
+    />
     <description-section v-else-if="item.type === 'description'" :category />
     <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
     <open-close-time-section v-else-if="item.type === 'time'" :category />
@@ -102,6 +105,10 @@
     return galleryItems.value.filter((_, index) => {
       return !(effectiveDisplayMask & (1 << index)); // Hide item if the corresponding bit is 1
     });
+  });
+
+  const showContactSection = computed(() => {
+    return !!(category.contactPhone || category.contactWhatsApp);
   });
 
   const renderItems = computed((): RenderItem[] => {

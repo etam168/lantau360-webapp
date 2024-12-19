@@ -43,7 +43,49 @@
         </template>
       </q-carousel>
 
-      <q-img v-else :src="image" />
+      <q-img v-else :src="image">
+        <div
+          class="absolute-top-right q-ma-md"
+          :offset="[18, 18]"
+          style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px"
+        >
+          <q-btn
+            flat
+            dense
+            color="white"
+            size="sm"
+            :icon="fullscreen ? fasCompress : fasExpand"
+            @click="toggleFullscreen"
+          >
+            <q-tooltip class="bg-dark text-caption shadow-4">{{
+              $t("action.fullScreen")
+            }}</q-tooltip>
+          </q-btn>
+        </div>
+
+        <!-- Fullscreen Dialog -->
+        <q-dialog v-model="fullscreen" maximized>
+          <q-img :src="image">
+            <div
+              class="absolute-top-right q-ma-md"
+              style="background: rgba(0, 0, 0, 0.5); padding: 4px 8px"
+            >
+              <q-btn
+                flat
+                dense
+                color="white"
+                size="sm"
+                :icon="fasCompress"
+                @click="toggleFullscreen"
+              >
+                <q-tooltip class="bg-dark text-caption shadow-4">{{
+                  $t("action.compress")
+                }}</q-tooltip>
+              </q-btn>
+            </div>
+          </q-img>
+        </q-dialog>
+      </q-img>
     </q-responsive>
 
     <q-separator color="white" />
@@ -77,6 +119,10 @@
   const hasMultipleImage = computed(() => {
     return imageList.length > 1;
   });
+
+  const toggleFullscreen = () => {
+    fullscreen.value = !fullscreen.value;
+  };
 
   const image = computed(() => {
     return imageList.length === 1

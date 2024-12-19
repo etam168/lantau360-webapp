@@ -4,6 +4,7 @@ export default {
     location: "位置",
     contactInfo: "聯絡資訊",
     contactnotavailable: "联系方式不可用",
+    info: "資訊",
     tripDetail: "行程資訊"
   },
 

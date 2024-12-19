@@ -4,6 +4,7 @@ export default {
     location: "Location",
     contactInfo: "Contact Info",
     contactnotavailable: "Contact info not available",
+    info: "Info",
     tripDetail: "Trip Details"
   },
 

@@ -4,7 +4,13 @@
       <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasAngleDown">
         <template v-slot:header>
           <q-item-section class="text-h6">
-            {{ $t(`${i18nKey}.description`) }}
+            <!-- Conditional rendering for Washroom -->
+            <template v-if="isWashroom">
+              {{ $t(`${i18nKey}.info`) }}
+            </template>
+            <template v-else>
+              {{ $t(`${i18nKey}.description`) }}
+            </template>
           </q-item-section>
 
           <q-item-section side>
@@ -18,7 +24,7 @@
         <q-separator />
 
         <q-card>
-          <q-card-section class="q-pa-md">
+          <q-card-section class="q-pa-sm">
             <div v-html="translatedContent"></div>
           </q-card-section>
         </q-card>
@@ -51,6 +57,9 @@
   const i18nKey = "home.dialog";
   const translatedContent = ref(translate(category.description, category.meta, "description"));
   const isFavourite = ref(isFavouriteItem(category));
+
+  // Check if directoryName is Washroom (case-insensitive)
+  const isWashroom = computed(() => ["Washroom", "washroom"].includes(category.directoryName));
 
   function onBtnFavClick() {
     toggleItemFavStatus(category, isFavourite.value);
