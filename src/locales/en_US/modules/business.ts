@@ -1,7 +1,7 @@
 export default {
   title: "Lantau Business",
   advertisement: "Advertisement",
-  moreDetail: "More Details",
+  moreDetail: "Details",
 
   tabItem: {
     promotion: "Promotions",

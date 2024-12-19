@@ -4,14 +4,14 @@ export default {
     location: "位置",
     contactInfo: "联系信息",
     contactnotavailable: "联系方式不可用",
-    tripDetail: "行程详细信息"
+    tripDetail: "行程资讯"
   },
 
   other: "其他",
-  moreDetail: "更多细节",
+  moreDetail: "详情 ",
 
   tabItem: {
-    allLocations: "地标",
+    allLocations: "地点",
     resources: "资讯",
     sightSeeing: "畅游大屿山"
   },

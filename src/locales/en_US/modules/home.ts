@@ -4,14 +4,14 @@ export default {
     location: "Location",
     contactInfo: "Contact Info",
     contactnotavailable: "Contact info not available",
-    tripDetail: "Trip Detail"
+    tripDetail: "Trip Details"
   },
 
   other: "Other",
-  moreDetail: "More Detail",
+  moreDetail: "Details",
 
   tabItem: {
-    allLocations: "All Location",
+    allLocations: "Locations",
     resources: "Resources",
     sightSeeing: "Sightseeing"
   },
