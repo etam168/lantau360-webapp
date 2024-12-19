@@ -42,6 +42,7 @@ export function useMemberItemDialogService() {
   }
 
   async function openTransactionItemDialog(
+    props: Record<string, any>,
     isDialogOpen: Ref<Boolean>,
     member: Member,
     entityKey: EntityURLKey
@@ -53,7 +54,7 @@ export function useMemberItemDialogService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/member-transaction-dialog/index.vue")
       ),
-      componentProps: { member: member, entityKey: entityKey }
+      componentProps: { member: member, entityKey: entityKey,  dialogName: props.dialogName }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
@@ -65,6 +66,7 @@ export function useMemberItemDialogService() {
       });
   }
   async function openMemberItemDialog(
+    props: Record<string, any>,
     isDialogOpen: Ref<Boolean>,
     member: Member,
     entityKey: EntityURLKey
@@ -76,7 +78,7 @@ export function useMemberItemDialogService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/member-items-dialog/index.vue")
       ),
-      componentProps: { member: member, entityKey: entityKey }
+      componentProps: { member: member, entityKey: entityKey, dialogName: props.dialogName }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed

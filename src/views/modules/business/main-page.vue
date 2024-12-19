@@ -143,7 +143,7 @@
 
   async function onDirectoryItem(directory: Directory) {
     if (isDialogOpen.value) return;
-    const dialogName = "BusinessItemListDialog";
+    const dialogName = "BusinessItemList";
     eventBus("DialogStatus").emit(true, dialogName);
     openCategoryItemDialog(isDialogOpen, directory, dialogName);
   }

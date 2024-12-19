@@ -111,9 +111,12 @@
   function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
     member.memberId = userStore.userId;
+    const dialogName = "accountDetail";
+    const props = { dialogName: dialogName };
+    eventBus("DialogStatus").emit(true, dialogName);
 
     if (!isDialogOpen.value) {
-      openTransactionItemDialog(isDialogOpen, member, entityKey);
+      openTransactionItemDialog(props, isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }
@@ -121,16 +124,20 @@
   function handleMemberDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
     member.memberId = userStore.userId;
-
+    const dialogName = "checkinDetail";
+    const props = { dialogName: dialogName };
+    eventBus("DialogStatus").emit(true, dialogName);
     if (!isDialogOpen.value) {
-      openMemberItemDialog(isDialogOpen, member, entityKey);
+      openMemberItemDialog(props,isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
-    const props = { dialogName: itemName };
+    const dialogName = "profileDetail";
+    const props = { dialogName: dialogName };
     if (!isDialogOpen.value) {
+      eventBus("DialogStatus").emit(true, dialogName);
       handleOpenDialog(props, isDialogOpen, entityKey, "edit");
       resetItemLoading(itemName);
     }
@@ -138,6 +145,7 @@
 
   function handleContentDialog(name: string) {
     openContentDialog(isLoading, name, resetItemLoading);
+    resetItemLoading(name);
   }
 
   function resetItemLoading(name: string) {

@@ -57,17 +57,23 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { member, entityKey, points } = defineProps<{
+  const {
+    member,
+    entityKey,
+    points,
+    dialogName = ""
+  } = defineProps<{
     member: Member;
     entityKey: EntityURLKey;
     points?: Record<string, any>;
+    dialogName: string;
   }>();
 
   // Composable function calls
   const { t } = i18n.global;
 
   const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
-  const { getEntityName } = useUtilities();
+  const { eventBus, getEntityName } = useUtilities();
 
   // Reactive variables
   const isDialogVisible = ref(true);
@@ -120,8 +126,8 @@
   // Lifecycle hooks
   onMounted(() => {
     // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
+    eventBus(dialogName).on(() => {
+      isDialogVisible.value = false;
+    });
   });
 </script>

@@ -59,7 +59,7 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { row, entityKey } = defineProps<{
+  const { row, entityKey,dialogName="" } = defineProps<{
     row: CategoryTypes;
     entityKey: EntityURLKey;
     dialogName?: string;
@@ -116,6 +116,9 @@
   onMounted(() => {
     // Set up event listener for closing dialog
     eventBus("CloseDialog").on(() => {
+      isDialogVisible.value = false;
+    });
+    eventBus(dialogName).on(() => {
       isDialogVisible.value = false;
     });
   });
