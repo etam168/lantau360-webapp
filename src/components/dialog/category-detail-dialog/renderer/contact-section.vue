@@ -7,8 +7,8 @@
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"
       v-if="category.contactPhone || category.contactWhatsApp"
     >
-      <q-list class="q-pa-none">
-        <q-item v-if="businessItem.contactPhone" class="q-pa-none">
+      <q-list class="q-pa-none" dense>
+        <q-item v-if="businessItem.contactPhone" class="q-pa-none" dense>
           <q-item-section avatar @click="navigateToPhone(businessItem.contactPhone)">
             <q-avatar>
               <q-icon :name="fasPhone" color="primary" />
@@ -21,7 +21,7 @@
           </q-item-section>
         </q-item>
 
-        <q-item v-if="businessItem.contactWhatsApp" class="q-pa-none">
+        <q-item v-if="businessItem.contactWhatsApp" class="q-pa-none" dense>
           <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
             <q-avatar>
               <q-icon :name="fabSquareWhatsapp" color="primary" />

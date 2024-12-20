@@ -1,6 +1,7 @@
 <!-- category-items-content.vue -->
 <template>
   <!-- No Records Message -->
+
   <div
     v-if="directory.groupId !== 5 && categoryItems.length === 0"
     class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
@@ -183,10 +184,17 @@
               return (a.rank || 0) - (b.rank || 0); // Default rank to 0 if undefined
             }
 
-            // Sort alphabetically by title, handle missing or undefined titles
-            const titleA = a.title || ""; // Default to an empty string if title is undefined
-            const titleB = b.title || ""; // Default to an empty string if title is undefined
-            return titleA.localeCompare(titleB);
+            // If ranks are equal, sort by siteName for directoryTemplate === 2, otherwise by title
+            if (a.directoryTemplate === 2 && b.directoryTemplate === 2) {
+              const siteNameA = a.siteName || ""; // Default to an empty string if siteName is undefined
+              const siteNameB = b.siteName || ""; // Default to an empty string if siteName is undefined
+              return siteNameA.localeCompare(siteNameB);
+            } else {
+              // If directoryTemplate is not 2 for both or either, sort alphabetically by title
+              const titleA = a.title || ""; // Default to an empty string if title is undefined
+              const titleB = b.title || ""; // Default to an empty string if title is undefined
+              return titleA.localeCompare(titleB);
+            }
           });
 
           break;

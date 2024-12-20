@@ -27,7 +27,7 @@ const name = "Lantau360 Lite";
 
 export default defineConfig({
   esbuild: {
-    drop: ["console", "debugger"]
+    // drop: ["console", "debugger"]
   },
   build: {
     chunkSizeWarningLimit: 600
