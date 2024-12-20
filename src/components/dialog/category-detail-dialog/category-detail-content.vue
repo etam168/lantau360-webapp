@@ -142,7 +142,10 @@
           { name: "description", type: "description" }
         ];
       case RENDERER.EMERGENCY:
-        return [{ name: "expansion-contact", type: "expansion-contact" }];
+        return [
+          { name: "description", type: "description" },
+          { name: "contact", type: "contact" }
+        ];
       case RENDERER.PROMOTION:
         return [
           { name: "carousel", type: "carousel" },
