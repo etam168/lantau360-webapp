@@ -28,7 +28,7 @@
             <app-search-bar @on-search="handleSearchDialog" />
           </q-card-actions>
 
-          <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+          <app-directory-items :data="businessDirectories" @on-directory-item="onDirectoryItem" />
         </q-tab-panel>
       </q-tab-panels>
     </q-scroll-area>
@@ -38,6 +38,7 @@
 <script setup lang="ts">
   // Interface files
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
+  import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
   import type { Directory } from "@/interfaces/models/entities/directory";
@@ -61,7 +62,7 @@
   const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
 
   const advertisements = ref<AdvertisementView[]>([]);
-  const businessDirectories = ref<Directory[]>([]);
+  const businessDirectories = ref<BusinessDirectory[]>([]);
   const businessPromotion = ref<BusinessPromotionView[]>([]);
   const businessVoucher = ref<BusinessVoucherView[]>([]);
 
@@ -78,10 +79,6 @@
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
-
-  const directoryData = computed(() =>
-    businessDirectories.value.filter((dir: Directory) => [2, 4].includes(dir.groupId))
-  );
 
   function handleSearchDialog(value: any) {
     $q.dialog({

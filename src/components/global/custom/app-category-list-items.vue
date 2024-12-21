@@ -38,6 +38,7 @@
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Constants
   import { EntityURLKey, STORAGE_KEYS, IMAGES } from "@/constants";
@@ -59,7 +60,7 @@
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
     entityKey: EntityURLKey;
-    directory: Directory;
+    directory: DirectoryTypes;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });

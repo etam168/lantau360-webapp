@@ -25,10 +25,11 @@
 
   // Interface files
   import type { Directory } from "@/interfaces/models/entities/directory";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Props
   const { directory } = defineProps<{
-    directory: Directory;
+    directory: DirectoryTypes;
   }>();
 
   // Composable function calls

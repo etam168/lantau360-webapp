@@ -84,6 +84,8 @@
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Props
   const {
@@ -91,7 +93,7 @@
     entityKey,
     dialogName = "ItemListDialog"
   } = defineProps<{
-    directory: Directory;
+    directory: DirectoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
   }>();
@@ -108,9 +110,18 @@
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
   const checkIns: Ref<CheckIn[]> = ref([]);
 
-  const directoryId = computed<number>(() =>
-    ["BUSINESS", "SITE"].includes(entityKey) ? directory.directoryId : 0
-  );
+  // const directoryId = computed<number>(() =>
+  //   ["BUSINESS", "SITE"].includes(entityKey) ? directory.directoryId : 0
+  // );
+
+  const directoryId = computed<number>(() => {
+    if (entityKey === "BUSINESS") {
+      return (directory as BusinessDirectory).businessDirectoryId;
+    } else if (entityKey === "SITE") {
+      return (directory as Directory).directoryId;
+    }
+    return 0;
+  });
 
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)

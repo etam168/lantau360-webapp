@@ -6,7 +6,7 @@ export const ENTITY_URL = {
   ADVERTISEMENT_GALLERY: `/AdvertisementImage/GalleryImages`,
   ATTRACTION: `/Site/ByDirectoryId/1`,
   BUSINESS: `/Business`,
-  BUSINESS_DIRECTORIES: `/Directory/DirectoryGroupsData/2`,
+  BUSINESS_DIRECTORIES: `/BusinessDirectory`,
   BUSINESS_GALLERY: `/BusinessImage/GalleryImages`,
   BUSINESS_PROMOTION: `/BusinessPromotion/Datatable`,
   BUSINESS_PROMOTION_GALLERY: `/BusinessPromotionImage/GalleryImages`,
