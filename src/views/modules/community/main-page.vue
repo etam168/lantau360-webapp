@@ -4,8 +4,7 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <!-- Dynamically calculated height -->
-    <q-scroll-area :style="{ height: computedScrollHeight }">
+    <q-scroll-area style="height: calc(100vh - 410px)">
       <q-banner :inline-actions="!isSmallScreen">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
@@ -82,12 +81,6 @@
 
   const isDialogOpen = ref(false);
 
-  const computedScrollHeight = computed(() => {
-    const windowHeight = window.innerHeight;
-    const carouselHeight = 312; // Adjust based on actual carousel height
-    return `calc(${windowHeight}px - ${carouselHeight}px)`;
-  });
-
   const tabItems = ref<TabItem[]>([
     { name: "events", label: t(`${i18nKey}.tabItem.events`) },
     { name: "notice", label: t(`${i18nKey}.tabItem.notice`) },
@@ -147,9 +140,6 @@
       } else {
         dialogStack.value.pop();
       }
-    });
-    window.addEventListener("resize", () => {
-      computedScrollHeight.value; // Re-computes on resize
     });
   });
 

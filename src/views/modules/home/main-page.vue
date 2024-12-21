@@ -3,7 +3,7 @@
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
 
     <!-- Dynamically calculated height -->
-    <q-scroll-area :style="{ height: computedScrollHeight }">
+    <q-scroll-area style="height: calc(100vh - 360px)">
       <weather-section :data="weatherData" />
       <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
@@ -58,12 +58,6 @@
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
-
-  const computedScrollHeight = computed(() => {
-    const windowHeight = window.innerHeight;
-    const carouselHeight = 286; // Adjust based on actual carousel height
-    return `calc(${windowHeight}px - ${carouselHeight}px)`;
-  });
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
@@ -147,9 +141,6 @@
       } else {
         dialogStack.value.pop();
       }
-    });
-    window.addEventListener("resize", () => {
-      computedScrollHeight.value; // Re-computes on resize
     });
   });
 
