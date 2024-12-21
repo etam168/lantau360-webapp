@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar v-bind="$attrs" class="q-gutter-x-sm q-pl-md">
+  <q-toolbar v-bind="$attrs" class="q-gutter-x-sm q-pl-md flex-wrap">
     <q-chip
       v-for="(tabItem, index) in props.tabItems"
       :key="index"
@@ -38,3 +38,9 @@
     emit("update:currentTab", val);
   };
 </script>
+
+<style>
+  .q-toolbar.flex-wrap {
+    flex-wrap: wrap !important;
+  }
+</style>
