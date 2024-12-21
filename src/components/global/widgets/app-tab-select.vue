@@ -1,5 +1,9 @@
 <template>
-  <q-toolbar v-bind="$attrs" class="q-gutter-x-sm q-pl-md flex-wrap">
+  <q-toolbar
+    v-bind="$attrs"
+    class="q-gutter-x-sm q-pl-md"
+    :class="$q.screen.lt.sm ? 'flex-wrap' : ''"
+  >
     <q-chip
       v-for="(tabItem, index) in props.tabItems"
       :key="index"
