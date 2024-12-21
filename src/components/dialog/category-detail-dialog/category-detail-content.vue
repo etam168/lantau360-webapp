@@ -151,11 +151,26 @@
           { name: "carousel", type: "carousel" },
           { name: "promotion", type: "promotion" }
         ];
-      case RENDERER.TAXI:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "favourite", type: "favourite" }
-        ];
+      case RENDERER.TAXI: {
+        const hasCallOrTelephone = ["title", "subtitle3"].some(
+          key =>
+            (category[key] || "").toLowerCase().includes("call") ||
+            (category[key] || "").toLowerCase().includes("telephone")
+        );
+
+        // Construct baseItems conditionally
+        const baseItems: RenderItem[] = hasCallOrTelephone
+          ? [
+              { name: "description", type: "description" },
+              { name: "contact", type: "contact" }
+            ]
+          : [
+              { name: "carousel", type: "carousel" },
+              { name: "favourite", type: "favourite" }
+            ];
+
+        return baseItems;
+      }
       case RENDERER.TIMETABLE:
         return [{ name: "timetable", type: "timetable" }];
       default:

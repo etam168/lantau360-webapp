@@ -112,6 +112,10 @@
     try {
       const [advertisementResponse] = await Promise.all([fetchData(ENTITY_URL.ADVERTISEMENT)]);
       advertisements.value = advertisementResponse;
+
+      advertisements.value = advertisementResponse.filter(
+        (adv: AdvertisementView) => adv.status === 1
+      );
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {

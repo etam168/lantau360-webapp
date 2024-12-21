@@ -1,26 +1,30 @@
 <template>
   <q-page>
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
-    <weather-section :data="weatherData" />
-    <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-    <q-card-actions align="center">
-      <app-search-bar @on-search="handleSearchDialog" />
-    </q-card-actions>
+    <!-- Dynamically calculated height -->
+    <q-scroll-area :style="{ height: computedScrollHeight }">
+      <weather-section :data="weatherData" />
+      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
-    <q-tab-panels v-model="tab">
-      <q-tab-panel name="all">
-        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
-      </q-tab-panel>
+      <q-card-actions align="center">
+        <app-search-bar @on-search="handleSearchDialog" />
+      </q-card-actions>
 
-      <q-tab-panel name="resources">
-        <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
-      </q-tab-panel>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="all">
+          <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
 
-      <q-tab-panel name="sightSeeing">
-        <app-directory-items :data="sightSeeingData" @on-directory-item="onDirectoryItem" />
-      </q-tab-panel>
-    </q-tab-panels>
+        <q-tab-panel name="resources">
+          <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+
+        <q-tab-panel name="sightSeeing">
+          <app-directory-items :data="sightSeeingData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-scroll-area>
   </q-page>
 </template>
 
@@ -54,6 +58,12 @@
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
+
+  const computedScrollHeight = computed(() => {
+    const windowHeight = window.innerHeight;
+    const carouselHeight = 286; // Adjust based on actual carousel height
+    return `calc(${windowHeight}px - ${carouselHeight}px)`;
+  });
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
@@ -137,6 +147,9 @@
       } else {
         dialogStack.value.pop();
       }
+    });
+    window.addEventListener("resize", () => {
+      computedScrollHeight.value; // Re-computes on resize
     });
   });
 

@@ -4,32 +4,35 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
+    <!-- Dynamically calculated height -->
+    <q-scroll-area :style="{ height: computedScrollHeight }">
+      <q-banner :inline-actions="!isSmallScreen">
+        <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
-      <template v-slot:action>
-        <app-tab-select
-          :class="tabSelectClass"
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-        />
-      </template>
-    </q-banner>
+        <template v-slot:action>
+          <app-tab-select
+            :class="tabSelectClass"
+            :tab-items="tabItems"
+            :current-tab="tab"
+            @update:currentTab="setTab"
+          />
+        </template>
+      </q-banner>
 
-    <q-tab-panels v-model="tab">
-      <q-tab-panel name="promotion" class="q-pa-sm">
-        <app-marketing-item-list :data="businessPromotion" :entity-key="'BUSINESS_PROMOTION'" />
-      </q-tab-panel>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="promotion" class="q-pa-sm">
+          <app-marketing-item-list :data="businessPromotion" :entity-key="'BUSINESS_PROMOTION'" />
+        </q-tab-panel>
 
-      <q-tab-panel name="directory">
-        <q-card-actions align="center">
-          <app-search-bar @on-search="handleSearchDialog" />
-        </q-card-actions>
+        <q-tab-panel name="directory">
+          <q-card-actions align="center">
+            <app-search-bar @on-search="handleSearchDialog" />
+          </q-card-actions>
 
-        <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
-      </q-tab-panel>
-    </q-tab-panels>
+          <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-scroll-area>
   </q-page>
 </template>
 
@@ -71,6 +74,12 @@
   const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
+
+  const computedScrollHeight = computed(() => {
+    const windowHeight = window.innerHeight;
+    const carouselHeight = 312; // Adjust based on actual carousel height
+    return `calc(${windowHeight}px - ${carouselHeight}px)`;
+  });
 
   const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
@@ -155,6 +164,9 @@
       } else {
         dialogStack.value.pop();
       }
+    });
+    window.addEventListener("resize", () => {
+      computedScrollHeight.value; // Re-computes on resize
     });
   });
 

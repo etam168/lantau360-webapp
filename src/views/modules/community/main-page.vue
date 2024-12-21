@@ -2,35 +2,37 @@
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
-
     <q-separator size="4px" color="primary" />
 
-    <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
+    <!-- Dynamically calculated height -->
+    <q-scroll-area :style="{ height: computedScrollHeight }">
+      <q-banner :inline-actions="!isSmallScreen">
+        <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
-      <template v-slot:action>
-        <app-tab-select
-          :class="tabSelectClass"
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-        />
-      </template>
-    </q-banner>
+        <template v-slot:action>
+          <app-tab-select
+            :class="tabSelectClass"
+            :tab-items="tabItems"
+            :current-tab="tab"
+            @update:currentTab="setTab"
+          />
+        </template>
+      </q-banner>
 
-    <q-tab-panels v-model="tab">
-      <q-tab-panel name="events" class="q-pa-sm">
-        <app-bulletin-item-list :items="events" :entity-key="'COMMUNITY_EVENT'" />
-      </q-tab-panel>
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="events" class="q-pa-sm">
+          <app-bulletin-item-list :items="events" :entity-key="'COMMUNITY_EVENT'" />
+        </q-tab-panel>
 
-      <q-tab-panel name="notice">
-        <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'" />
-      </q-tab-panel>
+        <q-tab-panel name="notice">
+          <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'" />
+        </q-tab-panel>
 
-      <q-tab-panel name="directory">
-        <app-directory-items :data="communityDirectories" @on-directory-item="onDirectoryItem" />
-      </q-tab-panel>
-    </q-tab-panels>
+        <q-tab-panel name="directory">
+          <app-directory-items :data="communityDirectories" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+      </q-tab-panels>
+    </q-scroll-area>
   </q-page>
 </template>
 
@@ -79,6 +81,12 @@
   const i18nKey = "community";
 
   const isDialogOpen = ref(false);
+
+  const computedScrollHeight = computed(() => {
+    const windowHeight = window.innerHeight;
+    const carouselHeight = 312; // Adjust based on actual carousel height
+    return `calc(${windowHeight}px - ${carouselHeight}px)`;
+  });
 
   const tabItems = ref<TabItem[]>([
     { name: "events", label: t(`${i18nKey}.tabItem.events`) },
@@ -139,6 +147,9 @@
       } else {
         dialogStack.value.pop();
       }
+    });
+    window.addEventListener("resize", () => {
+      computedScrollHeight.value; // Re-computes on resize
     });
   });
 
