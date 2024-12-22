@@ -75,8 +75,6 @@ export function usePwaInstallService() {
   }
 
   async function checkInstalledRelatedApps() {
-    debugger;
-
     if ("getInstalledRelatedApps" in navigator) {
       const relatedApps = await navigator.getInstalledRelatedApps;
       // isAppInstalled.value = relatedApps.length > 0; // Check if any related apps are installed

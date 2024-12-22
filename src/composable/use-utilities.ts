@@ -91,13 +91,6 @@ export function useUtilities(locale?: string) {
     }
   }
 
-  function translateAlt(label: string, altName: any, key: string) {
-    const { locale } = i18n.global;
-    const translation = altName?.i18n?.[locale]?.[key];
-
-    return typeof translation === "string" && translation.trim() !== "" ? translation : label;
-  }
-
   function resetObject<T>(obj: T): T {
     if (typeof obj !== "object" || obj === null) {
       return obj;
@@ -144,7 +137,6 @@ export function useUtilities(locale?: string) {
     groupBy,
     notify,
     resetObject,
-    translate,
-    translateAlt
+    translate
   };
 }

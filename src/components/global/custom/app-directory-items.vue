@@ -67,15 +67,14 @@
 
   const { locale } = useI18n({ useScope: "global" });
 
-  const { getImageURL, translate, translateAlt } = useUtilities(locale.value);
+  const { getImageURL, translate } = useUtilities(locale.value);
   const $q = useQuasar();
   const i18nKey = "home";
 
   function getDirectoryTitle(item: DirectoryTypes) {
     const { shortName, shortNameAlt, meta } = item;
-
     return shortNameAlt != null
-      ? translateAlt(shortName, shortNameAlt, "shortName")
+      ? translate(shortName, shortNameAlt, "shortName")
       : translate(shortName, meta, "shortName");
   }
 
