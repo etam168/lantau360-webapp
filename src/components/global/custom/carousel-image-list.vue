@@ -9,7 +9,6 @@
         :arrows="fullscreen"
         :prev-icon="fasChevronLeft"
         :next-icon="fasChevronRight"
-        infinite
         v-model="slide"
         v-model:fullscreen="fullscreen"
         class="bg-thumbnail"
