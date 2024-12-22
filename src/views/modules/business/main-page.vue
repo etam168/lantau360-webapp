@@ -4,7 +4,7 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <q-scroll-area style="height: calc(100vh - 410px)">
+    <q-scroll-area :style="scrollAreaStyle">
       <q-banner :inline-actions="!isSmallScreen">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
@@ -74,6 +74,20 @@
   const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
+
+  const scrollAreaStyle = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const imgHeight = (width * 9) / 16; // Height for the carousel
+    const smallScreenHeight = $q.screen.height - imgHeight - 75;
+
+    // For large screens, use calc(100vh - 360px)
+    if ($q.screen.gt.sm) {
+      return { height: `calc(100vh - 410px)` };
+    }
+
+    // For small screens, return pixel-based height
+    return { height: `${smallScreenHeight}px` };
+  });
 
   const tabItems = ref<TabItem[]>([
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },

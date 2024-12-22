@@ -2,8 +2,7 @@
   <q-page>
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
 
-    <!-- Dynamically calculated height -->
-    <q-scroll-area :style="{ height: `${scrollAreaHeight}px` }">
+    <q-scroll-area :style="scrollAreaStyle">
       <weather-section :data="weatherData" />
       <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
 
@@ -65,14 +64,19 @@
 
   const isDialogOpen = ref(false);
 
-  // Additional logic for dynamically calculating height
-  const carouselRef = ref<HTMLElement | null>(null);
-  const scrollAreaHeight = ref(0);
+  const scrollAreaStyle = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const imgHeight = (width * 9) / 16; // Height for the carousel
+    const smallScreenHeight = $q.screen.height - imgHeight - 75;
 
-  const updateScrollAreaHeight = () => {
-    const carouselHeight = carouselRef.value?.offsetHeight || 0;
-    scrollAreaHeight.value = window.innerHeight - carouselHeight;
-  };
+    // For large screens, use calc(100vh - 360px)
+    if ($q.screen.gt.sm) {
+      return { height: `calc(100vh - 360px)` };
+    }
+
+    // For small screens, return pixel-based height
+    return { height: `${smallScreenHeight}px` };
+  });
 
   const tabItems = ref<TabItem[]>([
     { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
@@ -151,12 +155,6 @@
         dialogStack.value.pop();
       }
     });
-    updateScrollAreaHeight();
-    window.addEventListener("resize", updateScrollAreaHeight);
-  });
-
-  onUnmounted(() => {
-    window.removeEventListener("resize", updateScrollAreaHeight);
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
