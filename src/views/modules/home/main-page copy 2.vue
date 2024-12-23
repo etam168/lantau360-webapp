@@ -3,31 +3,50 @@
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
 
     <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
-      <main-content
-        v-model:tab="tab"
-        :weather-data="weatherData"
-        :tab-items="tabItems"
-        :directory-data="directoryData"
-        :resources-data="resourcesData"
-        :sight-seeing-data="sightSeeingData"
-        @update:current-tab="setTab"
-        @on-search="handleSearchDialog"
-        @on-directory-item="onDirectoryItem"
-      />
+      <weather-section :data="weatherData" />
+      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
+      <q-card-actions align="center">
+        <app-search-bar @on-search="handleSearchDialog" />
+      </q-card-actions>
+
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="all">
+          <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+
+        <q-tab-panel name="resources">
+          <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+
+        <q-tab-panel name="sightSeeing">
+          <app-directory-items :data="sightSeeingData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+      </q-tab-panels>
     </q-scroll-area>
 
-    <common-content
-      v-else
-      v-model:tab="tab"
-      :weather-data="weatherData"
-      :tab-items="tabItems"
-      :directory-data="directoryData"
-      :resources-data="resourcesData"
-      :sight-seeing-data="sightSeeingData"
-      @update:current-tab="setTab"
-      @on-search="handleSearchDialog"
-      @on-directory-item="onDirectoryItem"
-    />
+    <template v-else>
+      <weather-section :data="weatherData" />
+      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+
+      <q-card-actions align="center">
+        <app-search-bar @on-search="handleSearchDialog" />
+      </q-card-actions>
+
+      <q-tab-panels v-model="tab">
+        <q-tab-panel name="all">
+          <app-directory-items :data="directoryData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+
+        <q-tab-panel name="resources">
+          <app-directory-items :data="resourcesData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+
+        <q-tab-panel name="sightSeeing">
+          <app-directory-items :data="sightSeeingData" @on-directory-item="onDirectoryItem" />
+        </q-tab-panel>
+      </q-tab-panels>
+    </template>
   </q-page>
 </template>
 
@@ -42,7 +61,7 @@
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Custom Components
-  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
+  const weatherSection = defineAsyncComponent(() => import("./components/weather-section.vue"));
 
   // Props
   const { entityKey } = defineProps<{
