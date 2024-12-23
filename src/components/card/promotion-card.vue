@@ -55,6 +55,6 @@
   const onItemClick = (item: BusinessPromotionView) => {
     const dialogName = "BusinessPromotionDetail";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(item, dialogName);
+    openCategoryDetailDialog(item, dialogName, "BUSINESS_PROMOTION");
   };
 </script>
