@@ -350,6 +350,7 @@
     "useMoreItemService": true,
     "useMoreItemServiceCopy": true,
     "useValidationSchemas": true,
-    "RenderItem": true
+    "RenderItem": true,
+    "useSSRWidth": true
   }
 }

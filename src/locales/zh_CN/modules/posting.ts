@@ -8,7 +8,7 @@ export default {
     edit: "编辑帖子",
     create: "创建帖子",
     title: "标题",
-    description: "描述",
+    description: "简介",
     save: "保存"
   },
 

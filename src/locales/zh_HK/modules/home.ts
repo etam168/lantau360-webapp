@@ -1,6 +1,6 @@
 export default {
   dialog: {
-    description: "描述",
+    description: "簡介",
     location: "位置",
     contactInfo: "聯絡資訊",
     contactnotavailable: "联系方式不可用",

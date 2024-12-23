@@ -1,7 +1,7 @@
 export default {
   dialog: {
     create: "創建簽到",
-    description: "描述",
+    description: "簡介",
     save: "保存"
   },
 

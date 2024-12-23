@@ -8,7 +8,7 @@ export default {
     edit: "編輯貼文",
     create: "創建貼文",
     title: "標題",
-    description: "描述",
+    description: "簡介",
     save: "保存"
   },
 
