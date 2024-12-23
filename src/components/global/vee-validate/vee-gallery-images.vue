@@ -1,5 +1,5 @@
 <template>
-  <q-card class="bg-transparent full-width">
+  <q-card class="bg-transparent full-width" style="margin-bottom: 21px">
     <q-bar dense class="bg-primary text-white">
       <div class="col text-weight-bold">
         {{ $t("errors.photosRemaining", { count: localImages.length, limit: maxImages }) }}

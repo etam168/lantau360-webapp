@@ -18,8 +18,8 @@
       :entityKey
     />
 
-    <location-section
-      v-else-if="item.type === 'location'"
+    <expansion-location-section
+      v-else-if="item.type === 'expansion-location'"
       :category
       :has-check-in="entityKey.includes('SITE')"
       @check-in="requestCheckIn(category)"
@@ -43,7 +43,7 @@
   import ExpansionContactSection from "./renderer/expansion-contact-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import FavouriteSection from "./renderer/favourite-section.vue";
-  import LocationSection from "./renderer/location-section.vue";
+  import ExpansionLocationSection from "./renderer/expansion-location-section.vue";
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
@@ -70,7 +70,7 @@
       | "expansion-description"
       | "description"
       | "favourite"
-      | "location"
+      | "expansion-location"
       | "expansion-contact"
       | "timetable"
       | "time"
@@ -124,7 +124,7 @@
         return [
           { name: "carousel", type: "carousel" },
           { name: "expansion-description", type: "expansion-description" },
-          { name: "location", type: "location" },
+          { name: "expansion-location", type: "expansion-location" },
           { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.BUSINESS:
@@ -133,7 +133,7 @@
           { name: "carousel", type: "carousel" },
           { name: "time", type: "time" },
           { name: "expansion-description", type: "expansion-description" },
-          { name: "location", type: "location" },
+          { name: "expansion-location", type: "expansion-location" },
           { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.DAYTRIP:

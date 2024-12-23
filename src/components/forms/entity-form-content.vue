@@ -42,7 +42,7 @@
 
     <!-- Entity fields -->
     <q-list v-for="(section, index) in formStructure.entityFields!.sections" :key="index" dense>
-      <q-item v-for="field in section.fields" :key="field.name">
+      <q-item v-for="field in section.fields" :key="field.name" dense>
         <q-item-section v-for="subField in field.subFields" :key="subField.name">
           <!-- Render telephone input for 'tel' type fields -->
 
