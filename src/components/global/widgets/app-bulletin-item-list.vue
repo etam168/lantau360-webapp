@@ -1,14 +1,21 @@
 <template>
-  <div class="row q-col-gutter-sm">
-    <div
-      v-for="(item, index) in sortedItemsWithType"
-      :key="index"
-      :class="entityKey == 'COMMUNITY_EVENT' ? 'col-md-3 col-sm-4 col-6' : ''"
-    >
-      <event-card v-if="entityKey == 'COMMUNITY_EVENT'" :item="item" />
-      <notice-card v-else-if="entityKey == 'COMMUNITY_NOTICE'" :item="item" />
+  <template v-if="sortedItemsWithType.length > 0">
+    <div class="row q-col-gutter-sm">
+      <div
+        v-for="(item, index) in sortedItemsWithType"
+        :key="index"
+        :class="entityKey == 'COMMUNITY_EVENT' ? 'col-md-3 col-sm-4 col-6' : ''"
+      >
+        <event-card v-if="entityKey == 'COMMUNITY_EVENT'" :item="item" />
+        <notice-card v-else-if="entityKey == 'COMMUNITY_NOTICE'" :item="item" />
+      </div>
     </div>
-  </div>
+  </template>
+  <template v-else>
+    <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
+      {{ $t("errors.noRecord") }}
+    </div>
+  </template>
 </template>
 
 <script setup lang="ts">

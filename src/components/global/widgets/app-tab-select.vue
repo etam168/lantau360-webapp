@@ -2,7 +2,7 @@
   <q-toolbar
     v-bind="$attrs"
     class="q-gutter-x-sm q-pl-md"
-    :class="$q.screen.lt.sm ? 'flex-wrap' : ''"
+    :class="$q.screen.lt.sm ? 'flex-wrap justify-center' : ''"
   >
     <q-chip
       v-for="(tabItem, index) in props.tabItems"
