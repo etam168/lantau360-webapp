@@ -54,7 +54,7 @@
 
   // Composable function calls
   const { getEntityName } = useUtilities();
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
+  const { dialogRef } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
@@ -66,10 +66,9 @@
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    isDialogVisible.value = false;
     setTimeout(() => {
       try {
-        onDialogCancel();
+        isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }

@@ -82,11 +82,11 @@
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    isDialogVisible.value = false;
     eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
-        onDialogCancel();
+        // onDialogCancel();
+        isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }

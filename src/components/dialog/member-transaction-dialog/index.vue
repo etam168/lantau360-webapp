@@ -57,7 +57,12 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { member, entityKey, points,  dialogName = "" } = defineProps<{
+  const {
+    member,
+    entityKey,
+    points,
+    dialogName = ""
+  } = defineProps<{
     member: Member;
     entityKey: EntityURLKey;
     points?: Record<string, any>;
@@ -67,7 +72,7 @@
   // Composable function calls
   const { t } = i18n.global;
 
-  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { eventBus, getEntityName } = useUtilities();
 
   // Reactive variables
@@ -85,10 +90,9 @@
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    isDialogVisible.value = false;
     setTimeout(() => {
       try {
-        onDialogCancel();
+        isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }
