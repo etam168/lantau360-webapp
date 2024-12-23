@@ -16,7 +16,7 @@
       />
     </q-scroll-area>
 
-    <common-content
+    <main-content
       v-else
       v-model:tab="tab"
       :weather-data="weatherData"

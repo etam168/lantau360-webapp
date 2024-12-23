@@ -4,34 +4,30 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <q-scroll-area :style="scrollAreaStyle">
-      <q-banner :inline-actions="!isSmallScreen">
-        <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
-
-        <template v-slot:action>
-          <app-tab-select
-            :class="tabSelectClass"
-            :tab-items="tabItems"
-            :current-tab="tab"
-            @update:currentTab="setTab"
-          />
-        </template>
-      </q-banner>
-
-      <q-tab-panels v-model="tab">
-        <q-tab-panel name="events" class="q-pa-sm">
-          <app-bulletin-item-list :items="events" :entity-key="'COMMUNITY_EVENT'" />
-        </q-tab-panel>
-
-        <q-tab-panel name="notice">
-          <app-bulletin-item-list :items="notices" :entity-key="'COMMUNITY_NOTICE'" />
-        </q-tab-panel>
-
-        <q-tab-panel name="directory">
-          <app-directory-items :data="communityDirectories" @on-directory-item="onDirectoryItem" />
-        </q-tab-panel>
-      </q-tab-panels>
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content
+        v-model:tab="tab"
+        :i18n-key="i18nKey"
+        :tab-items="tabItems"
+        :events="events"
+        :notices="notices"
+        :directory-data="communityDirectories"
+        @update:current-tab="setTab"
+        @on-directory-item="onDirectoryItem"
+      />
     </q-scroll-area>
+
+    <main-content
+      v-else
+      v-model:tab="tab"
+      :tab-items="tabItems"
+      :i18n-key="i18nKey"
+      :events="events"
+      :notices="notices"
+      :directory-data="communityDirectories"
+      @update:current-tab="setTab"
+      @on-directory-item="onDirectoryItem"
+    />
   </q-page>
 </template>
 
@@ -44,6 +40,9 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
+  // Custom Components
+  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
+
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
@@ -51,7 +50,7 @@
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
-  
+
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { eventBus, isSmallScreen } = useUtilities();
@@ -65,9 +64,7 @@
     `${entityKey}_DIRECTORY` as EntityURLKey
   );
 
-  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
-  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
-
+  const THRESHOLD = 320;
   const advertisements = ref<AdvertisementView[]>([]);
   const communityDirectories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
@@ -82,18 +79,14 @@
 
   const isDialogOpen = ref(false);
 
-  const scrollAreaStyle = computed(() => {
+  const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
-    const imgHeight = (width * 9) / 16; // Height for the carousel
-    const smallScreenHeight = $q.screen.height - imgHeight - 75;
+    const carouselHeight = (width * 9) / 16; // Height for the carousel
+    return carouselHeight + 84;
+  });
 
-    // For large screens, use calc(100vh - 360px)
-    if ($q.screen.gt.sm) {
-      return { height: `calc(100vh - 360px)` };
-    }
-
-    // For small screens, return pixel-based height
-    return { height: `${smallScreenHeight}px` };
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
   });
 
   const tabItems = ref<TabItem[]>([
