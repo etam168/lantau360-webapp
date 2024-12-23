@@ -2,7 +2,7 @@
   <q-card class="q-ma-md">
     <q-expansion-item
       group="itemGroup"
-      class="q-px-sm"
+      class="detail-page-expansion"
       dense-toggle
       default-opened
       expand-icon-toggle
@@ -14,14 +14,7 @@
         </q-item-section>
 
         <q-item-section side v-if="hasCheckIn">
-          <q-btn
-            dense
-            unelevated
-            flat
-            size="12px"
-            color="primary"
-            @click="onBtnCheckInClick"
-            class="q-pa-none"
+          <q-btn dense unelevated flat color="primary" @click="onBtnCheckInClick" class="q-pa-none"
             >Check-In</q-btn
           >
         </q-item-section>
@@ -33,10 +26,10 @@
         flat
         class="row justify-center"
         :style="{
-          height: $q.screen.gt.xs ? '370px' : '100%'
+          height: $q.screen.gt.xs ? '345px' : '100%'
         }"
       >
-        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()">
+        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()" class="q-pa-none">
           <app-map-component
             style="flex: 1"
             :zoom="zoom"
@@ -108,7 +101,7 @@
   });
 
   const mapComponentStyle = computed(() => ({
-    height: $q.screen.gt.xs ? "300px" : "230px",
+    height: $q.screen.gt.xs ? "300px" : "209px",
     width: $q.screen.gt.xs ? "600px" : "100%"
   }));
 

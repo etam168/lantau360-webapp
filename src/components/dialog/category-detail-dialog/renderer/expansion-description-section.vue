@@ -2,7 +2,7 @@
   <q-card class="q-ma-md">
     <q-expansion-item
       group="itemGroup"
-      class="q-px-sm"
+      class="detail-page-expansion"
       dense-toggle
       expand-icon-toggle
       :expand-icon="fasAngleDown"
@@ -71,3 +71,9 @@
     eventBus("favoriteUpdated").emit(category);
   }
 </script>
+
+<style>
+  .q-expansion-item.detail-page-expansion .q-item {
+    padding: 8px !important;
+  }
+</style>
