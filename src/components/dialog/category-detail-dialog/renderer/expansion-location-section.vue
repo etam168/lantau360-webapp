@@ -1,55 +1,54 @@
 <template>
   <q-card class="q-ma-md">
-    <q-card-section class="q-pa-sm">
-      <q-expansion-item
-        group="itemGroup"
-        dense
-        dense-toggle
-        :expand-icon="fasAngleDown"
-        default-opened
+    <q-expansion-item
+      group="itemGroup"
+      class="q-px-sm"
+      dense-toggle
+      default-opened
+      expand-icon-toggle
+      :expand-icon="fasAngleDown"
+    >
+      <template v-slot:header>
+        <q-item-section class="text-h6">
+          {{ $t(`${i18nKey}.location`) }}
+        </q-item-section>
+
+        <q-item-section side v-if="hasCheckIn">
+          <q-btn
+            dense
+            unelevated
+            flat
+            size="12px"
+            color="primary"
+            @click="onBtnCheckInClick"
+            class="q-pa-none"
+            >Check-In</q-btn
+          >
+        </q-item-section>
+      </template>
+
+      <q-separator />
+
+      <q-card
+        flat
+        class="row justify-center"
+        :style="{
+          height: $q.screen.gt.xs ? '370px' : '100%'
+        }"
       >
-        <template v-slot:header>
-          <q-item-section class="text-h6">
-            {{ $t(`${i18nKey}.location`) }}
-          </q-item-section>
-
-          <q-item-section side v-if="hasCheckIn">
-            <q-btn
-              dense
-              unelevated
-              flat
-              size="12px"
-              color="primary"
-              @click="onBtnCheckInClick"
-              class="q-pa-none"
-              >Check-In</q-btn
-            >
-          </q-item-section>
-        </template>
-
-        <q-separator />
-
-        <q-card
-          flat
-          class="row justify-center"
-          :style="{
-            height: $q.screen.gt.xs ? '346px' : '100%'
-          }"
-        >
-          <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()">
-            <app-map-component
-              style="flex: 1"
-              :zoom="zoom"
-              :marker-position="markerPosition"
-              :url="localMapUrl"
-              :bounds="bounds"
-              :tooltip="mapTooltip"
-              :bottom-right-label="address"
-            />
-          </q-card-section>
-        </q-card>
-      </q-expansion-item>
-    </q-card-section>
+        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()">
+          <app-map-component
+            style="flex: 1"
+            :zoom="zoom"
+            :marker-position="markerPosition"
+            :url="localMapUrl"
+            :bounds="bounds"
+            :tooltip="mapTooltip"
+            :bottom-right-label="address"
+          />
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
   </q-card>
 </template>
 

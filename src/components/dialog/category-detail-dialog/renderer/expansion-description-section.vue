@@ -1,35 +1,39 @@
 <template>
   <q-card class="q-ma-md">
-    <q-card-section class="q-pa-sm">
-      <q-expansion-item group="itemGroup" dense dense-toggle :expand-icon="fasAngleDown">
-        <template v-slot:header>
-          <q-item-section class="text-h6">
-            <!-- Conditional rendering for Washroom -->
-            <template v-if="isWashroom">
-              {{ $t(`${i18nKey}.info`) }}
-            </template>
-            <template v-else>
-              {{ $t(`${i18nKey}.description`) }}
-            </template>
-          </q-item-section>
+    <q-expansion-item
+      group="itemGroup"
+      class="q-px-sm"
+      dense-toggle
+      expand-icon-toggle
+      :expand-icon="fasAngleDown"
+    >
+      <template v-slot:header>
+        <q-item-section class="text-h6">
+          <!-- Conditional rendering for Washroom -->
+          <template v-if="isWashroom">
+            {{ $t(`${i18nKey}.info`) }}
+          </template>
+          <template v-else>
+            {{ $t(`${i18nKey}.description`) }}
+          </template>
+        </q-item-section>
 
-          <q-item-section side>
-            <app-button-rounded
-              :text-color="isFavourite ? 'red' : 'white'"
-              :icon="fasHeart"
-              @click="onBtnFavClick"
-            />
-          </q-item-section>
-        </template>
-        <q-separator />
+        <q-item-section side>
+          <app-button-rounded
+            :text-color="isFavourite ? 'red' : 'white'"
+            :icon="fasHeart"
+            @click="onBtnFavClick"
+          />
+        </q-item-section>
+      </template>
+      <q-separator />
 
-        <q-card>
-          <q-card-section class="q-pa-sm">
-            <div v-html="translatedContent"></div>
-          </q-card-section>
-        </q-card>
-      </q-expansion-item>
-    </q-card-section>
+      <q-card>
+        <q-card-section class="q-pa-sm">
+          <div v-html="translatedContent"></div>
+        </q-card-section>
+      </q-card>
+    </q-expansion-item>
   </q-card>
 </template>
 

@@ -44,6 +44,7 @@
 
       <q-img v-else :src="image">
         <div
+          v-if="imageList.length > 0"
           class="absolute-top-right q-ma-md"
           :offset="[18, 18]"
           style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px"
@@ -100,15 +101,12 @@
   } from "@quasar/extras/fontawesome-v6";
   import { IMAGES } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
-  import { computed, ref } from "vue";
 
   const { imageList } = defineProps<{
     imageList: GalleryImageType[];
   }>();
 
   const { getImageURL } = useUtilities();
-  const $q = useQuasar();
-  const isSmallScreen = computed(() => $q.screen.lt.md); // Check if screen size is small
   const galleryImages = computed(() => imageList);
   const fullscreen = ref(false);
 
