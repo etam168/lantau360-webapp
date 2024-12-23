@@ -3,6 +3,8 @@ import i18n from "@/plugins/i18n/i18n";
 import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 import { BLOB_URL, EntityURLKey, IMAGES, ImageURLKey } from "@/constants";
 import { date, Notify, Screen } from "quasar";
+import { fasCheck, fasXmark } from "@quasar/extras/fontawesome-v6";
+
 
 const eventBus = (key: string) => useEventBus<any>(key);
 
@@ -47,10 +49,13 @@ export function useUtilities(locale?: string) {
     return `${entityKey}_IMAGE` as ImageURLKey;
   }
 
+
   function notify(message: string, type: string) {
     Notify.create({
       message: message,
-      type: type
+      type: type,
+      icon: type === "positive" ? fasCheck : fasXmark,
+      color: type === "positive" ? "primary" : "negative"
     });
   }
 

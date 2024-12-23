@@ -36,5 +36,11 @@ export default {
     passwordMinLength: "密碼長度必須至少為 6 個字元",
     phoneRequired: "電話號碼為必填項",
     userNameRequired: "您的電子郵件地址為必填項!!"
-  }
+  },
+  message: {
+    invalidUserPassword: "Invalid username or password.",
+    emailSentSuccessfully: "Please check your email for the confirmation link",
+    loginSuccessMessage: "登录成功",
+    passwordResetSuccessfully: "Password reset successfully"
+  },
 };

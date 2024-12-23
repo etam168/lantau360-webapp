@@ -36,5 +36,12 @@ export default {
     passwordMinLength: "密码长度必须至少为 6 个字符",
     phoneRequired: "电话号码为必填项",
     userNameRequired: "您的电子邮件地址为必填项!!"
-  }
+  },
+  message: {
+    invalidUserPassword: "Invalid username or password.",
+    emailSentSuccessfully: "Please check your email for the confirmation link",
+    loginSuccessMessage: "登录成功",
+    passwordResetSuccessfully: "Password reset successfully"
+  },
+
 };
