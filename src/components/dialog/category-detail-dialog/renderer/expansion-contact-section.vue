@@ -17,20 +17,26 @@
           v-if="category.contactPhone || category.contactWhatsApp"
         >
           <q-list class="q-pa-none" dense>
-            <q-item v-if="businessItem.contactPhone" class="q-pa-none">
-              <q-item-section avatar @click="navigateToPhone(businessItem.contactPhone)">
-                <q-icon :name="fasPhone" color="primary" />
+            <q-item v-if="businessItem.contactPhone" class="q-pa-none" clickable v-ripple>
+              <q-item-section
+                avatar
+                @click="navigateToPhone(businessItem.contactPhone)"
+                class="items-center"
+              >
+                <q-icon :name="fasPhone" color="primary" size="xs" />
               </q-item-section>
 
-              <q-item-section>
-                <q-item-label class="text-caption">{{
-                  businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone
-                }}</q-item-label>
+              <q-item-section class="text-caption">
+                {{ businessItem.contactPhone == undefined ? "N/A" : businessItem.contactPhone }}
               </q-item-section>
             </q-item>
 
             <q-item v-if="businessItem.contactWhatsApp" class="q-pa-none">
-              <q-item-section avatar @click="navigateToWhatsApp(businessItem.contactWhatsApp)">
+              <q-item-section
+                avatar
+                @click="navigateToWhatsApp(businessItem.contactWhatsApp)"
+                class="items-center"
+              >
                 <q-icon :name="fabSquareWhatsapp" color="primary" />
               </q-item-section>
               <q-item-section>

@@ -1,30 +1,26 @@
 <template>
-  <q-item class="q-pa-none">
-    <q-item-section>
-      <div style="width: 100px; width: 100%">
-        <q-responsive :ratio="16 / 9">
-          <l-map
-            :use-global-leaflet="false"
-            ref="map"
-            v-model:zoom="localZoom"
-            :center="mapCenter"
-            :options="mapOptions"
-            :bounds="bounds"
-          >
-            <l-tile-layer :url="url" layer-type="base" name="OpenStreetMap"></l-tile-layer>
+  <div style="width: 100px; width: 100%">
+    <q-responsive :ratio="16 / 9">
+      <l-map
+        :use-global-leaflet="false"
+        ref="map"
+        v-model:zoom="localZoom"
+        :center="mapCenter"
+        :options="mapOptions"
+        :bounds="bounds"
+      >
+        <l-tile-layer :url="url" layer-type="base" name="OpenStreetMap"></l-tile-layer>
 
-            <l-marker :lat-lng="markerPosition">
-              <l-tooltip :options="{ permanent: true, interactive: true }">{{ tooltip }}</l-tooltip>
-            </l-marker>
+        <l-marker :lat-lng="markerPosition">
+          <l-tooltip :options="{ permanent: true, interactive: true }">{{ tooltip }}</l-tooltip>
+        </l-marker>
 
-            <l-control position="bottomright">
-              <div style="font-weight: 500">{{ bottomRightLabel }}</div>
-            </l-control>
-          </l-map>
-        </q-responsive>
-      </div>
-    </q-item-section>
-  </q-item>
+        <l-control position="bottomright">
+          <div style="font-weight: 500">{{ bottomRightLabel }}</div>
+        </l-control>
+      </l-map>
+    </q-responsive>
+  </div>
 </template>
 
 <script setup lang="ts">

@@ -2,7 +2,7 @@
   <q-card v-for="(item, index) in categoryItems" :key="index" class="q-ma-md">
     <q-card-section class="q-pa-none">
       <q-list>
-        <q-item clickable @click="handleDetail(item)">
+        <q-item clickable @click="handleDetail(item)" class="q-pa-sm">
           <q-item-section avatar>
             <q-avatar size="64px" square>
               <q-img ratio="1" :src="getImageURL(item.iconPath)">
@@ -16,7 +16,8 @@
           <q-item-section>
             <q-item-label> {{ line1(item) }} </q-item-label>
             <q-item-label> {{ line2(item) }} </q-item-label>
-            <q-item-label v-if="directory.groupId === 5"> {{ title(item) }} </q-item-label>
+
+            <!-- <q-item-label v-if="directory.groupId === 5"> {{ title(item) }} </q-item-label> -->
           </q-item-section>
 
           <q-item-section side>

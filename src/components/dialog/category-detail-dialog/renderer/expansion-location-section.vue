@@ -13,11 +13,11 @@
           {{ $t(`${i18nKey}.location`) }}
         </q-item-section>
 
-        <q-item-section side v-if="hasCheckIn">
+        <!-- <q-item-section side v-if="hasCheckIn">
           <q-btn dense unelevated flat color="primary" @click="onBtnCheckInClick" class="q-pa-none"
             >Check-In</q-btn
           >
-        </q-item-section>
+        </q-item-section> -->
       </template>
 
       <q-separator />
@@ -26,10 +26,10 @@
         flat
         class="row justify-center"
         :style="{
-          height: $q.screen.gt.xs ? '345px' : '100%'
+          height: $q.screen.gt.xs ? '350px' : '100%'
         }"
       >
-        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()" class="q-pa-none">
+        <q-card-section :style="mapComponentStyle" @click="openGoogleMaps()" class="q-pa-md">
           <app-map-component
             style="flex: 1"
             :zoom="zoom"

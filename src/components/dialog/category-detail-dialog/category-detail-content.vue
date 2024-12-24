@@ -26,9 +26,35 @@
       @open-map="openGoogleMaps(category)"
     />
   </template>
+
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-btn
+      dense
+      fab
+      size="xs"
+      color="primary"
+      :text-color="isFavourite ? 'red' : 'white'"
+      :icon="fasHeart"
+      @click="onBtnFavClick"
+    />
+  </q-page-sticky>
+
+  <q-page-sticky position="bottom-right" :offset="[17, 80]" v-if="entityKey.includes('SITE')">
+    <q-btn
+      dense
+      fab
+      size="xs"
+      color="primary"
+      :icon="fasMapLocationDot"
+      @click="requestCheckIn(category)"
+    />
+  </q-page-sticky>
 </template>
 
 <script setup lang="ts">
+  // Third party imports
+  import { fasHeart, fasMapLocationDot } from "@quasar/extras/fontawesome-v6";
+
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
@@ -80,6 +106,11 @@
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+
+  const { eventBus } = useUtilities();
+
+  const isFavourite = ref(isFavouriteItem(category));
 
   const maskGalleryItems = computed(() => {
     // Get the displayMask from props (default value)
@@ -194,6 +225,12 @@
         return "";
     }
   });
+
+  function onBtnFavClick() {
+    toggleItemFavStatus(category, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus("favoriteUpdated").emit(category);
+  }
 
   function getBusinessTemplate() {
     // we only need to process BusinessView data here

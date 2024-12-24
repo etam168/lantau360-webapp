@@ -18,18 +18,18 @@
           </template>
         </q-item-section>
 
-        <q-item-section side>
+        <!-- <q-item-section side>
           <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
             :icon="fasHeart"
             @click="onBtnFavClick"
           />
-        </q-item-section>
+        </q-item-section> -->
       </template>
       <q-separator />
 
       <q-card>
-        <q-card-section class="q-pa-sm">
+        <q-card-section class="q-pa-md">
           <div v-html="translatedContent"></div>
         </q-card-section>
       </q-card>
