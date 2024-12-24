@@ -101,7 +101,7 @@
   });
 
   const mapComponentStyle = computed(() => ({
-    height: $q.screen.gt.xs ? "300px" : "209px",
+    height: $q.screen.gt.xs ? "300px" : "216px",
     width: $q.screen.gt.xs ? "600px" : "100%"
   }));
 
