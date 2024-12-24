@@ -13,11 +13,16 @@
             </q-avatar>
           </q-item-section>
 
-          <q-item-section>
+          <q-item-section v-if="directory && directory.groupId === 5">
+            <!-- Show title if groupId is 5 -->
+            <q-item-label>
+              {{ title(item) }}
+            </q-item-label>
+          </q-item-section>
+
+          <q-item-section v-else>
             <q-item-label> {{ line1(item) }} </q-item-label>
             <q-item-label> {{ line2(item) }} </q-item-label>
-
-            <!-- <q-item-label v-if="directory.groupId === 5"> {{ title(item) }} </q-item-label> -->
           </q-item-section>
 
           <q-item-section side>
@@ -61,7 +66,7 @@
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
     entityKey: EntityURLKey;
-    directory: DirectoryTypes;
+    directory?: DirectoryTypes;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });

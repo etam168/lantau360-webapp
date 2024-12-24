@@ -1,6 +1,6 @@
 {
   "name": "lantau360-webapp",
-  "version": "1.0.114",
+  "version": "1.0.116",
   "private": true,
   "type": "module",
   "scripts": {
