@@ -226,13 +226,13 @@
 
   // Lifecycle hooks
   onBeforeMount(() => {
-    eventBus("refreshData").on(async () => {
-      const lastSelectedTab = tab.value;
-      await fetchAllData();
-      if (lastSelectedTab) {
-        tab.value = lastSelectedTab;
-      }
-    });
+    // eventBus("refreshData").on(async () => {
+    //   const lastSelectedTab = tab.value;
+    //   await fetchAllData();
+    //   if (lastSelectedTab) {
+    //     tab.value = lastSelectedTab;
+    //   }
+    // });
   });
 
   /**
