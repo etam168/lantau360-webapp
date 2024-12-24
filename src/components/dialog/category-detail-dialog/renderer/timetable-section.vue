@@ -8,13 +8,13 @@
           </div>
         </q-toolbar-title>
 
-        <template v-slot:action>
+        <!-- <template v-slot:action>
           <app-button-rounded
             :text-color="isFavourite ? 'red' : 'white'"
             :icon="fasHeart"
             @click="onBtnFavClick"
           />
-        </template>
+        </template> -->
       </q-banner>
       <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
     </q-card-section>

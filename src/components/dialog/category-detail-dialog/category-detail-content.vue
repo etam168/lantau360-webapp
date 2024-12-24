@@ -6,18 +6,11 @@
       v-else-if="item.type === 'expansion-contact' && showContactSection"
       :category
     />
-    <description-section v-else-if="item.type === 'description'" :category />
-    <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey />
-    <open-close-time-section v-else-if="item.type === 'time'" :category />
-    <promotion-section v-else-if="item.type === 'promotion'" :category />
-    <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
-
     <expansion-description-section
       v-else-if="item.type === 'expansion-description'"
       :category
       :entityKey
     />
-
     <expansion-location-section
       v-else-if="item.type === 'expansion-location'"
       :category
@@ -25,30 +18,53 @@
       @check-in="requestCheckIn(category)"
       @open-map="openGoogleMaps(category)"
     />
+    <description-section v-else-if="item.type === 'description'" :category />
+    <!-- <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey /> -->
+    <open-close-time-section v-else-if="item.type === 'time'" :category />
+    <promotion-section v-else-if="item.type === 'promotion'" :category />
+    <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
+
+    <!-- Show Sticky Buttons when item type matches 'expansion-description', 'timetable', or 'expansion-contact' -->
+    <q-page-sticky
+      v-if="
+        ['expansion-description', 'timetable', 'expansion-location', 'favourite'].includes(
+          item.type
+        )
+      "
+      position="bottom-right"
+      :offset="[18, 18]"
+      style="z-index: 1"
+    >
+      <q-btn
+        dense
+        fab
+        size="xs"
+        color="primary"
+        :text-color="isFavourite ? 'red' : 'white'"
+        :icon="fasHeart"
+        @click="onBtnFavClick"
+      />
+    </q-page-sticky>
+
+    <q-page-sticky
+      v-if="
+        ['expansion-description', 'expansion-location'].includes(item.type) &&
+        entityKey.includes('SITE')
+      "
+      position="bottom-right"
+      :offset="[17, 80]"
+      style="z-index: 1"
+    >
+      <q-btn
+        dense
+        fab
+        size="xs"
+        color="primary"
+        :icon="fasMapLocationDot"
+        @click="requestCheckIn(category)"
+      />
+    </q-page-sticky>
   </template>
-
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-btn
-      dense
-      fab
-      size="xs"
-      color="primary"
-      :text-color="isFavourite ? 'red' : 'white'"
-      :icon="fasHeart"
-      @click="onBtnFavClick"
-    />
-  </q-page-sticky>
-
-  <q-page-sticky position="bottom-right" :offset="[17, 80]" v-if="entityKey.includes('SITE')">
-    <q-btn
-      dense
-      fab
-      size="xs"
-      color="primary"
-      :icon="fasMapLocationDot"
-      @click="requestCheckIn(category)"
-    />
-  </q-page-sticky>
 </template>
 
 <script setup lang="ts">
@@ -188,7 +204,6 @@
             (category[key] || "").toLowerCase().includes("call") ||
             (category[key] || "").toLowerCase().includes("telephone")
         );
-
         // Construct baseItems conditionally
         const baseItems: RenderItem[] = hasCallOrTelephone
           ? [
