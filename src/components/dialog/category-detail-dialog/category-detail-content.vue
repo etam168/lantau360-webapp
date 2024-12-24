@@ -19,57 +19,60 @@
       @open-map="openGoogleMaps(category)"
     />
     <description-section v-else-if="item.type === 'description'" :category />
-    <!-- <favourite-section v-else-if="item.type === 'favourite'" :category :entityKey /> -->
     <open-close-time-section v-else-if="item.type === 'time'" :category />
     <promotion-section v-else-if="item.type === 'promotion'" :category />
     <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
+  </template>
 
-    <!-- Show Sticky Buttons when item type matches 'expansion-description', 'timetable', or 'expansion-contact' -->
-    <q-page-sticky
-      v-if="
-        ['expansion-description', 'timetable', 'expansion-location', 'favourite'].includes(
-          item.type
-        )
-      "
-      position="bottom-right"
-      :offset="[18, 18]"
-      style="z-index: 1"
+  <!-- Show Sticky Buttons -->
+  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+    <q-fab
+      v-if="shouldShowFab"
+      vertical-actions-align="right"
+      color="primary"
+      :icon="fasChevronUp"
+      :active-icon="fasXmark"
+      direction="up"
     >
-      <q-btn
-        dense
-        fab
-        size="xs"
+      <q-fab-action
+        v-if="
+          ['expansion-description', 'timetable', 'expansion-location', 'favourite'].some(type =>
+            renderItems.some(item => item.type === type)
+          )
+        "
         color="primary"
         :text-color="isFavourite ? 'red' : 'white'"
-        :icon="fasHeart"
+        external-label
+        label-position="left"
         @click="onBtnFavClick"
+        :icon="fasHeart"
+        label="Favourite"
       />
-    </q-page-sticky>
-
-    <q-page-sticky
-      v-if="
-        ['expansion-description', 'expansion-location'].includes(item.type) &&
-        entityKey.includes('SITE')
-      "
-      position="bottom-right"
-      :offset="[17, 80]"
-      style="z-index: 1"
-    >
-      <q-btn
-        dense
-        fab
-        size="xs"
+      <q-fab-action
+        v-if="
+          ['expansion-description', 'expansion-location'].some(type =>
+            renderItems.some(item => item.type === type)
+          ) && entityKey.includes('SITE')
+        "
         color="primary"
-        :icon="fasMapLocationDot"
+        external-label
+        label-position="left"
         @click="requestCheckIn(category)"
+        :icon="fasMapLocationDot"
+        label="Checkin"
       />
-    </q-page-sticky>
-  </template>
+    </q-fab>
+  </q-page-sticky>
 </template>
 
 <script setup lang="ts">
   // Third party imports
-  import { fasHeart, fasMapLocationDot } from "@quasar/extras/fontawesome-v6";
+  import {
+    fasChevronUp,
+    fasHeart,
+    fasMapLocationDot,
+    fasXmark
+  } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
@@ -127,6 +130,7 @@
   const { eventBus } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(category));
+  const fabRight = ref(true);
 
   const maskGalleryItems = computed(() => {
     // Get the displayMask from props (default value)
@@ -156,6 +160,12 @@
 
   const showContactSection = computed(() => {
     return !!(category.contactPhone || category.contactWhatsApp);
+  });
+
+  const shouldShowFab = computed(() => {
+    return renderItems.value.some(item =>
+      ["expansion-description", "timetable", "expansion-location", "favourite"].includes(item.type)
+    );
   });
 
   const renderItems = computed((): RenderItem[] => {
