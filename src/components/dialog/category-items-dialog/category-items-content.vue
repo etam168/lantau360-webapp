@@ -5,25 +5,13 @@
 
   <!-- Fixed Top Section and Scrollable Content -->
   <template class="full-height" v-if="directory.groupId === 5">
-    <!-- Top Fixed Card -->
-    <q-card flat bordered class="q-ma-md">
-      <q-responsive :ratio="16 / 9">
-        <q-card-section> Mui Wo ↔ Tung Chung </q-card-section>
-      </q-responsive>
-    </q-card>
-
-    <!-- Scrollable Content Area -->
-    <q-scroll-area style="height: calc(100vh - 286px)">
-      <expansion-description-section v-if="directory.groupId === 5" :directory />
-
-      <app-category-list-items
-        :categoryItems
-        :checkIns
-        :directory
-        :entityKey
-        @on-category-detail="onCategoryDetail"
-      />
-    </q-scroll-area>
+    <app-sight-seeing-item
+      :categoryItems="categoryItems"
+      :checkIns="checkIns"
+      :directory="directory"
+      :entityKey="entityKey"
+      :on-Category-Detail="onCategoryDetail"
+    />
   </template>
 
   <template v-else>
@@ -74,7 +62,7 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
-  import expansionDescriptionSection from "./expansion-description-section.vue";
+  import appSightSeeingItem from "@/components/global/custom/app-site-seeing-item.vue";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
@@ -217,17 +205,6 @@
       throw error;
     }
   };
-
-  // Lifecycle hooks
-  onBeforeMount(() => {
-    // eventBus("refreshData").on(async () => {
-    //   const lastSelectedTab = tab.value;
-    //   await fetchAllData();
-    //   if (lastSelectedTab) {
-    //     tab.value = lastSelectedTab;
-    //   }
-    // });
-  });
 
   /**
    * Fetch data as part of the setup
