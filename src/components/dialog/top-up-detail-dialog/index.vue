@@ -9,7 +9,7 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title>{{}}</app-dialog-title>
+        <app-dialog-title>{{ $t(`${i18nKeyMoreDialog}.topUpPoints`) }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -60,6 +60,7 @@
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
+  const i18nKeyMoreDialog = "more.mainMenuDialog.account";
 
   /**
    * Handles the closing of the dialog
