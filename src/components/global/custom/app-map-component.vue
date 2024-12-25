@@ -64,3 +64,10 @@
   // Create a local reactive property for zoom
   const localZoom = ref(zoom);
 </script>
+
+<style>
+  .leaflet-pane.leaflet-marker-pane img {
+    width: 20px !important;
+    height: 30px !important;
+  }
+</style>

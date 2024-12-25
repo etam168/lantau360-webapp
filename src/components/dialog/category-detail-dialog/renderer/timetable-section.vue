@@ -1,24 +1,26 @@
 <template>
   <q-card bordered flat square class="q-mt-xs q-ma-md">
-    <q-card-section class="q-pa-sm">
-      <q-card-actions class="justify-between q-pa-none q-pb-sm">
-        <div class="text-h6 q-mb-none q-pb-none">{{ formattedSubtitle1 }}</div>
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          :icon="fasHeart"
-          @click="onBtnFavClick"
-        />
-      </q-card-actions>
+    <q-card-actions class="justify-between">
+      <div class="text-h6 q-mb-none q-pb-none">{{ formattedSubtitle1 }}</div>
+      <app-button-rounded
+        :text-color="isFavourite ? 'red' : 'white'"
+        :icon="fasHeart"
+        @click="onBtnFavClick"
+      />
+    </q-card-actions>
 
+    <q-separator />
+
+    <q-card-section class="q-pa-sm">
       <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
     </q-card-section>
   </q-card>
 
   <q-card bordered flat square class="q-mt-xs q-ma-md" v-if="!isMaskValueOne">
     <!-- Display both bannerPath and imagePath if their conditions are met -->
-    <q-card-section class="text-h6 q-mb-none q-pb-none q-pa-sm">
-      {{ formattedSubtitle2 }}
-
+    <div class="text-h6 q-mb-none q-pa-sm">{{ formattedSubtitle2 }}</div>
+    <q-separator />
+    <q-card-section class="q-pa-sm">
       <q-img class="rounded-borders" :src="getImageURL(category.imagePath)" />
     </q-card-section>
   </q-card>
