@@ -1,6 +1,6 @@
 <template>
   <q-card bordered flat square class="q-mt-xs q-ma-md">
-    <q-card-actions class="justify-between">
+    <q-card-actions class="justify-between q-px-md">
       <div class="text-h6 q-mb-none q-pb-none">{{ formattedSubtitle1 }}</div>
       <app-button-rounded
         :text-color="isFavourite ? 'red' : 'white'"
@@ -18,7 +18,7 @@
 
   <q-card bordered flat square class="q-mt-xs q-ma-md" v-if="!isMaskValueOne">
     <!-- Display both bannerPath and imagePath if their conditions are met -->
-    <div class="text-h6 q-mb-none q-pa-sm">{{ formattedSubtitle2 }}</div>
+    <div class="text-h6 q-mb-none q-px-md q-py-sm">{{ formattedSubtitle2 }}</div>
     <q-separator />
     <q-card-section class="q-pa-sm">
       <q-img class="rounded-borders" :src="getImageURL(category.imagePath)" />
