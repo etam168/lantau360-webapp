@@ -27,6 +27,7 @@ declare module 'vue' {
     AppMapComponent: typeof import('./components/global/custom/app-map-component.vue')['default']
     AppMarketingItemList: typeof import('./components/global/custom/app-marketing-item-list.vue')['default']
     AppMemberListItems: typeof import('./components/global/custom/app-member-list-items.vue')['default']
+    AppNoRecordMessage: typeof import('./components/global/custom/app-no-record-message.vue')['default']
     AppPageTitle: typeof import('./components/global/custom/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
     AppSkeletonCard: typeof import('./components/global/widgets/app-skeleton-card.vue')['default']

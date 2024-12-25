@@ -1,13 +1,7 @@
 <!-- category-items-content.vue -->
 <template>
   <!-- No Records Message -->
-
-  <div
-    v-if="directory.groupId !== 5 && categoryItems.length === 0"
-    class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold"
-  >
-    {{ $t("errors.noRecord") }}
-  </div>
+  <app-no-record-message v-if="categoryItems.length === 0" :message="$t('errors.noRecord')" />
 
   <!-- Fixed Top Section and Scrollable Content -->
   <template class="full-height" v-if="directory.groupId === 5">
@@ -100,7 +94,6 @@
 
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
-  const $q = useQuasar();
   const { fetchData } = useApi();
 
   const { groupBy, translate, eventBus } = useUtilities(locale.value);
@@ -109,10 +102,6 @@
   // Reactive variables
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
   const checkIns: Ref<CheckIn[]> = ref([]);
-
-  // const directoryId = computed<number>(() =>
-  //   ["BUSINESS", "SITE"].includes(entityKey) ? directory.directoryId : 0
-  // );
 
   const directoryId = computed<number>(() => {
     if (entityKey === "BUSINESS") {
@@ -148,6 +137,11 @@
     );
 
     return groupBy(validItems, getTranslatedKey);
+  });
+
+  // No record message
+  const noRecordMessage = computed<string | null>(() => {
+    return "";
   });
 
   // Define tabItems as a computed property
