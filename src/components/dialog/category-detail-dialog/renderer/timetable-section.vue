@@ -49,7 +49,7 @@
   const isFavourite = ref(isFavouriteItem(category));
 
   const isMaskValueOne = computed(() => {
-    return Number((category as SiteView).meta.maskValue) === 1;
+    return Number((category as SiteView).displayMask) === 1;
   });
 
   // Computed properties for handling other subtitle conditions
