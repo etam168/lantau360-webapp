@@ -1,5 +1,10 @@
 <template>
-  <q-card v-for="(item, index) in categoryItems" :key="index" class="q-ma-md">
+  <q-card
+    v-if="categoryItems.length > 0"
+    v-for="(item, index) in categoryItems"
+    :key="index"
+    class="q-ma-md"
+  >
     <q-card-section class="q-pa-none">
       <q-list>
         <q-item clickable @click="handleDetail(item)" class="q-pa-sm">
@@ -34,6 +39,8 @@
       </q-list>
     </q-card-section>
   </q-card>
+
+  <app-no-record-message v-else :message="$t('errors.noRecord')" />
 </template>
 
 <script setup lang="ts">

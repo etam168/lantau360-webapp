@@ -5,57 +5,30 @@
 
     <q-separator size="4px" color="primary" />
 
-    <q-banner :inline-actions="!isSmallScreen">
-      <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content
+        v-model:tab="tab"
+        :i18n-key="i18nKey"
+        :tab-items="tabItems"
+        :site-items="siteItems"
+        :business-items="businessItems"
+        :check-ins="checkIns"
+        @update:current-tab="setTab"
+        @on-category-detail="onCategoryDetail"
+      />
+    </q-scroll-area>
 
-      <template v-slot:action>
-        <app-tab-select
-          :class="tabSelectClass"
-          :tab-items="tabItems"
-          :current-tab="tab"
-          @update:currentTab="setTab"
-        />
-      </template>
-    </q-banner>
-
-    <q-tab-panels v-model="tab">
-      <q-tab-panel name="location" class="q-pa-none">
-        <div
-          v-if="siteItems.length == 0"
-          class="text-h6 text-weight-regular q-ma-md text-grey-6 text-weight-bold text-center"
-        >
-          {{ $t("errors.noSaveSiteRecord") }}
-        </div>
-
-        <app-category-list-items
-          v-else
-          :categoryItems="siteItems"
-          :checkIns
-          :entityKey="'SITE'"
-          @on-category-detail="onCategoryDetail"
-        />
-      </q-tab-panel>
-
-      <q-tab-panel name="business" class="q-pa-none">
-        <div
-          v-if="businessItems.length == 0"
-          class="text-h6 text-weight-regular q-ma-md text-grey-6 text-weight-bold text-center"
-        >
-          {{ $t("errors.noSaveBusinessRecord") }}
-        </div>
-        <app-category-list-items
-          v-else
-          :categoryItems="businessItems"
-          :checkIns
-          :entityKey="'BUSINESS'"
-          @on-category-detail="onCategoryDetail"
-        />
-      </q-tab-panel>
-
-      <q-tab-panel name="coupon">
-        <div>{{ $t(`${i18nKey}.tabItems.coupon`) }}</div>
-      </q-tab-panel>
-    </q-tab-panels>
+    <main-content
+      v-else
+      v-model:tab="tab"
+      :i18n-key="i18nKey"
+      :tab-items="tabItems"
+      :site-items="siteItems"
+      :business-items="businessItems"
+      :check-ins="checkIns"
+      @update:current-tab="setTab"
+      @on-category-detail="onCategoryDetail"
+    />
   </q-page>
 </template>
 
@@ -66,6 +39,9 @@
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
+
+  // Custom Components
+  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
 
   // Constants
   import { STORAGE_KEYS, EntityURLKey, ENTITY_URL } from "@/constants";
@@ -78,14 +54,13 @@
     entityKey: EntityURLKey;
   }>();
 
+  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { eventBus, isSmallScreen, getEntityName } = useUtilities();
 
-  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
-  const tabSelectClass = computed(() => (isSmallScreen.value ? "q-mt-xs flex justify-center" : ""));
-
+  const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<BusinessView[]>(
@@ -100,6 +75,16 @@
   const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
+
+  const usedHeight = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const carouselHeight = (width * 9) / 16; // Height for the carousel
+    return carouselHeight + 105;
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
 
   const tabItems = ref<TabItem[]>([
     { name: "location", label: t(`${i18nKey}.tabItem.location`) },
