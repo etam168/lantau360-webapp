@@ -14,7 +14,6 @@
           </q-item-section>
 
           <q-item-section v-if="directory && directory.groupId === 5">
-            <!-- Show title if groupId is 5 -->
             <q-item-label>
               {{ title(item) }}
             </q-item-label>
@@ -38,25 +37,17 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
-  import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
-  import type { Directory } from "@/interfaces/models/entities/directory";
-  import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
 
-  // Constants
-  import { EntityURLKey, STORAGE_KEYS, IMAGES } from "@/constants";
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
+  import { IMAGES } from "@/constants";
+  import { useFavoriteStore } from "@/stores/favorite-store";
 
-  // Composables
-  import { LocalStorage } from "quasar";
-
-  // Emits
   const emits = defineEmits(["on-category-detail"]);
 
-  // Props
   const {
     categoryItems,
     checkIns = [],
@@ -65,37 +56,18 @@
   } = defineProps<{
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
-    entityKey: EntityURLKey;
+    entityKey: "SITE" | "BUSINESS";
     directory?: DirectoryTypes;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
   const { getEntityName, getImageURL, translate } = useUtilities(locale.value);
+
   const entityName = getEntityName(entityKey);
-
-  const favoriteItems = ref([] as CategoryTypes[]);
-
-  // Watch for changes in categoryItems and reload favorites
-  watch(
-    () => categoryItems,
-    () => {
-      switch (entityKey) {
-        case "BUSINESS":
-          favoriteItems.value = LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || [];
-          break;
-        case "SITE":
-          favoriteItems.value = LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || [];
-          break;
-        default:
-          favoriteItems.value = [];
-      }
-    },
-    { immediate: true, deep: true }
-  );
+  const favoriteStore = useFavoriteStore();
 
   function line1(item: CategoryTypes) {
     const name = `${entityName}Name` as keyof CategoryTypes;
-
     return translate(item[name] as string, item.meta, name);
   }
 
@@ -108,7 +80,7 @@
   }
 
   const isCheckedIn = (item: CategoryTypes): boolean => {
-    if (entityKey == "SITE") {
+    if (entityKey === "SITE") {
       return checkIns.some(
         checkInItem => (checkInItem as CheckIn).siteId === (item as SiteView).siteId
       );
@@ -117,18 +89,7 @@
   };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
-    switch (entityKey) {
-      case "BUSINESS":
-        return favoriteItems.value.some(
-          favItem => (favItem as BusinessView).businessId === (item as BusinessView).businessId
-        );
-      case "SITE":
-        return favoriteItems.value.some(
-          favItem => (favItem as SiteView).siteId === (item as SiteView).siteId
-        );
-      default:
-        return false;
-    }
+    return favoriteStore.isFavorite(item as any, entityKey);
   };
 
   function handleDetail(item: any) {
