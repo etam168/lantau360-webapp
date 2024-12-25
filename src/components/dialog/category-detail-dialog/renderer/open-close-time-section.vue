@@ -1,21 +1,18 @@
 <template>
-  <q-item class="q-px-md q-pb-none" v-if="statusText">
-    <q-item-section class="justify-center">
-      <q-item-label class="q-pa-none q-ma-none">
+  <q-card flat v-if="statusText">
+    <q-card-actions class="justify-between q-pt-md q-px-md q-pb-none">
+      <div>
         <span :class="statusClass" class="q-pr-sm text-subtitle1">{{ statusText }}</span>
         <q-icon :name="fasCircle" class="q-mr-sm" style="font-size: 0.8em" />
         {{ formattedTimes }}
-      </q-item-label>
-    </q-item-section>
-
-    <q-item-section side>
+      </div>
       <app-button-rounded
         :text-color="isFavourite ? 'red' : 'white'"
         :icon="fasHeart"
         @click="onBtnFavClick"
       />
-    </q-item-section>
-  </q-item>
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup lang="ts">

@@ -1,23 +1,20 @@
 <template>
-  <q-item>
-    <q-item-section></q-item-section>
-    <q-item-section top side>
-      <div class="text-grey-8 q-gutter-xs">
-        <app-button-rounded
-          v-if="hasCheckIn"
-          color="primary"
-          @click="onBtnCheckInClick"
-          :icon="fasMapLocationDot"
-        />
+  <q-card flat>
+    <q-card-actions class="justify-end q-pt-md q-px-md q-pb-none">
+      <app-button-rounded
+        v-if="hasCheckIn"
+        color="primary"
+        @click="onBtnCheckInClick"
+        :icon="fasMapLocationDot"
+      />
 
-        <app-button-rounded
-          :text-color="isFavourite ? 'red' : 'white'"
-          :icon="fasHeart"
-          @click="onBtnFavClick"
-        />
-      </div>
-    </q-item-section>
-  </q-item>
+      <app-button-rounded
+        :text-color="isFavourite ? 'red' : 'white'"
+        :icon="fasHeart"
+        @click="onBtnFavClick"
+      />
+    </q-card-actions>
+  </q-card>
 </template>
 
 <script setup lang="ts">
