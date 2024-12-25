@@ -30,6 +30,7 @@ declare module 'vue' {
     AppNoRecordMessage: typeof import('./components/global/custom/app-no-record-message.vue')['default']
     AppPageTitle: typeof import('./components/global/custom/app-page-title.vue')['default']
     AppSearchBar: typeof import('./components/global/widgets/app-search-bar.vue')['default']
+    AppSiteSeeingItem: typeof import('./components/global/custom/app-site-seeing-item.vue')['default']
     AppSkeletonCard: typeof import('./components/global/widgets/app-skeleton-card.vue')['default']
     AppSkeletonCarousel: typeof import('./components/global/widgets/app-skeleton-carousel.vue')['default']
     AppSkeletonDirectoryItems: typeof import('./components/global/widgets/app-skeleton-directory-items.vue')['default']

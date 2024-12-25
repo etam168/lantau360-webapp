@@ -25,55 +25,17 @@
   </template>
 
   <!-- Show Sticky Buttons -->
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
-    <q-fab
-      v-if="shouldShowFab"
-      vertical-actions-align="right"
-      color="primary"
-      :icon="fasChevronUp"
-      :active-icon="fasXmark"
-      direction="up"
-    >
-      <q-fab-action
-        v-if="
-          ['expansion-description', 'timetable', 'expansion-location', 'favourite'].some(type =>
-            renderItems.some(item => item.type === type)
-          )
-        "
-        color="primary"
-        :text-color="isFavourite ? 'red' : 'white'"
-        external-label
-        label-position="left"
-        @click="onBtnFavClick"
-        :icon="fasHeart"
-        label="Favourite"
-      />
-      <q-fab-action
-        v-if="
-          ['expansion-description', 'expansion-location'].some(type =>
-            renderItems.some(item => item.type === type)
-          ) && entityKey.includes('SITE')
-        "
-        color="primary"
-        external-label
-        label-position="left"
-        @click="requestCheckIn(category)"
-        :icon="fasMapLocationDot"
-        label="Checkin"
-      />
-    </q-fab>
-  </q-page-sticky>
+  <favourite-checkin-section
+    v-if="shouldShowFab"
+    :category
+    :entityKey
+    :renderItems
+    :has-check-in="entityKey.includes('SITE')"
+    @check-in="requestCheckIn(category)"
+  />
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import {
-    fasChevronUp,
-    fasHeart,
-    fasMapLocationDot,
-    fasXmark
-  } from "@quasar/extras/fontawesome-v6";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
@@ -87,8 +49,8 @@
   import DescriptionSection from "./renderer/description-section.vue";
   import ExpansionContactSection from "./renderer/expansion-contact-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
-  import FavouriteSection from "./renderer/favourite-section.vue";
   import ExpansionLocationSection from "./renderer/expansion-location-section.vue";
+  import favouriteCheckinSection from "./renderer/favourite-checkin-section.vue";
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
@@ -130,7 +92,6 @@
   const { eventBus } = useUtilities();
 
   const isFavourite = ref(isFavouriteItem(category));
-  const fabRight = ref(true);
 
   const maskGalleryItems = computed(() => {
     // Get the displayMask from props (default value)
@@ -250,12 +211,6 @@
         return "";
     }
   });
-
-  function onBtnFavClick() {
-    toggleItemFavStatus(category, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus("favoriteUpdated").emit(category);
-  }
 
   function getBusinessTemplate() {
     // we only need to process BusinessView data here

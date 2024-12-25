@@ -351,6 +351,7 @@
     "useMoreItemServiceCopy": true,
     "useValidationSchemas": true,
     "RenderItem": true,
-    "useSSRWidth": true
+    "useSSRWidth": true,
+    "usePreferredReducedTransparency": true
   }
 }
