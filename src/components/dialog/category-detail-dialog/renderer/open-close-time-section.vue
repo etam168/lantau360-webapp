@@ -7,19 +7,39 @@
         {{ formattedTimes }}
       </q-item-label>
     </q-item-section>
+
+    <q-item-section side>
+      <app-button-rounded
+        :text-color="isFavourite ? 'red' : 'white'"
+        :icon="fasHeart"
+        @click="onBtnFavClick"
+      />
+    </q-item-section>
   </q-item>
 </template>
 
 <script setup lang="ts">
   // Third party imports
-  import { fasCircle } from "@quasar/extras/fontawesome-v6";
+  import { fasCircle, fasHeart } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
-  // Props
-  const { category } = defineProps<{ category: CategoryTypes }>();
+  // Third party imports
+  import { EntityURLKey } from "@/constants";
 
+  // Props
+  const { category, entityKey } = defineProps<{
+    category: CategoryTypes;
+    entityKey: EntityURLKey;
+  }>();
+
+  // Composable function calls
+  const { eventBus } = useUtilities();
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+
+  // Reactive variables
+  const isFavourite = ref(isFavouriteItem(category));
   // Utility function to format time to 12-hour format with am/pm
   function formatTime(time: string): string {
     const [hour, minute] = time.split(":");
@@ -69,4 +89,10 @@
       return "text-red"; // Quasar class for red text
     }
   });
+
+  function onBtnFavClick() {
+    toggleItemFavStatus(category, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus("favoriteUpdated").emit(category);
+  }
 </script>

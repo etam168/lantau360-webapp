@@ -1,12 +1,6 @@
 <template>
   <q-card class="q-ma-md">
-    <q-expansion-item
-      group="itemGroup"
-      class="detail-page-expansion"
-      dense-toggle
-      expand-icon-toggle
-      :expand-icon="fasAngleDown"
-    >
+    <q-expansion-item group="itemGroup" dense-toggle expand-icon-toggle :expand-icon="fasAngleDown">
       <template v-slot:header>
         <q-item-section class="text-h6">
           <!-- Conditional rendering for Washroom -->
@@ -55,9 +49,3 @@
   // Check if directoryName is Washroom (case-insensitive)
   const isWashroom = computed(() => ["Washroom", "washroom"].includes(category.directoryName));
 </script>
-
-<style>
-  .q-expansion-item.detail-page-expansion .q-item {
-    padding: 8px !important;
-  }
-</style>

@@ -17,18 +17,17 @@
       @open-map="openGoogleMaps(category)"
     />
     <description-section v-else-if="item.type === 'description'" :category />
-    <open-close-time-section v-else-if="item.type === 'time'" :category />
+    <favourite-section
+      v-else-if="item.type === 'favourite'"
+      :category
+      :entityKey
+      :has-check-in="entityKey.includes('SITE')"
+      @check-in="requestCheckIn(category)"
+    />
+    <open-close-time-section v-else-if="item.type === 'time'" :category :entityKey />
     <promotion-section v-else-if="item.type === 'promotion'" :category />
     <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
   </template>
-
-  <favourite-checkin-section
-    :category
-    :entityKey
-    :renderItems
-    :has-check-in="entityKey.includes('SITE')"
-    @check-in="requestCheckIn(category)"
-  />
 </template>
 
 <script setup lang="ts">
@@ -46,7 +45,7 @@
   import ExpansionContactSection from "./renderer/expansion-contact-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import ExpansionLocationSection from "./renderer/expansion-location-section.vue";
-  import favouriteCheckinSection from "./renderer/favourite-checkin-section.vue";
+  import favouriteSection from "./renderer/favourite-section.vue";
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
@@ -126,6 +125,7 @@
       case RENDERER.SITE:
         return [
           { name: "carousel", type: "carousel" },
+          { name: "favourite", type: "favourite" },
           { name: "expansion-description", type: "expansion-description" },
           { name: "expansion-location", type: "expansion-location" },
           { name: "expansion-contact", type: "expansion-contact" }

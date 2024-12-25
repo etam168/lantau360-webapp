@@ -2,7 +2,6 @@
   <q-card class="q-ma-md">
     <q-expansion-item
       group="itemGroup"
-      class="detail-page-expansion"
       dense-toggle
       expand-icon-toggle
       :expand-icon="fasAngleDown"

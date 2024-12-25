@@ -1,7 +1,14 @@
 <template>
   <q-card flat square class="q-mt-xs">
-    <q-card-section class="text-h6 q-mb-none q-pb-md">
-      {{ formattedSubtitle1 }}
+    <q-card-section>
+      <q-card-actions class="justify-between q-pa-none">
+        <div class="text-h6 q-mb-none q-pb-none">{{ formattedSubtitle1 }}</div>
+        <app-button-rounded
+          :text-color="isFavourite ? 'red' : 'white'"
+          :icon="fasHeart"
+          @click="onBtnFavClick"
+        />
+      </q-card-actions>
 
       <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
     </q-card-section>
@@ -16,6 +23,8 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
@@ -31,7 +40,11 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
 
-  const { getImageURL, translate } = useUtilities(locale.value);
+  const { eventBus, getImageURL, translate } = useUtilities(locale.value);
+  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+
+  // Reactive variables
+  const isFavourite = ref(isFavouriteItem(category));
 
   const isMaskValueOne = computed(() => {
     return Number((category as SiteView).meta.maskValue) === 1;
@@ -49,4 +62,10 @@
   const formattedSubtitle2 = computed(() => {
     return translate(category.subtitle2, category.meta, "subtitle2");
   });
+
+  function onBtnFavClick() {
+    toggleItemFavStatus(category, isFavourite.value);
+    isFavourite.value = !isFavourite.value;
+    eventBus("favoriteUpdated").emit(category);
+  }
 </script>
