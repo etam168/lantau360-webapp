@@ -1,33 +1,14 @@
 <template>
   <q-card flat square class="q-mt-xs">
-    <q-card-section>
-      <q-banner inline-actions>
-        <q-toolbar-title>
-          <div class="text-h6 q-mb-none q-pb-none">
-            {{ formattedSubtitle1 }}
-          </div>
-        </q-toolbar-title>
+    <q-card-section class="text-h6 q-mb-none q-pb-md">
+      {{ formattedSubtitle1 }}
 
-        <!-- <template v-slot:action>
-          <app-button-rounded
-            :text-color="isFavourite ? 'red' : 'white'"
-            :icon="fasHeart"
-            @click="onBtnFavClick"
-          />
-        </template> -->
-      </q-banner>
       <q-img class="rounded-borders" :src="getImageURL(category.bannerPath)" />
     </q-card-section>
 
     <!-- Display both bannerPath and imagePath if their conditions are met -->
-    <q-card-section v-if="!isMaskValueOne">
-      <q-banner inline-actions>
-        <q-toolbar-title>
-          <div class="text-h6 q-mb-none q-pb-none">
-            {{ formattedSubtitle2 }}
-          </div>
-        </q-toolbar-title>
-      </q-banner>
+    <q-card-section v-if="!isMaskValueOne" class="text-h6 q-mb-none q-pb-none">
+      {{ formattedSubtitle2 }}
 
       <q-img class="rounded-borders" :src="getImageURL(category.imagePath)" />
     </q-card-section>
@@ -40,7 +21,6 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Third party imports
-  import { fasHeart } from "@quasar/extras/fontawesome-v6";
   import { EntityURLKey } from "@/constants";
 
   const { category, entityKey } = defineProps<{
@@ -51,11 +31,7 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, getImageURL, translate } = useUtilities(locale.value);
-  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
-
-  // Reactive variables
-  const isFavourite = ref(isFavouriteItem(category));
+  const { getImageURL, translate } = useUtilities(locale.value);
 
   const isMaskValueOne = computed(() => {
     return Number((category as SiteView).meta.maskValue) === 1;
@@ -73,10 +49,4 @@
   const formattedSubtitle2 = computed(() => {
     return translate(category.subtitle2, category.meta, "subtitle2");
   });
-
-  function onBtnFavClick() {
-    toggleItemFavStatus(category, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus("favoriteUpdated").emit(category);
-  }
 </script>
