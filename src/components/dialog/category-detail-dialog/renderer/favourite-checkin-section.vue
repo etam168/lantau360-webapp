@@ -1,5 +1,5 @@
 <template>
-  <q-page-sticky position="bottom-right" :offset="[18, 18]">
+  <q-page-sticky position="bottom-right" :offset="[18, 18]" v-if="shouldShowFab">
     <q-fab
       vertical-actions-align="right"
       color="primary"
@@ -19,7 +19,7 @@
         label-position="left"
         @click="onBtnFavClick"
         :icon="fasHeart"
-        label="Favourite"
+        :label="$t('action.favourite')"
       />
       <q-fab-action
         v-if="
@@ -32,7 +32,7 @@
         label-position="left"
         @click="onBtnCheckInClick"
         :icon="fasMapLocationDot"
-        label="Checkin"
+        :label="$t('action.checkin')"
       />
     </q-fab>
   </q-page-sticky>
@@ -47,6 +47,8 @@
   } from "@quasar/extras/fontawesome-v6";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { EntityURLKey } from "@/constants";
+
+  const emit = defineEmits(["check-in"]);
 
   const {
     category,
@@ -66,7 +68,12 @@
 
   // Reactive variables
   const isFavourite = ref(isFavouriteItem(category));
-  const emit = defineEmits(["check-in"]);
+
+  const shouldShowFab = computed(() => {
+    return renderItems.some(item =>
+      ["expansion-description", "timetable", "expansion-location", "favourite"].includes(item.type)
+    );
+  });
 
   function onBtnFavClick() {
     toggleItemFavStatus(category, isFavourite.value);

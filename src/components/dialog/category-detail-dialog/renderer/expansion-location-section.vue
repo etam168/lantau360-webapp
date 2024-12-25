@@ -12,12 +12,6 @@
         <q-item-section class="text-h6">
           {{ $t(`${i18nKey}.location`) }}
         </q-item-section>
-
-        <!-- <q-item-section side v-if="hasCheckIn">
-          <q-btn dense unelevated flat color="primary" @click="onBtnCheckInClick" class="q-pa-none"
-            >Check-In</q-btn
-          >
-        </q-item-section> -->
       </template>
 
       <q-separator />
@@ -57,9 +51,8 @@
   const emits = defineEmits(["open-map", "check-in"]);
 
   // Props
-  const { category, hasCheckIn = false } = defineProps<{
+  const { category } = defineProps<{
     category: CategoryTypes;
-    hasCheckIn?: boolean;
   }>();
 
   // Composable function calls
@@ -104,10 +97,6 @@
     height: $q.screen.gt.xs ? "300px" : "216px",
     width: $q.screen.gt.xs ? "600px" : "100%"
   }));
-
-  function onBtnCheckInClick() {
-    emits("check-in");
-  }
 
   function openGoogleMaps() {
     emits("open-map");

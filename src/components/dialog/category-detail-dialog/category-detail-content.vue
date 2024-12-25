@@ -14,8 +14,6 @@
     <expansion-location-section
       v-else-if="item.type === 'expansion-location'"
       :category
-      :has-check-in="entityKey.includes('SITE')"
-      @check-in="requestCheckIn(category)"
       @open-map="openGoogleMaps(category)"
     />
     <description-section v-else-if="item.type === 'description'" :category />
@@ -24,9 +22,7 @@
     <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
   </template>
 
-  <!-- Show Sticky Buttons -->
   <favourite-checkin-section
-    v-if="shouldShowFab"
     :category
     :entityKey
     :renderItems
@@ -87,11 +83,6 @@
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
-  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
-
-  const { eventBus } = useUtilities();
-
-  const isFavourite = ref(isFavouriteItem(category));
 
   const maskGalleryItems = computed(() => {
     // Get the displayMask from props (default value)
@@ -121,12 +112,6 @@
 
   const showContactSection = computed(() => {
     return !!(category.contactPhone || category.contactWhatsApp);
-  });
-
-  const shouldShowFab = computed(() => {
-    return renderItems.value.some(item =>
-      ["expansion-description", "timetable", "expansion-location", "favourite"].includes(item.type)
-    );
   });
 
   const renderItems = computed((): RenderItem[] => {

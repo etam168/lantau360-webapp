@@ -17,14 +17,6 @@
             {{ $t(`${i18nKey}.description`) }}
           </template>
         </q-item-section>
-
-        <!-- <q-item-section side>
-          <app-button-rounded
-            :text-color="isFavourite ? 'red' : 'white'"
-            :icon="fasHeart"
-            @click="onBtnFavClick"
-          />
-        </q-item-section> -->
       </template>
       <q-separator />
 
@@ -39,7 +31,7 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasAngleDown, fasHeart } from "@quasar/extras/fontawesome-v6";
+  import { fasAngleDown } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
@@ -54,22 +46,14 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, translate } = useUtilities(locale.value);
-  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+  const { translate } = useUtilities(locale.value);
 
   // Reactive variables
   const i18nKey = "home.dialog";
   const translatedContent = ref(translate(category.description, category.meta, "description"));
-  const isFavourite = ref(isFavouriteItem(category));
 
   // Check if directoryName is Washroom (case-insensitive)
   const isWashroom = computed(() => ["Washroom", "washroom"].includes(category.directoryName));
-
-  function onBtnFavClick() {
-    toggleItemFavStatus(category, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus("favoriteUpdated").emit(category);
-  }
 </script>
 
 <style>
