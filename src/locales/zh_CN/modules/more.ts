@@ -18,7 +18,7 @@ export default {
     privacy: "隐私政策",
     aboutUs: "关于我们",
     myCheckin: "我的签到",
-    profile: {
+    profileDetail: {
       title: "个人资料",
       save: "保存"
     },

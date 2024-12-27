@@ -1,6 +1,6 @@
 <!-- community-items-content.vue -->
 <template>
-  <q-card>
+  <q-card flat>
     <q-item clickable v-ripple @click="onCreatePosting">
       <q-item-section avatar>
         <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
@@ -54,7 +54,7 @@
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
-  import { fasPlus } from "@quasar/extras/fontawesome-v6";
+  import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
   // Props
   const {
@@ -135,9 +135,35 @@
   }
 
   async function onCreatePosting() {
-    const dialogName = "PostingListDialog";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCreatePosting(isDialogOpen, directory);
+    $q.notify({
+      message: `
+      <p style="margin-bottom: 0px;">Create post will cost you 50 points.</p>
+      <p style="margin-bottom: 0px;">Are you sure you want to continue?</p>
+    `,
+      html: true,
+      color: "warning",
+      position: "center",
+      icon: fasTriangleExclamation,
+      actions: [
+        {
+          label: "Yes",
+          color: "white",
+          handler: async () => {
+            // Open the dialog for creating the post
+            const dialogName = "PostingListDialog";
+            eventBus("DialogStatus").emit(true, dialogName);
+            openCreatePosting(isDialogOpen, directory);
+          }
+        },
+        {
+          label: "No",
+          color: "white", // If the user cancels
+          handler: () => {
+            // Do nothing, simply dismiss the notification
+          }
+        }
+      ]
+    });
   }
 
   async function handleDetail(item: any) {
@@ -145,10 +171,6 @@
     openCommunityDetailDialog(isDialogOpen, item, dialogName + "Detail");
   }
 
-  /**
-   * Fetches all required data concurrently
-   * Populates the reactive variables with the fetched data
-   */
   async function fetchAllData() {
     try {
       switch (entityKey) {

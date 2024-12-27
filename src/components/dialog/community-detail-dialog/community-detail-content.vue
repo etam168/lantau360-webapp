@@ -1,11 +1,9 @@
 <template>
-  <q-page>
-    <template v-for="(item, index) in renderItems" :key="index">
-      <carousel-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
-      <contact-section v-else-if="item.type === 'contact'" :category />
-      <description-section v-else-if="item.type === 'description'" :category />
-    </template>
-  </q-page>
+  <template v-for="(item, index) in renderItems" :key="index">
+    <carousel-image-list v-if="item.type === 'carousel'" :image-list="galleryItems" />
+    <contact-section v-else-if="item.type === 'contact'" :category />
+    <description-section v-else-if="item.type === 'description'" :category />
+  </template>
 </template>
 
 <script setup lang="ts">

@@ -21,8 +21,8 @@
   import type { EntityType } from "@/interfaces/types/entity-type";
 
   //.ts
-  import  { newPostingImage } from "@/interfaces/models/entities/posting-image";
-  import  { newMemberImage } from "@/interfaces/models/entities/member-image";
+  import { newPostingImage } from "@/interfaces/models/entities/posting-image";
+  import { newMemberImage } from "@/interfaces/models/entities/member-image";
 
   import { useUserStore } from "@/stores/user";
 

@@ -20,16 +20,8 @@
 
       <q-item-section side>
         <div class="text-grey-8 q-gutter-xs">
+          <q-btn size="xs" dense flat :icon="fasCircleInfo" @click="handleDetail(item)" />
           <q-btn
-            class="gt-xs"
-            size="xs"
-            dense
-            flat
-            :icon="fasCircleInfo"
-            @click="handleDetail(item)"
-          />
-          <q-btn
-            class="gt-xs"
             size="xs"
             dense
             flat

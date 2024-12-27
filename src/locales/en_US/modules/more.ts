@@ -18,7 +18,7 @@ export default {
     privacy: "Privacy Policy",
     aboutUs: "About",
     myCheckin: "My Check-In",
-    profile: {
+    profileDetail: {
       title: "Profile",
       save: "Save"
     },

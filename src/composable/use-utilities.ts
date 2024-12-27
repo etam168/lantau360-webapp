@@ -5,7 +5,6 @@ import { BLOB_URL, EntityURLKey, IMAGES, ImageURLKey } from "@/constants";
 import { date, Notify, Screen } from "quasar";
 import { fasCheck, fasXmark } from "@quasar/extras/fontawesome-v6";
 
-
 const eventBus = (key: string) => useEventBus<any>(key);
 
 export function useUtilities(locale?: string) {
@@ -49,13 +48,13 @@ export function useUtilities(locale?: string) {
     return `${entityKey}_IMAGE` as ImageURLKey;
   }
 
-
-  function notify(message: string, type: string) {
+  function notify(message: string, type: string, position?: any) {
     Notify.create({
       message: message,
       type: type,
       icon: type === "positive" ? fasCheck : fasXmark,
-      color: type === "positive" ? "primary" : "negative"
+      color: type === "positive" ? "primary" : "negative",
+      position: position
     });
   }
 

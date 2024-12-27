@@ -1,6 +1,6 @@
 <!-- app-skeleton-tab-items.vue -->
 <template>
-  <q-item class="q-gutter-sm">
+  <q-item class="q-gutter-sm" :class="$q.screen.lt.sm ? 'justify-center' : ''">
     <q-skeleton v-for="index in itemCount" :key="index" type="QChip" />
   </q-item>
 </template>
