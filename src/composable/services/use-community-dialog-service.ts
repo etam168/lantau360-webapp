@@ -7,7 +7,7 @@ import { Dialog } from "quasar";
 import { ENTITY_URL, EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
 
-const { eventBus } = useUtilities();
+const { eventBus, notify } = useUtilities();
 const userStore = useUserStore();
 const { isUserLogon } = userStore;
 const { handleOpenDialog } = useEntityDataHandlingService();
@@ -102,6 +102,12 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     if (isUserLogon()) {
       // Fetch additional member points
       await userStore.fetchMemberPoints();
+      // Check whether user have required point to create post
+      if (userStore.availabelPoints < userStore.pointsPerPost) {
+        notify("Dont have enough points to post", "negative");
+        return;
+      }
+
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
       handleOpenDialog(props, isDialogOpen, entityKey);
