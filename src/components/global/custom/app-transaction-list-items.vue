@@ -2,6 +2,7 @@
   <q-table
     ref="qTableRef"
     v-bind="$attrs"
+    :card-style="scrollAreaStyle"
     :rows-per-page="rowsPerPage"
     :rows-per-page-options="rowsPerPageOptions"
     class="sticky-header-column q-ma-md"
@@ -77,6 +78,14 @@
   const $q = useQuasar();
   const rowsPerPageOptions = [10, 50, 100];
   const rowsPerPage = ref(10);
+
+  const usedHeight = computed(() => {
+    return $q.screen.height * 0.375; // 80% of screen height
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
 
   // Define pagination
   const pagination = ref({

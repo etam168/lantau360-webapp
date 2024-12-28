@@ -13,22 +13,12 @@
         class="q-pa-none"
       >
         <template v-if="filterGroupedArray(item.name).length > 0">
-          <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
-            <app-transaction-list-items
-              :memberItems="filterGroupedArray(item.name)"
-              :entityKey="entityKey"
-              @on-member-detail="handleDetail"
-              :showBottom="item.name === 'recent'"
-            />
-          </q-scroll-area>
-          <template v-else>
-            <app-transaction-list-items
-              :memberItems="filterGroupedArray(item.name)"
-              :entityKey="entityKey"
-              @on-member-detail="handleDetail"
-              :showBottom="item.name === 'recent'"
-            />
-          </template>
+          <app-transaction-list-items
+            :memberItems="filterGroupedArray(item.name)"
+            :entityKey="entityKey"
+            @on-member-detail="handleDetail"
+            :showBottom="item.name === 'recent'"
+          />
         </template>
 
         <template v-else>
@@ -69,21 +59,10 @@
 
   const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog";
-  const THRESHOLD = 580;
 
   const memberItems = ref<CategoryTypes[]>([]);
   const historyItems = ref<Transaction[]>([]);
   const recentItems = ref<Transaction[]>([]);
-
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 24; // Height for the carousel
-    return carouselHeight + 84;
-  });
-
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
-  });
 
   const $q = useQuasar();
   const entityData = ref<Record<string, any>>({});
