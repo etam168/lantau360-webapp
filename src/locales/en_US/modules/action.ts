@@ -16,6 +16,7 @@ export default {
   ok: "OK",
   no: "No",
   resendLink: "Resend Link",
+  rowsPerPage: "Rows per page:",
   save: "Save",
   yes: "Yes"
 };

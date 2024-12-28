@@ -16,6 +16,7 @@ export default {
   ok: "确定",
   no: "否",
   resendLink: "重新发送链接",
+  rowsPerPage: "每页行数：",
   save: "保存",
   yes: "是"
 };
