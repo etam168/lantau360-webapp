@@ -17,6 +17,7 @@
             :memberItems="filterGroupedArray(item.name)"
             :entityKey="entityKey"
             @on-member-detail="handleDetail"
+            :showBottom="item.name === 'recent'"
           />
         </template>
 

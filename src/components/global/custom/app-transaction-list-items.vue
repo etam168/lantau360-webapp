@@ -1,65 +1,100 @@
 <template>
-  <q-list class="q-ma-md">
-    <q-item
-      class="shadow-1 q-pa-md q-mb-md"
-      clickable
-      @click="handleDetail(item)"
-      v-for="(item, index) in transactionItem"
-      :key="index"
-    >
-      <q-item-section>
-        <q-item-label>{{ item.title }}</q-item-label>
-
-        <q-item-label v-if="item.directoryName !== null" caption>{{
-          item.directoryName + "   -  " + dateFormatter(item.createdAt)
-        }}</q-item-label>
-
-        <q-item-label v-else caption> {{ dateFormatter(item.createdAt) }}</q-item-label>
-      </q-item-section>
-
-      <q-item-section side>
-        <q-item-label :class="item.transactionType === 2 ? 'text-red' : ''">
-          {{ item.transactionType === 2 ? "-" + item.points : item.points }}</q-item-label
-        >
-        <q-item-label class="text-red" v-if="item.isPostExpired == true">{{
-          $t(`${i18nKey}.account.expired`)
-        }}</q-item-label>
-      </q-item-section>
-    </q-item>
-  </q-list>
+  <q-table
+    :rows="transactionItem"
+    :pagination="pagination"
+    :hide-bottom="showBottom ? true : false"
+    :columns="columns"
+    row-key="id"
+    class="q-ma-md"
+    :dense="true"
+  >
+    <template v-slot:top-right>
+      <!-- Optional additional controls can go here -->
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
-  // Interface files
   import type { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-
-  // .ts files
   import { EntityURLKey } from "@/constants";
+  import { QTableColumn } from "quasar";
+
+  // Internal plugin imports
+  import i18n from "@/plugins/i18n/i18n";
 
   const { dateFormatter } = useUtilities();
 
   const emits = defineEmits(["on-member-detail"]);
 
   // Props
-  const { memberItems, entityKey } = defineProps<{
+  const { memberItems, entityKey, showBottom } = defineProps<{
     memberItems: CategoryTypes[];
     entityKey: EntityURLKey;
+    showBottom: boolean;
   }>();
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
   const i18nKey = "more.mainMenuDialog";
+  const { t } = i18n.global;
 
-  const items = computed(() => {
-    switch (entityKey) {
-      case "POSTING":
-        return ["posting"];
-      default:
-        return ["N/A"];
-    }
+  // Define pagination
+  const pagination = ref({
+    page: 1,
+    rowsPerPage: 20,
+    rowsNumber: transactionItem.value.length
   });
 
-  function handleDetail(item: any) {
-    // emits("on-member-detail", item);
-  }
+  // Columns definition for the table
+  const columns = computed(() => {
+    const cols: Partial<QTableColumn>[] = [
+      {
+        name: "title",
+        label: "Title",
+        required: true,
+        align: "left",
+        field: "title"
+      },
+      {
+        name: "directory",
+        label: "Directory - Date",
+        required: true,
+        align: "left",
+        field: "directoryName",
+        format: (val: string, row: any) => {
+          return val ? `${val} - ${dateFormatter(row.createdAt)}` : dateFormatter(row.createdAt);
+        }
+      },
+      {
+        name: "points",
+        label: "Points",
+        required: true,
+        align: "center",
+        field: "points",
+        format: (val: number, row: any) => {
+          return row.transactionType === 2 ? `-${val}` : `${val}`; // Ensure this always returns a string
+        }
+      },
+      {
+        name: "expired",
+        label: "Expired",
+        required: true,
+        align: "center",
+        field: "isPostExpired",
+        format: (val: boolean) => (val ? "Expired" : "")
+      }
+    ];
+
+    return cols.map(col =>
+      col.name === "actionSlot"
+        ? col
+        : {
+            ...col,
+            // label: t(`${entity}.columns.${col.name}`, col.name as string),
+            align: col.align || "left",
+            required: col.required !== false,
+            sortable: col.sortable !== false
+          }
+    ) as QTableColumn[];
+  });
 </script>
