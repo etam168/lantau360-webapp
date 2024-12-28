@@ -51,7 +51,13 @@ export const ENTITY_URL = {
   SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
   SITE_GALLERY: `/SiteImage/GalleryImages`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
-  WEATHER: `/Weather`
+  WEATHER: `/Weather`,
+
+  EMAIL_CONFIRMATION: {
+    SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",
+    RESEND_LINK: "/MemberAuth/ReSendEmailConfirmationLink",
+    CONFIRM_EMAIL: "/MemberAuth/VerifyEmail"
+  }
 };
 
 export type EntityURLKey = keyof typeof ENTITY_URL;

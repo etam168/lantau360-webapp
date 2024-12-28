@@ -45,7 +45,6 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
           password: passwordSchema,
           firstName: string().required(t(`${i18nKeySchema}.firstName`)),
           lastName: string().required(t(`${i18nKeySchema}.lastName`)),
-          phone: string().required(t(`${i18nKeySchema}.phone`))
         });
 
       case "reset":

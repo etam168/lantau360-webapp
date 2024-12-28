@@ -20,7 +20,7 @@
 <script setup lang="ts">
   import { useInterval } from "@vueuse/core";
 
-  const { duration = 10000, label } = defineProps<{
+  const { duration = 40000, label } = defineProps<{
     duration?: number;
     label?: string;
   }>();

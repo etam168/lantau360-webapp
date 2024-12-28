@@ -58,16 +58,16 @@ const drawerRouter: Array<RouteRecordRaw> = [
           group: "common"
         }
       },
-      // {
-      //   path: "/email-confirmation",
-      //   name: "email-confirmation",
-      //   component: () => import("@/views/auth/email-confirmation.vue"),
-      //   meta: {
-      //     title: "route.drawerComponents.more",
-      //     icon: fasBriefcase,
-      //     group: "common"
-      //   }
-      // },
+      {
+        path: "/email-confirmation",
+        name: "email-confirmation",
+        component: () => import("@/views/auth/email-confirmation.vue"),
+        meta: {
+          title: "route.drawerComponents.more",
+          icon: fasBriefcase,
+          group: "common"
+        }
+      },
       {
         path: "/:catchAll(.*)",
         name: "not-found",
