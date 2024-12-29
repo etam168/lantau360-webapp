@@ -3,7 +3,12 @@
     <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
 
     <template v-slot:action>
-      <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="tab = $event" />
+      <app-tab-select
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="tab = $event"
+        :class="$q.screen.lt.sm ? 'justify-center' : ''"
+      />
     </template>
   </q-banner>
 

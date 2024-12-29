@@ -1,6 +1,11 @@
 <template>
   <weather-section :data="weatherData" />
-  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="tab = $event" />
+  <app-tab-select
+    :tab-items="tabItems"
+    :current-tab="tab"
+    @update:currentTab="tab = $event"
+    :class="$q.screen.lt.sm ? 'justify-center' : ''"
+  />
 
   <q-card-actions align="center">
     <app-search-bar @on-search="$emit('onSearch', $event)" />

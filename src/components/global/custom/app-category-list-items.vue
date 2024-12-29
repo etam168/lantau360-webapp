@@ -1,6 +1,4 @@
 <template>
-  <!-- <div>{{ directory }}</div>
-  <pre>{{ categoryItems }}</pre> -->
   <q-card
     v-if="categoryItems.length > 0"
     v-for="(item, index) in categoryItems"
