@@ -53,7 +53,7 @@
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, isSmallScreen } = useUtilities();
+  const { eventBus } = useUtilities();
   const { fetchData } = useApi();
 
   const { openCategoryDetailDialog } = useCategoryDialogService(

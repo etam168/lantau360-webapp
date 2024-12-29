@@ -50,7 +50,7 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
-  import { IMAGES } from "@/constants";
+  import { EntityURLKey, IMAGES } from "@/constants";
   import { useFavoriteStore } from "@/stores/favorite-store";
 
   const emits = defineEmits(["on-category-detail"]);
@@ -63,7 +63,7 @@
   } = defineProps<{
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
-    entityKey: "SITE" | "BUSINESS";
+    entityKey: EntityURLKey;
     directory?: DirectoryTypes;
   }>();
 

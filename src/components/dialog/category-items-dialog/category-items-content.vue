@@ -62,12 +62,13 @@
   import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
-  import appSightSeeingItem from "@/components/global/custom/app-site-seeing-item.vue";
-
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
   import { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
+
+  // Constants
+  import AppSightSeeingItem from "@/components/global/custom/app-site-seeing-item.vue";
 
   // Props
   const {
@@ -92,12 +93,14 @@
   const checkIns: Ref<CheckIn[]> = ref([]);
 
   const directoryId = computed<number>(() => {
-    if (entityKey === "BUSINESS") {
-      return (directory as BusinessDirectory).businessDirectoryId;
-    } else if (entityKey === "SITE") {
-      return (directory as Directory).directoryId;
+    switch (entityKey) {
+      case "BUSINESS":
+        return (directory as BusinessDirectory).businessDirectoryId;
+      case "SITE":
+        return (directory as Directory).directoryId;
+      default:
+        return 0;
     }
-    return 0;
   });
 
   const groupBykey = computed<string | null>(() =>
@@ -127,19 +130,11 @@
     return groupBy(validItems, getTranslatedKey);
   });
 
-  // No record message
-  const noRecordMessage = computed<string | null>(() => {
-    return "";
-  });
-
   // Define tabItems as a computed property
   const tabItems = computed(() => {
     return groupedArray.value
       .filter(group => typeof group.group === "string" && group.group.trim() !== "") // Exclude empty or whitespace-only group
-      .map(group => ({
-        name: group.group,
-        label: group.group
-      })) as TabItem[];
+      .map(group => ({ name: group.group, label: group.group })) as TabItem[];
   });
 
   const tab = ref("");
