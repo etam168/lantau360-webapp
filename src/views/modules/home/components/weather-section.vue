@@ -46,7 +46,7 @@
   const { translate } = useUtilities(locale.value);
 
   const caption = computed(() => {
-    return translate(data?.caption ?? "", data?.meta, "Caption");
+    return translate(data?.caption ?? "", data?.meta, "caption");
   });
 
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
