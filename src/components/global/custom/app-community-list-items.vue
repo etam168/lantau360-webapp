@@ -24,24 +24,18 @@
               <q-item-label class="text-weight-bold">
                 {{ (item as PostingView).memberFirstName }}
               </q-item-label>
-
-              <div class="row items-center">
-                <q-item-label class="text-weight-medium text-caption q-mt-xs">
-                  {{ line1(item) }}
-                </q-item-label>
-                <q-item-label class="text-weight-medium text-caption text-caption q-ml-sm">
-                  <q-badge>
-                    {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
-                  </q-badge>
-                </q-item-label>
-              </div>
+              <q-item-label class="text-weight-medium text-caption text-caption">
+                <q-badge>
+                  {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
+                </q-badge>
+              </q-item-label>
             </q-item-section>
           </q-item>
         </q-item-section>
 
         <q-item-section side>
           <div class="text-grey-8 q-gutter-xs">
-            <q-btn size="xs" dense flat :icon="fasCircleInfo" @click="handleDetail(item)" />
+            <q-btn size="xs" dense flat :icon="fasEllipsisVertical" @click="handleDetail(item)" />
             <q-btn
               size="xs"
               dense
@@ -58,7 +52,7 @@
       <q-item class="justify-content">
         <q-item-section>
           <q-item-label class="text-grey-8">
-            {{ (item as PostingView).description }}
+            {{ line1(item) }}
           </q-item-label>
         </q-item-section>
       </q-item>
@@ -73,7 +67,7 @@
 
   // Constants
   import { EntityURLKey } from "@/constants";
-  import { fasCircleInfo, fasPencil } from "@quasar/extras/fontawesome-v6";
+  import { fasEllipsisVertical, fasPencil } from "@quasar/extras/fontawesome-v6";
 
   // Stores
   import { useUserStore } from "@/stores/user";
@@ -98,10 +92,6 @@
     const name = `title` as keyof CategoryTypes;
 
     return translate(item[name] as string, item.meta, name);
-  }
-
-  function line2(item: CategoryTypes) {
-    return translate(item.subtitle1, item.meta, "subtitle1");
   }
 
   function handleDetail(item: any) {
