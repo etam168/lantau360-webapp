@@ -30,7 +30,9 @@
                   {{ line1(item) }}
                 </q-item-label>
                 <q-item-label class="text-weight-medium text-caption text-caption q-ml-sm">
-                  {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
+                  <q-badge>
+                    {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
+                  </q-badge>
                 </q-item-label>
               </div>
             </q-item-section>
