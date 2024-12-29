@@ -10,7 +10,7 @@
       :checkIns="checkIns"
       :directory="directory"
       :entityKey="entityKey"
-      :on-Category-Detail="onCategoryDetail"
+      @on-category-detail="onCategoryDetail"
     />
   </template>
 
