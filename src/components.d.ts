@@ -53,7 +53,6 @@ declare module 'vue' {
     MorePageLogon: typeof import('./components/global/custom/more-page-logon.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
-    StandardBottomSlot: typeof import('./components/global/custom/standard-bottom-slot.vue')['default']
     VeeAvatar: typeof import('./components/global/vee-validate/vee-avatar.vue')['default']
     VeeGalleryImages: typeof import('./components/global/vee-validate/vee-gallery-images.vue')['default']
     VeeInput: typeof import('./components/global/vee-validate/vee-input.vue')['default']

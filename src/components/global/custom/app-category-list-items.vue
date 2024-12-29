@@ -1,4 +1,6 @@
 <template>
+  <!-- <div>{{ directory }}</div>
+  <pre>{{ categoryItems }}</pre> -->
   <q-card
     v-if="categoryItems.length > 0"
     v-for="(item, index) in categoryItems"
@@ -22,6 +24,13 @@
             <q-item-label>
               {{ title(item) }}
             </q-item-label>
+          </q-item-section>
+
+          <q-item-section v-else-if="directory?.meta.template === 3">
+            <q-item-label>
+              {{ title(item) }}
+            </q-item-label>
+            <q-item-label> {{ line2(item) }} </q-item-label>
           </q-item-section>
 
           <q-item-section v-else>
