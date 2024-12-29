@@ -4,58 +4,42 @@
     :key="index"
     class="q-list q-px-md q-pt-md q-pb-none"
   >
-    <q-item class="shadow-1 q-pa-sm q-mb-md column">
-      <q-item class="q-pl-none">
-        <q-item-section>
-          <q-item>
-            <q-item-section top avatar>
-              <q-avatar size="54px" circle>
-                <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
-                  <template v-slot:error>
-                    <div class="absolute-full flex flex-center bg-negative text-white">
-                      {{ $t("errors.cannotLoadImage") }}
-                    </div>
-                  </template>
-                </q-img>
-              </q-avatar>
-            </q-item-section>
+    <q-item class="shadow-1 q-pa-md">
+      <q-item-section top avatar>
+        <q-avatar size="54px" circle>
+          <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
+            <template v-slot:error>
+              <div class="absolute-full flex flex-center bg-negative text-white">
+                {{ $t("errors.cannotLoadImage") }}
+              </div>
+            </template>
+          </q-img>
+        </q-avatar>
+      </q-item-section>
 
-            <q-item-section side>
-              <q-item-label class="text-weight-bold">
-                {{ (item as PostingView).memberFirstName }}
-              </q-item-label>
-              <q-item-label class="text-weight-medium text-caption text-caption">
-                <q-badge>
-                  {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
-                </q-badge>
-              </q-item-label>
-            </q-item-section>
-          </q-item>
-        </q-item-section>
+      <q-item-section>
+        <q-item-label class="text-weight-bold">
+          {{ (item as PostingView).memberFirstName }}
+        </q-item-label>
 
-        <q-item-section side>
-          <div class="text-grey-8 q-gutter-xs">
-            <q-btn size="xs" dense flat :icon="fasEllipsisVertical" @click="handleDetail(item)" />
-            <q-btn
-              size="xs"
-              dense
-              flat
-              :icon="fasPencil"
-              v-if="userStore.userId === item.createdBy"
-              @click="handleEdit(item)"
-            />
-          </div>
-        </q-item-section>
-      </q-item>
-      <q-separator />
+        <q-item-label caption class="text-weight-medium">
+          {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }} | {{ line1(item) }}
+        </q-item-label>
+      </q-item-section>
 
-      <q-item class="justify-content">
-        <q-item-section>
-          <q-item-label class="text-grey-8">
-            {{ line1(item) }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+      <q-item-section side>
+        <div class="text-grey-8 q-gutter-xs">
+          <q-btn size="xs" dense flat :icon="fasEllipsis" @click="handleDetail(item)" />
+          <q-btn
+            size="xs"
+            dense
+            flat
+            :icon="fasPencil"
+            v-if="userStore.userId === item.createdBy"
+            @click="handleEdit(item)"
+          />
+        </div>
+      </q-item-section>
     </q-item>
   </q-list>
 </template>
@@ -67,7 +51,7 @@
 
   // Constants
   import { EntityURLKey } from "@/constants";
-  import { fasEllipsisVertical, fasPencil } from "@quasar/extras/fontawesome-v6";
+  import { fasEllipsis, fasPencil } from "@quasar/extras/fontawesome-v6";
 
   // Stores
   import { useUserStore } from "@/stores/user";
