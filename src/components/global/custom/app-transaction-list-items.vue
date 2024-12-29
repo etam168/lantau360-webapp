@@ -3,15 +3,11 @@
     ref="qTableRef"
     v-bind="$attrs"
     :card-style="scrollAreaStyle"
-    v-model:rows-per-page="rowsPerPage"
-    :rows-per-page-options="rowsPerPageOptions"
     class="sticky-header-column q-ma-md"
-    binary-state-sort
-    :rows="paginatedData"
-    :pagination="pagination"
-    :hide-bottom="showBottom"
+    :rows="transactionItem"
     :columns="columns"
     row-key="description"
+     v-model:pagination="pagination"
     :dense="$q.screen.lt.md"
   >
     <template #body="props">
@@ -38,27 +34,66 @@
                 <q-item-label :class="props.row.transactionType === 2 ? 'text-red' : ''">
                   {{ props.row.transactionType === 2 ? `${props.row.points}` : props.row.points }}
                 </q-item-label>
-                <q-item-label caption v-if="props.row.isPostExpired" class="text-red q-ml-sm">
-                  {{ $t(`${i18nKey}.account.expired`) }}
-                </q-item-label>
               </q-item-section>
             </q-item>
           </template>
         </q-td>
       </q-tr>
     </template>
+    <template v-slot:pagination="scope">
+        <!-- <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="first_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isFirstPage"
+          @click="scope.firstPage"
+        /> -->
 
-    <template #bottom="scope">
-      <standard-bottom-slot :scope :rowsPerPageOptions @update:pagination="updatePagination" />
-    </template>
+        <q-btn
+          :icon="fasAngleLeft"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isFirstPage"
+          @click="scope.prevPage"
+        />
+
+         <q-btn
+            :icon="fasAngleRight"
+            color="grey-8"
+            round
+            dense
+            flat
+            :disable="scope.isLastPage"
+            @click="scope.nextPage"
+          /> 
+
+        <!-- <q-btn
+          v-if="scope.pagesNumber > 2"
+          icon="last_page"
+          color="grey-8"
+          round
+          dense
+          flat
+          :disable="scope.isLastPage"
+          @click="scope.lastPage"
+        /> -->
+      </template>
   </q-table>
 </template>
 
 <script setup lang="ts">
- import { QTable, QTableColumn } from "quasar";
+  import { QTable, QTableColumn } from "quasar";
   import type { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import { EntityURLKey } from "@/constants";
+
+  import { fasTriangleExclamation, fasAngleLeft, fasAngleRight} from "@quasar/extras/fontawesome-v6";
+
 
   const { dateFormatter } = useUtilities();
 
@@ -89,16 +124,9 @@
     sortBy: "description",
     descending: false,
     page: 1,
-    rowsPerPage: rowsPerPageOptions[0],
-    rowsNumber: transactionItem.value.length
+    rowsPerPage: 10,
   });
 
-  // Compute paginated data
-  const paginatedData = computed(() => {
-    const startIndex = (pagination.value.page - 1) * pagination.value.rowsPerPage;
-    const endIndex = startIndex + pagination.value.rowsPerPage;
-    return transactionItem.value.slice(startIndex, endIndex);
-  });
 
   // Columns definition for the table
   const columns = computed(() => {
@@ -124,3 +152,8 @@
     pagination.value = newPagination;
   }
 </script>
+<style scoped>
+.q-pagination .q-icon {
+  color: #000; /* Use a contrasting color */
+}
+</style>
