@@ -1,36 +1,65 @@
 <template>
-  <q-list class="q-list q-px-md q-pt-md q-pb-none">
-    <q-item v-for="(item, index) in communityItems" :key="index" class="shadow-1 q-pa-sm q-mb-md">
-      <q-item-section avatar>
-        <q-avatar size="64px" circle>
-          <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                {{ $t("errors.cannotLoadImage") }}
+  <q-list
+    v-for="(item, index) in communityItems"
+    :key="index"
+    class="q-list q-px-md q-pt-md q-pb-none"
+  >
+    <q-item class="shadow-1 q-pa-sm q-mb-md column">
+      <q-item class="q-pl-none">
+        <q-item-section>
+          <q-item>
+            <q-item-section top avatar>
+              <q-avatar size="54px" circle>
+                <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
+                  <template v-slot:error>
+                    <div class="absolute-full flex flex-center bg-negative text-white">
+                      {{ $t("errors.cannotLoadImage") }}
+                    </div>
+                  </template>
+                </q-img>
+              </q-avatar>
+            </q-item-section>
+
+            <q-item-section side>
+              <q-item-label class="text-weight-bold">
+                {{ (item as PostingView).memberFirstName }}
+              </q-item-label>
+
+              <div class="row items-center">
+                <q-item-label class="text-weight-medium text-caption q-mt-xs">
+                  {{ line1(item) }}
+                </q-item-label>
+                <q-item-label class="text-weight-medium text-caption text-caption q-ml-sm">
+                  {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }}
+                </q-item-label>
               </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
+            </q-item-section>
+          </q-item>
+        </q-item-section>
 
-      <q-item-section>
-        <q-item-label> {{ line1(item) }} </q-item-label>
-        <q-item-label> {{ line2(item) }} </q-item-label>
-      </q-item-section>
+        <q-item-section side>
+          <div class="text-grey-8 q-gutter-xs">
+            <q-btn size="xs" dense flat :icon="fasCircleInfo" @click="handleDetail(item)" />
+            <q-btn
+              size="xs"
+              dense
+              flat
+              :icon="fasPencil"
+              v-if="userStore.userId === item.createdBy"
+              @click="handleEdit(item)"
+            />
+          </div>
+        </q-item-section>
+      </q-item>
+      <q-separator />
 
-      <q-item-section side>
-        <div class="text-grey-8 q-gutter-xs">
-          <q-btn size="xs" dense flat :icon="fasCircleInfo" @click="handleDetail(item)" />
-          <q-btn
-            size="xs"
-            dense
-            flat
-            :icon="fasPencil"
-            v-if="userStore.userId === item.createdBy"
-            @click="handleEdit(item)"
-          />
-        </div>
-      </q-item-section>
+      <q-item class="justify-content">
+        <q-item-section>
+          <q-item-label class="text-grey-8">
+            {{ (item as PostingView).description }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
     </q-item>
   </q-list>
 </template>
@@ -46,6 +75,8 @@
 
   // Stores
   import { useUserStore } from "@/stores/user";
+
+  import { formatTimeAgo } from "@vueuse/core";
 
   // Emits
   const emits = defineEmits(["on-category-detail"]);
