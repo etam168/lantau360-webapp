@@ -30,7 +30,7 @@ export default {
       topUpPoints: "充值積分",
       recentTransactions: "最近交易",
       history: "歷史",
-      recent: "最近",
+      recent: "过去 3 个月",
       repost: "重新發布",
       topUpYourAccount: "充值您的帳戶",
       topUpAmount: "充值金額",

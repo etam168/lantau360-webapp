@@ -8,6 +8,7 @@
     :columns="columns"
     row-key="description"
      v-model:pagination="pagination"
+     :hide-pagination="hidePagination"
     :dense="$q.screen.lt.md"
   >
     <template #body="props">
@@ -100,10 +101,10 @@
   const emits = defineEmits(["on-member-detail"]);
 
   // Props
-  const { memberItems, entityKey, showBottom } = defineProps<{
+  const { memberItems, entityKey, hidePagination } = defineProps<{
     memberItems: CategoryTypes[];
     entityKey: EntityURLKey;
-    showBottom?: boolean;
+    hidePagination?: boolean;
   }>();
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
@@ -124,7 +125,7 @@
     sortBy: "description",
     descending: false,
     page: 1,
-    rowsPerPage: 10,
+    rowsPerPage: hidePagination ? transactionItem.value.length : 10,
   });
 
 

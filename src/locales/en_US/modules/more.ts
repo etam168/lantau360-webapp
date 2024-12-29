@@ -30,7 +30,7 @@ export default {
       topUpPoints: "Top-up Points",
       recentTransactions: "Recent Transactions",
       history: "History",
-      recent: "Recent",
+      recent: "Last 3 months",
       repost: "Repost",
       topUpYourAccount: "Top-up your account",
       topUpAmount: "Top-up Amount",
