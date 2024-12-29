@@ -9,13 +9,6 @@
             })
           }}
         </div>
-        <div class="text-caption">
-          {{
-            $t(`${i18nKeyMoreDialog}.spentPoints`, {
-              spentPoints: userStore.spendPoints
-            })
-          }}
-        </div>
       </q-card-section>
 
       <q-btn

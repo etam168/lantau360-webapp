@@ -8,6 +8,7 @@ import type { CommunityNoticeView } from "@/interfaces/models/views/community-no
 import type { PostingView } from "@/interfaces/models/views/posting-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
 import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+import type { TransactionView } from "../models/views/trasaction-view";
 
 export type CategoryTypes =
   | AdvertisementView
@@ -19,4 +20,5 @@ export type CategoryTypes =
   | CommunityNewsView
   | CommunityNoticeView
   | PostingView
-  | SiteView;
+  | SiteView
+  | TransactionView;

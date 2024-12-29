@@ -3,13 +3,13 @@
     ref="qTableRef"
     v-bind="$attrs"
     :card-style="scrollAreaStyle"
-    :rows-per-page="rowsPerPage"
+    v-model:rows-per-page="rowsPerPage"
     :rows-per-page-options="rowsPerPageOptions"
     class="sticky-header-column q-ma-md"
     binary-state-sort
-    :rows="transactionItem"
+    :rows="paginatedData"
     :pagination="pagination"
-    :hide-bottom="showBottom ? true : false"
+    :hide-bottom="showBottom"
     :columns="columns"
     row-key="description"
     :dense="$q.screen.lt.md"
@@ -20,14 +20,14 @@
           <template v-if="col.name == 'description'">
             <q-item dense class="q-pa-none">
               <q-item-section>
-                <q-item-label>{{ props.row.title }}</q-item-label>
-                <q-item-label caption>
+                <q-item-label>
                   {{
                     props.row.directoryName
                       ? `${props.row.directoryName} - ${dateFormatter(props.row.createdAt)}`
                       : dateFormatter(props.row.createdAt)
-                  }}</q-item-label
-                >
+                  }}
+                </q-item-label>
+                <q-item-label caption>{{ props.row.title }}</q-item-label>
               </q-item-section>
             </q-item>
           </template>
@@ -36,13 +36,11 @@
             <q-item dense class="q-pa-none">
               <q-item-section>
                 <q-item-label :class="props.row.transactionType === 2 ? 'text-red' : ''">
-                  {{
-                    props.row.transactionType === 2 ? `${props.row.points}` : props.row.points
-                  }}</q-item-label
-                >
+                  {{ props.row.transactionType === 2 ? `${props.row.points}` : props.row.points }}
+                </q-item-label>
                 <q-item-label caption v-if="props.row.isPostExpired" class="text-red q-ml-sm">
-                  {{ $t(`${i18nKey}.account.expired`) }}</q-item-label
-                >
+                  {{ $t(`${i18nKey}.account.expired`) }}
+                </q-item-label>
               </q-item-section>
             </q-item>
           </template>
@@ -57,10 +55,10 @@
 </template>
 
 <script setup lang="ts">
+ import { QTable, QTableColumn } from "quasar";
   import type { TransactionView } from "@/interfaces/models/views/trasaction-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import { EntityURLKey } from "@/constants";
-  import { QTableColumn } from "quasar";
 
   const { dateFormatter } = useUtilities();
 
@@ -78,9 +76,8 @@
   const $q = useQuasar();
   const rowsPerPageOptions = [10, 50, 100];
   const rowsPerPage = ref(10);
-
   const usedHeight = computed(() => {
-    return $q.screen.height * 0.375; // 80% of screen height
+    return $q.screen.height * 0.375;
   });
 
   const scrollAreaStyle = computed(() => {
@@ -92,8 +89,15 @@
     sortBy: "description",
     descending: false,
     page: 1,
-    rowsPerPage: 10,
+    rowsPerPage: rowsPerPageOptions[0],
     rowsNumber: transactionItem.value.length
+  });
+
+  // Compute paginated data
+  const paginatedData = computed(() => {
+    const startIndex = (pagination.value.page - 1) * pagination.value.rowsPerPage;
+    const endIndex = startIndex + pagination.value.rowsPerPage;
+    return transactionItem.value.slice(startIndex, endIndex);
   });
 
   // Columns definition for the table
@@ -116,10 +120,7 @@
     ] as QTableColumn[];
   });
 
-  function updatePagination(event: any) {
-    pagination.value = {
-      ...pagination.value,
-      ...event
-    };
+  function updatePagination(newPagination: any) {
+    pagination.value = newPagination;
   }
 </script>

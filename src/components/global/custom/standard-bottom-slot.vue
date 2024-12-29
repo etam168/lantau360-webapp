@@ -1,4 +1,8 @@
+<!-- standard-bottom-slot.vue -->
 <template>
+  <!-- {{ scope }}
+  {{ scope.prevPage }} -->
+
   <q-card-actions class="full-width row items-center">
     <template v-if="!scope.isFirstPage || !scope.isLastPage">
       <div class="col-12 col-sm-8 offset-sm-2 row items-center justify-center q-gutter-sm">
