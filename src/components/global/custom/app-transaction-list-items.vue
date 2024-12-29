@@ -7,8 +7,8 @@
     :rows="transactionItem"
     :columns="columns"
     row-key="description"
-     v-model:pagination="pagination"
-     :hide-pagination="hidePagination"
+    v-model:pagination="pagination"
+    :hide-pagination="hidePagination"
     :dense="$q.screen.lt.md"
   >
     <template #body="props">
@@ -42,48 +42,26 @@
       </q-tr>
     </template>
     <template v-slot:pagination="scope">
-        <!-- <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="first_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isFirstPage"
-          @click="scope.firstPage"
-        /> -->
+      <q-btn
+        :icon="fasAngleLeft"
+        color="grey-8"
+        round
+        dense
+        flat
+        :disable="scope.isFirstPage"
+        @click="scope.prevPage"
+      />
 
-        <q-btn
-          :icon="fasAngleLeft"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isFirstPage"
-          @click="scope.prevPage"
-        />
-
-         <q-btn
-            :icon="fasAngleRight"
-            color="grey-8"
-            round
-            dense
-            flat
-            :disable="scope.isLastPage"
-            @click="scope.nextPage"
-          /> 
-
-        <!-- <q-btn
-          v-if="scope.pagesNumber > 2"
-          icon="last_page"
-          color="grey-8"
-          round
-          dense
-          flat
-          :disable="scope.isLastPage"
-          @click="scope.lastPage"
-        /> -->
-      </template>
+      <q-btn
+        :icon="fasAngleRight"
+        color="grey-8"
+        round
+        dense
+        flat
+        :disable="scope.isLastPage"
+        @click="scope.nextPage"
+      />
+    </template>
   </q-table>
 </template>
 
@@ -93,8 +71,7 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import { EntityURLKey } from "@/constants";
 
-  import { fasTriangleExclamation, fasAngleLeft, fasAngleRight} from "@quasar/extras/fontawesome-v6";
-
+  import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";
 
   const { dateFormatter } = useUtilities();
 
@@ -108,10 +85,7 @@
   }>();
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
-  const i18nKey = "more.mainMenuDialog";
   const $q = useQuasar();
-  const rowsPerPageOptions = [10, 50, 100];
-  const rowsPerPage = ref(10);
   const usedHeight = computed(() => {
     return $q.screen.height * 0.375;
   });
@@ -125,9 +99,8 @@
     sortBy: "description",
     descending: false,
     page: 1,
-    rowsPerPage: hidePagination ? transactionItem.value.length : 10,
+    rowsPerPage: hidePagination ? transactionItem.value.length : 10
   });
-
 
   // Columns definition for the table
   const columns = computed(() => {
@@ -148,13 +121,9 @@
       }
     ] as QTableColumn[];
   });
-
-  function updatePagination(newPagination: any) {
-    pagination.value = newPagination;
-  }
 </script>
 <style scoped>
-.q-pagination .q-icon {
-  color: #000; /* Use a contrasting color */
-}
+  .q-pagination .q-icon {
+    color: #000; /* Use a contrasting color */
+  }
 </style>

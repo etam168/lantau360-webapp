@@ -21,7 +21,7 @@
       v-else-if="item.type === 'favourite'"
       :category
       :entityKey
-      :has-check-in="entityKey.includes('SITE')"
+      :has-check-in="entityKey.includes('SITE') && getSiteTemplate() !== 'Taxi'"
       @check-in="requestCheckIn(category)"
     />
     <open-close-time-section v-else-if="item.type === 'time'" :category :entityKey />
