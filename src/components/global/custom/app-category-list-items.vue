@@ -25,10 +25,10 @@
           </q-item-section>
 
           <q-item-section v-else-if="directory?.meta.template === 3">
+            <q-item-label> {{ line1(item) }} </q-item-label>
             <q-item-label>
               {{ title(item) }}
             </q-item-label>
-            <q-item-label> {{ line2(item) }} </q-item-label>
           </q-item-section>
 
           <q-item-section v-else>
