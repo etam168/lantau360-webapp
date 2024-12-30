@@ -42,7 +42,8 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Interface files
-  import type { Directory } from "@/interfaces/models/entities/site-directory";
+  import { DirectoryTypes } from "@/interfaces/types/directory-types";
+
 
   // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";
@@ -59,7 +60,7 @@
     entityKey,
     dialogName = "ItemListDialog"
   } = defineProps<{
-    directory: Directory;
+    directory: DirectoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
   }>();

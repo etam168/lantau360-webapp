@@ -52,6 +52,8 @@ export const ENTITY_URL = {
   SITE_GALLERY: `/SiteImage/GalleryImages`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
   WEATHER: `/Weather`,
+  FAVOURITE_SITE:'/FavouriteSite',
+  FAVOURITE_BUSINESS:'/FavouriteBusiness',
 
   EMAIL_CONFIRMATION: {
     SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",
