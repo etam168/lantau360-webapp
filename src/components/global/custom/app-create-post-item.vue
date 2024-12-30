@@ -15,9 +15,15 @@
   import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
   // Props
-  const { createTitle, createDescription, onCreatePosting } = defineProps<{
+  const { createTitle, createDescription } = defineProps<{
     createTitle: string;
     createDescription: string;
-    onCreatePosting: () => void;
   }>();
+
+  // Emits
+  const emit = defineEmits(["on-create-posting"]);
+
+  function onCreatePosting() {
+    emit("on-create-posting");
+  }
 </script>
