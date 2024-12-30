@@ -86,12 +86,16 @@
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
   const $q = useQuasar();
+
+  const MEMBER_POINTS_HEIGHT = 76 as const;
+  const OTHER_HEIGHT = (96 + 72) as const;
+
   const usedHeight = computed(() => {
-    return $q.screen.height * 0.375;
+    return MEMBER_POINTS_HEIGHT + OTHER_HEIGHT;
   });
 
   const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
+    return $q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : null;
   });
 
   // Define pagination
