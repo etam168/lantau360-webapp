@@ -5,46 +5,25 @@
     :key="index"
     class="q-ma-md"
   >
-    <q-card-section class="q-pa-none">
-      <q-list>
-        <q-item clickable @click="handleDetail(item)" class="q-pa-sm">
-          <q-item-section avatar>
-            <q-avatar size="64px" square>
-              <q-img ratio="1" :src="getImageURL(item.iconPath)">
-                <template v-slot:error>
-                  <q-img ratio="1" :src="IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER"></q-img>
-                </template>
-              </q-img>
-            </q-avatar>
-          </q-item-section>
+    <q-list>
+      <q-item clickable @click="handleDetail(item)" class="q-pa-sm">
+        <q-item-section avatar>
+          <app-avatar-square :image-path="item.iconPath" />
+        </q-item-section>
 
-          <q-item-section v-if="directory && directory.groupId === 5">
-            <q-item-label>
-              {{ title(item) }}
-            </q-item-label>
-          </q-item-section>
+        <q-item-section>
+          <q-item-label v-if="line1(item)">{{ line1(item) }}</q-item-label>
+          <q-item-label>{{ line2(item) }}</q-item-label>
+        </q-item-section>
 
-          <q-item-section v-else-if="directory?.meta.template === 3">
-            <q-item-label> {{ line1(item) }} </q-item-label>
-            <q-item-label>
-              {{ title(item) }}
-            </q-item-label>
-          </q-item-section>
-
-          <q-item-section v-else>
-            <q-item-label> {{ line1(item) }} </q-item-label>
-            <q-item-label> {{ line2(item) }} </q-item-label>
-          </q-item-section>
-
-          <q-item-section side>
-            <div class="q-gutter-sm">
-              <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-              <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-            </div>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-card-section>
+        <q-item-section side>
+          <div class="q-gutter-sm">
+            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
+            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+          </div>
+        </q-item-section>
+      </q-item>
+    </q-list>
   </q-card>
 
   <app-no-record-message v-else :message="$t('errors.noRecord')" />
@@ -80,12 +59,21 @@
   const entityName = getEntityName(entityKey);
   const favoriteStore = useFavoriteStore();
 
-  function line1(item: CategoryTypes) {
+  function line1(item: CategoryTypes): string | null {
+    if (directory && directory.groupId === 5) {
+      return null;
+    }
     const name = `${entityName}Name` as keyof CategoryTypes;
     return translate(item[name] as string, item.meta, name);
   }
 
-  function line2(item: CategoryTypes) {
+  function line2(item: CategoryTypes): string {
+    if (directory && directory.groupId === 5) {
+      return title(item);
+    }
+    if (directory?.meta.template === 3) {
+      return title(item);
+    }
     return translate(item.subtitle1, item.meta, "subtitle1");
   }
 

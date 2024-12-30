@@ -48,7 +48,7 @@ export const ENTITY_URL = {
   SIGN_IN: "/MemberAuth/SignIn",
   SIGN_UP: "/MemberAuth/SignUp",
   SITE: `/Site`,
-  SITE_DIRECTORIES: `/Directory/DirectoryGroupsData/1`,
+  SITE_DIRECTORIES: `/SiteDirectory`,
   SITE_GALLERY: `/SiteImage/GalleryImages`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
   WEATHER: `/Weather`,

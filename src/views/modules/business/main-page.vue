@@ -37,7 +37,6 @@
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
-  import type { Directory } from "@/interfaces/models/entities/directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
@@ -126,7 +125,7 @@
       );
 
       businessDirectories.value = businessDirectoryResponse.filter(
-        (dir: Directory) => dir.status === 1
+        (dir: BusinessDirectory) => dir.status === 1
       );
     } catch (err) {
       if (err instanceof AxiosError) {

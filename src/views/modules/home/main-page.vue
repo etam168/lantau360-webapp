@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { Directory } from "@/interfaces/models/entities/site-directory";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";

@@ -1,6 +1,6 @@
 import { BaseDirectory } from "../base-entities/base-directory";
 
-export interface Directory extends BaseDirectory {
-  directoryId: number;
+export interface SiteDirectory extends BaseDirectory {
+  siteDirectoryId: number;
   displayMask: number;
 }

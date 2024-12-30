@@ -1,6 +1,7 @@
 <template>
   <q-avatar size="64px" square class="bg-grey-2">
     <q-img
+      ratio="1"
       :src="getImageURL(imagePath)"
       spinner-color="primary"
       spinner-size="24px"

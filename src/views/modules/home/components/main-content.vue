@@ -36,7 +36,7 @@
 </template>
 
 <script setup lang="ts">
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { Directory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 

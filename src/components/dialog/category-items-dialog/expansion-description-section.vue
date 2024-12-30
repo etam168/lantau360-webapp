@@ -24,7 +24,7 @@
   import { fasAngleDown } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { Directory } from "@/interfaces/models/entities/site-directory";
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Props

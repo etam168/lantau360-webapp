@@ -59,7 +59,7 @@
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
@@ -97,7 +97,7 @@
       case "BUSINESS":
         return (directory as BusinessDirectory).businessDirectoryId;
       case "SITE":
-        return (directory as Directory).directoryId;
+        return (directory as SiteDirectory).siteDirectoryId;
       default:
         return 0;
     }

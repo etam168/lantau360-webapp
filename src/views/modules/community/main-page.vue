@@ -37,7 +37,7 @@
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
-  import type { Directory } from "@/interfaces/models/entities/directory";
+  import type { Directory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
