@@ -13,11 +13,11 @@
 
         <q-item-section>
           <q-item-label class="text-weight-bold">
-            {{ (item as PostingView).memberFirstName }}
+            {{ line1(item) }}
           </q-item-label>
 
           <q-item-label caption class="text-weight-medium">
-            {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }} | {{ line1(item) }}
+            {{ line2(item) }}
           </q-item-label>
         </q-item-section>
 
@@ -43,6 +43,8 @@
 
 <script setup lang="ts">
   import { fasEllipsis, fasPencil } from "@quasar/extras/fontawesome-v6";
+  import { formatTimeAgo } from "@vueuse/core";
+
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { PostingView } from "@/interfaces/models/views/posting-view";
@@ -52,8 +54,6 @@
 
   // Stores
   import { useUserStore } from "@/stores/user";
-
-  import { formatTimeAgo } from "@vueuse/core";
 
   // Emits
   const emits = defineEmits(["on-community-detail"]);
@@ -67,24 +67,29 @@
   const { locale } = useI18n({ useScope: "global" });
   const $q = useQuasar();
   const userStore = useUserStore();
-  const { getImageURL, translate } = useUtilities(locale.value);
+  const { translate } = useUtilities(locale.value);
 
-  function line1(item: CategoryTypes) {
-    const name = `title` as keyof CategoryTypes;
-
-    return translate(item[name] as string, item.meta, name);
+  // Functions for line1 and line2
+  function line1(item: CategoryTypes): string {
+    return (item as PostingView).memberFirstName || "";
   }
 
-  function handleDetail(item: any) {
+  function line2(item: CategoryTypes): string {
+    const timeAgo = formatTimeAgo(new Date((item as PostingView).createdAt));
+    const title = translate(item.title as string, item.meta, "title");
+    return `${timeAgo} | ${title}`;
+  }
+
+  function handleDetail(item: CategoryTypes) {
     emits("on-community-detail", item);
   }
 
-  function handleEdit(item: any) {
+  function handleEdit(item: CategoryTypes) {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
       ),
-      componentProps: { row: item, entityKey: entityKey }
+      componentProps: { row: item, entityKey }
     });
   }
 </script>

@@ -8,7 +8,7 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+    <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
       <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
 
       <q-page-container>
