@@ -1,57 +1,54 @@
 <template>
-  <q-list
+  <q-card
+    v-if="communityItems.length > 0"
     v-for="(item, index) in communityItems"
     :key="index"
-    class="q-list q-px-md q-pt-md q-pb-none"
+    class="q-ma-md"
   >
-    <q-item class="shadow-1 q-pa-md">
-      <q-item-section top avatar>
-        <q-avatar size="54px" circle>
-          <q-img ratio="1" :src="getImageURL((item as PostingView).memberImage)">
-            <template v-slot:error>
-              <div class="absolute-full flex flex-center bg-negative text-white">
-                {{ $t("errors.cannotLoadImage") }}
-              </div>
-            </template>
-          </q-img>
-        </q-avatar>
-      </q-item-section>
+    <q-list>
+      <q-item class="q-pa-md">
+        <q-item-section avatar>
+          <app-avatar :image-path="(item as PostingView).memberImage" size="54px" />
+        </q-item-section>
 
-      <q-item-section>
-        <q-item-label class="text-weight-bold">
-          {{ (item as PostingView).memberFirstName }}
-        </q-item-label>
+        <q-item-section>
+          <q-item-label class="text-weight-bold">
+            {{ (item as PostingView).memberFirstName }}
+          </q-item-label>
 
-        <q-item-label caption class="text-weight-medium">
-          {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }} | {{ line1(item) }}
-        </q-item-label>
-      </q-item-section>
+          <q-item-label caption class="text-weight-medium">
+            {{ formatTimeAgo(new Date((item as PostingView).createdAt)) }} | {{ line1(item) }}
+          </q-item-label>
+        </q-item-section>
 
-      <q-item-section side>
-        <div class="text-grey-8 q-gutter-xs">
-          <q-btn size="xs" dense flat :icon="fasEllipsis" @click="handleDetail(item)" />
-          <q-btn
-            size="xs"
-            dense
-            flat
-            :icon="fasPencil"
-            v-if="userStore.userId === item.createdBy"
-            @click="handleEdit(item)"
-          />
-        </div>
-      </q-item-section>
-    </q-item>
-  </q-list>
+        <q-item-section side>
+          <div class="text-grey-8 q-gutter-xs">
+            <q-btn size="xs" dense flat :icon="fasEllipsis" @click="handleDetail(item)" />
+            <q-btn
+              size="xs"
+              dense
+              flat
+              :icon="fasPencil"
+              v-if="userStore.userId === item.createdBy"
+              @click="handleEdit(item)"
+            />
+          </div>
+        </q-item-section>
+      </q-item>
+    </q-list>
+  </q-card>
+
+  <app-no-record-message v-else :message="$t('errors.noRecord')" />
 </template>
 
 <script setup lang="ts">
+  import { fasEllipsis, fasPencil } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { PostingView } from "@/interfaces/models/views/posting-view";
 
   // Constants
   import { EntityURLKey } from "@/constants";
-  import { fasEllipsis, fasPencil } from "@quasar/extras/fontawesome-v6";
 
   // Stores
   import { useUserStore } from "@/stores/user";
@@ -59,7 +56,7 @@
   import { formatTimeAgo } from "@vueuse/core";
 
   // Emits
-  const emits = defineEmits(["on-category-detail"]);
+  const emits = defineEmits(["on-community-detail"]);
 
   // Props
   const { communityItems, entityKey } = defineProps<{
@@ -79,7 +76,7 @@
   }
 
   function handleDetail(item: any) {
-    emits("on-category-detail", item);
+    emits("on-community-detail", item);
   }
 
   function handleEdit(item: any) {

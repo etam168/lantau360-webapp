@@ -28,13 +28,13 @@
         <app-community-list-items
           :communityItems="filterGroupedArray(item.name)"
           :entityKey
-          @on-category-detail="handleDetail"
+          @on-community-detail="handleDetail"
         />
       </q-tab-panel>
     </q-tab-panels>
   </template>
 
-  <app-community-list-items v-else :communityItems :entityKey @on-category-detail="handleDetail" />
+  <app-community-list-items v-else :communityItems :entityKey @on-community-detail="handleDetail" />
 </template>
 
 <script setup lang="ts">

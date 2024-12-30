@@ -42,7 +42,7 @@
 
       <q-card flat v-else>
         <q-card-section class="text-center">
-          <app-avatar :image-path="item.imagePath" @click="handleClick(item)" />
+          <app-avatar :image-path="item.imagePath" @click="handleClick(item)" size="64px" />
           <q-item-label class="q-mt-sm">{{ getDirectoryTitle(item) }}</q-item-label>
         </q-card-section>
       </q-card>
