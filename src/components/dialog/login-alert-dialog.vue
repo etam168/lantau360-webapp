@@ -10,7 +10,7 @@
     <q-card>
       <q-card-section>
         <q-avatar :icon="fasTriangleExclamation" color="negative" text-color="white" />
-        <span class="q-ml-sm">Please login first to check in.</span>
+        <span class="q-ml-sm">Please login first to procceed.</span>
       </q-card-section>
 
       <q-card-actions align="right">

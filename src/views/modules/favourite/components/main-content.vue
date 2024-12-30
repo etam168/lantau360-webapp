@@ -39,7 +39,6 @@
 
 <script setup lang="ts">
   // Interface files
-  import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { SiteView } from "@/interfaces/models/views/site-view";

@@ -48,13 +48,16 @@
 
   // Composables
   import { LocalStorage } from "quasar";
+  import { useUserStore } from "@/stores/user";
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
 
+  const userStore = useUserStore();
   const $q = useQuasar();
+  const { api } = useApi();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
@@ -62,6 +65,7 @@
 
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
+
   const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
   const businessItems = ref<BusinessView[]>(
     LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []
@@ -101,6 +105,68 @@
       advertisements.value = advertisementResponse.filter(
         (adv: AdvertisementView) => adv.status === 1
       );
+
+      //if user is logedin then send all data from localstorage to sync on backend
+      if (userStore.isUserLogon()) {
+        for (const item of siteItems.value) {
+          try {
+            const payload = {
+              createdBy: userStore.userId,
+              modifiedBy: userStore.userId,
+              siteId: (item as SiteView).siteId,
+              siteData: { data: item }
+            };
+
+            await api.create(`${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${(item as SiteView).siteId}`, payload);
+            console.log(`Favorite site with ID ${item.siteId} saved to the database.`);
+          } catch (error) {
+            console.error(
+              `Failed to save favorite site with ID ${item.siteId} to the database:`,
+              error
+            );
+          }
+        }
+
+        // Loop over businessItems and upload each to the backend
+        for (const item of businessItems.value) {
+          try {
+            const payload = {
+              businessId: (item as BusinessView).businessId,
+              businessData: { data: item },
+              createdBy: userStore.userId,
+              modifiedBy: userStore.userId
+            };
+
+            await api.create(`${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${(item as BusinessView).businessId}`, payload);
+            console.log(`Favorite business with ID ${item.businessId} saved to the database.`);
+          } catch (error) {
+            console.error(
+              `Failed to save favorite business with ID ${item.businessId} to the database:`,
+              error
+            );
+          }
+        }
+
+        // Fetch updated data for both siteItems and businessItems from the backend and then sync the local storage
+        try {
+          // Fetch favourite sites and businesses for the logged-in user
+          const [siteResponse, businessResponse] = await Promise.all([
+            fetchData(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`),
+            fetchData(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`)
+          ]);
+
+          // // Update siteItems and businessItems with the fetched data
+          // siteItems.value = siteResponse; // Replace with the response from the API
+          // businessItems.value = businessResponse; // Replace with the response from the API
+
+          console.log("Favourite site and business data refreshed from the API.");
+        } catch (fetchError) {
+          console.error("Failed to fetch updated site or business data:", fetchError);
+        }
+        debugger;
+
+      } else {
+      }
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response && err.response.status === 404) {
