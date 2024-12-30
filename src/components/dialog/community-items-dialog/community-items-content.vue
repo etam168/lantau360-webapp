@@ -80,9 +80,7 @@
   );
 
   const directoryId = computed<number>(() =>
-    ["POSTING", "COMMUNITY_DIRECTORY"].includes(entityKey)
-      ? (directory as CommunityDirectory).communityDirectoryId
-      : 0
+    ["POSTING"].includes(entityKey) ? (directory as CommunityDirectory).communityDirectoryId : 0
   );
 
   const groupBykey = computed<string | null>(() =>
@@ -169,7 +167,6 @@
     try {
       switch (entityKey) {
         case "POSTING":
-        case "COMMUNITY_DIRECTORY":
           communityItems.value = await fetchData(
             `${ENTITY_URL.POSTING_BY_DIRECTORY}/${directoryId.value}`
           );
