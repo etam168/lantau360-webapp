@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppAuthAvatar: typeof import('./components/global/widgets/app-auth-avatar.vue')['default']
     AppAvatar: typeof import('./components/global/widgets/app-avatar.vue')['default']
+    AppAvatarSquare: typeof import('./components/global/widgets/app-avatar-square.vue')['default']
     AppBarDialogClose: typeof import('./components/global/widgets/app-bar-dialog-close.vue')['default']
     AppBarTitle: typeof import('./components/global/widgets/app-bar-title.vue')['default']
     AppBulletinItemList: typeof import('./components/global/widgets/app-bulletin-item-list.vue')['default']
@@ -21,6 +22,7 @@ declare module 'vue' {
     AppCarouselSection: typeof import('./components/global/widgets/app-carousel-section.vue')['default']
     AppCategoryListItems: typeof import('./components/global/custom/app-category-list-items.vue')['default']
     AppCommunityListItems: typeof import('./components/global/custom/app-community-list-items.vue')['default']
+    AppCreatePostItem: typeof import('./components/global/custom/app-create-post-item.vue')['default']
     AppDialogTitle: typeof import('./components/global/custom/app-dialog-title.vue')['default']
     AppDirectoryItems: typeof import('./components/global/custom/app-directory-items.vue')['default']
     AppHtmlItem: typeof import('./components/global/widgets/app-html-item.vue')['default']
@@ -43,6 +45,7 @@ declare module 'vue' {
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
     CarouselImageList: typeof import('./components/global/custom/carousel-image-list.vue')['default']
+    copy: typeof import('./components/global/custom/app-site-seeing-item copy.vue')['default']
     GalleryImageCard: typeof import('./components/global/custom/gallery-image-card.vue')['default']
     LanguageSelect: typeof import('./components/global/custom/language-select.vue')['default']
     MainPageSkeleton: typeof import('./components/global/custom/main-page-skeleton.vue')['default']

@@ -21,7 +21,8 @@
         :tab-items="tabItems"
         :current-tab="tab"
         @update:currentTab="setTab"
-        class="q-pt-sm"
+        :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
+        :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
       />
 
       <!-- Tab Panels -->
@@ -57,17 +58,17 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
-  import { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
-  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
-  // Constants
+  // Compontents
   import AppSightSeeingItem from "@/components/global/custom/app-site-seeing-item.vue";
 
   // Props

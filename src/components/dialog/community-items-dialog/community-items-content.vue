@@ -1,52 +1,44 @@
 <!-- community-items-content.vue -->
 <template>
-  <q-card flat>
-    <q-item clickable v-ripple @click="onCreatePosting">
-      <q-item-section avatar>
-        <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
-      </q-item-section>
+  <!-- Create Post -->
+  <app-create-post-item
+    :create-title="createTitle"
+    :create-description="createDescription"
+    @on-create-posting="onCreatePosting"
+  />
 
-      <q-item-section>
-        <q-item-label>{{ createTitle }}</q-item-label>
-        <q-item-label caption>{{ createDescription }}</q-item-label>
-      </q-item-section>
-    </q-item>
-
-    <template v-if="groupBykey">
-      <app-tab-select
-        :tab-items="tabItems"
-        :current-tab="tab"
-        @update:currentTab="setTab"
-        :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
-        :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
-      />
-
-      <q-tab-panels v-model="tab">
-        <q-tab-panel
-          v-for="(item, index) in tabItems"
-          :key="index"
-          :name="item.name"
-          class="q-pa-none"
-        >
-          <app-community-list-items
-            :communityItems="filterGroupedArray(item.name)"
-            :entityKey
-            @on-category-detail="handleDetail"
-          />
-        </q-tab-panel>
-      </q-tab-panels>
-    </template>
-
-    <app-community-list-items
-      v-else
-      :communityItems
-      :entityKey
-      @on-category-detail="handleDetail"
+  <template v-if="groupBykey">
+    <!-- Tab Select -->
+    <app-tab-select
+      :tab-items="tabItems"
+      :current-tab="tab"
+      @update:currentTab="setTab"
+      :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
+      :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
     />
-  </q-card>
+
+    <!-- Tab Panels -->
+    <q-tab-panels v-model="tab">
+      <q-tab-panel
+        v-for="(item, index) in tabItems"
+        :key="index"
+        :name="item.name"
+        class="q-pa-none"
+      >
+        <app-community-list-items
+          :communityItems="filterGroupedArray(item.name)"
+          :entityKey
+          @on-category-detail="handleDetail"
+        />
+      </q-tab-panel>
+    </q-tab-panels>
+  </template>
+
+  <app-community-list-items v-else :communityItems :entityKey @on-category-detail="handleDetail" />
 </template>
 
 <script setup lang="ts">
+  import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
@@ -54,7 +46,9 @@
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
-  import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
+
+  // Compontents
+  import AppCreatePostItem from "@/components/global/custom/app-create-post-item.vue";
 
   // Props
   const {
