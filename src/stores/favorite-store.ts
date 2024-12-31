@@ -119,6 +119,19 @@ export const useFavoriteStore = defineStore("favorite", () => {
     }
   }
 
+  async function removeBusinessFavorite(item: BusinessView) {
+    favoriteBusinesses.value = favoriteBusinesses.value.filter(
+      fav => fav.businessId !== (item as BusinessView).businessId
+    );
+    syncLocalStorage("BUSINESS");
+
+    try {
+      console.log("Favorite business removed from the database.");
+    } catch (error) {
+      console.error("Failed to remove favorite business from the database:", error);
+    }
+  }
+
   async function removeSiteFavorite(item: SiteView) {
     favoriteSites.value = favoriteSites.value.filter(
       fav => fav.siteId !== (item as SiteView).siteId
@@ -158,11 +171,45 @@ export const useFavoriteStore = defineStore("favorite", () => {
     }
   }
 
+  async function addBusinessFavorite(item: BusinessView) {
+    if (
+      !favoriteBusinesses.value.some(fav => fav.businessId === (item as BusinessView).businessId)
+    ) {
+      favoriteBusinesses.value.push(item as BusinessView);
+      syncLocalStorage("BUSINESS");
+
+      try {
+        // Make API call to save favorite site in the database
+        const payload = {
+          createdBy: userStore.userId, // Replace with actual user ID if available
+          modifiedBy: userStore.userId,
+          businessId: (item as BusinessView).businessId,
+          businessData: { data: item } // Add metadata if required
+        };
+        // await api.create(
+        //   `${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${(item as SiteView).siteId}`,
+        //   payload
+        // ); // Adjust the endpoint URL if needed
+        console.log("Favorite business saved to the database.");
+      } catch (error) {
+        console.error("Failed to save favorite site to the database:", error);
+      }
+    }
+  }
+
   function toggleSiteFavorite(item: SiteView, favStatus: boolean) {
     if (favStatus) {
       removeSiteFavorite(item);
     } else {
       addSiteFavorite(item);
+    }
+  }
+
+  function toggleBusinessFavorite(item: BusinessView, favStatus: boolean) {
+    if (favStatus) {
+      removeBusinessFavorite(item);
+    } else {
+      addBusinessFavorite(item);
     }
   }
 
@@ -173,6 +220,7 @@ export const useFavoriteStore = defineStore("favorite", () => {
     isFavoriteBusiness,
     isFavoriteSite,
     removeFavorite,
+    toggleBusinessFavorite,
     toggleSiteFavorite
   };
 });

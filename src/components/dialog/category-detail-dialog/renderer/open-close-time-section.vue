@@ -1,25 +1,24 @@
 <template>
-  <q-card flat v-if="statusText">
-    <q-card-actions class="justify-between q-pt-md q-px-md q-pb-none">
-      <div>
-        <span :class="statusClass" class="q-pr-sm text-subtitle1">{{ statusText }}</span>
-        <q-icon :name="fasCircle" class="q-mr-sm" style="font-size: 0.8em" />
-        {{ formattedTimes }}
-      </div>
-      <app-button-rounded
-        :text-color="isFavourite ? 'red' : 'white'"
-        :icon="fasHeart"
-        @click="onBtnFavClick"
-      />
-    </q-card-actions>
-  </q-card>
+  <q-toolbar class="q-pr-md" v-if="statusText">
+    <div>
+      <span :class="statusClass" class="q-pr-sm text-subtitle1">{{ statusText }}</span>
+      <q-icon :name="fasCircle" class="q-mr-sm" style="font-size: 0.8em" />
+      {{ formattedTimes }}
+    </div>
+    <q-space />
+
+    <app-button-rounded
+      :text-color="isFavourite ? 'red' : 'white'"
+      :icon="fasHeart"
+      @click="onBtnFavClick"
+    />
+  </q-toolbar>
 </template>
 
 <script setup lang="ts">
   // Interface files
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
   import { EntityURLKey } from "@/constants";
@@ -35,14 +34,12 @@
     entityKey: EntityURLKey;
   }>();
 
-  const $q = useQuasar();
-
   // Composable function calls
   const favoriteStore = useFavoriteStore();
   const userStore = useUserStore();
 
   // Computed properties
-  const isFavourite = computed(() => favoriteStore.isFavoriteSite(category as SiteView));
+  const isFavourite = computed(() => favoriteStore.isFavoriteBusiness(category as BusinessView));
 
   // Utility function to format time to 12-hour format with am/pm
   function formatTime(time: string): string {
@@ -103,25 +100,11 @@
   function onBtnFavClick() {
     switch (true) {
       case !userStore.isUserLogon():
-        promptUserLogon();
+        userStore.promptUserLogon();
         break;
       case entityKey === "BUSINESS":
-        // favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
-        // eventBus("favoriteUpdated").emit(category);
-        break;
-      case entityKey === "SITE":
-        favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
-        //eventBus("favoriteUpdated").emit(category);
+        favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
         break;
     }
-  }
-
-  function promptUserLogon() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
-      componentProps: {
-        mode: "login"
-      }
-    });
   }
 </script>

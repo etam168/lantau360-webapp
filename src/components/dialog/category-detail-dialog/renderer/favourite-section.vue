@@ -1,9 +1,10 @@
 <template>
-  <q-toolbar class="bg-red q-pr-md">
+  <q-toolbar class="q-pr-md">
     <q-space />
     <app-button-rounded
       v-if="hasCheckIn"
       color="primary"
+      class="q-mr-sm"
       @click="onBtnCheckInClick"
       :icon="fasMapLocationDot"
     />
@@ -34,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Interface
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
@@ -56,8 +57,6 @@
     hasCheckIn?: boolean;
   }>();
 
-  const $q = useQuasar();
-
   // Composable function calls
   const favoriteStore = useFavoriteStore();
   const userStore = useUserStore();
@@ -72,25 +71,11 @@
   function onBtnFavClick() {
     switch (true) {
       case !userStore.isUserLogon():
-        promptUserLogon();
-        break;
-      case entityKey === "BUSINESS":
-        // favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
-        // eventBus("favoriteUpdated").emit(category);
+        userStore.promptUserLogon();
         break;
       case entityKey === "SITE":
         favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
-        //eventBus("favoriteUpdated").emit(category);
         break;
     }
-  }
-
-  function promptUserLogon() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
-      componentProps: {
-        mode: "login"
-      }
-    });
   }
 </script>

@@ -3,10 +3,11 @@
     v-if="directory?.meta.template === 2 && hasTaxiFleet"
     @show-info="showInfo"
   />
+
   <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
     <q-item clickable @click="handleDetail(item)">
       <q-item-section avatar>
-        <app-avatar :image-path="item.iconPath" />
+        <app-avatar-rounded :image-path="item.iconPath" />
       </q-item-section>
 
       <q-item-section>

@@ -134,6 +134,16 @@ export const useUserStore = defineStore(
       return token.value ? true : false;
     }
 
+    function promptUserLogon() {
+      const $q = useQuasar();
+      $q.dialog({
+        component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
+        componentProps: {
+          mode: "login"
+        }
+      });
+    }
+
     function setPoints(
       perPostPoints: number,
       freeTopUpPoints: number,
@@ -208,6 +218,7 @@ export const useUserStore = defineStore(
       LogOut,
       SetUserInfo,
       isUserLogon,
+      promptUserLogon,
       setPoints,
       setToken,
       setExpiredToken,
