@@ -12,8 +12,9 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   manifest: {
     name: "Lantau360 Lite",
     short_name: "Lantau360",
-    theme_color: "#a06ded",
-    background_color: "#00652E",
+    theme_color: "#00652E",
+    //    background_color: "#00652E",
+    background_color: "#FFFFFF",
     id: "/?homescreen=1",
     start_url: "/?source=pwa&v=1.0.1", // Include version in start_url
     display: "standalone",
@@ -52,7 +53,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   },
   workbox: {
     cleanupOutdatedCaches: true,
-    skipWaiting: false,
+    skipWaiting: true,
     clientsClaim: true,
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",
@@ -62,15 +63,17 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     ],
     navigateFallback: "index.html",
     navigateFallbackAllowlist: [/^(?!\/__).*/],
+
     runtimeCaching: [
       {
+        // PWA Core Assets (icons, splash screens)
         urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),
-        handler: "StaleWhileRevalidate",
+        handler: "CacheFirst",
         options: {
-          cacheName: "pwa-assets",
+          cacheName: `pwa-assets-${process.env.npm_package_version}`,
           expiration: {
             maxEntries: 20,
-            maxAgeSeconds: 60 * 60 // 1 hour
+            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days for core assets
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -78,13 +81,14 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
+        // JS and CSS files
         urlPattern: /\.(?:js|css)$/i,
         handler: "StaleWhileRevalidate",
         options: {
-          cacheName: "static-resources",
+          cacheName: `static-resources-${process.env.npm_package_version}`,
           expiration: {
             maxEntries: 100,
-            maxAgeSeconds: 60 * 60 // 1 hour
+            maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -92,13 +96,13 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /\/manifest\.webmanifest/, // Matches requests for manifest.webmanifest
+        urlPattern: /\/manifest\.webmanifest/,
         handler: "StaleWhileRevalidate",
         options: {
-          cacheName: "manifest-cache",
+          cacheName: `manifest-cache-${process.env.npm_package_version}`,
           expiration: {
             maxEntries: 1,
-            maxAgeSeconds: 60
+            maxAgeSeconds: 60 * 60 // 1 hour
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -109,13 +113,14 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
+        // Single API cache with optimized settings
         urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/.*$/,
         handler: "StaleWhileRevalidate",
         options: {
           cacheName: "api-cache",
           expiration: {
-            maxEntries: 300,
-            maxAgeSeconds: 60 * 3 // 3 minute
+            maxEntries: 500, // Increased from 300 for better coverage
+            maxAgeSeconds: 60 * 30 // 30 minutes - balanced for mixed content types
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -126,13 +131,14 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/[^/]+\/SignIn$/, // Match the signin endpoint
-        handler: "StaleWhileRevalidate",
+        // Auth endpoints - no caching
+        urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/[^/]+\/Sign(In|Up)$/,
+        handler: "NetworkOnly",
         options: {
-          cacheName: "signin-api-cache",
+          cacheName: "auth-cache",
           expiration: {
-            maxEntries: 1, // Keep only one signin response in the cache
-            maxAgeSeconds: 60 * 5 // Cache for 5 minutes
+            maxEntries: 1,
+            maxAgeSeconds: 60 * 5
           },
           cacheableResponse: {
             statuses: [0, 200]
@@ -143,29 +149,14 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         }
       },
       {
-        urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/[^/]+\/SignUp$/, // Match the signup endpoint
-        handler: "StaleWhileRevalidate",
-        options: {
-          cacheName: "signup-api-cache",
-          expiration: {
-            maxEntries: 1, // Keep only one signup response in the cache
-            maxAgeSeconds: 60 * 5 // Cache for 5 minutes
-          },
-          cacheableResponse: {
-            statuses: [0, 200]
-          },
-          matchOptions: {
-            ignoreSearch: true
-          }
-        }
-      },
-      {
+        // Map tiles with increased cache
         urlPattern: /^https:\/\/(?:[a-z]\.)?tile\.openstreetmap\.org\/\d+\/\d+\/\d+\.png$/,
-        handler: "StaleWhileRevalidate",
+        handler: "CacheFirst",
         options: {
           cacheName: "map-cache",
           expiration: {
-            maxEntries: 10
+            maxEntries: 200, // Increased for better offline map coverage
+            maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days
           },
           cacheableResponse: {
             statuses: [0, 200]
