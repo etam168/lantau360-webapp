@@ -7,5 +7,4 @@ export interface FavouriteSite  {
   createdBy: number;
   modifiedAt: Date;
   modifiedBy?: number;
-  meta?: Record<string, any>;
 }

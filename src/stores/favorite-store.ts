@@ -1,3 +1,4 @@
+import typia from "typia";
 import { defineStore } from "pinia";
 import { LocalStorage } from "quasar";
 import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
@@ -102,10 +103,10 @@ export const useFavoriteStore = defineStore("favorite", () => {
     }
   }
 
-  function isFavorite(item: SiteView | BusinessView, type: "SITE" | "BUSINESS"): boolean {
-    if (type === "SITE") {
+  function isFavorite(item: SiteView | BusinessView): boolean {
+    if (typia.is<SiteView>(item)) {
       return favoriteSites.value.some(fav => fav.siteId === (item as SiteView).siteId);
-    } else if (type === "BUSINESS") {
+    } else if (typia.is<BusinessView>(item)) {
       return favoriteBusinesses.value.some(
         fav => fav.businessId === (item as BusinessView).businessId
       );

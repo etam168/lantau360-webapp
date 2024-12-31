@@ -37,6 +37,8 @@
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { FavouriteSite } from "@/interfaces/models/entities/favourite-site";
+
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
 
@@ -49,6 +51,7 @@
   // Composables
   import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
+  import { FavouriteBusiness } from "@/interfaces/models/entities/favourite-business";
 
   // Props
   const { entityKey } = defineProps<{
@@ -70,6 +73,9 @@
   const businessItems = ref<BusinessView[]>(
     LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []
   );
+
+  const favSiteServer = ref([]);
+  const favBusinessServer = ref([]);
 
   const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
@@ -106,79 +112,143 @@
         (adv: AdvertisementView) => adv.status === 1
       );
 
-      //if user is logedin then send all data from localstorage to sync on backend
       if (userStore.isUserLogon()) {
-        for (const item of siteItems.value) {
-          try {
-            const payload = {
-              createdBy: userStore.userId,
-              modifiedBy: userStore.userId,
-              siteId: (item as SiteView).siteId,
-              siteData: { data: item }
-            };
-
-            await api.create(`${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${(item as SiteView).siteId}`, payload);
-            console.log(`Favorite site with ID ${item.siteId} saved to the database.`);
-          } catch (error) {
-            console.error(
-              `Failed to save favorite site with ID ${item.siteId} to the database:`,
-              error
-            );
-          }
-        }
-
-        // Loop over businessItems and upload each to the backend
-        for (const item of businessItems.value) {
-          try {
-            const payload = {
-              businessId: (item as BusinessView).businessId,
-              businessData: { data: item },
-              createdBy: userStore.userId,
-              modifiedBy: userStore.userId
-            };
-
-            await api.create(`${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${(item as BusinessView).businessId}`, payload);
-            console.log(`Favorite business with ID ${item.businessId} saved to the database.`);
-          } catch (error) {
-            console.error(
-              `Failed to save favorite business with ID ${item.businessId} to the database:`,
-              error
-            );
-          }
-        }
-
-        // Fetch updated data for both siteItems and businessItems from the backend and then sync the local storage
-        try {
-          // Fetch favourite sites and businesses for the logged-in user
-          const [siteResponse, businessResponse] = await Promise.all([
-            fetchData(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`),
-            fetchData(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`)
-          ]);
-
-          // // Update siteItems and businessItems with the fetched data
-          // siteItems.value = siteResponse; // Replace with the response from the API
-          // businessItems.value = businessResponse; // Replace with the response from the API
-
-          console.log("Favourite site and business data refreshed from the API.");
-        } catch (fetchError) {
-          console.error("Failed to fetch updated site or business data:", fetchError);
-        }
-        debugger;
-
+        await syncFavoriteData();
       } else {
+        //directly use the local storage data that has already been setup in siteItems and businessItem
+        //Can remove this else block if no extra logic required
       }
     } catch (err) {
-      if (err instanceof AxiosError) {
-        if (err.response && err.response.status === 404) {
-          error.value = t("errors.404");
-        } else {
-          error.value = t("errors.anErrorOccured");
-        }
-      } else {
-        error.value = t("errors.anErrorOccured");
-      }
+      handleError(err);
     }
   }
+
+  async function syncFavoriteData() {
+    try {
+      const [siteResponse, businessResponse] = await Promise.all([
+        fetchData(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`),
+        fetchData(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`)
+      ]);
+
+      favSiteServer.value = siteResponse;
+      favBusinessServer.value = businessResponse;
+
+      if (isDataOutOfSync(siteResponse, businessResponse)) {
+        promptUserDataSynAlert();
+      }
+    } catch (fetchError) {
+      console.error("Failed to fetch updated site or business data:", fetchError);
+    }
+  }
+
+  function isDataOutOfSync(
+    siteResponse: FavouriteSite[],
+    businessResponse: FavouriteBusiness[]
+  ): boolean {
+    const apiSiteIds = siteResponse.map(item => item.siteId).sort();
+    const localSiteIds = siteItems.value.map(item => item.siteId).sort();
+
+    const apiBusinessIds = businessResponse.map(item => item.businessId).sort();
+    const localBusinessIds = businessItems.value.map(item => item.businessId).sort();
+
+    const areSitesInSync =
+      apiSiteIds.length === localSiteIds.length &&
+      apiSiteIds.every((id, index) => id === localSiteIds[index]);
+
+    const areBusinessesInSync =
+      apiBusinessIds.length === localBusinessIds.length &&
+      apiBusinessIds.every((id, index) => id === localBusinessIds[index]);
+
+    return !areSitesInSync || !areBusinessesInSync;
+  }
+
+  function handleError(err: unknown) {
+    if (err instanceof AxiosError) {
+      error.value = err.response?.status === 404 ? t("errors.404") : t("errors.anErrorOccured");
+    } else {
+      error.value = t("errors.anErrorOccured");
+    }
+  }
+
+  function promptUserDataSynAlert() {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/views/modules/favourite/components/data-sync-alert-dialog.vue")
+      )
+    }).onOk(async (selectedOption: string) => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen.value = false;
+      debugger;
+
+      if (selectedOption === "local") {
+        syncLocalData();
+      } else {
+        syncServerData();
+      }
+    });
+  }
+
+  //send data from local storage to api to sync
+  async function syncLocalData() {
+    try {
+      // Extract records from local storage that are not in the API response
+      const missingSites = siteItems.value.filter(
+        localSite =>
+          !favSiteServer.value.some(
+            apiSite => (apiSite as FavouriteSite).siteId === localSite.siteId
+          )
+      );
+
+      const missingBusinesses = businessItems.value.filter(
+        localBusiness =>
+          !favBusinessServer.value.some(
+            apiBusiness =>
+              (apiBusiness as FavouriteBusiness).businessId === localBusiness.businessId
+          )
+      );
+
+      // Sync missing sites with the API
+      for (const site of missingSites) {
+        const payload = {
+          siteId: site.siteId,
+          createdBy: userStore.userId,
+          modifiedBy: userStore.userId,
+          siteData: { data: site }
+        };
+
+        await api.create(`${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${site.siteId}`, payload);
+      }
+
+      // Sync missing businesses with the API
+      for (const business of missingBusinesses) {
+        const payload = {
+          businessId: business.businessId,
+          businessData: { data: business },
+          createdBy: userStore.userId,
+          modifiedBy: userStore.userId
+        };
+
+        await api.create(`${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${business.businessId}`, payload);
+      }
+
+      $q.notify({
+        type: "positive",
+        message: "Local records have been successfully synced to the server."
+      });
+    } catch (error) {
+      console.error("Failed to sync local data with the backend:", error);
+      $q.notify({
+        type: "negative",
+        message: "An error occurred while syncing data. Please try again."
+      });
+    }
+  }
+
+  //sync local storage data from api
+  async function syncServerData() {
+    
+  }
+
 
   const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";

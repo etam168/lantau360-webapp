@@ -7,5 +7,4 @@ export interface FavouriteBusiness  {
   createdBy: number;
   modifiedAt: Date;
   modifiedBy?: number;
-  meta?: Record<string, any>;
 }

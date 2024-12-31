@@ -31,6 +31,8 @@
 
 <script setup lang="ts">
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
+  import typia from "typia";
+
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
@@ -42,6 +44,7 @@
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
+  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // Emits
   const emits = defineEmits(["on-category-detail"]);
@@ -97,7 +100,11 @@
   };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
-    return favoriteStore.isFavorite(item as any, entityKey);
+    if (typia.is<SiteView>(item)) {
+      return favoriteStore.isFavorite(item as SiteView);
+    } else {
+      return favoriteStore.isFavorite(item as BusinessView);
+    }
   };
 
   function handleDetail(item: any) {
