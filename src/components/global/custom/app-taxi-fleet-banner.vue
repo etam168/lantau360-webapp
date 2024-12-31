@@ -1,16 +1,7 @@
 <template>
-  <q-banner class="q-ma-md shadow-1" rounded elevated>
+  <q-banner class="q-ma-md" rounded dense style="border: 1px solid rgba(0, 0, 0, 0.2)">
     <template v-slot:avatar>
-      <q-btn
-        round
-        unelevated
-        :icon="fasCircleInfo"
-        size="md"
-        class="q-mr-md text-primary"
-        @click="showInfo"
-      >
-        <q-tooltip>Click for more information</q-tooltip>
-      </q-btn>
+      <q-icon :name="fasCircleInfo" color="primary" size="xs" />
     </template>
     Here is our collection of <span class="text-primary">Blue Taxis</span> operating in Lantau
     Island

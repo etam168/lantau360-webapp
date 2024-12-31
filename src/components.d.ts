@@ -9,6 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppAuthAvatar: typeof import('./components/global/widgets/app-auth-avatar.vue')['default']
     AppAvatar: typeof import('./components/global/widgets/app-avatar.vue')['default']
+    AppAvatarRounded: typeof import('./components/global/widgets/app-avatar-rounded.vue')['default']
     AppAvatarSquare: typeof import('./components/global/widgets/app-avatar-square.vue')['default']
     AppBarDialogClose: typeof import('./components/global/widgets/app-bar-dialog-close.vue')['default']
     AppBarTitle: typeof import('./components/global/widgets/app-bar-title.vue')['default']
