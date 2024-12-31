@@ -52,6 +52,7 @@
   import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { FavouriteBusiness } from "@/interfaces/models/entities/favourite-business";
+  import business from "@/locales/en_US/modules/business";
 
   // Props
   const { entityKey } = defineProps<{
@@ -113,6 +114,7 @@
       );
 
       if (userStore.isUserLogon()) {
+        debugger;
         await syncFavoriteData();
       } else {
         //directly use the local storage data that has already been setup in siteItems and businessItem
@@ -178,7 +180,6 @@
     }).onOk(async (selectedOption: string) => {
       // Reset dialog state when it is dismissed/closed
       isDialogOpen.value = false;
-      debugger;
 
       if (selectedOption === "local") {
         syncLocalData();
@@ -207,29 +208,12 @@
           )
       );
 
-      // Sync missing sites with the API
-      for (const site of missingSites) {
-        const payload = {
-          siteId: site.siteId,
-          createdBy: userStore.userId,
-          modifiedBy: userStore.userId,
-          siteData: { data: site }
-        };
+      const payload = {
+        sites: missingSites.map(site => site.siteId),
+        business: missingBusinesses.map(business => business.businessId)
+      };
 
-        await api.create(`${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${site.siteId}`, payload);
-      }
-
-      // Sync missing businesses with the API
-      for (const business of missingBusinesses) {
-        const payload = {
-          businessId: business.businessId,
-          businessData: { data: business },
-          createdBy: userStore.userId,
-          modifiedBy: userStore.userId
-        };
-
-        await api.create(`${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${business.businessId}`, payload);
-      }
+      await api.update(`${ENTITY_URL.FAVOURITE_UPDATE}/${userStore.userId}`, payload);
 
       $q.notify({
         type: "positive",
@@ -245,10 +229,7 @@
   }
 
   //sync local storage data from api
-  async function syncServerData() {
-    
-  }
-
+  async function syncServerData() {}
 
   const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";

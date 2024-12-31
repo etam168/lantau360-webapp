@@ -100,11 +100,15 @@
   };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
-    if (typia.is<SiteView>(item)) {
-      return favoriteStore.isFavorite(item as SiteView);
-    } else {
-      return favoriteStore.isFavorite(item as BusinessView);
-    }
+
+    // needs fix typia was throwing some error
+    // if (typia.is<SiteView>(item)) {
+    //   return favoriteStore.isFavorite(item as SiteView);
+    // } else {
+    //   return favoriteStore.isFavorite(item as BusinessView);
+    // }
+    return favoriteStore.isFavorite(item as any);
+
   };
 
   function handleDetail(item: any) {
