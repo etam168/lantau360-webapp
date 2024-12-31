@@ -36,13 +36,6 @@
 
   // Reactive variables
   const queryData = ref(query.searchKeyword);
-  const tableUrl = computed(() => urlAndKey.value.url);
-  const tableKey = computed(() => urlAndKey.value.key);
-
-  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
-    tableUrl.value,
-    tableKey.value
-  );
 
   // Dynamically set URL and key based on entityKey
   const urlAndKey = computed(() => {
@@ -55,6 +48,14 @@
         return { url: "", key: "" }; // Default case
     }
   });
+
+  const tableUrl = computed(() => urlAndKey.value.url);
+  const tableKey = computed(() => urlAndKey.value.key);
+
+  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
+    tableUrl.value,
+    tableKey.value
+  );
 
   function updatePagination(val: any) {
     pagination.value.page = val;
