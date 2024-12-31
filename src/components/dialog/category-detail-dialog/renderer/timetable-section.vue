@@ -27,14 +27,17 @@
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import { fasHeart } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
-  // Third party imports
+  // Constants
   import { EntityURLKey } from "@/constants";
+  import { fasHeart } from "@quasar/extras/fontawesome-v6";
+
+  // Stores
+  import { useFavoriteStore } from "@/stores/favorite-store";
+  import { useUserStore } from "@/stores/user";
 
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
@@ -42,13 +45,15 @@
   }>();
 
   // Composable function calls
+  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
+  const { getImageURL, translate } = useUtilities(locale.value);
 
-  const { eventBus, getImageURL, translate } = useUtilities(locale.value);
-  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+  const favoriteStore = useFavoriteStore();
+  const userStore = useUserStore();
 
-  // Reactive variables
-  const isFavourite = ref(isFavouriteItem(category));
+  // Computed properties
+  const isFavourite = computed(() => favoriteStore.isFavoriteSite(category as SiteView));
 
   const isMaskValueOne = computed(() => {
     return Number((category as SiteView).displayMask) === 1;
@@ -68,8 +73,26 @@
   });
 
   function onBtnFavClick() {
-    toggleItemFavStatus(category, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus("favoriteUpdated").emit(category);
+    switch (true) {
+      case !userStore.isUserLogon():
+        promptUserLogon();
+        break;
+      case entityKey === "BUSINESS":
+        // favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
+        // eventBus("favoriteUpdated").emit(category);
+        break;
+      case entityKey === "SITE":
+        favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
+        break;
+    }
+  }
+
+  function promptUserLogon() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
+      componentProps: {
+        mode: "login"
+      }
+    });
   }
 </script>

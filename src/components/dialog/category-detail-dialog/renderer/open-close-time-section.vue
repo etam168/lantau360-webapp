@@ -16,14 +16,18 @@
 </template>
 
 <script setup lang="ts">
-  // Third party imports
+  // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+
+  // Constants
+  import { EntityURLKey } from "@/constants";
   import { fasCircle, fasHeart } from "@quasar/extras/fontawesome-v6";
 
-  // Interface files
-  import type { CategoryTypes } from "@/interfaces/types/category-types";
-
-  // Third party imports
-  import { EntityURLKey } from "@/constants";
+  // Stores
+  import { useFavoriteStore } from "@/stores/favorite-store";
+  import { useUserStore } from "@/stores/user";
 
   // Props
   const { category, entityKey } = defineProps<{
@@ -31,12 +35,15 @@
     entityKey: EntityURLKey;
   }>();
 
-  // Composable function calls
-  const { eventBus } = useUtilities();
-  const { isFavouriteItem, toggleItemFavStatus } = useFavorite(entityKey);
+  const $q = useQuasar();
 
-  // Reactive variables
-  const isFavourite = ref(isFavouriteItem(category));
+  // Composable function calls
+  const favoriteStore = useFavoriteStore();
+  const userStore = useUserStore();
+
+  // Computed properties
+  const isFavourite = computed(() => favoriteStore.isFavoriteSite(category as SiteView));
+
   // Utility function to format time to 12-hour format with am/pm
   function formatTime(time: string): string {
     const [hour, minute] = time.split(":");
@@ -48,7 +55,7 @@
 
   // Computed property for the status text ("Open now" or "Close now")
   const statusText = computed(() => {
-    if (!category.openTime || !category.closeTime) {
+    if (!(category as BusinessView).openTime || !category.closeTime) {
       return "";
     }
 
@@ -71,6 +78,12 @@
   });
 
   // Computed property for formatted times
+  const openTime = computed(() => {
+    if (!category.openTime || !category.closeTime) {
+      return "";
+    }
+  });
+
   const formattedTimes = computed(() => {
     if (!category.openTime || !category.closeTime) {
       return "";
@@ -88,8 +101,27 @@
   });
 
   function onBtnFavClick() {
-    toggleItemFavStatus(category, isFavourite.value);
-    isFavourite.value = !isFavourite.value;
-    eventBus("favoriteUpdated").emit(category);
+    switch (true) {
+      case !userStore.isUserLogon():
+        promptUserLogon();
+        break;
+      case entityKey === "BUSINESS":
+        // favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
+        // eventBus("favoriteUpdated").emit(category);
+        break;
+      case entityKey === "SITE":
+        favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
+        //eventBus("favoriteUpdated").emit(category);
+        break;
+    }
+  }
+
+  function promptUserLogon() {
+    $q.dialog({
+      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
+      componentProps: {
+        mode: "login"
+      }
+    });
   }
 </script>
