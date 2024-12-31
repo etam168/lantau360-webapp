@@ -17,6 +17,8 @@
       :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
     />
 
+    <q-separator />
+
     <!-- Tab Panels -->
     <q-tab-panels v-model="tab">
       <q-tab-panel

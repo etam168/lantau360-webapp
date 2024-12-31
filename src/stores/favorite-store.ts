@@ -1,10 +1,10 @@
-import typia from "typia";
+import type { SiteView } from "@/interfaces/models/views/site-view";
+import type { BusinessView } from "@/interfaces/models/views/business-view";
+
 import { defineStore } from "pinia";
 import { LocalStorage } from "quasar";
 import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
 import { useUserStore } from "@/stores/user";
-import type { SiteView } from "@/interfaces/models/views/site-view";
-import type { BusinessView } from "@/interfaces/models/views/business-view";
 
 const { api } = useApi();
 const userStore = useUserStore();
@@ -42,7 +42,10 @@ export const useFavoriteStore = defineStore("favorite", () => {
             siteId: (item as SiteView).siteId,
             siteData: { data: item } // Add metadata if required
           };
-          await api.create(`${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${(item as SiteView).siteId}`, payload); // Adjust the endpoint URL if needed
+          await api.create(
+            `${ENTITY_URL.FAVOURITE_SITE_UPSERT}/${(item as SiteView).siteId}`,
+            payload
+          ); // Adjust the endpoint URL if needed
           console.log("Favorite site saved to the database.");
         } catch (error) {
           console.error("Failed to save favorite site to the database:", error);
@@ -64,13 +67,24 @@ export const useFavoriteStore = defineStore("favorite", () => {
             businessData: { data: item } // Add metadata if required
           };
 
-          await api.create(`${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${(item as BusinessView).businessId}`, payload); // Adjust the endpoint URL if needed
+          await api.create(
+            `${ENTITY_URL.FAVOURITE_BUSINESS_UPSERT}/${(item as BusinessView).businessId}`,
+            payload
+          ); // Adjust the endpoint URL if needed
           console.log("Favorite business saved to the database.");
         } catch (error) {
           console.error("Failed to save favorite business to the database:", error);
         }
       }
     }
+  }
+
+  function isFavoriteBusiness(item: BusinessView): boolean {
+    return favoriteBusinesses.value.some(fav => fav.businessId === item.businessId);
+  }
+
+  function isFavoriteSite(item: SiteView): boolean {
+    return favoriteSites.value.some(fav => fav.siteId === item.siteId);
   }
 
   async function removeFavorite(item: SiteView | BusinessView, type: "SITE" | "BUSINESS") {
@@ -95,7 +109,9 @@ export const useFavoriteStore = defineStore("favorite", () => {
 
       try {
         // Make API call to remove favorite business
-        await api.delete(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByBusinessId/${(item as BusinessView).businessId}`);
+        await api.delete(
+          `${ENTITY_URL.FAVOURITE_BUSINESS}/ByBusinessId/${(item as BusinessView).businessId}`
+        );
         console.log("Favorite business removed from the database.");
       } catch (error) {
         console.error("Failed to remove favorite business from the database:", error);
@@ -103,22 +119,12 @@ export const useFavoriteStore = defineStore("favorite", () => {
     }
   }
 
-  function isFavorite(item: SiteView | BusinessView): boolean {
-    if (typia.is<SiteView>(item)) {
-      return favoriteSites.value.some(fav => fav.siteId === (item as SiteView).siteId);
-    } else if (typia.is<BusinessView>(item)) {
-      return favoriteBusinesses.value.some(
-        fav => fav.businessId === (item as BusinessView).businessId
-      );
-    }
-    return false;
-  }
-
   return {
     favoriteSites,
     favoriteBusinesses,
     addFavorite,
-    removeFavorite,
-    isFavorite
+    isFavoriteBusiness,
+    isFavoriteSite,
+    removeFavorite
   };
 });

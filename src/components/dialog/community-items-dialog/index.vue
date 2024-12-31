@@ -17,6 +17,7 @@
         <!-- Suspense wrapper for async component loading -->
         <Suspense>
           <template #default>
+            <!-- Main community items dialog content -->
             <community-items-content :directory :entity-key :dialogName />
           </template>
 

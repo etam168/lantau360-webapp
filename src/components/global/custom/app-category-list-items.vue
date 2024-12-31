@@ -20,10 +20,11 @@
     Here is our collection of <span class="text-primary">Blue Taxis</span> operating in Lantau
     Island
   </q-banner>
+
   <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
     <q-item clickable @click="handleDetail(item)">
       <q-item-section avatar>
-        <app-avatar :image-path="item.iconPath" />
+        <app-avatar-rounded :image-path="item.iconPath" />
       </q-item-section>
 
       <q-item-section>
@@ -106,17 +107,19 @@
     return translate(item.title, item.meta, "title");
   }
 
-  const isCheckedIn = (item: CategoryTypes): boolean => {
-    if (entityKey === "SITE") {
-      return checkIns.some(
-        checkInItem => (checkInItem as CheckIn).siteId === (item as SiteView).siteId
-      );
-    }
-    return false;
-  };
+  const isCheckedIn = (item: CategoryTypes): boolean =>
+    entityKey === "SITE" &&
+    checkIns.some((checkInItem: CheckIn) => checkInItem.siteId === (item as SiteView).siteId);
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
-    return favoriteStore.isFavorite(item as any, entityKey);
+    switch (entityKey) {
+      case "BUSINESS":
+        return favoriteStore.isFavoriteBusiness(item as BusinessView);
+      case "SITE":
+        return favoriteStore.isFavoriteSite(item as SiteView);
+      default:
+        return false;
+    }
   };
 
   function handleDetail(item: any) {
