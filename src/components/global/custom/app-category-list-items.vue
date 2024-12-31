@@ -1,30 +1,12 @@
 <template>
-  <q-banner
+  <app-taxi-fleet-banner
     v-if="directory?.meta.template === 2 && hasTaxiFleet"
-    class="q-ma-md shadow-1"
-    rounded
-    elevated
-  >
-    <template v-slot:avatar>
-      <q-btn
-        round
-        unelevated
-        :icon="fasCircleInfo"
-        size="md"
-        class="q-mr-md text-primary"
-        @click="showInfo"
-      >
-        <q-tooltip>Click for more information</q-tooltip>
-      </q-btn>
-    </template>
-    Here is our collection of <span class="text-primary">Blue Taxis</span> operating in Lantau
-    Island
-  </q-banner>
-
+    @show-info="showInfo"
+  />
   <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
     <q-item clickable @click="handleDetail(item)">
       <q-item-section avatar>
-        <app-avatar-rounded :image-path="item.iconPath" />
+        <app-avatar :image-path="item.iconPath" />
       </q-item-section>
 
       <q-item-section>
@@ -48,6 +30,7 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
@@ -55,7 +38,7 @@
 
   // Constants
   import { EntityURLKey } from "@/constants";
-  import { fasHeart, fasLocationDot, fasCircleInfo } from "@quasar/extras/fontawesome-v6";
+  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";

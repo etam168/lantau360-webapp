@@ -7,7 +7,6 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    2: typeof import('./components/global/custom/app-category-list-items copy 2.vue')['default']
     AppAuthAvatar: typeof import('./components/global/widgets/app-auth-avatar.vue')['default']
     AppAvatar: typeof import('./components/global/widgets/app-avatar.vue')['default']
     AppAvatarSquare: typeof import('./components/global/widgets/app-avatar-square.vue')['default']
@@ -43,6 +42,7 @@ declare module 'vue' {
     AppSkeletonWeather: typeof import('./components/global/widgets/app-skeleton-weather.vue')['default']
     AppSpinner: typeof import('./components/global/widgets/app-spinner.vue')['default']
     AppTabSelect: typeof import('./components/global/widgets/app-tab-select.vue')['default']
+    AppTaxiFleetBanner: typeof import('./components/global/custom/app-taxi-fleet-banner.vue')['default']
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
     CarouselImageList: typeof import('./components/global/custom/carousel-image-list.vue')['default']
