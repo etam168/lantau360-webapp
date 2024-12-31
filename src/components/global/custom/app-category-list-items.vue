@@ -1,38 +1,51 @@
 <template>
-  <q-card
-    v-if="categoryItems.length > 0"
-    v-for="(item, index) in categoryItems"
-    :key="index"
-    class="q-ma-md"
+  <q-banner
+    v-if="directory?.meta.template === 2 && hasTaxiFleet"
+    class="q-ma-md shadow-1"
+    rounded
+    elevated
   >
-    <q-list>
-      <q-item clickable @click="handleDetail(item)" class="q-pa-sm">
-        <q-item-section avatar>
-          <app-avatar-square :image-path="item.iconPath" />
-        </q-item-section>
+    <template v-slot:avatar>
+      <q-btn
+        round
+        unelevated
+        :icon="fasCircleInfo"
+        size="md"
+        class="q-mr-md text-primary"
+        @click="showInfo"
+      >
+        <q-tooltip>Click for more information</q-tooltip>
+      </q-btn>
+    </template>
+    Here is our collection of <span class="text-primary">Blue Taxis</span> operating in Lantau
+    Island
+  </q-banner>
+  <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
+    <q-item clickable @click="handleDetail(item)">
+      <q-item-section avatar>
+        <app-avatar :image-path="item.iconPath" />
+      </q-item-section>
 
-        <q-item-section>
-          <q-item-label v-if="line1(item)">{{ line1(item) }}</q-item-label>
-          <q-item-label>{{ line2(item) }}</q-item-label>
-        </q-item-section>
+      <q-item-section>
+        <q-item-label>{{ line1(item) }}</q-item-label>
+        <q-item-label caption>{{ line2(item) }}</q-item-label>
+      </q-item-section>
 
-        <q-item-section side>
-          <div class="q-gutter-sm">
-            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-          </div>
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-card>
+      <q-item-section side>
+        <div class="q-gutter-sm">
+          <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
+          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+        </div>
+      </q-item-section>
+    </q-item>
+
+    <q-separator />
+  </q-list>
 
   <app-no-record-message v-else :message="$t('errors.noRecord')" />
 </template>
 
 <script setup lang="ts">
-  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
-  import typia from "typia";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
@@ -40,11 +53,11 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
-  import { EntityURLKey, IMAGES } from "@/constants";
+  import { EntityURLKey } from "@/constants";
+  import { fasHeart, fasLocationDot, fasCircleInfo } from "@quasar/extras/fontawesome-v6";
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
-  import { BusinessView } from "@/interfaces/models/views/business-view";
 
   // Emits
   const emits = defineEmits(["on-category-detail"]);
@@ -63,10 +76,13 @@
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
-  const { getEntityName, getImageURL, translate } = useUtilities(locale.value);
+  const { getEntityName, translate } = useUtilities(locale.value);
 
   const entityName = getEntityName(entityKey);
   const favoriteStore = useFavoriteStore();
+
+  // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
+  const hasTaxiFleet = computed(() => categoryItems.some(item => item.subtitle3 === "Taxi Fleet"));
 
   function line1(item: CategoryTypes): string | null {
     if (directory && directory.groupId === 5) {
@@ -100,18 +116,12 @@
   };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
-
-    // needs fix typia was throwing some error
-    // if (typia.is<SiteView>(item)) {
-    //   return favoriteStore.isFavorite(item as SiteView);
-    // } else {
-    //   return favoriteStore.isFavorite(item as BusinessView);
-    // }
-    return favoriteStore.isFavorite(item as any);
-
+    return favoriteStore.isFavorite(item as any, entityKey);
   };
 
   function handleDetail(item: any) {
     emits("on-category-detail", item);
   }
+
+  function showInfo() {}
 </script>
