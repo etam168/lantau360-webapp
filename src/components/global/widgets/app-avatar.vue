@@ -12,7 +12,7 @@
 
 <script setup lang="ts">
   const { imagePath } = defineProps<{
-    imagePath: string;
+    imagePath: string | null;
   }>();
 
   const { getImageURL } = useUtilities();

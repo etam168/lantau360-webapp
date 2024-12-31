@@ -10,7 +10,7 @@
       :validation-schema="schema"
       @submit="onSubmit"
     >
-      <q-list class="q-pa-md">
+      <q-list>
         <q-item v-for="(item, index) in renderItems" :key="index" dense>
           <q-item-section>
             <vee-input-password v-if="item.type === 'password'" v-bind="getOptionalProps(item)" />

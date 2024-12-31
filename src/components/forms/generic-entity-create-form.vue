@@ -18,7 +18,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   >
     <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
-        <q-card-section class="q-py-lg q-px-sm">
+        <q-card-section class="q-pt-md q-pa-none">
           <entity-form-content
             v-if="isFormMapperLoaded"
             :entityKey

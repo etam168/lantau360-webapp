@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    2: typeof import('./components/global/custom/app-category-list-items copy 2.vue')['default']
     AppAuthAvatar: typeof import('./components/global/widgets/app-auth-avatar.vue')['default']
     AppAvatar: typeof import('./components/global/widgets/app-avatar.vue')['default']
     AppAvatarSquare: typeof import('./components/global/widgets/app-avatar-square.vue')['default']
@@ -21,6 +22,7 @@ declare module 'vue' {
     AppButtonTimeout: typeof import('./components/global/widgets/app-button-timeout.vue')['default']
     AppCarouselSection: typeof import('./components/global/widgets/app-carousel-section.vue')['default']
     AppCategoryListItems: typeof import('./components/global/custom/app-category-list-items.vue')['default']
+    'AppCategoryListItems copy 2': typeof import('./components/global/custom/app-category-list-items copy 2.vue')['default']
     AppCommunityListItems: typeof import('./components/global/custom/app-community-list-items.vue')['default']
     AppCreatePostItem: typeof import('./components/global/custom/app-create-post-item.vue')['default']
     AppDialogTitle: typeof import('./components/global/custom/app-dialog-title.vue')['default']

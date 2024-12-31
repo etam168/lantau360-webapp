@@ -19,7 +19,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <transaction-items-content :member :entity-key :points />
+            <transaction-items-content :member :entity-key />
           </template>
 
           <template #fallback>
@@ -60,12 +60,10 @@
   const {
     member,
     entityKey,
-    points,
     dialogName = ""
   } = defineProps<{
     member: Member;
     entityKey: EntityURLKey;
-    points?: Record<string, any>;
     dialogName: string;
   }>();
 

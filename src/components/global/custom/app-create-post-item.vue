@@ -12,7 +12,7 @@
 </template>
 
 <script setup lang="ts">
-  import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
+  import { fasPlus } from "@quasar/extras/fontawesome-v6";
 
   // Props
   const { createTitle, createDescription } = defineProps<{

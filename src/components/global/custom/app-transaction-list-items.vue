@@ -88,14 +88,14 @@
   const $q = useQuasar();
 
   const MEMBER_POINTS_HEIGHT = 76 as const;
-  const OTHER_HEIGHT = (96 + 72) as const;
+  const OTHER_HEIGHT = 96 + 72;
 
   const usedHeight = computed(() => {
     return MEMBER_POINTS_HEIGHT + OTHER_HEIGHT;
   });
 
   const scrollAreaStyle = computed(() => {
-    return $q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : null;
+    return $q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : "";
   });
 
   // Define pagination
@@ -103,7 +103,7 @@
     sortBy: "description",
     descending: false,
     page: 1,
-    rowsPerPage: hidePagination ? transactionItem.value.length : 10
+    rowsPerPage: hidePagination ? transactionItem.value.length : 20
   });
 
   // Columns definition for the table
