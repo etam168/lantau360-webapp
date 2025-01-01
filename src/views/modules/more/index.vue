@@ -23,12 +23,19 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import { newMember } from "@/interfaces/models/entities/member";
-  import { useUserStore } from "@/stores/user";
+
+  // Constants
   import { EntityURLKey, ICONS } from "@/constants";
+
+  // Stores
+  import { useUserStore } from "@/stores/user";
+  import { UserLogon } from "@/composable/use-member";
 
   const $q = useQuasar();
   const userStore = useUserStore();
+  const userLogon = UserLogon();
   const { eventBus } = useUtilities();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
@@ -128,7 +135,7 @@
     const props = { dialogName: dialogName };
     eventBus("DialogStatus").emit(true, dialogName);
     if (!isDialogOpen.value) {
-      openMemberItemDialog(props,isDialogOpen, member, entityKey);
+      openMemberItemDialog(props, isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }
@@ -180,13 +187,23 @@
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus(emitter).emit();
-      dialogStack.value.pop();
-      next(false);
-    } else {
-      next();
+    switch (true) {
+      case dialogStack.value.length > 0: {
+        const emitter = dialogStack.value[dialogStack.value.length - 1];
+        eventBus(emitter).emit();
+        dialogStack.value.pop();
+        next(false);
+        break;
+      }
+      case _to.name === "favourite" && !userStore.isUserLogon(): {
+        userLogon.promptUserLogon();
+        next(false);
+        break;
+      }
+      default: {
+        next();
+        break;
+      }
     }
   });
 </script>

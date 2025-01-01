@@ -18,7 +18,7 @@
 
   // Stores
   import { useUserStore } from "@/stores/user";
-  import { useMember } from "@/composable/use-member";
+  import { UserLogon } from "@/composable/use-member";
 
   const entityKey: EntityURLKey = "SITE";
   const MainPage = defineAsyncComponent({
@@ -29,7 +29,7 @@
   const { eventBus } = useUtilities();
   const dialogStack = ref<string[]>([]);
   const userStore = useUserStore();
-  const member = useMember();
+  const userLogon = UserLogon();
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {
@@ -51,7 +51,7 @@
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
-        member.promptUserLogon();
+        userLogon.promptUserLogon();
         next(false);
         break;
       }

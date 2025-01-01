@@ -13,7 +13,12 @@
 </template>
 
 <script setup lang="ts">
+  // Constants
   import { EntityURLKey } from "@/constants";
+
+  // Stores
+  import { useUserStore } from "@/stores/user";
+  import { UserLogon } from "@/composable/use-member";
 
   const entityKey: EntityURLKey = "FAVOURITE";
   const MainPage = defineAsyncComponent({
@@ -23,6 +28,8 @@
 
   const { eventBus } = useUtilities();
   const dialogStack = ref<string[]>([]);
+  const userStore = useUserStore();
+  const userLogon = UserLogon();
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {
@@ -35,13 +42,23 @@
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus(emitter).emit();
-      dialogStack.value.pop();
-      next(false);
-    } else {
-      next();
+    switch (true) {
+      case dialogStack.value.length > 0: {
+        const emitter = dialogStack.value[dialogStack.value.length - 1];
+        eventBus(emitter).emit();
+        dialogStack.value.pop();
+        next(false);
+        break;
+      }
+      case _to.name === "favourite" && !userStore.isUserLogon(): {
+        userLogon.promptUserLogon();
+        next(false);
+        break;
+      }
+      default: {
+        next();
+        break;
+      }
     }
   });
 </script>

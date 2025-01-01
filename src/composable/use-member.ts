@@ -1,6 +1,6 @@
 import { Dialog } from "quasar";
 
-export function useMember() {
+export function UserLogon() {
   function promptUserLogon() {
     Dialog.create({
       component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
