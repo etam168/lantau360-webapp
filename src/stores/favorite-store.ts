@@ -164,13 +164,23 @@ export const useFavoriteStore = defineStore(
 
     async function syncRemoteFromLocal(): Promise<void> {
       try {
+        // Construct the payload
         const payload = {
           sites: favoriteSites.value.map(s => s.siteId),
           business: favoriteBusinesses.value.map(b => b.businessId)
         };
 
-        // Todo: send the payload the the api
+        // Check if the user is logged in
+        if (!userStore.isUserLogon()) {
+          console.warn("User is not logged in. Cannot sync remote data.");
+          return;
+        }
+
+        // API call to update favorites
+        const url = `${ENTITY_URL.FAVOURITE_UPDATE}/${userStore.userId}`;
+        await api.update(url, payload);
       } catch (error) {
+        console.error("Error syncing remote data:", error);
         throw error;
       }
     }
