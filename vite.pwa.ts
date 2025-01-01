@@ -2,6 +2,7 @@ import { VitePWAOptions } from "vite-plugin-pwa";
 
 export const iconType = "icons";
 export const name = "Lantau360 Lite";
+export const iconVersion = "v=6";
 
 export const pwaOptions: Partial<VitePWAOptions> = {
   mode: "production",
@@ -16,36 +17,36 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     //    background_color: "#00652E",
     background_color: "#FFFFFF",
     id: "/?homescreen=1",
-    start_url: "/?source=pwa&v=1.0.1", // Include version in start_url
+    start_url: "/?source=pwa",
     display: "standalone",
     icons: [
       {
-        src: "./resources/pwa/icons/android/android-launchericon-48-48.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-48-48.png?${iconVersion}`,
         sizes: "48x48",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/icons/android/android-launchericon-72-72.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-72-72.png?${iconVersion}`,
         sizes: "72x72",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/icons/android/android-launchericon-96-96.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-96-96.png?${iconVersion}`,
         sizes: "96x96",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/icons/android/android-launchericon-144-144.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-144-144.png?${iconVersion}`,
         sizes: "144x144",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/icons/android/android-launchericon-192-192.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-192-192.png?${iconVersion}`,
         sizes: "192x192",
         type: "image/png"
       },
       {
-        src: "./resources/pwa/icons/android/android-launchericon-512-512.png?v=6",
+        src: `./resources/pwa/icons/android/android-launchericon-512-512.png?${iconVersion}`,
         sizes: "512x512",
         type: "image/png"
       }
@@ -70,7 +71,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         urlPattern: ({ url }) => url.pathname.startsWith("/resources/pwa/"),
         handler: "CacheFirst",
         options: {
-          cacheName: `pwa-assets-${process.env.npm_package_version}`,
+          cacheName: "pwa-assets",
           expiration: {
             maxEntries: 20,
             maxAgeSeconds: 30 * 24 * 60 * 60 // 30 days for core assets
@@ -85,7 +86,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         urlPattern: /\.(?:js|css)$/i,
         handler: "StaleWhileRevalidate",
         options: {
-          cacheName: `static-resources-${process.env.npm_package_version}`,
+          cacheName: "static-resources",
           expiration: {
             maxEntries: 100,
             maxAgeSeconds: 7 * 24 * 60 * 60 // 7 days
@@ -99,7 +100,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         urlPattern: /\/manifest\.webmanifest/,
         handler: "StaleWhileRevalidate",
         options: {
-          cacheName: `manifest-cache-${process.env.npm_package_version}`,
+          cacheName: "manifest-cache",
           expiration: {
             maxEntries: 1,
             maxAgeSeconds: 60 * 60 // 1 hour
