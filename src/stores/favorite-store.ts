@@ -40,17 +40,17 @@ async function deleteFavorite(deleteUrl: string) {
 export const useFavoriteStore = defineStore(
   "favorite",
   () => {
-    // const favoriteSites = ref<SiteView[]>([]);
-
     const favoriteSites = ref<SiteView[]>(
       (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
     );
 
-    const favoriteBusinesses = ref<BusinessView[]>([]);
-    const lastSyncCheckedAt = ref<Date>(new Date());
+    const favoriteBusinesses = ref<BusinessView[]>(
+      (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) || []) as BusinessView[]
+    );
 
+    const lastSyncCheckedAt = ref<Date>(new Date());
     const serverBusinesses = ref<BusinessView[]>([]);
-    const serverSites = ref<SiteView[]>([]); // This won't be persisted since it's not returned
+    const serverSites = ref<SiteView[]>([]);
 
     // Business favorites
     async function addBusinessFavorite(business: BusinessView) {
@@ -112,7 +112,6 @@ export const useFavoriteStore = defineStore(
           `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
         );
 
-        //serverSites.value = sites;
         serverSites.value = sites.map((s: any) => s.siteData);
 
         if (serverSites.value.length !== favoriteSites.value.length) {
@@ -163,6 +162,19 @@ export const useFavoriteStore = defineStore(
       }
     }
 
+    async function syncRemoteFromLocal(): Promise<void> {
+      try {
+        const payload = {
+          sites: favoriteSites.value.map(s => s.siteId),
+          business: favoriteBusinesses.value.map(b => b.businessId)
+        };
+
+        // Todo: send the payload the the api
+      } catch (error) {
+        throw error;
+      }
+    }
+
     function toggleBusinessFavorite(business: BusinessView, isFavorite: boolean) {
       return isFavorite ? removeBusinessFavorite(business) : addBusinessFavorite(business);
     }
@@ -176,15 +188,12 @@ export const useFavoriteStore = defineStore(
       favoriteSites,
       lastSyncCheckedAt,
       getServerSites,
-      addBusinessFavorite,
-      addSiteFavorite,
       isBusinessFavorite,
       isBusinessInSync,
       isSiteFavorite,
       isSiteInSync,
-      removeBusinessFavorite,
-      removeSiteFavorite,
       syncLocalFromRemote,
+      syncRemoteFromLocal,
       toggleBusinessFavorite,
       toggleSiteFavorite
     };
