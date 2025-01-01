@@ -61,8 +61,6 @@
   const businessDirectories = ref<BusinessDirectory[]>([]);
   const businessPromotion = ref<BusinessPromotionView[]>([]);
   const businessVoucher = ref<BusinessVoucherView[]>([]);
-
-  const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);

@@ -71,14 +71,10 @@
 
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
-
   const siteItems = ref<SiteView[]>(favStore.favoriteSites);
   const businessItems = ref<BusinessView[]>(favStore.favoriteBusinesses);
-
   const favSiteServer = ref([]);
   const favBusinessServer = ref([]);
-
-  const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);

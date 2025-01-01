@@ -59,7 +59,6 @@
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
   const weatherData = ref<Weather | null>(null);
-
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);

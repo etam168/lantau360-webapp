@@ -75,7 +75,6 @@
   });
 
   function onBtnFavClick() {
-    alert(!userStore.isUserLogon());
     switch (true) {
       case !userStore.isUserLogon():
         member.promptUserLogon();

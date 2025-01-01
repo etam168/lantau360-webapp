@@ -69,8 +69,6 @@
   const communityDirectories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
   const notices = ref<CommunityNoticeView[]>([]);
-
-  const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
