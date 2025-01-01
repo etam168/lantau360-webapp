@@ -36,23 +36,23 @@
 </template>
 
 <script setup lang="ts">
-  import type { Directory } from "@/interfaces/models/entities/site-directory";
+  import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 
   defineProps<{
     weatherData: Weather | null;
     tabItems: TabItem[];
-    directoryData: Directory[];
-    resourcesData: Directory[];
-    sightSeeingData: Directory[];
+    directoryData: SiteDirectory[];
+    resourcesData: SiteDirectory[];
+    sightSeeingData: SiteDirectory[];
   }>();
 
   const tab = defineModel<string>("tab", { required: true });
 
   defineEmits<{
     (e: "onSearch", value: any): void;
-    (e: "onDirectoryItem", value: Directory): void;
+    (e: "onDirectoryItem", value: SiteDirectory): void;
   }>();
 
   // Custom Components

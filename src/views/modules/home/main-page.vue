@@ -33,7 +33,7 @@
 
 <script setup lang="ts">
   // Interface files
-  import type { Directory } from "@/interfaces/models/entities/site-directory";
+  import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
@@ -57,10 +57,9 @@
 
   const THRESHOLD = 320;
   const attractions = ref<SiteView[]>([]);
-  const homeDirectories = ref<Directory[]>([]);
+  const homeDirectories = ref<SiteDirectory[]>([]);
   const weatherData = ref<Weather | null>(null);
 
-  const dialogStack = ref<string[]>([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
@@ -86,15 +85,15 @@
   ]);
 
   const directoryData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => dir.groupId == 1)
+    homeDirectories.value.filter((dir: SiteDirectory) => dir.groupId == 1)
   );
 
   const resourcesData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => dir.groupId == 3)
+    homeDirectories.value.filter((dir: SiteDirectory) => dir.groupId == 3)
   );
 
   const sightSeeingData = computed(() =>
-    homeDirectories.value.filter((dir: Directory) => dir.groupId == 5)
+    homeDirectories.value.filter((dir: SiteDirectory) => dir.groupId == 5)
   );
 
   function handleSearchDialog(value: any) {
@@ -118,7 +117,9 @@
       ]);
 
       weatherData.value = weatherResponse;
-      homeDirectories.value = homeDirectoryResponse.filter((dir: Directory) => dir.status === 1);
+      homeDirectories.value = homeDirectoryResponse.filter(
+        (dir: SiteDirectory) => dir.status === 1
+      );
       attractions.value = attractionResponse
         .sort((a: any, b: any) => a.siteId - b.siteId)
         .slice(0, 10);
@@ -141,33 +142,12 @@
     openCategoryDetailDialog(category, dialogName, entityKey);
   };
 
-  async function onDirectoryItem(directory: Directory) {
+  async function onDirectoryItem(directory: SiteDirectory) {
     if (isDialogOpen.value) return;
     const dialogName = "SiteItemList";
     eventBus("DialogStatus").emit(true, dialogName);
     openCategoryItemDialog(isDialogOpen, directory, dialogName);
   }
-
-  onMounted(() => {
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
-  });
-
-  onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus(emitter).emit();
-      dialogStack.value.pop();
-      next(false);
-    } else {
-      next();
-    }
-  });
 
   /**
    * Fetch data as part of the setup

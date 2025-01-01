@@ -226,35 +226,15 @@
           []) as BusinessView[];
       }
     });
-
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
   });
 
-  onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus(emitter).emit();
-      dialogStack.value.pop();
-      next(false);
-    } else {
-      next();
-    }
-  });
-
-  function showLocalDataUsageAlert()
-  {
+  function showLocalDataUsageAlert() {
     $q.notify({
-        type: "positive",
-        message: "You are seeing your local favourite data as you are not loggedin at the moment"
-      });
+      type: "positive",
+      message: "You are seeing your local favourite data as you are not loggedin at the moment"
+    });
   }
-  
+
   /**
    * Fetch data as part of the setup
    * This ensures that the component is compatible with Suspense

@@ -37,7 +37,7 @@
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
-  import type { Directory } from "@/interfaces/models/entities/site-directory";
+  import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
@@ -109,7 +109,7 @@
         (adv: AdvertisementView) => adv.status === 1
       );
       communityDirectories.value = directoryResponse.filter(
-        (directory: Directory) => directory.status === 1
+        (directory: SiteDirectory) => directory.status === 1
       );
       events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
       notices.value = noticeResponse.filter(
@@ -140,27 +140,6 @@
     eventBus("DialogStatus").emit(true, dialogName);
     openCommunityItemDialog(isDialogOpen, "POSTING", communityDirectory, dialogName);
   }
-
-  onMounted(() => {
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
-  });
-
-  onBeforeRouteLeave((_to, _from, next) => {
-    if (dialogStack.value.length > 0) {
-      const emitter = dialogStack.value[dialogStack.value.length - 1];
-      eventBus(emitter).emit();
-      dialogStack.value.pop();
-      next(false);
-    } else {
-      next();
-    }
-  });
 
   /**
    * Fetch data as part of the setup
