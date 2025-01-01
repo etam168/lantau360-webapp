@@ -52,7 +52,6 @@
   import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { FavouriteBusiness } from "@/interfaces/models/entities/favourite-business";
-  import business from "@/locales/en_US/modules/business";
 
   // Props
   const { entityKey } = defineProps<{
@@ -65,7 +64,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { eventBus, isSmallScreen, getEntityName } = useUtilities();
+  const { eventBus, getEntityName } = useUtilities();
 
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
