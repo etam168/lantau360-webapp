@@ -51,6 +51,8 @@
   // Composables
   import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
+  import { useFavoriteStore } from "@/stores/favorite-store";
+
   import { FavouriteBusiness } from "@/interfaces/models/entities/favourite-business";
 
   // Props
@@ -59,6 +61,7 @@
   }>();
 
   const userStore = useUserStore();
+  const favStore = useFavoriteStore();
   const $q = useQuasar();
   const { api } = useApi();
   const { t } = useI18n({ useScope: "global" });
@@ -69,10 +72,8 @@
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
 
-  const siteItems = ref<SiteView[]>(LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []);
-  const businessItems = ref<BusinessView[]>(
-    LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ?? []
-  );
+  const siteItems = ref<SiteView[]>(favStore.favoriteSites);
+  const businessItems = ref<BusinessView[]>(favStore.favoriteBusinesses);
 
   const favSiteServer = ref([]);
   const favBusinessServer = ref([]);
@@ -113,54 +114,24 @@
       );
 
       if (userStore.isUserLogon()) {
-        debugger;
-        await syncFavoriteData();
+        favStore.lastSyncCheckedAt = new Date(favStore.lastSyncCheckedAt);
+        const timeSinceLastSync = new Date().getTime() - favStore.lastSyncCheckedAt.getTime();
+
+        if (timeSinceLastSync > 300000) {
+          // 300,000 milliseconds = 5 minutes
+          const isSiteSync = await favStore.isSiteInSync();
+          const isBusinessSync = await favStore.isBusinessInSync();
+
+          if (!(isSiteSync && isBusinessSync)) {
+            promptUserDataSynAlert();
+          }
+        }
       } else {
-        //directly use the local storage data that has already been setup in siteItems and businessItem
-        //Can remove this else block if no extra logic required
+        showLocalDataUsageAlert();
       }
     } catch (err) {
       handleError(err);
     }
-  }
-
-  async function syncFavoriteData() {
-    try {
-      const [siteResponse, businessResponse] = await Promise.all([
-        fetchData(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`),
-        fetchData(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`)
-      ]);
-
-      favSiteServer.value = siteResponse;
-      favBusinessServer.value = businessResponse;
-
-      if (isDataOutOfSync(siteResponse, businessResponse)) {
-        promptUserDataSynAlert();
-      }
-    } catch (fetchError) {
-      console.error("Failed to fetch updated site or business data:", fetchError);
-    }
-  }
-
-  function isDataOutOfSync(
-    siteResponse: FavouriteSite[],
-    businessResponse: FavouriteBusiness[]
-  ): boolean {
-    const apiSiteIds = siteResponse.map(item => item.siteId).sort();
-    const localSiteIds = siteItems.value.map(item => item.siteId).sort();
-
-    const apiBusinessIds = businessResponse.map(item => item.businessId).sort();
-    const localBusinessIds = businessItems.value.map(item => item.businessId).sort();
-
-    const areSitesInSync =
-      apiSiteIds.length === localSiteIds.length &&
-      apiSiteIds.every((id, index) => id === localSiteIds[index]);
-
-    const areBusinessesInSync =
-      apiBusinessIds.length === localBusinessIds.length &&
-      apiBusinessIds.every((id, index) => id === localBusinessIds[index]);
-
-    return !areSitesInSync || !areBusinessesInSync;
   }
 
   function handleError(err: unknown) {
@@ -276,6 +247,14 @@
     }
   });
 
+  function showLocalDataUsageAlert()
+  {
+    $q.notify({
+        type: "positive",
+        message: "You are seeing your local favourite data as you are not loggedin at the moment"
+      });
+  }
+  
   /**
    * Fetch data as part of the setup
    * This ensures that the component is compatible with Suspense

@@ -62,7 +62,7 @@
   const userStore = useUserStore();
 
   // Computed properties
-  const isFavourite = computed(() => favoriteStore.isFavoriteSite(category as SiteView));
+  const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
 
   function onBtnCheckInClick() {
     emit("check-in");

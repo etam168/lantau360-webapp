@@ -108,9 +108,9 @@
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (entityKey) {
       case "BUSINESS":
-        return favoriteStore.isFavoriteBusiness(item as BusinessView);
+        return favoriteStore.isBusinessFavorite(item as BusinessView);
       case "SITE":
-        return favoriteStore.isFavoriteSite(item as SiteView);
+        return favoriteStore.isSiteFavorite(item as SiteView);
       default:
         return false;
     }

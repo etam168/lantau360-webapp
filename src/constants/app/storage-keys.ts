@@ -2,8 +2,8 @@ export const STORAGE_KEYS = {
   IsLogOn: "IsLogin",
 
   SAVED: {
-    BUSINESS: "businessFavourites",
-    SITE: "siteFavourites",
+    BUSINESS: "favoriteBusinesses",
+    SITE: "favoriteSites",
     POSTING: "postingFavourites"
   }
 };

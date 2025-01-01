@@ -39,7 +39,7 @@
   const userStore = useUserStore();
 
   // Computed properties
-  const isFavourite = computed(() => favoriteStore.isFavoriteBusiness(category as BusinessView));
+  const isFavourite = computed(() => favoriteStore.isBusinessFavorite(category as BusinessView));
 
   // Utility function to format time to 12-hour format with am/pm
   function formatTime(time: string): string {

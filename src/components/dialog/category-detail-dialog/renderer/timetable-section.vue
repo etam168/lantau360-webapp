@@ -53,7 +53,7 @@
   const userStore = useUserStore();
 
   // Computed properties
-  const isFavourite = computed(() => favoriteStore.isFavoriteSite(category as SiteView));
+  const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
 
   const isMaskValueOne = computed(() => {
     return Number((category as SiteView).displayMask) === 1;

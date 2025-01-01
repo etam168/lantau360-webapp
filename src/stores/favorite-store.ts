@@ -12,12 +12,11 @@ const MAX_FAVORITES = 100;
 async function syncFavorite(upsertUrl: string, id: number) {
   try {
     const payload = {
-      createdBy: userStore.userId,
-      modifiedBy: userStore.userId,
-      id
+      memberId: userStore.userId,
+      entityId: id
     };
 
-    await api.create(`${upsertUrl}/${id}`, payload);
+    await api.create(`${upsertUrl}`, payload);
   } catch (error) {
     throw error;
   }
@@ -36,7 +35,7 @@ export const useFavoriteStore = defineStore(
   () => {
     const favoriteSites = ref<SiteView[]>([]);
     const favoriteBusinesses = ref<BusinessView[]>([]);
-
+    const lastSyncCheckedAt = ref<Date>(new Date());
     // Business favorites
     async function addBusinessFavorite(business: BusinessView) {
       if (!favoriteBusinesses.value.some(fav => fav.businessId === business.businessId)) {
@@ -99,7 +98,7 @@ export const useFavoriteStore = defineStore(
 
     async function isBusinessInSync(): Promise<boolean> {
       try {
-        const response = await api.get(ENTITY_URL.FAVOURITE_BUSINESS);
+        const response = await api.get(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`);
         const serverFavorites: BusinessView[] = response.data;
 
         if (serverFavorites.length !== favoriteBusinesses.value.length) {
@@ -107,20 +106,42 @@ export const useFavoriteStore = defineStore(
         }
 
         const serverIds = new Set(serverFavorites.map(business => business.businessId));
+        lastSyncCheckedAt.value = new Date();
         return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
       } catch (error) {
         throw error;
       }
+      
+    }
+
+    async function isSiteInSync(): Promise<boolean> {
+      try {
+        const response = await api.get(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`);
+        const serverFavorites: SiteView[] = response.data;
+
+        if (serverFavorites.length !== favoriteSites.value.length) {
+          return false;
+        }
+
+        const serverIds = new Set(serverFavorites.map(site => site.siteId));
+        lastSyncCheckedAt.value = new Date();
+        return favoriteSites.value.every(site => serverIds.has(site.siteId));
+      } catch (error) {
+        throw error;
+      }
+      
     }
 
     return {
       favoriteBusinesses,
       favoriteSites,
+      lastSyncCheckedAt,
       addBusinessFavorite,
       addSiteFavorite,
       isBusinessFavorite,
       isSiteFavorite,
       isBusinessInSync,
+      isSiteInSync,
       removeBusinessFavorite,
       removeSiteFavorite,
       toggleBusinessFavorite,

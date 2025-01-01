@@ -15,9 +15,12 @@
 <script setup lang="ts">
   import { EntityURLKey } from "@/constants";
 
+  import { useUserStore } from "@/stores/user";
+
   const entityKey: EntityURLKey = "FAVOURITE";
   const MainPage = defineAsyncComponent({
     loader: () => import("./main-page.vue"),
     delay: 500
   });
+  const userStore = useUserStore();
 </script>
