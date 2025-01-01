@@ -1,11 +1,16 @@
+// Types
 import type { SiteView } from "@/interfaces/models/views/site-view";
 import type { BusinessView } from "@/interfaces/models/views/business-view";
 
+// Store
 import { defineStore } from "pinia";
-import { ENTITY_URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 
-const { api } = useApi();
+// Constants
+import { LocalStorage } from "quasar";
+import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
+
+const { api, fetchData } = useApi();
 const userStore = useUserStore();
 const MAX_FAVORITES = 100;
 
@@ -33,9 +38,18 @@ async function deleteFavorite(deleteUrl: string) {
 export const useFavoriteStore = defineStore(
   "favorite",
   () => {
-    const favoriteSites = ref<SiteView[]>([]);
+    // const favoriteSites = ref<SiteView[]>([]);
+
+    const favoriteSites = ref<SiteView[]>(
+      (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) || []) as SiteView[]
+    );
+
     const favoriteBusinesses = ref<BusinessView[]>([]);
     const lastSyncCheckedAt = ref<Date>(new Date());
+
+    const serverBusinesses = ref<BusinessView[]>([]);
+    const serverSites = ref<SiteView[]>([]); // This won't be persisted since it's not returned
+
     // Business favorites
     async function addBusinessFavorite(business: BusinessView) {
       if (!favoriteBusinesses.value.some(fav => fav.businessId === business.businessId)) {
@@ -62,20 +76,58 @@ export const useFavoriteStore = defineStore(
       }
     }
 
-    async function removeSiteFavorite(site: SiteView) {
-      favoriteSites.value = favoriteSites.value.filter(fav => fav.siteId !== site.siteId);
-      await deleteFavorite(`${ENTITY_URL.FAVOURITE_SITE}/BySiteId/${site.siteId}`);
+    function isBusinessFavorite(business: BusinessView): boolean {
+      return favoriteBusinesses.value.some(fav => fav.businessId === business.businessId);
+    }
+
+    async function isBusinessInSync(): Promise<boolean> {
+      try {
+        const businesses = await fetchData(
+          `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
+        );
+
+        serverBusinesses.value = businesses.map((s: any) => s.businessData);
+
+        if (serverBusinesses.value.length !== favoriteBusinesses.value.length) {
+          return false;
+        }
+
+        const serverIds = new Set(serverBusinesses.value.map(business => business.businessId));
+        lastSyncCheckedAt.value = new Date();
+        return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
+      } catch (error) {
+        throw error;
+      }
     }
 
     function isSiteFavorite(site: SiteView): boolean {
       return favoriteSites.value.some(fav => fav.siteId === site.siteId);
     }
 
-    function toggleSiteFavorite(site: SiteView, isFavorite: boolean) {
-      if (isFavorite) {
-        return removeSiteFavorite(site);
+    async function isSiteInSync(): Promise<boolean> {
+      try {
+        const sites = await fetchData(
+          `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
+        );
+
+        alert("isSiteInSync");
+        //serverSites.value = sites;
+        serverSites.value = sites.map((s: any) => s.siteData);
+
+        if (serverSites.value.length !== favoriteSites.value.length) {
+          return false;
+        }
+
+        const serverIds = new Set(serverSites.value.map(site => site.siteId));
+        lastSyncCheckedAt.value = new Date();
+        return favoriteSites.value.every(site => serverIds.has(site.siteId));
+      } catch (error) {
+        throw error;
       }
-      return addSiteFavorite(site);
+    }
+
+    function getServerSites() {
+      return serverSites.value;
     }
 
     async function removeBusinessFavorite(business: BusinessView) {
@@ -85,65 +137,53 @@ export const useFavoriteStore = defineStore(
       await deleteFavorite(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByBusinessId/${business.businessId}`);
     }
 
-    function isBusinessFavorite(business: BusinessView): boolean {
-      return favoriteBusinesses.value.some(fav => fav.businessId === business.businessId);
+    async function removeSiteFavorite(site: SiteView) {
+      favoriteSites.value = favoriteSites.value.filter(fav => fav.siteId !== site.siteId);
+      await deleteFavorite(`${ENTITY_URL.FAVOURITE_SITE}/BySiteId/${site.siteId}`);
+    }
+
+    async function syncLocalFromRemote(): Promise<void> {
+      try {
+        const sites = await fetchData(
+          `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
+        );
+
+        // Temporary mapping to address Suleman's api error
+        favoriteSites.value = sites.map((s: any) => s.siteData);
+
+        const businesses = await fetchData(
+          `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
+        );
+
+        // Temporary mapping to address Suleman's api error
+        favoriteBusinesses.value = businesses.map((s: any) => s.businessData);
+      } catch (error) {
+        throw error;
+      }
     }
 
     function toggleBusinessFavorite(business: BusinessView, isFavorite: boolean) {
-      if (isFavorite) {
-        return removeBusinessFavorite(business);
-      }
-      return addBusinessFavorite(business);
+      return isFavorite ? removeBusinessFavorite(business) : addBusinessFavorite(business);
     }
 
-    async function isBusinessInSync(): Promise<boolean> {
-      try {
-        const response = await api.get(`${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`);
-        const serverFavorites: BusinessView[] = response.data;
-
-        if (serverFavorites.length !== favoriteBusinesses.value.length) {
-          return false;
-        }
-
-        const serverIds = new Set(serverFavorites.map(business => business.businessId));
-        lastSyncCheckedAt.value = new Date();
-        return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
-      } catch (error) {
-        throw error;
-      }
-      
-    }
-
-    async function isSiteInSync(): Promise<boolean> {
-      try {
-        const response = await api.get(`${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`);
-        const serverFavorites: SiteView[] = response.data;
-
-        if (serverFavorites.length !== favoriteSites.value.length) {
-          return false;
-        }
-
-        const serverIds = new Set(serverFavorites.map(site => site.siteId));
-        lastSyncCheckedAt.value = new Date();
-        return favoriteSites.value.every(site => serverIds.has(site.siteId));
-      } catch (error) {
-        throw error;
-      }
-      
+    function toggleSiteFavorite(site: SiteView, isFavorite: boolean) {
+      return isFavorite ? removeSiteFavorite(site) : addSiteFavorite(site);
     }
 
     return {
       favoriteBusinesses,
       favoriteSites,
       lastSyncCheckedAt,
+      getServerSites,
       addBusinessFavorite,
       addSiteFavorite,
       isBusinessFavorite,
-      isSiteFavorite,
       isBusinessInSync,
+      isSiteFavorite,
       isSiteInSync,
       removeBusinessFavorite,
       removeSiteFavorite,
+      syncLocalFromRemote,
       toggleBusinessFavorite,
       toggleSiteFavorite
     };

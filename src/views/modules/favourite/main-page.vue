@@ -37,8 +37,6 @@
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
-  import type { FavouriteSite } from "@/interfaces/models/entities/favourite-site";
-
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { TabItem } from "@/interfaces/tab-item";
 
@@ -53,8 +51,6 @@
   import { useUserStore } from "@/stores/user";
   import { useFavoriteStore } from "@/stores/favorite-store";
 
-  import { FavouriteBusiness } from "@/interfaces/models/entities/favourite-business";
-
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
@@ -63,7 +59,6 @@
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
   const $q = useQuasar();
-  const { api } = useApi();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
@@ -73,8 +68,6 @@
   const advertisements = ref<any | null>(null);
   const siteItems = ref<SiteView[]>(favStore.favoriteSites);
   const businessItems = ref<BusinessView[]>(favStore.favoriteBusinesses);
-  const favSiteServer = ref([]);
-  const favBusinessServer = ref([]);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
@@ -113,7 +106,8 @@
         favStore.lastSyncCheckedAt = new Date(favStore.lastSyncCheckedAt);
         const timeSinceLastSync = new Date().getTime() - favStore.lastSyncCheckedAt.getTime();
 
-        if (timeSinceLastSync > 300000) {
+        if (timeSinceLastSync > 30) {
+          // if (timeSinceLastSync > 300000) {
           // 300,000 milliseconds = 5 minutes
           const isSiteSync = await favStore.isSiteInSync();
           const isBusinessSync = await favStore.isBusinessInSync();
@@ -121,6 +115,7 @@
           if (!(isSiteSync && isBusinessSync)) {
             promptUserDataSynAlert();
           }
+          // favStore.syncLocalFromRemote();
         }
       } else {
         showLocalDataUsageAlert();
@@ -147,55 +142,14 @@
       // Reset dialog state when it is dismissed/closed
       isDialogOpen.value = false;
 
-      if (selectedOption === "local") {
-        syncLocalData();
-      } else {
-        syncServerData();
-      }
+      //if (selectedOption === "local") {
+      // syncLocalData();
+      ///} else {
+      //alert("server");
+      favStore.syncLocalFromRemote();
+      //}
     });
   }
-
-  //send data from local storage to api to sync
-  async function syncLocalData() {
-    try {
-      // Extract records from local storage that are not in the API response
-      const missingSites = siteItems.value.filter(
-        localSite =>
-          !favSiteServer.value.some(
-            apiSite => (apiSite as FavouriteSite).siteId === localSite.siteId
-          )
-      );
-
-      const missingBusinesses = businessItems.value.filter(
-        localBusiness =>
-          !favBusinessServer.value.some(
-            apiBusiness =>
-              (apiBusiness as FavouriteBusiness).businessId === localBusiness.businessId
-          )
-      );
-
-      const payload = {
-        sites: missingSites.map(site => site.siteId),
-        business: missingBusinesses.map(business => business.businessId)
-      };
-
-      await api.update(`${ENTITY_URL.FAVOURITE_UPDATE}/${userStore.userId}`, payload);
-
-      $q.notify({
-        type: "positive",
-        message: "Local records have been successfully synced to the server."
-      });
-    } catch (error) {
-      console.error("Failed to sync local data with the backend:", error);
-      $q.notify({
-        type: "negative",
-        message: "An error occurred while syncing data. Please try again."
-      });
-    }
-  }
-
-  //sync local storage data from api
-  async function syncServerData() {}
 
   const onImageClick = (category: AdvertisementView) => {
     const dialogName = "AdvertisementDetail";
