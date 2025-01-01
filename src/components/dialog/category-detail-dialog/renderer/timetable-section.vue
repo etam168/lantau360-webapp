@@ -28,6 +28,7 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
@@ -38,6 +39,7 @@
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
   import { useUserStore } from "@/stores/user";
+  import { useMember } from "@/composable/use-member";
 
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
@@ -45,12 +47,12 @@
   }>();
 
   // Composable function calls
-  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const { getImageURL, translate } = useUtilities(locale.value);
 
   const favoriteStore = useFavoriteStore();
   const userStore = useUserStore();
+  const member = useMember();
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
@@ -75,24 +77,14 @@
   function onBtnFavClick() {
     switch (true) {
       case !userStore.isUserLogon():
-        promptUserLogon();
+        member.promptUserLogon();
         break;
       case entityKey === "BUSINESS":
-        // favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
-        // eventBus("favoriteUpdated").emit(category);
+        favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
         break;
       case entityKey === "SITE":
         favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
         break;
     }
-  }
-
-  function promptUserLogon() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
-      componentProps: {
-        mode: "login"
-      }
-    });
   }
 </script>

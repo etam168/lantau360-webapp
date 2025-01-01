@@ -6,10 +6,11 @@ import L from "leaflet";
 import { ENTITY_URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { SiteView } from "@/interfaces/models/views/site-view";
+import { useMember } from "@/composable/use-member";
 
 export function useCheckInDataService() {
-
   const $q = useQuasar();
+  const member = useMember();
   const userStore = useUserStore();
   const { handleOpenDialog } = useEntityDataHandlingService();
   const { fetchData } = useApi();
@@ -22,15 +23,6 @@ export function useCheckInDataService() {
     const isDialogOpen = ref(false);
     const props = { associatedEntityId: (category as SiteView).siteId, entityKey: "CHECKIN" };
     handleOpenDialog(props, isDialogOpen, "CHECKIN");
-  }
-
-  function promptUserLogon() {
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue")),
-      componentProps: {
-        mode: "login"
-      }
-    });
   }
 
   function isOutOfRange(category: CategoryTypes) {
@@ -84,7 +76,7 @@ export function useCheckInDataService() {
     try {
       switch (true) {
         case userStore.isUserLogon() == false:
-          promptUserLogon();
+          member.promptUserLogon();
           return;
         case isOutOfRange(category):
           notify("You must be under 100 meters of location for check-in", "primary");
