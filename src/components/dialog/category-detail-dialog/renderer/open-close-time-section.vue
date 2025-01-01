@@ -27,7 +27,7 @@
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
   import { useUserStore } from "@/stores/user";
-  import { useMember } from "@/composable/use-member";
+  import { UserLogon } from "@/composable/use-member";
 
   // Props
   const { category, entityKey } = defineProps<{
@@ -38,7 +38,7 @@
   // Composable function calls
   const favoriteStore = useFavoriteStore();
   const userStore = useUserStore();
-  const member = useMember();
+  const userLogon = UserLogon();
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isBusinessFavorite(category as BusinessView));
@@ -102,7 +102,7 @@
   function onBtnFavClick() {
     switch (true) {
       case !userStore.isUserLogon():
-        member.promptUserLogon();
+        userLogon.promptUserLogon();
         break;
       case entityKey === "BUSINESS":
         favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);

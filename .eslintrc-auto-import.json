@@ -352,6 +352,7 @@
     "useValidationSchemas": true,
     "RenderItem": true,
     "useSSRWidth": true,
-    "usePreferredReducedTransparency": true
+    "usePreferredReducedTransparency": true,
+    "UserLogon": true
   }
 }

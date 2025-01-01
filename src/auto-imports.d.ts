@@ -10,6 +10,7 @@ declare global {
   const EffectScope: typeof import('vue')['EffectScope']
   const GeolocationPermissionStatus: typeof import('./composable/geo_permission')['GeolocationPermissionStatus']
   const Status: (typeof import("./composable/use-member"))["Status"]
+  const UserLogon: typeof import('./composable/use-member')['UserLogon']
   const asyncComputed: typeof import('@vueuse/core')['asyncComputed']
   const autoResetRef: typeof import('@vueuse/core')['autoResetRef']
   const axios: typeof import('axios')['default']
@@ -366,6 +367,7 @@ declare module 'vue' {
   interface ComponentCustomProperties {
     readonly AxiosError: UnwrapRef<typeof import('axios')['AxiosError']>
     readonly EffectScope: UnwrapRef<typeof import('vue')['EffectScope']>
+    readonly UserLogon: UnwrapRef<typeof import('./composable/use-member')['UserLogon']>
     readonly asyncComputed: UnwrapRef<typeof import('@vueuse/core')['asyncComputed']>
     readonly autoResetRef: UnwrapRef<typeof import('@vueuse/core')['autoResetRef']>
     readonly axios: UnwrapRef<typeof import('axios')['default']>
@@ -568,7 +570,6 @@ declare module 'vue' {
     readonly useManualRefHistory: UnwrapRef<typeof import('@vueuse/core')['useManualRefHistory']>
     readonly useMediaControls: UnwrapRef<typeof import('@vueuse/core')['useMediaControls']>
     readonly useMediaQuery: UnwrapRef<typeof import('@vueuse/core')['useMediaQuery']>
-    readonly useMember: UnwrapRef<typeof import('./composable/use-member')['useMember']>
     readonly useMemberFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-member-form-contents')['useMemberFormContents']>
     readonly useMemberFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-member-form-mapper')['useMemberFormMapper']>
     readonly useMemberItemDialogService: UnwrapRef<typeof import('./composable/services/use-member-item-dialog-service')['useMemberItemDialogService']>

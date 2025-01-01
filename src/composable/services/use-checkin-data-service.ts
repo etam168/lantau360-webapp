@@ -6,11 +6,10 @@ import L from "leaflet";
 import { ENTITY_URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { SiteView } from "@/interfaces/models/views/site-view";
-import { useMember } from "@/composable/use-member";
+import { UserLogon } from "@/composable/use-member";
 
 export function useCheckInDataService() {
-  const $q = useQuasar();
-  const member = useMember();
+  const userLogon = UserLogon();
   const userStore = useUserStore();
   const { handleOpenDialog } = useEntityDataHandlingService();
   const { fetchData } = useApi();
@@ -76,7 +75,7 @@ export function useCheckInDataService() {
     try {
       switch (true) {
         case userStore.isUserLogon() == false:
-          member.promptUserLogon();
+          userLogon.promptUserLogon();
           return;
         case isOutOfRange(category):
           notify("You must be under 100 meters of location for check-in", "primary");
