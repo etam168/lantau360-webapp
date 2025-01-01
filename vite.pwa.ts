@@ -15,7 +15,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
     short_name: "Lantau360",
     theme_color: "#00652E",
     //    background_color: "#00652E",
-    background_color: "#FFFFFF",
+    background_color: "00652E",
     id: "/?homescreen=1",
     start_url: "/?source=pwa",
     display: "standalone",

@@ -29,9 +29,11 @@ async function syncFavorite(upsertUrl: string, id: number) {
 
 async function deleteFavorite(deleteUrl: string) {
   try {
-    await api.delete(deleteUrl);
+    if (userStore.isUserLogon()) {
+      await api.delete(deleteUrl);
+    }
   } catch (error) {
-    throw error;
+    throw error; // Rethrow any caught errors
   }
 }
 
@@ -110,7 +112,6 @@ export const useFavoriteStore = defineStore(
           `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
         );
 
-        alert("isSiteInSync");
         //serverSites.value = sites;
         serverSites.value = sites.map((s: any) => s.siteData);
 

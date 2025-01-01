@@ -145,7 +145,6 @@
       //if (selectedOption === "local") {
       // syncLocalData();
       ///} else {
-      //alert("server");
       favStore.syncLocalFromRemote();
       //}
     });

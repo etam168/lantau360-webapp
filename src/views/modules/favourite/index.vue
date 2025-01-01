@@ -20,11 +20,10 @@
   import { useUserStore } from "@/stores/user";
   import { UserLogon } from "@/composable/use-member";
 
+  //Components
+  import MainPage from "./main-page.vue";
+
   const entityKey: EntityURLKey = "FAVOURITE";
-  const MainPage = defineAsyncComponent({
-    loader: () => import("./main-page.vue"),
-    delay: 500
-  });
 
   const { eventBus } = useUtilities();
   const dialogStack = ref<string[]>([]);
