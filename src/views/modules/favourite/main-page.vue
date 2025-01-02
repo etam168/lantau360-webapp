@@ -103,17 +103,11 @@
       );
 
       if (userStore.isUserLogon()) {
-        favStore.lastSyncCheckedAt = new Date(favStore.lastSyncCheckedAt);
-        const timeSinceLastSync = new Date().getTime() - favStore.lastSyncCheckedAt.getTime();
-
-        if (timeSinceLastSync > 30) {
-          // 300,000 milliseconds = 5 minutes
-          const isFavouriteSync =await favStore.isFavoritesInSync();
-          if (!isFavouriteSync) {
-            promptUserDataSynAlert();
-          }
+        const isFavouriteSync = await favStore.isFavoritesInSync();
+        if (!isFavouriteSync) {
+          promptUserDataSynAlert();
         }
-      } 
+      }
     } catch (err) {
       handleError(err);
     }
@@ -170,7 +164,6 @@
       }
     });
   });
-
 
   /**
    * Fetch data as part of the setup
