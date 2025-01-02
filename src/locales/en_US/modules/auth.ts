@@ -1,5 +1,3 @@
-import { message } from "typia/lib/protobuf";
-
 export default {
   button: {
     login: "Sign in",
@@ -34,7 +32,8 @@ export default {
     password: "Password",
     registerPassword: "Password",
     userName: "User Name",
-    checkInCaption: "For checkIn please signIn first"
+    checkInCaption: "For checkIn please signIn first",
+    loginToProceed: "Please login first to procceed."
   },
 
   validation: {
@@ -62,6 +61,5 @@ export default {
     emailAlreadyVerified: "Your email is already verified",
     confimationSucessfull:
       "Thank you for verifying your email address.\nYour email has been successfully verified."
-  },
-
+  }
 };

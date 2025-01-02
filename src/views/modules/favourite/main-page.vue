@@ -44,10 +44,9 @@
   const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
 
   // Constants
-  import { STORAGE_KEYS, EntityURLKey, ENTITY_URL } from "@/constants";
+  import { EntityURLKey, ENTITY_URL } from "@/constants";
 
   // Composables
-  import { LocalStorage } from "quasar";
   import { useUserStore } from "@/stores/user";
   import { useFavoriteStore } from "@/stores/favorite-store";
 
@@ -66,8 +65,8 @@
 
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
-  const siteItems = ref<SiteView[]>(favStore.favoriteSites);
-  const businessItems = ref<BusinessView[]>(favStore.favoriteBusinesses);
+  const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
+  const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
   const error = ref<string | null>(null);
 
   const setTab = (val: string) => (tab.value = val);
@@ -104,9 +103,7 @@
 
       if (userStore.isUserLogon()) {
         const isFavouriteSync = await favStore.isFavoritesInSync();
-        if (!isFavouriteSync) {
-          promptUserDataSynAlert();
-        }
+        if (!isFavouriteSync) promptUserDataSynAlert();
       }
     } catch (err) {
       handleError(err);
@@ -128,10 +125,17 @@
       // Reset dialog state when it is dismissed/closed
       isDialogOpen.value = false;
 
-      if (selectedOption === "local") {
-        favStore.syncRemoteFromLocal();
-      } else {
-        favStore.syncLocalFromRemote();
+      switch (selectedOption) {
+        case "local":
+          favStore.syncRemoteFromLocal();
+          break;
+
+        case "server":
+          favStore.syncLocalFromRemote();
+          break;
+
+        default:
+          console.warn(`Unhandled option: ${selectedOption}`);
       }
     });
   }
@@ -151,17 +155,6 @@
     eventBus("DialogStatus").emit(true, dialogName);
     await openCategoryDetailDialog(item, dialogName, entityKey);
   }
-
-  onMounted(() => {
-    eventBus("favoriteUpdated").on(item => {
-      if ("siteId" in item) {
-        siteItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.SITE) ?? []) as SiteView[];
-      } else if ("businessId" in item) {
-        businessItems.value = (LocalStorage.getItem(STORAGE_KEYS.SAVED.BUSINESS) ??
-          []) as BusinessView[];
-      }
-    });
-  });
 
   /**
    * Fetch data as part of the setup

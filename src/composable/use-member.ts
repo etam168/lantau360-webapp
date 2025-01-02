@@ -1,6 +1,5 @@
 import { Dialog, Notify } from "quasar";
 // Third party imports
-import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
 export function UserLogon() {
   function promptUserLogon() {

@@ -21,7 +21,8 @@ export default {
     userName: "用户名 (电子邮件)",
     checkInCaption: "请先登录以进行签到",
     passwordResetSuccessfully: "密码重设成功",
-    emailSentSuccessfully: "请检查您的电子邮件以确认链接"
+    emailSentSuccessfully: "请检查您的电子邮件以确认链接",
+    loginToProceed: "请先登录以继续。"
   },
 
   validation: {
@@ -42,6 +43,5 @@ export default {
     emailSentSuccessfully: "Please check your email for the confirmation link",
     loginSuccessMessage: "登录成功",
     passwordResetSuccessfully: "Password reset successfully"
-  },
-
+  }
 };

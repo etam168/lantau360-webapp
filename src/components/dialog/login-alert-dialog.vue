@@ -10,12 +10,18 @@
     <q-card>
       <q-card-section>
         <q-avatar :icon="fasTriangleExclamation" color="negative" text-color="white" />
-        <span class="q-ml-sm">Please login first to procceed.</span>
+        <span class="q-ml-sm">{{ $t(`${i18nKey}.label.loginToProceed`) }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <q-btn flat label="Cancel" color="primary" v-close-popup />
-        <q-btn flat label="Login" color="primary" v-close-popup @click="onLogin" />
+        <app-button flat :label="$t('action.cancel')" color="primary" v-close-popup />
+        <app-button
+          flat
+          :label="$t(`${i18nKey}.button.login`)"
+          color="primary"
+          v-close-popup
+          @click="onLogin"
+        />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -35,6 +41,8 @@
   const $q = useQuasar();
   const isDialogVisible = ref(true);
   const { dialogRef } = useDialogPluginComponent();
+
+  const i18nKey = "auth";
 
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
