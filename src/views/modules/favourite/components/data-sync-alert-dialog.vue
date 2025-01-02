@@ -10,15 +10,21 @@
     <q-card>
       <q-card-section>
         <q-avatar :icon="fasTriangleExclamation" color="negative" text-color="white" />
-        <span class="q-ml-sm">Your data is not sync. Which data you would prefer to sync</span>
+        <span class="q-ml-sm">{{ $t(`${i18nKey}.dataSync`) }}</span>
       </q-card-section>
 
       <q-card-actions align="right">
-        <!-- <q-btn flat label="Cancel" color="primary" v-close-popup /> -->
-        <q-btn flat label="Local Data" color="primary" v-close-popup @click="updateData('local')" />
-        <q-btn
+        <app-button
           flat
-          label="Server Data"
+          :label="$t(`${i18nKey}.localData`)"
+          color="primary"
+          v-close-popup
+          @click="updateData('local')"
+        />
+
+        <app-button
+          flat
+          :label="$t(`${i18nKey}.serverData`)"
           color="primary"
           v-close-popup
           @click="updateData('server')"
@@ -39,9 +45,10 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Reactive variables
-  const $q = useQuasar();
   const isDialogVisible = ref(true);
   const { dialogRef, onDialogOK } = useDialogPluginComponent();
+
+  const i18nKey = "favourite.dialog";
 
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;

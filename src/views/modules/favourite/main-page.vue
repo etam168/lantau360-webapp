@@ -123,9 +123,7 @@
 
   function promptUserDataSynAlert() {
     $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/views/modules/favourite/components/data-sync-alert-dialog.vue")
-      )
+      component: defineAsyncComponent(() => import("./components/data-sync-alert-dialog.vue"))
     }).onOk(async (selectedOption: string) => {
       // Reset dialog state when it is dismissed/closed
       isDialogOpen.value = false;
