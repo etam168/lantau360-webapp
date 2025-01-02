@@ -18,17 +18,18 @@
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
-  import { LocalStorage } from "quasar";
-
-  // Third party imports
   import { fasHeart } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
-  import { EntityURLKey, STORAGE_KEYS } from "@/constants";
+  import { EntityURLKey } from "@/constants";
+
+  // Stores
+  import { useFavoriteStore } from "@/stores/favorite-store";
 
   // Emits
   const emits = defineEmits(["on-detail"]);
@@ -43,29 +44,14 @@
   const { locale } = useI18n({ useScope: "global" });
   const { getEntityName, getImageURL, translate } = useUtilities(locale.value);
   const entityName = getEntityName(entityKey);
-
-  const storageKey = computed(() =>
-    entityKey === "BUSINESS" ? STORAGE_KEYS.SAVED.BUSINESS : STORAGE_KEYS.SAVED.SITE
-  );
-
-  const favoriteItems = ref((LocalStorage.getItem(storageKey.value) || []) as CategoryTypes[]);
+  const favoriteStore = useFavoriteStore();
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (entityKey) {
       case "BUSINESS":
-        if ("businessId" in item) {
-          return favoriteItems.value.some(
-            favItem => "businessId" in favItem && favItem.businessId === item.businessId
-          );
-        }
-        return false;
+        return favoriteStore.isBusinessFavorite(item as BusinessView);
       case "SITE":
-        if ("siteId" in item) {
-          return favoriteItems.value.some(
-            favItem => "siteId" in favItem && favItem.siteId === item.siteId
-          );
-        }
-        return false;
+        return favoriteStore.isSiteFavorite(item as SiteView);
       default:
         return false;
     }
