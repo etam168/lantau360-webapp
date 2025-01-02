@@ -1,8 +1,5 @@
 <template>
-  <app-taxi-fleet-banner
-    v-if="directory?.meta.template === 2 && hasTaxiFleet"
-    @show-info="showInfo"
-  />
+  <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
 
   <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
     <q-item clickable @click="handleDetail(item)">
@@ -109,6 +106,4 @@
   function handleDetail(item: any) {
     emits("on-category-detail", item);
   }
-
-  function showInfo() {}
 </script>
