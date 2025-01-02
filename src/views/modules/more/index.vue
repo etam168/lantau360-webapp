@@ -31,11 +31,11 @@
 
   // Stores
   import { useUserStore } from "@/stores/user";
-  import { useFavoriteStore } from "@/stores/favorite-store";
+  import { UserLogon } from "@/composable/use-member";
 
   const $q = useQuasar();
   const userStore = useUserStore();
-  const favStore = useFavoriteStore();
+  const userLogon = UserLogon();
   const { eventBus } = useUtilities();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
@@ -196,7 +196,7 @@
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
-        favStore.syncRemoteFromLocal();
+        userLogon.localDataNotification();
         next();
         break;
       }

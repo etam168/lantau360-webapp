@@ -49,11 +49,6 @@
         next(false);
         break;
       }
-      case _to.name === "favourite" && !userStore.isUserLogon(): {
-        favStore.syncRemoteFromLocal();
-        next();
-        break;
-      }
       default: {
         next();
         break;

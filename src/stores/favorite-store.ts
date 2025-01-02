@@ -138,9 +138,7 @@ export const useFavoriteStore = defineStore(
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        const favoriteData = await fetchData(
-          `${ENTITY_URL.FAVOURITE_DATA}/ByMemberId/${userStore.userId}`
-        );
+        const favoriteData = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userId}`);
 
         favoriteSites.value = favoriteData.sites;
         favoriteBusinesses.value = favoriteData.businesses;

@@ -6,5 +6,7 @@ export default {
   refresh: "刷新",
   dismiss: "关闭",
   install: "安装",
-  appinstalled: "应用程序已安装"
+  appinstalled: "应用程序已安装",
+  enterOfflineMode: "您目前处于离线模式",
+  accessAllFeatures: "登录以使用所有功能"
 };

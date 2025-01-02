@@ -6,5 +6,7 @@ export default {
   refresh: "Refresh",
   dismiss: "Dismiss",
   install: "Install",
-  appinstalled: "App Installed"
+  appinstalled: "App Installed",
+  enterOfflineMode: "You are in Offline Mode",
+  accessAllFeatures: "Login to access all features."
 };
