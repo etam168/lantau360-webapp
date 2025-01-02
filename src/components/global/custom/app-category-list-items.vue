@@ -1,7 +1,37 @@
 <template>
   <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
 
-  <q-list v-if="categoryItems.length > 0" v-for="(item, index) in categoryItems" :key="index">
+  <q-scroll-area
+    v-if="$q.screen.height - usedHeight > THRESHOLD && categoryItems.length > 0"
+    :style="scrollAreaStyle"
+  >
+    <!-- <div>BANNER_HEIGHT:{{ BANNER_HEIGHT }}</div>
+    <div>TAB_HEIGHT:{{ TAB_HEIGHT }}</div>
+    <div>usedHeight:{{ usedHeight }}</div> -->
+    <q-list v-for="(item, index) in categoryItems" :key="index">
+      <q-item clickable @click="handleDetail(item)">
+        <q-item-section avatar>
+          <app-avatar-rounded :image-path="item.iconPath" />
+        </q-item-section>
+
+        <q-item-section>
+          <q-item-label>{{ line1(item) }}</q-item-label>
+          <q-item-label caption>{{ line2(item) }}</q-item-label>
+        </q-item-section>
+
+        <q-item-section side>
+          <div class="q-gutter-sm">
+            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
+            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+          </div>
+        </q-item-section>
+      </q-item>
+
+      <q-separator />
+    </q-list>
+  </q-scroll-area>
+
+  <q-list v-else v-for="(item, index) in categoryItems" :key="index">
     <q-item clickable @click="handleDetail(item)">
       <q-item-section avatar>
         <app-avatar-rounded :image-path="item.iconPath" />
@@ -23,7 +53,7 @@
     <q-separator />
   </q-list>
 
-  <app-no-record-message v-else :message="$t('errors.noRecord')" />
+  <app-no-record-message v-if="categoryItems.length <= 0" :message="$t('errors.noRecord')" />
 </template>
 
 <script setup lang="ts">
@@ -60,8 +90,26 @@
   const { locale } = useI18n({ useScope: "global" });
   const { getEntityName, translate } = useUtilities(locale.value);
 
+  const $q = useQuasar();
   const entityName = getEntityName(entityKey);
   const favoriteStore = useFavoriteStore();
+  const THRESHOLD = 150;
+
+  const TAB_HEIGHT = computed(() => {
+    return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
+  });
+
+  const BANNER_HEIGHT = computed(() => {
+    return directory?.meta?.template === 2 && hasTaxiFleet.value ? 78 : 0;
+  });
+
+  const usedHeight = computed(() => {
+    return TAB_HEIGHT.value + BANNER_HEIGHT.value;
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
 
   // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
   const hasTaxiFleet = computed(() => categoryItems.some(item => item.subtitle3 === "Taxi Fleet"));
