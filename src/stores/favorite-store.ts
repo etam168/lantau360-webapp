@@ -49,8 +49,8 @@ export const useFavoriteStore = defineStore(
     );
 
     const lastSyncCheckedAt = ref<Date>(new Date());
-    const serverBusinesses = ref<BusinessView[]>([]);
-    const serverSites = ref<SiteView[]>([]);
+    const serverBusinesses = ref<[]>([]);
+    const serverSites = ref<[]>([]);
 
     // Business favorites
     async function addBusinessFavorite(business: BusinessView) {
@@ -82,49 +82,82 @@ export const useFavoriteStore = defineStore(
       return favoriteBusinesses.value.some(fav => fav.businessId === business.businessId);
     }
 
-    async function isBusinessInSync(): Promise<boolean> {
+    async function isFavoritesInSync(): Promise<boolean> {
       try {
-        const businesses = await fetchData(
-          `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
-        );
+        const favourite = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userId}`);
 
-        serverBusinesses.value = businesses.map((s: any) => s.businessData);
+        // Update server data
+        const siteIds = favourite.sites;
+        const businessIds = favourite.businesses;
 
-        if (serverBusinesses.value.length !== favoriteBusinesses.value.length) {
+        // Check for mismatches in counts
+        if (
+          siteIds.length !== favoriteSites.value.length ||
+          businessIds.length !== favoriteBusinesses.value.length
+        ) {
           return false;
         }
 
-        const serverIds = new Set(serverBusinesses.value.map(business => business.businessId));
+        // Check if all sites are in sync
+        const sitesInSync = favoriteSites.value.every(site => siteIds.has(site.siteId));
+
+        // Check if all businesses are in sync
+        const businessesInSync = favoriteBusinesses.value.every(business =>
+          businessIds.has(business.businessId)
+        );
+
         lastSyncCheckedAt.value = new Date();
-        return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
+
+        // Return true only if both are in sync
+        return sitesInSync && businessesInSync;
       } catch (error) {
         throw error;
       }
     }
+
+    // async function isBusinessInSync(): Promise<boolean> {
+    //   try {
+    //     const businesses = await fetchData(
+    //       `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
+    //     );
+
+    //     serverBusinesses.value = businesses.map((s: any) => s.businessData);
+
+    //     if (serverBusinesses.value.length !== favoriteBusinesses.value.length) {
+    //       return false;
+    //     }
+
+    //     const serverIds = new Set(serverBusinesses.value.map(business => business.businessId));
+    //     lastSyncCheckedAt.value = new Date();
+    //     return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // }
 
     function isSiteFavorite(site: SiteView): boolean {
       return favoriteSites.value.some(fav => fav.siteId === site.siteId);
     }
 
-    async function isSiteInSync(): Promise<boolean> {
-      try {
-        const sites = await fetchData(
-          `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
-        );
+    // async function isSiteInSync(): Promise<boolean> {
+    //   try {
+    //     const sites = await fetchData(
+    //       `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
+    //     );
 
-        serverSites.value = sites.map((s: any) => s.siteData);
+    //     serverSites.value = sites.map((s: any) => s.siteData);
 
-        if (serverSites.value.length !== favoriteSites.value.length) {
-          return false;
-        }
+    //     if (serverSites.value.length !== favoriteSites.value.length) {
+    //       return false;
+    //     }
 
-        const serverIds = new Set(serverSites.value.map(site => site.siteId));
-        lastSyncCheckedAt.value = new Date();
-        return favoriteSites.value.every(site => serverIds.has(site.siteId));
-      } catch (error) {
-        throw error;
-      }
-    }
+    //     const serverIds = new Set(serverSites.value.map(site => site.siteId));
+    //     lastSyncCheckedAt.value = new Date();
+    //     return favoriteSites.value.every(site => serverIds.has(site.siteId));
+    //   } catch (error) {
+    //     throw error;
+    //   }
+    // }
 
     function getServerSites() {
       return serverSites.value;
@@ -167,7 +200,7 @@ export const useFavoriteStore = defineStore(
         // Construct the payload
         const payload = {
           sites: favoriteSites.value.map(s => s.siteId),
-          business: favoriteBusinesses.value.map(b => b.businessId)
+          businesses: favoriteBusinesses.value.map(b => b.businessId)
         };
 
         // Check if the user is logged in
@@ -199,9 +232,10 @@ export const useFavoriteStore = defineStore(
       lastSyncCheckedAt,
       getServerSites,
       isBusinessFavorite,
-      isBusinessInSync,
+      // isBusinessInSync,
+      isFavoritesInSync,
       isSiteFavorite,
-      isSiteInSync,
+      // isSiteInSync,
       syncLocalFromRemote,
       syncRemoteFromLocal,
       toggleBusinessFavorite,

@@ -109,10 +109,10 @@
         if (timeSinceLastSync > 30) {
           // if (timeSinceLastSync > 300000) {
           // 300,000 milliseconds = 5 minutes
-          const isSiteSync = await favStore.isSiteInSync();
-          const isBusinessSync = await favStore.isBusinessInSync();
-
-          if (!(isSiteSync && isBusinessSync)) {
+          const isFavouriteSync =await favStore.isFavoritesInSync();
+          // const isSiteSync = await favStore.isSiteInSync();
+          // const isBusinessSync = await favStore.isBusinessInSync();
+          if (!isFavouriteSync) {
             promptUserDataSynAlert();
           }
           // favStore.syncLocalFromRemote();
@@ -142,11 +142,11 @@
       // Reset dialog state when it is dismissed/closed
       isDialogOpen.value = false;
 
-      //if (selectedOption === "local") {
-      // syncLocalData();
-      ///} else {
-      favStore.syncLocalFromRemote();
-      //}
+      if (selectedOption === "local") {
+        favStore.syncRemoteFromLocal();
+      } else {
+        favStore.syncLocalFromRemote();
+      }
     });
   }
 
