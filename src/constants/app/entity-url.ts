@@ -57,7 +57,9 @@ export const ENTITY_URL = {
   FAVOURITE_SITE:'/FavouriteSite',
   FAVOURITE_BUSINESS: 'FavouriteBusiness',
   FAVOURITE_UPDATE:'/Member/UpdateFavourite',
+  FAVOURITE_DATA_IDS:'/Member/GetFavouriteData/Ids',
   FAVOURITE_DATA:'/Member/GetFavouriteData',
+
 
   EMAIL_CONFIRMATION: {
     SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",

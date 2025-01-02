@@ -50,11 +50,6 @@
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
-        userLogon.promptUserLogon();
-        next(false);
-        break;
-      }
-      case _to.name === "favourite" && userStore.isUserLogon(): {
         userLogon.localDataNotification();
         next();
         break;

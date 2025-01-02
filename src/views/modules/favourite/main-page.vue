@@ -107,19 +107,13 @@
         const timeSinceLastSync = new Date().getTime() - favStore.lastSyncCheckedAt.getTime();
 
         if (timeSinceLastSync > 30) {
-          // if (timeSinceLastSync > 300000) {
           // 300,000 milliseconds = 5 minutes
           const isFavouriteSync =await favStore.isFavoritesInSync();
-          // const isSiteSync = await favStore.isSiteInSync();
-          // const isBusinessSync = await favStore.isBusinessInSync();
           if (!isFavouriteSync) {
             promptUserDataSynAlert();
           }
-          // favStore.syncLocalFromRemote();
         }
-      } else {
-        showLocalDataUsageAlert();
-      }
+      } 
     } catch (err) {
       handleError(err);
     }
@@ -177,12 +171,6 @@
     });
   });
 
-  function showLocalDataUsageAlert() {
-    $q.notify({
-      type: "positive",
-      message: "You are seeing your local favourite data as you are not loggedin at the moment"
-    });
-  }
 
   /**
    * Fetch data as part of the setup

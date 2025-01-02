@@ -196,8 +196,8 @@
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
-        userLogon.promptUserLogon();
-        next(false);
+        userLogon.localDataNotification();
+        next();
         break;
       }
       default: {

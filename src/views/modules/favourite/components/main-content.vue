@@ -1,6 +1,6 @@
 <template>
   <q-banner :inline-actions="!isSmallScreen">
-    <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
+    <q-toolbar-title :class="titleClass">{{ title }}</q-toolbar-title>
 
     <template v-slot:action>
       <app-tab-select
@@ -45,7 +45,11 @@
   import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
 
-  defineProps<{
+  import { useUserStore } from "@/stores/user";
+  import i18n from "@/plugins/i18n/i18n";
+
+  // Props
+  const { i18nKey, tabItems, checkIns, siteItems, businessItems } = defineProps<{
     i18nKey: string;
     tabItems: TabItem[];
     checkIns: CheckIn[];
@@ -53,11 +57,18 @@
     businessItems: BusinessView[];
   }>();
 
+  const { t } = i18n.global;
   const { isSmallScreen } = useUtilities();
+  const userStore = useUserStore();
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 
   const tab = defineModel<string>("tab", { required: true });
+
+  const title = computed(() => {
+    const baseTitle = t(`${i18nKey}.title`);
+    return userStore.isUserLogon() ? baseTitle : `${baseTitle} (Offline)`;
+  });
 
   defineEmits<{
     (e: "onSearch", value: any): void;

@@ -20,8 +20,9 @@ async function syncFavorite(upsertUrl: string, id: number) {
       memberId: userStore.userId,
       entityId: id
     };
-
-    await api.create(`${upsertUrl}`, payload);
+    if (userStore.isUserLogon()) {
+      await api.create(`${upsertUrl}`, payload);
+    }
   } catch (error) {
     throw error;
   }
@@ -84,7 +85,7 @@ export const useFavoriteStore = defineStore(
 
     async function isFavoritesInSync(): Promise<boolean> {
       try {
-        const favourite = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userId}`);
+        const favourite = await fetchData(`${ENTITY_URL.FAVOURITE_DATA_IDS}/${userStore.userId}`);
 
         // Update server data
         const siteIds = favourite.sites;
@@ -115,49 +116,9 @@ export const useFavoriteStore = defineStore(
       }
     }
 
-    // async function isBusinessInSync(): Promise<boolean> {
-    //   try {
-    //     const businesses = await fetchData(
-    //       `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
-    //     );
-
-    //     serverBusinesses.value = businesses.map((s: any) => s.businessData);
-
-    //     if (serverBusinesses.value.length !== favoriteBusinesses.value.length) {
-    //       return false;
-    //     }
-
-    //     const serverIds = new Set(serverBusinesses.value.map(business => business.businessId));
-    //     lastSyncCheckedAt.value = new Date();
-    //     return favoriteBusinesses.value.every(business => serverIds.has(business.businessId));
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // }
-
     function isSiteFavorite(site: SiteView): boolean {
       return favoriteSites.value.some(fav => fav.siteId === site.siteId);
     }
-
-    // async function isSiteInSync(): Promise<boolean> {
-    //   try {
-    //     const sites = await fetchData(
-    //       `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
-    //     );
-
-    //     serverSites.value = sites.map((s: any) => s.siteData);
-
-    //     if (serverSites.value.length !== favoriteSites.value.length) {
-    //       return false;
-    //     }
-
-    //     const serverIds = new Set(serverSites.value.map(site => site.siteId));
-    //     lastSyncCheckedAt.value = new Date();
-    //     return favoriteSites.value.every(site => serverIds.has(site.siteId));
-    //   } catch (error) {
-    //     throw error;
-    //   }
-    // }
 
     function getServerSites() {
       return serverSites.value;
@@ -177,19 +138,12 @@ export const useFavoriteStore = defineStore(
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        const sites = await fetchData(
-          `${ENTITY_URL.FAVOURITE_SITE}/ByMemberId/${userStore.userId}`
+        const favoriteData = await fetchData(
+          `${ENTITY_URL.FAVOURITE_DATA}/ByMemberId/${userStore.userId}`
         );
 
-        // Temporary mapping to address Suleman's api error
-        favoriteSites.value = sites.map((s: any) => s.siteData);
-
-        const businesses = await fetchData(
-          `${ENTITY_URL.FAVOURITE_BUSINESS}/ByMemberId/${userStore.userId}`
-        );
-
-        // Temporary mapping to address Suleman's api error
-        favoriteBusinesses.value = businesses.map((s: any) => s.businessData);
+        favoriteSites.value = favoriteData.sites;
+        favoriteBusinesses.value = favoriteData.businesses;
       } catch (error) {
         throw error;
       }
