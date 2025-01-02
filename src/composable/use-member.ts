@@ -15,26 +15,13 @@ export function UserLogon() {
   function localDataNotification() {
     Notify.create({
       message: `
-      <p style="margin-bottom: 0px;">Currently you're using Local Version.</p>
+      <p style="margin-bottom: 0px;">Currently, You're Logout.</p>
+       <p style="margin-bottom: 0px;">Please Login First.</p>
     `,
       html: true,
-      color: "warning",
-      position: "center",
-      icon: fasTriangleExclamation,
-      actions: [
-        {
-          label: "Yes",
-          color: "white",
-          handler: async () => {}
-        },
-        {
-          label: "OK",
-          color: "white", // If the user cancels
-          handler: () => {
-            // Do nothing, simply dismiss the notification
-          }
-        }
-      ]
+      color: "secondary",
+      textColor: "primary",
+      position: "center"
     });
   }
 
