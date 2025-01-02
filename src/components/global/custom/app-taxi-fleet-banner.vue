@@ -1,7 +1,7 @@
 <template>
-  <q-card flat bordered class="q-ma-md">
+  <q-card flat bordered class="q-ma-md bg-grey-3">
     <q-item dense>
-      <q-item-section thumbnail class="bg-transparent q-pl-sm">
+      <q-item-section thumbnail class="q-pl-xs" style="width: 48px">
         <q-avatar>
           <q-icon :name="fasCircleInfo" color="primary" size="sm" />
         </q-avatar>

@@ -2,6 +2,7 @@
   <q-card flat v-if="category?.meta?.showContact">
     <q-separator />
     <q-card-section class="text-body1"> {{ $t(`${i18nKey}.contactInfo`) }}</q-card-section>
+
     <q-card-section
       class="q-pa-none"
       :class="{ 'row no-wrap': $q.screen.gt.xs, column: !$q.screen.gt.xs }"

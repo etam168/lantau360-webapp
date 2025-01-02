@@ -20,6 +20,7 @@ async function syncFavorite(upsertUrl: string, id: number) {
       memberId: userStore.userId,
       entityId: id
     };
+
     if (userStore.isUserLogon()) {
       await api.create(`${upsertUrl}`, payload);
     }
@@ -50,7 +51,6 @@ export const useFavoriteStore = defineStore(
     );
 
     const lastSyncCheckedAt = ref<Date>(new Date());
-    const serverBusinesses = ref<[]>([]);
     const serverSites = ref<[]>([]);
 
     // Business favorites
@@ -186,10 +186,8 @@ export const useFavoriteStore = defineStore(
       lastSyncCheckedAt,
       getServerSites,
       isBusinessFavorite,
-      // isBusinessInSync,
       isFavoritesInSync,
       isSiteFavorite,
-      // isSiteInSync,
       syncLocalFromRemote,
       syncRemoteFromLocal,
       toggleBusinessFavorite,

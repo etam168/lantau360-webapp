@@ -54,7 +54,7 @@ export function useMemberItemDialogService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/member-transaction-dialog/index.vue")
       ),
-      componentProps: { member: member, entityKey: entityKey,  dialogName: props.dialogName }
+      componentProps: { member: member, entityKey: entityKey, dialogName: props.dialogName }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
@@ -113,8 +113,8 @@ export function useMemberItemDialogService() {
   }
 
   return {
-    openContentDialog,
     fetchTransactionData,
+    openContentDialog,
     openMemberItemDialog,
     openTransactionItemDialog
   };

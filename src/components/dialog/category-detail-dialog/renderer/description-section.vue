@@ -7,6 +7,7 @@
       </q-item-label>
     </q-item>
   </q-scroll-area>
+
   <!-- Fallback for small content -->
   <div v-else>
     <q-item>
