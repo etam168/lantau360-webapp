@@ -45,9 +45,6 @@
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
-  import { useUserStore } from "@/stores/user";
-
-  import { UserLogon } from "@/composable/use-member";
 
   // Emit
   const emit = defineEmits(["check-in"]);
@@ -61,8 +58,6 @@
 
   // Composable function calls
   const favoriteStore = useFavoriteStore();
-  const userStore = useUserStore();
-  const userLogon = UserLogon();
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
@@ -73,9 +68,6 @@
 
   function onBtnFavClick() {
     switch (true) {
-      case !userStore.isUserLogon():
-        userLogon.promptUserLogon();
-        break;
       case entityKey === "SITE":
         favoriteStore.toggleSiteFavorite(category as SiteView, isFavourite.value);
         break;

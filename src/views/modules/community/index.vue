@@ -18,7 +18,7 @@
 
   // Stores
   import { useUserStore } from "@/stores/user";
-  import { UserLogon } from "@/composable/use-member";
+  import { useFavoriteStore } from "@/stores/favorite-store";
 
   //Components
   import MainPage from "./main-page.vue";
@@ -28,7 +28,7 @@
   const { eventBus } = useUtilities();
   const dialogStack = ref<string[]>([]);
   const userStore = useUserStore();
-  const userLogon = UserLogon();
+  const favStore = useFavoriteStore();
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {
@@ -50,7 +50,7 @@
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
-        userLogon.localDataNotification();
+        favStore.syncRemoteFromLocal();
         next();
         break;
       }

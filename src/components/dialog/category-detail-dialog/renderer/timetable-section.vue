@@ -42,8 +42,6 @@
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
-  import { useUserStore } from "@/stores/user";
-  import { UserLogon } from "@/composable/use-member";
 
   const { category, entityKey } = defineProps<{
     category: CategoryTypes;
@@ -55,8 +53,6 @@
   const { getImageURL, translate } = useUtilities(locale.value);
 
   const favoriteStore = useFavoriteStore();
-  const userStore = useUserStore();
-  const userLogon = UserLogon();
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
@@ -80,9 +76,6 @@
 
   function onBtnFavClick() {
     switch (true) {
-      case !userStore.isUserLogon():
-        userLogon.promptUserLogon();
-        break;
       case entityKey === "BUSINESS":
         favoriteStore.toggleBusinessFavorite(category as BusinessView, isFavourite.value);
         break;
