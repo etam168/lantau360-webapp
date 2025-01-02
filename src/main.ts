@@ -26,8 +26,11 @@ const updateSW = registerSW({
         {
           label: t("notification.refresh"),
           color: "white",
-          handler: () => {
-            updateSW(true); // Pass true to force update
+          handler: async () => {
+            // First update the service worker
+            await updateSW(true);
+            // Then reload the page
+            window.location.reload();
           }
         },
         {

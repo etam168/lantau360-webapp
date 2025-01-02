@@ -54,7 +54,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
   },
   workbox: {
     cleanupOutdatedCaches: true,
-    skipWaiting: true,
+    skipWaiting: false, // Prevents automatic updates
     clientsClaim: true,
     globPatterns: [
       "**/*.{js,css,html,ico,png,svg,json,woff2,webp}",
