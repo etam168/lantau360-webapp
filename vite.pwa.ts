@@ -87,6 +87,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       {
         // Map tiles with increased cache
         urlPattern: /^https:\/\/(?:[a-z]\.)?tile\.openstreetmap\.org\/\d+\/\d+\/\d+\.png$/,
+        method: "GET",
         handler: "CacheFirst",
         options: {
           cacheName: "map-cache",
@@ -152,6 +153,7 @@ export const pwaOptions: Partial<VitePWAOptions> = {
       {
         // Single API cache with optimized settings
         urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/.*$/,
+        method: "GET",
         handler: "StaleWhileRevalidate",
         options: {
           cacheName: "api-cache",
