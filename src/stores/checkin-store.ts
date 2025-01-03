@@ -1,5 +1,5 @@
 // Types
-import type { CheckIn } from "@/interfaces/models/entities/checkin";
+import type { CheckInView } from "@/interfaces/models/views/checkin-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
 
 // Store and Composables
@@ -14,7 +14,7 @@ const { api, fetchData } = useApi();
 const userStore = useUserStore();
 const MAX_CHECKINS = 100;
 
-async function syncCheckIn(upsertUrl: string, checkIn: CheckIn) {
+async function syncCheckIn(upsertUrl: string, checkIn: CheckInView) {
   try {
     if (!userStore.isUserLogon()) {
       return;
@@ -47,23 +47,42 @@ export const useCheckInStore = defineStore(
   "checkin",
   () => {
     // State
-    const checkInSites = ref<CheckIn[]>(
-      (LocalStorage.getItem(STORAGE_KEYS.CHECKIN.SITE) || []) as CheckIn[]
+    const checkInSites = ref<CheckInView[]>(
+      (LocalStorage.getItem(STORAGE_KEYS.SAVED.CHECK_IN_SITES) || []) as CheckInView[]
     );
     const lastSyncCheckedAt = ref<Date>(new Date());
-    const serverSites = ref<[]>([]);
 
     // Main check-in functions
-    async function addCheckIn(checkIn: CheckIn) {
+    async function addCheckIn(site: SiteView) {
       try {
-        if (!checkInSites.value.some(c => c.siteId === checkIn.siteId)) {
+        if (!checkInSites.value.some(c => c.siteId === site.siteId)) {
           if (checkInSites.value.length >= MAX_CHECKINS) {
             return;
           }
+          const newCheckIn = {
+            checkInId: 0,
+            memberId: userStore.userId,
+            siteId: site.siteId,
+            checkInfo: [
+              {
+                checkInAt: Date,
+                description: site.description
+              }
+            ],
+            createdAt: Date,
+            createdBy: userStore.userId,
+            modifiedAt: Date,
+            modifiedBy: userStore.userId,
+            meta: null,
+            siteData: site
+          } as unknown as CheckInView;
+          checkInSites.value.push(newCheckIn);
+        } else {
+          // checkInSites.value.push(site);
         }
-        checkInSites.value.push(checkIn);
+
         // to do
-        await syncCheckIn(ENTITY_URL.CHECKIN, checkIn);
+        // await syncCheckIn(ENTITY_URL.CHECKIN, checkIn);
       } catch (error) {
         throw error;
       }
@@ -92,7 +111,7 @@ export const useCheckInStore = defineStore(
       return checkInSites.value.some(checkin => checkin.siteId === site.siteId);
     }
 
-    async function removeCheckIn(checkIn: CheckIn) {
+    async function removeCheckIn(checkIn: CheckInView) {
       checkInSites.value = checkInSites.value.filter(checkin => checkin.siteId !== checkIn.siteId);
       //to do
       // await deleteCheckIn(`${ENTITY_URL.FAVOURITE_SITE}/BySiteId/${checkIn.siteId}`);
@@ -133,7 +152,7 @@ export const useCheckInStore = defineStore(
       isCheckInInSync,
       isCheckIn,
       syncLocalFromRemote,
-      syncRemoteFromLocal,
+      syncRemoteFromLocal
     };
   },
   {

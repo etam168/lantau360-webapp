@@ -29,7 +29,7 @@
       />
     </q-tab-panel>
     <q-tab-panel name="checkIn" class="q-pa-none">
-      <app-checkin-list-items :entityKey="'CHECKIN'" :checkinItems />
+      <app-checkin-list-items />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -45,6 +45,7 @@
   //Stores
   import { useUserStore } from "@/stores/user";
   import { useFavoriteStore } from "@/stores/favorite-store";
+  import { useCheckInStore } from "@/stores/checkin-store";
   import i18n from "@/plugins/i18n/i18n";
 
   // Constants
@@ -59,10 +60,11 @@
   const { isSmallScreen } = useUtilities();
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
+  const checkInStore = useCheckInStore();
   const { fetchData } = useApi();
   const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
-  const checkinItems = ref<CheckInView[]>([]);
+  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 

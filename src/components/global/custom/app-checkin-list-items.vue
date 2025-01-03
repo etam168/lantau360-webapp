@@ -5,7 +5,8 @@
         <q-item clickable @click="handleDetail(item)">
           <q-item-section avatar>
             <q-avatar size="64px" circle>
-              <q-img ratio="1" :src="computeIconPath(item)">
+              <!-- Accessing siteData for each item -->
+              <q-img ratio="1" :src="computeIconPath(item.siteData?.meta.site)">
                 <template v-slot:error>
                   <div class="absolute-full flex flex-center bg-negative text-white">
                     {{ $t("errors.cannotLoadImage") }}
@@ -16,13 +17,17 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>{{ item.siteName }}</q-item-label>
-            <q-item-label lines="2"
-              >{{
-                $t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, {
-                  date: dateFormatter(item.modifiedAt)
-                })
-              }}
+            <!-- Displaying siteData properties -->
+            <q-item-label>{{ item.siteData?.meta.site.siteName }}</q-item-label>
+
+            <q-item-label lines="2" v-if="item.siteData?.checkInfo?.length > 0">
+              <span v-for="(checkin, index) in item.siteData?.checkInfo" :key="index">
+                {{
+                  $t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, {
+                    date: dateFormatter(checkin.checkInAt)
+                  })
+                }}
+              </span>
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -33,28 +38,30 @@
 
 <script setup lang="ts">
   // Interface files
-  import { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+
+  // Stores
+  import { useCheckInStore } from "@/stores/checkin-store";
 
   // .ts files
-  import { BLOB_URL, EntityURLKey } from "@/constants";
+  import { BLOB_URL } from "@/constants";
 
   const emits = defineEmits(["on-member-detail"]);
 
-  // Props
-  const { checkinItems, entityKey } = defineProps<{
-    checkinItems: CategoryTypes[];
-    entityKey: EntityURLKey;
-  }>();
-
   const { locale } = useI18n({ useScope: "global" });
+  const checkInStore = useCheckInStore();
+  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
   const { dateFormatter } = useUtilities(locale.value);
 
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
-  const computeIconPath = (item: any) => {
-    return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";
+  const computeIconPath = (siteData: any) => {
+    return siteData.iconPath
+      ? `${BLOB_URL}/${siteData.iconPath}`
+      : "./img/icons/no_image_available.jpeg";
   };
+
   function handleDetail(item: any) {
     emits("on-member-detail", item);
   }

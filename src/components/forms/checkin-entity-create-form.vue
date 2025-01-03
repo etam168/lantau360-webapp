@@ -114,9 +114,10 @@ Supports validation, custom form structures, and integrates with a CRUD service.
         "memberId" in newEntity && (newEntity.memberId = userStore.userId);
         // move to prepareEntityRecord -- to do
         newEntity.meta = {
-          site  
-        }
-        await checkInStore.addCheckIn(newEntity as CheckIn);
+          site
+        };
+        await checkInStore.addCheckIn(newEntity as SiteView);
+
         emits("close-dialog");
       } catch (error) {
         console.error("Error creating entity record:", error);

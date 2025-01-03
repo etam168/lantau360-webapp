@@ -4,10 +4,11 @@ export const STORAGE_KEYS = {
   SAVED: {
     BUSINESS: "favoriteBusinesses",
     SITE: "favoriteSites",
-    POSTING: "postingFavourites"
+    POSTING: "postingFavourites",
+    CHECK_IN_SITES: "checkInSites"
   },
-  
+
   CHECKIN: {
-    SITE: "checkinSites",
+    SITE: "checkinSites"
   }
 };

@@ -20,7 +20,11 @@ export function useCheckInDataService() {
 
   function openCheckInDialog(category: CategoryTypes) {
     const isDialogOpen = ref(false);
-    const props = { associatedEntityId: (category as SiteView).siteId, entityKey: "CHECKIN", entityData: category };
+    const props = {
+      associatedEntityId: (category as SiteView).siteId,
+      entityKey: "CHECKIN",
+      entityData: category
+    };
     handleOpenCheckInDialog(props, isDialogOpen, "CHECKIN");
   }
 
@@ -74,9 +78,6 @@ export function useCheckInDataService() {
   async function requestCheckIn(category: CategoryTypes) {
     try {
       switch (true) {
-        case userStore.isUserLogon() == false:
-          userLogon.promptUserLogon();
-          return;
         // case isOutOfRange(category):
         //   notify("You must be under 100 meters of location for check-in", "primary");
         //   return;
@@ -85,7 +86,7 @@ export function useCheckInDataService() {
         //     `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
         //     "primary"
         //   );
-          // return;
+        // return;
         default:
           openCheckInDialog(category);
           break;

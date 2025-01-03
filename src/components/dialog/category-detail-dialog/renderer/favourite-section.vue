@@ -15,23 +15,6 @@
       @click="onBtnFavClick"
     />
   </q-toolbar>
-
-  <!-- <q-card flat>
-    <q-card-actions class="justify-end q-pt-md q-px-md q-pb-none">
-      <app-button-rounded
-        v-if="hasCheckIn"
-        color="primary"
-        @click="onBtnCheckInClick"
-        :icon="fasMapLocationDot"
-      />
-
-      <app-button-rounded
-        :text-color="isFavourite ? 'red' : 'white'"
-        :icon="fasHeart"
-        @click="onBtnFavClick"
-      />
-    </q-card-actions>
-  </q-card> -->
 </template>
 
 <script setup lang="ts">
@@ -56,15 +39,21 @@
     hasCheckIn?: boolean;
   }>();
 
+  const { handleOpenCheckInDialog } = useEntityDataHandlingService();
+
   // Composable function calls
   const favoriteStore = useFavoriteStore();
-
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
 
   function onBtnCheckInClick() {
-    emit("check-in");
+    const isDialogOpen = ref(false);
+    const props = {
+      entityKey: "CHECKIN",
+      entityData: category
+    };
+    handleOpenCheckInDialog(props, isDialogOpen, "CHECKIN");
   }
 
   function onBtnFavClick() {
