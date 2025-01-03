@@ -11,7 +11,7 @@ import { UserLogon } from "@/composable/use-member";
 export function useCheckInDataService() {
   const userLogon = UserLogon();
   const userStore = useUserStore();
-  const { handleOpenDialog } = useEntityDataHandlingService();
+  const { handleOpenCheckInDialog } = useEntityDataHandlingService();
   const { fetchData } = useApi();
   const { notify } = useUtilities();
   const distanceToDestination = ref(0);
@@ -20,8 +20,8 @@ export function useCheckInDataService() {
 
   function openCheckInDialog(category: CategoryTypes) {
     const isDialogOpen = ref(false);
-    const props = { associatedEntityId: (category as SiteView).siteId, entityKey: "CHECKIN" };
-    handleOpenDialog(props, isDialogOpen, "CHECKIN");
+    const props = { associatedEntityId: (category as SiteView).siteId, entityKey: "CHECKIN", entityData: category };
+    handleOpenCheckInDialog(props, isDialogOpen, "CHECKIN");
   }
 
   function isOutOfRange(category: CategoryTypes) {
@@ -77,15 +77,15 @@ export function useCheckInDataService() {
         case userStore.isUserLogon() == false:
           userLogon.promptUserLogon();
           return;
-        case isOutOfRange(category):
-          notify("You must be under 100 meters of location for check-in", "primary");
-          return;
-        case await hasLast24HrsCheckIn(category):
-          notify(
-            `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
-            "primary"
-          );
-          return;
+        // case isOutOfRange(category):
+        //   notify("You must be under 100 meters of location for check-in", "primary");
+        //   return;
+        // case await hasLast24HrsCheckIn(category):
+        //   notify(
+        //     `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
+        //     "primary"
+        //   );
+          // return;
         default:
           openCheckInDialog(category);
           break;

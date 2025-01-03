@@ -59,6 +59,7 @@
   // Composable function calls
   const favoriteStore = useFavoriteStore();
 
+
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
 

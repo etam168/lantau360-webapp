@@ -44,6 +44,8 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 <script setup lang="ts" generic="EntityT extends EntityType">
   // Interface files
   import type { EntityType } from "@/interfaces/types/entity-type";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Third party imports
   import { object } from "yup";
@@ -53,34 +55,28 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // Component imports
   import EntityFormContent from "@/components/forms/entity-form-content.vue";
 
-  // Composable imports
-  import { useCrudService } from "@/composable/services/use-crud-service";
-
   // Constants
   import { EntityURLKey } from "@/constants";
 
   // Store
   import { useFormMappersStore } from "@/stores/form-mappers-store";
+  import { useCheckInStore } from "@/stores/checkin-store";
 
   // Emits definition
-  const emits = defineEmits([
-    "close-dialog",
-    "after-entity-created",
-    "update-entity-features"
-    // "update-avatar-image",
-  ]);
+  const emits = defineEmits(["close-dialog"]);
 
   // Props
-  const { entityKey, entityOptions, associatedEntityId } = defineProps<{
+  const { entityKey, entityOptions, site } = defineProps<{
     entityKey: EntityURLKey;
     entityOptions?: Record<string, any>;
-    associatedEntityId?: any;
+    site?: SiteView;
   }>();
 
   // Composables and store instantiation
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, getEntityName, notify } = useUtilities();
+  const { getEntityName, notify } = useUtilities();
   const userStore = useUserStore();
+  const checkInStore = useCheckInStore();
 
   // Reactive references
   const formMappersStore = useFormMappersStore();
@@ -99,9 +95,6 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // Validation Schema
   const schema = object({});
 
-  // Services
-  const crudService = useCrudService<EntityT>(entityKey);
-
   // Form submission handler
   async function handleSubmit(values: any) {
     const { validate } = form.value;
@@ -111,7 +104,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
       try {
         values = {
           ...values,
-          [entityKey === "CHECKIN" ? "siteId" : "directoryId"]: associatedEntityId || 0
+          siteId: site?.siteId || 0
         };
 
         // Create the entity record
@@ -119,8 +112,12 @@ Supports validation, custom form structures, and integrates with a CRUD service.
         newEntity.createdBy = userStore.userId;
         // Only set memberId if it exists, without direct assignment
         "memberId" in newEntity && (newEntity.memberId = userStore.userId);
-
-       
+        // move to prepareEntityRecord -- to do
+        newEntity.meta = {
+          site  
+        }
+        await checkInStore.addCheckIn(newEntity as CheckIn);
+        emits("close-dialog");
       } catch (error) {
         console.error("Error creating entity record:", error);
         notify(t(`${entityName}.message.createError`), "negative");

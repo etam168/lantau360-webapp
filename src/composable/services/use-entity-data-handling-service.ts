@@ -53,7 +53,38 @@ export function useEntityDataHandlingService() {
     }
   }
 
+  function handleOpenCheckInDialog(
+    props: Record<string, any>,
+    isDialogOpen: Ref<Boolean>,
+    entityKey?: EntityURLKey,
+    mode?: string
+  ) {
+    if (isDialogOpen.value) {
+      // Prevent opening another dialog if one is already open
+      return;
+    }
+
+    // Set the dialog state to open
+    isDialogOpen.value = true;
+
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/checkin-input-dialog/index.vue")
+      ),
+      componentProps: {
+        entityKey: entityKey,
+        associatedEntityId: props.associatedEntityId,
+        dialogName: props.dialogName,
+        site: props.entityData
+      }
+    }).onDismiss(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen.value = false;
+    });
+  }
+
   return {
-    handleOpenDialog
+    handleOpenDialog,
+    handleOpenCheckInDialog
   };
 }

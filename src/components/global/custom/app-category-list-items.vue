@@ -70,6 +70,7 @@
   import { EntityURLKey } from "@/constants";
 
   // Stores
+  import { useCheckInStore } from "@/stores/checkin-store";
   import { useFavoriteStore } from "@/stores/favorite-store";
 
   // Emits
@@ -78,7 +79,7 @@
   // Props
   const {
     categoryItems,
-    checkIns = [],
+    checkIns = [], // to do remove
     entityKey,
     directory
   } = defineProps<{
@@ -93,6 +94,7 @@
 
   const $q = useQuasar();
   const entityName = getEntityName(entityKey);
+  const checkInStore = useCheckInStore();
   const favoriteStore = useFavoriteStore();
   const THRESHOLD = 150;
 
@@ -137,9 +139,14 @@
     return translate(item.title, item.meta, "title");
   }
 
-  const isCheckedIn = (item: CategoryTypes): boolean =>
-    entityKey === "SITE" &&
-    checkIns.some((checkInItem: CheckIn) => checkInItem.siteId === (item as SiteView).siteId);
+  const isCheckedIn = (item: CategoryTypes): boolean => {
+    switch (entityKey) {
+      case "SITE":
+        return checkInStore.isCheckIn(item as SiteView);
+      default:
+        return false;
+    }
+  };
 
   const isFavoriteItem = (item: CategoryTypes): boolean => {
     switch (entityKey) {

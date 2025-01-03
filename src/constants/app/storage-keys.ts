@@ -5,5 +5,9 @@ export const STORAGE_KEYS = {
     BUSINESS: "favoriteBusinesses",
     SITE: "favoriteSites",
     POSTING: "postingFavourites"
+  },
+  
+  CHECKIN: {
+    SITE: "checkinSites",
   }
 };
