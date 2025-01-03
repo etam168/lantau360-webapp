@@ -55,9 +55,15 @@ export const useCheckInStore = defineStore(
     // Main check-in functions
     async function addCheckIn(site: SiteView) {
       try {
+        // Extract description from checkInfo[0]
+        const description =
+          site.checkInfo && site.checkInfo.length > 0
+            ? site.checkInfo[0].description
+            : "No description available";
+
         const newCheckInEntry = {
           checkInAt: new Date().toISOString(),
-          description: site.description
+          description: description // Use description from checkInfo here
         };
 
         const index = checkInSites.value.findIndex(c => c.siteId === site.siteId);

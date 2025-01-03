@@ -128,13 +128,17 @@ export const useFavoriteStore = defineStore(
       favoriteBusinesses.value = favoriteBusinesses.value.filter(
         fav => fav.businessId !== business.businessId
       );
-      await deleteFavorite(`${ENTITY_URL.FAVOURITE_BUSINESS}/RemoveFavourite/${business.businessId}/${userStore.userId}`);
+      await deleteFavorite(
+        `${ENTITY_URL.FAVOURITE_BUSINESS}/RemoveFavourite/${business.businessId}/${userStore.userId}`
+      );
     }
 
     async function removeSiteFavorite(site: SiteView) {
       favoriteSites.value = favoriteSites.value.filter(fav => fav.siteId !== site.siteId);
-debugger;
-      await deleteFavorite(`${ENTITY_URL.FAVOURITE_SITE}/RemoveFavourite/${site.siteId}/${userStore.userId}`);
+
+      await deleteFavorite(
+        `${ENTITY_URL.FAVOURITE_SITE}/RemoveFavourite/${site.siteId}/${userStore.userId}`
+      );
     }
 
     async function syncLocalFromRemote(): Promise<void> {

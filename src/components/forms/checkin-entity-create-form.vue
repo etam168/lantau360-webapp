@@ -44,7 +44,6 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 <script setup lang="ts" generic="EntityT extends EntityType">
   // Interface files
   import type { EntityType } from "@/interfaces/types/entity-type";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Third party imports
@@ -116,6 +115,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
         newEntity.meta = {
           site
         };
+
         await checkInStore.addCheckIn(newEntity as SiteView);
 
         emits("close-dialog");

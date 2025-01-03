@@ -88,7 +88,7 @@
 
   // Rows data - accessing checkInfo from the item prop
   const getCheckinRows = (item: any) => {
-    return item.siteData?.checkInfo || []; // Ensure checkInfo exists
+    return item.checkInfo || [];
   };
 
   // Handle scroll area height
