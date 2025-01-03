@@ -11,6 +11,6 @@ export default {
   tabItem: {
     location: "Home",
     business: "Business",
-    coupon: "Coupon"
+    checkIn: "Check-In"
   }
 };

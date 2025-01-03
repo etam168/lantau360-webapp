@@ -58,7 +58,6 @@
 
   const MORE_ITEMS: Record<string, Partial<RenderItem>> = {
     account: { type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.mainMenu.account` },
-    checkIn: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.mainMenu.myCheckin` },
     language: { type: "language", icon: ICONS.SETTING, title: `${i18nKey}.mainMenu.language` },
     logon: { type: "logon", title: `${i18nKey}.mainMenu.logon}` },
     logoff: { type: "logoff", title: `${i18nKey}.mainMenu.logoff}` },
@@ -77,7 +76,7 @@
 
   const renderItems = computed(() => {
     const items = userStore.isUserLogon()
-      ? ["logoff", "language", "terms", "privacy", "profile", "account", "checkIn"]
+      ? ["logoff", "language", "terms", "privacy", "profile", "account"]
       : ["logon", "language", "privacy", "terms"];
 
     return items.map(key => getItem(key)) as RenderItem[];
@@ -96,9 +95,6 @@
         break;
       case "account":
         handleTransactionDialog("ACCOUNT", itemName);
-        break;
-      case "checkIn":
-        handleMemberDialog("CHECKIN", itemName);
         break;
       default:
         break;
@@ -124,18 +120,6 @@
 
     if (!isDialogOpen.value) {
       openTransactionItemDialog(props, isDialogOpen, member, entityKey);
-      resetItemLoading(itemName);
-    }
-  }
-
-  function handleMemberDialog(entityKey: EntityURLKey, itemName: string) {
-    isLoading.value = true;
-    member.memberId = userStore.userId;
-    const dialogName = "checkinDetail";
-    const props = { dialogName: dialogName };
-    eventBus("DialogStatus").emit(true, dialogName);
-    if (!isDialogOpen.value) {
-      openMemberItemDialog(props, isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }

@@ -10,29 +10,16 @@
       class="q-mb-none"
       :style="scrollAreaStyle"
     >
-      <main-content
-        :i18n-key="i18nKey"
-        :site-items="siteItems"
-        :business-items="businessItems"
-        @on-category-detail="onCategoryDetail"
-      />
+      <main-content :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
     </q-scroll-area>
 
-    <main-content
-      v-else
-      :i18n-key="i18nKey"
-      :site-items="siteItems"
-      :business-items="businessItems"
-      @on-category-detail="onCategoryDetail"
-    />
+    <main-content v-else :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
   </q-page>
 </template>
 
 <script setup lang="ts">
   // Interface files
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-  import type { BusinessView } from "@/interfaces/models/views/business-view";
-  import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Custom Components
   const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
@@ -59,8 +46,6 @@
 
   const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
-  const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
-  const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
   const error = ref<string | null>(null);
 
   const i18nKey = getEntityName(entityKey);

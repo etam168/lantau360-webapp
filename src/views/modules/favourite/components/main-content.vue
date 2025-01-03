@@ -29,8 +29,8 @@
       />
     </q-tab-panel>
 
-    <q-tab-panel name="checkIn">
-      <div>{{ $t(`${i18nKey}.tabItems.checkIn`) }}</div>
+    <q-tab-panel name="checkIn" class="q-pa-none">
+      <div>{{ $t(`${i18nKey}.tabItem.checkIn`) }}</div>
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -42,19 +42,22 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
 
+  //Stores
   import { useUserStore } from "@/stores/user";
+  import { useFavoriteStore } from "@/stores/favorite-store";
   import i18n from "@/plugins/i18n/i18n";
 
   // Props
-  const { i18nKey, siteItems, businessItems } = defineProps<{
+  const { i18nKey } = defineProps<{
     i18nKey: string;
-    siteItems: SiteView[];
-    businessItems: BusinessView[];
   }>();
 
   const { t } = i18n.global;
   const { isSmallScreen } = useUtilities();
   const userStore = useUserStore();
+  const favStore = useFavoriteStore();
+  const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
+  const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 

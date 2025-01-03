@@ -16,10 +16,6 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
-  // Stores
-  import { useUserStore } from "@/stores/user";
-  import { useFavoriteStore } from "@/stores/favorite-store";
-
   //Components
   import MainPage from "./main-page.vue";
 
@@ -27,8 +23,6 @@
 
   const { eventBus } = useUtilities();
   const dialogStack = ref<string[]>([]);
-  const userStore = useUserStore();
-  const favStore = useFavoriteStore();
 
   onMounted(() => {
     eventBus("DialogStatus").on((status: any, emitter: string) => {

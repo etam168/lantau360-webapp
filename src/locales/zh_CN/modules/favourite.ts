@@ -11,6 +11,6 @@ export default {
   tabItem: {
     location: "首頁",
     business: "商業",
-    coupon: "優惠券"
+    checkIn: "签到"
   }
 };
