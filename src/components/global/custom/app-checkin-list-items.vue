@@ -1,5 +1,5 @@
 <template>
-  <q-card v-for="(item, index) in memberItems" :key="index" class="q-ma-md">
+  <q-card v-for="(item, index) in checkinItems" :key="index" class="q-ma-md">
     <q-card-section class="q-pa-none">
       <q-list>
         <q-item clickable @click="handleDetail(item)">
@@ -41,31 +41,16 @@
   const emits = defineEmits(["on-member-detail"]);
 
   // Props
-  const { memberItems, entityKey } = defineProps<{
-    memberItems: CategoryTypes[];
+  const { checkinItems, entityKey } = defineProps<{
+    checkinItems: CategoryTypes[];
     entityKey: EntityURLKey;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
 
-  const { getEntityName, translate, dateFormatter } = useUtilities(locale.value);
-  const entityName = getEntityName(entityKey);
+  const { dateFormatter } = useUtilities(locale.value);
+
   const i18nKeyMoreDialog = "more.mainMenuDialog";
-
-  const items = computed(() => {
-    switch (entityKey) {
-      case "POSTING":
-        return ["posting"];
-      default:
-        return ["N/A"];
-    }
-  });
-
-  function line1(item: CategoryTypes) {
-    const name = `${entityName}Name` as keyof CategoryTypes;
-
-    return translate(item[name] as string, item.meta, name);
-  }
 
   const computeIconPath = (item: any) => {
     return item.iconPath ? `${BLOB_URL}/${item.iconPath}` : "./img/icons/no_image_available.jpeg";

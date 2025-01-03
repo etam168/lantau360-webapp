@@ -65,30 +65,6 @@ export function useMemberItemDialogService() {
         isDialogOpen.value = false;
       });
   }
-  async function openMemberItemDialog(
-    props: Record<string, any>,
-    isDialogOpen: Ref<Boolean>,
-    member: Member,
-    entityKey: EntityURLKey
-  ) {
-    if (isDialogOpen.value) return;
-
-    isDialogOpen.value = true;
-    Dialog.create({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/member-items-dialog/index.vue")
-      ),
-      componentProps: { member: member, entityKey: entityKey, dialogName: props.dialogName }
-    })
-      .onCancel(() => {
-        // Reset dialog state when it is dismissed/closed
-        isDialogOpen.value = false;
-      })
-      .onOk(() => {
-        // Reset dialog state when it is dismissed/closed
-        isDialogOpen.value = false;
-      });
-  }
 
   async function openContentDialog(
     isLoading: Ref<Boolean>,
@@ -115,7 +91,6 @@ export function useMemberItemDialogService() {
   return {
     fetchTransactionData,
     openContentDialog,
-    openMemberItemDialog,
     openTransactionItemDialog
   };
 }

@@ -23,6 +23,7 @@ declare module 'vue' {
     AppCarouselSection: typeof import('./components/global/widgets/app-carousel-section.vue')['default']
     AppCategoryListItems: typeof import('./components/global/custom/app-category-list-items.vue')['default']
     'AppCategoryListItems copy': typeof import('./components/global/custom/app-category-list-items copy.vue')['default']
+    AppCheckinListItems: typeof import('./components/global/custom/app-checkin-list-items.vue')['default']
     AppCommunityListItems: typeof import('./components/global/custom/app-community-list-items.vue')['default']
     AppCreatePostItem: typeof import('./components/global/custom/app-create-post-item.vue')['default']
     AppDialogTitle: typeof import('./components/global/custom/app-dialog-title.vue')['default']

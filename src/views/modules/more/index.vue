@@ -39,12 +39,8 @@
   const { eventBus } = useUtilities();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
-  const {
-    openContentDialog,
-    openMemberItemDialog,
-    fetchTransactionData,
-    openTransactionItemDialog
-  } = useMemberItemDialogService();
+  const { openContentDialog, fetchTransactionData, openTransactionItemDialog } =
+    useMemberItemDialogService();
 
   const i18nKey = "more";
   const isDialogOpen = ref(false);

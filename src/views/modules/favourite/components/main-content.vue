@@ -28,9 +28,8 @@
         @on-category-detail="$emit('on-category-detail', $event)"
       />
     </q-tab-panel>
-
     <q-tab-panel name="checkIn" class="q-pa-none">
-      <div>{{ $t(`${i18nKey}.tabItem.checkIn`) }}</div>
+      <app-checkin-list-items :entityKey="'CHECKIN'" :checkinItems />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -38,6 +37,7 @@
 <script setup lang="ts">
   // Interface files
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
@@ -46,6 +46,9 @@
   import { useUserStore } from "@/stores/user";
   import { useFavoriteStore } from "@/stores/favorite-store";
   import i18n from "@/plugins/i18n/i18n";
+
+  // Constants
+  import { ENTITY_URL } from "@/constants";
 
   // Props
   const { i18nKey } = defineProps<{
@@ -56,8 +59,10 @@
   const { isSmallScreen } = useUtilities();
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
+  const { fetchData } = useApi();
   const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
+  const checkinItems = ref<CheckInView[]>([]);
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 
@@ -81,4 +86,16 @@
     (e: "onSearch", value: any): void;
     (e: "on-category-detail", value: BusinessDirectory): void;
   }>();
+
+  const fetchAllData = async () => {
+    try {
+      checkinItems.value = await fetchData(`${ENTITY_URL.CHECKIN_BY_MEMBER}/${userStore.userId}`);
+    } catch (error) {
+      console.error("Error fetching data:", error);
+    }
+  };
+
+  onMounted(() => {
+    fetchAllData();
+  });
 </script>
