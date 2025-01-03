@@ -5,24 +5,23 @@
 
     <q-separator size="4px" color="primary" />
 
-    <q-scroll-area
-      v-if="$q.screen.height - usedHeight > THRESHOLD"
-      class="q-mb-none"
-      :style="scrollAreaStyle"
-    >
+    <!-- <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
       <main-content
         :i18n-key="i18nKey"
         :site-items="siteItems"
         :business-items="businessItems"
+        :check-ins="checkIns"
+        @update:current-tab="setTab"
         @on-category-detail="onCategoryDetail"
       />
-    </q-scroll-area>
+    </q-scroll-area> -->
 
     <main-content
-      v-else
       :i18n-key="i18nKey"
       :site-items="siteItems"
       :business-items="businessItems"
+      :check-ins="checkIns"
+      @update:current-tab="setTab"
       @on-category-detail="onCategoryDetail"
     />
   </q-page>
@@ -32,6 +31,7 @@
   // Interface files
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
+  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Custom Components
@@ -63,18 +63,23 @@
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
   const error = ref<string | null>(null);
 
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("location");
   const i18nKey = getEntityName(entityKey);
+
   const isDialogOpen = ref(false);
 
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
     const carouselHeight = (width * 9) / 16; // Height for the carousel
-    return carouselHeight + 40;
+    return carouselHeight + 105;
   });
 
   const scrollAreaStyle = computed(() => {
     return { height: `calc(100vh - ${usedHeight.value}px)` };
   });
+
+  const checkIns: Ref<CheckIn[]> = ref([]);
 
   async function fetchAllData() {
     try {

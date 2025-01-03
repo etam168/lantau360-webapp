@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import router, { asyncRoutes } from "@/router";
 import { RouteRecordRaw } from "vue-router";
+import router, { asyncRoutes } from "@/router";
 
 /**
  * Through meta.role determines whether the current user rights match

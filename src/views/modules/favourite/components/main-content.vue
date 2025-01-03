@@ -6,7 +6,7 @@
       <app-tab-select
         :tab-items="tabItems"
         :current-tab="tab"
-        @update:currentTab="tab = $event"
+        @update:currentTab="setTab"
         :class="$q.screen.lt.sm ? 'justify-center' : ''"
       />
     </template>
@@ -16,7 +16,6 @@
     <q-tab-panel name="location" class="q-pa-none">
       <app-category-list-items
         :categoryItems="siteItems"
-        :checkIns
         :entityKey="'SITE'"
         @on-category-detail="$emit('on-category-detail', $event)"
       />
@@ -25,14 +24,13 @@
     <q-tab-panel name="business" class="q-pa-none">
       <app-category-list-items
         :categoryItems="businessItems"
-        :checkIns
         :entityKey="'BUSINESS'"
         @on-category-detail="$emit('on-category-detail', $event)"
       />
     </q-tab-panel>
 
-    <q-tab-panel name="coupon">
-      <div>{{ $t(`${i18nKey}.tabItems.coupon`) }}</div>
+    <q-tab-panel name="checkIn">
+      <div>{{ $t(`${i18nKey}.tabItems.checkIn`) }}</div>
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -42,17 +40,14 @@
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { SiteView } from "@/interfaces/models/views/site-view";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
 
   import { useUserStore } from "@/stores/user";
   import i18n from "@/plugins/i18n/i18n";
 
   // Props
-  const { i18nKey, tabItems, checkIns, siteItems, businessItems } = defineProps<{
+  const { i18nKey, siteItems, businessItems } = defineProps<{
     i18nKey: string;
-    tabItems: TabItem[];
-    checkIns: CheckIn[];
     siteItems: SiteView[];
     businessItems: BusinessView[];
   }>();
@@ -63,7 +58,16 @@
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 
-  const tab = defineModel<string>("tab", { required: true });
+  // const tab = defineModel<string>("tab", { required: true });
+  const tab = ref("location");
+
+  const tabItems = ref<TabItem[]>([
+    { name: "location", label: t(`${i18nKey}.tabItem.location`) },
+    { name: "business", label: t(`${i18nKey}.tabItem.business`) },
+    { name: "checkIn", label: t(`${i18nKey}.tabItem.checkIn`) }
+  ]);
+
+  const setTab = (val: string) => (tab.value = val);
 
   const title = computed(() => {
     const baseTitle = t(`${i18nKey}.title`);
