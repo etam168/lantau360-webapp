@@ -2,7 +2,7 @@ export interface CheckIn {
   checkInId: number;
   memberId: number;
   siteId: number;
-  checkInfo: Record<string, any>;
+  checkInfo: any[]; // Just a JSON array;
   createdAt: Date;
   createdBy: number;
   modifiedAt: Date;

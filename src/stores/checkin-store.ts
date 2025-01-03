@@ -55,41 +55,46 @@ export const useCheckInStore = defineStore(
     // Main check-in functions
     async function addCheckIn(site: SiteView) {
       try {
-        // Find the existing check-in for the site
-        const existingCheckIn = checkInSites.value.find(c => c.siteId === site.siteId);
+        const newCheckInEntry = {
+          checkInAt: new Date().toISOString(),
+          description: site.description
+        };
 
-        if (!existingCheckIn && checkInSites.value.length < MAX_CHECKINS) {
-          // If this is a new site and we haven't exceeded the MAX_CHECKINS limit
+        const index = checkInSites.value.findIndex(c => c.siteId === site.siteId);
+
+        if (index === -1) {
+          // New check-in
           const newCheckIn: CheckInView = {
-            checkInId: 0, // Assuming new check-in doesn't have an ID yet
+            checkInId: 0,
             memberId: userStore.userId,
             siteId: site.siteId,
-            checkInfo: [
-              {
-                checkInAt: new Date().toISOString(), // Add current timestamp as ISO string
-                description: site.description
-              }
-            ],
+            checkInfo: [newCheckInEntry],
             createdAt: new Date(),
             createdBy: userStore.userId,
             modifiedAt: new Date(),
             modifiedBy: userStore.userId,
-            meta: null,
+            meta: {},
             siteData: site
           };
 
-          // Push new check-in into checkInSites array
+          // Add new check-in to array (reactive)
           checkInSites.value.push(newCheckIn);
-        } else if (existingCheckIn) {
-          // If the site has been checked in before, just add a new check-in to checkInfo
-          existingCheckIn.checkInfo.push({
-            checkInAt: new Date().toISOString(), // Add current timestamp as ISO string
-            description: site.description
-          });
+        } else {
+          // Update existing check-in (reactive)
+          const existingCheckIn = checkInSites.value[index];
+          const updatedCheckIn = {
+            ...existingCheckIn,
+            checkInfo: [...existingCheckIn.checkInfo, newCheckInEntry],
+            modifiedAt: new Date(),
+            modifiedBy: userStore.userId
+          };
+
+          // Update the existing check-in (reactive)
+          checkInSites.value[index] = updatedCheckIn;
         }
 
-        // Optionally, sync with the backend
-        // await syncCheckIn(ENTITY_URL.CHECKIN, existingCheckIn || newCheckIn);
+        // Optionally, sync with backend
+        // await syncCheckIn(ENTITY_URL.CHECKIN, checkInSites.value[index]);
       } catch (error) {
         console.error("Error adding check-in:", error);
       }
