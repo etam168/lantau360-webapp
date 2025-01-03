@@ -48,6 +48,7 @@
 
   const emits = defineEmits(["on-member-detail"]);
 
+  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const checkInStore = useCheckInStore();
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
@@ -62,7 +63,16 @@
       : "./img/icons/no_image_available.jpeg";
   };
 
-  function handleDetail(item: any) {
-    emits("on-member-detail", item);
+  async function handleDetail(item: CheckInView) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/checkin-detail-dialog/index.vue")
+      ),
+      componentProps: { item: item, dialogName: "checkinDetailDialog" }
+    })
+      .onCancel(() => {})
+      .onOk(() => {});
+
+    // openCategoryDetailDialog(item,"CheckInItemDetailDialog");
   }
 </script>

@@ -28,6 +28,7 @@
         @on-category-detail="$emit('on-category-detail', $event)"
       />
     </q-tab-panel>
+
     <q-tab-panel name="checkIn" class="q-pa-none">
       <app-checkin-list-items />
     </q-tab-panel>

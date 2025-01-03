@@ -55,36 +55,43 @@ export const useCheckInStore = defineStore(
     // Main check-in functions
     async function addCheckIn(site: SiteView) {
       try {
-        if (!checkInSites.value.some(c => c.siteId === site.siteId)) {
-          if (checkInSites.value.length >= MAX_CHECKINS) {
-            return;
-          }
-          const newCheckIn = {
-            checkInId: 0,
+        // Find the existing check-in for the site
+        const existingCheckIn = checkInSites.value.find(c => c.siteId === site.siteId);
+
+        if (!existingCheckIn && checkInSites.value.length < MAX_CHECKINS) {
+          // If this is a new site and we haven't exceeded the MAX_CHECKINS limit
+          const newCheckIn: CheckInView = {
+            checkInId: 0, // Assuming new check-in doesn't have an ID yet
             memberId: userStore.userId,
             siteId: site.siteId,
             checkInfo: [
               {
-                checkInAt: Date,
+                checkInAt: new Date().toISOString(), // Add current timestamp as ISO string
                 description: site.description
               }
             ],
-            createdAt: Date,
+            createdAt: new Date(),
             createdBy: userStore.userId,
-            modifiedAt: Date,
+            modifiedAt: new Date(),
             modifiedBy: userStore.userId,
             meta: null,
             siteData: site
-          } as unknown as CheckInView;
+          };
+
+          // Push new check-in into checkInSites array
           checkInSites.value.push(newCheckIn);
-        } else {
-          // checkInSites.value.push(site);
+        } else if (existingCheckIn) {
+          // If the site has been checked in before, just add a new check-in to checkInfo
+          existingCheckIn.checkInfo.push({
+            checkInAt: new Date().toISOString(), // Add current timestamp as ISO string
+            description: site.description
+          });
         }
 
-        // to do
-        // await syncCheckIn(ENTITY_URL.CHECKIN, checkIn);
+        // Optionally, sync with the backend
+        // await syncCheckIn(ENTITY_URL.CHECKIN, existingCheckIn || newCheckIn);
       } catch (error) {
-        throw error;
+        console.error("Error adding check-in:", error);
       }
     }
 
