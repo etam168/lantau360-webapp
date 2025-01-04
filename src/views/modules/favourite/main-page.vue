@@ -1,16 +1,10 @@
 <template>
-  <q-page>
-    <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
-    <app-carousel-section :data="advertisements" @image-click="onImageClick" />
+  <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
+  <app-carousel-section :data="advertisements" @image-click="onImageClick" />
 
-    <q-separator size="4px" color="primary" />
+  <q-separator size="4px" color="primary" />
 
-    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
-      <main-content :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
-    </q-scroll-area>
-
-    <main-content v-else :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
-  </q-page>
+  <main-content :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
 </template>
 
 <script setup lang="ts">
@@ -43,22 +37,11 @@
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { eventBus, getEntityName } = useUtilities();
 
-  const THRESHOLD = 320;
   const advertisements = ref<any | null>(null);
   const error = ref<string | null>(null);
 
   const i18nKey = getEntityName(entityKey);
   const isDialogOpen = ref(false);
-
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16; // Height for the carousel
-    return carouselHeight + 40;
-  });
-
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
-  });
 
   async function fetchAllData() {
     try {
@@ -72,7 +55,7 @@
       if (userStore.isUserLogon()) {
         const isFavouriteSync = await favStore.isFavoritesInSync();
         const isCheckInIsSync = await checkInStore.isCheckInInSync();
-        debugger;
+
         if (!isFavouriteSync || !isCheckInIsSync) promptUserDataSynAlert();
       }
     } catch (err) {

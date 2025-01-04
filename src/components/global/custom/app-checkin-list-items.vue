@@ -1,7 +1,20 @@
 <template>
-  <q-table grid flat :rows="checkinItems" row-key="siteId" hide-pagination>
+  <q-table
+    grid
+    flat
+    :rows="checkinItems"
+    row-key="siteId"
+    hide-pagination
+    :style="tableStyle"
+    :rows-per-page-options="[0]"
+  >
     <template v-slot:item="props">
-      <q-item clickable @click="handleDetail(props.row)" class="full-width">
+      <q-item
+        clickable
+        @click="handleDetail(props.row)"
+        class="full-width"
+        style="height: fit-content"
+      >
         <q-item-section avatar>
           <app-avatar :image-path="computeIconPath(props.row)" size="54px" />
         </q-item-section>
@@ -15,46 +28,54 @@
         </q-item-section>
       </q-item>
     </template>
+    <template v-slot:no-data>
+      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold full-width">
+        {{ $t("errors.noCheckinRecord") }}
+      </div>
+    </template>
   </q-table>
 </template>
+
 <script setup lang="ts">
-  // Interface files
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
-
-  // Stores
   import { useCheckInStore } from "@/stores/checkin-store";
-
-  // Emits
   const emits = defineEmits(["on-member-detail"]);
-
-  // Reactive variables
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
   const checkInStore = useCheckInStore();
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
-
   const { dateFormatter, translate } = useUtilities(locale.value);
-
   const i18nKeyMoreDialog = "more.mainMenuDialog";
+  const THRESHOLD = 320;
+
+  const usedHeight = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const carouselHeight = (width * 9) / 16;
+    return carouselHeight + 193;
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
+
+  const tableStyle = computed(() => {
+    return $q.screen.height - usedHeight.value > THRESHOLD ? scrollAreaStyle.value : {};
+  });
 
   const computeIconPath = (item: any) => {
     return item.siteData?.iconPath;
   };
 
-  // line1 function to retrieve the siteName from the row
   function line1(item: CheckInView) {
     const siteName = item.siteData?.siteName;
     if (siteName) {
       return translate(siteName, item.siteData?.meta, "siteName");
     }
-    return ""; // Return empty string if siteName is not found
+    return "";
   }
 
-  // line2 function to retrieve and format the last check-in date
   function line2(item: CheckInView) {
     const checkInfo = item.checkInfo || [];
-
-    // Find the latest check-in object by checking the latest `checkInAt` value
     const latestCheckIn = checkInfo.reduce(
       (latest, current) => {
         return new Date(current.checkInAt) > new Date(latest.checkInAt) ? current : latest;
@@ -62,13 +83,12 @@
       { checkInAt: "1970-01-01T00:00:00.000Z" }
     );
 
-    // If a valid check-in exists, format and display it
     if (latestCheckIn.checkInAt) {
-      const formattedDate = dateFormatter(latestCheckIn.checkInAt); // Format the date as per your requirement
+      const formattedDate = dateFormatter(latestCheckIn.checkInAt);
       return t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, { date: formattedDate });
     }
 
-    return ""; // Return empty if no valid check-in date is found
+    return "";
   }
 
   async function handleDetail(item: CheckInView) {
@@ -82,3 +102,9 @@
       .onOk(() => {});
   }
 </script>
+
+<style>
+  .q-table--grid .q-table__grid-content {
+    flex: none;
+  }
+</style>

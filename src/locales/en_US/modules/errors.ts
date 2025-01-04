@@ -17,6 +17,7 @@ export default {
   inValidToken: "Invalid token",
   invalidUsername: "Username is incorrect",
   invalidCredentials: "Username or password is incorrect",
+  noCheckinRecord: "There is no Check-In Record to show you.",
   noRecord: "There is no Record to show you right now.",
   noSaveSiteRecord: "There is no Favourite Site Record to show you.",
   noSaveBusinessRecord: "There is no Favourite Business Record to show you.",
