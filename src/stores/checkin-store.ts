@@ -27,7 +27,7 @@ async function syncCheckIn(checkInView: CheckInView) {
     const pruneCheckin = typia.misc.createPrune<CheckIn>();
     pruneCheckin(checkInView);
 
-    //await api.create(upsertUrl, checkIn);
+    await api.create(`${ENTITY_URL.CHECKIN}`, checkInView);
   } catch (error) {
     throw error;
   }
@@ -55,7 +55,7 @@ export const useCheckInStore = defineStore(
     const lastSyncCheckedAt = ref<Date>(new Date());
 
     // Main check-in functions
-    async function addCheckIn(site: SiteView, description: string) {
+    async function addOrUpdateCheckIn(site: SiteView, description: string) {
       try {
         const checkInfo = {
           checkInAt: new Date().toISOString(),
@@ -78,7 +78,7 @@ export const useCheckInStore = defineStore(
     async function addNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
       try {
         // New check-in
-        const checkinView = newCheckInView;
+        const checkinView =  structuredClone(newCheckInView);
         checkinView.memberId = userStore.userId;
         checkinView.createdBy = userStore.userId;
         checkinView.modifiedBy = userStore.userId;
@@ -90,7 +90,7 @@ export const useCheckInStore = defineStore(
         checkInSites.value.push(checkinView);
 
         // Optionally, sync with backend
-        // await syncCheckIn(updatedCheckIn);
+        await syncCheckIn(checkinView);
       } catch (error) {
         throw error;
       }
@@ -111,7 +111,7 @@ export const useCheckInStore = defineStore(
         checkInSites.value[index] = updatedCheckIn;
 
         // Optionally, sync with backend
-        // await syncCheckIn(updatedCheckIn);
+        await syncCheckIn(updatedCheckIn);
       } catch (error) {
         throw error;
       }
@@ -119,22 +119,42 @@ export const useCheckInStore = defineStore(
 
     async function isCheckInInSync(): Promise<boolean> {
       try {
-        // to do
-        const checkIn = await fetchData(`${ENTITY_URL.FAVOURITE_DATA_IDS}/${userStore.userId}`);
-        const siteIds = checkIn.sites;
-
-        if (siteIds.length !== checkInSites.value.length) {
-          return false;
-        }
-
-        const isInSync = checkInSites.value.every(site => siteIds.has(site.siteId));
-        lastSyncCheckedAt.value = new Date();
-
-        return isInSync;
+          // Fetch data from the API
+          const checkInResponse = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
+  
+          // Create a helper function to format DateTime to "HH:mm"
+          const formatTime = (dateString: any) => {
+              const date = new Date(dateString);
+              return date.toISOString().slice(0, 16); // "YYYY-MM-DDTHH:mm"
+          };
+  
+          // Create a mapping of siteId to checkIn times (formatted)
+          const apiCheckInMap = new Map();
+  
+          checkInResponse.forEach((site : any) => {
+              apiCheckInMap.set(site.siteId, site.checkInInfo.map((checkIn: any) => formatTime(checkIn)));
+          });
+  
+          // Check for each local storage check-in if it exists in the API response
+          const isInSync = checkInSites.value.every(localCheckIn => {
+              const siteId = localCheckIn.siteId;
+              const localTimes = localCheckIn.checkInfo.map(info => formatTime(info.checkInAt));
+              
+              // Get the corresponding API times
+              const apiTimes = apiCheckInMap.get(siteId) || [];
+  
+              // Check if all local times exist in API times
+              return localTimes.every(localTime => apiTimes.includes(localTime));
+          });
+  
+          lastSyncCheckedAt.value = new Date(); // Update last sync time
+  
+          return isInSync;
       } catch (error) {
-        throw error;
+          console.error("Error checking sync:", error);
+          throw error;
       }
-    }
+  }
 
     function isCheckIn(site: SiteView): boolean {
       return checkInSites.value.some(checkin => checkin.siteId === site.siteId);
@@ -177,7 +197,7 @@ export const useCheckInStore = defineStore(
     return {
       checkInSites,
       lastSyncCheckedAt,
-      addCheckIn,
+      addOrUpdateCheckIn,
       isCheckInInSync,
       isCheckIn,
       syncLocalFromRemote,

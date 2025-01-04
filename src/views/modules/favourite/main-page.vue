@@ -26,6 +26,8 @@
   // Composables
   import { useUserStore } from "@/stores/user";
   import { useFavoriteStore } from "@/stores/favorite-store";
+  import { useCheckInStore } from "@/stores/checkin-store";
+
 
   // Props
   const { entityKey } = defineProps<{
@@ -34,6 +36,8 @@
 
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
+  const checkInStore = useCheckInStore();
+  
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
@@ -65,6 +69,10 @@
       advertisements.value = advertisementResponse.filter(
         (adv: AdvertisementView) => adv.status === 1
       );
+
+
+      //added here for testing only
+      const isCheckInIsSync = await  checkInStore.isCheckInInSync();
 
       if (userStore.isUserLogon()) {
         const isFavouriteSync = await favStore.isFavoritesInSync();

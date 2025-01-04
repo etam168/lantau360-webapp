@@ -101,23 +101,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
     if (result.valid && formMappers.value) {
       try {
-        values = {
-          ...values,
-          siteId: site?.siteId || 0
-        };
-
-        // Create the entity record
-        const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;
-        newEntity.createdBy = userStore.userId;
-        // Only set memberId if it exists, without direct assignment
-        "memberId" in newEntity && (newEntity.memberId = userStore.userId);
-        // move to prepareEntityRecord -- to do
-        newEntity.meta = {
-          site
-        };
-
-        await checkInStore.addCheckIn(newEntity as SiteView);
-
+        await checkInStore.addOrUpdateCheckIn(site as SiteView,values.description);
         emits("close-dialog");
       } catch (error) {
         console.error("Error creating entity record:", error);

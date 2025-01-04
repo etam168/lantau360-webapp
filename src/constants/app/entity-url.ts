@@ -59,6 +59,8 @@ export const ENTITY_URL = {
   FAVOURITE_UPDATE:'/Member/UpdateFavourite',
   FAVOURITE_DATA_IDS:'/Member/GetFavouriteData/Ids',
   FAVOURITE_DATA:'/Member/GetFavouriteData',
+  CHECKIN_DATA:'/Member/GetCheckInData',
+
 
 
   EMAIL_CONFIRMATION: {

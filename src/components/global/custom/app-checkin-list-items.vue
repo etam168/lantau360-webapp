@@ -6,7 +6,7 @@
           <q-item-section avatar>
             <q-avatar size="64px" circle>
               <!-- Accessing siteData for each item -->
-              <q-img ratio="1" :src="computeIconPath(item.siteData?.meta.site)">
+              <q-img ratio="1" :src="computeIconPath(item.siteData)">
                 <template v-slot:error>
                   <div class="absolute-full flex flex-center bg-negative text-white">
                     {{ $t("errors.cannotLoadImage") }}
@@ -18,10 +18,10 @@
 
           <q-item-section>
             <!-- Displaying siteData properties -->
-            <q-item-label>{{ item.siteData?.meta.site.siteName }}</q-item-label>
+            <q-item-label>{{ item.siteData?.siteName }}</q-item-label>
 
-            <q-item-label lines="2" v-if="item.siteData?.checkInfo?.length > 0">
-              <span v-for="(checkin, index) in item.siteData?.checkInfo" :key="index">
+            <q-item-label lines="2" v-if="item?.checkInfo?.length > 0">
+              <span v-for="(checkin, index) in item?.checkInfo" :key="index">
                 {{
                   $t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, {
                     date: dateFormatter(checkin.checkInAt)
