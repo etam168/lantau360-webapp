@@ -28,7 +28,6 @@
   import { useFavoriteStore } from "@/stores/favorite-store";
   import { useCheckInStore } from "@/stores/checkin-store";
 
-
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
@@ -37,7 +36,7 @@
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
   const checkInStore = useCheckInStore();
-  
+
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
@@ -71,12 +70,12 @@
       );
 
 
-      //added here for testing only
-      const isCheckInIsSync = await  checkInStore.isCheckInInSync();
 
       if (userStore.isUserLogon()) {
         const isFavouriteSync = await favStore.isFavoritesInSync();
-        if (!isFavouriteSync) promptUserDataSynAlert();
+        const isCheckInIsSync = await checkInStore.isCheckInInSync();
+
+        if (!isFavouriteSync && !isCheckInIsSync) promptUserDataSynAlert();
       }
     } catch (err) {
       handleError(err);
@@ -101,6 +100,7 @@
       switch (selectedOption) {
         case "local":
           favStore.syncRemoteFromLocal();
+          checkInStore.syncRemoteFromLocal();
           break;
 
         case "server":
