@@ -35,14 +35,22 @@
 </template>
 
 <script setup lang="ts">
+  // Interface files
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+
+  // Stores
   import { useCheckInStore } from "@/stores/checkin-store";
+
+  // Emits
   const emits = defineEmits(["on-member-detail"]);
+
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
+  const { dateFormatter, translate } = useUtilities(locale.value);
+
   const checkInStore = useCheckInStore();
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
-  const { dateFormatter, translate } = useUtilities(locale.value);
+
   const i18nKeyMoreDialog = "more.mainMenuDialog";
   const THRESHOLD = 320;
 

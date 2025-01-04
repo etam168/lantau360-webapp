@@ -4,7 +4,7 @@
     grid
     flat
     :rows="categoryItems"
-    :ow-key="`${entityName}Id`"
+    :row-key="`${entityName}Id`"
     hide-pagination
     :style="tableStyle"
     :rows-per-page-options="[0]"
@@ -83,7 +83,7 @@
   const entityName = getEntityName(entityKey);
   const checkInStore = useCheckInStore();
   const favoriteStore = useFavoriteStore();
-  // Set THRESHOLD based on pageName
+
   const THRESHOLD = computed(() => {
     return pageName === "FAVOURITE" ? 320 : 150;
   });
