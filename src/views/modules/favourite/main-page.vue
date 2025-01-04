@@ -5,11 +5,7 @@
 
     <q-separator size="4px" color="primary" />
 
-    <q-scroll-area
-      v-if="$q.screen.height - usedHeight > THRESHOLD"
-      class="q-mb-none"
-      :style="scrollAreaStyle"
-    >
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
       <main-content :i18n-key="i18nKey" @on-category-detail="onCategoryDetail" />
     </q-scroll-area>
 

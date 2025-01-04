@@ -24,8 +24,7 @@ export interface Member {
   meta: Record<string, unknown>;
 }
 
-export const randomMember = () => typia.random<Member>();
-
 const { resetObject } = useUtilities();
 
+export const randomMember = () => typia.random<Member>();
 export const newMember: Member = resetObject(typia.random<Member>());

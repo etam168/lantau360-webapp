@@ -1,3 +1,5 @@
+import typia from "typia";
+
 export interface CheckIn {
   checkInId: number;
   memberId: number;
@@ -9,3 +11,8 @@ export interface CheckIn {
   modifiedBy?: number;
   meta?: Record<string, any>;
 }
+
+const { resetObject } = useUtilities();
+
+export const randomCheckIn = () => typia.random<CheckIn>();
+export const newCheckIn: CheckIn = resetObject(typia.random<CheckIn>());

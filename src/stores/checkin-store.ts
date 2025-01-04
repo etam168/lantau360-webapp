@@ -1,10 +1,14 @@
 // Types
-import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+import type { CheckIn } from "@/interfaces/models/entities/checkin";
 import type { SiteView } from "@/interfaces/models/views/site-view";
+import { newCheckInView, type CheckInView } from "@/interfaces/models/views/checkin-view";
 
 // Store and Composables
 import { defineStore } from "pinia";
 import { useUserStore } from "@/stores/user";
+
+// Other 3rd party
+import typia from "typia";
 
 // Utilities
 import { LocalStorage } from "quasar";
@@ -14,18 +18,16 @@ const { api, fetchData } = useApi();
 const userStore = useUserStore();
 const MAX_CHECKINS = 100;
 
-async function syncCheckIn(upsertUrl: string, checkIn: CheckInView) {
+async function syncCheckIn(checkInView: CheckInView) {
   try {
     if (!userStore.isUserLogon()) {
       return;
     }
 
-    // const payload = {
-    //   memberId: userStore.userId,
-    //   entityId: id
-    // };
+    const pruneCheckin = typia.misc.createPrune<CheckIn>();
+    pruneCheckin(checkInView);
 
-    await api.create(upsertUrl, checkIn);
+    //await api.create(upsertUrl, checkIn);
   } catch (error) {
     throw error;
   }
@@ -53,56 +55,65 @@ export const useCheckInStore = defineStore(
     const lastSyncCheckedAt = ref<Date>(new Date());
 
     // Main check-in functions
-    async function addCheckIn(site: SiteView) {
+    async function addCheckIn(site: SiteView, description: string) {
       try {
-        // Extract description from checkInfo[0]
-        const description =
-          site.checkInfo && site.checkInfo.length > 0
-            ? site.checkInfo[0].description
-            : "No description available";
-
-        const newCheckInEntry = {
+        const checkInfo = {
           checkInAt: new Date().toISOString(),
           description: description // Use description from checkInfo here
         };
 
         const index = checkInSites.value.findIndex(c => c.siteId === site.siteId);
-
         if (index === -1) {
           // New check-in
-          const newCheckIn: CheckInView = {
-            checkInId: 0,
-            memberId: userStore.userId,
-            siteId: site.siteId,
-            checkInfo: [newCheckInEntry],
-            createdAt: new Date(),
-            createdBy: userStore.userId,
-            modifiedAt: new Date(),
-            modifiedBy: userStore.userId,
-            meta: {},
-            siteData: site
-          };
-
-          // Add new check-in to array (reactive)
-          checkInSites.value.push(newCheckIn);
+          await addNewCheckIn(site, checkInfo);
         } else {
           // Update existing check-in (reactive)
-          const existingCheckIn = checkInSites.value[index];
-          const updatedCheckIn = {
-            ...existingCheckIn,
-            checkInfo: [...existingCheckIn.checkInfo, newCheckInEntry],
-            modifiedAt: new Date(),
-            modifiedBy: userStore.userId
-          };
-
-          // Update the existing check-in (reactive)
-          checkInSites.value[index] = updatedCheckIn;
+          await updateCheckIn(index, checkInfo);
         }
-
-        // Optionally, sync with backend
-        // await syncCheckIn(ENTITY_URL.CHECKIN, checkInSites.value[index]);
       } catch (error) {
         console.error("Error adding check-in:", error);
+      }
+    }
+
+    async function addNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
+      try {
+        // New check-in
+        const checkinView = newCheckInView;
+        checkinView.memberId = userStore.userId;
+        checkinView.createdBy = userStore.userId;
+        checkinView.modifiedBy = userStore.userId;
+        checkinView.siteId = site.siteId;
+        checkinView.checkInfo = [checkInfo];
+        checkinView.siteData = site;
+
+        // Add new check-in to array (reactive)
+        checkInSites.value.push(checkinView);
+
+        // Optionally, sync with backend
+        // await syncCheckIn(updatedCheckIn);
+      } catch (error) {
+        throw error;
+      }
+    }
+
+    async function updateCheckIn(index: number, checkInfo: Record<string, any>) {
+      try {
+        // Update existing check-in (reactive)
+        const existingCheckIn = checkInSites.value[index];
+        const updatedCheckIn = {
+          ...existingCheckIn,
+          checkInfo: [...existingCheckIn.checkInfo, checkInfo],
+          modifiedAt: new Date(),
+          modifiedBy: userStore.userId
+        };
+
+        // Update the existing check-in (reactive)
+        checkInSites.value[index] = updatedCheckIn;
+
+        // Optionally, sync with backend
+        // await syncCheckIn(updatedCheckIn);
+      } catch (error) {
+        throw error;
       }
     }
 
