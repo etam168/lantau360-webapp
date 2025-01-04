@@ -25,7 +25,8 @@ async function syncCheckIn(checkInView: CheckInView) {
     }
 
     const pruneCheckin = typia.misc.createPrune<CheckIn>();
-    const checkInPayload = structuredClone(checkInView)
+    // const checkInPayload = structuredClone(checkInView)
+    const checkInPayload = JSON.parse(JSON.stringify(checkInView)); 
     pruneCheckin(checkInPayload);
 
     await api.create(`${ENTITY_URL.CHECKIN}`, checkInPayload);
@@ -79,7 +80,8 @@ export const useCheckInStore = defineStore(
     async function addNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
       try {
         // New check-in
-        const checkinView = structuredClone(newCheckInView);
+        // const checkinView = structuredClone(newCheckInView);
+        const checkinView = JSON.parse(JSON.stringify(newCheckInView)); // Deep clone with JSON
         checkinView.memberId = userStore.userId;
         checkinView.createdBy = userStore.userId;
         checkinView.modifiedBy = userStore.userId;

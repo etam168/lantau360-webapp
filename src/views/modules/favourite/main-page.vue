@@ -69,13 +69,11 @@
         (adv: AdvertisementView) => adv.status === 1
       );
 
-
-
       if (userStore.isUserLogon()) {
         const isFavouriteSync = await favStore.isFavoritesInSync();
         const isCheckInIsSync = await checkInStore.isCheckInInSync();
-
-        if (!isFavouriteSync && !isCheckInIsSync) promptUserDataSynAlert();
+        debugger;
+        if (!isFavouriteSync || !isCheckInIsSync) promptUserDataSynAlert();
       }
     } catch (err) {
       handleError(err);
