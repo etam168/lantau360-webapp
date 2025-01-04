@@ -1,5 +1,5 @@
 <template>
-  <q-card-section class="text-center text-h6 text-grey-6 text-weight-bold">
+  <q-card-section class="text-center text-h6 text-grey-6 text-weight-bold full-width">
     {{ message }}
   </q-card-section>
 </template>

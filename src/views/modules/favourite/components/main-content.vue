@@ -17,6 +17,7 @@
       <app-category-list-items
         :categoryItems="siteItems"
         :entityKey="'SITE'"
+        :pageName="'FAVOURITE'"
         @on-category-detail="$emit('on-category-detail', $event)"
       />
     </q-tab-panel>
@@ -25,6 +26,7 @@
       <app-category-list-items
         :categoryItems="businessItems"
         :entityKey="'BUSINESS'"
+        :pageName="'FAVOURITE'"
         @on-category-detail="$emit('on-category-detail', $event)"
       />
     </q-tab-panel>

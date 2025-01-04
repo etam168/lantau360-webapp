@@ -8,7 +8,7 @@
     :model-value="isDialogVisible"
     maximized
   >
-    <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
+    <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
@@ -43,7 +43,6 @@
 
   // Interface files
   import { DirectoryTypes } from "@/interfaces/types/directory-types";
-
 
   // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";

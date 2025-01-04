@@ -29,9 +29,7 @@
       </q-item>
     </template>
     <template v-slot:no-data>
-      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold full-width">
-        {{ $t("errors.noCheckinRecord") }}
-      </div>
+      <app-no-record-message :message="$t('errors.noCheckinRecord')" />
     </template>
   </q-table>
 </template>

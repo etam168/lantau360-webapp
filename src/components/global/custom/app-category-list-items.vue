@@ -1,59 +1,44 @@
 <template>
   <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
-
-  <q-scroll-area
-    v-if="$q.screen.height - usedHeight > THRESHOLD && categoryItems.length > 0"
-    :style="scrollAreaStyle"
+  <q-table
+    grid
+    flat
+    :rows="categoryItems"
+    :ow-key="`${entityName}Id`"
+    hide-pagination
+    :style="tableStyle"
+    :rows-per-page-options="[0]"
   >
-    <!-- <div>BANNER_HEIGHT:{{ BANNER_HEIGHT }}</div>
-    <div>TAB_HEIGHT:{{ TAB_HEIGHT }}</div>
-    <div>usedHeight:{{ usedHeight }}</div> -->
-    <q-list v-for="(item, index) in categoryItems" :key="index">
-      <q-item clickable @click="handleDetail(item)">
+    <template v-slot:item="props">
+      <q-item
+        clickable
+        @click="handleDetail(props.row)"
+        class="full-width"
+        style="height: fit-content"
+      >
         <q-item-section avatar>
-          <app-avatar-rounded :image-path="item.iconPath" />
+          <app-avatar-rounded :image-path="props.row.iconPath" />
         </q-item-section>
 
         <q-item-section>
-          <q-item-label>{{ line1(item) }}</q-item-label>
-          <q-item-label caption>{{ line2(item) }}</q-item-label>
+          <q-item-label>{{ line1(props.row) }}</q-item-label>
+          <q-item-label caption>{{ line2(props.row) }}</q-item-label>
         </q-item-section>
 
         <q-item-section side>
           <div class="q-gutter-sm">
-            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
+            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(props.row)" />
+            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(props.row)" />
           </div>
         </q-item-section>
       </q-item>
 
       <q-separator />
-    </q-list>
-  </q-scroll-area>
-
-  <q-list v-else v-for="(item, index) in categoryItems" :key="index">
-    <q-item clickable @click="handleDetail(item)">
-      <q-item-section avatar>
-        <app-avatar-rounded :image-path="item.iconPath" />
-      </q-item-section>
-
-      <q-item-section>
-        <q-item-label>{{ line1(item) }}</q-item-label>
-        <q-item-label caption>{{ line2(item) }}</q-item-label>
-      </q-item-section>
-
-      <q-item-section side>
-        <div class="q-gutter-sm">
-          <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(item)" />
-          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(item)" />
-        </div>
-      </q-item-section>
-    </q-item>
-
-    <q-separator />
-  </q-list>
-
-  <app-no-record-message v-if="categoryItems.length <= 0" :message="$t('errors.noRecord')" />
+    </template>
+    <template v-slot:no-data>
+      <app-no-record-message v-if="categoryItems.length <= 0" :message="$t('errors.noRecord')" />
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
@@ -79,14 +64,16 @@
   // Props
   const {
     categoryItems,
-    checkIns = [], // to do remove
+    checkIns = [],
     entityKey,
-    directory
+    directory,
+    pageName
   } = defineProps<{
     categoryItems: CategoryTypes[];
     checkIns?: CheckIn[];
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
+    pageName?: string;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
@@ -96,7 +83,10 @@
   const entityName = getEntityName(entityKey);
   const checkInStore = useCheckInStore();
   const favoriteStore = useFavoriteStore();
-  const THRESHOLD = 150;
+  // Set THRESHOLD based on pageName
+  const THRESHOLD = computed(() => {
+    return pageName === "FAVOURITE" ? 320 : 150;
+  });
 
   const TAB_HEIGHT = computed(() => {
     return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
@@ -107,11 +97,21 @@
   });
 
   const usedHeight = computed(() => {
-    return TAB_HEIGHT.value + BANNER_HEIGHT.value;
+    if (pageName === "FAVOURITE") {
+      const width = Math.min($q.screen.width, 1024);
+      const carouselHeight = (width * 9) / 16;
+      return carouselHeight + 193;
+    } else {
+      return TAB_HEIGHT.value + BANNER_HEIGHT.value;
+    }
   });
 
   const scrollAreaStyle = computed(() => {
     return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
+
+  const tableStyle = computed(() => {
+    return $q.screen.height - usedHeight.value > THRESHOLD.value ? scrollAreaStyle.value : {};
   });
 
   // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
@@ -163,3 +163,9 @@
     emits("on-category-detail", item);
   }
 </script>
+
+<style>
+  .q-table--grid .q-table__grid-content {
+    flex: none;
+  }
+</style>
