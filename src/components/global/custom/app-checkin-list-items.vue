@@ -1,41 +1,22 @@
 <template>
-  <q-card v-for="(item, index) in checkinItems" :key="index" class="q-ma-md">
-    <q-card-section class="q-pa-none">
-      <q-list>
-        <q-item clickable @click="handleDetail(item)">
-          <q-item-section avatar>
-            <q-avatar size="64px" circle>
-              <!-- Accessing siteData for each item -->
-              <q-img ratio="1" :src="computeIconPath(item.siteData)">
-                <template v-slot:error>
-                  <div class="absolute-full flex flex-center bg-negative text-white">
-                    {{ $t("errors.cannotLoadImage") }}
-                  </div>
-                </template>
-              </q-img>
-            </q-avatar>
-          </q-item-section>
+  <q-table grid flat :rows="checkinItems" row-key="siteId" hide-pagination>
+    <template v-slot:item="props">
+      <q-item clickable @click="handleDetail(props.row)" class="full-width">
+        <q-item-section avatar>
+          <app-avatar :image-path="computeIconPath(props.row)" size="54px" />
+        </q-item-section>
 
-          <q-item-section>
-            <!-- Displaying siteData properties -->
-            <q-item-label>{{ item.siteData?.siteName }}</q-item-label>
+        <q-item-section>
+          <q-item-label>{{ line1(props.row) }}</q-item-label>
 
-            <q-item-label lines="2" v-if="item?.checkInfo?.length > 0">
-              <span v-for="(checkin, index) in item?.checkInfo" :key="index">
-                {{
-                  $t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, {
-                    date: dateFormatter(checkin.checkInAt)
-                  })
-                }}
-              </span>
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-      </q-list>
-    </q-card-section>
-  </q-card>
+          <q-item-label lines="2" v-if="props.row?.checkInfo?.length > 0">
+            {{ line2(props.row) }}
+          </q-item-label>
+        </q-item-section>
+      </q-item>
+    </template>
+  </q-table>
 </template>
-
 <script setup lang="ts">
   // Interface files
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
@@ -43,25 +24,54 @@
   // Stores
   import { useCheckInStore } from "@/stores/checkin-store";
 
-  // .ts files
-  import { BLOB_URL } from "@/constants";
-
+  // Emits
   const emits = defineEmits(["on-member-detail"]);
 
+  // Reactive variables
   const $q = useQuasar();
-  const { locale } = useI18n({ useScope: "global" });
+  const { locale, t } = useI18n({ useScope: "global" });
   const checkInStore = useCheckInStore();
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
-  const { dateFormatter } = useUtilities(locale.value);
+  const { dateFormatter, translate } = useUtilities(locale.value);
 
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
-  const computeIconPath = (siteData: any) => {
-    return siteData.iconPath
-      ? `${BLOB_URL}/${siteData.iconPath}`
-      : "./img/icons/no_image_available.jpeg";
+  const computeIconPath = (item: any) => {
+    const iconPath = item.siteData?.meta?.site.iconPath;
+
+    return iconPath;
   };
+
+  // line1 function to retrieve the siteName from the row
+  function line1(item: CheckInView) {
+    const siteName = item.siteData?.meta?.site?.siteName;
+    if (siteName) {
+      return translate(siteName, item.siteData?.meta, "siteName");
+    }
+    return ""; // Return empty string if siteName is not found
+  }
+
+  // line2 function to retrieve and format the last check-in date
+  function line2(item: CheckInView) {
+    const checkInfo = item.checkInfo || [];
+
+    // Find the latest check-in object by checking the latest `checkInAt` value
+    const latestCheckIn = checkInfo.reduce(
+      (latest, current) => {
+        return new Date(current.checkInAt) > new Date(latest.checkInAt) ? current : latest;
+      },
+      { checkInAt: "1970-01-01T00:00:00.000Z" }
+    );
+
+    // If a valid check-in exists, format and display it
+    if (latestCheckIn.checkInAt) {
+      const formattedDate = dateFormatter(latestCheckIn.checkInAt); // Format the date as per your requirement
+      return t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, { date: formattedDate });
+    }
+
+    return ""; // Return empty if no valid check-in date is found
+  }
 
   async function handleDetail(item: CheckInView) {
     $q.dialog({
@@ -72,7 +82,5 @@
     })
       .onCancel(() => {})
       .onOk(() => {});
-
-    // openCategoryDetailDialog(item,"CheckInItemDetailDialog");
   }
 </script>
