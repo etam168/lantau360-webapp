@@ -9,9 +9,7 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{
-          item.siteData?.meta.site.siteName
-        }}</app-dialog-title>
+        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -65,7 +63,7 @@
   const errorMessage = ref<string | null>(null);
 
   const dialogTitle = computed(() => {
-    return translate(item.siteName, item.meta, "siteName");
+    return translate(item.siteData?.siteName, item.siteData?.meta, "siteName");
   });
 
   /**

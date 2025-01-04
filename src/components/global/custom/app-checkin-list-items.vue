@@ -38,14 +38,12 @@
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const computeIconPath = (item: any) => {
-    const iconPath = item.siteData?.meta?.site.iconPath;
-
-    return iconPath;
+    return item.siteData?.iconPath;
   };
 
   // line1 function to retrieve the siteName from the row
   function line1(item: CheckInView) {
-    const siteName = item.siteData?.meta?.site?.siteName;
+    const siteName = item.siteData?.siteName;
     if (siteName) {
       return translate(siteName, item.siteData?.meta, "siteName");
     }
