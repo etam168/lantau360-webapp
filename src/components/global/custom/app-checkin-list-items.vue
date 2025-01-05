@@ -24,7 +24,7 @@
     </template>
 
     <template v-slot:no-data>
-      <app-no-record-message :message="$t(`${i18nKey}.checkIn.noCheckinRecord`)" />
+      <app-no-record-message :message="$t(`errors.noCheckinRecord`)" />
     </template>
   </q-table>
 </template>

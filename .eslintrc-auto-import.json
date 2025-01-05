@@ -353,6 +353,7 @@
     "RenderItem": true,
     "useSSRWidth": true,
     "usePreferredReducedTransparency": true,
-    "UserLogon": true
+    "UserLogon": true,
+    "onElementRemoval": true
   }
 }

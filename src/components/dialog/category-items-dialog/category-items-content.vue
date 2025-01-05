@@ -36,7 +36,7 @@
           :name="item.name"
           class="q-pa-none"
         >
-          <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
+          <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet(item)" />
 
           <app-category-list-items
             :categoryItems="filterGroupedArray(item.name)"
@@ -114,6 +114,10 @@
 
   const THRESHOLD = 150 as const;
 
+  function hasTaxiFleet(item): boolean {
+    return item && item.name === "Taxi Fleet";
+  }
+
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
   );
@@ -155,7 +159,7 @@
     return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
   });
   const BANNER_HEIGHT = computed(() => {
-    return directory?.meta?.template === 2 && hasTaxiFleet.value ? 78 : 0;
+    return directory?.meta?.template === 2 && hasTaxiFleet() ? 78 : 0;
   });
 
   const usedHeight = computed(() => {
@@ -175,11 +179,6 @@
         return undefined;
     }
   });
-
-  // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
-  const hasTaxiFleet = computed(() =>
-    categoryItems.value.some(item => item.subtitle3 === "Taxi Fleet")
-  );
 
   // Function to filter groupedArray by group name
   function filterGroupedArray(groupName: string) {

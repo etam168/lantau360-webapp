@@ -20,9 +20,8 @@ export function UserLogon() {
       <p style="margin-bottom: 0px;">${t("notification.accessAllFeatures")}</p>
     `,
       html: true,
-      color: "secondary",
-      textColor: "primary",
-      position: "center"
+      color: "primary",
+      position: "top"
     });
   }
 
