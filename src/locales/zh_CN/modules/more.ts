@@ -38,13 +38,6 @@ export default {
       payByStrip: "通过 Strip 支付",
       paymentOptions: "支付选项",
       noRecord: "目前没有记录可供显示。"
-    },
-    checkin: {
-      title: "我的签到",
-      checkInList: "签到列表",
-      map: "地图",
-      lastCheckIn: "最后签到时间：{date}",
-      noCheckIn: "您尚无任何签到记录"
     }
   },
 

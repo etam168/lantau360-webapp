@@ -6,7 +6,7 @@
       color="primary"
       class="q-mr-sm"
       @click="onBtnCheckInClick"
-      :icon="fasMapLocationDot"
+      :icon="fasLocationDot"
     />
 
     <app-button-rounded
@@ -23,7 +23,7 @@
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
-  import { fasHeart, fasMapLocationDot } from "@quasar/extras/fontawesome-v6";
+  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
   import { EntityURLKey } from "@/constants";
 
   // Stores

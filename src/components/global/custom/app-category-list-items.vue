@@ -19,6 +19,8 @@
             :image-path="props.row.iconPath"
             :line1="line1(props.row)"
             :line2="line2(props.row)"
+            :is-checked-in="isCheckedIn(props.row)"
+            :is-favorite="isFavoriteItem(props.row)"
             @click="handleDetail(props.row)"
           />
         </q-td>
@@ -39,6 +41,10 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
+  // Store
+  import { useCheckInStore } from "@/stores/checkin-store";
+  import { useFavoriteStore } from "@/stores/favorite-store";
+
   // Emits
   const emits = defineEmits(["on-category-detail"]);
 
@@ -53,11 +59,33 @@
   const { getEntityName, translate } = useUtilities(locale.value);
 
   const entityName = getEntityName(entityKey);
+  const checkInStore = useCheckInStore();
+  const favoriteStore = useFavoriteStore();
 
   const cardStyle = computed(() => ({
     borderTop: "1px solid rgba(0, 0, 0, 0.12)",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
   }));
+
+  const isCheckedIn = (item: CategoryTypes): boolean => {
+    switch (entityKey) {
+      case "SITE":
+        return checkInStore.isCheckIn(item as SiteView);
+      default:
+        return false;
+    }
+  };
+
+  const isFavoriteItem = (item: CategoryTypes): boolean => {
+    switch (entityKey) {
+      case "BUSINESS":
+        return favoriteStore.isBusinessFavorite(item as BusinessView);
+      case "SITE":
+        return favoriteStore.isSiteFavorite(item as SiteView);
+      default:
+        return false;
+    }
+  };
 
   function line1(item: CategoryTypes): string {
     if (directory && directory.groupId === 5) {

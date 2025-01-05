@@ -8,6 +8,14 @@ export default {
     serverData: "伺服器數據"
   },
 
+  checkIn: {
+    title: "我的簽到",
+    checkInList: "簽到列表",
+    map: "地圖",
+    lastCheckIn: "最後簽到時間：{date}",
+    noCheckIn: "您尚無任何簽到記錄"
+  },
+
   tabItem: {
     location: "首頁",
     business: "商業",

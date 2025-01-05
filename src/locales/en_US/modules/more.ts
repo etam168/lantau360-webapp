@@ -38,13 +38,6 @@ export default {
       payByStrip: "Pay By Strip",
       paymentOptions: "Payment Options",
       noRecord: "There is no Record to show you right now."
-    },
-    checkin: {
-      title: "My Check-In",
-      checkInList: "CheckIn List",
-      map: "Map",
-      lastCheckIn: "Last CheckIn : {date}",
-      noCheckIn: "You don't have any Check-In"
     }
   },
 

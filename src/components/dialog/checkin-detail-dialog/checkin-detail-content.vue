@@ -1,5 +1,4 @@
 <template>
-  <div>ddd</div>
   <q-table
     ref="qTableRef"
     v-bind="$attrs"
