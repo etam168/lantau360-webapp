@@ -1,33 +1,29 @@
 <template>
   <q-table
-    grid
+    class="bg-red"
     flat
-    :rows="checkinItems"
-    row-key="siteId"
+    square
     hide-pagination
+    hide-header
+    :hide-bottom="checkinItems.length > 0"
+    row-key="siteId"
+    :card-style="cardStyle"
+    :rows="checkinItems"
     :style="tableStyle"
-    :rows-per-page-options="[0]"
   >
-    <template v-slot:item="props">
-      <q-item
-        clickable
-        @click="handleDetail(props.row)"
-        class="full-width"
-        style="height: fit-content"
-      >
-        <q-item-section avatar>
-          <app-avatar :image-path="computeIconPath(props.row)" size="54px" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>{{ line1(props.row) }}</q-item-label>
-
-          <q-item-label lines="2" v-if="props.row?.checkInfo?.length > 0">
-            {{ line2(props.row) }}
-          </q-item-label>
-        </q-item-section>
-      </q-item>
+    <template v-slot:body="props">
+      <q-tr :props="props">
+        <q-td auto-width style="padding: 0">
+          <app-checkin-item
+            :image-path="props.row.siteData?.iconPath"
+            :line1="getLine1(props.row)"
+            :line2="getLine2(props.row)"
+            @click="showDetailDialog(props.row)"
+          />
+        </q-td>
+      </q-tr>
     </template>
+
     <template v-slot:no-data>
       <app-no-record-message :message="$t('errors.noCheckinRecord')" />
     </template>
@@ -35,82 +31,73 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Types
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
-
-  // Stores
   import { useCheckInStore } from "@/stores/checkin-store";
 
-  // Emits
-  const emits = defineEmits(["on-member-detail"]);
+  // Constants
+  import { MAX_SCREEN_WIDTH } from "@/constants";
+
+  // Props
+  const { i18nKey = "" } = defineProps<{
+    i18nKey?: string;
+  }>();
 
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
-  const { dateFormatter, translate } = useUtilities(locale.value);
-
+  const { aspectRatio, dateFormatter, translate } = useUtilities(locale.value);
   const checkInStore = useCheckInStore();
+
+  const THRESHOLD = 320;
+  const ADDITIONAL_HEIGHT = 160;
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
-  const i18nKeyMoreDialog = "more.mainMenuDialog";
-  const THRESHOLD = 320;
+  const cardStyle = computed(() => ({
+    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+  }));
 
   const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16;
-    return carouselHeight + 193;
+    const width = Math.min($q.screen.width, MAX_SCREEN_WIDTH);
+    return width * aspectRatio() + ADDITIONAL_HEIGHT;
   });
 
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const height = $q.screen.height - usedHeight.value;
+    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
   });
 
-  const tableStyle = computed(() => {
-    return $q.screen.height - usedHeight.value > THRESHOLD ? scrollAreaStyle.value : {};
-  });
-
-  const computeIconPath = (item: any) => {
-    return item.siteData?.iconPath;
+  const getLine1 = (item: CheckInView): string => {
+    const { siteName, meta } = item.siteData ?? {};
+    return siteName ? translate(siteName, meta, "siteName") : "";
   };
 
-  function line1(item: CheckInView) {
-    const siteName = item.siteData?.siteName;
-    if (siteName) {
-      return translate(siteName, item.siteData?.meta, "siteName");
-    }
-    return "";
-  }
+  const getLine2 = (item: CheckInView): string => {
+    const checkInfo = item.checkInfo ?? [];
+    if (!checkInfo.length) return "";
 
-  function line2(item: CheckInView) {
-    const checkInfo = item.checkInfo || [];
-    const latestCheckIn = checkInfo.reduce(
-      (latest, current) => {
-        return new Date(current.checkInAt) > new Date(latest.checkInAt) ? current : latest;
-      },
-      { checkInAt: "1970-01-01T00:00:00.000Z" }
+    const lastCheckIn = checkInfo.reduce((latest, current) =>
+      new Date(current.checkInAt) > new Date(latest.checkInAt) ? current : latest
     );
 
-    if (latestCheckIn.checkInAt) {
-      const formattedDate = dateFormatter(latestCheckIn.checkInAt);
-      return t(`${i18nKeyMoreDialog}.checkin.lastCheckIn`, { date: formattedDate });
-    }
+    const d = dateFormatter(lastCheckIn.checkInAt);
 
-    return "";
-  }
+    return lastCheckIn.checkInAt
+      ? t(`${i18nKey}.checkIn.lastCheckIn`, {
+          date: dateFormatter(lastCheckIn.checkInAt)
+        })
+      : "";
+  };
 
-  async function handleDetail(item: CheckInView) {
+  const showDetailDialog = (item: CheckInView) => {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/checkin-detail-dialog/index.vue")
       ),
-      componentProps: { item: item, dialogName: "checkinDetailDialog" }
-    })
-      .onCancel(() => {})
-      .onOk(() => {});
-  }
+      componentProps: {
+        item,
+        dialogName: "checkinDetailDialog"
+      }
+    });
+  };
 </script>
-
-<style>
-  .q-table--grid .q-table__grid-content {
-    flex: none;
-  }
-</style>

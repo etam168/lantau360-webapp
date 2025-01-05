@@ -1,40 +1,31 @@
 <template>
   <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
+
   <q-table
-    grid
     flat
-    :rows="categoryItems"
+    square
+    :hide-pagination="categoryItems.length > 0"
+    :hide-header="categoryItems.length > 0"
+    :hide-bottom="categoryItems.length > 0"
     :row-key="`${entityName}Id`"
-    hide-pagination
+    :card-style="cardStyle"
+    :rows="categoryItems"
     :style="tableStyle"
-    :rows-per-page-options="[0]"
   >
-    <template v-slot:item="props">
-      <q-item
-        clickable
-        @click="handleDetail(props.row)"
-        class="full-width"
-        style="height: fit-content"
-      >
-        <q-item-section avatar>
-          <app-avatar-rounded :image-path="props.row.iconPath" />
-        </q-item-section>
-
-        <q-item-section>
-          <q-item-label>{{ line1(props.row) }}</q-item-label>
-          <q-item-label caption>{{ line2(props.row) }}</q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <div class="q-gutter-sm">
-            <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn(props.row)" />
-            <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavoriteItem(props.row)" />
-          </div>
-        </q-item-section>
-      </q-item>
-
-      <q-separator />
+    <!-- :style="tableStyle" -->
+    <template v-slot:body="props">
+      <q-tr :props="props">
+        <q-td style="padding: 0">
+          <app-category-item
+            :image-path="props.row.iconPath"
+            :line1="line1(props.row)"
+            :line2="line2(props.row)"
+            @click="handleDetail(props.row)"
+          />
+        </q-td>
+      </q-tr>
     </template>
+
     <template v-slot:no-data>
       <app-no-record-message v-if="categoryItems.length <= 0" :message="$t('errors.noRecord')" />
     </template>
@@ -96,30 +87,41 @@
     return directory?.meta?.template === 2 && hasTaxiFleet.value ? 78 : 0;
   });
 
+  const cardStyle = computed(() => ({
+    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+  }));
+
   const usedHeight = computed(() => {
     if (pageName === "FAVOURITE") {
       const width = Math.min($q.screen.width, 1024);
       const carouselHeight = (width * 9) / 16;
-      return carouselHeight + 193;
+      return carouselHeight + 168;
     } else {
       return TAB_HEIGHT.value + BANNER_HEIGHT.value;
     }
   });
 
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
-  });
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const hasNoData = categoryItems.length === 0;
+    const hasEnoughSpace = $q.screen.height - usedHeight.value > THRESHOLD.value;
 
-  const tableStyle = computed(() => {
-    return $q.screen.height - usedHeight.value > THRESHOLD.value ? scrollAreaStyle.value : {};
+    switch (true) {
+      case hasNoData:
+        return undefined;
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
   });
 
   // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
   const hasTaxiFleet = computed(() => categoryItems.some(item => item.subtitle3 === "Taxi Fleet"));
 
-  function line1(item: CategoryTypes): string | null {
+  function line1(item: CategoryTypes): string {
     if (directory && directory.groupId === 5) {
-      return null;
+      return "";
     }
     const name = `${entityName}Name` as keyof CategoryTypes;
     return translate(item[name] as string, item.meta, name);
@@ -165,7 +167,7 @@
 </script>
 
 <style>
-  .q-table--grid .q-table__grid-content {
+  /* .q-table--grid .q-table__grid-content {
     flex: none;
-  }
+  } */
 </style>

@@ -7,14 +7,12 @@ import type { CommunityNewsView } from "@/interfaces/models/views/community-news
 import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
 import type { PostingView } from "@/interfaces/models/views/posting-view";
 import type { SiteView } from "@/interfaces/models/views/site-view";
-import type { CheckInView } from "@/interfaces/models/views/checkin-view";
 
 export type CategoryTypes =
   | AdvertisementView
   | BusinessView
   | BusinessPromotionView
   | BusinessVoucherView
-  | CheckInView
   | CommunityEventView
   | CommunityNewsView
   | CommunityNoticeView

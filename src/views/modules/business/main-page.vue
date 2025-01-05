@@ -40,9 +40,9 @@
   import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
-  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
+  import MainContent from "./components/main-content.vue";
 
-  // .ts file
+  // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Props

@@ -1,8 +1,9 @@
 import type { CheckIn } from "../entities/checkin";
 import typia from "typia";
+import { SiteView } from "./site-view";
 
 export interface CheckInView extends CheckIn {
-  siteData?: Record<string, any>;
+  siteData?: SiteView;
 }
 
 const { resetObject } = useUtilities();
