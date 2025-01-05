@@ -11,6 +11,7 @@
       :directory="directory"
       :entityKey="entityKey"
       @on-category-detail="onCategoryDetail"
+      :style="tableStyle"
     />
   </template>
 
@@ -41,6 +42,7 @@
             :directory
             :entityKey
             @on-category-detail="onCategoryDetail"
+            :style="tableStyle"
           />
         </q-tab-panel>
       </q-tab-panels>
@@ -54,6 +56,7 @@
       :directory
       :entityKey
       @on-category-detail="onCategoryDetail"
+      :style="tableStyle"
     />
   </template>
 </template>
@@ -85,6 +88,7 @@
   }>();
 
   // Composable function calls
+  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
 
@@ -105,6 +109,8 @@
         return 0;
     }
   });
+
+  const THRESHOLD = 150 as const;
 
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
@@ -142,6 +148,36 @@
 
   const tab = ref("");
   const setTab = (val: string) => (tab.value = val);
+
+  const TAB_HEIGHT = computed(() => {
+    return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
+  });
+  const BANNER_HEIGHT = computed(() => {
+    return directory?.meta?.template === 2 && hasTaxiFleet.value ? 78 : 0;
+  });
+
+  const usedHeight = computed(() => {
+    return TAB_HEIGHT.value + BANNER_HEIGHT.value;
+  });
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const hasNoData = categoryItems.value.length === 0;
+    const hasEnoughSpace = $q.screen.height - usedHeight.value > THRESHOLD.value;
+
+    switch (true) {
+      case hasNoData:
+        return undefined;
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
+  });
+
+  // Computed property to check if categoryItems contains "Taxi Fleet" in subtitle3
+  const hasTaxiFleet = computed(() =>
+    categoryItems.value.some(item => item.subtitle3 === "Taxi Fleet")
+  );
 
   // Function to filter groupedArray by group name
   function filterGroupedArray(groupName: string) {

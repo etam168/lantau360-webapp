@@ -25,6 +25,7 @@
         :entityKey="'SITE'"
         :pageName="'FAVOURITE'"
         @on-category-detail="onCategoryDetail"
+        :style="tableStyle" 
       />
     </q-tab-panel>
 
@@ -34,6 +35,7 @@
         :entityKey="'BUSINESS'"
         :pageName="'FAVOURITE'"
         @on-category-detail="onCategoryDetail"
+        :style="tableStyle" 
       />
     </q-tab-panel>
 

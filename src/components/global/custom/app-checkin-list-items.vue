@@ -32,6 +32,8 @@
 <script setup lang="ts">
   // Types
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+
+  //Store
   import { useCheckInStore } from "@/stores/checkin-store";
 
   // Props

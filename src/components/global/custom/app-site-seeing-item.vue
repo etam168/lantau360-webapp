@@ -15,6 +15,7 @@
       :directory="directory"
       :entityKey="entityKey"
       @on-category-detail="onCategoryDetail"
+      :style
     />
   </div>
 </template>
@@ -28,11 +29,12 @@
   import expansionDescriptionSection from "@/components/dialog/category-items-dialog/expansion-description-section.vue";
 
   // Props
-  const { categoryItems, checkIns, directory, entityKey } = defineProps<{
+  const { categoryItems, checkIns, directory, entityKey, style } = defineProps<{
     categoryItems: CategoryTypes[];
     checkIns: CheckIn[];
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
+    style: any;
   }>();
 
   // Emits
