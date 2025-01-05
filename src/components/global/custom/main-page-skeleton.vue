@@ -54,7 +54,7 @@
       case "FAVOURITE":
         return [
           { name: "carousel", type: "carousel" },
-          { name: "toolbar", type: "toolbar", itemCount: 2 }
+          { name: "toolbar", type: "toolbar", itemCount: 3 }
         ];
       case "SITE":
         return [

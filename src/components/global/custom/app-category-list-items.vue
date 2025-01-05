@@ -35,8 +35,10 @@
 
 <script setup lang="ts">
   // Interface files
+  import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
   import { EntityURLKey } from "@/constants";

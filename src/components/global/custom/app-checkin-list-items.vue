@@ -9,6 +9,7 @@
     row-key="siteId"
     :card-style="cardStyle"
     :rows="checkinItems"
+    :rows-per-page-options="[0]"
   >
     <template v-slot:body="props">
       <q-tr :props="props">

@@ -19,6 +19,9 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
       <q-scroll-area>
         <q-card-section class="q-pt-md q-pa-none">
+          <q-item v-if="latestCheckinItem"
+            ><q-item-label>{{ getLine2(latestCheckinItem) }}</q-item-label></q-item
+          >
           <entity-form-content
             v-if="isFormMapperLoaded"
             :entityKey
@@ -43,13 +46,13 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
 <script setup lang="ts" generic="EntityT extends EntityType">
   // Interface files
+  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import type { EntityType } from "@/interfaces/types/entity-type";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Third party imports
   import { object } from "yup";
   import { Form } from "vee-validate";
-  import { useUserStore } from "@/stores/user";
 
   // Component imports
   import EntityFormContent from "@/components/forms/entity-form-content.vue";
@@ -73,8 +76,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
   // Composables and store instantiation
   const { t } = useI18n({ useScope: "global" });
-  const { getEntityName, notify } = useUtilities();
-  const userStore = useUserStore();
+  const { dateFormatter, getEntityName, notify } = useUtilities();
   const checkInStore = useCheckInStore();
 
   // Reactive references
@@ -93,6 +95,40 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
   // Validation Schema
   const schema = object({});
+  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
+
+  // Compute the latest check-in item
+  const latestCheckinItem = computed(() => {
+    if (checkinItems.value.length > 0) {
+      const latest = checkinItems.value.reduce((latest, current) =>
+        new Date(current.checkInfo[0]?.checkInAt) > new Date(latest.checkInfo[0]?.checkInAt)
+          ? current
+          : latest
+      );
+      console.log("latestCheckinItem:", latest); // Log the latest check-in item
+      return latest;
+    }
+    return null; // Return null if no items are found
+  });
+
+  // Refactor getLine2 to display the exact checkInAt
+  const getLine2 = (item: CheckInView | null) => {
+    if (!item || !item.checkInfo || item.checkInfo.length === 0) {
+      return "No check-in data available.";
+    }
+
+    const lastCheckIn = item.checkInfo[0]; // We are using the most recent check-in
+
+    if (!lastCheckIn || !lastCheckIn.checkInAt) {
+      return "No check-in data available.";
+    }
+
+    return lastCheckIn.checkInAt
+      ? t(`favourite.checkIn.lastCheckIn`, {
+          date: dateFormatter(lastCheckIn.checkInAt)
+        })
+      : "";
+  };
 
   // Form submission handler
   async function handleSubmit(values: any) {
@@ -101,7 +137,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
     if (result.valid && formMappers.value) {
       try {
-        await checkInStore.addOrUpdateCheckIn(site as SiteView,values.description);
+        await checkInStore.addOrUpdateCheckIn(site as SiteView, values.description);
         emits("close-dialog");
       } catch (error) {
         console.error("Error creating entity record:", error);

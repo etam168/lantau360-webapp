@@ -19,21 +19,17 @@
   // Component imports
   import CheckInEntityCreateForm from "@/components/forms/checkin-entity-create-form.vue";
 
-  // Constant imports
+  // Constants
   import { EntityURLKey } from "@/constants";
 
-  // Emits
   const emit = defineEmits(["close-dialog"]);
 
-  // Props
   const { entityKey, site } = defineProps<{
     entityKey: EntityURLKey;
     site?: SiteView;
   }>();
 
   const supportedEntityTypes = ["CHECKIN"];
-
-  // Composable function calls
   const entityOptions = ref<Record<string, any>>({});
 
   const fetchAllData = async () => {
@@ -52,9 +48,5 @@
     }
   };
 
-  /**
-   * Fetch data as part of the setup
-   * This ensures that the component is compatible with Suspense
-   */
   await fetchAllData();
 </script>

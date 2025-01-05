@@ -10,8 +10,8 @@
       :checkIns="checkIns"
       :directory="directory"
       :entityKey="entityKey"
-      @on-category-detail="onCategoryDetail"
       :style="tableStyle"
+      @on-category-detail="onCategoryDetail"
     />
   </template>
 
@@ -36,15 +36,17 @@
           :name="item.name"
           class="q-pa-none"
         >
-          <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet(item)" />
+          <app-taxi-fleet-banner
+            v-if="directory?.meta.template === 2 && hasTaxiFleet(filterGroupedArray(item.name))"
+          />
 
           <app-category-list-items
             :categoryItems="filterGroupedArray(item.name)"
             :checkIns
             :directory
             :entityKey
-            @on-category-detail="onCategoryDetail"
             :style="tableStyle"
+            @on-category-detail="onCategoryDetail"
           />
         </q-tab-panel>
       </q-tab-panels>
@@ -114,8 +116,8 @@
 
   const THRESHOLD = 150 as const;
 
-  function hasTaxiFleet(item): boolean {
-    return item && item.name === "Taxi Fleet";
+  function hasTaxiFleet(item: CategoryTypes[]): boolean {
+    return item.some(i => i.subtitle3 === "Taxi Fleet");
   }
 
   const groupBykey = computed<string | null>(() =>
@@ -159,7 +161,7 @@
     return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
   });
   const BANNER_HEIGHT = computed(() => {
-    return directory?.meta?.template === 2 && hasTaxiFleet() ? 78 : 0;
+    return directory?.meta?.template === 2 && groupBykey.value ? 78 : 0;
   });
 
   const usedHeight = computed(() => {
@@ -168,13 +170,13 @@
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
     const hasNoData = categoryItems.value.length === 0;
-    const hasEnoughSpace = $q.screen.height - usedHeight.value > THRESHOLD.value;
+    const hasEnoughSpace = $q.screen.height - usedHeight.value > THRESHOLD;
 
     switch (true) {
       case hasNoData:
         return undefined;
       case hasEnoughSpace:
-        return { height: `calc(100vh - ${usedHeight}px)` };
+        return { height: `calc(100vh - ${usedHeight.value}px)` };
       default:
         return undefined;
     }

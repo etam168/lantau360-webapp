@@ -4,6 +4,7 @@ export interface BaseDirectory {
   shortNameAlt: string;
   imagePath: string;
   description: string;
+  displayMask: number;
   groupId: number;
   rank: number;
   status: number;
