@@ -9,6 +9,7 @@
     :row-key="`${entityName}Id`"
     :card-style="cardStyle"
     :rows="categoryItems"
+    :rows-per-page-options="[0]"
   >
     <!-- :style="tableStyle" -->
     <template v-slot:body="props">
