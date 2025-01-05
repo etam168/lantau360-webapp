@@ -1,6 +1,6 @@
 <template>
   <q-table
-    class="bg-red"
+    v-bind="$attrs"
     flat
     square
     hide-pagination
@@ -9,7 +9,6 @@
     row-key="siteId"
     :card-style="cardStyle"
     :rows="checkinItems"
-    :style="tableStyle"
   >
     <template v-slot:body="props">
       <q-tr :props="props">
@@ -25,7 +24,7 @@
     </template>
 
     <template v-slot:no-data>
-      <app-no-record-message :message="$t('errors.noCheckinRecord')" />
+      <app-no-record-message :message="$t(`${i18nKey}.checkIn.noCheckinRecord`)" />
     </template>
   </q-table>
 </template>
@@ -35,9 +34,6 @@
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import { useCheckInStore } from "@/stores/checkin-store";
 
-  // Constants
-  import { MAX_SCREEN_WIDTH } from "@/constants";
-
   // Props
   const { i18nKey = "" } = defineProps<{
     i18nKey?: string;
@@ -45,27 +41,15 @@
 
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
-  const { aspectRatio, dateFormatter, translate } = useUtilities(locale.value);
+  const { dateFormatter, translate } = useUtilities(locale.value);
   const checkInStore = useCheckInStore();
 
-  const THRESHOLD = 320;
-  const ADDITIONAL_HEIGHT = 160;
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
   const cardStyle = computed(() => ({
     borderTop: "1px solid rgba(0, 0, 0, 0.12)",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
   }));
-
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, MAX_SCREEN_WIDTH);
-    return width * aspectRatio() + ADDITIONAL_HEIGHT;
-  });
-
-  const tableStyle = computed<Record<string, any> | undefined>(() => {
-    const height = $q.screen.height - usedHeight.value;
-    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
-  });
 
   const getLine1 = (item: CheckInView): string => {
     const { siteName, meta } = item.siteData ?? {};

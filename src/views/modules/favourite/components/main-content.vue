@@ -32,7 +32,7 @@
     </q-tab-panel>
 
     <q-tab-panel name="checkIn" class="q-pa-none">
-      <app-checkin-list-items />
+      <app-checkin-list-items :style="tableStyle" i18n-key="favourite.checkIn" />
     </q-tab-panel>
   </q-tab-panels>
 </template>
@@ -52,19 +52,21 @@
   import i18n from "@/plugins/i18n/i18n";
 
   // Constants
-  import { ENTITY_URL } from "@/constants";
+  import { ENTITY_URL, MAX_SCREEN_WIDTH } from "@/constants";
 
   // Props
   const { i18nKey } = defineProps<{
     i18nKey: string;
   }>();
 
+  const $q = useQuasar();
   const { t } = i18n.global;
-  const { isSmallScreen } = useUtilities();
+  const { isSmallScreen, aspectRatio } = useUtilities();
+  const { fetchData } = useApi();
+
   const userStore = useUserStore();
   const favStore = useFavoriteStore();
   const checkInStore = useCheckInStore();
-  const { fetchData } = useApi();
   const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
@@ -85,6 +87,21 @@
   const title = computed(() => {
     const baseTitle = t(`${i18nKey}.title`);
     return userStore.isUserLogon() ? baseTitle : `${baseTitle} (Offline)`;
+  });
+
+  const THRESHOLD = 320 as const;
+
+  const usedHeight = computed(() => {
+    const ADDITIONAL_HEIGHT = 160 as const;
+    const width = Math.min($q.screen.width, MAX_SCREEN_WIDTH);
+    const carouselHeigh = width * aspectRatio();
+
+    return carouselHeigh + ADDITIONAL_HEIGHT;
+  });
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const height = $q.screen.height - usedHeight.value;
+    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
   });
 
   defineEmits<{

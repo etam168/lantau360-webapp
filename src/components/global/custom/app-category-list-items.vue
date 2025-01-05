@@ -4,8 +4,8 @@
   <q-table
     flat
     square
-    :hide-pagination="categoryItems.length > 0"
-    :hide-header="categoryItems.length > 0"
+    hide-pagination
+    hide-header
     :hide-bottom="categoryItems.length > 0"
     :row-key="`${entityName}Id`"
     :card-style="cardStyle"
@@ -165,9 +165,3 @@
     emits("on-category-detail", item);
   }
 </script>
-
-<style>
-  /* .q-table--grid .q-table__grid-content {
-    flex: none;
-  } */
-</style>
