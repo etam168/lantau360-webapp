@@ -69,7 +69,7 @@
     const d = dateFormatter(lastCheckIn.checkInAt);
 
     return lastCheckIn.checkInAt
-      ? t(`${i18nKey}.checkIn.lastCheckIn`, {
+      ? t(`${i18nKey}.lastCheckIn`, {
           date: dateFormatter(lastCheckIn.checkInAt)
         })
       : "";

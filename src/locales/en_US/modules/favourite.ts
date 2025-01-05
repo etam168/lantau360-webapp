@@ -8,6 +8,14 @@ export default {
     serverData: "Server Data"
   },
 
+  checkIn: {
+    title: "My Check-In",
+    checkInList: "CheckIn List",
+    map: "Map",
+    lastCheckIn: "Last CheckIn : {date}",
+    noCheckIn: "You don't have any Check-In"
+  },
+
   tabItem: {
     location: "Home",
     business: "Business",
