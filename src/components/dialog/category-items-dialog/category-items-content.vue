@@ -36,6 +36,8 @@
           :name="item.name"
           class="q-pa-none"
         >
+          <app-taxi-fleet-banner v-if="directory?.meta.template === 2 && hasTaxiFleet" />
+
           <app-category-list-items
             :categoryItems="filterGroupedArray(item.name)"
             :checkIns
