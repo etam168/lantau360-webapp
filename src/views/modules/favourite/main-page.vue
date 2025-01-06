@@ -4,7 +4,6 @@
 
   <q-separator size="4px" color="primary" />
 
-  <!-- Merged main-content template -->
   <q-banner :inline-actions="!isSmallScreen">
     <q-toolbar-title :class="titleClass">{{ contentTitle }}</q-toolbar-title>
 
@@ -17,15 +16,13 @@
       />
     </template>
   </q-banner>
-
   <q-tab-panels v-model="tab">
     <q-tab-panel name="location" class="q-pa-none">
       <app-category-list-items
         :categoryItems="siteItems"
         :entityKey="'SITE'"
-        :pageName="'FAVOURITE'"
+        :style="tableStyle"
         @on-category-detail="onCategoryDetail"
-        :style="tableStyle" 
       />
     </q-tab-panel>
 
@@ -33,9 +30,8 @@
       <app-category-list-items
         :categoryItems="businessItems"
         :entityKey="'BUSINESS'"
-        :pageName="'FAVOURITE'"
+        :style="tableStyle"
         @on-category-detail="onCategoryDetail"
-        :style="tableStyle" 
       />
     </q-tab-panel>
 
@@ -48,7 +44,6 @@
 <script setup lang="ts">
   // Interface files
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
-  import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { SiteView } from "@/interfaces/models/views/site-view";
   import type { BusinessView } from "@/interfaces/models/views/business-view";
@@ -79,12 +74,10 @@
   const error = ref<string | null>(null);
   const i18nKey = getEntityName(entityKey);
   const isDialogOpen = ref(false);
-
   const siteItems = computed<SiteView[]>(() => favStore.favoriteSites);
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
-  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
-  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
+  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : undefined));
   const tab = ref("location");
 
   const tabItems = ref<TabItem[]>([
@@ -100,17 +93,16 @@
     return userStore.isUserLogon() ? baseTitle : `${baseTitle} (Offline)`;
   });
 
-  const THRESHOLD = 320 as const;
-
   const usedHeight = computed(() => {
-    const ADDITIONAL_HEIGHT = 160 as const;
     const width = Math.min($q.screen.width, MAX_SCREEN_WIDTH);
-    const carouselHeigh = width * aspectRatio();
+    const carouselHeigh = Math.ceil(width / aspectRatio());
+    const additionalHeight = isSmallScreen.value ? 192 : 170;
 
-    return carouselHeigh + ADDITIONAL_HEIGHT;
+    return carouselHeigh + additionalHeight;
   });
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const THRESHOLD = 248 as const;
     const height = $q.screen.height - usedHeight.value;
     return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
   });
