@@ -3,8 +3,8 @@ File: generic-entity-create-form.vue
 
 Description:
 A reusable Vue component for creating new entities dynamically.
-It uses form mappers to generate appropriate form fields based on the entity type.
-Supports validation, custom form structures, and integrates with a CRUD service.
+Features form content, check-in history table, and submission handling.
+Supports validation, custom form structures, and integrates with CRUD service.
 -->
 
 <template>
@@ -16,28 +16,60 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     @submit="handleSubmit"
     style="width: 520px"
   >
-    <q-card flat class="full-height" style="display: grid; grid-template-rows: 1fr auto">
-      <q-scroll-area>
-        <q-card-section class="q-pt-md q-pa-none">
-          <q-item v-if="latestCheckinItem"
-            ><q-item-label>{{ getLine2(latestCheckinItem) }}</q-item-label></q-item
-          >
-          <entity-form-content
-            v-if="isFormMapperLoaded"
-            :entityKey
-            :entityOptions
-            :form-structure="formMappers!.formStructure"
-          />
-          <div v-else>{{ $t("error.formMapperLoadFailed") }}</div>
-        </q-card-section>
-      </q-scroll-area>
+    <q-card flat class="full-height" style="display: grid; grid-template-rows: auto 1fr auto">
+      <!-- Form Content Section -->
+      <q-card-section class="q-pt-md">
+        <entity-form-content
+          v-if="isFormMapperLoaded"
+          :entityKey="entityKey"
+          :entityOptions="entityOptions"
+          :form-structure="formMappers!.formStructure"
+        />
+        <div v-else>{{ $t("error.formMapperLoadFailed") }}</div>
+      </q-card-section>
 
+      <!-- Check-in History Table Section -->
+      <q-card-section class="q-pa-none">
+        <div class="text-h6 q-px-md q-pt-md">{{ "Checkin History" }}</div>
+        <q-scroll-area style="height: 200px">
+          <q-table
+            flat
+            dense
+            :rows="sortedCheckIns"
+            row-key="checkInAt"
+            hide-pagination
+            :rows-per-page-options="[0]"
+            class="check-in-table"
+            :style="tableStyle"
+          >
+            <template v-slot:body="props">
+              <q-tr :props="props">
+                <q-td auto-width>
+                  {{ dateTimeFormatter(props.row.checkInAt) }}
+                </q-td>
+                <q-td>
+                  {{ props.row.description || "-" }}
+                </q-td>
+              </q-tr>
+            </template>
+
+            <template v-slot:no-data>
+              <div class="full-width row flex-center q-pa-md text-grey-6">
+                {{ $t("errors.noCheckinRecord") }}
+              </div>
+            </template>
+          </q-table>
+        </q-scroll-area>
+      </q-card-section>
+
+      <!-- Action Button Section -->
       <q-card-actions :class="$q.screen.gt.sm ? 'q-pa-lg' : 'q-pa-md'">
         <app-button
           class="full-width"
           :label="$t('action.save')"
           type="submit"
-          :disable="!isFormMapperLoaded"
+          :loading="isSubmitting"
+          :disable="!isFormMapperLoaded || isSubmitting"
         />
       </q-card-actions>
     </q-card>
@@ -49,10 +81,12 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import type { EntityType } from "@/interfaces/types/entity-type";
   import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { QTableColumn } from "quasar";
 
   // Third party imports
   import { object } from "yup";
   import { Form } from "vee-validate";
+  import { ref, computed, onBeforeMount } from "vue";
 
   // Component imports
   import EntityFormContent from "@/components/forms/entity-form-content.vue";
@@ -68,7 +102,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   const emits = defineEmits(["close-dialog"]);
 
   // Props
-  const { entityKey, entityOptions, site } = defineProps<{
+  const props = defineProps<{
     entityKey: EntityURLKey;
     entityOptions?: Record<string, any>;
     site?: SiteView;
@@ -76,80 +110,86 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
   // Composables and store instantiation
   const { t } = useI18n({ useScope: "global" });
-  const { dateFormatter, getEntityName, notify } = useUtilities();
+  const { dateTimeFormatter, getEntityName, notify, aspectRatio } = useUtilities();
+  const $q = useQuasar();
   const checkInStore = useCheckInStore();
+  const formMappersStore = useFormMappersStore();
 
   // Reactive references
-  const formMappersStore = useFormMappersStore();
-  const formMappers = computed(() => formMappersStore.getFormMappers(entityKey));
-
-  const isFormMapperLoaded = computed(
-    () => formMappersStore.isLoaded(entityKey) && !!formMappers.value
-  );
-
   const form = ref();
   const initialValues = ref({});
   const isLoading = ref(true);
+  const isSubmitting = ref(false);
 
-  const entityName = getEntityName(entityKey);
+  // Computed properties
+  const formMappers = computed(() => formMappersStore.getFormMappers(props.entityKey));
+  const entityName = getEntityName(props.entityKey);
+
+  const isFormMapperLoaded = computed(
+    () => formMappersStore.isLoaded(props.entityKey) && !!formMappers.value
+  );
+
+  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
+
+
+  const sortedCheckIns = computed(() => {
+    const currentSiteCheckIns =
+      checkinItems.value.find(item => item.siteId === props.site?.siteId)?.checkInfo || [];
+
+    return [...currentSiteCheckIns].sort(
+      (a, b) => new Date(b.checkInAt).getTime() - new Date(a.checkInAt).getTime()
+    );
+  });
 
   // Validation Schema
   const schema = object({});
-  const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
-  // Compute the latest check-in item
-  const latestCheckinItem = computed(() => {
-    if (checkinItems.value.length > 0) {
-      const latest = checkinItems.value.reduce((latest, current) =>
-        new Date(current.checkInfo[0]?.checkInAt) > new Date(latest.checkInfo[0]?.checkInAt)
-          ? current
-          : latest
-      );
-      console.log("latestCheckinItem:", latest); // Log the latest check-in item
-      return latest;
-    }
-    return null; // Return null if no items are found
-  });
+  // Add these constants
+const THRESHOLD = 320 as const;
+const MAX_SCREEN_WIDTH = 1200; // Add your actual MAX_SCREEN_WIDTH value
+const FORM_ADDITIONAL_HEIGHT = 260; // Height for form content and button sections
 
-  // Refactor getLine2 to display the exact checkInAt
-  const getLine2 = (item: CheckInView | null) => {
-    if (!item || !item.checkInfo || item.checkInfo.length === 0) {
-      return "No check-in data available.";
-    }
+const usedHeight = computed(() => {
+  const ADDITIONAL_HEIGHT = 160 as const;
+  const width = Math.min($q.screen.width, MAX_SCREEN_WIDTH);
+  const carouselHeight = width * aspectRatio();
 
-    const lastCheckIn = item.checkInfo[0]; // We are using the most recent check-in
+  return carouselHeight + ADDITIONAL_HEIGHT + FORM_ADDITIONAL_HEIGHT;
+});
 
-    if (!lastCheckIn || !lastCheckIn.checkInAt) {
-      return "No check-in data available.";
-    }
+const tableStyle = computed<Record<string, any> | undefined>(() => {
+  const height = $q.screen.height - usedHeight.value;
+  return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
+});
 
-    return lastCheckIn.checkInAt
-      ? t(`favourite.checkIn.lastCheckIn`, {
-          date: dateFormatter(lastCheckIn.checkInAt)
-        })
-      : "";
-  };
 
   // Form submission handler
   async function handleSubmit(values: any) {
-    const { validate } = form.value;
-    const result = await validate();
+    if (!formMappers.value || isSubmitting.value) return;
 
-    if (result.valid && formMappers.value) {
-      try {
-        await checkInStore.addOrUpdateCheckIn(site as SiteView, values.description);
+    isSubmitting.value = true;
+    const { validate } = form.value;
+
+    try {
+      const result = await validate();
+
+      if (result.valid) {
+        await checkInStore.addOrUpdateCheckIn(props.site as SiteView, values.description);
+        notify(t(`${entityName}.message.createSuccess`), "positive");
         emits("close-dialog");
-      } catch (error) {
-        console.error("Error creating entity record:", error);
-        notify(t(`${entityName}.message.createError`), "negative");
       }
+    } catch (error) {
+      console.error("Error creating entity record:", error);
+      notify(t(`${entityName}.message.createError`), "negative");
+    } finally {
+      isSubmitting.value = false;
     }
   }
 
-  // Lifecycle hook
-  onBeforeMount(() => {
+  // Load form mapper data
+  async function loadFormMapperData() {
     try {
-      formMappersStore.loadFormMapper(entityKey);
+      await formMappersStore.loadFormMapper(props.entityKey);
 
       if (!isFormMapperLoaded.value) {
         throw new Error("Form mappers not loaded after attempting to load");
@@ -168,5 +208,10 @@ Supports validation, custom form structures, and integrates with a CRUD service.
     } finally {
       isLoading.value = false;
     }
+  }
+
+  // Lifecycle hooks
+  onBeforeMount(async () => {
+    await loadFormMapperData();
   });
 </script>
