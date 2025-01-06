@@ -20,11 +20,9 @@
         <Suspense>
           <template #default>
             <!-- Main input dialog content -->
-            <input-dialog-content
-              :entity-key
-              :site
-              @close-dialog="handleCloseDialog"
-            />
+            <div class="row justify-center">
+              <input-dialog-content :entity-key :site @close-dialog="handleCloseDialog" />
+            </div>
           </template>
           <template #fallback>
             <!-- Loading spinner shown while content is loading -->
