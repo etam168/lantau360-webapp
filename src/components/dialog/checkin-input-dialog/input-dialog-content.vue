@@ -1,17 +1,13 @@
 <template>
   <Form
     ref="form"
-    class="full-height"
+    class="full-height q-mx-auto"
     :initial-values="initialValues"
     :validation-schema="schema"
     @submit="handleSubmit"
-    style="width: 520px"
+    style="max-width: 560px"
   >
-    <q-card
-      flat
-      class="full-height bg-transparent"
-      style="display: grid; grid-template-rows: auto 1fr auto"
-    >
+    <q-card flat>
       <!-- Form Content Section -->
       <q-card-section>
         <vee-input :auto-grow="true" name="description" label="Note" type="textarea" />
@@ -93,12 +89,10 @@
   // Reactive references
   const form = ref();
   const initialValues = ref({});
-  const isLoading = ref(true);
   const isSubmitting = ref(false);
-
-  // Computed properties
   const entityName = getEntityName(props.entityKey);
 
+  // Computed properties
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
   const sortedCheckIns = computed(() => {
@@ -124,7 +118,7 @@
 
   // Form submission handler
   async function handleSubmit(values: any) {
-    if ( isSubmitting.value) return;
+    if (isSubmitting.value) return;
     isSubmitting.value = true;
     const { validate } = form.value;
 
@@ -133,7 +127,6 @@
 
       if (result.valid) {
         await checkInStore.addOrUpdateCheckIn(props.site as SiteView, values.description);
-        // notify(t(`${entityName}.message.createSuccess`), "positive");
         emits("close-dialog");
       }
     } catch (error) {
