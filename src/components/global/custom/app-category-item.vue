@@ -1,12 +1,12 @@
 <template>
-  <q-item clickable class="full-width" @click="$emit('click')">
+  <q-item clickable @click="$emit('click')" style="max-width: 390px">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="imagePath" size="54px" />
     </q-item-section>
 
     <q-item-section>
-      <q-item-label>{{ line1 }}</q-item-label>
-      <q-item-label caption>{{ line2 }}</q-item-label>
+      <q-item-label lines="1">{{ line1 }}</q-item-label>
+      <q-item-label caption lines="2">{{ line2 }}</q-item-label>
     </q-item-section>
 
     <q-item-section side>

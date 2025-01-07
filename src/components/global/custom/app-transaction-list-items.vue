@@ -2,10 +2,12 @@
   <q-table
     ref="qTableRef"
     v-bind="$attrs"
-    :card-style="scrollAreaStyle"
+    :card-style="cardStyle"
     class="sticky-header-column q-ma-md"
     :rows="transactionItem"
     :columns="columns"
+    flat
+    squares
     row-key="description"
     v-model:pagination="pagination"
     :hide-pagination="hidePagination"
@@ -18,13 +20,12 @@
             <q-item dense class="q-pa-none">
               <q-item-section>
                 <q-item-label>
-                  {{
-                    props.row.directoryName
-                      ? `${props.row.directoryName} - ${dateFormatter(props.row.createdAt)}`
-                      : dateFormatter(props.row.createdAt)
-                  }}
+                  {{ props.row.directoryName }}
                 </q-item-label>
-                <q-item-label caption>{{ props.row.title }}</q-item-label>
+                <q-item-label caption
+                  ><div>{{ dateFormatter(props.row.createdAt) }}</div>
+                  <div>{{ props.row.title }}</div></q-item-label
+                >
               </q-item-section>
             </q-item>
           </template>
@@ -94,9 +95,17 @@
     return MEMBER_POINTS_HEIGHT + OTHER_HEIGHT;
   });
 
-  const scrollAreaStyle = computed(() => {
+  const cardStyle = computed(() => {
     return $q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : "";
   });
+
+  // const cardStyle = computed(() => {
+  //   return {
+  //     borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+  //     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
+  //     ...($q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : {})
+  //   };
+  // });
 
   // Define pagination
   const pagination = ref({

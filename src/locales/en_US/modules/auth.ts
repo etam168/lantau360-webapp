@@ -31,7 +31,7 @@ export default {
     newPassword: "New Password",
     password: "Password",
     registerPassword: "Password",
-    userName: "(Email)",
+    userName: "User Name (Email)",
     checkInCaption: "For checkIn please signIn first",
     loginToProceed: "Please login first to procceed."
   },

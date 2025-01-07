@@ -18,8 +18,11 @@
 
           <q-card flat bordered>
             <q-card-section class="q-pa-none">
-              <div class="text-subtitle3">MEMO</div>
-              <div class="text-subtitle3">{{ dateTimeFormatter(props.row.checkInAt) }}</div>
+              <q-bar>
+                <div class="text-subtitle3">MEMO</div>
+                <q-space />
+                <div class="text-subtitle3">{{ dateTimeFormatter(props.row.checkInAt) }}</div>
+              </q-bar>
             </q-card-section>
 
             <q-card-section class="ellipsis q-pa-none" style="max-width: 500px">
@@ -28,7 +31,6 @@
                 hide-bottom-space
                 v-model="props.row.description"
                 :name="`description_${props.row.checkInAt}`"
-                label="Note"
                 type="textarea"
               />
             </q-card-section>
