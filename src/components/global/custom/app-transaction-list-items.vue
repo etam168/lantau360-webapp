@@ -7,14 +7,15 @@
     :rows="transactionItem"
     :columns="columns"
     flat
-    row-key="description"
+    row-key="title"
     v-model:pagination="pagination"
     :hide-pagination="hidePagination"
     :dense="$q.screen.lt.md"
   >
-    <template v-slot:body-cell-description="props">
+    <template v-slot:body-cell-title="props">
       <q-td :props="props">
-        {{ props.value }}
+        <q-item-label> {{ props.value }} </q-item-label>
+        <q-item-label caption>{{ dateFormatter(props.row.createdAt) }} </q-item-label>
       </q-td>
     </template>
 
@@ -70,6 +71,7 @@
 
   const transactionItem = ref<TransactionView[]>(memberItems as TransactionView[]);
   const $q = useQuasar();
+  const { dateFormatter } = useUtilities();
 
   const MEMBER_POINTS_HEIGHT = 76 as const;
   const OTHER_HEIGHT = 96 + 72;
@@ -94,7 +96,7 @@
   const columns = computed(() => {
     return [
       {
-        name: "description",
+        name: "title",
         label: "Description",
         required: true,
         align: "left",
