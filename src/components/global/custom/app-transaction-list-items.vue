@@ -7,41 +7,25 @@
     :rows="transactionItem"
     :columns="columns"
     flat
-    squares
     row-key="description"
     v-model:pagination="pagination"
     :hide-pagination="hidePagination"
     :dense="$q.screen.lt.md"
   >
-    <template #body="props">
-      <q-tr :props="props">
-        <q-td v-for="col in props.cols" :key="col.name" :props="props">
-          <template v-if="col.name == 'description'">
-            <q-item dense class="q-pa-none">
-              <q-item-section>
-                <q-item-label>
-                  {{ props.row.directoryName }}
-                </q-item-label>
-                <q-item-label caption
-                  ><div>{{ dateFormatter(props.row.createdAt) }}</div>
-                  <div>{{ props.row.title }}</div></q-item-label
-                >
-              </q-item-section>
-            </q-item>
-          </template>
-
-          <template v-if="col.name == 'points'">
-            <q-item dense class="q-pa-none">
-              <q-item-section>
-                <q-item-label :class="props.row.transactionType === 2 ? 'text-red' : ''">
-                  {{ props.row.transactionType === 2 ? `${props.row.points}` : props.row.points }}
-                </q-item-label>
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-td>
-      </q-tr>
+    <template v-slot:body-cell-description="props">
+      <q-td :props="props">
+        {{ props.value }}
+      </q-td>
     </template>
+
+    <template v-slot:body-cell-points="props">
+      <q-td :props="props">
+        <q-item-label :class="props.row.transactionType === 2 ? 'text-red' : ''">
+          {{ props.row.transactionType === 2 ? `${props.row.points}` : props.row.points }}
+        </q-item-label>
+      </q-td>
+    </template>
+
     <template v-slot:pagination="scope">
       <q-btn
         :icon="fasAngleLeft"
@@ -52,7 +36,6 @@
         :disable="scope.isFirstPage"
         @click="scope.prevPage"
       />
-
       <q-btn
         :icon="fasAngleRight"
         color="grey-8"
@@ -99,14 +82,6 @@
     return $q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : "";
   });
 
-  // const cardStyle = computed(() => {
-  //   return {
-  //     borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-  //     borderBottom: "1px solid rgba(0, 0, 0, 0.12)",
-  //     ...($q.screen.height > 600 ? { height: `calc(100vh - ${usedHeight.value}px)` } : {})
-  //   };
-  // });
-
   // Define pagination
   const pagination = ref({
     sortBy: "description",
@@ -130,7 +105,7 @@
         name: "points",
         label: "Points",
         required: true,
-        align: "center",
+        align: "right",
         field: "points"
       }
     ] as QTableColumn[];

@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="$emit('click')" style="max-width: 390px">
+  <q-item clickable @click="$emit('click')" :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="imagePath" size="54px" />
     </q-item-section>

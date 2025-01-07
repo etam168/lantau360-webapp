@@ -2,30 +2,27 @@
   <q-table
     v-bind="$attrs"
     flat
-    dense
     hide-pagination
     hide-header
+    separator="none"
     row-key="checkInAt"
-    class="q-mx-auto"
+    class="q-mx-auto q-mt-sm"
     style="max-width: 560px"
     :rows="getCheckinRows(item)"
     :rows-per-page-options="[0]"
   >
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td class="no-border q-py-md">
+        <q-td class="q-py-sm">
           <!-- Card for Each Row -->
+          <q-card flat class="q-pa-none">
+            <q-bar dense class="bg-primary text-white">
+              <q-item-label>MEMO</q-item-label>
+              <q-space />
+              <div class="text-subtitle3">{{ dateTimeFormatter(props.row.checkInAt) }}</div>
+            </q-bar>
 
-          <q-card flat bordered>
             <q-card-section class="q-pa-none">
-              <q-bar>
-                <div class="text-subtitle3">MEMO</div>
-                <q-space />
-                <div class="text-subtitle3">{{ dateTimeFormatter(props.row.checkInAt) }}</div>
-              </q-bar>
-            </q-card-section>
-
-            <q-card-section class="ellipsis q-pa-none" style="max-width: 500px">
               <vee-input
                 readonly
                 hide-bottom-space
@@ -43,7 +40,6 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasCalendarDays } from "@quasar/extras/fontawesome-v6";
   import { QTable } from "quasar";
 
   const { item } = defineProps<{
@@ -56,15 +52,3 @@
     return item.checkInfo || [];
   };
 </script>
-
-<style scoped>
-  .date-section {
-    font-size: 14px;
-    font-weight: bold;
-    color: #333;
-  }
-
-  .q-card {
-    padding: 12px;
-  }
-</style>
