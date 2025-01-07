@@ -147,6 +147,7 @@
 
         case "server":
           favStore.syncLocalFromRemote();
+          checkInStore.syncLocalFromRemote();
           break;
 
         default:

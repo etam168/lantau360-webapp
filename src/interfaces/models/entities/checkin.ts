@@ -10,6 +10,7 @@ export interface CheckIn {
   modifiedAt: Date;
   modifiedBy?: number;
   meta?: Record<string, any>;
+  siteData: Record<string, any>;
 }
 
 const { resetObject } = useUtilities();

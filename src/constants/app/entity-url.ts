@@ -59,6 +59,7 @@ export const ENTITY_URL = {
   FAVOURITE_UPDATE:'/Member/UpdateFavourite',
   FAVOURITE_DATA_IDS:'/Member/GetFavouriteData/Ids',
   FAVOURITE_DATA:'/Member/GetFavouriteData',
+  CHECKIN_DATA_IDS:'/Member/GetCheckInData/Ids',
   CHECKIN_DATA:'/Member/GetCheckInData',
   CHECKIN_UPDATE:'/Member/UpdateCheckIn',
 

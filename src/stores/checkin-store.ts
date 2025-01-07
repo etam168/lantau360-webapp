@@ -124,7 +124,7 @@ export const useCheckInStore = defineStore(
     async function isCheckInInSync(): Promise<boolean> {
       try {
         // Fetch data from the API
-        const checkInResponse = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
+        const checkInResponse = await fetchData(`${ENTITY_URL.CHECKIN_DATA_IDS}/${userStore.userId}`);
 
         // Create a helper function to format DateTime to "HH:mm"
         const formatTime = (dateString: any) => {
@@ -175,8 +175,8 @@ export const useCheckInStore = defineStore(
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        const checkInData = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userId}`);
-        checkInSites.value = checkInData.sites;
+        const checkInData = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
+        checkInSites.value = checkInData;
       } catch (error) {
         throw error;
       }
