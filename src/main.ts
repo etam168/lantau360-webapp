@@ -20,7 +20,7 @@ const updateSW = registerSW({
     Notify.create({
       message: t("notification.updateAvailable"),
       color: "primary",
-      position: "top",
+      position: "bottom",
       timeout: 0, // Set to 0 to prevent auto-dismiss
       actions: [
         {

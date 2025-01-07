@@ -11,7 +11,7 @@
 
     <q-item-section side>
       <div class="q-gutter-sm">
-        <q-icon :name="fasLocationDot" size="xs" v-if="isCheckedIn" />
+        <q-icon :name="fasLocationDot" color="primary" size="xs" v-if="isCheckedIn" />
         <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavorite" />
       </div>
     </q-item-section>

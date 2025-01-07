@@ -500,8 +500,6 @@ declare module 'vue' {
     readonly useCached: UnwrapRef<typeof import('@vueuse/core')['useCached']>
     readonly useCategoryDialogService: UnwrapRef<typeof import('./composable/services/use-category-dialog-service')['useCategoryDialogService']>
     readonly useCheckInDataService: UnwrapRef<typeof import('./composable/services/use-checkin-data-service')['useCheckInDataService']>
-    readonly useCheckinFormContents: UnwrapRef<typeof import('./composable/form-mappers/form-contents/use-checkin-form-contents')['useCheckinFormContents']>
-    readonly useCheckinFormMapper: UnwrapRef<typeof import('./composable/form-mappers/use-checkin-form-mapper')['useCheckinFormMapper']>
     readonly useClipboard: UnwrapRef<typeof import('@vueuse/core')['useClipboard']>
     readonly useClipboardItems: UnwrapRef<typeof import('@vueuse/core')['useClipboardItems']>
     readonly useCloned: UnwrapRef<typeof import('@vueuse/core')['useCloned']>

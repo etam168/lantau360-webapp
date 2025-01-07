@@ -10,7 +10,7 @@
     <q-card flat>
       <!-- Form Content Section -->
       <q-card-section>
-        <vee-input :auto-grow="true" name="description" label="Note" type="textarea" />
+        <vee-input :auto-grow="true" name="description" label="Memo" type="textarea" />
       </q-card-section>
 
       <!-- Check-in History Table Section -->

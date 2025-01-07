@@ -3,7 +3,7 @@
     <q-space />
     <app-button-rounded
       v-if="hasCheckIn"
-      color="primary"
+      :text-color="isCheckIn ? 'amber' : 'white'"
       class="q-mr-sm"
       @click="onBtnCheckInClick"
       :icon="fasLocationDot"
@@ -28,6 +28,7 @@
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
+  import { useCheckInStore } from "@/stores/checkin-store";
 
   // Emit
   const emit = defineEmits(["check-in"]);
@@ -43,9 +44,11 @@
 
   // Composable function calls
   const favoriteStore = useFavoriteStore();
+  const checkInStore = useCheckInStore();
 
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
+  const isCheckIn = computed(() => checkInStore.isCheckIn(category as SiteView));
 
   function onBtnCheckInClick() {
     const isDialogOpen = ref(false);

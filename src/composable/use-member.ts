@@ -21,7 +21,7 @@ export function UserLogon() {
     `,
       html: true,
       color: "primary",
-      position: "top"
+      position: "bottom"
     });
   }
 

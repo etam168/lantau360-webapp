@@ -1,5 +1,4 @@
 <template>
-  <!-- <div style="width: 520px; margin: auto"> -->
   <q-table
     v-bind="$attrs"
     flat
@@ -14,29 +13,29 @@
   >
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td>
-          <div class="column-layout">
-            <div class="date-section">
-              {{ dateTimeFormatter(props.row.checkInAt) }}
-            </div>
-            <div>
-              <vee-input
-                v-model="props.row.description"
-                :name="`description_${props.row.checkInAt}`"
-                label="Note"
-                type="textarea"
-                :disable="true"
-              />
-            </div>
-          </div>
+        <q-td class="no-border q-pa-none">
+          <!-- Card for Each Row -->
+          <q-list bordered separator>
+            <q-item clickable>
+              <q-item-section avatar>
+                <q-icon :name="fasCalendarDays" size="16px" class="q-mr-sm" />
+              </q-item-section>
+
+              <q-item-section>
+                <q-item-label> {{ dateTimeFormatter(props.row.checkInAt) }}</q-item-label>
+                <q-item-label caption lines="1">{{ props.row.description }}</q-item-label>
+              </q-item-section>
+            </q-item>
+          </q-list>
         </q-td>
       </q-tr>
     </template>
   </q-table>
-  <!-- </div> -->
 </template>
 
 <script setup lang="ts">
+  // Third party imports
+  import { fasCalendarDays } from "@quasar/extras/fontawesome-v6";
   import { QTable } from "quasar";
 
   const { item } = defineProps<{
@@ -51,15 +50,13 @@
 </script>
 
 <style scoped>
-  .column-layout {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-  }
-
   .date-section {
     font-size: 14px;
     font-weight: bold;
     color: #333;
+  }
+
+  .q-card {
+    padding: 12px;
   }
 </style>
