@@ -33,6 +33,7 @@
             <app-button-auth-flat
               v-else-if="item.type === 'flatButton'"
               :label="item.label"
+              class="q-py-sm"
               @click="handleClick(item.name)"
             />
           </q-item-section>
@@ -98,7 +99,7 @@
         default:
           // Default is login
           return [
-            { name: "userName", type: "input", hint: "(Please enter your email)" },
+            { name: "userName", type: "input" },
             { name: "password", type: "password" },
             { name: "logon", type: "submit" },
             { name: "forgotPassword", type: "flatButton" }

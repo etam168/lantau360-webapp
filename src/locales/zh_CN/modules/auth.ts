@@ -18,7 +18,7 @@ export default {
     newPassword: "新密码",
     password: "密码",
     registerPassword: "密码",
-    userName: "用户名 (电子邮件)",
+    userName: "(电邮)",
     checkInCaption: "请先登录以进行签到",
     passwordResetSuccessfully: "密码重设成功",
     emailSentSuccessfully: "请检查您的电子邮件以确认链接",

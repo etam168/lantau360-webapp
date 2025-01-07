@@ -18,7 +18,7 @@ export default {
     newPassword: "新密碼",
     password: "密碼",
     registerPassword: "密碼",
-    userName: "用戶名稱 (電子郵件)",
+    userName: "(電郵)",
     checkInCaption: "請先登入以進行簽到",
     passwordResetSuccessfully: "密碼重設成功",
     emailSentSuccessfully: "請檢查您的電子郵件以確認鏈接",

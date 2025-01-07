@@ -114,6 +114,7 @@
         label: "Description",
         required: true,
         align: "left",
+        sortable: true,
         field: "title"
       },
       {
@@ -126,8 +127,11 @@
     ] as QTableColumn[];
   });
 </script>
-<style scoped>
+<style>
   .q-pagination .q-icon {
     color: #000; /* Use a contrasting color */
+  }
+  .q-table th i.q-icon.fas.fa-arrow-up.q-table__sort-icon:before {
+    content: "▲";
   }
 </style>

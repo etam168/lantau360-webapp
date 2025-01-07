@@ -13,20 +13,24 @@
   >
     <template v-slot:body="props">
       <q-tr :props="props">
-        <q-td class="no-border q-pa-none">
+        <q-td class="no-border q-py-md">
           <!-- Card for Each Row -->
 
-          <q-card class="my-card" flat bordered>
-            <q-card-actions class="justify-between q-py-sm q-px-md">
-              <div class="text-subtitle3 text-left">MEMO</div>
-              <div class="text-subtitle3 text-right">
-                {{ dateTimeFormatter(props.row.checkInAt) }}
-              </div>
-            </q-card-actions>
+          <q-card flat bordered>
+            <q-card-section class="q-pa-none">
+              <div class="text-subtitle3">MEMO</div>
+              <div class="text-subtitle3">{{ dateTimeFormatter(props.row.checkInAt) }}</div>
+            </q-card-section>
 
-            <q-separator inset />
-            <q-card-section class="ellipsis" style="max-width: 500px">
-              {{ props.row.description }}
+            <q-card-section class="ellipsis q-pa-none" style="max-width: 500px">
+              <vee-input
+                readonly
+                hide-bottom-space
+                v-model="props.row.description"
+                :name="`description_${props.row.checkInAt}`"
+                label="Note"
+                type="textarea"
+              />
             </q-card-section>
           </q-card>
         </q-td>
