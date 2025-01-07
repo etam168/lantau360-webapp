@@ -13,6 +13,7 @@
   >
     <template v-slot:body="props">
       <q-tr :props="props">
+        <!-- Main Content -->
         <q-td auto-width style="padding: 0">
           <app-checkin-item
             :image-path="props.row.siteData?.iconPath"
@@ -21,9 +22,24 @@
             @click="showDetailDialog(props.row)"
           />
         </q-td>
+
+        <!-- Actions Menu -->
+        <q-td auto-width class="text-right">
+          <!-- <pre>{{ props.row }}</pre> -->
+          <q-btn size="sm" dense flat :icon="fasEllipsis">
+            <q-menu>
+              <q-list style="min-width: 100px">
+                <q-item clickable v-close-popup>
+                  <q-item-section class="text-red">Delete</q-item-section>
+                </q-item>
+              </q-list>
+            </q-menu>
+          </q-btn>
+        </q-td>
       </q-tr>
     </template>
 
+    <!-- No Data Message -->
     <template v-slot:no-data>
       <app-no-record-message :message="$t(`errors.noCheckinRecord`)" />
     </template>
@@ -31,10 +47,9 @@
 </template>
 
 <script setup lang="ts">
-  // Types
+  import { fasEllipsis } from "@quasar/extras/fontawesome-v6";
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
-
-  //Store
+  import { ref, computed } from "vue";
   import { useCheckInStore } from "@/stores/checkin-store";
 
   // Props
@@ -42,18 +57,22 @@
     i18nKey?: string;
   }>();
 
+  // Quasar Utilities
   const $q = useQuasar();
   const { locale, t } = useI18n({ useScope: "global" });
   const { dateFormatter, translate } = useUtilities(locale.value);
-  const checkInStore = useCheckInStore();
 
+  // Check-in Store
+  const checkInStore = useCheckInStore();
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
 
+  // Dynamic Card Style
   const cardStyle = computed(() => ({
     borderTop: "1px solid rgba(0, 0, 0, 0.12)",
     borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
   }));
 
+  // Extract Line Information
   const getLine1 = (item: CheckInView): string => {
     const { siteName, meta } = item.siteData ?? {};
     return siteName ? translate(siteName, meta, "siteName") : "";
@@ -76,6 +95,7 @@
       : "";
   };
 
+  // Dialog and Menu Actions
   const showDetailDialog = (item: CheckInView) => {
     $q.dialog({
       component: defineAsyncComponent(
@@ -86,5 +106,21 @@
         dialogName: "checkinDetailDialog"
       }
     });
+  };
+
+  const menuVisible = ref(false);
+
+  const openMenu = (row: CheckInView) => {
+    menuVisible.value = true;
+  };
+
+  const onEdit = (row: CheckInView) => {
+    menuVisible.value = false;
+    console.log("Edit clicked for:", row);
+  };
+
+  const onDelete = (row: CheckInView) => {
+    menuVisible.value = false;
+    console.log("Delete clicked for:", row);
   };
 </script>

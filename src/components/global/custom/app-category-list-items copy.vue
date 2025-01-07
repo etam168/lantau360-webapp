@@ -33,8 +33,6 @@
 </template>
 
 <script setup lang="ts">
-  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
-
   // Interface files
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";

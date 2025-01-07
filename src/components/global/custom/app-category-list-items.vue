@@ -21,6 +21,7 @@
             :line2="line2(props.row)"
             :is-checked-in="isCheckedIn(props.row)"
             :is-favorite="isFavoriteItem(props.row)"
+            :pageName
             @click="handleDetail(props.row)"
           />
         </q-td>
@@ -55,6 +56,7 @@
     categoryItems: CategoryTypes[];
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
+    pageName?: string;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });

@@ -21,6 +21,7 @@
       <app-category-list-items
         :categoryItems="siteItems"
         :entityKey="'SITE'"
+        :pageName="entityKey"
         :style="tableStyle"
         @on-category-detail="onCategoryDetail"
       />
@@ -30,6 +31,7 @@
       <app-category-list-items
         :categoryItems="businessItems"
         :entityKey="'BUSINESS'"
+        :pageName="entityKey"
         :style="tableStyle"
         @on-category-detail="onCategoryDetail"
       />

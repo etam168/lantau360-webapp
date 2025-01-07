@@ -28,6 +28,7 @@
     line2: string;
     isCheckedIn: boolean;
     isFavorite: boolean;
+    pageName?: string;
   }>();
 
   defineEmits<{

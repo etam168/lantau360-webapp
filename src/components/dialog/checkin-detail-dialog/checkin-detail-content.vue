@@ -15,18 +15,20 @@
       <q-tr :props="props">
         <q-td class="no-border q-pa-none">
           <!-- Card for Each Row -->
-          <q-list bordered separator>
-            <q-item clickable>
-              <q-item-section avatar>
-                <q-icon :name="fasCalendarDays" size="16px" class="q-mr-sm" />
-              </q-item-section>
 
-              <q-item-section>
-                <q-item-label> {{ dateTimeFormatter(props.row.checkInAt) }}</q-item-label>
-                <q-item-label caption lines="1">{{ props.row.description }}</q-item-label>
-              </q-item-section>
-            </q-item>
-          </q-list>
+          <q-card class="my-card" flat bordered>
+            <q-card-actions class="justify-between q-py-sm q-px-md">
+              <div class="text-subtitle3 text-left">MEMO</div>
+              <div class="text-subtitle3 text-right">
+                {{ dateTimeFormatter(props.row.checkInAt) }}
+              </div>
+            </q-card-actions>
+
+            <q-separator inset />
+            <q-card-section class="ellipsis" style="max-width: 500px">
+              {{ props.row.description }}
+            </q-card-section>
+          </q-card>
         </q-td>
       </q-tr>
     </template>
