@@ -117,3 +117,9 @@
     emits("on-category-detail", item);
   }
 </script>
+
+<style>
+  .q-table__card .q-table__middle {
+    flex: inherit;
+  }
+</style>

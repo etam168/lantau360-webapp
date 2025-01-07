@@ -3,7 +3,7 @@
     ref="qTableRef"
     v-bind="$attrs"
     :card-style="cardStyle"
-    class="sticky-header-column q-ma-md"
+    class="sticky-header-column"
     :rows="transactionItem"
     :columns="columns"
     flat
@@ -27,8 +27,9 @@
     </template>
 
     <template v-slot:pagination="scope">
-      <q-btn
+      <app-button
         :icon="fasAngleLeft"
+        size="sm"
         color="grey-8"
         round
         dense
@@ -38,6 +39,7 @@
       />
       <q-btn
         :icon="fasAngleRight"
+        size="sm"
         color="grey-8"
         round
         dense
@@ -56,8 +58,6 @@
   import { EntityURLKey } from "@/constants";
 
   import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";
-
-  const { dateFormatter } = useUtilities();
 
   const emits = defineEmits(["on-member-detail"]);
 
@@ -117,5 +117,10 @@
   }
   .q-table th i.q-icon.fas.fa-arrow-up.q-table__sort-icon:before {
     content: "▲";
+  }
+
+  i.q-icon.fas.fa-caret-down.q-select__dropdown-icon:before {
+    content: "▲";
+    font-size: 14px;
   }
 </style>
