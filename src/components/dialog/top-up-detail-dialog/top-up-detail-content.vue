@@ -39,9 +39,8 @@
   }
 
   async function claimFreePoints() {
-    const memberId = parseInt(userId);
     try {
-      const res = await api.create(`/Points/RequestFreePoints/${memberId}`);
+      const res = await api.create(`/Member/RequestFreePoints/${userId}`);
       eventBus("refresh-transaction-data").emit();
     } catch (err) {
       if (err instanceof AxiosError) {
@@ -66,7 +65,8 @@
         buttonText: "CLAIM YOUR FREE POINT",
         error: "You have already claimed your 100 free points for this month.",
         type: "option",
-        disable: currentMonthFreeTransactionCount > 1
+        // disable: currentMonthFreeTransactionCount > 1
+        disable: false
       },
       {
         name: "purchasePoints",

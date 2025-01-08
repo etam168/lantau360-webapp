@@ -119,8 +119,22 @@ Supports validation, custom form structures, and integrates with a CRUD service.
         newEntity.createdBy = userStore.userId;
         // Only set memberId if it exists, without direct assignment
         "memberId" in newEntity && (newEntity.memberId = userStore.userId);
+        
+        const entityCreated = await crudService.createEntity(newEntity);
 
-       
+        // Use switch statement for handling other data
+        switch (true) {
+          case "galleryImages" in values:
+          case "avatarImage" in values:
+            emits("after-entity-created", { formData: values, entityCreated: entityCreated });
+            break;
+          default:
+            // default actions after created the entity
+            eventBus("refreshData").emit();
+            notify(t(`${entityName}.message.createSuccess`), "positive");
+            emits("close-dialog", entityCreated);
+            break;
+        }
       } catch (error) {
         console.error("Error creating entity record:", error);
         notify(t(`${entityName}.message.createError`), "negative");
