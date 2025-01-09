@@ -192,7 +192,7 @@ export const useCheckInStore = defineStore(
         // Construct the payload
         const payload = checkInSites.value.map(item => ({
           siteId: item.siteId,
-          checkInFO: item.checkInfo
+          checkInfo: item.checkInfo
         }));
 
         // Check if the user is logged in

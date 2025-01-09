@@ -40,7 +40,7 @@
 
   async function claimFreePoints() {
     try {
-      const res = await api.create(`/Member/RequestFreePoints/${userId}`);
+      const res = await api.get(`/Member/RequestFreePoints/${userId}`);
       eventBus("refresh-transaction-data").emit();
     } catch (err) {
       if (err instanceof AxiosError) {
