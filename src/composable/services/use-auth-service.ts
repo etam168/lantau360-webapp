@@ -115,7 +115,7 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
   async function recoverPassword(email: string, newPassword: string, otp: string) {
     try {
       const response = await api.create(`${ENTITY_URL.RESET_PASSWORD}`, {
-        email: email,
+        userName: email,
         newPassword: newPassword,
         otp: otp
       });
