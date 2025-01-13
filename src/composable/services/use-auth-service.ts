@@ -134,15 +134,19 @@ export function useAuthService(renderMode: Ref<AuthMode>) {
 
   async function registerRequest(values: Record<string, any>) {
     try {
-      const response = await api.create(`${ENTITY_URL.SIGN_UP}`, {
-        email: values.email || values.userName, // Assuming email might be the same as userName
-        firstName: values.firstName,
-        lastName: values.lastName,
-        phone: values.phone,
-        password: values.password,
-        userName: values.email || values.userName, // Assuming email might be the same as userName
-        status: 1
-      });
+      const response = await api.create(`${ENTITY_URL.SIGN_UP}`, 
+        {
+          Member : {
+            email: values.email || values.userName, 
+            firstName: values.firstName,
+            lastName: values.lastName,
+            phone: values.phone,
+            userName: values.email || values.userName, 
+            status: 1
+          },
+          Password: values.password,
+        }
+      );
 
       notify(t(`${i18nKey}.message.emailSentSuccessfully`), "positive");
       LocalStorage.set(STORAGE_KEYS.IsLogOn, true);
