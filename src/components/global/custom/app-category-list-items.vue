@@ -21,6 +21,7 @@
             :line2="line2(props.row)"
             :is-checked-in="isCheckedIn(props.row)"
             :is-favorite="isFavoriteItem(props.row)"
+            :distance="getDistance(props.row)"
             :pageName
             @click="handleDetail(props.row)"
           />
@@ -40,6 +41,9 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
+
+  import { useGeolocation } from "@vueuse/core";
+  import L from "leaflet";
 
   // Constants
   import { EntityURLKey } from "@/constants";
@@ -112,6 +116,27 @@
   function title(item: CategoryTypes) {
     return translate(item.title, item.meta, "title");
   }
+
+  const { coords: userLocation } = useGeolocation();
+
+  function getDistance(item: any): string | undefined {
+  if (!userLocation.value.latitude || !userLocation.value.longitude) {
+    return undefined; // Return undefined if user location is unavailable
+  }
+
+  if (!item.latitude || !item.longitude) {
+    return undefined; // Return undefined if item location is unavailable
+  }
+
+  const sourcePoint = L.latLng(userLocation.value.latitude, userLocation.value.longitude);
+  const destinationPoint = L.latLng(item.latitude, item.longitude);
+
+  const distanceInMeters = sourcePoint.distanceTo(destinationPoint);
+  return distanceInMeters > 1000
+    ? `${(distanceInMeters / 1000).toFixed(1)} km`
+    : `${Math.round(distanceInMeters)} meters`;
+}
+
 
   function handleDetail(item: any) {
     emits("on-category-detail", item);

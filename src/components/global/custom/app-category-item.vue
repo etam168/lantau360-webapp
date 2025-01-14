@@ -10,7 +10,7 @@
     </q-item-section>
 
     <q-item-section side>
-      <div class="q-gutter-sm">
+      <div class="q-gutter-sm" style="display: flex; flex-direction: column; align-items: center; justify-content: center;">
         <q-icon
           :name="fasLocationDot"
           color="primary"
@@ -18,25 +18,29 @@
           v-if="isCheckedIn && pageName !== 'FAVOURITE'"
         />
         <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavorite" />
+        <div class="text-caption text-primary">
+          {{ distance || "N/A" }}
+        </div>
       </div>
     </q-item-section>
   </q-item>
 </template>
 
+
 <script setup lang="ts">
-  import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
+import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
 
-  // Props
-  const { imagePath, line1, line2, isCheckedIn, isFavorite } = defineProps<{
-    imagePath: string;
-    line1: string;
-    line2: string;
-    isCheckedIn: boolean;
-    isFavorite: boolean;
-    pageName?: string;
-  }>();
+const { imagePath, line1, line2, isCheckedIn, isFavorite, distance } = defineProps<{
+  imagePath: string;
+  line1: string;
+  line2: string;
+  isCheckedIn: boolean;
+  isFavorite: boolean;
+  distance?: string; // Optional distance prop
+  pageName?: string;
+}>();
 
-  defineEmits<{
-    (e: "click"): void;
-  }>();
+defineEmits<{
+  (e: "click"): void;
+}>();
 </script>
