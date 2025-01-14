@@ -119,24 +119,27 @@
 
   const { coords: userLocation } = useGeolocation();
 
-  function getDistance(item: any): string | undefined {
-  if (!userLocation.value.latitude || !userLocation.value.longitude) {
-    return undefined; // Return undefined if user location is unavailable
+  function getDistance(item: any) {
+    // Check if user's location is available
+    if (!userLocation.value?.latitude || !userLocation.value?.longitude) {
+      return "N/A"; // Default value when location access is blocked
+    }
+
+    // Check if the item's location is available
+    if (!item.latitude || !item.longitude) {
+      return "N/A"; // Default value for items without coordinates
+    }
+
+    const sourcePoint = L.latLng(userLocation.value.latitude, userLocation.value.longitude);
+    const destinationPoint = L.latLng(item.latitude, item.longitude);
+
+    const distanceInMeters = sourcePoint.distanceTo(destinationPoint);
+
+    // Format distance
+    return distanceInMeters > 1000
+      ? `${(distanceInMeters / 1000).toFixed(1)} km`
+      : `${Math.round(distanceInMeters)} meters`;
   }
-
-  if (!item.latitude || !item.longitude) {
-    return undefined; // Return undefined if item location is unavailable
-  }
-
-  const sourcePoint = L.latLng(userLocation.value.latitude, userLocation.value.longitude);
-  const destinationPoint = L.latLng(item.latitude, item.longitude);
-
-  const distanceInMeters = sourcePoint.distanceTo(destinationPoint);
-  return distanceInMeters > 1000
-    ? `${(distanceInMeters / 1000).toFixed(1)} km`
-    : `${Math.round(distanceInMeters)} meters`;
-}
-
 
   function handleDetail(item: any) {
     emits("on-category-detail", item);
