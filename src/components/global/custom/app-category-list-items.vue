@@ -8,7 +8,7 @@
     :hide-bottom="categoryItems.length > 0"
     :row-key="`${entityName}Id`"
     :card-style="cardStyle"
-    :rows="categoryItems"
+    :rows="rows"
     :rows-per-page-options="[0]"
   >
     <!-- :style="tableStyle" -->
@@ -22,7 +22,6 @@
             :is-checked-in="isCheckedIn(props.row)"
             :is-favorite="isFavoriteItem(props.row)"
             :distance="getDistance(props.row)"
-            :pageName
             @click="handleDetail(props.row)"
           />
         </q-td>
@@ -46,7 +45,7 @@
   import L from "leaflet";
 
   // Constants
-  import { EntityURLKey } from "@/constants";
+  import { EntityURLKey, TEMPLATE } from "@/constants";
 
   // Store
   import { useCheckInStore } from "@/stores/checkin-store";
@@ -56,11 +55,16 @@
   const emits = defineEmits(["on-category-detail"]);
 
   // Props
-  const { categoryItems, entityKey, directory } = defineProps<{
+  const {
+    categoryItems,
+    entityKey,
+    directory,
+    isSortByDistance = false
+  } = defineProps<{
     categoryItems: CategoryTypes[];
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
-    pageName?: string;
+    isSortByDistance?: boolean;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
@@ -78,7 +82,8 @@
   const isCheckedIn = (item: CategoryTypes): boolean => {
     switch (entityKey) {
       case "SITE":
-        return checkInStore.isCheckIn(item as SiteView);
+        const site = item as SiteView;
+        return checkInStore.isCheckIn(site) && site.directoryTemplate != TEMPLATE.TAXI.value;
       default:
         return false;
     }
@@ -117,29 +122,72 @@
     return translate(item.title, item.meta, "title");
   }
 
-  const { coords: userLocation } = useGeolocation();
+  const { coords } = useGeolocation();
 
   function getDistance(item: any) {
-    // Check if user's location is available
-    if (!userLocation.value?.latitude || !userLocation.value?.longitude) {
-      return "N/A"; // Default value when location access is blocked
+    switch (true) {
+      case item.directoryTemplate === TEMPLATE.TAXI.value:
+        return "";
+      case !coords.value?.latitude ||
+        !coords.value?.longitude ||
+        isNaN(coords.value.latitude) ||
+        isNaN(coords.value.longitude):
+        return "N/A";
+      case !item?.latitude || !item?.longitude || isNaN(item.latitude) || isNaN(item.longitude):
+        return "N/A";
     }
 
-    // Check if the item's location is available
-    if (!item.latitude || !item.longitude) {
-      return "N/A"; // Default value for items without coordinates
-    }
-
-    const sourcePoint = L.latLng(userLocation.value.latitude, userLocation.value.longitude);
+    const sourcePoint = L.latLng(coords.value.latitude, coords.value.longitude);
     const destinationPoint = L.latLng(item.latitude, item.longitude);
 
+    // Calculate distance
     const distanceInMeters = sourcePoint.distanceTo(destinationPoint);
 
-    // Format distance
-    return distanceInMeters > 1000
-      ? `${(distanceInMeters / 1000).toFixed(1)} km`
-      : `${Math.round(distanceInMeters)} meters`;
+    // Format distance:
+    // - If less than 1 meter, return "< 1M"
+    // - If less than 1KM, return meters with "M" suffix
+    // - If 1KM or more, return kilometers with "KM" suffix
+    switch (true) {
+      case isNaN(distanceInMeters):
+        return "";
+      case distanceInMeters < 1:
+        return "< 1M";
+      case distanceInMeters < 1000:
+        return `${Math.round(distanceInMeters)}M`;
+      default:
+        return `${(distanceInMeters / 1000).toFixed(1)}KM`;
+    }
   }
+
+  // Function to get numeric distance for sorting
+  function getDistanceValue(item: any): number {
+    switch (true) {
+      case item.directoryTemplate === TEMPLATE.TAXI.value:
+        return Infinity;
+      case !coords.value?.latitude ||
+        !coords.value?.longitude ||
+        isNaN(coords.value.latitude) ||
+        isNaN(coords.value.longitude):
+        return Infinity;
+      case !item?.latitude || !item?.longitude || isNaN(item.latitude) || isNaN(item.longitude):
+        return Infinity;
+    }
+
+    const sourcePoint = L.latLng(coords.value.latitude, coords.value.longitude);
+    const destinationPoint = L.latLng(item.latitude, item.longitude);
+    return sourcePoint.distanceTo(destinationPoint);
+  }
+
+  // Compute rows for the table
+  const rows = computed(() => {
+    if (!isSortByDistance) return categoryItems;
+
+    return [...categoryItems].sort((a, b) => {
+      const distanceA = getDistanceValue(a);
+      const distanceB = getDistanceValue(b);
+      return distanceA - distanceB;
+    });
+  });
 
   function handleDetail(item: any) {
     emits("on-category-detail", item);
