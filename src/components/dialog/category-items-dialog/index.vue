@@ -9,14 +9,12 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
-      <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title
-          :has-options="true"
-          @dialog-closed="handleCloseDialog"
-          @change:sort-option="handleChangeSortOptions"
-          >{{ dialogTitle }}</app-dialog-title
-        >
-      </q-header>
+      <app-dialog-title
+        :has-options
+        @dialog-closed="handleCloseDialog"
+        @change:sort-option="handleChangeSortOptions"
+        >{{ dialogTitle }}
+      </app-dialog-title>
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
@@ -53,7 +51,7 @@
   import CategoryItemsContent from "./category-items-content.vue";
 
   // Constants
-  import { EntityURLKey } from "@/constants";
+  import { EntityURLKey, TEMPLATE } from "@/constants";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
@@ -83,6 +81,17 @@
     translate(directory.directoryName, directory.meta, "directoryName")
   );
 
+  const hasOptions = computed(() => {
+    const directoryTemplate = directory.meta.template ?? 0;
+
+    switch (directoryTemplate) {
+      case TEMPLATE.TAXI.value:
+        return false;
+      default:
+        return true;
+    }
+  });
+
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
@@ -99,16 +108,11 @@
     }, 1200);
   }
 
-  interface MenuItem {
-    value: string;
-    label: string;
-  }
-
   /**
    * Handles the sorting
    */
-  const handleChangeSortOptions = (menuItem: MenuItem) => {
-    sortOption.value = menuItem.value;
+  const handleChangeSortOptions = (option: string) => {
+    sortOption.value = option;
   };
 
   /**
