@@ -42,9 +42,9 @@
 
           <app-category-list-items
             :categoryItems="filterGroupedArray(item.name)"
-            :checkIns
             :directory
             :entityKey
+            :sortOption
             :style="tableStyle"
             @on-category-detail="onCategoryDetail"
           />
@@ -56,9 +56,9 @@
     <app-category-list-items
       v-else
       :categoryItems
-      :checkIns
       :directory
       :entityKey
+      :sortOption
       @on-category-detail="onCategoryDetail"
       :style="tableStyle"
     />
@@ -84,11 +84,13 @@
   const {
     directory,
     entityKey,
-    dialogName = "ItemListDialog"
+    dialogName = "ItemListDialog",
+    sortOption = "default"
   } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
+    sortOption?: string;
   }>();
 
   // Composable function calls
@@ -160,6 +162,7 @@
   const TAB_HEIGHT = computed(() => {
     return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
   });
+
   const BANNER_HEIGHT = computed(() => {
     return directory?.meta?.template === 2 && groupBykey.value ? 78 : 0;
   });

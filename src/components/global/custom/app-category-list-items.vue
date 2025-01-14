@@ -59,12 +59,12 @@
     categoryItems,
     entityKey,
     directory,
-    isSortByDistance = false
+    sortOption = "default"
   } = defineProps<{
     categoryItems: CategoryTypes[];
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
-    isSortByDistance?: boolean;
+    sortOption?: string;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
@@ -180,6 +180,11 @@
 
   // Compute rows for the table
   const rows = computed(() => {
+    const isSortByDistance = sortOption == "distance";
+
+    //if (isSortByDistance) alert("by distance");
+
+    //return categoryItems;
     if (!isSortByDistance) return categoryItems;
 
     return [...categoryItems].sort((a, b) => {

@@ -50,7 +50,6 @@ declare module 'vue' {
     AppToolbarDialogTitle: typeof import('./components/global/widgets/app-toolbar-dialog-title.vue')['default']
     AppTransactionListItems: typeof import('./components/global/custom/app-transaction-list-items.vue')['default']
     CarouselImageList: typeof import('./components/global/custom/carousel-image-list.vue')['default']
-    copy: typeof import('./components/global/custom/app-category-list-items copy.vue')['default']
     GalleryImageCard: typeof import('./components/global/custom/gallery-image-card.vue')['default']
     LanguageSelect: typeof import('./components/global/custom/language-select.vue')['default']
     MainPageSkeleton: typeof import('./components/global/custom/main-page-skeleton.vue')['default']

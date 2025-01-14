@@ -10,7 +10,12 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title
+          :has-options="true"
+          @dialog-closed="handleCloseDialog"
+          @change:sort-option="handleChangeSortOptions"
+          >{{ dialogTitle }}</app-dialog-title
+        >
       </q-header>
 
       <q-page-container>
@@ -18,7 +23,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entity-key :dialogName />
+            <category-items-content :directory :entityKey :dialogName :sortOption />
           </template>
 
           <template #fallback>
@@ -67,11 +72,12 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate } = useUtilities(locale.value);
-  const { dialogRef, onDialogCancel, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
+  const sortOption = ref("default");
 
   const dialogTitle = computed(() =>
     translate(directory.directoryName, directory.meta, "directoryName")
@@ -92,6 +98,18 @@
       }
     }, 1200);
   }
+
+  interface MenuItem {
+    value: string;
+    label: string;
+  }
+
+  /**
+   * Handles the sorting
+   */
+  const handleChangeSortOptions = (menuItem: MenuItem) => {
+    sortOption.value = menuItem.value;
+  };
 
   /**
    * Updates the dialog's visibility state
