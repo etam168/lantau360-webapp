@@ -11,7 +11,6 @@
     :rows="rows"
     :rows-per-page-options="[0]"
   >
-    <!-- :style="tableStyle" -->
     <template v-slot:body="props">
       <q-tr :props="props">
         <q-td style="padding: 0">
@@ -29,7 +28,7 @@
     </template>
 
     <template v-slot:no-data>
-      <app-no-record-message v-if="categoryItems.length <= 0" :message="$t('errors.noRecord')" />
+      <app-no-record-message v-if="rows.length <= 1" :message="$t('errors.noRecord')" />
     </template>
   </q-table>
 </template>
@@ -59,12 +58,12 @@
     categoryItems,
     entityKey,
     directory,
-    sortOption = "default"
+    sortByKey = "default"
   } = defineProps<{
     categoryItems: CategoryTypes[];
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
-    sortOption?: string;
+    sortByKey?: string;
   }>();
 
   const { locale } = useI18n({ useScope: "global" });
@@ -144,13 +143,13 @@
     const distanceInMeters = sourcePoint.distanceTo(destinationPoint);
 
     // Format distance:
-    // - If less than 1 meter, return "< 1M"
+    // - If less than 10 meter, return "< 10M"
     // - If less than 1KM, return meters with "M" suffix
     // - If 1KM or more, return kilometers with "KM" suffix
     switch (true) {
       case isNaN(distanceInMeters):
         return "";
-      case distanceInMeters < 1:
+      case distanceInMeters < 10:
         return "< 1M";
       case distanceInMeters < 1000:
         return `${Math.round(distanceInMeters)}M`;
@@ -160,7 +159,7 @@
   }
 
   // Function to get numeric distance for sorting
-  function getDistanceValue(item: any): number {
+  function getDistanceValue(item: CategoryTypes): number {
     switch (true) {
       case item.directoryTemplate === TEMPLATE.TAXI.value:
         return Infinity;
@@ -180,11 +179,7 @@
 
   // Compute rows for the table
   const rows = computed(() => {
-    const isSortByDistance = sortOption == "distance";
-
-    //if (isSortByDistance) alert("by distance");
-
-    //return categoryItems;
+    const isSortByDistance = sortByKey == "distance";
     if (!isSortByDistance) return categoryItems;
 
     return [...categoryItems].sort((a, b) => {

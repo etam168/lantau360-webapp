@@ -1,19 +1,14 @@
 <!-- category-items-content.vue -->
 <template>
-  <!-- No Records Message -->
-  <app-no-record-message v-if="categoryItems.length === 0" :message="$t('errors.noRecord')" />
-
-  <!-- Fixed Top Section and Scrollable Content -->
-  <template class="full-height" v-if="directory.groupId === 5">
-    <app-sight-seeing-item
-      :categoryItems="categoryItems"
-      :checkIns="checkIns"
-      :directory="directory"
-      :entityKey="entityKey"
-      :style="tableStyle"
-      @on-category-detail="onCategoryDetail"
-    />
-  </template>
+  <app-sight-seeing-item
+    v-if="directory.groupId === 5"
+    :categoryItems
+    :directory
+    :entityKey
+    :sortByKey
+    :style="tableStyle"
+    @on-category-detail="onCategoryDetail"
+  />
 
   <template v-else>
     <template v-if="directory.groupId !== 5 && groupBykey">
@@ -44,7 +39,7 @@
             :categoryItems="filterGroupedArray(item.name)"
             :directory
             :entityKey
-            :sortOption
+            :sortByKey
             :style="tableStyle"
             @on-category-detail="onCategoryDetail"
           />
@@ -58,7 +53,7 @@
       :categoryItems
       :directory
       :entityKey
-      :sortOption
+      :sortByKey
       @on-category-detail="onCategoryDetail"
       :style="tableStyle"
     />
@@ -69,7 +64,6 @@
   // Interface files
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
@@ -77,20 +71,17 @@
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
 
-  // Compontents
-  import AppSightSeeingItem from "@/components/global/custom/app-site-seeing-item.vue";
-
   // Props
   const {
     directory,
     entityKey,
     dialogName = "ItemListDialog",
-    sortOption = "default"
+    sortByKey = "default"
   } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
-    sortOption?: string;
+    sortByKey?: string;
   }>();
 
   // Composable function calls
@@ -103,7 +94,6 @@
 
   // Reactive variables
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
-  const checkIns: Ref<CheckIn[]> = ref([]);
 
   const directoryId = computed<number>(() => {
     switch (entityKey) {

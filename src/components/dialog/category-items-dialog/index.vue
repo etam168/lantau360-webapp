@@ -21,7 +21,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entityKey :dialogName :sortOption />
+            <category-items-content :directory :entityKey :dialogName :sortByKey />
           </template>
 
           <template #fallback>
@@ -75,7 +75,7 @@
   // Reactive variables
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
-  const sortOption = ref("default");
+  const sortByKey = ref("default");
 
   const dialogTitle = computed(() =>
     translate(directory.directoryName, directory.meta, "directoryName")
@@ -111,8 +111,8 @@
   /**
    * Handles the sorting
    */
-  const handleChangeSortOptions = (option: string) => {
-    sortOption.value = option;
+  const handleChangeSortOptions = (sortBy: string) => {
+    sortByKey.value = sortBy;
   };
 
   /**
