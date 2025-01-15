@@ -120,10 +120,6 @@ export const useFavoriteStore = defineStore(
       return favoriteSites.value.some(fav => fav.siteId === site.siteId);
     }
 
-    function getServerSites() {
-      return serverSites.value;
-    }
-
     async function removeBusinessFavorite(business: BusinessView) {
       favoriteBusinesses.value = favoriteBusinesses.value.filter(
         fav => fav.businessId !== business.businessId
@@ -187,7 +183,6 @@ export const useFavoriteStore = defineStore(
       favoriteBusinesses,
       favoriteSites,
       lastSyncCheckedAt,
-      getServerSites,
       isBusinessFavorite,
       isFavoritesInSync,
       isSiteFavorite,

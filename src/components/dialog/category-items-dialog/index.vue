@@ -41,11 +41,11 @@
 </template>
 
 <script setup lang="ts">
+  // Types
+  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
+
   // Quasar Import
   import { useDialogPluginComponent } from "quasar";
-
-  // Interface files
-  import { DirectoryTypes } from "@/interfaces/types/directory-types";
 
   // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";
@@ -100,7 +100,6 @@
     eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
-        // onDialogCancel();
         isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);

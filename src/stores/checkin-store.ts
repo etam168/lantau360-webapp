@@ -16,7 +16,6 @@ import { ENTITY_URL, STORAGE_KEYS } from "@/constants";
 
 const { api, fetchData } = useApi();
 const userStore = useUserStore();
-const MAX_CHECKINS = 100;
 
 async function syncCheckIn(checkInView: CheckInView) {
   try {
@@ -25,23 +24,10 @@ async function syncCheckIn(checkInView: CheckInView) {
     }
 
     const pruneCheckin = typia.misc.createPrune<CheckIn>();
-    // const checkInPayload = structuredClone(checkInView)
-    const checkInPayload = JSON.parse(JSON.stringify(checkInView)); 
+    const checkInPayload = JSON.parse(JSON.stringify(checkInView));
     pruneCheckin(checkInPayload);
 
     await api.create(`${ENTITY_URL.CHECKIN}`, checkInPayload);
-  } catch (error) {
-    throw error;
-  }
-}
-
-async function deleteCheckIn(deleteUrl: string) {
-  try {
-    if (!userStore.isUserLogon()) {
-      return;
-    }
-    // to do
-    // await api.delete(deleteUrl);
   } catch (error) {
     throw error;
   }
@@ -58,73 +44,59 @@ export const useCheckInStore = defineStore(
 
     // Main check-in functions
     async function addOrUpdateCheckIn(site: SiteView, description: string) {
-      try {
-        const checkInfo = {
-          checkInAt: new Date().toISOString(),
-          description: description // Use description from checkInfo here
-        };
+      const checkInfo = {
+        checkInAt: new Date().toISOString(),
+        description
+      };
 
-        const index = checkInSites.value.findIndex(c => c.siteId === site.siteId);
+      const index = checkInSites.value.findIndex(c => c.siteId === site.siteId);
+
+      try {
+        const updatedCheckIn =
+          index === -1
+            ? await createNewCheckIn(site, checkInfo)
+            : await updateExistingCheckIn(checkInSites.value[index], checkInfo);
+
         if (index === -1) {
-          // New check-in
-          await addNewCheckIn(site, checkInfo);
+          checkInSites.value.push(updatedCheckIn);
         } else {
-          // Update existing check-in (reactive)
-          await updateCheckIn(index, checkInfo);
+          checkInSites.value[index] = updatedCheckIn;
         }
-      } catch (error) {
-        console.error("Error adding check-in:", error);
-      }
-    }
 
-    async function addNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
-      try {
-        // New check-in
-        // const checkinView = structuredClone(newCheckInView);
-        const checkinView = JSON.parse(JSON.stringify(newCheckInView)); // Deep clone with JSON
-        checkinView.memberId = userStore.userId;
-        checkinView.createdBy = userStore.userId;
-        checkinView.modifiedBy = userStore.userId;
-        checkinView.siteId = site.siteId;
-        checkinView.checkInfo = [checkInfo];
-        checkinView.siteData = site;
-        //  checkinView.siteData = structuredClone(site);
-
-        // Add new check-in to array (reactive)
-        checkInSites.value.push(checkinView);
-
-        // Optionally, sync with backend
-        await syncCheckIn(checkinView);
-      } catch (error) {
-        throw error;
-      }
-    }
-
-    async function updateCheckIn(index: number, checkInfo: Record<string, any>) {
-      try {
-        // Update existing check-in (reactive)
-        const existingCheckIn = checkInSites.value[index];
-        const updatedCheckIn = {
-          ...existingCheckIn,
-          checkInfo: [...existingCheckIn.checkInfo, checkInfo],
-          modifiedAt: new Date(),
-          modifiedBy: userStore.userId
-        };
-
-        // Update the existing check-in (reactive)
-        checkInSites.value[index] = updatedCheckIn;
-
-        // Optionally, sync with backend
         await syncCheckIn(updatedCheckIn);
       } catch (error) {
-        throw error;
+        console.error("Error in check-in operation:", error);
+        throw error; // Re-throw to allow parent components to handle
       }
+    }
+
+    function createNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
+      return {
+        ...JSON.parse(JSON.stringify(newCheckInView)),
+        memberId: userStore.userId,
+        createdBy: userStore.userId,
+        modifiedBy: userStore.userId,
+        siteId: site.siteId,
+        checkInfo: [checkInfo],
+        siteData: site
+      };
+    }
+
+    function updateExistingCheckIn(existingCheckIn: any, checkInfo: Record<string, any>) {
+      return {
+        ...existingCheckIn,
+        checkInfo: [...existingCheckIn.checkInfo, checkInfo],
+        modifiedAt: new Date(),
+        modifiedBy: userStore.userId
+      };
     }
 
     async function isCheckInInSync(): Promise<boolean> {
       try {
         // Fetch data from the API
-        const checkInResponse = await fetchData(`${ENTITY_URL.CHECKIN_DATA_IDS}/${userStore.userId}`);
+        const checkInResponse = await fetchData(
+          `${ENTITY_URL.CHECKIN_DATA_IDS}/${userStore.userId}`
+        );
 
         // Create a helper function to format DateTime to "HH:mm"
         const formatTime = (dateString: any) => {
@@ -167,16 +139,9 @@ export const useCheckInStore = defineStore(
       return checkInSites.value.some(checkin => checkin.siteId === site.siteId);
     }
 
-    async function removeCheckIn(checkIn: CheckInView) {
-      checkInSites.value = checkInSites.value.filter(checkin => checkin.siteId !== checkIn.siteId);
-      //to do
-      // await deleteCheckIn(`${ENTITY_URL.FAVOURITE_SITE}/BySiteId/${checkIn.siteId}`);
-    }
-
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        const checkInData = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
-        checkInSites.value = checkInData;
+        checkInSites.value = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
       } catch (error) {
         throw error;
       }
