@@ -1,8 +1,7 @@
 <template>
-<q-card-actions align="center">
-    <app-search-bar  :query="queryData" @on-search="onSearch" />
+  <q-card-actions align="center">
+    <app-search-bar :query="queryData" @on-search="onSearch" />
   </q-card-actions>
-
 
   <app-category-list-items
     :categoryItems="rows"
@@ -48,13 +47,13 @@
   const tableKey = computed(() => urlAndKey.value.key);
 
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
+  const { filter, loading, pagination, rows, loadData, onRefresh } = useDataTable(
     tableUrl.value,
     tableKey.value
   );
 
-  function updatePagination(val: any) {
-    pagination.value.page = val;
+  function onSearch(val: any) {
+    filter.value = val;
     loadData({ pagination: pagination.value });
   }
 
