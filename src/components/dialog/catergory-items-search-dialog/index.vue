@@ -11,9 +11,9 @@
         maximized
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-            <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+          <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
 
-          <q-page-container class="q-mx-md q-my-md">
+          <q-page-container>
             <category-items-search-content :query :entity-key />
           </q-page-container>
         </q-layout>

@@ -1,5 +1,8 @@
 <template>
-  <app-search-bar :query="queryData" @on-search="onSearch" />
+<q-card-actions align="center">
+    <app-search-bar  :query="queryData" @on-search="onSearch" />
+  </q-card-actions>
+
 
   <app-category-list-items
     :categoryItems="rows"
