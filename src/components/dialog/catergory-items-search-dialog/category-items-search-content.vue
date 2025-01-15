@@ -1,24 +1,16 @@
 <template>
   <app-search-bar :query="queryData" @on-search="onSearch" />
 
-  <list-table
-    v-model:pagination="pagination"
-    :row-key="tableKey"
-    :rows="rows"
+  <app-category-list-items
+    :categoryItems="rows"
     :entityKey
-    :loading="loading"
-    @on-detail="handleDialog"
-    @on-pagination="updatePagination"
-    @request="loadData"
+    @on-category-detail="onCategoryDetail"
   />
 </template>
 
 <script setup lang="ts">
   // .ts files
   import useDataTable from "@/composable/use-data-table";
-
-  // Custom Components
-  import listTable from "./list-table.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants";
@@ -52,6 +44,7 @@
   const tableUrl = computed(() => urlAndKey.value.url);
   const tableKey = computed(() => urlAndKey.value.key);
 
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { filter, loading, pagination, rows, loadData, onRefresh, onSearch } = useDataTable(
     tableUrl.value,
     tableKey.value
@@ -62,15 +55,10 @@
     loadData({ pagination: pagination.value });
   }
 
-  async function handleDialog(item: any) {
-    // $q.dialog({
-    //   component: defineAsyncComponent(
-    //     () => import("@/components/dialog/category-detail-dialog.vue")
-    //   ),
-    //   componentProps: {
-    //     item: item
-    //   }
-    // });
+  async function onCategoryDetail(item: any) {
+    const detailDialogName = "serachItem" + "Detail";
+    eventBus("DialogStatus").emit(true, detailDialogName);
+    openCategoryDetailDialog(item, detailDialogName, entityKey);
   }
 
   // Lifecycle hooks
@@ -88,6 +76,7 @@
     if (query?.searchKeyword !== undefined) {
       // Do something with the searchKeyword value
       filter.value = query.searchKeyword as string;
+      pagination.value.rowsPerPage = 100;
       // keyword.value = filter.value;
     }
     loadData({ pagination: pagination.value });
