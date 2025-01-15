@@ -1,46 +1,36 @@
 <template>
-  <q-card
-    v-if="communityItems.length > 0"
-    v-for="(item, index) in communityItems"
-    :key="index"
-    class="q-ma-md"
+  <q-table
+    v-bind="$attrs"
+    flat
+    square
+    hide-pagination
+    hide-header
+    :hide-bottom="communityItems.length > 0"
+    :row-key="`${entityKey}Id`"
+    :card-style="cardStyle"
+    :rows="rows"
+    :rows-per-page-options="[0]"
   >
-    <q-list>
-      <q-item class="q-pa-md">
-        <q-item-section avatar>
-          <app-avatar :image-path="(item as PostingView).memberImage" size="54px" />
-        </q-item-section>
+    <template v-slot:body="props">
+      <q-tr :props="props">
+        <q-td style="padding: 0">
+          <app-community-item
+            :image-path="props.row.memberImage"
+            :line1="line1(props.row)"
+            :line2="line2(props.row)"
+            :show-edit-icon="userStore.userId === props.row.createdBy"
+            @on-detail="handleDetail(props.row)"
+            @on-edit="handleEdit(props.row)"
+          />
+        </q-td>
+      </q-tr>
+    </template>
 
-        <q-item-section>
-          <q-item-label class="text-weight-bold">
-            {{ line1(item) }}
-          </q-item-label>
-
-          <q-item-label caption class="text-weight-medium">
-            {{ line2(item) }}
-          </q-item-label>
-        </q-item-section>
-
-        <q-item-section side>
-          <div class="text-grey-8 q-gutter-xs">
-            <q-btn size="xs" dense flat :icon="fasEllipsis" @click="handleDetail(item)" />
-            <q-btn
-              size="xs"
-              dense
-              flat
-              :icon="fasPencil"
-              v-if="userStore.userId === item.createdBy"
-              @click="handleEdit(item)"
-            />
-          </div>
-        </q-item-section>
-      </q-item>
-    </q-list>
-  </q-card>
-
-  <app-no-record-message v-else :message="$t('errors.noRecord')" />
+    <template v-slot:no-data>
+      <app-no-record-message v-if="communityItems.length <= 0" :message="$t('errors.noRecord')" />
+    </template>
+  </q-table>
 </template>
-
 <script setup lang="ts">
   import { fasEllipsis, fasPencil } from "@quasar/extras/fontawesome-v6";
   import { formatTimeAgo } from "@vueuse/core";
@@ -68,6 +58,14 @@
   const $q = useQuasar();
   const userStore = useUserStore();
   const { translate } = useUtilities(locale.value);
+
+  const cardStyle = computed(() => ({
+    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+  }));
+
+  // Computed Rows
+  const rows = computed(() => communityItems);
 
   // Functions for line1 and line2
   function line1(item: CategoryTypes): string {
