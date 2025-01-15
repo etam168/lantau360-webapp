@@ -7,11 +7,10 @@
         }}</q-card-section>
       </q-responsive>
     </q-card>
-    <expansion-description-section :directory="directory" />
+    <!-- <expansion-description-section :directory="directory" /> -->
 
     <app-category-list-items
       :categoryItems="categoryItems"
-      :checkIns="checkIns"
       :directory="directory"
       :entityKey="entityKey"
       @on-category-detail="onCategoryDetail"
@@ -22,16 +21,14 @@
 
 <script setup lang="ts">
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { CheckIn } from "@/interfaces/models/entities/checkin";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { EntityURLKey } from "@/constants";
 
-  import expansionDescriptionSection from "@/components/dialog/category-items-dialog/expansion-description-section.vue";
+  // import expansionDescriptionSection from "@/components/dialog/category-items-dialog/expansion-description-section.vue";
 
   // Props
-  const { categoryItems, checkIns, directory, entityKey, style } = defineProps<{
+  const { categoryItems, directory, entityKey, style } = defineProps<{
     categoryItems: CategoryTypes[];
-    checkIns: CheckIn[];
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
     style: any;

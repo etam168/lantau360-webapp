@@ -1,6 +1,6 @@
 <!-- category-items-content.vue -->
 <template>
-  <app-sight-seeing-item
+  <app-site-seeing-item
     v-if="directory.groupId === 5"
     :categoryItems
     :directory
@@ -32,7 +32,7 @@
           class="q-pa-none"
         >
           <app-taxi-fleet-banner
-            v-if="directory?.meta.template === 2 && hasTaxiFleet(filterGroupedArray(item.name))"
+            v-if="directoryTemplate === 2 && hasTaxiFleet(filterGroupedArray(item.name))"
           />
 
           <app-category-list-items
@@ -106,6 +106,8 @@
     }
   });
 
+  const directoryTemplate = computed<number>(() => directory.meta.template ?? 0);
+
   const THRESHOLD = 150 as const;
 
   function hasTaxiFleet(item: CategoryTypes[]): boolean {
@@ -149,27 +151,19 @@
   const tab = ref("");
   const setTab = (val: string) => (tab.value = val);
 
-  const TAB_HEIGHT = computed(() => {
-    return directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
-  });
-
-  const BANNER_HEIGHT = computed(() => {
-    return directory?.meta?.template === 2 && groupBykey.value ? 78 : 0;
-  });
-
-  const usedHeight = computed(() => {
-    return TAB_HEIGHT.value + BANNER_HEIGHT.value;
-  });
-
   const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const tabHeight = directory?.meta?.groupByKey !== "none" ? 51 + 51 : 51;
+    const bannerHeight = directoryTemplate.value === 2 && groupBykey.value ? 78 : 0;
+    const usedHeight = tabHeight + bannerHeight;
+
     const hasNoData = categoryItems.value.length === 0;
-    const hasEnoughSpace = $q.screen.height - usedHeight.value > THRESHOLD;
+    const hasEnoughSpace = $q.screen.height - usedHeight > THRESHOLD;
 
     switch (true) {
       case hasNoData:
         return undefined;
       case hasEnoughSpace:
-        return { height: `calc(100vh - ${usedHeight.value}px)` };
+        return { height: `calc(100vh - ${usedHeight}px)` };
       default:
         return undefined;
     }
@@ -200,7 +194,6 @@
             `${ENTITY_URL[entityKey]}/ByDirectoryId/${directoryId.value}`
           );
           break;
-
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
       }
