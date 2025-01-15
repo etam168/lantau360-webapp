@@ -179,14 +179,37 @@
 
   // Compute rows for the table
   const rows = computed(() => {
-    const isSortByDistance = sortByKey == "distance";
-    if (!isSortByDistance) return categoryItems;
+    // Check if sortByKey is 'default'
+    if (sortByKey === "default") {
+      // Sort categoryItems by rank first, then alphabetically by title or siteName for directoryTemplate === 2
+      return [...categoryItems].sort((a: any, b: any) => {
+        // Sort by rank first
+        if (a.rank !== b.rank) {
+          return (a.rank || 0) - (b.rank || 0); // Default rank to 0 if undefined
+        }
 
-    return [...categoryItems].sort((a, b) => {
-      const distanceA = getDistanceValue(a);
-      const distanceB = getDistanceValue(b);
-      return distanceA - distanceB;
-    });
+        // If ranks are equal, sort by siteName for directoryTemplate === 2, otherwise by title
+        if (a.directoryTemplate === 2 && b.directoryTemplate === 2) {
+          const siteNameA = a.siteName || "";
+          const siteNameB = b.siteName || "";
+          return siteNameA.localeCompare(siteNameB);
+        } else {
+          // If directoryTemplate is not 2 for both or either, sort alphabetically by title
+          const titleA = a.title || "";
+          const titleB = b.title || "";
+          return titleA.localeCompare(titleB);
+        }
+      });
+    } else if (sortByKey === "distance") {
+      return [...categoryItems].sort((a, b) => {
+        const distanceA = getDistanceValue(a);
+        const distanceB = getDistanceValue(b);
+        return distanceA - distanceB;
+      });
+    }
+
+    // If no valid sortByKey is given, return the original list
+    return categoryItems;
   });
 
   function handleDetail(item: any) {
