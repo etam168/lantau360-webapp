@@ -8,7 +8,7 @@
   />
 
   <q-card-actions align="center">
-    <app-search-bar :query="query" @on-search="$emit('onSearch', $event)" />
+    <app-search-bar @on-search="$emit('onSearch', $event)" />
   </q-card-actions>
 
   <q-tab-panels v-model="tab">
@@ -47,14 +47,12 @@
     directoryData,
     resourcesData,
     sightSeeingData,
-    query = ""
   } = defineProps<{
     weatherData: Weather | null;
     tabItems: TabItem[];
     directoryData: SiteDirectory[];
     resourcesData: SiteDirectory[];
     sightSeeingData: SiteDirectory[];
-    query?: string;
   }>();
 
   const tab = defineModel<string>("tab", { required: true });

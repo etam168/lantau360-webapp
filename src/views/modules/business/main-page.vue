@@ -68,7 +68,6 @@
   const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
-
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
     const carouselHeight = (width * 9) / 16; // Height for the carousel
@@ -93,6 +92,8 @@
         query: { searchKeyword: value },
         entityKey: entityKey
       }
+    }).onDismiss(() => {
+      eventBus("ClearInput").emit();
     });
   }
 

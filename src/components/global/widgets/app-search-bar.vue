@@ -30,7 +30,7 @@
 <script setup lang="ts">
   import { fasXmark, fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 
-  const { notify } = useUtilities();
+  const {eventBus, notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const emit = defineEmits(["on-search"]);
 
@@ -70,5 +70,11 @@
       handleSearch();
     }
   };
+
+  onMounted(() => {
+    eventBus("ClearInput").on(() => {
+      keyword.value = "";
+    });
+  });
 
 </script>

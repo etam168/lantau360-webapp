@@ -10,7 +10,6 @@
         :directory-data="directoryData"
         :resources-data="resourcesData"
         :sight-seeing-data="sightSeeingData"
-        :query="query"
         @update:current-tab="setTab"
         @on-search="handleSearchDialog"
         @on-directory-item="onDirectoryItem"
@@ -25,7 +24,6 @@
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
-      :query="query"
       @update:current-tab="setTab"
       @on-search="handleSearchDialog"
       @on-directory-item="onDirectoryItem"
@@ -51,14 +49,13 @@
     entityKey: EntityURLKey;
   }>();
 
-  const query = ref("");
-
+  
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { eventBus } = useUtilities();
-
+  
   const THRESHOLD = 320;
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
@@ -109,7 +106,7 @@
         entityKey: "SITE"
       }
     }).onDismiss(() => {
-      query.value = " ";
+      eventBus("ClearInput").emit();
     });
   }
 
