@@ -48,10 +48,13 @@
 </template>
 
 <script setup lang="ts">
+  // Types
   import type { TabItem } from "@/interfaces/tab-item";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { EntityURLKey } from "@/constants";
+
+  // Constants
   import { AREA_NAME, NONE } from "@/constants";
 
   const props = defineProps<{

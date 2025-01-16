@@ -67,6 +67,29 @@ export const pwaOptions: Partial<VitePWAOptions> = {
 
     runtimeCaching: [
       {
+        // All POST requests - no caching
+        urlPattern: /.*/,
+        method: "POST",
+        handler: "NetworkOnly"
+      },
+      {
+        // All PUT requests - no caching
+        urlPattern: /.*/,
+        method: "PUT",
+        handler: "NetworkOnly"
+      },
+      {
+        // All DELETE requests - no caching
+        urlPattern: /.*/,
+        method: "DELETE",
+        handler: "NetworkOnly"
+      },
+      {
+        // Datatable endpoints - network only
+        urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/.*\/Datatable/i,
+        handler: "NetworkOnly"
+      },
+      {
         // Auth endpoints - no caching
         urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/(Member|MemberAuth)/i,
         handler: "NetworkOnly",

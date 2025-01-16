@@ -1,7 +1,7 @@
 <!-- category-items-content.vue -->
 <template>
   <sightseeing-items
-    v-if="directory.groupId === 5"
+    v-if="directory.groupId === SIGHTSEEING_GROUP"
     :categoryItems
     :directory
     :entityKey
@@ -54,6 +54,8 @@
   const { eventBus } = useUtilities(locale.value);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
+  const SIGHTSEEING_GROUP = 5 as const;
+
   // Reactive variables
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
 
@@ -67,8 +69,6 @@
         return 0;
     }
   });
-
-  const tab = ref("");
 
   async function onCategoryDetail(item: any) {
     const detailDialogName = dialogName + "Detail";
