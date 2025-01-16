@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
-  const { currentMonthFreeTransactionCount, userId } = useUserStore();
+  const { currentMonthFreeTransactionCount, userInfo } = useUserStore();
 
   const { t } = useI18n({ useScope: "global" });
   const { api } = useApi();
@@ -40,7 +40,7 @@
 
   async function claimFreePoints() {
     try {
-      const res = await api.get(`/Member/RequestFreePoints/${userId}`);
+      const res = await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
       eventBus("refresh-transaction-data").emit();
     } catch (err) {
       if (err instanceof AxiosError) {

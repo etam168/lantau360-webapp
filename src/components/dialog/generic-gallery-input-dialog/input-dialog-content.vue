@@ -71,7 +71,7 @@
       switch (entityKey) {
         case "MEMBER":
           entityOptions.value.galleryImages = [];
-          const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userId}`);
+          const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`);
           initialization.value = memberData;
           break;
         case "CHECKIN":

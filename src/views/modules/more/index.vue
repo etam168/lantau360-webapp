@@ -109,7 +109,7 @@
 
   function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
-    member.memberId = userStore.userId;
+    member.memberId = userStore.userInfo.userId;
     const dialogName = "accountDetail";
     const props = { dialogName: dialogName };
     eventBus("DialogStatus").emit(true, dialogName);

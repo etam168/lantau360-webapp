@@ -23,12 +23,12 @@ export function useCommunication() {
     const userStore = useUserStore();
     try {
       const response = await axios.post(`/MemberAuth/RefreshToken`, {
-        accessToken: userStore.token,
-        refreshToken: userStore.refreshToken
+        accessToken: userStore.userInfo.token,
+        refreshToken: userStore.userInfo.refreshToken
       });
       const { accessToken, tokenRefresh } = response.data;
-      userStore.token = accessToken;
-      userStore.refreshToken = tokenRefresh;
+      userStore.userInfo.token = accessToken;
+      userStore.userInfo.refreshToken = tokenRefresh;
       return accessToken;
     } catch (error) {
       notify("Error fetching data: " + error, "negative");

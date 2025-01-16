@@ -17,7 +17,7 @@ const MAX_FAVORITES = 100;
 async function syncFavorite(upsertUrl: string, id: number) {
   try {
     const payload = {
-      memberId: userStore.userId,
+      memberId: userStore.userInfo.userId,
       entityId: id
     };
 
@@ -85,7 +85,7 @@ export const useFavoriteStore = defineStore(
 
     async function isFavoritesInSync(): Promise<boolean> {
       try {
-        const favourite = await fetchData(`${ENTITY_URL.FAVOURITE_DATA_IDS}/${userStore.userId}`);
+        const favourite = await fetchData(`${ENTITY_URL.FAVOURITE_DATA_IDS}/${userStore.userInfo.userId}`);
 
         // Update server data
         const siteIds = favourite.sites;
@@ -125,7 +125,7 @@ export const useFavoriteStore = defineStore(
         fav => fav.businessId !== business.businessId
       );
       await deleteFavorite(
-        `${ENTITY_URL.FAVOURITE_BUSINESS}/RemoveFavourite/${business.businessId}/${userStore.userId}`
+        `${ENTITY_URL.FAVOURITE_BUSINESS}/RemoveFavourite/${business.businessId}/${userStore.userInfo.userId}`
       );
     }
 
@@ -133,13 +133,13 @@ export const useFavoriteStore = defineStore(
       favoriteSites.value = favoriteSites.value.filter(fav => fav.siteId !== site.siteId);
 
       await deleteFavorite(
-        `${ENTITY_URL.FAVOURITE_SITE}/RemoveFavourite/${site.siteId}/${userStore.userId}`
+        `${ENTITY_URL.FAVOURITE_SITE}/RemoveFavourite/${site.siteId}/${userStore.userInfo.userId}`
       );
     }
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        const favoriteData = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userId}`);
+        const favoriteData = await fetchData(`${ENTITY_URL.FAVOURITE_DATA}/${userStore.userInfo.userId}`);
 
         favoriteSites.value = favoriteData.sites;
         favoriteBusinesses.value = favoriteData.businesses;
@@ -163,7 +163,7 @@ export const useFavoriteStore = defineStore(
         }
 
         // API call to update favorites
-        const url = `${ENTITY_URL.FAVOURITE_UPDATE}/${userStore.userId}`;
+        const url = `${ENTITY_URL.FAVOURITE_UPDATE}/${userStore.userInfo.userId}`;
         await api.update(url, payload);
       } catch (error) {
         console.error("Error syncing remote data:", error);

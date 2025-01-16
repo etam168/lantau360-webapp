@@ -100,6 +100,7 @@
 
   const fetchAllData = async () => {
     try {
+      debugger;
       switch (entityKey) {
         case "ACCOUNT":
           // Fetch data from two different APIs concurrently

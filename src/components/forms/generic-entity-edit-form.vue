@@ -112,7 +112,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
           values = {
             ...values, // Spread existing values
             siteId: entityId || 0, // Assign siteId from initializationData
-            memberId: userStore.userId || 0 // Assign memberId from userStore
+            memberId: userStore.userInfo.userId || 0 // Assign memberId from userStore
           };
 
           console.log("Values after assignment:", values); // Log values after assignment

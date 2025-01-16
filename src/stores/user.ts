@@ -1,6 +1,8 @@
 import { defineStore } from "pinia";
+import { ref } from "vue";
 import { usePermissionStore } from "./permission";
 import { ENTITY_URL } from "@/constants";
+
 const { api } = useApi();
 const { notify } = useUtilities();
 
@@ -8,45 +10,40 @@ export const useUserStore = defineStore(
   "user",
   () => {
     // State
-    const token = ref("");
+    const userInfo = ref<any>(null); //Stores complete user object 
+
+    const refreshTokenExpiry = ref<string | null>(null);
     const expiredToken = ref("");
-    const refreshToken = ref("");
-    const roles = ref([]);
-    const user = ref("");
-    const userId = ref(0);
-    const staffId = ref(0);
-    const memberId = ref(0);
-    const name = ref("");
-    const email = ref("");
-    const phone = ref("");
-    const profilePic = ref("");
-    const status = ref(0);
-    const code = ref("");
+    
     const totalPoints = ref(0);
     const spendPoints = ref(0);
     const availabelPoints = ref(0);
     const pointsPerPost = ref(0);
     const topUpPoints = ref(0);
     const currentMonthFreeTransactionCount = ref(0);
-    const refreshTokenExpiry = ref<string | null>(null); // Fixed type here
     const purchasePrice = ref(0);
     const purchasePoints = ref(0);
 
     // Actions
     async function fetchMemberPoints() {
       try {
-        if (!token.value) {
+        if (!userInfo.value?.token) {
+          console.warn("User is not logged in or token is missing.");
           return;
         }
-        const response = await api.get(`${ENTITY_URL.MEMBER_POINTS}/${userId.value}`);
+
+        const response = await api.get(
+          `${ENTITY_URL.MEMBER_POINTS}/${userInfo.value?.userId}`
+        );
+
         const { total, spend, available, currentMonthTransactionCount, memberConfig } =
           response.data;
 
         setPoints(
-          memberConfig.value?.meta.postPoint ?? 50,
-          memberConfig.value?.meta.requestFreePoints ?? 100,
-          memberConfig.value?.meta.purchsePrice ?? 100,
-          memberConfig.value?.meta.purchsePoints ?? 100
+          memberConfig?.meta?.postPoint ?? 50,
+          memberConfig?.meta?.requestFreePoints ?? 100,
+          memberConfig?.meta?.purchsePrice ?? 100,
+          memberConfig?.meta?.purchsePoints ?? 100
         );
 
         totalPoints.value = total;
@@ -62,68 +59,17 @@ export const useUserStore = defineStore(
     async function LogOut() {
       SetUserInfo({ logout: true });
     }
+
     function SetUserInfo(payload: any) {
-      // Fields to reset
-      const resetFields: (keyof typeof fieldsMap)[] = [
-        "token",
-        "expiredToken",
-        "refreshToken",
-        "roles",
-        "user",
-        "userId",
-        "staffId",
-        "memberId",
-        "name",
-        "email",
-        "phone",
-        "profilePic",
-        "code",
-        "totalPoints",
-        "spendPoints",
-        "availabelPoints",
-        "refreshTokenExpiry"
-      ];
-
-      // A mapping of fields to their reactive references
-      const fieldsMap = {
-        token,
-        expiredToken,
-        refreshToken,
-        roles,
-        user,
-        userId,
-        staffId,
-        memberId,
-        name,
-        email,
-        phone,
-        profilePic,
-        code,
-        totalPoints,
-        spendPoints,
-        availabelPoints,
-        refreshTokenExpiry
-      };
-
       if (payload.logout) {
-        // Reset fields to empty string or null for token-related fields
-        resetFields.forEach(field => {
-          const refField = fieldsMap[field];
-          if (refField) refField.value = "";
-        });
+        userInfo.value = null;
+        expiredToken.value = "";
+        refreshTokenExpiry.value = null;
       } else {
-        // Update fields with the values from payload
-        resetFields.forEach(field => {
-          const refField = fieldsMap[field];
-          if (refField) {
-            refField.value = payload[field] || refField.value;
-          }
-        });
-
-        expiredToken.value = payload.token;
-
+        userInfo.value = payload;
+        expiredToken.value = payload.token ?? "";
         if (payload.refreshToken) {
-          setRefreshTokenWithExpiry();
+          setRefreshTokenExpiry();
         }
       }
 
@@ -131,7 +77,7 @@ export const useUserStore = defineStore(
     }
 
     function isUserLogon() {
-      return token.value ? true : false;
+      return !!userInfo.value?.token;
     }
 
     function setPoints(
@@ -147,7 +93,11 @@ export const useUserStore = defineStore(
     }
 
     function setToken(newToken: string) {
-      token.value = newToken;
+      if (userInfo.value) {
+        userInfo.value.token = newToken;
+      } else {
+        console.warn("Cannot set token: userInfo is null or undefined.");
+      }
     }
 
     function setExpiredToken(newExpiredToken: string) {
@@ -155,11 +105,15 @@ export const useUserStore = defineStore(
     }
 
     function setRefreshToken(newRefreshToken: string) {
-      refreshToken.value = newRefreshToken;
-      setRefreshTokenWithExpiry();
+      if (userInfo.value) {
+        userInfo.value.refreshToken = newRefreshToken;
+        setRefreshTokenExpiry();
+      } else {
+        console.warn("Cannot set refresh token: userInfo is null or undefined.");
+      }
     }
 
-    function setRefreshTokenWithExpiry() {
+    function setRefreshTokenExpiry() {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + 6);
       refreshTokenExpiry.value = expiryDate.toISOString();
@@ -179,19 +133,7 @@ export const useUserStore = defineStore(
 
     return {
       // State
-      token,
-      refreshToken,
-      roles,
-      user,
-      userId,
-      staffId,
-      memberId,
-      name,
-      email,
-      phone,
-      profilePic,
-      status,
-      code,
+      userInfo,
       totalPoints,
       spendPoints,
       availabelPoints,
@@ -212,7 +154,7 @@ export const useUserStore = defineStore(
       setToken,
       setExpiredToken,
       setRefreshToken,
-      setRefreshTokenWithExpiry,
+      setRefreshTokenExpiry,
       setPointsInfo
     };
   },

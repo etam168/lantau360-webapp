@@ -73,9 +73,9 @@ export const useCheckInStore = defineStore(
     function createNewCheckIn(site: SiteView, checkInfo: Record<string, any>) {
       return {
         ...JSON.parse(JSON.stringify(newCheckInView)),
-        memberId: userStore.userId,
-        createdBy: userStore.userId,
-        modifiedBy: userStore.userId,
+        memberId: userStore.userInfo.userId,
+        createdBy: userStore.userInfo.userId,
+        modifiedBy: userStore.userInfo.userId,
         siteId: site.siteId,
         checkInfo: [checkInfo],
         siteData: site
@@ -87,7 +87,7 @@ export const useCheckInStore = defineStore(
         ...existingCheckIn,
         checkInfo: [...existingCheckIn.checkInfo, checkInfo],
         modifiedAt: new Date(),
-        modifiedBy: userStore.userId
+        modifiedBy: userStore.userInfo.userId
       };
     }
 
@@ -95,7 +95,7 @@ export const useCheckInStore = defineStore(
       try {
         // Fetch data from the API
         const checkInResponse = await fetchData(
-          `${ENTITY_URL.CHECKIN_DATA_IDS}/${userStore.userId}`
+          `${ENTITY_URL.CHECKIN_DATA_IDS}/${userStore.userInfo.userId}`
         );
 
         // Create a helper function to format DateTime to "HH:mm"
@@ -141,7 +141,7 @@ export const useCheckInStore = defineStore(
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        checkInSites.value = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userId}`);
+        checkInSites.value = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userInfo.userId}`);
       } catch (error) {
         throw error;
       }
@@ -167,7 +167,7 @@ export const useCheckInStore = defineStore(
         }
 
         // API call to update check-in data
-        const url = `${ENTITY_URL.CHECKIN_UPDATE}/${userStore.userId}`;
+        const url = `${ENTITY_URL.CHECKIN_UPDATE}/${userStore.userInfo.userId}`;
         await api.update(url, payload);
 
         console.log("Check-in data synced successfully.");

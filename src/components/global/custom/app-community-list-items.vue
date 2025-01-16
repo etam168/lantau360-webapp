@@ -18,7 +18,7 @@
             :image-path="props.row.memberImage"
             :line1="line1(props.row)"
             :line2="line2(props.row)"
-            :show-edit-icon="userStore.userId === props.row.createdBy"
+            :show-edit-icon="userStore.userInfo.userId === props.row.createdBy"
             @on-detail="handleDetail(props.row)"
             @on-edit="handleEdit(props.row)"
           />

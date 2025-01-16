@@ -17,8 +17,8 @@ export function useMemberItemDialogService() {
     try {
       if (userStore.isUserLogon()) {
         const [transactionHistory, recentTransactions, memberConfigResponse] = await Promise.all([
-          fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${userStore.userId}`),
-          fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${userStore.userId}`),
+          fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${userStore.userInfo.userId}`),
+          fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${userStore.userInfo.userId}`),
           fetchData(ENTITY_URL.MEMBER_CONFIG)
         ]);
 

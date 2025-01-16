@@ -1,6 +1,7 @@
 // Third-party imports
 import { storeToRefs } from "pinia";
 
+
 // Local imports
 import { useUserStore } from "@/stores/user";
 import { ENTITY_URL } from "@/constants";
@@ -15,19 +16,27 @@ function isRefreshTokenExpired(refreshTokenExpiry: string | null): boolean {
   if (!refreshTokenExpiry) return true;
   return new Date() > new Date(refreshTokenExpiry);
 }
+
 // Helper function to refresh token
 async function refreshToken() {
   const userStore = useUserStore();
   const { api } = useApi();
   const { notify } = useUtilities();
+
   try {
+    const userInfo = userStore.userInfo; // Adjust based on your store structure
+    if (!userInfo?.refreshToken || !userInfo.token) {
+      throw new Error("Missing tokens in user information");
+    }
+
     const response = await api.create(`${ENTITY_URL.REFRESH_TOKEN}`, {
-      accessToken: userStore.expiredToken,
-      refreshToken: userStore.refreshToken
+      accessToken: userInfo.token,
+      refreshToken: userInfo.refreshToken
     });
+
     const { accessToken, tokenRefresh } = response.data;
 
-    if (tokenRefresh !== userStore.refreshToken) {
+    if (tokenRefresh !== userInfo.refreshToken) {
       userStore.setExpiredToken(accessToken);
       userStore.setRefreshToken(tokenRefresh);
     }
@@ -45,20 +54,26 @@ axiosInstance.interceptors.request.use(
   config => {
     const userStore = useUserStore();
     const { eventBus } = useUtilities();
-    const { token, refreshTokenExpiry } = storeToRefs(userStore);
+    const { userInfo, refreshTokenExpiry } = storeToRefs(userStore);
+
+    // Check if userInfo exists
+    if (!userInfo.value) {
+      console.warn("User is not logged in.");
+      return config;
+    }
 
     // Check if the refresh token is expired
-    if (refreshTokenExpiry.value) {
-      if (isRefreshTokenExpired(refreshTokenExpiry.value)) {
-        eventBus("logOut").emit();
-        // Reject the request with a custom error
-        return Promise.reject(new Error("Session expired"));
-      }
+    if (isRefreshTokenExpired(refreshTokenExpiry.value)) {
+      eventBus("logOut").emit();
+      // Reject the request with a custom error
+      return Promise.reject(new Error("Session expired"));
     }
 
-    if (token.value) {
-      config.headers.Authorization = `Bearer ${token.value}`;
+    // Add the token to the headers
+    if (userInfo.value.token) {
+      config.headers.Authorization = `Bearer ${userInfo.value.token}`;
     }
+
     return config;
   },
   error => Promise.reject(error)
@@ -73,16 +88,18 @@ axiosInstance.interceptors.response.use(
 
     if (error.response?.status === 401 && !originalRequest._retry) {
       originalRequest._retry = true;
+
       try {
         const newToken = await refreshToken();
         originalRequest.headers.Authorization = `Bearer ${newToken}`;
         return axiosInstance(originalRequest);
       } catch (refreshError) {
         console.error("Error refreshing token:", refreshError);
-        userStore.logout();
+        userStore.LogOut();
         return Promise.reject(refreshError);
       }
     }
+
     return Promise.reject(error);
   }
 );

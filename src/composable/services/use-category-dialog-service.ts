@@ -19,7 +19,7 @@ interface FetchSiteDataResult {
 
 export function useCategoryDialogService(entityKey: EntityURLKey) {
   const userStore = useUserStore();
-  const { userId, isUserLogon } = userStore;
+  const { userInfo, isUserLogon } = userStore;
   const galleryItems = ref<GalleryImageType[]>([]);
   const memberConfig = ref();
   const checkInData = ref();
@@ -36,7 +36,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
 
       if (isUserLogon()) {
         requestUrls.push(
-          `${ENTITY_URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userId}&directoryId=${directoryId}`
+          `${ENTITY_URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userInfo.userId}&directoryId=${directoryId}`
         );
       }
 

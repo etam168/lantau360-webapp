@@ -15,9 +15,9 @@
       </q-img>
     </q-avatar>
     <div class="q-ml-md">
-      <div class="text-body1">{{ userStore.name }}</div>
+      <div class="text-body1">{{ userStore.userInfo.name }}</div>
       <div class="text-caption">
-        {{ userStore.user }}
+        {{ userStore.userInfo.user }}
       </div>
     </div>
 
@@ -38,12 +38,12 @@
   const i18nKey = "more";
 
   const avatar = computed(() => {
-    if (userStore.profilePic != null) {
-      return userStore.profilePic.includes("http")
-        ? userStore.profilePic
-        : `${BLOB_URL}/${userStore.profilePic}`;
+    if (userStore.userInfo.profilePic != null) {
+      return userStore.userInfo.profilePic.includes("http")
+        ? userStore.userInfo.profilePic
+        : `${BLOB_URL}/${userStore.userInfo.profilePic}`;
     }
-    return userStore.profilePic ? `${BLOB_URL}/${userStore.profilePic}` : IMAGES.PLACEHOLDER_AVATAR;
+    return userStore.userInfo.profilePic ? `${BLOB_URL}/${userStore.userInfo.profilePic}` : IMAGES.PLACEHOLDER_AVATAR;
   });
 
   const logout = () => {

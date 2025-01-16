@@ -44,7 +44,7 @@ export function useCheckInDataService() {
       const [memberConfigRes, checkInDataRes] = await Promise.all([
         fetchData<Content>(ENTITY_URL.MEMBER_CONFIG),
         fetchData<CheckIn>(
-          `${ENTITY_URL.MEMBER_SITE_CHECK_IN}/${userStore.userId}/${(category as SiteView).siteId}`
+          `${ENTITY_URL.MEMBER_SITE_CHECK_IN}/${userStore.userInfo.userId}/${(category as SiteView).siteId}`
         )
       ]);
 

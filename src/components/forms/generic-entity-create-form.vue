@@ -116,9 +116,9 @@ Supports validation, custom form structures, and integrates with a CRUD service.
 
         // Create the entity record
         const newEntity = formMappers.value!.prepareEntityRecord(undefined, values) as EntityT;
-        newEntity.createdBy = userStore.userId;
+        newEntity.createdBy = userStore.userInfo.userId;
         // Only set memberId if it exists, without direct assignment
-        "memberId" in newEntity && (newEntity.memberId = userStore.userId);
+        "memberId" in newEntity && (newEntity.memberId = userStore.userInfo.userId);
         
         const entityCreated = await crudService.createEntity(newEntity);
 
