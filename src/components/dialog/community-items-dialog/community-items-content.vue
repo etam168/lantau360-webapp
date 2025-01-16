@@ -67,7 +67,7 @@
   const { locale, t } = useI18n({ useScope: "global" });
   const { eventBus, getEntityName, groupBy, translate } = useUtilities(locale.value);
   const { fetchData } = useApi();
-  const { openCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
+  const { handleCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   // Reactive variables
   const $q = useQuasar();
@@ -129,35 +129,7 @@
   }
 
   async function onCreatePosting() {
-    $q.notify({
-      message: `
-      <p style="margin-bottom: 0px;">Create post will cost you 50 points.</p>
-      <p style="margin-bottom: 0px;">Are you sure you want to continue?</p>
-    `,
-      html: true,
-      color: "warning",
-      position: "center",
-      icon: fasTriangleExclamation,
-      actions: [
-        {
-          label: "Yes",
-          color: "white",
-          handler: async () => {
-            // Open the dialog for creating the post
-            const dialogName = "PostingListDialog";
-            eventBus("DialogStatus").emit(true, dialogName);
-            openCreatePosting(isDialogOpen, directory);
-          }
-        },
-        {
-          label: "No",
-          color: "white", // If the user cancels
-          handler: () => {
-            // Do nothing, simply dismiss the notification
-          }
-        }
-      ]
-    });
+    handleCreatePosting(isDialogOpen,directory);
   }
 
   async function handleDetail(item: any) {

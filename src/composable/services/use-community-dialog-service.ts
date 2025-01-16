@@ -98,6 +98,21 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       });
   }
 
+  async function handleCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/create-posting-alert-dialog.vue"), 
+      ),
+      componentProps: {
+        directory:directory, // Pass the row prop for the edit dialog
+        entityKey: entityKey,
+      }
+    }).onCancel(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen.value = false;
+    });
+  }
+
   async function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     if (isUserLogon()) {
       // Fetch additional member points
@@ -110,7 +125,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
 
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      // handleOpenDialog(props, isDialogOpen, entityKey); 
+      // handleOpenDialog(props, isDialogOpen, entityKey);
       // TO DO, USE new custom dialog for posting to keep it simple
     } else {
       Dialog.create({
@@ -141,6 +156,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   return {
     galleryItems,
     openCreatePosting,
+    handleCreatePosting,
     fetchAllData,
     openCommunityDetailDialog,
     openCommunityItemDialog
