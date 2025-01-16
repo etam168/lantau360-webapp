@@ -10,6 +10,7 @@
         :directory-data="directoryData"
         :resources-data="resourcesData"
         :sight-seeing-data="sightSeeingData"
+        :query="query"
         @update:current-tab="setTab"
         @on-search="handleSearchDialog"
         @on-directory-item="onDirectoryItem"
@@ -24,6 +25,7 @@
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
+      :query="query"
       @update:current-tab="setTab"
       @on-search="handleSearchDialog"
       @on-directory-item="onDirectoryItem"
@@ -48,6 +50,8 @@
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
+
+  const query = ref("");
 
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
@@ -104,6 +108,8 @@
         query: { searchKeyword: value },
         entityKey: "SITE"
       }
+    }).onDismiss(() => {
+      query.value = " ";
     });
   }
 

@@ -57,9 +57,18 @@
     keyword.value = "";
   };
 
+  // Watch for changes in the `query` prop
+  watch(
+    () => query,
+    newQuery => {
+      keyword.value = newQuery || "";
+    }
+  );
+
   const handleEnterKey = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
+
 </script>
