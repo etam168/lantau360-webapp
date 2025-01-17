@@ -11,10 +11,10 @@
 
   <non-sightseeing-items
     v-else
-    :directory="directory"
-    :entityKey="entityKey"
-    :categoryItems="categoryItems"
-    :sortByKey="sortByKey"
+    :categoryItems
+    :directory
+    :entityKey
+    :sortByKey
     @on-category-detail="onCategoryDetail"
   />
 </template>

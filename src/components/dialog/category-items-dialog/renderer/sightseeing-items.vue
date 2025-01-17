@@ -31,7 +31,7 @@
     categoryItems: CategoryTypes[];
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
-    style: any;
+    style?: any;
   }>();
 
   // Emits
