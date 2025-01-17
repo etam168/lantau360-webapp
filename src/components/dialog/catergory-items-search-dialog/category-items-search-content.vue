@@ -6,6 +6,8 @@
   <app-category-list-items
     :categoryItems="rows"
     :entityKey
+    :sortByKey="sortByKey"
+    :style="tableStyle"
     @on-category-detail="onCategoryDetail"
   />
 </template>
@@ -20,9 +22,14 @@
   const { eventBus } = useUtilities();
 
   // Props
-  const { query, entityKey } = defineProps<{
+  const {
+    query,
+    entityKey,
+    sortByKey = "default"
+  } = defineProps<{
     query: any;
     entityKey: EntityURLKey;
+    sortByKey?: string;
   }>();
 
   // Composable function calls
@@ -45,6 +52,21 @@
 
   const tableUrl = computed(() => urlAndKey.value.url);
   const tableKey = computed(() => urlAndKey.value.key);
+  const THRESHOLD = 150;
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const tabHeight = 120;
+    const usedHeight = tabHeight;
+
+    const hasEnoughSpace = $q.screen.height > THRESHOLD;
+
+    switch (true) {
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
+  });
 
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { filter, loading, pagination, rows, loadData, onRefresh } = useDataTable(

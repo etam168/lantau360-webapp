@@ -11,10 +11,10 @@
         maximized
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-          <app-dialog-title>{{ dialogTitle }}</app-dialog-title>
+          <app-dialog-title :has-options="true"  @change:sort-option="handleChangeSortOptions">{{ dialogTitle }}</app-dialog-title>
 
           <q-page-container>
-            <category-items-search-content :query :entity-key />
+            <category-items-search-content :query :entity-key  :sortByKey />
           </q-page-container>
         </q-layout>
       </q-dialog>
@@ -48,6 +48,7 @@
 
   // Reactive variables
   const isDialogVisible = ref();
+  const sortByKey = ref("default");
 
   const dialogTitle = computed(() => {
     switch (entityKey) {
@@ -64,6 +65,15 @@
     isDialogVisible.value = status;
     eventBus("DialogStatus").emit(status, "SiteSearchDialog");
   }
+
+
+
+  /**
+   * Handles the sorting
+   */
+   const handleChangeSortOptions = (sortBy: string) => {
+    sortByKey.value = sortBy;
+  };
 
   // Lifecycle hooks
   onMounted(() => {
