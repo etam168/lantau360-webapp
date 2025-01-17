@@ -18,7 +18,7 @@
             :image-path="props.row.memberImage"
             :line1="line1(props.row)"
             :line2="line2(props.row)"
-            :show-edit-icon="userStore.userInfo.userId === props.row.createdBy"
+            :show-edit-icon="showEdit(props.row)"
             @on-detail="handleDetail(props.row)"
             @on-edit="handleEdit(props.row)"
           />
@@ -77,6 +77,10 @@
     const title = translate(item.title as string, item.meta, "title");
     return `${timeAgo} | ${title}`;
   }
+
+  function showEdit(item: any){
+   return userStore.userInfo && userStore.userInfo.userId === item.createdBy;
+  } 
 
   function handleDetail(item: CategoryTypes) {
     emits("on-community-detail", item);
