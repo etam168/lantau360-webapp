@@ -90,22 +90,9 @@ export const pwaOptions: Partial<VitePWAOptions> = {
         handler: "NetworkOnly"
       },
       {
-        // Auth endpoints - no caching
+        // Auth endpoints - network only (no caching needed)
         urlPattern: /^https:\/\/api(-dev)?\.lantau360\.com\/(Member|MemberAuth)/i,
-        handler: "NetworkOnly",
-        options: {
-          cacheName: "auth-cache",
-          expiration: {
-            maxEntries: 1,
-            maxAgeSeconds: 60 * 5
-          },
-          cacheableResponse: {
-            statuses: [0, 200]
-          },
-          matchOptions: {
-            ignoreSearch: true
-          }
-        }
+        handler: "NetworkOnly"
       },
       {
         // Map tiles with increased cache
