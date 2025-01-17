@@ -83,9 +83,14 @@
 
   const hasOptions = computed(() => {
     const directoryTemplate = directory.meta.template ?? 0;
-
     switch (directoryTemplate) {
       case TEMPLATE.TAXI.value:
+        return false;
+      case TEMPLATE.TIMETABLE.value:
+        return false;
+      case TEMPLATE.EMERGENCY.value:
+        return false;
+      case TEMPLATE.DAYTRIP.value:
         return false;
       default:
         return true;
