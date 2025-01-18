@@ -10,7 +10,6 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
       <app-dialog-title
-        :i18n-key
         :has-options
         @dialog-closed="handleCloseDialog"
         @change:sort-option="handleChangeSortOptions"
@@ -61,13 +60,11 @@
   const {
     directory,
     entityKey,
-    dialogName = "ItemListDialog",
-    i18nKey
+    dialogName = "ItemListDialog"
   } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
     dialogName: string;
-    i18nKey: string;
   }>();
 
   // Composable function calls

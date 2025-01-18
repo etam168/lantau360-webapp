@@ -141,7 +141,9 @@ export const useCheckInStore = defineStore(
 
     async function syncLocalFromRemote(): Promise<void> {
       try {
-        checkInSites.value = await fetchData(`${ENTITY_URL.CHECKIN_DATA}/${userStore.userInfo.userId}`);
+        checkInSites.value = await fetchData(
+          `${ENTITY_URL.CHECKIN_DATA}/${userStore.userInfo.userId}`
+        );
       } catch (error) {
         throw error;
       }
@@ -170,7 +172,7 @@ export const useCheckInStore = defineStore(
         const url = `${ENTITY_URL.CHECKIN_UPDATE}/${userStore.userInfo.userId}`;
         await api.update(url, payload);
 
-        console.log("Check-in data synced successfully.");
+        // console.log("Check-in data synced successfully.");
       } catch (error) {
         console.error("Error syncing check-in data:", error);
         throw error;

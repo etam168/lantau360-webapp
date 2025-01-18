@@ -10,11 +10,11 @@ export const useUserStore = defineStore(
   "user",
   () => {
     // State
-    const userInfo = ref<any>(null); //Stores complete user object 
+    const userInfo = ref<any>(null); //Stores complete user object
 
     const refreshTokenExpiry = ref<string | null>(null);
     const expiredToken = ref("");
-    
+
     const totalPoints = ref(0);
     const spendPoints = ref(0);
     const availabelPoints = ref(0);
@@ -32,9 +32,7 @@ export const useUserStore = defineStore(
           return;
         }
 
-        const response = await api.get(
-          `${ENTITY_URL.MEMBER_POINTS}/${userInfo.value?.userId}`
-        );
+        const response = await api.get(`${ENTITY_URL.MEMBER_POINTS}/${userInfo.value?.userId}`);
 
         const { total, spend, available, currentMonthTransactionCount, memberConfig } =
           response.data;

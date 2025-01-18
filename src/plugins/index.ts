@@ -10,6 +10,8 @@ import i18n from "./i18n/i18n";
 
 import { Quasar } from "quasar";
 import quasarUserOptions from "./quasar/quasar-user-options";
+import { eventBusPlugin } from "./quasar/event-bus";
+
 import pinia from "@/stores";
 import router from "@/router";
 import veeValidate from "./vee-validate/index";
@@ -17,10 +19,14 @@ import Vue3QTelInput from "vue3-q-tel-input";
 import InternetConnectionPlugin from "./internet-connection-plugin";
 import "vue3-q-tel-input/dist/style.css";
 
+// Use the event bus plugin
+//app.use(eventBusPlugin)
+
 export function registerPlugins(app: App) {
   app
     .use(i18n)
     .use(Quasar, quasarUserOptions)
+    .use(eventBusPlugin)
     .use(pinia)
     .use(veeValidate)
     .use(Vue3QTelInput)
