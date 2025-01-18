@@ -40,47 +40,25 @@
     alert("mounted on main page");
 
     openDialogStore.resetQuery();
-    router.replace({ query: {} });
-    // eventBus("DialogStatus").on((status: any, emitter: string) => {
-    //   if (status) {
-    //     dialogStack.value.push(emitter);
-    //   } else {
-    //     dialogStack.value.pop();
-    //   }
-    // });
   });
 
   onUnmounted(() => {
     alert("un-mounted on main page");
-    // eventBus("DialogStatus").on((status: any, emitter: string) => {
-    //   if (status) {
-    //     dialogStack.value.push(emitter);
-    //   } else {
-    //     dialogStack.value.pop();
-    //   }
-    // });
+   
   });
 
   const bus = inject("bus") as EventBus;
 
   onBeforeRouteLeave((_to, _from, next) => {
     alert("onBeforeRouteLeave");
-    alert("from: " + JSON.stringify(_from));
-
-    const newPath = window.location.href;
-    alert(newPath);
-
-    // window.dispatchEvent(new Event("popstate"));
-    bus.emit("DialogClose", "Testing 123");
-
     switch (true) {
-      // case dialogStack.value.length > 0: {
-      //   //const emitter = dialogStack.value[dialogStack.value.length - 1];
-      //   //eventBus(emitter).emit();
-      //   //dialogStack.value.pop();
-      //   //next(false);
-      //   break;
-      // }
+      case openDialogStore.hasDialogId() : {
+        const dialogId = openDialogStore.getLatestDialogId();
+        bus.emit("DialogClose", dialogId);
+        alert(`DialogClose emitted with dialogId: ${dialogId}`);
+        next(false); // Prevent navigation if dialogId exists
+        break;
+      }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
         userLogon.localDataNotification();
         next();

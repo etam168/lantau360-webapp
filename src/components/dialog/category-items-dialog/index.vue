@@ -45,6 +45,9 @@
   // Types
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
+  // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
+
   // Quasar Import
   import { EventBus, useDialogPluginComponent } from "quasar";
 
@@ -74,6 +77,7 @@
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate } = useUtilities(locale.value);
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
   const isDialogVisible = ref(true);
@@ -152,14 +156,19 @@
     alert("onMounted: category");
     // Set up event listener for closing dialog
     console.log("Category Items");
-
+    debugger;
     console.log(dialogRef.value?.$el); // See all available properties
     const dialogId = dialogRef.value?.$el.parentElement.id;
     const dialogContainer = document.getElementById(dialogId);
     console.log("dialogContainer ");
 
-    // const firstChild = dialogContainer?.firstChild;
-    // console.log(firstChild); // See all available properties
+    const currentQuery = new URLSearchParams(window.location.search);
+    currentQuery.set("dialog", dialogId);
+
+    const newUrl = `${window.location.pathname}?${currentQuery.toString()}`;
+    history.replaceState(null, "", newUrl); ///To do
+
+    openDialogStore.updateQuery(dialogId);
 
     // Add event listener for DialogClose
     bus.on("DialogClose", () => {
