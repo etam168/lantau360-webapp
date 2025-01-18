@@ -60,9 +60,9 @@
   const emit = defineEmits(["dialogClosed", "change:sortOption"]);
 
   // Props
-  const { hasOptions = false, i18nKey } = defineProps<{
+  const { hasOptions = false, i18nKey = "" } = defineProps<{
     hasOptions?: boolean;
-    i18nKey: string;
+    i18nKey?: string;
   }>();
 
   const emitCloseEvent = () => {

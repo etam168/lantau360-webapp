@@ -26,36 +26,32 @@
 
   //Components
   import MainPage from "./main-page.vue";
-  import router from "@/router";
 
   const entityKey: EntityURLKey = "SITE";
 
-  const dialogStack = ref<string[]>([]);
   const userStore = useUserStore();
   const userLogon = UserLogon();
 
   const openDialogStore = useOpenDialogStore();
+  const bus = inject("bus") as EventBus;
 
   onMounted(() => {
     alert("mounted on main page");
 
     openDialogStore.resetQuery();
+    window.dispatchEvent(new Event("popstate")); // This causes route update
   });
 
   onUnmounted(() => {
     alert("un-mounted on main page");
-   
   });
-
-  const bus = inject("bus") as EventBus;
 
   onBeforeRouteLeave((_to, _from, next) => {
     alert("onBeforeRouteLeave");
     switch (true) {
-      case openDialogStore.hasDialogId() : {
+      case openDialogStore.hasDialogId(): {
         const dialogId = openDialogStore.getLatestDialogId();
         bus.emit("DialogClose", dialogId);
-        alert(`DialogClose emitted with dialogId: ${dialogId}`);
         next(false); // Prevent navigation if dialogId exists
         break;
       }

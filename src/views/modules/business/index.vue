@@ -17,7 +17,11 @@
   import { EntityURLKey } from "@/constants";
 
   // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
   import { useUserStore } from "@/stores/user";
+
+  // Composables
+  import { EventBus } from "quasar";
   import { UserLogon } from "@/composable/use-member";
 
   //Components
@@ -25,28 +29,30 @@
 
   const entityKey: EntityURLKey = "BUSINESS";
 
-  const { eventBus } = useUtilities();
-  const dialogStack = ref<string[]>([]);
   const userStore = useUserStore();
   const userLogon = UserLogon();
 
+  const openDialogStore = useOpenDialogStore();
+  const bus = inject("bus") as EventBus;
+
   onMounted(() => {
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
+    alert("mounted on main page");
+
+    openDialogStore.resetQuery();
+    window.dispatchEvent(new Event("popstate")); // This causes route update
+  });
+
+  onUnmounted(() => {
+    alert("un-mounted on main page");
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
+    alert("onBeforeRouteLeave");
     switch (true) {
-      case dialogStack.value.length > 0: {
-        const emitter = dialogStack.value[dialogStack.value.length - 1];
-        eventBus(emitter).emit();
-        dialogStack.value.pop();
-        next(false);
+      case openDialogStore.hasDialogId(): {
+        const dialogId = openDialogStore.getLatestDialogId();
+        bus.emit("DialogClose", dialogId);
+        next(false); // Prevent navigation if dialogId exists
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {

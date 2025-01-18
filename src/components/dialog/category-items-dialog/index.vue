@@ -45,6 +45,9 @@
   // Types
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 
+  // Constants
+  import { EntityURLKey, TEMPLATE } from "@/constants";
+
   // Stores
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
@@ -53,9 +56,6 @@
 
   // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";
-
-  // Constants
-  import { EntityURLKey, TEMPLATE } from "@/constants";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
@@ -75,8 +75,9 @@
 
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
-  const { eventBus, translate } = useUtilities(locale.value);
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { translate } = useUtilities(locale.value);
+
   const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
@@ -109,9 +110,11 @@
    * Sets visibility to false and triggers the cancel action after a delay
    */
   function handleCloseDialog(): void {
-    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
+        alert("Items Closing handler" + dialogId.value);
+        openDialogStore.removeDialogFromQuery(dialogId.value);
+        openDialogStore.updateWindowHistory();
         isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
@@ -150,35 +153,33 @@
   });
 
   const bus = inject("bus") as EventBus;
+  const dialogId = ref<string>("");
 
-  // Lifecycle hooks
+  // Store the event handler function in a variable so we can reference it in both mounted and unmounted
+  const handleDialogClose = (receivedDialogId: string) => {
+    alert("handle Items DialogClose: " + receivedDialogId);
+    if (receivedDialogId === dialogId.value) {
+      alert("id matched");
+      handleCloseDialog();
+    }
+  };
+
   onMounted(() => {
     alert("onMounted: category");
-    // Set up event listener for closing dialog
-    console.log("Category Items");
-    debugger;
-    console.log(dialogRef.value?.$el); // See all available properties
-    const dialogId = dialogRef.value?.$el.parentElement.id;
-    const dialogContainer = document.getElementById(dialogId);
-    console.log("dialogContainer ");
+    // Get the DOM id from the dialogRef
+    dialogId.value = dialogRef.value?.$el.parentElement.id;
 
-    const currentQuery = new URLSearchParams(window.location.search);
-    currentQuery.set("dialog", dialogId);
+    // Update store query param and the browser address bar
+    openDialogStore.updateQuery(dialogId.value);
+    openDialogStore.updateWindowHistory();
 
-    const newUrl = `${window.location.pathname}?${currentQuery.toString()}`;
-    history.replaceState(null, "", newUrl); ///To do
-
-    openDialogStore.updateQuery(dialogId);
-
-    // Add event listener for DialogClose
-    bus.on("DialogClose", () => {
-      alert("DialogClose");
-      // handleCloseDialog();
-    });
+    // Add event listener for DialogClose with dialogId parameter
+    bus.on("DialogClose", handleDialogClose);
   });
 
   onUnmounted(() => {
     alert("onUnmounted: category");
-    bus.off("DialogClose");
+    // bus.off("DialogClose"); // Remove only this specific listener
+    bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
   });
 </script>

@@ -354,6 +354,9 @@
     "useSSRWidth": true,
     "usePreferredReducedTransparency": true,
     "UserLogon": true,
-    "onElementRemoval": true
+    "onElementRemoval": true,
+    "useCommonDialogs": true,
+    "useDialogStack": true,
+    "useUserDialogs": true
   }
 }

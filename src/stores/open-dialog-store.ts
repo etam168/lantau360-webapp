@@ -2,56 +2,68 @@
 import { defineStore } from "pinia";
 
 export const useOpenDialogStore = defineStore("openDialog", () => {
-  const currentUrl = ref(window.location.href);
   const currentQuery = ref(new URLSearchParams(window.location.search));
 
-  function updateUrl(newUrl: string) {
-    currentUrl.value = newUrl;
-    currentQuery.value = new URLSearchParams(new URL(newUrl).search);
+  function getLatestDialogId() {
+    const dialogString = currentQuery.value.get("dialog");
+    return dialogString ? dialogString.split(",").at(-1) : null;
+  }
+
+  function hasDialogId() {
+    return currentQuery.value.has("dialog"); // true means we HAVE a dialog
+  }
+
+  function removeDialogFromQuery(dialogId: string) {
+    if (dialogId === getLatestDialogId()) {
+      const dialogString = currentQuery.value.get("dialog");
+      if (!dialogString) return;
+
+      const dialogIds = dialogString.split(",");
+      dialogIds.pop();
+
+      if (dialogIds.length === 0) {
+        currentQuery.value.delete("dialog");
+      } else {
+        currentQuery.value.set("dialog", dialogIds.join(","));
+      }
+    }
+  }
+
+  function resetQuery() {
+    // Clear the URL query parameters and replace history entry
+    window.history.replaceState({}, "", window.location.pathname);
+
+    // Reset the store's currentQuery
+    currentQuery.value = new URLSearchParams();
   }
 
   function updateQuery(dialogId: string) {
-    const currentQuery = new URLSearchParams(window.location.search);
-
-    // Get existing dialog value (if any)
-    const existingDialog = currentQuery.get("dialog");
+    // Work with currentQuery directly since it's our source of truth
+    const existingDialog = currentQuery.value.get("dialog");
 
     // Append new dialogId to existing value, separated by comma
     const newDialogValue = existingDialog ? `${existingDialog},${dialogId}` : dialogId;
 
     // Set the combined value
-    currentQuery.set("dialog", newDialogValue);
+    currentQuery.value.set("dialog", newDialogValue);
   }
 
-  function getLatestDialogId() {
-    const currentQuery = new URLSearchParams(window.location.search);
-    const dialogString = currentQuery.get("dialog");
-
-    if (!dialogString) return null;
-
-    const [...dialogIds] = dialogString.split(",");
-    return dialogIds.at(-1);
-  }
-
-  function hasDialogId() {
-    // Check if the current query has a "dialog" parameter
-    return currentQuery.value.has("dialog");
-  }
-
-  function resetQuery() {
-    const url = new URL(window.location.href);
-    url.search = "";
-    currentUrl.value = url.toString();
-    currentQuery.value = new URLSearchParams();
+  function updateWindowHistory() {
+    if (hasDialogId()) {
+      const latestId = getLatestDialogId();
+      window.history.replaceState({}, "", `${window.location.pathname}?dialog=${latestId}`);
+    } else {
+      resetQuery();
+    }
   }
 
   return {
-    currentUrl,
     currentQuery,
     getLatestDialogId,
     hasDialogId,
-    updateUrl,
+    removeDialogFromQuery,
+    resetQuery,
     updateQuery,
-    resetQuery
+    updateWindowHistory
   };
 });
