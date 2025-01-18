@@ -19,5 +19,10 @@ export default {
   searchBar: {
     placeholder: "Enter Keyword",
     siteSearch: "Site Search"
+  },
+  sort:
+  {
+    default: "Sort by default",
+    distance: "Sort by distance",
   }
 };

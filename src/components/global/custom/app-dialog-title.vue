@@ -49,19 +49,20 @@
   const menuItems = computed<MenuItem[]>(() => [
     {
       value: "default",
-      label: t("sort.default")
+      label: t(`${i18nKey}.sort.default`)
     },
     {
       value: "distance",
-      label: t("sort.distance")
+      label: t(`${i18nKey}.sort.distance`)
     }
   ]);
 
   const emit = defineEmits(["dialogClosed", "change:sortOption"]);
 
   // Props
-  const { hasOptions = false } = defineProps<{
+  const { hasOptions = false, i18nKey } = defineProps<{
     hasOptions?: boolean;
+    i18nKey: string;
   }>();
 
   const emitCloseEvent = () => {

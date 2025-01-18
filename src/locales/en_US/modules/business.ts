@@ -12,5 +12,10 @@ export default {
   },
   searchBar: {
     businessSearch: "Business Search"
+  },
+  sort:
+  {
+    default: "Sort by default",
+    distance: "Sort by distance",
   }
 };

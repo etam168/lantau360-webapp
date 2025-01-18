@@ -81,6 +81,10 @@
     switch (true) {
       case categoryItem.directoryTemplate === TEMPLATE.TAXI.value:
         return "";
+      case categoryItem.directoryTemplate === TEMPLATE.TIMETABLE.value:
+        return "";
+      case categoryItem.directoryTemplate === TEMPLATE.EMERGENCY.value:
+        return "";
       case distance === Infinity:
         return "";
       case distance < 10:

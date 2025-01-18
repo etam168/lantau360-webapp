@@ -103,7 +103,8 @@
       ),
       componentProps: {
         query: { searchKeyword: value },
-        entityKey: "SITE"
+        entityKey: "SITE",
+        i18nKey:"home"
       }
     }).onDismiss(() => {
       eventBus("ClearInput").emit();
@@ -148,7 +149,7 @@
     if (isDialogOpen.value) return;
     const dialogName = "SiteItemList";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryItemDialog(isDialogOpen, directory, dialogName);
+    openCategoryItemDialog(isDialogOpen, directory, dialogName,"home");
   }
 
   /**

@@ -11,7 +11,7 @@
         maximized
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-          <app-dialog-title :has-options="true"  @change:sort-option="handleChangeSortOptions">{{ dialogTitle }}</app-dialog-title>
+          <app-dialog-title :i18nKey :has-options="true"  @change:sort-option="handleChangeSortOptions">{{ dialogTitle }}</app-dialog-title>
 
           <q-page-container>
             <category-items-search-content :query :entity-key  :sortByKey />
@@ -36,9 +36,10 @@
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Props
-  const { query, entityKey } = defineProps<{
+  const { query, entityKey, i18nKey } = defineProps<{
     query: any;
     entityKey: EntityURLKey;
+    i18nKey: string;
   }>();
 
   // Composable function calls

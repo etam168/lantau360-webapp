@@ -19,5 +19,10 @@ export default {
   searchBar: {
     placeholder: "輸入關鍵詞",
     siteSearch: "網站搜索"
+  },
+  sort:
+  {
+    default: "默认排序",
+    distance: "按距离排序",
   }
 };

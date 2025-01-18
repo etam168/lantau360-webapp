@@ -90,7 +90,8 @@
       ),
       componentProps: {
         query: { searchKeyword: value },
-        entityKey: entityKey
+        entityKey: entityKey,
+        i18nKey:"business"
       }
     }).onDismiss(() => {
       eventBus("ClearInput").emit();
@@ -149,7 +150,7 @@
     if (isDialogOpen.value) return;
     const dialogName = "BusinessItemList";
     eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryItemDialog(isDialogOpen, directory, dialogName);
+    openCategoryItemDialog(isDialogOpen, directory, dialogName,"business");
   }
 
   /**

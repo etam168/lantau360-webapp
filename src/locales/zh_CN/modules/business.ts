@@ -12,5 +12,10 @@ export default {
   },
   searchBar: {
     businessSearch: "商户搜索"
+  },
+  sort:
+  {
+    default: "默认排序",
+    distance: "按距离排序",
   }
 };
