@@ -1,6 +1,10 @@
 <template>
   <q-card-actions align="center">
-    <app-search-bar v-model:keyword="keyword" @on-search="onSearch" />
+    <app-search-bar
+      v-model:keyword="keyword"
+      @on-search="onSearch"
+      @on-clear-input="onClearInput"
+    />
   </q-card-actions>
 
   <app-category-list-items
@@ -14,7 +18,7 @@
 
 <script setup lang="ts">
   import useDataTable from "@/composable/use-data-table";
-  import { EntityURLKey } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Props
   const { entityKey, sortByKey = "default" } = defineProps<{
@@ -30,22 +34,9 @@
 
   // Composable function calls
   const $q = useQuasar();
-  const { eventBus } = useUtilities();
+  const { getEntityKeyName } = useUtilities();
 
-  // Dynamically set URL and key based on entityKey
-  const urlAndKey = computed(() => {
-    switch (entityKey) {
-      case "SITE":
-        return { url: "/Site/Datatable", key: "siteId" };
-      case "BUSINESS":
-        return { url: "/Business/Datatable", key: "businessId" };
-      default:
-        return { url: "", key: "" }; // Default case
-    }
-  });
-
-  const tableUrl = computed(() => urlAndKey.value.url);
-  const tableKey = computed(() => urlAndKey.value.key);
+  const entityUrl = computed(() => `${ENTITY_URL[entityKey]}/Datatable`);
   const THRESHOLD = 150;
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
@@ -63,10 +54,15 @@
   });
 
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { filter, pagination, rows, loadData, onRefresh } = useDataTable(
-    tableUrl.value,
-    tableKey.value
+  const { filter, pagination, rows, loadData } = useDataTable(
+    entityUrl.value,
+    getEntityKeyName(entityKey)
   );
+
+  function onClearInput() {
+    alert("clear");
+    rows.value = [];
+  }
 
   function onSearch(val: any) {
     filter.value = val;
@@ -74,22 +70,10 @@
   }
 
   async function onCategoryDetail(item: any) {
-    const detailDialogName = "serachItem" + "Detail";
-    eventBus("DialogStatus").emit(true, detailDialogName);
-    openCategoryDetailDialog(item, detailDialogName, entityKey);
+    openCategoryDetailDialog(item, entityKey);
   }
 
-  // Lifecycle hooks
-  onBeforeUnmount(() => {
-    eventBus("LoadData").off(() => {});
-  });
-
   onMounted(() => {
-    eventBus("LoadData").on(() => {
-      loadData({ pagination: pagination.value });
-      onRefresh();
-    });
-
     // Check if the route query is an object and contains the key searchKeyword
     if (keyword !== undefined) {
       // Do something with the searchKeyword value

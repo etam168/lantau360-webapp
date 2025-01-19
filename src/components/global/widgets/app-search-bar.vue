@@ -30,8 +30,10 @@
 <script setup lang="ts">
   import { fasXmark, fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 
-  const emit = defineEmits(["on-search"]);
+  // Emits
+  const emit = defineEmits(["on-search", "on-clear-input"]);
 
+  // v-model;
   const keyword = defineModel<string>("keyword", {
     required: false,
     default: ""
@@ -56,6 +58,7 @@
 
   const clearInput = () => {
     keyword.value = "";
+    emit("on-clear-input");
   };
 
   const handleEnterKey = (event: KeyboardEvent) => {

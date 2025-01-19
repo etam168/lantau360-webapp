@@ -18,11 +18,10 @@ export default {
   },
   searchBar: {
     placeholder: "輸入關鍵詞",
-    siteSearch: "網站搜索"
+    title: "地點搜尋"
   },
-  sort:
-  {
-    default: "默认排序",
-    distance: "按距离排序",
+  sort: {
+    default: "預設排序",
+    distance: "按距離排序"
   }
 };

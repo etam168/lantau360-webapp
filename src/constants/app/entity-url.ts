@@ -52,18 +52,16 @@ export const ENTITY_URL = {
   SITE_GALLERY: `/SiteImage/GalleryImages`,
   TRANSACTION: `/Transactoin/MemberTransactions`,
   WEATHER: `/Weather`,
-  FAVOURITE_SITE_UPSERT:'/FavouriteSite/UpsertSite',
-  FAVOURITE_BUSINESS_UPSERT:'/FavouriteBusiness/UpsertBusiness',
-  FAVOURITE_SITE:'/FavouriteSite',
-  FAVOURITE_BUSINESS: 'FavouriteBusiness',
-  FAVOURITE_UPDATE:'/Member/UpdateFavourite',
-  FAVOURITE_DATA_IDS:'/Member/GetFavouriteData/Ids',
-  FAVOURITE_DATA:'/Member/GetFavouriteData',
-  CHECKIN_DATA_IDS:'/Member/GetCheckInData/Ids',
-  CHECKIN_DATA:'/Member/GetCheckInData',
-  CHECKIN_UPDATE:'/Member/UpdateCheckIn',
-
-
+  FAVOURITE_SITE_UPSERT: "/FavouriteSite/UpsertSite",
+  FAVOURITE_BUSINESS_UPSERT: "/FavouriteBusiness/UpsertBusiness",
+  FAVOURITE_SITE: "/FavouriteSite",
+  FAVOURITE_BUSINESS: "FavouriteBusiness",
+  FAVOURITE_UPDATE: "/Member/UpdateFavourite",
+  FAVOURITE_DATA_IDS: "/Member/GetFavouriteData/Ids",
+  FAVOURITE_DATA: "/Member/GetFavouriteData",
+  CHECKIN_DATA_IDS: "/Member/GetCheckInData/Ids",
+  CHECKIN_DATA: "/Member/GetCheckInData",
+  CHECKIN_UPDATE: "/Member/UpdateCheckIn",
 
   EMAIL_CONFIRMATION: {
     SEND_LINK: "/MemberAuth/SendEmailConfirmationLink",

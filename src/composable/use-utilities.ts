@@ -36,6 +36,10 @@ export function useUtilities(locale?: string) {
     return row[`${entityName}Id`] as number;
   }
 
+  function getEntityKeyName(entityKey: EntityURLKey): string {
+    return `${useChangeCase(entityKey, "camelCase").value}Id`;
+  }
+
   function getEntityName(entityKey: EntityURLKey): string {
     return useChangeCase(entityKey, "camelCase").value;
   }
@@ -135,6 +139,7 @@ export function useUtilities(locale?: string) {
     dateTimeFormatter,
     eventBus,
     getEntityId,
+    getEntityKeyName,
     getEntityName,
     getImageURL,
     getImageUrlKey,

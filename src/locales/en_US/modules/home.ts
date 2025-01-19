@@ -18,11 +18,10 @@ export default {
   },
   searchBar: {
     placeholder: "Enter Keyword",
-    siteSearch: "Site Search"
+    title: "Site Search"
   },
-  sort:
-  {
+  sort: {
     default: "Sort by default",
-    distance: "Sort by distance",
+    distance: "Sort by distance"
   }
 };

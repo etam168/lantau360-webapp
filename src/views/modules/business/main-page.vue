@@ -7,12 +7,12 @@
     <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
       <main-content
         v-model:tab="tab"
-        :i18n-key="i18nKey"
         :tab-items="tabItems"
         :business-promotion="businessPromotion"
         :directory-data="businessDirectories"
+        :entityKey
+        :i18nKey
         @update:current-tab="setTab"
-        @on-search="handleSearchDialog"
         @on-directory-item="onDirectoryItem"
       />
     </q-scroll-area>
@@ -21,11 +21,11 @@
       v-else
       v-model:tab="tab"
       :tab-items="tabItems"
-      :i18n-key="i18nKey"
       :business-promotion="businessPromotion"
       :directory-data="businessDirectories"
+      :entityKey
+      :i18nKey
       @update:current-tab="setTab"
-      @on-search="handleSearchDialog"
       @on-directory-item="onDirectoryItem"
     />
   </q-page>
@@ -82,21 +82,6 @@
     { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
-
-  function handleSearchDialog(value: any) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
-      ),
-      componentProps: {
-        query: { searchKeyword: value },
-        entityKey: entityKey,
-        i18nKey: "business"
-      }
-    }).onDismiss(() => {
-      //eventBus("ClearInput").emit();
-    });
-  }
 
   async function fetchAllData() {
     try {

@@ -112,7 +112,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
    */
   async function openCategoryDetailDialog(
     item: any,
-    dialogName: string,
     entityKey: EntityURLKey,
     displayMask?: number
   ) {

@@ -36,26 +36,37 @@
 </template>
 
 <script setup lang="ts">
+  // Types
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 
+  // Constants
+  import { EntityURLKey } from "@/constants";
+
   // Emits
   defineEmits<{
-    // (e: "onSearch", value: any): void;
     (e: "onDirectoryItem", value: SiteDirectory): void;
   }>();
 
   // Props
-  const { weatherData, tabItems, directoryData, resourcesData, sightSeeingData, i18nKey } =
-    defineProps<{
-      weatherData: Weather | null;
-      tabItems: TabItem[];
-      directoryData: SiteDirectory[];
-      resourcesData: SiteDirectory[];
-      sightSeeingData: SiteDirectory[];
-      i18nKey?: string;
-    }>();
+  const {
+    weatherData,
+    tabItems,
+    directoryData,
+    resourcesData,
+    sightSeeingData,
+    entityKey,
+    i18nKey
+  } = defineProps<{
+    weatherData: Weather | null;
+    tabItems: TabItem[];
+    directoryData: SiteDirectory[];
+    resourcesData: SiteDirectory[];
+    sightSeeingData: SiteDirectory[];
+    entityKey: EntityURLKey;
+    i18nKey?: string;
+  }>();
 
   // v-model
   const tab = defineModel<string>("tab", { required: true });
@@ -71,7 +82,7 @@
         () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
       ),
       componentProps: {
-        entityKey: "SITE",
+        entityKey: entityKey,
         i18nKey: i18nKey,
         keyword: keyword.value
       }

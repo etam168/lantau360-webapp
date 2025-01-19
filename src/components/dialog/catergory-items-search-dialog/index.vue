@@ -11,12 +11,9 @@
         maximized
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-          <app-dialog-title
-            :i18nKey
-            :has-options="true"
-            @change:sort-option="handleChangeSortOptions"
-            >{{ dialogTitle }}</app-dialog-title
-          >
+          <app-dialog-title :i18nKey has-options @change:sort-option="handleChangeSortOptions">{{
+            dialogTitle
+          }}</app-dialog-title>
 
           <q-page-container>
             <category-items-search-content v-model:keyword="keyword" :entityKey :sortByKey />
@@ -31,14 +28,14 @@
 </template>
 
 <script setup lang="ts">
-  // Quasar Import
-  import { useDialogPluginComponent } from "quasar";
-
   // Custom Components
   import CategoryItemsSearchContent from "./category-items-search-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
+
+  // Quasar Import
+  import { useDialogPluginComponent } from "quasar";
 
   // Props
   const { entityKey, i18nKey } = defineProps<{
@@ -53,7 +50,6 @@
   });
 
   // Composable function calls
-  const { eventBus } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
@@ -62,19 +58,11 @@
   const sortByKey = ref("default");
 
   const dialogTitle = computed(() => {
-    switch (entityKey) {
-      case "SITE":
-        return t(`home.searchBar.siteSearch`);
-      case "BUSINESS":
-        return t(`business.searchBar.businessSearch`);
-      default:
-        break;
-    }
+    return t(`${i18nKey}.searchBar.title`);
   });
 
   function updateDialogState(status: any) {
     isDialogVisible.value = status;
-    eventBus("DialogStatus").emit(status, "SiteSearchDialog");
   }
 
   /**
@@ -83,11 +71,4 @@
   const handleChangeSortOptions = (sortBy: string) => {
     sortByKey.value = sortBy;
   };
-
-  // Lifecycle hooks
-  onMounted(() => {
-    eventBus("SiteSearchDialog").on(() => {
-      isDialogVisible.value = false;
-    });
-  });
 </script>

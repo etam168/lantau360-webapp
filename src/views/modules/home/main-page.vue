@@ -10,6 +10,7 @@
         :directory-data="directoryData"
         :resources-data="resourcesData"
         :sight-seeing-data="sightSeeingData"
+        :entityKey
         :i18nKey
         @update:current-tab="setTab"
         @on-directory-item="onDirectoryItem"
@@ -24,6 +25,7 @@
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
+      :entityKey
       :i18nKey
       @update:current-tab="setTab"
       @on-directory-item="onDirectoryItem"
@@ -45,8 +47,9 @@
   import MainContent from "./components/main-content.vue";
 
   // Props
-  const { entityKey } = defineProps<{
+  const { entityKey, i18nKey = "home" } = defineProps<{
     entityKey: EntityURLKey;
+    i18nKey?: string;
   }>();
 
   const $q = useQuasar();
@@ -63,7 +66,6 @@
 
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
-  const i18nKey = "home";
 
   const isDialogOpen = ref(false);
 
