@@ -151,13 +151,6 @@
     bus.on("DialogClose", handleDialogClose);
   });
 
-  // onMounted(() => {
-  //   // Set up event listener for closing dialog
-  //   eventBus(dialogName).on(() => {
-  //     isDialogVisible.value = false;
-  //   });
-  // });
-
   onUnmounted(() => {
     alert("onUnmounted: details");
     // bus.off("DialogClose"); // Remove only this specific listener

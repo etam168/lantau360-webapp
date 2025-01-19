@@ -24,8 +24,6 @@
   import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { EntityURLKey } from "@/constants";
 
-  // import expansionDescriptionSection from "@/components/dialog/category-items-dialog/expansion-description-section.vue";
-
   // Props
   const { categoryItems, directory, entityKey, style } = defineProps<{
     categoryItems: CategoryTypes[];

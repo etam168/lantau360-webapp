@@ -54,7 +54,7 @@
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryDialogService(entityKey);
-  const { eventBus, getEntityName } = useUtilities();
+  const { getEntityName } = useUtilities();
 
   const THRESHOLD = 320;
   const advertisements = ref<AdvertisementView[]>([]);
@@ -91,10 +91,10 @@
       componentProps: {
         query: { searchKeyword: value },
         entityKey: entityKey,
-        i18nKey:"business"
+        i18nKey: "business"
       }
     }).onDismiss(() => {
-      eventBus("ClearInput").emit();
+      //eventBus("ClearInput").emit();
     });
   }
 
@@ -141,16 +141,13 @@
   }
 
   const onImageClick = (category: AdvertisementView) => {
-    const dialogName = "AdvertisementDetail";
-    eventBus("DialogStatus").emit(true, dialogName);
     openCategoryDetailDialog(category, dialogName, "ADVERTISEMENT");
   };
 
   async function onDirectoryItem(directory: BusinessDirectory) {
-    if (isDialogOpen.value) return;
-    const dialogName = "BusinessItemList";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryItemDialog(isDialogOpen, directory, dialogName,"business");
+    if (!isDialogOpen.value) {
+      openCategoryItemDialog(isDialogOpen, directory, "business");
+    }
   }
 
   /**

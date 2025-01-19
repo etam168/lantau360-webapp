@@ -30,17 +30,18 @@
 <script setup lang="ts">
   import { fasXmark, fasMagnifyingGlass } from "@quasar/extras/fontawesome-v6";
 
-  const {eventBus, notify } = useUtilities();
-  const { t } = useI18n({ useScope: "global" });
   const emit = defineEmits(["on-search"]);
 
-  // Props
-  const { query = "" } = defineProps<{
-    query?: string;
-  }>();
+  const keyword = defineModel<string>("keyword", {
+    required: false,
+    default: ""
+  });
 
-  const keyword = ref(query);
+  const { notify } = useUtilities();
+  const { t } = useI18n({ useScope: "global" });
+
   const i18nKey = "home";
+
   function handleSearch() {
     if (keyword.value.length < 3) {
       notify(t("errors.minimum3letter"), "negative");
@@ -57,24 +58,9 @@
     keyword.value = "";
   };
 
-  // Watch for changes in the `query` prop
-  watch(
-    () => query,
-    newQuery => {
-      keyword.value = newQuery || "";
-    }
-  );
-
   const handleEnterKey = (event: KeyboardEvent) => {
     if (event.key === "Enter") {
       handleSearch();
     }
   };
-
-  onMounted(() => {
-    eventBus("ClearInput").on(() => {
-      keyword.value = "";
-    });
-  });
-
 </script>

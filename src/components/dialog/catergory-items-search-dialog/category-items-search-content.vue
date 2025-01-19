@@ -1,6 +1,6 @@
 <template>
   <q-card-actions align="center">
-    <app-search-bar :query="queryData" @on-search="onSearch" />
+    <app-search-bar v-model:keyword="keyword" @on-search="onSearch" />
   </q-card-actions>
 
   <app-category-list-items
@@ -13,30 +13,24 @@
 </template>
 
 <script setup lang="ts">
-  // .ts files
   import useDataTable from "@/composable/use-data-table";
-
-  // Constants
   import { EntityURLKey } from "@/constants";
 
-  const { eventBus } = useUtilities();
-
   // Props
-  const {
-    query,
-    entityKey,
-    sortByKey = "default"
-  } = defineProps<{
-    query: any;
+  const { entityKey, sortByKey = "default" } = defineProps<{
     entityKey: EntityURLKey;
     sortByKey?: string;
   }>();
 
+  // v-model
+  const keyword = defineModel<string>("keyword", {
+    required: false,
+    default: ""
+  });
+
   // Composable function calls
   const $q = useQuasar();
-
-  // Reactive variables
-  const queryData = ref(query.searchKeyword);
+  const { eventBus } = useUtilities();
 
   // Dynamically set URL and key based on entityKey
   const urlAndKey = computed(() => {
@@ -69,7 +63,7 @@
   });
 
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { filter, loading, pagination, rows, loadData, onRefresh } = useDataTable(
+  const { filter, pagination, rows, loadData, onRefresh } = useDataTable(
     tableUrl.value,
     tableKey.value
   );
@@ -97,11 +91,10 @@
     });
 
     // Check if the route query is an object and contains the key searchKeyword
-    if (query?.searchKeyword !== undefined) {
+    if (keyword !== undefined) {
       // Do something with the searchKeyword value
-      filter.value = query.searchKeyword as string;
+      filter.value = keyword.value;
       pagination.value.rowsPerPage = 100;
-      // keyword.value = filter.value;
     }
     loadData({ pagination: pagination.value });
   });

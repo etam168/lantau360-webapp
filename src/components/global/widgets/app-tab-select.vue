@@ -5,7 +5,7 @@
     :class="$q.screen.lt.sm ? 'flex-wrap' : ''"
   >
     <q-chip
-      v-for="(tabItem, index) in props.tabItems"
+      v-for="(tabItem, index) in tabItems"
       :key="index"
       :outline="currentTab !== tabItem.name"
       color="primary"
@@ -22,17 +22,11 @@
   // Interface files
   import { TabItem } from "@/interfaces/tab-item"; // Ensure this path is correct
 
-  // Define the props the component takes with types and required fields
-  const props = defineProps({
-    tabItems: {
-      type: Array as PropType<TabItem[]>,
-      required: true // If tabItems is required, otherwise you can provide a default value
-    },
-    currentTab: {
-      type: String,
-      required: true // If currentTab is required, otherwise you can provide a default value
-    }
-  });
+  // Props
+  const { tabItems, currentTab } = defineProps<{
+    tabItems: TabItem[];
+    currentTab: String;
+  }>();
 
   // Define the emits the component will make
   const emit = defineEmits(["update:currentTab"]);

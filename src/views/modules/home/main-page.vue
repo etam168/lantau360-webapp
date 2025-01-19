@@ -10,8 +10,8 @@
         :directory-data="directoryData"
         :resources-data="resourcesData"
         :sight-seeing-data="sightSeeingData"
+        :i18nKey
         @update:current-tab="setTab"
-        @on-search="handleSearchDialog"
         @on-directory-item="onDirectoryItem"
       />
     </q-scroll-area>
@@ -24,8 +24,8 @@
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
+      :i18nKey
       @update:current-tab="setTab"
-      @on-search="handleSearchDialog"
       @on-directory-item="onDirectoryItem"
     />
   </q-page>
@@ -42,20 +42,19 @@
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Custom Components
-  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
+  import MainContent from "./components/main-content.vue";
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
 
-  
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { eventBus } = useUtilities();
-  
+
   const THRESHOLD = 320;
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
@@ -96,21 +95,6 @@
     homeDirectories.value.filter((dir: SiteDirectory) => dir.groupId == 5)
   );
 
-  function handleSearchDialog(value: any) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
-      ),
-      componentProps: {
-        query: { searchKeyword: value },
-        entityKey: "SITE",
-        i18nKey:"home"
-      }
-    }).onDismiss(() => {
-      eventBus("ClearInput").emit();
-    });
-  }
-
   async function fetchAllData() {
     try {
       const [attractionResponse, weatherResponse, homeDirectoryResponse] = await Promise.all([
@@ -146,10 +130,9 @@
   };
 
   async function onDirectoryItem(directory: SiteDirectory) {
-    if (isDialogOpen.value) return;
-    const dialogName = "SiteItemList";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryItemDialog(isDialogOpen, directory, dialogName,"home");
+    if (!isDialogOpen.value) {
+      openCategoryItemDialog(isDialogOpen, directory, "home");
+    }
   }
 
   /**

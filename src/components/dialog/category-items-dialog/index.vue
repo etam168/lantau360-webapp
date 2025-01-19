@@ -61,15 +61,9 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const {
-    directory,
-    entityKey,
-    dialogName = "ItemListDialog",
-    i18nKey
-  } = defineProps<{
+  const { directory, entityKey, i18nKey } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string;
     i18nKey: string;
   }>();
 
@@ -93,11 +87,8 @@
     const directoryTemplate = directory.meta.template ?? 0;
     switch (directoryTemplate) {
       case TEMPLATE.TAXI.value:
-        return false;
       case TEMPLATE.TIMETABLE.value:
-        return false;
       case TEMPLATE.EMERGENCY.value:
-        return false;
       case TEMPLATE.DAYTRIP.value:
         return false;
       default:

@@ -8,7 +8,7 @@
   />
 
   <q-card-actions align="center">
-    <app-search-bar @on-search="$emit('onSearch', $event)" />
+    <app-search-bar v-model:keyword="keyword" @on-search="handleSearchDialog" />
   </q-card-actions>
 
   <q-tab-panels v-model="tab">
@@ -40,28 +40,43 @@
   import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 
-  // Props
-  const {
-    weatherData,
-    tabItems,
-    directoryData,
-    resourcesData,
-    sightSeeingData,
-  } = defineProps<{
-    weatherData: Weather | null;
-    tabItems: TabItem[];
-    directoryData: SiteDirectory[];
-    resourcesData: SiteDirectory[];
-    sightSeeingData: SiteDirectory[];
-  }>();
-
-  const tab = defineModel<string>("tab", { required: true });
-
+  // Emits
   defineEmits<{
-    (e: "onSearch", value: any): void;
+    // (e: "onSearch", value: any): void;
     (e: "onDirectoryItem", value: SiteDirectory): void;
   }>();
 
+  // Props
+  const { weatherData, tabItems, directoryData, resourcesData, sightSeeingData, i18nKey } =
+    defineProps<{
+      weatherData: Weather | null;
+      tabItems: TabItem[];
+      directoryData: SiteDirectory[];
+      resourcesData: SiteDirectory[];
+      sightSeeingData: SiteDirectory[];
+      i18nKey?: string;
+    }>();
+
+  // v-model
+  const tab = defineModel<string>("tab", { required: true });
+
   // Custom Components
   const weatherSection = defineAsyncComponent(() => import("./weather-section.vue"));
+  const $q = useQuasar();
+  const keyword = ref("");
+
+  function handleSearchDialog(value: any) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
+      ),
+      componentProps: {
+        entityKey: "SITE",
+        i18nKey: i18nKey,
+        keyword: keyword.value
+      }
+    }).onDismiss(() => {
+      keyword.value = "";
+    });
+  }
 </script>

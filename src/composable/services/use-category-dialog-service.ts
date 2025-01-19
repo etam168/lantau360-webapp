@@ -82,8 +82,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   async function openCategoryItemDialog(
     isDialogOpen: Ref<Boolean>,
     directory: DirectoryTypes,
-    dialogName?: string,
-    i18nKey?:string
+    i18nKey?: string
   ) {
     if (isDialogOpen.value) return;
 
@@ -92,7 +91,11 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-items-dialog/index.vue")
       ),
-      componentProps: { directory: directory, entityKey: entityKey, dialogName: dialogName,i18nKey:i18nKey }
+      componentProps: {
+        directory: directory,
+        entityKey: entityKey,
+        i18nKey: i18nKey
+      }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
@@ -120,7 +123,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       componentProps: {
         category: item,
         entityKey: entityKey,
-        dialogName: dialogName,
         displayMask: displayMask
       }
     })

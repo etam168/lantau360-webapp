@@ -63,20 +63,8 @@
 
   interface RenderItem {
     name: string;
-    hasCheckIn?: boolean;
     itemCount?: number;
-    type:
-      | "carousel"
-      | "contact"
-      | "gallery"
-      | "expansion-description"
-      | "description"
-      | "favourite"
-      | "expansion-location"
-      | "expansion-contact"
-      | "timetable"
-      | "time"
-      | "promotion";
+    type: string;
   }
 
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
@@ -113,14 +101,14 @@
     return !!(category.contactPhone || category.contactWhatsApp);
   });
 
+  const CAROUSEL = { name: "carousel", type: "carousel" };
+  const DESCRIPTION = { name: "description", type: "description" };
+  const CONTACT = { name: "contact", type: "contact" };
+
   const renderItems = computed((): RenderItem[] => {
     switch (template.value) {
       case RENDERER.ADVERTISEMENT:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" },
-          { name: "contact", type: "contact" }
-        ];
+        return [CAROUSEL, DESCRIPTION, CONTACT];
       case RENDERER.ATM:
       case RENDERER.SITE:
         return [
@@ -140,15 +128,9 @@
           { name: "expansion-contact", type: "expansion-contact" }
         ];
       case RENDERER.DAYTRIP:
-        return [
-          { name: "carousel", type: "carousel" },
-          { name: "description", type: "description" }
-        ];
+        return [CAROUSEL, DESCRIPTION];
       case RENDERER.EMERGENCY:
-        return [
-          { name: "description", type: "description" },
-          { name: "contact", type: "contact" }
-        ];
+        return [DESCRIPTION, CONTACT];
       case RENDERER.PROMOTION:
         return [
           { name: "carousel", type: "carousel" },
@@ -199,7 +181,7 @@
 
   function getBusinessTemplate() {
     // we only need to process BusinessView data here
-    switch ((category as BusinessView).directoryTemplate) {
+    switch (category.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
       default:
@@ -209,7 +191,7 @@
 
   function getSiteTemplate() {
     // we only need to process SiteView data here
-    switch ((category as SiteView).directoryTemplate) {
+    switch (category.directoryTemplate) {
       case TEMPLATE.ATM.value:
         return RENDERER.ATM;
       case TEMPLATE.DAYTRIP.value:

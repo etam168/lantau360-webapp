@@ -19,7 +19,7 @@
 
     <q-tab-panel name="directory">
       <q-card-actions align="center">
-        <app-search-bar @on-search="$emit('onSearch', $event)" />
+        <app-search-bar v-model:keyword="keyword" @on-search="$emit('onSearch', $event)" />
       </q-card-actions>
 
       <app-directory-items
@@ -31,26 +31,36 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { TabItem } from "@/interfaces/tab-item";
 
-  defineProps<{
-    i18nKey: string;
-    tabItems: TabItem[];
-    businessPromotion: BusinessPromotionView[];
-    directoryData: BusinessDirectory[];
-  }>();
-
-  const { isSmallScreen } = useUtilities();
-
-  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
-
-  const tab = defineModel<string>("tab", { required: true });
-
+  // Emits
   defineEmits<{
     (e: "onSearch", value: any): void;
     (e: "onDirectoryItem", value: BusinessDirectory): void;
   }>();
+
+  // Props
+  const {
+    tabItems,
+    businessPromotion,
+    directoryData,
+    i18nKey
+    // keyword = ""
+  } = defineProps<{
+    tabItems: TabItem[];
+    businessPromotion: BusinessPromotionView[];
+    directoryData: BusinessDirectory[];
+    i18nKey: string;
+    // keyword?: string;
+  }>();
+
+  // v-model
+  const tab = defineModel<string>("tab", { required: true });
+  const keyword = ref("");
+
+  const { isSmallScreen } = useUtilities();
+
+  const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));
 </script>

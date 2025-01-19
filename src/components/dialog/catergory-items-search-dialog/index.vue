@@ -11,10 +11,15 @@
         maximized
       >
         <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-          <app-dialog-title :i18nKey :has-options="true"  @change:sort-option="handleChangeSortOptions">{{ dialogTitle }}</app-dialog-title>
+          <app-dialog-title
+            :i18nKey
+            :has-options="true"
+            @change:sort-option="handleChangeSortOptions"
+            >{{ dialogTitle }}</app-dialog-title
+          >
 
           <q-page-container>
-            <category-items-search-content :query :entity-key  :sortByKey />
+            <category-items-search-content v-model:keyword="keyword" :entityKey :sortByKey />
           </q-page-container>
         </q-layout>
       </q-dialog>
@@ -36,11 +41,16 @@
   import { EntityURLKey } from "@/constants/app/entity-url";
 
   // Props
-  const { query, entityKey, i18nKey } = defineProps<{
-    query: any;
+  const { entityKey, i18nKey } = defineProps<{
     entityKey: EntityURLKey;
     i18nKey: string;
   }>();
+
+  // v-model
+  const keyword = defineModel<string>("keyword", {
+    required: false,
+    default: ""
+  });
 
   // Composable function calls
   const { eventBus } = useUtilities();
@@ -67,12 +77,10 @@
     eventBus("DialogStatus").emit(status, "SiteSearchDialog");
   }
 
-
-
   /**
    * Handles the sorting
    */
-   const handleChangeSortOptions = (sortBy: string) => {
+  const handleChangeSortOptions = (sortBy: string) => {
     sortByKey.value = sortBy;
   };
 

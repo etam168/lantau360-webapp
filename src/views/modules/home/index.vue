@@ -36,18 +36,11 @@
   const bus = inject("bus") as EventBus;
 
   onMounted(() => {
-    alert("mounted on main page");
-
     openDialogStore.resetQuery();
     window.dispatchEvent(new Event("popstate")); // This causes route update
   });
 
-  onUnmounted(() => {
-    alert("un-mounted on main page");
-  });
-
   onBeforeRouteLeave((_to, _from, next) => {
-    alert("onBeforeRouteLeave");
     switch (true) {
       case openDialogStore.hasDialogId(): {
         const dialogId = openDialogStore.getLatestDialogId();
