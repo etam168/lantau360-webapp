@@ -35,9 +35,6 @@
 </template>
 
 <script setup lang="ts">
-  // Quasar  Imports
-  import { useDialogPluginComponent } from "quasar";
-
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
@@ -47,7 +44,12 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
-  // Emits definition
+  // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
+
+  // Quasar  Imports
+  import { EventBus, useDialogPluginComponent } from "quasar";
+
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
@@ -66,6 +68,8 @@
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate, getEntityName } = useUtilities(locale.value);
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+  const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
   const isDialogVisible = ref(true);
@@ -116,11 +120,34 @@
     return true;
   });
 
-  // Lifecycle hooks
+  const bus = inject("bus") as EventBus;
+  const dialogId = ref<string>("");
+
+  // Store the event handler function in a variable so we can reference it in both mounted and unmounted
+  const handleDialogClose = (receivedDialogId: string) => {
+    alert("handle Items DialogClose: " + receivedDialogId);
+    if (receivedDialogId === dialogId.value) {
+      alert("id matched");
+      handleCloseDialog();
+    }
+  };
+
   onMounted(() => {
-    // Set up event listener for closing dialog
-    eventBus(dialogName).on(() => {
-      isDialogVisible.value = false;
-    });
+    alert("onMounted: category");
+    // Get the DOM id from the dialogRef
+    dialogId.value = dialogRef.value?.$el.parentElement.id;
+
+    // Update store query param and the browser address bar
+    openDialogStore.updateQuery(dialogId.value);
+    openDialogStore.updateWindowHistory();
+
+    // Add event listener for DialogClose with dialogId parameter
+    bus.on("DialogClose", handleDialogClose);
+  });
+
+  onUnmounted(() => {
+    alert("onUnmounted: category");
+    // bus.off("DialogClose"); // Remove only this specific listener
+    bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
   });
 </script>

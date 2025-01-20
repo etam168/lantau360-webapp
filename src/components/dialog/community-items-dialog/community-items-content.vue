@@ -56,11 +56,9 @@
   const {
     directory,
     entityKey,
-    dialogName = "ItemListDialog"
   } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
-    dialogName: string;
   }>();
 
   // Composable function calls
@@ -133,8 +131,8 @@
   }
 
   async function handleDetail(item: any) {
-    eventBus("DialogStatus").emit(true, dialogName + "Detail");
-    openCommunityDetailDialog(isDialogOpen, item, dialogName + "Detail");
+    // eventBus("DialogStatus").emit(true, dialogName + "Detail");
+    openCommunityDetailDialog(isDialogOpen, item);
   }
 
   async function fetchAllData() {

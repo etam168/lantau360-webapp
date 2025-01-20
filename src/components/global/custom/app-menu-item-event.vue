@@ -41,7 +41,7 @@
   const isDialogOpen = ref(false);
   const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, translate, getImageURL } = useUtilities(locale.value);
+  const { translate, getImageURL } = useUtilities(locale.value);
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const eventItem = computed(() => item as CommunityEventView);
@@ -49,8 +49,6 @@
   const translatedTitle: any = ref(translate(eventItem.value.title, eventItem.value.meta, "title"));
 
   const onItemClick = () => {
-    const dialogName = "EventDetail";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCommunityDetailDialog(isDialogOpen, item, dialogName);
+    openCommunityDetailDialog(isDialogOpen, item);
   };
 </script>

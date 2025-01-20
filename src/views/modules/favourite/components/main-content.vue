@@ -61,7 +61,7 @@
   }>();
 
   const { t, locale } = useI18n({ useScope: "global" });
-  const { eventBus, isSmallScreen, dateFormatter, translate } = useUtilities(locale.value);
+  const { isSmallScreen} = useUtilities(locale.value);
   const $q = useQuasar();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
@@ -117,10 +117,7 @@
   }>();
 
   async function handleDetail(item: any) {
-    debugger;
-    const dialogName = item.siteId ? "SITE_DETAIL_DIALOG" : "BUSINESS_DETAIL_DIALOG";
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
-    eventBus("DialogStatus").emit(true, dialogName);
     openCategoryDetailDialog(item, entityKey);
   }
 </script>

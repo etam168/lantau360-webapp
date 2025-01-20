@@ -49,7 +49,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   async function openCommunityDetailDialog(
     isDialogOpen: Ref<Boolean>,
     item: any,
-    dialogName: string,
     customEntityKey?: EntityURLKey
   ) {
     if (isDialogOpen.value) return;
@@ -61,7 +60,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       componentProps: {
         category: item,
         entityKey: customEntityKey || entityKey,
-        dialogName: dialogName
       }
     })
       .onOk(() => {

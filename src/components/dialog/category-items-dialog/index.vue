@@ -100,18 +100,17 @@
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
    */
-  function handleCloseDialog(): void {
+   function handleCloseDialog(): void {
+    eventBus("DialogStatus").emit(false, dialogName);
     setTimeout(() => {
       try {
-        alert("Items Closing handler" + dialogId.value);
-        openDialogStore.removeDialogFromQuery(dialogId.value);
-        openDialogStore.updateWindowHistory();
         isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }
     }, 1200);
   }
+
 
   /**
    * Handles the sorting
