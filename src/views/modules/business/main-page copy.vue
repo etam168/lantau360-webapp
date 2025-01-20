@@ -4,11 +4,29 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content
+        v-model:tab="tab"
+        :tab-items="tabItems"
+        :business-promotion="businessPromotion"
+        :directory-data="businessDirectories"
+        :entityKey
+        :i18nKey
+        @update:current-tab="setTab"
+        @on-directory-item="onDirectoryItem"
+      />
+    </q-scroll-area>
+
     <main-content
+      v-else
+      v-model:tab="tab"
+      :tab-items="tabItems"
       :business-promotion="businessPromotion"
       :directory-data="businessDirectories"
       :entityKey
       :i18nKey
+      @update:current-tab="setTab"
+      @on-directory-item="onDirectoryItem"
     />
   </q-page>
 </template>
@@ -19,6 +37,7 @@
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
+  import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
   import MainContent from "./components/main-content.vue";
@@ -34,7 +53,7 @@
   const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { openCategoryDetailDialog, openCategoryItemDialog } = useCategoryDialogService(entityKey);
   const { getEntityName } = useUtilities();
 
   const THRESHOLD = 320;
@@ -44,6 +63,8 @@
   const businessVoucher = ref<BusinessVoucherView[]>([]);
   const error = ref<string | null>(null);
 
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("promotion");
   const i18nKey = getEntityName(entityKey);
 
   const isDialogOpen = ref(false);
@@ -56,6 +77,11 @@
   const scrollAreaStyle = computed(() => {
     return { height: `calc(100vh - ${usedHeight.value}px)` };
   });
+
+  const tabItems = ref<TabItem[]>([
+    { name: "promotion", label: t(`${i18nKey}.tabItem.promotion`) },
+    { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
+  ]);
 
   async function fetchAllData() {
     try {
@@ -102,6 +128,12 @@
   const onImageClick = (category: AdvertisementView) => {
     openCategoryDetailDialog(category, "ADVERTISEMENT");
   };
+
+  async function onDirectoryItem(directory: BusinessDirectory) {
+    if (!isDialogOpen.value) {
+      openCategoryItemDialog(isDialogOpen, directory, "business");
+    }
+  }
 
   /**
    * Fetch data as part of the setup

@@ -3,8 +3,8 @@
     v-bind="$attrs"
     flat
     square
-    hide-pagination
     hide-header
+    hide-pagination
     :hide-bottom="categoryItems.length > 0"
     :row-key="`${entityName}Id`"
     :card-style="cardStyle"

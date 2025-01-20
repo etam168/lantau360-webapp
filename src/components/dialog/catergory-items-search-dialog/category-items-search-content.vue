@@ -60,7 +60,6 @@
   );
 
   function onClearInput() {
-    alert("clear");
     rows.value = [];
   }
 

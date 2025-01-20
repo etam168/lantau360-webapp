@@ -18,63 +18,34 @@ interface FetchSiteDataResult {
 }
 
 export function useCategoryDialogService(entityKey: EntityURLKey) {
-  const userStore = useUserStore();
-  const { userInfo, isUserLogon } = userStore;
-  const galleryItems = ref<GalleryImageType[]>([]);
-  const memberConfig = ref();
-  const checkInData = ref();
+  // const galleryItems = ref<GalleryImageType[]>([]);
+  // const memberConfig = ref();
+  // const checkInData = ref();
   const { api, fetchData } = useApi();
-  const { getEntityId, getEntityName } = useUtilities();
+  // const { getEntityId, getEntityName } = useUtilities();
 
-  /**
-   * Fetches data for a directory, including directory items and user check-ins if applicable.
-   */
-  const fetchSiteData = async (directoryId: number): Promise<FetchSiteDataResult> => {
-    try {
-      const requestUrls: string[] = [];
-      requestUrls.push(`${ENTITY_URL.DIRECTORY_LIST.SITE}/${directoryId}`);
-
-      if (isUserLogon()) {
-        requestUrls.push(
-          `${ENTITY_URL.MEMBER_DIRECTORY_CHECK_IN}?memberId=${userInfo.userId}&directoryId=${directoryId}`
-        );
-      }
-
-      const axiosRequests = requestUrls.map(url => api.get(url));
-      const [directoryResponse, checkInResponse] = await Promise.all(axiosRequests);
-
-      const directoryItemsList: CategoryTypes[] = directoryResponse?.data || [];
-      const directoryCheckIns: CheckIn[] = checkInResponse?.data || [];
-
-      return { directoryItemsList, directoryCheckIns };
-    } catch (error) {
-      console.error("Error fetching site data:", error);
-      throw error;
-    }
-  };
-
-  async function fetchAllData(category: CategoryTypes) {
-    try {
-      switch (entityKey) {
-        case "SITE":
-        case "ADVERTISEMENT":
-        case "BUSINESS":
-        case "BUSINESS_PROMOTION":
-          const entityName = getEntityName(entityKey);
-          const id = getEntityId(category, entityName);
-          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-          const finalUrl = `${baseUrl}/${id}`;
-          const response = await fetchData<GalleryImageType[]>(finalUrl);
-          galleryItems.value = response;
-          break;
-        default:
-          console.warn(`Unsupported entity type: ${entityKey}`);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
-    }
-  }
+  // async function fetchAllData(category: CategoryTypes) {
+  //   try {
+  //     switch (entityKey) {
+  //       case "SITE":
+  //       case "ADVERTISEMENT":
+  //       case "BUSINESS":
+  //       case "BUSINESS_PROMOTION":
+  //         const entityName = getEntityName(entityKey);
+  //         const id = getEntityId(category, entityName);
+  //         const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
+  //         const finalUrl = `${baseUrl}/${id}`;
+  //         const response = await fetchData<GalleryImageType[]>(finalUrl);
+  //         galleryItems.value = response;
+  //         break;
+  //       default:
+  //         console.warn(`Unsupported entity type: ${entityKey}`);
+  //     }
+  //   } catch (error) {
+  //     console.error("Error fetching data:", error);
+  //     throw error;
+  //   }
+  // }
 
   /**
    * Opens a dialog for displaying category items.
@@ -128,7 +99,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       .onOk(() => {})
       .onCancel(() => {
         // Handle the Cancel action
-        eventBus("refreshData").emit();
+        // eventBus("refreshData").emit();
       });
   }
 
@@ -141,11 +112,10 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   }
 
   return {
-    checkInData,
-    galleryItems,
-    memberConfig,
-    fetchAllData,
-    fetchSiteData,
+    // checkInData,
+    // galleryItems,
+    // memberConfig,
+    // fetchAllData,
     openCategoryDetailDialog,
     openCategoryItemDialog,
     openGoogleMaps
