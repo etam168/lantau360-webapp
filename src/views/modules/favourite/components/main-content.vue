@@ -17,28 +17,27 @@
       </q-banner>
     </template>
 
-    <template v-slot:item="{ row }">
+    <template v-slot:body="{ row }">
       <div :class="itemClass">
         <app-fav-item
           v-if="tab === 'location'"
           :categoryItem="row"
           :distance="0"
           entity-key="SITE"
-          @on-directory-item="$emit('onCategoryDetail', $event)"
+          @on-directory-item="handleDetail(row)"
         />
         <app-fav-item
           v-else-if="tab === 'business'"
           :categoryItem="row"
           entity-key="BUSINESS"
           :distance="0"
-          @on-directory-item="$emit('onCategoryDetail', $event)"
+          @on-directory-item="handleDetail(row)"
         />
         <app-checkin-item
           v-else
           :siteData="row.siteData"
           :checkInfo="row.checkInfo"
           :i18nKey="i18nKey"
-          @click="$emit('onCheckInDetail', row)"
         />
       </div>
     </template>
@@ -52,7 +51,7 @@
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
   import type { EntityURLKey } from "@/constants";
 
-  const props = defineProps<{
+  const { siteItems, businessItems, checkinItems, isUserLogon, i18nKey, entityKey } = defineProps<{
     siteItems: SiteView[];
     businessItems: BusinessView[];
     checkinItems: CheckInView[];
@@ -62,26 +61,27 @@
   }>();
 
   const { t, locale } = useI18n({ useScope: "global" });
-  const { isSmallScreen, dateFormatter, translate } = useUtilities(locale.value);
+  const { eventBus, isSmallScreen, dateFormatter, translate } = useUtilities(locale.value);
   const $q = useQuasar();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const tab = ref("location");
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : undefined));
 
   const tabItems = ref<TabItem[]>([
-    { name: "location", label: t(`${props.i18nKey}.tabItem.location`) },
-    { name: "business", label: t(`${props.i18nKey}.tabItem.business`) },
-    { name: "checkIn", label: t(`${props.i18nKey}.tabItem.checkIn`) }
+    { name: "location", label: t(`${i18nKey}.tabItem.location`) },
+    { name: "business", label: t(`${i18nKey}.tabItem.business`) },
+    { name: "checkIn", label: t(`${i18nKey}.tabItem.checkIn`) }
   ]);
 
   const rows = computed(() => {
     switch (tab.value) {
       case "location":
-        return props.siteItems;
+        return siteItems;
       case "business":
-        return props.businessItems;
+        return businessItems;
       case "checkIn":
-        return props.checkinItems;
+        return checkinItems;
       default:
         return [];
     }
@@ -106,10 +106,23 @@
 
   const setTab = (val: string) => (tab.value = val);
 
+  const cardStyle = computed(() => ({
+    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
+    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
+  }));
+
   defineEmits<{
     (e: "onCategoryDetail", value: SiteView | BusinessView): void;
     (e: "onCheckInDetail", value: CheckInView): void;
   }>();
+
+  async function handleDetail(item: any) {
+    debugger;
+    const dialogName = item.siteId ? "SITE_DETAIL_DIALOG" : "BUSINESS_DETAIL_DIALOG";
+    const entityKey = item.siteId ? "SITE" : "BUSINESS";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(item, entityKey);
+  }
 </script>
 
 <style lang="scss">

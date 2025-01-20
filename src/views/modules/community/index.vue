@@ -17,8 +17,10 @@
   import { EntityURLKey } from "@/constants";
 
   // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
   import { useUserStore } from "@/stores/user";
   import { UserLogon } from "@/composable/use-member";
+  import { EventBus } from "quasar";
 
   //Components
   import MainPage from "./main-page.vue";
@@ -30,23 +32,21 @@
   const userStore = useUserStore();
   const userLogon = UserLogon();
 
+
+  const openDialogStore = useOpenDialogStore();
+  const bus = inject("bus") as EventBus;
+
   onMounted(() => {
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
+    openDialogStore.resetQuery();
+    window.dispatchEvent(new Event("popstate")); // This causes route update
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
     switch (true) {
-      case dialogStack.value.length > 0: {
-        const emitter = dialogStack.value[dialogStack.value.length - 1];
-        eventBus(emitter).emit();
-        dialogStack.value.pop();
-        next(false);
+      case openDialogStore.hasDialogId(): {
+        const dialogId = openDialogStore.getLatestDialogId();
+        bus.emit("DialogClose", dialogId);
+        next(false); // Prevent navigation if dialogId exists
         break;
       }
       case _to.name === "favourite" && !userStore.isUserLogon(): {

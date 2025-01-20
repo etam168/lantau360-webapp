@@ -21,26 +21,26 @@
 
   const entityKey: EntityURLKey = "FAVOURITE";
 
-  const { eventBus } = useUtilities();
-  const dialogStack = ref<string[]>([]);
+  // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
+
+  // Composables
+  import { EventBus } from "quasar";
+  
+  const openDialogStore = useOpenDialogStore();
+  const bus = inject("bus") as EventBus;
 
   onMounted(() => {
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
+    openDialogStore.resetQuery();
+    window.dispatchEvent(new Event("popstate")); // This causes route update
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
     switch (true) {
-      case dialogStack.value.length > 0: {
-        const emitter = dialogStack.value[dialogStack.value.length - 1];
-        eventBus(emitter).emit();
-        dialogStack.value.pop();
-        next(false);
+      case openDialogStore.hasDialogId(): {
+        const dialogId = openDialogStore.getLatestDialogId();
+        bus.emit("DialogClose", dialogId);
+        next(false); // Prevent navigation if dialogId exists
         break;
       }
       default: {
