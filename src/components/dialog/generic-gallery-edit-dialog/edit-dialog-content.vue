@@ -95,7 +95,6 @@
     try {
       switch (entityKey) {
         case "MEMBER":
-          debugger;
           entityOptions.value.galleryImages = [];
           rowData.value = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`);
           entityOptions.value.galleryImages = await fetchGalleryImages(entityKey, userStore.userInfo.userId);

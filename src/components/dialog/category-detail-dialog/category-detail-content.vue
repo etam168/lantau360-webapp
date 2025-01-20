@@ -66,7 +66,6 @@
     itemCount?: number;
     type: string;
   }
-
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);

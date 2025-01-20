@@ -57,12 +57,10 @@
   const {
     category,
     entityKey,
-    dialogName = "Detail",
     displayMask
   } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string;
     displayMask?: number;
   }>();
 
@@ -83,16 +81,15 @@
     const nameKey = `${entityName}Name` as keyof CategoryTypes;
     return translate(category[nameKey] as string, category.meta, nameKey);
   });
-
+  
   /**
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
    */
-  function handleCloseDialog(): void {
+   function handleCloseDialog(): void {
     setTimeout(() => {
       try {
-        alert("Details Closing handler" + dialogId.value);
-
+        alert("Items Closing handler" + dialogId.value);
         openDialogStore.removeDialogFromQuery(dialogId.value);
         openDialogStore.updateWindowHistory();
         isDialogVisible.value = false;
@@ -101,7 +98,6 @@
       }
     }, 1200);
   }
-
   /**
    * Updates the dialog's visibility state
    * @param status - The new visibility state
@@ -129,17 +125,15 @@
 
   // Store the event handler function in a variable so we can reference it in both mounted and unmounted
   const handleDialogClose = (receivedDialogId: string) => {
-    alert("handle details DialogClose: " + receivedDialogId);
+    alert("handle Items DialogClose: " + receivedDialogId);
     if (receivedDialogId === dialogId.value) {
       alert("id matched");
       handleCloseDialog();
     }
   };
 
-  // Lifecycle hooks
   onMounted(() => {
-    alert("onMounted: details");
-
+    alert("onMounted: category");
     // Get the DOM id from the dialogRef
     dialogId.value = dialogRef.value?.$el.parentElement.id;
 
@@ -152,7 +146,7 @@
   });
 
   onUnmounted(() => {
-    alert("onUnmounted: details");
+    alert("onUnmounted: category");
     // bus.off("DialogClose"); // Remove only this specific listener
     bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
   });

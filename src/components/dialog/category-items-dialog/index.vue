@@ -22,7 +22,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entityKey :dialogName :sortByKey />
+            <category-items-content :directory :entityKey :sortByKey />
           </template>
 
           <template #fallback>
