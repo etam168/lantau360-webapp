@@ -1,34 +1,14 @@
 <template>
   <q-page>
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
-
-    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
-      <main-content
-        v-model:tab="tab"
-        :weather-data="weatherData"
-        :tab-items="tabItems"
-        :directory-data="directoryData"
-        :resources-data="resourcesData"
-        :sight-seeing-data="sightSeeingData"
-        :entityKey
-        :i18nKey
-        @update:current-tab="setTab"
-        @on-directory-item="onDirectoryItem"
-      />
-    </q-scroll-area>
+    <weather-section :data="weatherData" />
 
     <main-content
-      v-else
-      v-model:tab="tab"
-      :weather-data="weatherData"
-      :tab-items="tabItems"
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
       :entityKey
       :i18nKey
-      @update:current-tab="setTab"
-      @on-directory-item="onDirectoryItem"
     />
   </q-page>
 </template>
@@ -37,7 +17,6 @@
   // Interface files
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { SiteView } from "@/interfaces/models/views/site-view";
-  import type { TabItem } from "@/interfaces/tab-item";
   import type { Weather } from "@/interfaces/models/entities/weather";
 
   // .ts file
@@ -45,6 +24,7 @@
 
   // Custom Components
   import MainContent from "./components/main-content.vue";
+  const weatherSection = defineAsyncComponent(() => import("./components/weather-section.vue"));
 
   // Props
   const { entityKey, i18nKey = "home" } = defineProps<{
@@ -52,38 +32,14 @@
     i18nKey?: string;
   }>();
 
-  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { openCategoryItemDialog, openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { eventBus } = useUtilities();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
-  const THRESHOLD = 320;
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
   const weatherData = ref<Weather | null>(null);
   const error = ref<string | null>(null);
-
-  const setTab = (val: string) => (tab.value = val);
-  const tab = ref("all");
-
-  const isDialogOpen = ref(false);
-
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16; // Height for the carousel
-    return carouselHeight + 84;
-  });
-
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
-  });
-
-  const tabItems = ref<TabItem[]>([
-    { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
-    { name: "resources", label: t(`${i18nKey}.tabItem.resources`) },
-    { name: "sightSeeing", label: t(`${i18nKey}.tabItem.sightSeeing`) }
-  ]);
 
   const directoryData = computed(() =>
     homeDirectories.value.filter((dir: SiteDirectory) => dir.groupId == 1)
@@ -126,16 +82,8 @@
   }
 
   const onImageClick = (category: SiteView) => {
-    const dialogName = "SiteHeroDetail";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCategoryDetailDialog(category, dialogName, entityKey);
+    openCategoryDetailDialog(category, entityKey);
   };
-
-  async function onDirectoryItem(directory: SiteDirectory) {
-    if (!isDialogOpen.value) {
-      openCategoryItemDialog(isDialogOpen, directory, "home");
-    }
-  }
 
   /**
    * Fetch data as part of the setup

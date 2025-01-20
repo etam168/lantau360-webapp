@@ -1,45 +1,37 @@
 <template>
-  <weather-section :data="weatherData" />
-  <app-tab-select
-    :tab-items="tabItems"
-    :current-tab="tab"
-    @update:currentTab="tab = $event"
-    :class="$q.screen.lt.sm ? 'justify-center' : ''"
-  />
-
-  <q-card-actions align="center">
-    <app-search-bar v-model:keyword="keyword" @on-search="handleSearchDialog" />
-  </q-card-actions>
-
-  <q-tab-panels v-model="tab">
-    <q-tab-panel name="all">
-      <app-directory-items
-        :data="directoryData"
-        @on-directory-item="$emit('onDirectoryItem', $event)"
+  <q-table flat grid hide-header hide-pagination :rowKey :rows>
+    <template v-slot:top>
+      <app-tab-select
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+        :class="$q.screen.lt.sm ? 'justify-center' : ''"
       />
-    </q-tab-panel>
 
-    <q-tab-panel name="resources">
-      <app-directory-items
-        :data="resourcesData"
-        @on-directory-item="$emit('onDirectoryItem', $event)"
-      />
-    </q-tab-panel>
+      <q-card-actions class="full-width" align="center">
+        <app-search-bar v-model:keyword="keyword" @on-search="handleSearchDialog" />
+      </q-card-actions>
+    </template>
 
-    <q-tab-panel name="sightSeeing">
-      <app-directory-items
-        :data="sightSeeingData"
-        @on-directory-item="$emit('onDirectoryItem', $event)"
-      />
-    </q-tab-panel>
-  </q-tab-panels>
+    <template v-slot:item="{ row }">
+      <div class="col-xs-4 col-md-3 q-pa-xs">
+
+        <app-menu-item-seeing
+          v-if="tab === SITESEEING"
+          :item="row"
+          :i18nKey
+          @on-directory-item="handleDirectoryItem"
+        />
+        <app-menu-item-directory v-else :item="row" @on-directory-item="handleDirectoryItem" />
+      </div>
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
   // Types
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
   import type { TabItem } from "@/interfaces/tab-item";
-  import type { Weather } from "@/interfaces/models/entities/weather";
 
   // Constants
   import { EntityURLKey } from "@/constants";
@@ -51,16 +43,12 @@
 
   // Props
   const {
-    weatherData,
-    tabItems,
     directoryData,
     resourcesData,
     sightSeeingData,
     entityKey,
-    i18nKey
+    i18nKey = ""
   } = defineProps<{
-    weatherData: Weather | null;
-    tabItems: TabItem[];
     directoryData: SiteDirectory[];
     resourcesData: SiteDirectory[];
     sightSeeingData: SiteDirectory[];
@@ -68,15 +56,40 @@
     i18nKey?: string;
   }>();
 
-  // v-model
-  const tab = defineModel<string>("tab", { required: true });
+  const { t, locale } = useI18n({ useScope: "global" });
+  const SITESEEING = "sightSeeing";
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("all");
 
-  // Custom Components
-  const weatherSection = defineAsyncComponent(() => import("./weather-section.vue"));
+  const tabItems = ref<TabItem[]>([
+    { name: "all", label: t(`${i18nKey}.tabItem.allLocations`) },
+    { name: "resources", label: t(`${i18nKey}.tabItem.resources`) },
+    { name: "sightSeeing", label: t(`${i18nKey}.tabItem.sightSeeing`) }
+  ]);
+  const { isSmallScreen } = useUtilities();
+
   const $q = useQuasar();
   const keyword = ref("");
 
-  function handleSearchDialog(value: any) {
+  const isDialogOpen = ref(false);
+
+  const rows = computed(() => {
+    switch (tab.value) {
+      case "all":
+        return directoryData;
+      case "resources":
+        return resourcesData;
+      case "sightSeeing":
+        return sightSeeingData;
+      default:
+        return directoryData;
+    }
+  });
+
+  const rowKey = computed(() => "siteDirectoryId");
+  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
+
+  function handleSearchDialog() {
     $q.dialog({
       component: defineAsyncComponent(
         () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
@@ -90,4 +103,16 @@
       keyword.value = "";
     });
   }
+
+  async function handleDirectoryItem(directory: SiteDirectory) {
+    if (!isDialogOpen.value) {
+      await openCategoryItemDialog(isDialogOpen, directory, i18nKey);
+    }
+  }
 </script>
+
+<style lang="scss">
+  .q-table__top {
+    padding: 0 !important;
+  }
+</style>
