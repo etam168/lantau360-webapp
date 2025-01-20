@@ -1,16 +1,32 @@
-<!-- Main Page Component -->
 <template>
   <q-page>
     <app-bar-title :title="$t(`${i18nKey}.advertisement`)" />
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content
+        v-model:tab="tab"
+        :i18n-key="i18nKey"
+        :tab-items="tabItems"
+        :events="events"
+        :notices="notices"
+        :directory-data="communityDirectories"
+        @update:current-tab="setTab"
+        @on-directory-item="onDirectoryItem"
+      />
+    </q-scroll-area>
+
     <main-content
+      v-else
+      v-model:tab="tab"
+      :tab-items="tabItems"
+      :i18n-key="i18nKey"
       :events="events"
       :notices="notices"
       :directory-data="communityDirectories"
-      :i18nKey="i18nKey"
-      :entityKey="entityKey"
+      @update:current-tab="setTab"
+      @on-directory-item="onDirectoryItem"
     />
   </q-page>
 </template>
@@ -22,9 +38,10 @@
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
+  import type { TabItem } from "@/interfaces/tab-item";
 
   // Custom Components
-  import MainContent from "./components/main-content.vue";
+  const mainContent = defineAsyncComponent(() => import("./components/main-content.vue"));
 
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
@@ -38,8 +55,14 @@
   const { t } = useI18n({ useScope: "global" });
   const { eventBus } = useUtilities();
   const { fetchData } = useApi();
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { openCommunityItemDialog } = useCommunityDialogService(entityKey);
+
+  const { openCategoryDetailDialog } = useCategoryDialogService(
+    `${entityKey}_DIRECTORY` as EntityURLKey
+  );
+
+  const { openCommunityItemDialog } = useCommunityDialogService(
+    `${entityKey}_DIRECTORY` as EntityURLKey
+  );
 
   const THRESHOLD = 320;
   const advertisements = ref<AdvertisementView[]>([]);
@@ -48,14 +71,27 @@
   const notices = ref<CommunityNoticeView[]>([]);
   const error = ref<string | null>(null);
 
+  const setTab = (val: string) => (tab.value = val);
+  const tab = ref("events");
   const i18nKey = "community";
 
   const isDialogOpen = ref(false);
+
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16;
+    const carouselHeight = (width * 9) / 16; // Height for the carousel
     return carouselHeight + 105;
   });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
+
+  const tabItems = ref<TabItem[]>([
+    { name: "events", label: t(`${i18nKey}.tabItem.events`) },
+    { name: "notice", label: t(`${i18nKey}.tabItem.notice`) },
+    { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
+  ]);
 
   async function fetchAllData() {
     try {
@@ -73,9 +109,7 @@
       communityDirectories.value = directoryResponse.filter(
         (directory: SiteDirectory) => directory.status === 1
       );
-      events.value = eventResponse.filter(
-        (comEve: CommunityEventView) => comEve.status === 1
-      );
+      events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
       notices.value = noticeResponse.filter(
         (comNotice: CommunityNoticeView) => comNotice.status === 1
       );
@@ -93,8 +127,17 @@
   }
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(category, "ADVERTISEMENT");
+    const dialogName = "AdvertisementDetail";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCategoryDetailDialog(category, dialogName, "ADVERTISEMENT");
   };
+
+  async function onDirectoryItem(communityDirectory: CommunityDirectory) {
+    if (isDialogOpen.value) return;
+    const dialogName = "PostingListDialog";
+    eventBus("DialogStatus").emit(true, dialogName);
+    openCommunityItemDialog(isDialogOpen, "POSTING", communityDirectory, dialogName);
+  }
 
   /**
    * Fetch data as part of the setup
