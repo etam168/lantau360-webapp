@@ -19,19 +19,18 @@
   // Stores
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
   import { useUserStore } from "@/stores/user";
-  import { UserLogon } from "@/composable/use-member";
+
+  // Composables
   import { EventBus } from "quasar";
+  import { UserLogon } from "@/composable/use-member";
 
   //Components
   import MainPage from "./main-page.vue";
 
   const entityKey: EntityURLKey = "COMMUNITY";
 
-  const { eventBus } = useUtilities();
-  const dialogStack = ref<string[]>([]);
   const userStore = useUserStore();
   const userLogon = UserLogon();
-
 
   const openDialogStore = useOpenDialogStore();
   const bus = inject("bus") as EventBus;

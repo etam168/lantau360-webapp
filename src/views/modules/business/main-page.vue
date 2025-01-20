@@ -4,40 +4,33 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <main-content
-      :business-promotion="businessPromotion"
-      :directory-data="businessDirectories"
-      :entityKey
-      :i18nKey
-    />
+    <main-content :businessPromotion :directory-data="businessDirectories" :entityKey :i18nKey />
   </q-page>
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Types
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { BusinessDirectory } from "@/interfaces/models/entities/business-directory";
   import type { BusinessPromotionView } from "@/interfaces/models/views/business-promotion-view";
   import type { BusinessVoucherView } from "@/interfaces/models/views/business-voucher-view";
 
-  // Custom Components
-  import MainContent from "./components/main-content.vue";
-
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
+
+  // Custom Components
+  import MainContent from "./components/main-content.vue";
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
 
-  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
   const { getEntityName } = useUtilities();
 
-  const THRESHOLD = 320;
   const advertisements = ref<AdvertisementView[]>([]);
   const businessDirectories = ref<BusinessDirectory[]>([]);
   const businessPromotion = ref<BusinessPromotionView[]>([]);
@@ -46,6 +39,9 @@
 
   const i18nKey = getEntityName(entityKey);
 
+  const $q = useQuasar();
+  const THRESHOLD = 320;
+
   const isDialogOpen = ref(false);
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
@@ -53,9 +49,9 @@
     return carouselHeight + 105;
   });
 
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
-  });
+  const onImageClick = (category: AdvertisementView) => {
+    openCategoryDetailDialog(category, "ADVERTISEMENT");
+  };
 
   async function fetchAllData() {
     try {
@@ -98,10 +94,6 @@
       }
     }
   }
-
-  const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(category, "ADVERTISEMENT");
-  };
 
   /**
    * Fetch data as part of the setup

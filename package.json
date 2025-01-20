@@ -38,7 +38,7 @@
   "devDependencies": {
     "@intlify/unplugin-vue-i18n": "^6.0.3",
     "@quasar/vite-plugin": "^1.9.0",
-    "@ryoppippi/unplugin-typia": "^1.1.2",
+    "@ryoppippi/unplugin-typia": "^1.2.0",
     "@types/leaflet": "^1.9.16",
     "@types/node": "^22.10.7",
     "@types/vue-tel-input": "^2.1.7",

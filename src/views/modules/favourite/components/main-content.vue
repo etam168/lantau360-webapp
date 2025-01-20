@@ -26,13 +26,15 @@
           entity-key="SITE"
           @on-directory-item="handleDetail(row)"
         />
+
         <app-fav-item
           v-else-if="tab === 'business'"
           :categoryItem="row"
-          entity-key="BUSINESS"
           :distance="0"
+          entity-key="BUSINESS"
           @on-directory-item="handleDetail(row)"
         />
+
         <app-checkin-item
           v-else
           :siteData="row.siteData"
@@ -45,23 +47,33 @@
 </template>
 
 <script setup lang="ts">
-  import type { TabItem } from "@/interfaces/tab-item";
-  import type { SiteView } from "@/interfaces/models/views/site-view";
+  // Types
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CheckInView } from "@/interfaces/models/views/checkin-view";
+  import type { SiteView } from "@/interfaces/models/views/site-view";
+  import type { TabItem } from "@/interfaces/tab-item";
+
+  // Constants
   import type { EntityURLKey } from "@/constants";
 
-  const { siteItems, businessItems, checkinItems, isUserLogon, i18nKey, entityKey } = defineProps<{
+  const {
+    siteItems,
+    businessItems,
+    checkinItems,
+    isUserLogon,
+    entityKey,
+    i18nKey = ""
+  } = defineProps<{
     siteItems: SiteView[];
     businessItems: BusinessView[];
     checkinItems: CheckInView[];
     isUserLogon: boolean;
-    i18nKey: string;
     entityKey: EntityURLKey;
+    i18nKey: string;
   }>();
 
   const { t, locale } = useI18n({ useScope: "global" });
-  const { isSmallScreen} = useUtilities(locale.value);
+  const { isSmallScreen } = useUtilities(locale.value);
   const $q = useQuasar();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 

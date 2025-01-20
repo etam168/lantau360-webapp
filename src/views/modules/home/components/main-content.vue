@@ -15,7 +15,6 @@
 
     <template v-slot:item="{ row }">
       <div class="col-xs-4 col-md-3 q-pa-xs">
-
         <app-menu-item-seeing
           v-if="tab === SITESEEING"
           :item="row"
@@ -35,11 +34,6 @@
 
   // Constants
   import { EntityURLKey } from "@/constants";
-
-  // Emits
-  defineEmits<{
-    (e: "onDirectoryItem", value: SiteDirectory): void;
-  }>();
 
   // Props
   const {

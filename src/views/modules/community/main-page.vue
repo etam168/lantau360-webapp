@@ -5,57 +5,55 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <main-content
-      :events="events"
-      :notices="notices"
-      :directory-data="communityDirectories"
-      :i18nKey="i18nKey"
-      :entityKey="entityKey"
-    />
+    <main-content :events :notices :directory-data="communityDirectories" :entityKey :i18nKey />
   </q-page>
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Types
   import type { AdvertisementView } from "@/interfaces/models/views/advertisement-view";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
 
-  // Custom Components
-  import MainContent from "./components/main-content.vue";
-
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
+
+  // Custom Components
+  import MainContent from "./components/main-content.vue";
 
   // Props
   const { entityKey } = defineProps<{
     entityKey: EntityURLKey;
   }>();
 
-  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus } = useUtilities();
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { openCommunityItemDialog } = useCommunityDialogService(entityKey);
+  const { getEntityName } = useUtilities();
 
-  const THRESHOLD = 320;
   const advertisements = ref<AdvertisementView[]>([]);
   const communityDirectories = ref<CommunityDirectory[]>([]);
   const events = ref<CommunityEventView[]>([]);
   const notices = ref<CommunityNoticeView[]>([]);
   const error = ref<string | null>(null);
 
-  const i18nKey = "community";
+  const i18nKey = getEntityName(entityKey);
 
+  const $q = useQuasar();
+
+  const THRESHOLD = 320;
   const isDialogOpen = ref(false);
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
     const carouselHeight = (width * 9) / 16;
     return carouselHeight + 105;
   });
+
+  const onImageClick = (category: AdvertisementView) => {
+    openCategoryDetailDialog(category, "ADVERTISEMENT");
+  };
 
   async function fetchAllData() {
     try {
@@ -70,12 +68,13 @@
       advertisements.value = advertisementResponse.filter(
         (adv: AdvertisementView) => adv.status === 1
       );
+
       communityDirectories.value = directoryResponse.filter(
         (directory: SiteDirectory) => directory.status === 1
       );
-      events.value = eventResponse.filter(
-        (comEve: CommunityEventView) => comEve.status === 1
-      );
+
+      events.value = eventResponse.filter((comEve: CommunityEventView) => comEve.status === 1);
+
       notices.value = noticeResponse.filter(
         (comNotice: CommunityNoticeView) => comNotice.status === 1
       );
@@ -91,10 +90,6 @@
       }
     }
   }
-
-  const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(category, "ADVERTISEMENT");
-  };
 
   /**
    * Fetch data as part of the setup

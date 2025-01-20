@@ -30,7 +30,35 @@ export default defineConfig({
     // drop: ["console", "debugger"]
   },
   build: {
-    chunkSizeWarningLimit: 600
+    rollupOptions: {
+      output: {
+        manualChunks(id) {
+          // Handle node_modules
+          if (id.includes("node_modules")) {
+            // Vue core and related packages
+            if (id.includes("vue") || id.includes("pinia") || id.includes("@vue")) {
+              return "vendor-vue";
+            }
+
+            // UI libraries
+            if (
+              // id.includes("quasar") ||
+              id.includes("quasar")
+            ) {
+              return "vendor-quasar";
+            }
+
+            return "vendor-other";
+          }
+
+          // Handle components directory
+          if (id.includes("/src/components/")) {
+            return "components-common";
+          }
+        }
+      }
+    },
+    chunkSizeWarningLimit: 800
   },
   plugins: [
     UnpluginTypia({}),

@@ -21,16 +21,14 @@
 
     <template v-slot:item="{ row }">
       <div class="col-xs-4 col-md-3 q-pa-xs">
-        <app-menu-item-event
-          v-if="tab === 'events'"
-          :item="row"
-          :entity-key="'COMMUNITY_EVENT'"
-        />
+        <app-menu-item-event v-if="tab === 'events'" :item="row" :entity-key="'COMMUNITY_EVENT'" />
+
         <app-menu-item-notice
           v-else-if="tab === 'notice'"
           :item="row"
           :entity-key="'COMMUNITY_NOTICE'"
         />
+
         <app-menu-item-directory v-else :item="row" @on-directory-item="handleDirectoryItem" />
       </div>
     </template>
@@ -38,11 +36,13 @@
 </template>
 
 <script setup lang="ts">
-  // Interface files
+  // Types
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   import type { CommunityEventView } from "@/interfaces/models/views/community-event-view";
   import type { CommunityNoticeView } from "@/interfaces/models/views/community-notice-view";
   import type { TabItem } from "@/interfaces/tab-item";
+
+  // Constants
   import type { EntityURLKey } from "@/constants";
 
   // Props
@@ -124,7 +124,7 @@
 
   async function handleDirectoryItem(directory: CommunityDirectory) {
     if (!isDialogOpen.value) {
-    const dialogName = "PostingListDialog";
+      const dialogName = "PostingListDialog";
       openCommunityItemDialog(isDialogOpen, "POSTING", directory, dialogName);
     }
   }

@@ -16,17 +16,17 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
-  //Components
-  import MainPage from "./main-page.vue";
-
-  const entityKey: EntityURLKey = "FAVOURITE";
-
   // Stores
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
   // Composables
   import { EventBus } from "quasar";
-  
+
+  //Components
+  import MainPage from "./main-page.vue";
+
+  const entityKey: EntityURLKey = "FAVOURITE";
+
   const openDialogStore = useOpenDialogStore();
   const bus = inject("bus") as EventBus;
 
