@@ -168,7 +168,7 @@
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
 
     eventBus("DialogStatus").emit(true, dialogName);
-    await openCategoryDetailDialog(item, dialogName, entityKey);
+    // await openCategoryDetailDialog(item, dialogName, entityKey);
   }
 
   await fetchAllData();
