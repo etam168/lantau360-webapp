@@ -137,6 +137,7 @@ declare global {
   const useAuthService: typeof import('./composable/services/use-auth-service')['useAuthService']
   const useAuthServiceCopy: typeof import('./composable/services/use-auth-service copy')['useAuthServiceCopy']
   const useBase64: typeof import('@vueuse/core')['useBase64']
+  const useBaseDialog: typeof import('./composable/use-base-dialog')['useBaseDialog']
   const useBattery: typeof import('@vueuse/core')['useBattery']
   const useBluetooth: typeof import('@vueuse/core')['useBluetooth']
   const useBreakpoints: typeof import('@vueuse/core')['useBreakpoints']
@@ -495,6 +496,7 @@ declare module 'vue' {
     readonly useAttrs: UnwrapRef<typeof import('vue')['useAttrs']>
     readonly useAuthService: UnwrapRef<typeof import('./composable/services/use-auth-service')['useAuthService']>
     readonly useBase64: UnwrapRef<typeof import('@vueuse/core')['useBase64']>
+    readonly useBaseDialog: UnwrapRef<typeof import('./composable/use-base-dialog')['useBaseDialog']>
     readonly useBattery: UnwrapRef<typeof import('@vueuse/core')['useBattery']>
     readonly useBluetooth: UnwrapRef<typeof import('@vueuse/core')['useBluetooth']>
     readonly useBreakpoints: UnwrapRef<typeof import('@vueuse/core')['useBreakpoints']>

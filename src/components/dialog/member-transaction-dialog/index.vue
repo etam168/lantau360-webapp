@@ -48,6 +48,9 @@
   // Components
   import TransactionItemsContent from "./transaction-items-content.vue";
 
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
+
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
 
@@ -70,40 +73,25 @@
   // Composable function calls
   const { t } = i18n.global;
 
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { eventBus, getEntityName } = useUtilities();
 
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
+
   // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const dialogTitle = computed(() => {
     return t(`${i18nKeyMoreDialog}.${entityName}.title`);
   });
-
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    setTimeout(() => {
-      try {
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Error handling for the component

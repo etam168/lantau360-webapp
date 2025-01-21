@@ -19,8 +19,8 @@
       </q-card-section>
 
       <q-card-actions align="right">
-        <app-button flat label="Yes"  v-close-popup @click="onConfirm" />
-        <app-button flat label="No"  v-close-popup @click="onCancel" />
+        <app-button flat label="Yes" v-close-popup @click="onConfirm" />
+        <app-button flat label="No" v-close-popup @click="onCancel" />
       </q-card-actions>
     </q-card>
   </q-dialog>
@@ -30,6 +30,9 @@
   import { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
   // Quasar Import
   import { useDialogPluginComponent } from "quasar";
+
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
 
   // Third party imports
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
@@ -52,15 +55,15 @@
   const { eventBus } = useUtilities();
 
   // Reactive variables
-  const isDialogVisible = ref(true);
-  const { dialogRef, onDialogOK } = useDialogPluginComponent();
   const { openCreatePosting } = useCommunityDialogService(entityKey);
 
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    isDialogVisible,
+    updateDialogState
+  } = useBaseDialog();
   const i18nKey = "dialog";
-
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   const onConfirm = () => {
     // Open the dialog for creating the post

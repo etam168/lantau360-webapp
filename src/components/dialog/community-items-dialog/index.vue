@@ -18,7 +18,7 @@
         <Suspense>
           <template #default>
             <!-- Main community items dialog content -->
-            <community-items-content :directory :entity-key  />
+            <community-items-content :directory :entity-key />
           </template>
 
           <template #fallback>
@@ -53,6 +53,9 @@
   // Stores
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
+
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -65,40 +68,21 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate } = useUtilities(locale.value);
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const openDialogStore = useOpenDialogStore();
 
-  // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   const dialogTitle = computed(() =>
     translate(directory.directoryName, directory.meta, "directoryName")
   );
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    setTimeout(() => {
-      try {
-        alert("Items Closing handler" + dialogId.value);
-        openDialogStore.removeDialogFromQuery(dialogId.value);
-        openDialogStore.updateWindowHistory();
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Error handling for the component

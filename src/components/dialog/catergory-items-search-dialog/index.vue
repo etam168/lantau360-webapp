@@ -33,9 +33,8 @@
 
   // Constants
   import { EntityURLKey } from "@/constants/app/entity-url";
+  import { useBaseDialog } from "@/composable/use-base-dialog";
 
-  // Quasar Import
-  import { useDialogPluginComponent } from "quasar";
 
   // Props
   const { entityKey, i18nKey } = defineProps<{
@@ -51,19 +50,22 @@
 
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+
+   // Use the base dialog composition
+   const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    updateDialogState
+  } = useBaseDialog();
 
   // Reactive variables
-  const isDialogVisible = ref();
   const sortByKey = ref("default");
 
   const dialogTitle = computed(() => {
     return t(`${i18nKey}.searchBar.title`);
   });
-
-  function updateDialogState(status: any) {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Handles the sorting

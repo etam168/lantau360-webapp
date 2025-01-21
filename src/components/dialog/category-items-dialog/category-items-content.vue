@@ -37,12 +37,10 @@
   const {
     directory,
     entityKey,
-    dialogName = "ItemListDialog",
     sortByKey = "default"
   } = defineProps<{
     directory: DirectoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string;
     sortByKey?: string;
   }>();
 
@@ -71,8 +69,8 @@
   });
 
   async function onCategoryDetail(item: any) {
-    const detailDialogName = dialogName + "Detail";
-    eventBus("DialogStatus").emit(true, detailDialogName);
+    // const detailDialogName = dialogName + "Detail";
+    // eventBus("DialogStatus").emit(true, detailDialogName);
     openCategoryDetailDialog(item, entityKey, directory.displayMask);
   }
 

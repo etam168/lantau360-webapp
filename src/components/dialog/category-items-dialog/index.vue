@@ -57,6 +57,9 @@
   // Custom Components
   import CategoryItemsContent from "./category-items-content.vue";
 
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
+
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -69,14 +72,21 @@
 
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const { translate } = useUtilities(locale.value);
+
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
   const sortByKey = ref("default");
 
   const dialogTitle = computed(() =>
@@ -97,36 +107,11 @@
   });
 
   /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    setTimeout(() => {
-      try {
-        openDialogStore.removeDialogFromQuery(dialogId.value);
-        openDialogStore.updateWindowHistory();
-
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
    * Handles the sorting
    */
   const handleChangeSortOptions = (sortBy: string) => {
     sortByKey.value = sortBy;
   };
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Error handling for the component

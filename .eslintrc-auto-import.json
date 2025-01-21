@@ -357,6 +357,7 @@
     "onElementRemoval": true,
     "useCommonDialogs": true,
     "useDialogStack": true,
-    "useUserDialogs": true
+    "useUserDialogs": true,
+    "useBaseDialog": true
   }
 }

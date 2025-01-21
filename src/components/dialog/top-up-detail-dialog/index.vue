@@ -44,6 +44,9 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
+
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -54,35 +57,20 @@
 
   // Composable function calls
   const { getEntityName } = useUtilities();
-  const { dialogRef } = useDialogPluginComponent();
+
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog.account";
-
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    setTimeout(() => {
-      try {
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Error handling for the component

@@ -50,6 +50,9 @@
   // Components
   import MoreDetailContent from "./more-detail-content.vue";
 
+   //Composable
+   import { useBaseDialog } from "@/composable/use-base-dialog";
+
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -69,22 +72,19 @@
 
   // Composable function calls
   const { eventBus } = useUtilities();
-  const { dialogRef, onDialogOK } = useDialogPluginComponent();
+  const { onDialogOK } = useDialogPluginComponent();
 
-  // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
+    // Use the base dialog composition
+    const {
+    dialogRef,
+    isDialogVisible,
+    errorMessage,
+    updateDialogState
+  } = useBaseDialog();
+
 
   function handleLoadingChange() {
     isLoading.value = tempLoading.value;
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
   }
 
   function handleDialogClose() {

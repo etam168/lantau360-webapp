@@ -44,6 +44,9 @@
   // Custom Components
   import CheckInDetailContent from "./checkin-detail-content.vue";
 
+  import { useBaseDialog } from "@/composable/use-base-dialog";
+
+
   // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -56,38 +59,20 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate } = useUtilities(locale.value);
-  const { dialogRef } = useDialogPluginComponent();
 
-  // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   const dialogTitle = computed(() => {
     return translate(item.siteData?.siteName, item.siteData?.meta, "siteName");
   });
-
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    eventBus("DialogStatus").emit(false, dialogName);
-    setTimeout(() => {
-      try {
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
 
   /**
    * Error handling for the component

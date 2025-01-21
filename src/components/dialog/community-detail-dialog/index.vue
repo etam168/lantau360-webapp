@@ -49,6 +49,7 @@
 
   // Quasar  Imports
   import { EventBus, useDialogPluginComponent } from "quasar";
+  import { useBaseDialog } from "@/composable/use-base-dialog";
 
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -67,13 +68,20 @@
 
   const { locale } = useI18n({ useScope: "global" });
   const { eventBus, translate, getEntityName } = useUtilities(locale.value);
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
@@ -83,28 +91,6 @@
     return translate((category as Record<string, any>)[nameKey], category.meta, nameKey);
   });
 
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    eventBus("DialogStatus").emit(false, dialogName);
-    setTimeout(() => {
-      try {
-        isDialogVisible.value = false;
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
   /**
    * Error handling for the component
    * Captures errors and sets an appropriate error message
