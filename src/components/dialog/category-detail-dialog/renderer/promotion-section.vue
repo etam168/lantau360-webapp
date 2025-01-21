@@ -45,17 +45,9 @@
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, translate } = useUtilities(locale.value);
+  const { translate } = useUtilities(locale.value);
   const { navigateToPhone, navigateToWhatsApp } = useCommunication();
 
   // Reactive variables
-  const isDialogVisible = ref();
   const translatedContent: any = ref(category.description);
-
-  // Lifecycle hooks
-  onMounted(() => {
-    eventBus("BusinessPromotionDialog").on(() => {
-      isDialogVisible.value = false;
-    });
-  });
 </script>

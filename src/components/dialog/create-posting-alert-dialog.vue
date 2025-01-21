@@ -50,7 +50,6 @@
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
-  const { eventBus } = useUtilities();
 
   // Reactive variables
   const { openCreatePosting } = useCommunityDialogService(entityKey);

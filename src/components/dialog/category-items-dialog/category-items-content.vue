@@ -49,7 +49,6 @@
   const { locale } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
 
-  const { eventBus } = useUtilities(locale.value);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const SIGHTSEEING_GROUP = 5 as const;

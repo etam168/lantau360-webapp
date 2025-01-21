@@ -69,7 +69,6 @@
   const tempLoading = ref(isLoading.value);
 
   // Composable function calls
-  const { eventBus } = useUtilities();
   const { onDialogOK } = useDialogPluginComponent();
 
     // Use the base dialog composition

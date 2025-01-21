@@ -9,7 +9,7 @@ import { useUserStore } from "@/stores/user";
 
 import i18n from "@/plugins/i18n/i18n";
 
-const { eventBus, notify } = useUtilities();
+const { notify } = useUtilities();
 const { t } = i18n.global;
 
 interface FetchSiteDataResult {
@@ -99,7 +99,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       .onOk(() => {})
       .onCancel(() => {
         // Handle the Cancel action
-        // eventBus("refreshData").emit();
       });
   }
 

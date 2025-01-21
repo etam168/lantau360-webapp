@@ -10,7 +10,6 @@ export function useMemberItemDialogService() {
   const trRecent = ref();
   const memberConfig = ref();
   const userStore = useUserStore();
-  const { eventBus } = useUtilities();
   const { fetchData } = useApi();
 
   async function fetchTransactionData() {
@@ -71,7 +70,6 @@ export function useMemberItemDialogService() {
     resetItemLoading: (name: string) => void
   ) {
     isLoading.value = true;
-    eventBus("DialogStatus").emit(true, name);
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")

@@ -30,7 +30,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { api } = useApi();
-  const { eventBus, notify } = useUtilities();
+  const { notify } = useUtilities();
 
   async function handleClick(itemName: string) {
     if (itemName == "freePoints") {
@@ -41,7 +41,6 @@
   async function claimFreePoints() {
     try {
       const res = await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
-      eventBus("refresh-transaction-data").emit();
     } catch (err) {
       if (err instanceof AxiosError) {
         if (err.response?.status === 400 && err.response?.data === "have_enough_points") {

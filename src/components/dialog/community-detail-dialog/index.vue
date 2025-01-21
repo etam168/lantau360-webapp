@@ -62,7 +62,7 @@
   // Composable function calls
 
   const { locale } = useI18n({ useScope: "global" });
-  const { eventBus, translate, getEntityName } = useUtilities(locale.value);
+  const { translate, getEntityName } = useUtilities(locale.value);
 
   // Use the base dialog composition
   const {

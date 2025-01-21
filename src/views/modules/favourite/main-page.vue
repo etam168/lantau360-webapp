@@ -48,7 +48,7 @@
 
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-  const { eventBus, getEntityName } = useUtilities();
+  const { getEntityName } = useUtilities();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const advertisements = ref<AdvertisementView[]>([]);

@@ -33,7 +33,7 @@
 
   const { locale } = useI18n({ useScope: "global" });
 
-  const { eventBus, translate } = useUtilities(locale.value);
+  const { translate } = useUtilities(locale.value);
   const { openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
   const noticeItem = computed(() => item as CommunityNotice);

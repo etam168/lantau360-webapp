@@ -33,7 +33,6 @@
 
   const { t } = useI18n();
   const router = useRouter();
-  const { eventBus } = useUtilities();
   const ACTIVE_TAB_KEY = "activeTab";
 
   const tab = ref(sessionStorage.getItem(ACTIVE_TAB_KEY) || "home");
@@ -73,10 +72,5 @@
     if (storedTab && tabs.value.some(tab => tab.name === storedTab)) {
       tab.value = storedTab;
     }
-
-    eventBus("navigateToMore").on(() => {
-      // Navigate to "/more" when the event is received
-      navigateTo("/more", "more");
-    });
   });
 </script>

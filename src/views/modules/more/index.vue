@@ -36,7 +36,6 @@
   const $q = useQuasar();
   const userStore = useUserStore();
   const userLogon = UserLogon();
-  const { eventBus } = useUtilities();
   const { handleOpenDialog } = useEntityDataHandlingService();
 
   const { openContentDialog, fetchTransactionData, openTransactionItemDialog } =
@@ -146,29 +145,8 @@
     });
   }
 
-  onMounted(() => {
-    eventBus("refresh-transaction-data").on(() => {
-      fetchTransactionData();
-    });
-
-    eventBus("DialogStatus").on((status: any, emitter: string) => {
-      if (status) {
-        dialogStack.value.push(emitter);
-      } else {
-        dialogStack.value.pop();
-      }
-    });
-  });
-
   onBeforeRouteLeave((_to, _from, next) => {
     switch (true) {
-      case dialogStack.value.length > 0: {
-        const emitter = dialogStack.value[dialogStack.value.length - 1];
-        eventBus(emitter).emit();
-        dialogStack.value.pop();
-        next(false);
-        break;
-      }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
         userLogon.localDataNotification();
         next();
