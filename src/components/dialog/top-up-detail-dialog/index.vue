@@ -61,10 +61,8 @@
   // Use the base dialog composition
   const {
     dialogRef,
-    onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
 
@@ -85,13 +83,5 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
-  });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    // eventBus("CloseDialog").on(() => {
-    //   isDialogVisible.value = false;
-    // });
   });
 </script>

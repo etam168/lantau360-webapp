@@ -64,7 +64,7 @@
   }>();
 
   // Composable function calls
-  const { eventBus, getEntityName } = useUtilities();
+  const { getEntityName } = useUtilities();
 
   // Use the base dialog composition
   const {
@@ -92,13 +92,5 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
-  });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    eventBus("CloseDialog").on(() => {
-      isDialogVisible.value = false;
-    });
   });
 </script>

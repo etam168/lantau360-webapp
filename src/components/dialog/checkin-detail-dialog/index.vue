@@ -46,7 +46,6 @@
 
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-
   // Emit
   defineEmits([...useDialogPluginComponent.emits]);
 
@@ -58,17 +57,11 @@
 
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
-  const { eventBus, translate } = useUtilities(locale.value);
+  const { translate } = useUtilities(locale.value);
 
   // Use the base dialog composition
-  const {
-    dialogRef,
-    onDialogHide,
-    isDialogVisible,
-    errorMessage,
-    handleCloseDialog,
-    updateDialogState
-  } = useBaseDialog();
+  const { dialogRef, isDialogVisible, errorMessage, handleCloseDialog, updateDialogState } =
+    useBaseDialog();
 
   const dialogTitle = computed(() => {
     return translate(item.siteData?.siteName, item.siteData?.meta, "siteName");
@@ -87,13 +80,5 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
-  });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    eventBus(dialogName).on(() => {
-      isDialogVisible.value = false;
-    });
   });
 </script>

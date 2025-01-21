@@ -105,35 +105,4 @@
     }
     return true;
   });
-
-  const bus = inject("bus") as EventBus;
-  const dialogId = ref<string>("");
-
-  // Store the event handler function in a variable so we can reference it in both mounted and unmounted
-  const handleDialogClose = (receivedDialogId: string) => {
-    alert("handle Items DialogClose: " + receivedDialogId);
-    if (receivedDialogId === dialogId.value) {
-      alert("id matched");
-      handleCloseDialog();
-    }
-  };
-
-  onMounted(() => {
-    alert("onMounted: category");
-    // Get the DOM id from the dialogRef
-    dialogId.value = dialogRef.value?.$el.parentElement.id;
-
-    // Update store query param and the browser address bar
-    openDialogStore.updateQuery(dialogId.value);
-    openDialogStore.updateWindowHistory();
-
-    // Add event listener for DialogClose with dialogId parameter
-    bus.on("DialogClose", handleDialogClose);
-  });
-
-  onUnmounted(() => {
-    alert("onUnmounted: category");
-    // bus.off("DialogClose"); // Remove only this specific listener
-    bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
-  });
 </script>

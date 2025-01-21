@@ -106,12 +106,4 @@
     }
     return true;
   });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    eventBus(dialogName).on(() => {
-      isDialogVisible.value = false;
-    });
-  });
 </script>

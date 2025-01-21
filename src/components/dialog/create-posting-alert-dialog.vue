@@ -76,14 +76,4 @@
     // Do nothing, simply dismiss the dialog
     isDialogVisible.value = false;
   };
-
-  // Lifecycle hooks
-  onMounted(() => {
-    const timeout = Math.random() * 100000; // random timeout up to 100 seconds
-    setTimeout(() => {
-      if (isDialogVisible.value) {
-        isDialogVisible.value = false; // Close the dialog after the timeout
-      }
-    }, timeout);
-  });
 </script>

@@ -74,7 +74,7 @@
   }>();
 
   // Composable function calls
-  const { eventBus, getEntityName } = useUtilities();
+  const { getEntityName } = useUtilities();
 
   // Reactive variables
   const entityName = getEntityName(entityKey);
@@ -103,16 +103,5 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
-  });
-
-  // Lifecycle hooks
-  onMounted(() => {
-    // Set up event listener for closing dialog
-    eventBus("CloseDialog").on(() => {
-      isDialogVisible.value = false;
-    });
-    eventBus(dialogName).on(() => {
-      isDialogVisible.value = false;
-    });
   });
 </script>
