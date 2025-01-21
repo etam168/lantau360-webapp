@@ -100,17 +100,18 @@
    * Handles the closing of the dialog
    * Sets visibility to false and triggers the cancel action after a delay
    */
-   function handleCloseDialog(): void {
-    eventBus("DialogStatus").emit(false, dialogName);
+  function handleCloseDialog(): void {
     setTimeout(() => {
       try {
+        openDialogStore.removeDialogFromQuery(dialogId.value);
+        openDialogStore.updateWindowHistory();
+
         isDialogVisible.value = false;
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }
     }, 1200);
   }
-
 
   /**
    * Handles the sorting
@@ -155,7 +156,6 @@
   };
 
   onMounted(() => {
-    alert("onMounted: category");
     // Get the DOM id from the dialogRef
     dialogId.value = dialogRef.value?.$el.parentElement.id;
 
@@ -168,8 +168,6 @@
   });
 
   onUnmounted(() => {
-    alert("onUnmounted: category");
-    // bus.off("DialogClose"); // Remove only this specific listener
     bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
   });
 </script>

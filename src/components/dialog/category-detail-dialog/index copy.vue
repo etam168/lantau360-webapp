@@ -42,11 +42,13 @@
   import { EntityURLKey } from "@/constants";
 
   // Quasar  Imports
-  import { useDialogPluginComponent } from "quasar";
+  import { EventBus, useDialogPluginComponent } from "quasar";
+
+  // Stores
+  import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
   // Custom Components
   import CategoryDetailContent from "./category-detail-content.vue";
-  import { useBaseDialog } from "@/composable/use-base-dialog";
 
   // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
@@ -60,18 +62,15 @@
 
   // Composable function calls
   const { locale } = useI18n({ useScope: "global" });
+
   const { translate, getEntityName } = useUtilities(locale.value);
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
-  // Use the base dialog composition
-  const {
-    dialogRef,
-    onDialogHide,
-    isDialogVisible,
-    errorMessage,
-    handleCloseDialog,
-    updateDialogState
-  } = useBaseDialog();
+  const openDialogStore = useOpenDialogStore();
 
+  // Reactive variables
+  const isDialogVisible = ref(true);
+  const errorMessage = ref<string | null>(null);
   const entityName = getEntityName(entityKey);
 
   const dialogTitle = computed(() => {
@@ -79,6 +78,30 @@
     return translate(category[nameKey] as string, category.meta, nameKey);
   });
 
+  /**
+   * Handles the closing of the dialog
+   * Sets visibility to false and triggers the cancel action after a delay
+   */
+  function handleCloseDialog(): void {
+    setTimeout(() => {
+      try {
+        alert("Items Closing handler" + dialogId.value);
+        openDialogStore.removeDialogFromQuery(dialogId.value);
+        openDialogStore.updateWindowHistory();
+
+        isDialogVisible.value = false;
+      } catch (error) {
+        console.error("Error while closing dialog:", error);
+      }
+    }, 1200);
+  }
+  /**
+   * Updates the dialog's visibility state
+   * @param status - The new visibility state
+   */
+  function updateDialogState(status: boolean): void {
+    isDialogVisible.value = status;
+  }
   /**
    * Error handling for the component
    * Captures errors and sets an appropriate error message
@@ -92,5 +115,33 @@
       errorMessage.value = "An unknown error occurred";
     }
     return true;
+  });
+
+  const bus = inject("bus") as EventBus;
+  const dialogId = ref<string>("");
+
+  // Store the event handler function in a variable so we can reference it in both mounted and unmounted
+  const handleDialogClose = (receivedDialogId: string) => {
+    alert("handle Items DialogClose: " + receivedDialogId);
+    if (receivedDialogId === dialogId.value) {
+      alert("id matched");
+      handleCloseDialog();
+    }
+  };
+
+  onMounted(() => {
+    // Get the DOM id from the dialogRef
+    dialogId.value = dialogRef.value?.$el.parentElement.id;
+
+    // Update store query param and the browser address bar
+    openDialogStore.updateQuery(dialogId.value);
+    openDialogStore.updateWindowHistory();
+
+    // Add event listener for DialogClose with dialogId parameter
+    bus.on("DialogClose", handleDialogClose);
+  });
+
+  onUnmounted(() => {
+    bus.off("DialogClose", handleDialogClose); // Remove only this specific listener
   });
 </script>
