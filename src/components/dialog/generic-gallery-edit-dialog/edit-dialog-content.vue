@@ -30,6 +30,7 @@
   import GenericEntityEditForm from "@/components/forms/generic-entity-edit-form.vue";
 
   // Composables imports
+  import { EventBus } from "quasar";
   import { useChangeCase } from "@vueuse/integrations/useChangeCase";
 
   // Constant imports
@@ -47,8 +48,9 @@
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
   const supportedEntityTypes = ["POSTING", "MEMBER"];
 
-  // Composable function calls
-  const { eventBus, getEntityId, getEntityName, notify } = useUtilities();
+  // Composable function 
+  const bus = inject("bus") as EventBus;
+  const { getEntityId, getEntityName, notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
   const { fetchGalleryImages } = useEntityOptionsFetcherService();
 
@@ -83,7 +85,7 @@
     }
     emit("close-dialog");
     notify(t(`${entityName}.message.updateSuccess`), "positive");
-    eventBus("refreshData").emit();
+    bus.emit("refreshData");
   }
 
   /**

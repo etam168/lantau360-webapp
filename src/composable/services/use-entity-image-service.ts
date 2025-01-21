@@ -5,6 +5,7 @@ import type { OperationMode } from "@/interfaces/types/operation-mode";
 
 // External library imports
 import { useChangeCase } from "@vueuse/integrations/useChangeCase";
+import { EventBus } from "quasar";
 
 import i18n from "@/plugins/i18n/i18n";
 
@@ -15,8 +16,9 @@ export function useEntityImageService<T extends GalleryImageType>(
   imageUrlKey: ImageURLKey
 ): EntityImageService<T> {
   const { api } = useApi();
-  const { isDevelopment, notify, eventBus } = useUtilities();
+  const { isDevelopment, notify } = useUtilities();
   const { t } = i18n.global;
+  const bus = inject("bus") as EventBus;
 
   // Get the URL from the constants
   const entityImageUrl = IMAGE_URL[imageUrlKey];
@@ -33,7 +35,7 @@ export function useEntityImageService<T extends GalleryImageType>(
 
     try {
       await api.delete(url);
-      eventBus(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`).emit();
+      bus.emit(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`);
     } catch (error: any) {
       if (isDevelopment) {
         console.error("Error deleting image:", error);
@@ -84,9 +86,7 @@ export function useEntityImageService<T extends GalleryImageType>(
           headers: { "Content-Type": "multipart/form-data" }
         });
       }
-
-      eventBus(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`).emit();
-
+      bus.emit(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`);
       // We can safely use type assertion here because we've checked for the existence of entityIdKey
       return (payload.imageData as any)[entityIdKey] as number;
     } catch (error: any) {

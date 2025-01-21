@@ -28,6 +28,9 @@
   // Constant imports
   import { ENTITY_URL, EntityURLKey } from "@/constants";
   import { useUserStore } from "@/stores/user";
+  
+  // Composables
+  import { EventBus } from "quasar";
 
   // Emits
   const emit = defineEmits(["close-dialog"]);
@@ -41,7 +44,8 @@
   const supportedEntityTypes = ["POSTING"];
 
   // Composable function calls
-  const { eventBus, getEntityId, getEntityName, getImageUrlKey, notify } = useUtilities();
+  const bus = inject("bus") as EventBus;
+  const { getEntityId, getEntityName, getImageUrlKey, notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
   const { fetchData } = useApi();
@@ -93,7 +97,7 @@
 
     emit("close-dialog");
     notify(t(`${entityName}.message.createSuccess`), "positive");
-    eventBus("refreshData").emit();
+    bus.emit("refreshData");
   }
 
   /**

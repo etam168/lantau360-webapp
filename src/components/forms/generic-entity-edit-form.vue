@@ -76,8 +76,9 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   }>();
 
   // Composables and Store Instantiation
+  const bus = inject("bus") as EventBus;
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus, notify } = useUtilities();
+  const {  notify } = useUtilities();
   const userStore = useUserStore();
 
   // Reactive References
@@ -127,7 +128,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
             break;
           default:
             // default actions after updated the entity
-            eventBus("LoadData").emit();
+            bus.emit("LoadData");
             notify(t(`${entityName}.message.updateSuccess`), "positive");
             emits("close-dialog");
             break;

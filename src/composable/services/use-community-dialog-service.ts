@@ -6,8 +6,9 @@ import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import { Dialog } from "quasar";
 import { ENTITY_URL, EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
+import { EventBus } from "quasar";
 
-const { eventBus, notify } = useUtilities();
+const { notify } = useUtilities();
 const userStore = useUserStore();
 const { isUserLogon } = userStore;
 const { handleOpenDialog } = useEntityDataHandlingService();
@@ -23,6 +24,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   const galleryItems = ref<GalleryImageType[]>([]);
   const { fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
+  const bus = inject("bus") as EventBus;
 
   async function fetchAllData(category: CategoryTypes) {
     try {
@@ -68,7 +70,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       .onCancel(() => {
         // Handle the Cancel action
         isDialogOpen.value = false;
-        eventBus("refreshData").emit();
+        bus.emit("refreshData");
       });
   }
 

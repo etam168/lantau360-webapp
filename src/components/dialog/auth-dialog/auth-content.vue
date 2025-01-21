@@ -54,6 +54,9 @@
   // Third party imports
   import { Form } from "vee-validate";
 
+  // Composables
+  import { EventBus } from "quasar";
+
   // Emits
   const emits = defineEmits(["close-dialog"]);
 
@@ -69,7 +72,7 @@
 
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
-  const { eventBus } = useUtilities();
+  const bus = inject("bus") as EventBus;
   const { initialValues, schema, loginRequest, registerRequest, recoverPassword, sendOtp } =
     useAuthService(renderMode);
 
@@ -143,7 +146,7 @@
             break;
           case "sendOtp":
             await sendOtp(values.userName);
-            eventBus("otpSent").emit("reset");
+            bus.emit("otpSent", "otpSent");
             break;
           default:
             throw new Error(`Unknown render mode: ${renderMode.value}`);
@@ -185,13 +188,15 @@
     renderMode.value = "login";
   }
 
+  function otpSent(mode: AuthMode) {
+    if (form.value) {
+      form.value.resetForm();
+    }
+    renderMode.value = mode;
+  }
+
   // Lifecycle hooks
   onMounted(() => {
-    eventBus("otpSent").on((mode: AuthMode) => {
-      if (form.value) {
-        form.value.resetForm();
-      }
-      renderMode.value = mode;
-    });
+    bus.on("DialogClose", otpSent);
   });
 </script>

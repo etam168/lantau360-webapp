@@ -63,7 +63,7 @@
 
   // Composable function calls
   const { locale, t } = useI18n({ useScope: "global" });
-  const { eventBus, getEntityName, groupBy, translate } = useUtilities(locale.value);
+  const { getEntityName, groupBy, translate } = useUtilities(locale.value);
   const { fetchData } = useApi();
   const { handleCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
 
@@ -159,12 +159,6 @@
       throw error;
     }
   }
-
-  onBeforeMount(() => {
-    eventBus("refreshData").on(async () => {
-      await fetchAllData();
-    });
-  });
 
   /**
    * Fetch data as part of the setup
