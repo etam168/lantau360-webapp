@@ -1,6 +1,6 @@
 <!-- category-items-content.vue -->
 <template>
-  <!-- <sightseeing-items
+  <sightseeing-items
     v-if="directory.groupId === SIGHTSEEING_GROUP"
     :categoryItems
     :directory
@@ -16,13 +16,6 @@
     :entityKey
     :sortByKey
     @on-category-detail="onCategoryDetail"
-  /> -->
-
-  <main-content
-    :categoryItems
-    :directory
-    :entityKey
-    :sortByKey
   />
 </template>
 
@@ -39,7 +32,6 @@
   // Import the new component
   import NonSightseeingItems from "./renderer/non-sightseeing-items.vue";
   import SightseeingItems from "./renderer/sightseeing-items.vue";
-  import MainContent from "./main-content.vue";
 
   // Props
   const {
@@ -76,7 +68,6 @@
   });
 
   async function onCategoryDetail(item: any) {
-    alert("onCategoryDetail")
     openCategoryDetailDialog(item, entityKey, directory.displayMask);
   }
 

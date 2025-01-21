@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable @click="$emit('click')" :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
+  <q-item clickable @click="$emit('on-directory-item')" :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
     </q-item-section>
@@ -35,7 +35,7 @@
   import { useFavoriteStore } from "@/stores/favorite-store";
 
   defineEmits<{
-    (e: "click"): void;
+    (e: "on-directory-item"): void;
   }>();
 
   const { distance, entityKey, categoryItem, directory } = defineProps<{
