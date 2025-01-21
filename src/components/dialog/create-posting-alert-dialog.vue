@@ -43,11 +43,9 @@
   const {
     directory,
     entityKey,
-    dialogName = "ItemListDialog"
   } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
-    dialogName: string;
   }>();
 
   // Emits
@@ -66,9 +64,6 @@
   const i18nKey = "dialog";
 
   const onConfirm = () => {
-    // Open the dialog for creating the post
-    const dialogName = "PostingListDialog";
-    eventBus("DialogStatus").emit(true, dialogName);
     openCreatePosting(isDialogVisible, directory);
   };
 

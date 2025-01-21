@@ -47,8 +47,6 @@
   );
 
   const onItemClick = () => {
-    const dialogName = "NoticeDetail";
-    eventBus("DialogStatus").emit(true, dialogName);
-    openCommunityDetailDialog(isDialogOpen, item, dialogName);
+    openCommunityDetailDialog(isDialogOpen, item);
   };
 </script>

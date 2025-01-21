@@ -131,7 +131,6 @@
   }
 
   async function handleDetail(item: any) {
-    // eventBus("DialogStatus").emit(true, dialogName + "Detail");
     openCommunityDetailDialog(isDialogOpen, item);
   }
 

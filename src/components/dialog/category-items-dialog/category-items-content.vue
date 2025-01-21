@@ -69,8 +69,6 @@
   });
 
   async function onCategoryDetail(item: any) {
-    // const detailDialogName = dialogName + "Detail";
-    // eventBus("DialogStatus").emit(true, detailDialogName);
     openCategoryDetailDialog(item, entityKey, directory.displayMask);
   }
 

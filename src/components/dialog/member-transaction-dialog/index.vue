@@ -63,11 +63,9 @@
   const {
     member,
     entityKey,
-    dialogName = ""
   } = defineProps<{
     member: Member;
     entityKey: EntityURLKey;
-    dialogName: string;
   }>();
 
   // Composable function calls

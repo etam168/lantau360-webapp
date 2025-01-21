@@ -50,9 +50,8 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { item, dialogName } = defineProps<{
+  const { item } = defineProps<{
     item: CheckInView;
-    dialogName: string;
   }>();
 
   // Composable function calls

@@ -60,11 +60,9 @@
   const {
     contentName,
     isLoading,
-    dialogName = "DetailDialog"
   } = defineProps<{
     contentName: string;
     isLoading: Ref<boolean>;
-    dialogName: string;
   }>();
 
   const i18nKey = "more.mainMenuDialog";
@@ -88,7 +86,6 @@
   }
 
   function handleDialogClose() {
-    eventBus("DialogStatus").emit(false, dialogName);
     onDialogOK();
   }
 

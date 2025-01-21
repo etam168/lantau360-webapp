@@ -54,14 +54,9 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const {
-    category,
-    entityKey,
-    dialogName = "Detail"
-  } = defineProps<{
+  const { category, entityKey } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
-    dialogName: string;
   }>();
 
   // Composable function calls

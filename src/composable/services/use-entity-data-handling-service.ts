@@ -26,7 +26,6 @@ export function useEntityDataHandlingService() {
           componentProps: {
             row: props.row, // Pass the row prop for the edit dialog
             entityKey: entityKey,
-            dialogName: props.dialogName
           }
         }).onDismiss(() => {
           // Reset dialog state when it is dismissed/closed

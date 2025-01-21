@@ -110,22 +110,16 @@
   function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
     isLoading.value = true;
     member.memberId = userStore.userInfo.userId;
-    const dialogName = "accountDetail";
-    const props = { dialogName: dialogName };
-    eventBus("DialogStatus").emit(true, dialogName);
 
     if (!isDialogOpen.value) {
-      openTransactionItemDialog(props, isDialogOpen, member, entityKey);
+      openTransactionItemDialog(isDialogOpen, member, entityKey);
       resetItemLoading(itemName);
     }
   }
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
-    const dialogName = "profileDetail";
-    const props = { dialogName: dialogName };
     if (!isDialogOpen.value) {
-      eventBus("DialogStatus").emit(true, dialogName);
-      handleOpenDialog(props, isDialogOpen, entityKey, "edit");
+      handleOpenDialog({}, isDialogOpen, entityKey, "edit");
       resetItemLoading(itemName);
     }
   }
