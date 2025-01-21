@@ -5,8 +5,6 @@ import { BLOB_URL, EntityURLKey, IMAGES, ImageURLKey } from "@/constants";
 import { date, Notify, Screen } from "quasar";
 import { fasCheck, fasXmark } from "@quasar/extras/fontawesome-v6";
 
-const eventBus = (key: string) => useEventBus<any>(key);
-
 export function useUtilities(locale?: string) {
   const { t } = i18n.global;
   const isSmallScreen = computed(() => Screen.lt.sm);
@@ -137,7 +135,6 @@ export function useUtilities(locale?: string) {
     aspectRatio,
     dateFormatter,
     dateTimeFormatter,
-    eventBus,
     getEntityId,
     getEntityKeyName,
     getEntityName,

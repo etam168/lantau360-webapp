@@ -1,6 +1,7 @@
 // Third-party imports
 import { storeToRefs } from "pinia";
 
+import { EventBus } from "quasar";
 
 // Local imports
 import { useUserStore } from "@/stores/user";
@@ -53,7 +54,7 @@ async function refreshToken() {
 axiosInstance.interceptors.request.use(
   config => {
     const userStore = useUserStore();
-    const { eventBus } = useUtilities();
+    const bus = inject("bus") as EventBus;
     const { userInfo, refreshTokenExpiry } = storeToRefs(userStore);
 
     // Check if userInfo exists
@@ -64,7 +65,7 @@ axiosInstance.interceptors.request.use(
 
     // Check if the refresh token is expired
     if (isRefreshTokenExpired(refreshTokenExpiry.value)) {
-      eventBus("logOut").emit();
+      bus.emit("logOut");
       // Reject the request with a custom error
       return Promise.reject(new Error("Session expired"));
     }
