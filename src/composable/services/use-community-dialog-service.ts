@@ -76,7 +76,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     isDialogOpen: Ref<Boolean>,
     entityKey: EntityURLKey,
     directory: CommunityDirectory,
-    dialogName: string
   ) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
@@ -84,7 +83,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       component: defineAsyncComponent(
         () => import("@/components/dialog/community-items-dialog/index.vue")
       ),
-      componentProps: { directory: directory, entityKey: entityKey, dialogName: dialogName }
+      componentProps: { directory: directory, entityKey: entityKey }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed

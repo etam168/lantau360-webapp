@@ -103,7 +103,6 @@
       ),
       componentProps: {
         item,
-        dialogName: "checkinDetailDialog"
       }
     });
   };

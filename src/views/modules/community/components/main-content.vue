@@ -124,8 +124,7 @@
 
   async function handleDirectoryItem(directory: CommunityDirectory) {
     if (!isDialogOpen.value) {
-      const dialogName = "PostingListDialog";
-      openCommunityItemDialog(isDialogOpen, "POSTING", directory, dialogName);
+      openCommunityItemDialog(isDialogOpen, "POSTING", directory);
     }
   }
 </script>

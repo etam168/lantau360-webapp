@@ -127,8 +127,7 @@
         () => import("@/components/dialog/checkin-detail-dialog/index.vue")
       ),
       componentProps: {
-        item,
-        dialogName: "checkinDetailDialog"
+        item
       }
     });
   }

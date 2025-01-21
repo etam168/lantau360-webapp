@@ -18,7 +18,7 @@ export function useMoreItemService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
-      componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
+      componentProps: { contentName: name, isLoading: isLoading }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed

@@ -11,7 +11,7 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
         <app-dialog-title>
-          {{ dialogName ? $t(`more.${dialogName}`) : $t(`${entityName}.dialog.create`) }}
+          <!-- {{ dialogName ? $t(`more.${dialogName}`) : $t(`${entityName}.dialog.create`) }} -->
         </app-dialog-title>
       </q-header>
 
@@ -60,7 +60,6 @@
   const { entityKey, site } = defineProps<{
     entityKey: EntityURLKey;
     site?: SiteView;
-    dialogName?: string;
   }>();
 
   // Composable function calls

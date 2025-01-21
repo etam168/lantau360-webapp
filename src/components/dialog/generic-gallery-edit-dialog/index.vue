@@ -14,11 +14,11 @@
         <!-- <app-dialog-title>{{ $t(`${entityName}.dialog.edit`) }}</app-dialog-title> -->
 
         <app-dialog-title>
-          {{
+          <!-- {{
             dialogName
               ? $t(`${i18nKeyMoreDialog}.${dialogName}.title`)
               : $t(`${entityName}.dialog.edit`)
-          }}
+          }} -->
         </app-dialog-title>
       </q-header>
 
@@ -66,11 +66,9 @@
   const {
     row,
     entityKey,
-    dialogName = ""
   } = defineProps<{
     row: CategoryTypes;
     entityKey: EntityURLKey;
-    dialogName?: string;
   }>();
 
   // Composable function calls

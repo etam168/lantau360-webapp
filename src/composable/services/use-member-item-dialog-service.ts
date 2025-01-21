@@ -76,7 +76,7 @@ export function useMemberItemDialogService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/more-detail-dialog/index.vue")
       ),
-      componentProps: { contentName: name, isLoading: isLoading, dialogName: name }
+      componentProps: { contentName: name, isLoading: isLoading }
     })
       .onCancel(() => {
         isLoading.value = false;
