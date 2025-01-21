@@ -1,19 +1,32 @@
+<!-- category-items-search-content.vue -->
 <template>
-  <q-card-actions align="center">
-    <app-search-bar
-      v-model:keyword="keyword"
-      @on-search="onSearch"
-      @on-clear-input="onClearInput"
-    />
-  </q-card-actions>
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    :rowKey
+    :rows="sortedRows"
+    :rows-per-page-options="[0]"
+  >
+    <template v-slot:top>
+      <q-card-actions class="full-width" align="center">
+        <app-search-bar
+          v-model:keyword="keyword"
+          @on-search="onSearch"
+          @on-clear-input="onClearInput"
+        />
+      </q-card-actions>
+    </template>
 
-  <app-category-list-items
-    :categoryItems="rows"
-    :entityKey
-    :sortByKey="sortByKey"
-    :style="tableStyle"
-    @on-category-detail="onCategoryDetail"
-  />
+    <template v-slot:body="{ row }">
+      <app-category-item
+        :categoryItem="row"
+        :entityKey
+        @on-directory-item="onCategoryDetail(row)"
+      />
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
@@ -32,12 +45,13 @@
     default: ""
   });
 
-  // Composable function calls
   const $q = useQuasar();
   const { getEntityKeyName } = useUtilities();
 
   const entityUrl = computed(() => `${ENTITY_URL[entityKey]}/Datatable`);
   const THRESHOLD = 150;
+
+  const rowKey = getEntityKeyName(entityKey);
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
     const tabHeight = 120;
@@ -53,11 +67,13 @@
     }
   });
 
+  const { filter, pagination, rows, loadData } = useDataTable(entityUrl.value, rowKey);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { filter, pagination, rows, loadData } = useDataTable(
-    entityUrl.value,
-    getEntityKeyName(entityKey)
-  );
+  const { sortCategoryTypes } = useSortCategoryItems(entityKey);
+
+  const sortedRows = computed(() => {
+    return sortCategoryTypes(rows.value, sortByKey);
+  });
 
   function onClearInput() {
     rows.value = [];

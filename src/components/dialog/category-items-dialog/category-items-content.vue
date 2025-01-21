@@ -1,29 +1,48 @@
 <!-- category-items-content.vue -->
 <template>
-  <!-- <sightseeing-items
-    v-if="directory.groupId === SIGHTSEEING_GROUP"
-    :categoryItems
-    :directory
-    :entityKey
-    :sortByKey
-    @on-category-detail="onCategoryDetail"
-  />
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    :row-key="rowKey"
+    :rows="sortedRows"
+    :rows-per-page-options="[0]"
+  >
+    <template v-slot:top>
+      <q-card
+        v-if="directory.groupId === SIGHTSEEING_GROUP"
+        flat
+        bordered
+        class="q-ma-md full-height"
+      >
+        <q-responsive :ratio="16 / 9">
+          <q-card-section>{{
+            translate(directory.shortName, directory.meta, "shortName")
+          }}</q-card-section>
+        </q-responsive>
+      </q-card>
 
-  <non-sightseeing-items
-    v-else
-    :categoryItems
-    :directory
-    :entityKey
-    :sortByKey
-    @on-category-detail="onCategoryDetail"
-  /> -->
+      <app-tab-select
+        v-if="hasGroup"
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+        :class="$q.screen.lt.sm ? 'justify-center' : ''"
+      />
 
-  <main-content
-    :categoryItems
-    :directory
-    :entityKey
-    :sortByKey
-  />
+      <app-taxi-fleet-banner v-if="directoryTemplate === 2" />
+    </template>
+
+    <template v-slot:body="{ row }">
+      <app-category-item
+        :categoryItem="row"
+        :directory
+        :entityKey
+        @on-directory-item="onCategoryDetail(row)"
+      />
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
@@ -35,11 +54,6 @@
 
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
-
-  // Import the new component
-  import NonSightseeingItems from "./renderer/non-sightseeing-items.vue";
-  import SightseeingItems from "./renderer/sightseeing-items.vue";
-  import MainContent from "./main-content.vue";
 
   // Props
   const {
@@ -56,8 +70,9 @@
   const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
-
+  const { getEntityKeyName, translate } = useUtilities(locale.value);
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { sortCategoryTypes } = useSortCategoryItems(entityKey);
 
   const SIGHTSEEING_GROUP = 5 as const;
 
@@ -75,8 +90,18 @@
     }
   });
 
-  async function onCategoryDetail(item: any) {
-    alert("onCategoryDetail")
+  const { tab, directoryTemplate, hasGroup, tabItems, rows, setTab } = useDirectoryGrouping(
+    categoryItems,
+    directory
+  );
+
+  const rowKey = computed(() => `${getEntityKeyName(entityKey)}Id`);
+
+  const sortedRows = computed(() => {
+    return sortCategoryTypes(rows.value, sortByKey);
+  });
+
+  function onCategoryDetail(item: any) {
     openCategoryDetailDialog(item, entityKey, directory.displayMask);
   }
 

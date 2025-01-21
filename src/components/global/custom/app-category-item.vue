@@ -1,5 +1,9 @@
 <template>
-  <q-item clickable @click="$emit('on-directory-item')" :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
+  <q-item
+    clickable
+    @click="$emit('on-directory-item')"
+    :style="$q.screen.lt.sm ? 'max-width: 390px' : ''"
+  >
     <q-item-section avatar>
       <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
     </q-item-section>
@@ -38,9 +42,8 @@
     (e: "on-directory-item"): void;
   }>();
 
-  const { distance, entityKey, categoryItem, directory } = defineProps<{
+  const { entityKey, categoryItem, directory } = defineProps<{
     categoryItem: CategoryTypes;
-    distance: number;
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
   }>();
@@ -73,20 +76,21 @@
     }
   });
 
+  const { getDistanceValue } = useSortCategoryItems(entityKey);
+
   const formattedDistance = computed(() => {
+    const distance = getDistanceValue(categoryItem);
     // Format distance:
     // - If less than 10 meter, return "< 10M"
     // - If less than 1KM, return meters with "M" suffix
     // - If 1KM or more, return kilometers with "KM" suffix
     switch (true) {
       case categoryItem.directoryTemplate === TEMPLATE.TAXI.value:
-        return "";
       case categoryItem.directoryTemplate === TEMPLATE.TIMETABLE.value:
-        return "";
       case categoryItem.directoryTemplate === TEMPLATE.EMERGENCY.value:
-        return "";
+        return "N/A";
       case distance === Infinity:
-        return "";
+        return "Infinity";
       case distance < 10:
         return "< 10M";
       case distance < 1000:

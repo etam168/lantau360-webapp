@@ -51,6 +51,9 @@
   }>();
 
   const { t, locale } = useI18n({ useScope: "global" });
+  const { getEntityKeyName } = useUtilities(locale.value);
+  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
+
   const SITESEEING = "sightSeeing";
   const setTab = (val: string) => (tab.value = val);
   const tab = ref("all");
@@ -60,11 +63,9 @@
     { name: "resources", label: t(`${i18nKey}.tabItem.resources`) },
     { name: "sightSeeing", label: t(`${i18nKey}.tabItem.sightSeeing`) }
   ]);
-  const { isSmallScreen } = useUtilities();
 
   const $q = useQuasar();
   const keyword = ref("");
-
   const isDialogOpen = ref(false);
 
   const rows = computed(() => {
@@ -80,8 +81,10 @@
     }
   });
 
-  const rowKey = computed(() => "siteDirectoryId");
-  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
+  const rowKey = computed(() => {
+    const entityKeyName = getEntityKeyName(entityKey);
+    return `${entityKeyName}DirectoryId`;
+  });
 
   function handleSearchDialog() {
     $q.dialog({
@@ -105,7 +108,7 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .q-table__top {
     padding: 0 !important;
   }

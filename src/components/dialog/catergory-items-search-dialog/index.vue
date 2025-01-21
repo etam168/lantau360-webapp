@@ -16,7 +16,12 @@
           }}</app-dialog-title>
 
           <q-page-container>
-            <category-items-search-content v-model:keyword="keyword" :entityKey :sortByKey />
+            <category-items-search-content
+              class="q-mt-xs"
+              v-model:keyword="keyword"
+              :entityKey
+              :sortByKey
+            />
           </q-page-container>
         </q-layout>
       </q-dialog>
@@ -35,7 +40,6 @@
   import { EntityURLKey } from "@/constants/app/entity-url";
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-
   // Props
   const { entityKey, i18nKey } = defineProps<{
     entityKey: EntityURLKey;
@@ -51,14 +55,8 @@
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
 
-
-   // Use the base dialog composition
-   const {
-    dialogRef,
-    onDialogHide,
-    isDialogVisible,
-    updateDialogState
-  } = useBaseDialog();
+  // Use the base dialog composition
+  const { dialogRef, onDialogHide, isDialogVisible, updateDialogState } = useBaseDialog();
 
   // Reactive variables
   const sortByKey = ref("default");
