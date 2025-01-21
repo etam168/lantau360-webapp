@@ -4,12 +4,12 @@ import { useDialogPluginComponent, EventBus } from "quasar";
 import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
 export function useBaseDialog() {
-  const dialogRef = ref();
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const dialogId = ref<string>("");
 
-  const { onDialogHide } = useDialogPluginComponent();
+  // Get dialogRef and other utilities from Quasar's dialog plugin
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const openDialogStore = useOpenDialogStore();
   const bus = inject("bus") as EventBus;
 
@@ -36,6 +36,7 @@ export function useBaseDialog() {
   };
 
   onMounted(() => {
+    // Now dialogRef comes from Quasar's plugin
     dialogId.value = dialogRef.value?.$el.parentElement.id;
     openDialogStore.updateQuery(dialogId.value);
     openDialogStore.updateWindowHistory();
@@ -47,7 +48,7 @@ export function useBaseDialog() {
   });
 
   return {
-    dialogRef,
+    dialogRef, // This now comes from Quasar's plugin
     onDialogHide,
     isDialogVisible,
     errorMessage,
