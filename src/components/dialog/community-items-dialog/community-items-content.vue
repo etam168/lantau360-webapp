@@ -41,10 +41,14 @@
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   // Constants
-  import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { ENTITY_URL, EntityURLKey, NONE } from "@/constants";
 
   // Compontents
   import AppCreatePostItem from "@/components/global/custom/app-create-post-item.vue";
+
+  //Composable imports
+  import { useSortCategoryItems } from "@/composable/use-sort-categorty-items";
+  import { useDirectoryGrouping } from "@/composable/use-directory-grouping";
 
   // Props
   const { directory, entityKey } = defineProps<{
@@ -54,7 +58,7 @@
 
   // Composable function calls
   const { locale, t } = useI18n({ useScope: "global" });
-  const { getEntityKeyName, getEntityName, groupBy, translate } = useUtilities(locale.value);
+  const { getEntityKeyName, getEntityName } = useUtilities(locale.value);
   const { fetchData } = useApi();
   const { handleCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
   const { sortCategoryTypes } = useSortCategoryItems(entityKey);
@@ -66,10 +70,7 @@
   // Reactive variables
   const communityItems: Ref<CategoryTypes[]> = ref([]);
 
-  const { tab, hasGroup, tabItems, rows, setTab } = useDirectoryGrouping(
-    communityItems,
-    directory
-  );
+  const { tab, hasGroup, tabItems, rows, setTab } = useDirectoryGrouping(communityItems, directory);
 
   const rowKey = computed(() => `${getEntityKeyName(entityKey)}Id`);
 
@@ -90,34 +91,6 @@
   const groupBykey = computed<string | null>(() =>
     directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
   );
-
-  const groupedArray = computed(() => {
-    if (groupBykey.value == null) {
-      return [];
-    }
-
-    const key = groupBykey.value;
-    const getTranslatedKey = (item: CategoryTypes): string | number => {
-      if (!(key in item)) {
-        return "Invalid!"; // Or any default value you prefer
-      }
-
-      const itemValue = item[key as keyof CategoryTypes] as string;
-      const metaData = key === AREA_NAME ? (item as any).areaNameAlt : item.meta;
-      return translate(itemValue, metaData, key);
-    };
-
-    const validItems = communityItems.value.filter(
-      (item: CategoryTypes) => key in item && item[key as keyof CategoryTypes] !== undefined
-    );
-
-    return groupBy(validItems, getTranslatedKey);
-  });
-
-  function filterGroupedArray(groupName: string) {
-    const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
-    return items.sort((a: any, b: any) => a.rank - b.rank);
-  }
 
   async function onCreatePosting() {
     handleCreatePosting(isDialogOpen, directory);
