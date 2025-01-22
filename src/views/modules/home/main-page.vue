@@ -35,6 +35,7 @@
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
+  const isDialogOpen = ref(false);
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
   const weatherData = ref<Weather | null>(null);
@@ -55,7 +56,7 @@
   );
 
   const onImageClick = (category: SiteView) => {
-    openCategoryDetailDialog(category, entityKey);
+    openCategoryDetailDialog(isDialogOpen, category, entityKey);
   };
 
   async function fetchAllData() {

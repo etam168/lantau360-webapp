@@ -55,6 +55,10 @@
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
 
+  //Composable import
+  import { useSortCategoryItems } from "@/composable/use-sort-categorty-items";
+  import { useDirectoryGrouping } from "@/composable/use-directory-grouping";
+
   // Props
   const {
     directory,
@@ -77,6 +81,7 @@
   const SIGHTSEEING_GROUP = 5 as const;
 
   // Reactive variables
+  const isDialogOpen = ref(false);
   const categoryItems: Ref<CategoryTypes[]> = ref([]);
 
   const directoryId = computed<number>(() => {
@@ -102,7 +107,7 @@
   });
 
   function onCategoryDetail(item: any) {
-    openCategoryDetailDialog(item, entityKey, directory.displayMask);
+    openCategoryDetailDialog(isDialogOpen,item, entityKey, directory.displayMask);
   }
 
   /**

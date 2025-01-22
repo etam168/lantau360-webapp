@@ -111,13 +111,13 @@
   }
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(category, "ADVERTISEMENT");
+    openCategoryDetailDialog(isDialogOpen,category, "ADVERTISEMENT");
   };
 
   async function onCategoryDetail(item: SiteView | BusinessView) {
     if (!isDialogOpen.value) {
       const entityType = "siteId" in item ? "SITE" : "BUSINESS";
-      openCategoryDetailDialog(item, entityType);
+      openCategoryDetailDialog(isDialogOpen,item, entityType);
     }
   }
 

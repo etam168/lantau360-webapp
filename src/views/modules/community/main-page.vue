@@ -52,7 +52,7 @@
   });
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(category, "ADVERTISEMENT");
+    openCategoryDetailDialog(isDialogOpen,category, "ADVERTISEMENT");
   };
 
   async function fetchAllData() {

@@ -77,6 +77,7 @@
   const $q = useQuasar();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
+  const isDialogOpen = ref(false);
   const tab = ref("location");
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : undefined));
 
@@ -130,7 +131,7 @@
 
   async function handleDetail(item: any) {
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
-    openCategoryDetailDialog(item, entityKey);
+    openCategoryDetailDialog(isDialogOpen,item, entityKey);
   }
 </script>
 

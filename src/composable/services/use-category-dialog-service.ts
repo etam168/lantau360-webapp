@@ -82,10 +82,14 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
    * Opens a dialog for displaying detailed information about a category.
    */
   async function openCategoryDetailDialog(
+    isDialogOpen: Ref<Boolean>,
     item: any,
     entityKey: EntityURLKey,
     displayMask?: number
   ) {
+    if (isDialogOpen.value) return;
+
+    isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/category-detail-dialog/index.vue")
@@ -96,9 +100,12 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
         displayMask: displayMask
       }
     })
-      .onOk(() => {})
+      .onOk(() => {
+        isDialogOpen.value = false;
+      })
       .onCancel(() => {
         // Handle the Cancel action
+        isDialogOpen.value = false;
       });
   }
 

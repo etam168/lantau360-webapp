@@ -45,6 +45,7 @@
     default: ""
   });
 
+  const isDialogOpen = ref(false);
   const $q = useQuasar();
   const { getEntityKeyName } = useUtilities();
 
@@ -85,7 +86,7 @@
   }
 
   async function onCategoryDetail(item: any) {
-    openCategoryDetailDialog(item, entityKey);
+    openCategoryDetailDialog(isDialogOpen,item, entityKey);
   }
 
   onMounted(() => {
