@@ -4,12 +4,8 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
-      <main-content :businessPromotion :directory-data="businessDirectories" :entityKey :i18nKey />
-    </q-scroll-area>
-
     <main-content
-      v-else
+      :style="tableStyle"
       :businessPromotion
       :directory-data="businessDirectories"
       :entityKey
@@ -50,7 +46,6 @@
   const i18nKey = getEntityName(entityKey);
 
   const $q = useQuasar();
-  const THRESHOLD = 320;
 
   const isDialogOpen = ref(false);
   const usedHeight = computed(() => {
@@ -59,8 +54,10 @@
     return carouselHeight + 101;
   });
 
-  const scrollAreaStyle = computed(() => {
-    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const THRESHOLD = 320 as const;
+    const height = $q.screen.height - usedHeight.value;
+    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
   });
 
   const onImageClick = (category: AdvertisementView) => {

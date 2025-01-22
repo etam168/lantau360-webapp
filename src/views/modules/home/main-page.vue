@@ -3,7 +3,18 @@
     <app-carousel-section :data="attractions" @image-click="onImageClick" />
     <weather-section :data="weatherData" />
 
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content
+        :directory-data="directoryData"
+        :resources-data="resourcesData"
+        :sight-seeing-data="sightSeeingData"
+        :entityKey
+        :i18nKey
+      />
+    </q-scroll-area>
+
     <main-content
+      v-else
       :directory-data="directoryData"
       :resources-data="resourcesData"
       :sight-seeing-data="sightSeeingData"
@@ -31,15 +42,27 @@
     entityKey: EntityURLKey;
   }>();
 
+  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
   const { fetchData } = useApi();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const isDialogOpen = ref(false);
+  const THRESHOLD = 320;
   const attractions = ref<SiteView[]>([]);
   const homeDirectories = ref<SiteDirectory[]>([]);
   const weatherData = ref<Weather | null>(null);
   const error = ref<string | null>(null);
+
+  const usedHeight = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const carouselHeight = (width * 9) / 16; // Height for the carousel
+    return carouselHeight + 133.6;
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
+  });
 
   const i18nKey = "home";
 
