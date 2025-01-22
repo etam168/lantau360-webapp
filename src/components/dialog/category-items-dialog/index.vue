@@ -22,7 +22,13 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entityKey :sortByKey :style="tableStyle" />
+            <category-items-content
+              :directory
+              :entityKey
+              :sortByKey
+              :style="tableStyle"
+              class="q-mt-xs"
+            />
           </template>
 
           <template #fallback>

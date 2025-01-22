@@ -138,3 +138,9 @@
    */
   await fetchAllData();
 </script>
+
+<style lang="scss" scoped>
+  .q-table__top {
+    padding: 0 !important;
+  }
+</style>
