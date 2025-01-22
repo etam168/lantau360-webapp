@@ -2,11 +2,9 @@ import dns from "dns";
 import eslint from "vite-plugin-eslint";
 import unpluginRemoveVite from "unplugin-remove/vite";
 import vue from "@vitejs/plugin-vue";
-
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import VueI18nPlugin from "@intlify/unplugin-vue-i18n/vite";
-
 import { createHtmlPlugin } from "vite-plugin-html";
 import { dirname, resolve } from "path";
 import { quasar, transformAssetUrls } from "@quasar/vite-plugin";
@@ -21,7 +19,7 @@ import path from "path";
 dns.setDefaultResultOrder("verbatim");
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const iconVersion = "v=6"; // Define your icon version here
+const iconVersion = "v=6";
 const iconType = "icons";
 const name = "Lantau360 Lite";
 
@@ -32,33 +30,46 @@ export default defineConfig({
   build: {
     rollupOptions: {
       output: {
-        manualChunks(id) {
-          // Handle node_modules
-          if (id.includes("node_modules")) {
-            // Vue core and related packages
-            if (id.includes("vue") || id.includes("pinia") || id.includes("@vue")) {
-              return "vendor-vue";
-            }
-
-            // UI libraries
-            if (
-              // id.includes("quasar") ||
-              id.includes("quasar")
-            ) {
-              return "vendor-quasar";
-            }
-
-            return "vendor-other";
-          }
-
-          // Handle components directory
-          if (id.includes("/src/components/")) {
-            return "components-common";
-          }
+        experimentalMinChunkSize: 10000,
+        manualChunks: {
+          'vendor-vue': [
+            'vue',
+            'vue-router',
+            'pinia',
+            '@vue/runtime-core',
+            '@vue/runtime-dom',
+            '@vue/shared',
+            'vue-i18n'
+          ],
+          'vendor-quasar': ['quasar'],
+          'vendor-utils': ['@vueuse/core', 'axios', 'lodash'],
         }
       }
     },
-    chunkSizeWarningLimit: 800
+    chunkSizeWarningLimit: 800,
+    minify: 'terser',
+    terserOptions: {
+      compress: {
+        drop_console: false,
+        drop_debugger: false
+      }
+    },
+    commonjsOptions: {
+      include: [/node_modules/],
+      strictRequires: true
+    }
+  },
+  optimizeDeps: {
+    include: [
+      'vue',
+      'vue-router',
+      'pinia',
+      '@vueuse/core',
+      'quasar',
+      'vue-i18n',
+      'axios'
+    ],
+    exclude: []
   },
   plugins: [
     UnpluginTypia({}),
@@ -74,7 +85,6 @@ export default defineConfig({
     quasar({
       sassVariables: "@/css/quasar.variables.scss"
     }),
-
     VitePWA(pwaOptions),
     AutoImport({
       include: [/\.[tj]sx?$/, /\.vue$/, /\.vue\?vue/, /\.md$/],
@@ -99,13 +109,9 @@ export default defineConfig({
       }
     }),
     Components({
-      // relative paths to the directory to search for components.
       dirs: ["src/components/global"],
-
-      // valid file extensions for components.
       extensions: ["vue"],
-
-      dts: "src/components.d.ts" // enabled by default if `typescript` is installed
+      dts: "src/components.d.ts"
     }),
     createHtmlPlugin({
       inject: {
@@ -117,10 +123,10 @@ export default defineConfig({
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/152.png?${iconVersion}" sizes="152x152" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/180.png?${iconVersion}" sizes="180x180" />
             <link rel="apple-touch-icon" href="/resources/pwa/${iconType}/ios/512.png?${iconVersion}" />
-        `,
+          `,
           injectTitle: `
             <title>${name}</title>
-        `
+          `
         }
       }
     })
