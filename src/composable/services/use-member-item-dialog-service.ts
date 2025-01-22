@@ -72,7 +72,7 @@ export function useMemberItemDialogService() {
     isLoading.value = true;
     Dialog.create({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/more-detail-dialog/index.vue")
+        () => import("@/components/dialog/terms-privacy-detail-dialog/index.vue")
       ),
       componentProps: { contentName: name, isLoading: isLoading }
     })

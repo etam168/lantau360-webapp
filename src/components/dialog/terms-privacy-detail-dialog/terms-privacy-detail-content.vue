@@ -45,9 +45,12 @@
     if (contentData.value) {
       return translate(contentData.value.contentData, contentData.value.meta, "contentData");
     }
-    return null;
+    return {};
   });
 
-  // Fetch data when component is created
-  fetchContent();
+  /**
+   * Fetch Content as part of the setup
+   * This ensures that the component is compatible with Suspense
+   */
+  await fetchContent();
 </script>

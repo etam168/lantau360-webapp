@@ -21,7 +21,7 @@
         <Suspense>
           <template #default>
             <!-- Main more-detail content -->
-            <more-detail-content
+            <terms-privacy-detail-content
               :contentName
               v-model:is-loading="tempLoading"
               @update:is-loading="handleLoadingChange"
@@ -48,19 +48,16 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import MoreDetailContent from "./more-detail-content.vue";
+  import TermsPrivacyDetailContent from "./terms-privacy-detail-content.vue";
 
-   //Composable
-   import { useBaseDialog } from "@/composable/use-base-dialog";
+  //Composable
+  import { useBaseDialog } from "@/composable/use-base-dialog";
 
   // Emits
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const {
-    contentName,
-    isLoading,
-  } = defineProps<{
+  const { contentName, isLoading } = defineProps<{
     contentName: string;
     isLoading: Ref<boolean>;
   }>();
@@ -71,14 +68,8 @@
   // Composable function calls
   const { onDialogOK } = useDialogPluginComponent();
 
-    // Use the base dialog composition
-    const {
-    dialogRef,
-    isDialogVisible,
-    errorMessage,
-    updateDialogState
-  } = useBaseDialog();
-
+  // Use the base dialog composition
+  const { dialogRef, isDialogVisible, errorMessage, updateDialogState } = useBaseDialog();
 
   function handleLoadingChange() {
     isLoading.value = tempLoading.value;

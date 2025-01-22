@@ -586,8 +586,6 @@ declare module 'vue' {
     readonly useMemory: UnwrapRef<typeof import('@vueuse/core')['useMemory']>
     readonly useMeta: UnwrapRef<typeof import('quasar')['useMeta']>
     readonly useModel: UnwrapRef<typeof import('vue')['useModel']>
-    readonly useMoreItemService: UnwrapRef<typeof import('./composable/services/use-more-item-service')['useMoreItemService']>
-    readonly useMoreItemServiceCopy: UnwrapRef<typeof import('./composable/services/use-more-item-service copy')['useMoreItemServiceCopy']>
     readonly useMounted: UnwrapRef<typeof import('@vueuse/core')['useMounted']>
     readonly useMouse: UnwrapRef<typeof import('@vueuse/core')['useMouse']>
     readonly useMouseInElement: UnwrapRef<typeof import('@vueuse/core')['useMouseInElement']>
