@@ -36,6 +36,8 @@
   //Custom Components
   import MorePageLogoff from "./components/more-page-logoff.vue";
   import MorePageLogon from "./components/more-page-logon.vue";
+  import MorePageItem from "./components/more-page-item.vue";
+  import morePageFooter from "./components/more-page-footer.vue";
 
 
   const $q = useQuasar();
