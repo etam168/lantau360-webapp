@@ -19,7 +19,7 @@
 
     <template v-slot:body="{ row }">
       <div :class="itemClass">
-        <app-fav-item
+        <!-- <app-fav-item
           v-if="tab === 'location'"
           :categoryItem="row"
           :distance="0"
@@ -33,13 +33,20 @@
           :distance="0"
           entity-key="BUSINESS"
           @on-directory-item="handleDetail(row)"
-        />
+        /> -->
 
         <app-checkin-item
-          v-else
+          v-if="tab == 'checkIn'"
           :siteData="row.siteData"
           :checkInfo="row.checkInfo"
           :i18nKey="i18nKey"
+        />
+
+        <app-category-item
+          v-else
+          :categoryItem="row"
+          :entityKey
+          @on-directory-item="handleDetail(row)"
         />
       </div>
     </template>
@@ -131,7 +138,7 @@
 
   async function handleDetail(item: any) {
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
-    openCategoryDetailDialog(isDialogOpen,item, entityKey);
+    openCategoryDetailDialog(isDialogOpen, item, entityKey);
   }
 </script>
 
