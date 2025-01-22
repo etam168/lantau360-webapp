@@ -33,6 +33,11 @@
   import { useUserStore } from "@/stores/user";
   import { UserLogon } from "@/composable/use-member";
 
+  //Custom Components
+  import MorePageLogoff from "./components/more-page-logoff.vue";
+  import MorePageLogon from "./components/more-page-logon.vue";
+
+
   const $q = useQuasar();
   const userStore = useUserStore();
   const userLogon = UserLogon();
