@@ -320,6 +320,7 @@ declare global {
   const useToNumber: typeof import('@vueuse/core')['useToNumber']
   const useToString: typeof import('@vueuse/core')['useToString']
   const useToggle: typeof import('@vueuse/core')['useToggle']
+  const useTransactionGrouping: typeof import('./composable/use-transaction-grouping')['useTransactionGrouping']
   const useTransactionItemDialogService: typeof import('./composable/services/use-transaction-item-dialog-service')['useTransactionItemDialogService']
   const useTransactionsFunctions: typeof import('./composable/use-transaction-functions')['useTransactionsFunctions']
   const useTransition: typeof import('@vueuse/core')['useTransition']
@@ -658,6 +659,7 @@ declare module 'vue' {
     readonly useToNumber: UnwrapRef<typeof import('@vueuse/core')['useToNumber']>
     readonly useToString: UnwrapRef<typeof import('@vueuse/core')['useToString']>
     readonly useToggle: UnwrapRef<typeof import('@vueuse/core')['useToggle']>
+    readonly useTransactionGrouping: UnwrapRef<typeof import('./composable/use-transaction-grouping')['useTransactionGrouping']>
     readonly useTransition: UnwrapRef<typeof import('@vueuse/core')['useTransition']>
     readonly useUrlSearchParams: UnwrapRef<typeof import('@vueuse/core')['useUrlSearchParams']>
     readonly useUserMedia: UnwrapRef<typeof import('@vueuse/core')['useUserMedia']>

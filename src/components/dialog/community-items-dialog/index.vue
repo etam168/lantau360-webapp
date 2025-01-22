@@ -18,7 +18,7 @@
         <Suspense>
           <template #default>
             <!-- Main community items dialog content -->
-            <community-items-content :directory :entity-key />
+            <community-items-content :directory :entity-key :style="tableStyle" />
           </template>
 
           <template #fallback>
@@ -39,7 +39,7 @@
 
 <script setup lang="ts">
   // Quasar Import
-  import { EventBus, useDialogPluginComponent } from "quasar";
+  import { useDialogPluginComponent } from "quasar";
 
   // Interface files
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
@@ -63,6 +63,7 @@
   }>();
 
   // Composable function calls
+  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const { translate } = useUtilities(locale.value);
 
@@ -76,9 +77,25 @@
     updateDialogState
   } = useBaseDialog();
 
+  const THRESHOLD = 100;
+
   const dialogTitle = computed(() =>
     translate(directory.directoryName, directory.meta, "directoryName")
   );
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const dialogTitleHeight = 51;
+    const usedHeight = dialogTitleHeight;
+
+    const hasEnoughSpace = $q.screen.height > THRESHOLD;
+
+    switch (true) {
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
+  });
 
   /**
    * Error handling for the component

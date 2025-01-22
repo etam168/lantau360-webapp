@@ -360,6 +360,7 @@
     "useUserDialogs": true,
     "useBaseDialog": true,
     "useDirectoryGrouping": true,
-    "useSortCategoryItems": true
+    "useSortCategoryItems": true,
+    "useTransactionGrouping": true
   }
 }

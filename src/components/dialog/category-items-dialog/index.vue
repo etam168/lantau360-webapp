@@ -22,7 +22,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <category-items-content :directory :entityKey :sortByKey />
+            <category-items-content :directory :entityKey :sortByKey :style="tableStyle" />
           </template>
 
           <template #fallback>
@@ -68,6 +68,7 @@
   }>();
 
   // Composable function calls
+  const $q = useQuasar();
   const { locale } = useI18n({ useScope: "global" });
   const { translate } = useUtilities(locale.value);
 
@@ -83,10 +84,25 @@
 
   // Reactive variables
   const sortByKey = ref("default");
+  const THRESHOLD = 100;
 
   const dialogTitle = computed(() =>
     translate(directory.directoryName, directory.meta, "directoryName")
   );
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const dialogTitleHeight = 50;
+    const usedHeight = dialogTitleHeight;
+
+    const hasEnoughSpace = $q.screen.height > THRESHOLD;
+
+    switch (true) {
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
+  });
 
   const hasOptions = computed(() => {
     const directoryTemplate = directory.meta.template ?? 0;

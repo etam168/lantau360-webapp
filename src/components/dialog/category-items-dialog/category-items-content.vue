@@ -107,7 +107,7 @@
   });
 
   function onCategoryDetail(item: any) {
-    openCategoryDetailDialog(isDialogOpen,item, entityKey, directory.displayMask);
+    openCategoryDetailDialog(isDialogOpen, item, entityKey, directory.displayMask);
   }
 
   /**

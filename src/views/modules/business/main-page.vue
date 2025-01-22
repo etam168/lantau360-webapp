@@ -4,13 +4,7 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <main-content
-      :style="tableStyle"
-      :businessPromotion
-      :directory-data="businessDirectories"
-      :entityKey
-      :i18nKey
-    />
+    <main-content :businessPromotion :directory-data="businessDirectories" :entityKey :i18nKey />
   </q-page>
 </template>
 
