@@ -60,7 +60,8 @@
   const { locale, t } = useI18n({ useScope: "global" });
   const { getEntityKeyName, getEntityName } = useUtilities(locale.value);
   const { fetchData } = useApi();
-  const { handleCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
+  const { handleCreatePosting, handleEditPosting, openCommunityDetailDialog } =
+    useCommunityDialogService(entityKey);
   const { sortCategoryTypes } = useSortCategoryItems(entityKey);
 
   // Reactive variables
@@ -97,12 +98,7 @@
   }
 
   function handleEdit(item: CategoryTypes) {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
-      ),
-      componentProps: { row: item, entityKey }
-    });
+    handleEditPosting(isDialogOpen, item, entityKey);
   }
   async function fetchAllData() {
     try {

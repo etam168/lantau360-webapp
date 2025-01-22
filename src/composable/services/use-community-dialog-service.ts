@@ -75,6 +75,8 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   }
 
   async function handleCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/create-posting-alert-dialog.vue")
@@ -89,7 +91,27 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     });
   }
 
+  async function handleEditPosting(
+    isDialogOpen: Ref<Boolean>,
+    item: CategoryTypes,
+    entityKey: EntityURLKey
+  ) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+      ),
+      componentProps: { row: item, entityKey }
+    }).onCancel(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen.value = false;
+    });
+  }
+
   async function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
     if (isUserLogon()) {
       // Fetch additional member points
       await userStore.fetchMemberPoints();
@@ -131,6 +153,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     galleryItems,
     openCreatePosting,
     handleCreatePosting,
+    handleEditPosting,
     openCommunityDetailDialog,
     openCommunityItemDialog
   };
