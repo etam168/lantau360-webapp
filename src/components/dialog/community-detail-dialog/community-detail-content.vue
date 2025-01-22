@@ -9,9 +9,10 @@
 <script setup lang="ts">
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // .ts files
-  import { EntityURLKey } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
   import { RenderItem } from "@/composable/services/use-community-dialog-service";
 
   // UI Components
@@ -25,7 +26,9 @@
   }>();
 
   // Composable function calls
-  const { galleryItems, fetchAllData } = useCommunityDialogService(entityKey);
+  const { galleryItems } = useCommunityDialogService(entityKey);
+  const { fetchData } = useApi();
+  const { getEntityId, getEntityName } = useUtilities();
 
   const renderItems = computed((): RenderItem[] => {
     return [
@@ -34,9 +37,31 @@
     ];
   });
 
+  async function fetchAllData() {
+    try {
+      switch (entityKey) {
+        case "COMMUNITY_EVENT":
+        case "COMMUNITY_NOTICE":
+        case "POSTING":
+          const entityName = getEntityName(entityKey);
+          const id = getEntityId(category, entityName);
+          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
+          const finalUrl = `${baseUrl}/${id}`;
+          const response = await fetchData<GalleryImageType[]>(finalUrl);
+          galleryItems.value = response;
+          break;
+        default:
+          console.warn(`Unsupported entity type: ${entityKey}`);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  }
+
   /**
    * Fetch data as part of the setup
    * This ensures that the component is compatible with Suspense
    */
-  await fetchAllData(category);
+  await fetchAllData();
 </script>

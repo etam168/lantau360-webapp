@@ -22,31 +22,8 @@ export interface RenderItem {
 
 export function useCommunityDialogService(entityKey: EntityURLKey, category?: CategoryTypes) {
   const galleryItems = ref<GalleryImageType[]>([]);
-  const { fetchData } = useApi();
-  const { getEntityId, getEntityName } = useUtilities();
-  const bus = inject("bus") as EventBus;
 
-  async function fetchAllData(category: CategoryTypes) {
-    try {
-      switch (entityKey) {
-        case "COMMUNITY_EVENT":
-        case "COMMUNITY_NOTICE":
-        case "POSTING":
-          const entityName = getEntityName(entityKey);
-          const id = getEntityId(category, entityName);
-          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-          const finalUrl = `${baseUrl}/${id}`;
-          const response = await fetchData<GalleryImageType[]>(finalUrl);
-          galleryItems.value = response;
-          break;
-        default:
-          console.warn(`Unsupported entity type: ${entityKey}`);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
-    }
-  }
+  const bus = inject("bus") as EventBus;
 
   async function openCommunityDetailDialog(
     isDialogOpen: Ref<Boolean>,
@@ -61,7 +38,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       ),
       componentProps: {
         category: item,
-        entityKey: customEntityKey || entityKey,
+        entityKey: customEntityKey || entityKey
       }
     })
       .onOk(() => {
@@ -77,7 +54,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   function openCommunityItemDialog(
     isDialogOpen: Ref<Boolean>,
     entityKey: EntityURLKey,
-    directory: CommunityDirectory,
+    directory: CommunityDirectory
   ) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
@@ -100,11 +77,11 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   async function handleCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     Dialog.create({
       component: defineAsyncComponent(
-        () => import("@/components/dialog/create-posting-alert-dialog.vue"), 
+        () => import("@/components/dialog/create-posting-alert-dialog.vue")
       ),
       componentProps: {
-        directory:directory, // Pass the row prop for the edit dialog
-        entityKey: entityKey,
+        directory: directory, // Pass the row prop for the edit dialog
+        entityKey: entityKey
       }
     }).onCancel(() => {
       // Reset dialog state when it is dismissed/closed
@@ -128,9 +105,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       // TO DO, USE new custom dialog for posting to keep it simple
     } else {
       Dialog.create({
-        component: defineAsyncComponent(
-          () => import("@/components/dialog/login-alert-dialog.vue")
-        )
+        component: defineAsyncComponent(() => import("@/components/dialog/login-alert-dialog.vue"))
       })
         .onCancel(() => {
           // Reset dialog state when it is dismissed/closed
@@ -156,7 +131,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     galleryItems,
     openCreatePosting,
     handleCreatePosting,
-    fetchAllData,
     openCommunityDetailDialog,
     openCommunityItemDialog
   };
