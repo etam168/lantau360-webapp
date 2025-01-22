@@ -1,38 +1,77 @@
-<!-- member-items-content.vue -->
 <template>
-  <member-points @top-up-points="handleTopUpPoints" />
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    row-key="title"
+    :columns="columns"
+    :rows="rows"
+    v-model:pagination="pagination"
+    :hide-pagination="hidePagination"
+    :rows-per-page-options="[0]"
+  >
+    <template v-slot:top>
+      <member-points @top-up-points="handleTopUpPoints" />
+      <app-tab-select
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+        :class="$q.screen.lt.sm ? 'justify-center' : ''"
+      />
+    </template>
 
-  <app-tab-select :tab-items="tabItems" :current-tab="tab" @update:currentTab="setTab" />
+    <template v-slot:body-cell-title="props">
+      <q-td :props="props">
+        <q-item-label> {{ props.value }} </q-item-label>
+        <q-item-label caption>{{ dateFormatter(props.row.createdAt) }} </q-item-label>
+      </q-td>
+    </template>
 
-  <q-tab-panels v-model="tab">
-    <q-tab-panel v-for="(item, index) in tabItems" :key="index" :name="item.name" class="q-pa-none">
-      <template v-if="filterGroupedArray(item.name).length > 0">
-        <app-transaction-list-items
-          :memberItems="filterGroupedArray(item.name)"
-          :entityKey="entityKey"
-          @on-member-detail="handleDetail"
-          :hidePagination="isPaginationHide"
-        />
-      </template>
+    <template v-slot:body-cell-points="props">
+      <q-td :props="props">
+        <q-item-label :class="props.row.transactionType === 2 ? 'text-red' : ''">
+          {{ props.row.transactionType === 2 ? `${props.row.points}` : props.row.points }}
+        </q-item-label>
+      </q-td>
+    </template>
 
-      <template v-else>
-        <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
-          {{ $t("errors.noRecord") }}
-        </div>
-      </template>
-    </q-tab-panel>
-  </q-tab-panels>
+    <template v-slot:pagination="scope">
+      <app-button
+        :icon="fasAngleLeft"
+        size="sm"
+        color="grey-8"
+        round
+        dense
+        flat
+        :disable="scope.isFirstPage"
+        @click="scope.prevPage"
+      />
+      <q-btn
+        :icon="fasAngleRight"
+        size="sm"
+        color="grey-8"
+        round
+        dense
+        flat
+        :disable="scope.isLastPage"
+        @click="scope.nextPage"
+      />
+    </template>
+  </q-table>
 </template>
-
 <script setup lang="ts">
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { Member } from "@/interfaces/models/entities/member";
   import type { Transaction } from "@/interfaces/models/entities/transaction";
+
   import { useUserStore } from "@/stores/user";
+  import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";
 
   // Constants
   import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import { QTableColumn } from "quasar";
+  import { useTransactionGrouping } from "@/composable/use-transaction-grouping";
 
   // Props
   const { member, entityKey } = defineProps<{
@@ -40,18 +79,17 @@
     entityKey: EntityURLKey;
   }>();
 
-  const { t } = useI18n({ useScope: "global" });
+  const transactionItems = ref<Transaction[]>([]);
+
   const userStore = useUserStore();
   const { fetchData } = useApi();
-  const { getEntityName } = useUtilities();
-  // const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { getEntityName, dateFormatter } = useUtilities();
 
-  const entityName = getEntityName(entityKey);
-  const i18nKeyMoreDialog = "more.mainMenuDialog";
+  const { tab, tabItems, rows, setTab } = useTransactionGrouping(transactionItems, entityKey);
 
-  const isPaginationHide = ref(true);
-  const historyItems = ref<Transaction[]>([]);
-  const recentItems = ref<Transaction[]>([]);
+  const hidePagination = computed(() => {
+    return tab.value == "recent";
+  });
 
   const $q = useQuasar();
 
@@ -59,34 +97,6 @@
   interface GroupedItems {
     group: string | number;
     items: CategoryTypes[];
-  }
-
-  const groupedArray = computed<GroupedItems[]>(() => {
-    return [
-      { group: "recent", items: recentItems.value },
-      { group: "history", items: historyItems.value }
-    ];
-  });
-
-  // New computed property for tabItems
-  const tabItems = computed(() => {
-    return [
-      { name: "recent", label: t(`${i18nKeyMoreDialog}.${entityName}.recent`) },
-      { name: "history", label: t(`${i18nKeyMoreDialog}.${entityName}.history`) }
-    ];
-  });
-
-  const tab = ref("recent");
-  const setTab = (val: string) => (tab.value = val);
-
-  function filterGroupedArray(groupName: string) {
-    isPaginationHide.value = groupName == "recent";
-    const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
-    return items.sort((a: any, b: any) => a.rank - b.rank);
-  }
-
-  async function handleDetail(item: any) {
-    // openCategoryDetailDialog(item);
   }
 
   function handleTopUpPoints() {
@@ -97,6 +107,35 @@
       componentProps: { entityKey: entityKey }
     });
   }
+
+  // Define pagination
+  const pagination = ref({
+    sortBy: "description",
+    descending: false,
+    page: 1,
+    rowsPerPage: hidePagination ? rows.value.length : 20
+  });
+
+  // Columns definition for the table
+  const columns = computed(() => {
+    return [
+      {
+        name: "title",
+        label: "Description",
+        required: true,
+        align: "left",
+        sortable: true,
+        field: "title"
+      },
+      {
+        name: "points",
+        label: "Points",
+        required: true,
+        align: "right",
+        field: "points"
+      }
+    ] as QTableColumn[];
+  });
 
   const fetchAllData = async () => {
     try {
@@ -110,15 +149,7 @@
             fetchData(`${ENTITY_URL.MEMBER_CONFIG}`)
           ]);
 
-          // Filter the history for the last 3 months for 'recent'
-          const threeMonthsAgo = new Date();
-          threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
-
-          recentItems.value = history.filter(
-            (item: Transaction) => new Date(item.createdAt) >= threeMonthsAgo
-          );
-
-          historyItems.value = history;
+          transactionItems.value = history;
 
           const { total, spend, available, currentMonthTransactionCount } = memberPoints;
           userStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
