@@ -33,7 +33,6 @@ declare module 'vue' {
     AppFavItem: typeof import('./components/global/custom/app-fav-item.vue')['default']
     AppHtmlItem: typeof import('./components/global/widgets/app-html-item.vue')['default']
     AppMapComponent: typeof import('./components/global/custom/app-map-component.vue')['default']
-    AppMarketingItemList: typeof import('./components/global/custom/app-marketing-item-list.vue')['default']
     AppMenuItemDirectory: typeof import('./components/global/custom/app-menu-item-directory.vue')['default']
     AppMenuItemEvent: typeof import('./components/global/custom/app-menu-item-event.vue')['default']
     AppMenuItemNotice: typeof import('./components/global/custom/app-menu-item-notice.vue')['default']

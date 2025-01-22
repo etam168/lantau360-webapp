@@ -4,7 +4,17 @@
     <app-carousel-section :data="advertisements" @image-click="onImageClick" />
     <q-separator size="4px" color="primary" />
 
-    <main-content :businessPromotion :directory-data="businessDirectories" :entityKey :i18nKey />
+    <q-scroll-area v-if="$q.screen.height - usedHeight > THRESHOLD" :style="scrollAreaStyle">
+      <main-content :businessPromotion :directory-data="businessDirectories" :entityKey :i18nKey />
+    </q-scroll-area>
+
+    <main-content
+      v-else
+      :businessPromotion
+      :directory-data="businessDirectories"
+      :entityKey
+      :i18nKey
+    />
   </q-page>
 </template>
 
@@ -46,11 +56,15 @@
   const usedHeight = computed(() => {
     const width = Math.min($q.screen.width, 1024);
     const carouselHeight = (width * 9) / 16; // Height for the carousel
-    return carouselHeight + 105;
+    return carouselHeight + 101;
+  });
+
+  const scrollAreaStyle = computed(() => {
+    return { height: `calc(100vh - ${usedHeight.value}px)` };
   });
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(isDialogOpen,category, "ADVERTISEMENT");
+    openCategoryDetailDialog(isDialogOpen, category, "ADVERTISEMENT");
   };
 
   async function fetchAllData() {

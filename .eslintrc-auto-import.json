@@ -358,6 +358,8 @@
     "useCommonDialogs": true,
     "useDialogStack": true,
     "useUserDialogs": true,
-    "useBaseDialog": true
+    "useBaseDialog": true,
+    "useDirectoryGrouping": true,
+    "useSortCategoryItems": true
   }
 }

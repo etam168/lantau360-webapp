@@ -183,6 +183,7 @@ declare global {
   const useDialogPluginComponent: typeof import('quasar')['useDialogPluginComponent']
   const useDialogStack: typeof import('./composable/useDialogStack')['useDialogStack']
   const useDirectory: (typeof import("./composable/use-directory"))["default"]
+  const useDirectoryGrouping: typeof import('./composable/use-directory-grouping')['useDirectoryGrouping']
   const useDisplayMedia: typeof import('@vueuse/core')['useDisplayMedia']
   const useDocumentVisibility: typeof import('@vueuse/core')['useDocumentVisibility']
   const useDraggable: typeof import('@vueuse/core')['useDraggable']
@@ -290,6 +291,7 @@ declare global {
   const useShowCrudDialogs: (typeof import("./composable/use-show-crud-dialogs"))["default"]
   const useSiteFormContents: typeof import('./composable/form-mappers/form-contents/use-site-form-contents')['useSiteFormContents']
   const useSlots: typeof import('vue')['useSlots']
+  const useSortCategoryItems: typeof import('./composable/use-sort-categorty-items')['useSortCategoryItems']
   const useSorted: typeof import('@vueuse/core')['useSorted']
   const useSpeechRecognition: typeof import('@vueuse/core')['useSpeechRecognition']
   const useSpeechSynthesis: typeof import('@vueuse/core')['useSpeechSynthesis']
@@ -530,6 +532,7 @@ declare module 'vue' {
     readonly useDevicePixelRatio: UnwrapRef<typeof import('@vueuse/core')['useDevicePixelRatio']>
     readonly useDevicesList: UnwrapRef<typeof import('@vueuse/core')['useDevicesList']>
     readonly useDialogPluginComponent: UnwrapRef<typeof import('quasar')['useDialogPluginComponent']>
+    readonly useDirectoryGrouping: UnwrapRef<typeof import('./composable/use-directory-grouping')['useDirectoryGrouping']>
     readonly useDisplayMedia: UnwrapRef<typeof import('@vueuse/core')['useDisplayMedia']>
     readonly useDocumentVisibility: UnwrapRef<typeof import('@vueuse/core')['useDocumentVisibility']>
     readonly useDraggable: UnwrapRef<typeof import('@vueuse/core')['useDraggable']>
@@ -628,6 +631,7 @@ declare module 'vue' {
     readonly useSessionStorage: UnwrapRef<typeof import('@vueuse/core')['useSessionStorage']>
     readonly useShare: UnwrapRef<typeof import('@vueuse/core')['useShare']>
     readonly useSlots: UnwrapRef<typeof import('vue')['useSlots']>
+    readonly useSortCategoryItems: UnwrapRef<typeof import('./composable/use-sort-categorty-items')['useSortCategoryItems']>
     readonly useSorted: UnwrapRef<typeof import('@vueuse/core')['useSorted']>
     readonly useSpeechRecognition: UnwrapRef<typeof import('@vueuse/core')['useSpeechRecognition']>
     readonly useSpeechSynthesis: UnwrapRef<typeof import('@vueuse/core')['useSpeechSynthesis']>
