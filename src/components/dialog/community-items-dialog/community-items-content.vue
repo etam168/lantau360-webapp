@@ -88,10 +88,6 @@
     ["POSTING"].includes(entityKey) ? (directory as CommunityDirectory).communityDirectoryId : 0
   );
 
-  const groupBykey = computed<string | null>(() =>
-    directory.meta?.groupByKey === NONE ? null : (directory.meta?.groupByKey ?? null)
-  );
-
   async function onCreatePosting() {
     handleCreatePosting(isDialogOpen, directory);
   }
@@ -120,11 +116,6 @@
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
           break;
-      }
-
-      // Set the initial tab value
-      if (communityItems.value.length > 0 && groupBykey.value) {
-        tab.value = tabItems.value.length > 0 ? tabItems.value[0].name : "";
       }
     } catch (error) {
       console.error("Error fetching data:", error);
