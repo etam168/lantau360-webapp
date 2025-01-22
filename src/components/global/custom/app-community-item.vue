@@ -1,7 +1,7 @@
 <template>
   <q-item clickable :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
     <q-item-section avatar>
-      <app-avatar-rounded :image-path="imagePath" size="54px" />
+      <app-avatar-rounded :image-path="(communityItem as PostingView).memberImage" size="54px" />
     </q-item-section>
 
     <q-item-section>
@@ -31,21 +31,23 @@
   </q-item>
 </template>
 <script setup lang="ts">
+  import { PostingView } from "@/interfaces/models/views/posting-view";
+  import { CategoryTypes } from "@/interfaces/types/category-types";
   import { fasEllipsisVertical } from "@quasar/extras/fontawesome-v6";
+  import { formatTimeAgo } from "@vueuse/core";
   import { computed } from "vue";
 
+  // Stores
+  import { useUserStore } from "@/stores/user";
+
   // Props
-  const {
-    imagePath,
-    line1,
-    line2,
-    allowEdit = false // Controls whether the "Edit" option is enabled
-  } = defineProps<{
-    imagePath: string;
-    line1: string;
-    line2: string;
-    allowEdit?: boolean;
+  const { communityItem } = defineProps<{
+    communityItem: CategoryTypes;
   }>();
+
+  const { locale } = useI18n({ useScope: "global" });
+  const { translate } = useUtilities(locale.value);
+  const userStore = useUserStore();
 
   // Emits
   const emit = defineEmits(["on-detail", "on-edit"]);
@@ -53,8 +55,23 @@
   // Menu Items
   const menuItems = computed(() => [
     { value: "detail", label: "Detail", disabled: false },
-    { value: "edit", label: "Edit", disabled: !allowEdit }
+    { value: "edit", label: "Edit", disabled: !showEdit() }
   ]);
+
+  // Functions for line1 and line2
+  const line1 = computed(() => {
+    return (communityItem as PostingView).memberFirstName || "";
+  });
+
+  const line2 = computed(() => {
+    const timeAgo = formatTimeAgo(new Date((communityItem as PostingView).createdAt));
+    const title = translate(communityItem.title as string, communityItem.meta, "title");
+    return `${timeAgo} | ${title}`;
+  });
+
+  function showEdit() {
+    return userStore.userInfo && userStore.userInfo.userId === communityItem.createdBy;
+  }
 
   // Handle Menu Action
   const handleMenuAction = (menuItem: { value: string }) => {

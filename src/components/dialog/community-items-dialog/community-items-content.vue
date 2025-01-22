@@ -1,50 +1,44 @@
 <!-- community-items-content.vue -->
 <template>
-  <!-- Create Post -->
-  <app-create-post-item
-    :create-title="createTitle"
-    :create-description="createDescription"
-    @on-create-posting="onCreatePosting"
-  />
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    :row-key="rowKey"
+    :rows="sortedRows"
+    :rows-per-page-options="[0]"
+  >
+    <template v-slot:top>
+      <app-create-post-item
+        :create-title="createTitle"
+        :create-description="createDescription"
+        @on-create-posting="onCreatePosting"
+      />
 
-  <template v-if="groupBykey">
-    <!-- Tab Select -->
-    <app-tab-select
-      :tab-items="tabItems"
-      :current-tab="tab"
-      @update:currentTab="setTab"
-      :style="$q.screen.lt.sm ? 'flex-wrap: wrap' : ''"
-      :class="$q.screen.lt.sm ? 'q-pt-sm' : ''"
-    />
+      <app-tab-select
+        v-if="hasGroup"
+        :tab-items="tabItems"
+        :current-tab="tab"
+        @update:currentTab="setTab"
+        :class="$q.screen.lt.sm ? 'justify-center' : ''"
+      />
+    </template>
 
-    <q-separator />
-
-    <!-- Tab Panels -->
-    <q-tab-panels v-model="tab">
-      <q-tab-panel
-        v-for="(item, index) in tabItems"
-        :key="index"
-        :name="item.name"
-        class="q-pa-none"
-      >
-        <app-community-list-items
-          :communityItems="filterGroupedArray(item.name)"
-          :entityKey
-          @on-community-detail="handleDetail"
-        />
-      </q-tab-panel>
-    </q-tab-panels>
-  </template>
-
-  <app-community-list-items v-else :communityItems :entityKey @on-community-detail="handleDetail" />
+    <template v-slot:body="{ row }">
+      <app-community-item
+        :community-item="row"
+        @on-detail="handleDetail(row)"
+        @on-edit="handleEdit(row)"
+      />
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
-  import { fasPlus, fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-  import type { TabItem } from "@/interfaces/tab-item";
 
   // Constants
   import { AREA_NAME, ENTITY_URL, EntityURLKey, NONE } from "@/constants";
@@ -53,25 +47,35 @@
   import AppCreatePostItem from "@/components/global/custom/app-create-post-item.vue";
 
   // Props
-  const {
-    directory,
-    entityKey,
-  } = defineProps<{
+  const { directory, entityKey } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
   const { locale, t } = useI18n({ useScope: "global" });
-  const { getEntityName, groupBy, translate } = useUtilities(locale.value);
+  const { getEntityKeyName, getEntityName, groupBy, translate } = useUtilities(locale.value);
   const { fetchData } = useApi();
   const { handleCreatePosting, openCommunityDetailDialog } = useCommunityDialogService(entityKey);
+  const { sortCategoryTypes } = useSortCategoryItems(entityKey);
 
   // Reactive variables
   const $q = useQuasar();
   const isDialogOpen = ref(false);
 
+  // Reactive variables
   const communityItems: Ref<CategoryTypes[]> = ref([]);
+
+  const { tab, hasGroup, tabItems, rows, setTab } = useDirectoryGrouping(
+    communityItems,
+    directory
+  );
+
+  const rowKey = computed(() => `${getEntityKeyName(entityKey)}Id`);
+
+  const sortedRows = computed(() => {
+    return sortCategoryTypes(rows.value, "default");
+  });
 
   const i18nKey = getEntityName(entityKey);
   const createDescription = computed(() => t(`${i18nKey}.mainMenu.addGalleryDescription`));
@@ -110,30 +114,27 @@
     return groupBy(validItems, getTranslatedKey);
   });
 
-  // Define tabItems as a computed property
-  const tabItems = computed(() => {
-    return groupedArray.value.map(group => ({
-      name: group.group,
-      label: group.group
-    })) as TabItem[];
-  });
-
-  const tab = ref("");
-  const setTab = (val: string) => (tab.value = val);
-
   function filterGroupedArray(groupName: string) {
     const items = groupedArray.value.find(group => group.group === groupName)?.items || [];
     return items.sort((a: any, b: any) => a.rank - b.rank);
   }
 
   async function onCreatePosting() {
-    handleCreatePosting(isDialogOpen,directory);
+    handleCreatePosting(isDialogOpen, directory);
   }
 
   async function handleDetail(item: any) {
     openCommunityDetailDialog(isDialogOpen, item);
   }
 
+  function handleEdit(item: CategoryTypes) {
+    $q.dialog({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+      ),
+      componentProps: { row: item, entityKey }
+    });
+  }
   async function fetchAllData() {
     try {
       switch (entityKey) {

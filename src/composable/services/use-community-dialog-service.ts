@@ -129,7 +129,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     } else {
       Dialog.create({
         component: defineAsyncComponent(
-          () => import("@/components/dialog/community-items-dialog/login-alert-dialog.vue")
+          () => import("@/components/dialog/login-alert-dialog.vue")
         )
       })
         .onCancel(() => {
