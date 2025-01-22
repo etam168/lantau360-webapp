@@ -17,10 +17,10 @@
 
           <q-page-container>
             <category-items-search-content
-              class="q-mt-xs"
               v-model:keyword="keyword"
               :entityKey
               :sortByKey
+              :style="tableStyle"
             />
           </q-page-container>
         </q-layout>
@@ -53,6 +53,7 @@
   });
 
   // Composable function calls
+  const $q = useQuasar();
   const { t } = useI18n({ useScope: "global" });
 
   // Use the base dialog composition
@@ -60,9 +61,24 @@
 
   // Reactive variables
   const sortByKey = ref("default");
+  const THRESHOLD = 100;
 
   const dialogTitle = computed(() => {
     return t(`${i18nKey}.searchBar.title`);
+  });
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const dialogTitleHeight = 50 + 2;
+    const usedHeight = dialogTitleHeight;
+
+    const hasEnoughSpace = $q.screen.height > THRESHOLD;
+
+    switch (true) {
+      case hasEnoughSpace:
+        return { height: `calc(100vh - ${usedHeight}px)` };
+      default:
+        return undefined;
+    }
   });
 
   /**
