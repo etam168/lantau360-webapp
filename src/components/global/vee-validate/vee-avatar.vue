@@ -2,7 +2,19 @@
   <q-card-actions class="q-pt-md justify-center">
     <q-btn v-bind="$attrs" round padding="1px" color="white" style="cursor: auto">
       <q-avatar size="128px">
-        <avatar-image-card :image="localImages[0]" />
+        <q-img :src="imageSrc || ''">
+          <template v-slot:error>
+            <img :src="imageSrc" />
+          </template>
+
+          <template v-slot:loading>
+            <div class="absolute-full flex flex-center bg-gray text-white">
+              <q-inner-loading showing class="spinner-card row justify-center items-center">
+                <q-spinner size="50px" color="primary" />
+              </q-inner-loading>
+            </div>
+          </template>
+        </q-img>
 
         <q-badge class="absolute-bottom-left" color="transparent">
           <app-button
@@ -13,7 +25,6 @@
             size="sm"
             @click="handleEditImage(0)"
           />
-
           <app-button-rounded
             v-else
             color="black"
@@ -48,16 +59,14 @@
 
   // Constants
   import { fasCamera } from "@quasar/extras/fontawesome-v6";
-
-  // Component
-  import AvatarImageCard from "@/components/card/avatar-image-card.vue";
+  import { PLACEHOLDER_THUMBNAIL } from "@/constants";
 
   const { name, options = [] } = defineProps<{
     name: string;
     options?: GalleryImageType[];
   }>();
 
-  const { notify } = useUtilities();
+  const { getImageURL, notify } = useUtilities();
 
   const currentEditingIndex = ref<number | null>(null);
   const imageRef = useTemplateRef("image");
@@ -72,6 +81,17 @@
 
   // Sync the field value with localImages initially
   handleChange([...localImages.value]);
+
+  const imageSrc = computed(() => {
+    const firstImage = localImages.value[0];
+    if (firstImage instanceof File) {
+      return URL.createObjectURL(firstImage);
+    } else if (typeof firstImage === "object" && "imagePath" in firstImage) {
+      return getImageURL(firstImage.imagePath);
+    } else {
+      return PLACEHOLDER_THUMBNAIL;
+    }
+  });
 
   function selectAndUploadNewImage() {
     if (localImages.value.length >= maxImages) {

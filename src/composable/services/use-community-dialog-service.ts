@@ -4,7 +4,7 @@ import type { CommunityDirectory } from "@/interfaces/models/entities/community-
 import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { Dialog } from "quasar";
-import { ENTITY_URL, EntityURLKey } from "@/constants";
+import { EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { EventBus } from "quasar";
 

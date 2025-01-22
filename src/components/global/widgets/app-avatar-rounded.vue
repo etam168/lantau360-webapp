@@ -20,7 +20,7 @@
   import { IMAGES } from "@/constants";
 
   const { imagePath } = defineProps<{
-    imagePath: string;
+    imagePath: string | null;
   }>();
 
   const { getImageURL } = useUtilities();
