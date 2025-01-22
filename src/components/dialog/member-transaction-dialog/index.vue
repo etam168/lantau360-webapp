@@ -19,7 +19,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <transaction-items-content :member :entity-key />
+            <member-transaction-content :member :entity-key />
           </template>
 
           <template #fallback>
@@ -46,7 +46,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import TransactionItemsContent from "./transaction-items-content.vue";
+  import MemberTransactionContent from "./member-transaction-content.vue";
 
   //Composable
   import { useBaseDialog } from "@/composable/use-base-dialog";
@@ -60,10 +60,7 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const {
-    member,
-    entityKey,
-  } = defineProps<{
+  const { member, entityKey } = defineProps<{
     member: Member;
     entityKey: EntityURLKey;
   }>();

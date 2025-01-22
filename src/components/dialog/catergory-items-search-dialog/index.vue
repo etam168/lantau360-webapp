@@ -1,35 +1,38 @@
 <template>
-  <suspense>
-    <template #default>
-      <q-dialog
-        ref="dialogRef"
-        @hide="onDialogHide"
-        transition-show="slide-up"
-        transition-hide="slide-down"
-        @update:model-value="updateDialogState"
-        :model-value="isDialogVisible"
-        maximized
-      >
-        <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-          <app-dialog-title :i18nKey has-options @change:sort-option="handleChangeSortOptions">{{
-            dialogTitle
-          }}</app-dialog-title>
+  <q-dialog
+    ref="dialogRef"
+    @hide="onDialogHide"
+    transition-show="slide-up"
+    transition-hide="slide-down"
+    @update:model-value="updateDialogState"
+    :model-value="isDialogVisible"
+    maximized
+  >
+    <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
+      <app-dialog-title :i18nKey has-options @change:sort-option="handleChangeSortOptions">{{
+        dialogTitle
+      }}</app-dialog-title>
 
-          <q-page-container>
+      <q-page-container>
+        <suspense>
+          <template #default>
             <category-items-search-content
               v-model:keyword="keyword"
               :entityKey
               :sortByKey
               :style="tableStyle"
             />
-          </q-page-container>
-        </q-layout>
-      </q-dialog>
-    </template>
-    <template #fallback>
-      <div class="row justify-center items-center" style="height: 500px"></div>
-    </template>
-  </suspense>
+          </template>
+
+          <template #fallback>
+            <div class="row justify-center items-center" style="height: 500px">
+              <q-spinner size="10em" />
+            </div>
+          </template>
+        </suspense>
+      </q-page-container>
+    </q-layout>
+  </q-dialog>
 </template>
 
 <script setup lang="ts">
@@ -73,12 +76,7 @@
 
     const hasEnoughSpace = $q.screen.height > THRESHOLD;
 
-    switch (true) {
-      case hasEnoughSpace:
-        return { height: `calc(100vh - ${usedHeight}px)` };
-      default:
-        return undefined;
-    }
+    return hasEnoughSpace ? { height: `calc(100vh - ${usedHeight}px)` } : undefined;
   });
 
   /**
