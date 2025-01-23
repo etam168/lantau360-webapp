@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey :rows>
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey="rowKey" :rows="rows">
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
@@ -20,14 +20,17 @@
     </template>
 
     <template v-slot:item="{ row }">
-      <div class="col-xs-4 col-md-3 q-pa-xs">
+      <div
+        :class="[
+          tab === PROMOTION ? 'q-pa-md col-xs-6 col-sm-4 col-md-3' : 'col-xs-4 col-md-3 q-pa-xs'
+        ]"
+      >
         <app-menu-item-promotion
           v-if="tab === PROMOTION"
           :item="row"
           :i18nKey
-          @on-directory-item="handlePromotionItem"
+          @on-promotion-item="handlePromotionItem"
         />
-
         <app-menu-item-directory v-else :item="row" @on-directory-item="handleDirectoryItem" />
       </div>
     </template>
@@ -66,7 +69,8 @@
     { name: PROMOTION, label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
-  const { openCategoryItemDialog, openCategoryItemSearchDialog } = useCategoryDialogService(entityKey);
+  const { openCategoryItemDialog, openCategoryDetailDialog, openCategoryItemSearchDialog } =
+    useCategoryDialogService(entityKey);
   const { isSmallScreen, getEntityKeyName } = useUtilities(locale.value);
 
   const $q = useQuasar();
@@ -88,7 +92,6 @@
     return tab.value === PROMOTION ? `${entityKeyName}PromotionId` : `${entityKeyName}DirectoryId`;
   });
 
-
   function handleSearchDialog() {
     openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
   }
@@ -99,13 +102,9 @@
 
   async function handlePromotionItem(promotion: BusinessPromotionView) {
     if (!isDialogOpen.value) {
-      //await openCategoryItemDialog(isDialogOpen, directory, "business");
+      await openCategoryDetailDialog(isDialogOpen, promotion, "BUSINESS_PROMOTION");
     }
   }
-
-  // const cardContainerClass = computed(() => {
-  //   return $q.screen.gt.xs ? "grid-masonry grid-masonry--" + ($q.screen.gt.sm ? "3" : "2") : null;
-  // });
 </script>
 
 <style lang="scss">

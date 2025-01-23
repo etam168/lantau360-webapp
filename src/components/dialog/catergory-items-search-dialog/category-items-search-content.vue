@@ -11,6 +11,7 @@
   >
     <template v-slot:top>
       <q-card-actions class="full-width" align="center">
+        <div>{{ keyword }}</div>
         <app-search-bar
           v-model:keyword="keyword"
           @on-search="onSearch"
@@ -86,7 +87,7 @@
   }
 
   async function onCategoryDetail(item: any) {
-    openCategoryDetailDialog(isDialogOpen,item, entityKey);
+    openCategoryDetailDialog(isDialogOpen, item, entityKey);
   }
 
   onMounted(() => {

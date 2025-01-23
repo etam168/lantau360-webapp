@@ -97,7 +97,7 @@
   );
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
-    const dialogTitleHeight = 50 + 2;
+    const dialogTitleHeight = 50 + 4;
     const usedHeight = dialogTitleHeight;
 
     const hasEnoughSpace = $q.screen.height > THRESHOLD;

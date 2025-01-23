@@ -40,10 +40,7 @@
   import { EntityURLKey } from "@/constants";
 
   // Props
-  const {
-    directory,
-    entityKey,
-  } = defineProps<{
+  const { directory, entityKey } = defineProps<{
     directory: CommunityDirectory;
     entityKey: EntityURLKey;
   }>();
@@ -55,14 +52,11 @@
   const { openCreatePosting } = useCommunityDialogService(entityKey);
 
   // Use the base dialog composition
-  const {
-    dialogRef,
-    isDialogVisible,
-    updateDialogState
-  } = useBaseDialog();
+  const { dialogRef, isDialogVisible, updateDialogState } = useBaseDialog();
   const i18nKey = "dialog";
 
   const onConfirm = () => {
+    isDialogVisible.value = false;
     openCreatePosting(isDialogVisible, directory);
   };
 

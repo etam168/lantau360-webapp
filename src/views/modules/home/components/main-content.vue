@@ -1,5 +1,5 @@
 <template>
-  <q-table flat grid hide-header hide-pagination :rowKey :rows>
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey :rows>
     <template v-slot:top>
       <app-tab-select
         :tab-items="tabItems"
@@ -9,12 +9,17 @@
       />
 
       <q-card-actions class="full-width" align="center">
+        <div>{{ keyword }}</div>
         <app-search-bar v-model:keyword="keyword" @on-search="handleSearchDialog" />
       </q-card-actions>
     </template>
 
     <template v-slot:item="{ row }">
-      <div class="col-xs-4 col-md-3 q-pa-xs">
+      <div
+        :class="[
+          tab === SITESEEING ? 'q-pa-md col-xs-6 col-sm-4 col-md-3' : 'col-xs-4 col-md-3 q-pa-xs'
+        ]"
+      >
         <app-menu-item-seeing
           v-if="tab === SITESEEING"
           :item="row"
@@ -96,7 +101,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .q-table__top {
     padding: 0 !important;
   }

@@ -5,7 +5,7 @@
         <div class="text-subtitle1">
           {{
             $t(`${i18nKeyMoreDialog}.availablePoints`, {
-              availablePoints: userStore.availabelPoints
+              availablePoints: memberPointsStore.availabelPoints
             })
           }}
         </div>
@@ -24,9 +24,9 @@
 
 <script setup lang="ts">
   import { defineEmits } from "vue";
-  import { useUserStore } from "@/stores/user";
+  import { useMemberPointsStore } from "@/stores/member-points-store";
 
-  const userStore = useUserStore();
+  const memberPointsStore = useMemberPointsStore();
   const i18nKeyMoreDialog = "more.mainMenuDialog.account";
 
   const emit = defineEmits(["top-up-points"]);

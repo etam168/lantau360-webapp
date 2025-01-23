@@ -6,14 +6,11 @@ import L from "leaflet";
 import { ENTITY_URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { SiteView } from "@/interfaces/models/views/site-view";
-import { UserLogon } from "@/composable/use-member";
 
 export function useCheckInDataService() {
-  const userLogon = UserLogon();
   const userStore = useUserStore();
   const { handleOpenCheckInDialog } = useEntityDataHandlingService();
   const { fetchData } = useApi();
-  const { notify } = useUtilities();
   const distanceToDestination = ref(0);
   const timeUntilNextCheckIn = ref(0);
   const { coords: userLocation } = useGeolocation();

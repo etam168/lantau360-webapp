@@ -20,11 +20,15 @@
     </template>
 
     <template v-slot:item="{ row }">
-      <div class="col-xs-4 col-md-3 q-pa-xs">
-        <app-menu-item-event v-if="tab === 'events'" :item="row" :entity-key="'COMMUNITY_EVENT'" />
+      <div
+        :class="[
+          tab === EVENTS ? 'q-pa-md col-xs-6 col-sm-4 col-md-3' : 'col-xs-4 col-md-3 q-pa-xs'
+        ]"
+      >
+        <app-menu-item-event v-if="tab === EVENTS" :item="row" :entity-key="'COMMUNITY_EVENT'" />
 
         <app-menu-item-notice
-          v-else-if="tab === 'notice'"
+          v-else-if="tab === NOTICE"
           :item="row"
           :entity-key="'COMMUNITY_NOTICE'"
         />
@@ -65,6 +69,8 @@
 
   const $q = useQuasar();
   const keyword = ref("");
+  const EVENTS = "events";
+  const NOTICE = "notice";
   const tab = ref("events");
 
   const titleClass = computed(() => (isSmallScreen.value ? "text-center" : ""));

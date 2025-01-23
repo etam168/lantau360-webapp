@@ -25,7 +25,7 @@ export function useEntityDataHandlingService() {
           ),
           componentProps: {
             row: props.row, // Pass the row prop for the edit dialog
-            entityKey: entityKey,
+            entityKey: entityKey
           }
         }).onDismiss(() => {
           // Reset dialog state when it is dismissed/closed
@@ -40,7 +40,7 @@ export function useEntityDataHandlingService() {
           ),
           componentProps: {
             entityKey: entityKey,
-            associatedEntityId: props.associatedEntityId,
+            associatedEntityId: props.associatedEntityId
           }
         }).onDismiss(() => {
           // Reset dialog state when it is dismissed/closed

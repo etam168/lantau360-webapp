@@ -1,5 +1,5 @@
 <template>
-  <q-card class="my-card full-width">
+  <q-card>
     <q-img :ratio="11 / 8" :src="getImageURL(item.imagePath)" />
     <q-separator color="white" />
     <q-card-section class="q-pa-sm">

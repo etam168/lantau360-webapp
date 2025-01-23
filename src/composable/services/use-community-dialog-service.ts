@@ -79,7 +79,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
 
   async function handleCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    isDialogOpen.value = true;
+    // isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/create-posting-alert-dialog.vue")
@@ -114,10 +114,10 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
 
   async function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {
     if (isDialogOpen.value) return;
-    isDialogOpen.value = true;
+    // isDialogOpen.value = true;
     if (isUserLogon()) {
       // Fetch additional member points
-      await memberPointStore.fetchMemberPoints(userStore.userInfo.userId,userStore.userInfo.token);
+      await memberPointStore.fetchMemberPoints(userStore.userInfo.userId, userStore.userInfo.token);
       // Check whether user have required point to create post
       if (memberPointStore.availabelPoints < memberPointStore.pointsPerPost) {
         notify("Dont have enough points to post", "negative");
@@ -126,7 +126,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
 
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      // handleOpenDialog(props, isDialogOpen, entityKey);
+      handleOpenDialog(props, isDialogOpen, entityKey);
       // TO DO, USE new custom dialog for posting to keep it simple
     } else {
       Dialog.create({

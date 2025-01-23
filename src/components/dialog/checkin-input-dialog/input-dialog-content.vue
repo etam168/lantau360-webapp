@@ -26,7 +26,7 @@
           :style="tableStyle"
         >
           <template v-slot:top>
-            <div>Checkin History</div>
+            <q-item dense>Checkin History</q-item>
           </template>
 
           <template v-slot:body="props">

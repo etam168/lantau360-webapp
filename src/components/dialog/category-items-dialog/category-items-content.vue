@@ -14,7 +14,8 @@
         v-if="directory.groupId === SIGHTSEEING_GROUP"
         flat
         bordered
-        class="q-ma-md full-height"
+        class="q-ma-md"
+        style="width: 100%"
       >
         <q-responsive :ratio="16 / 9">
           <q-card-section>{{
