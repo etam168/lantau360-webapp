@@ -28,7 +28,7 @@
   import { EntityURLKey, ICONS } from "@/constants";
 
   // Props
-  const { i18nKey = "" } = defineProps<{
+  const { i18nKey = "more" } = defineProps<{
     i18nKey?: string;
   }>();
 
@@ -69,62 +69,47 @@
   }
 
   const rows = computed(() => {
-    switch (userStore.isUserLogon()) {
-      case true:
-        return [
-          {
-            name: "language",
-            type: "language",
-            icon: ICONS.SETTING,
-            title: `${i18nKey}.mainMenu.language`
-          },
-          {
-            name: "terms",
-            type: "moreItem",
-            icon: ICONS.TNC,
-            title: `${i18nKey}.mainMenu.terms`
-          },
-          {
-            name: "privacy",
-            type: "moreItem",
-            icon: ICONS.PRIVACY,
-            title: `${i18nKey}.mainMenu.privacy`
-          },
-          {
-            name: "profile",
-            type: "moreItem",
-            icon: ICONS.PROFILE,
-            title: `${i18nKey}.mainMenu.profile`
-          },
-          {
-            name: "account",
-            type: "moreItem",
-            icon: ICONS.ACCOUNT,
-            title: `${i18nKey}.mainMenu.account`
-          }
-        ];
-      case false:
-        return [
-          {
-            name: "language",
-            type: "language",
-            icon: ICONS.SETTING,
-            title: `${i18nKey}.mainMenu.language`
-          },
-          {
-            name: "privacy",
-            type: "moreItem",
-            icon: ICONS.PRIVACY,
-            title: `${i18nKey}.mainMenu.privacy`
-          },
-          {
-            name: "terms",
-            type: "moreItem",
-            icon: ICONS.TNC,
-            title: `${i18nKey}.mainMenu.terms`
-          }
-        ];
+    // Base menu items that are always shown
+    const baseMenuItems: RenderItem[] = [
+      {
+        name: "language",
+        type: "language",
+        icon: ICONS.SETTING,
+        title: `${i18nKey}.mainMenu.language`
+      },
+      {
+        name: "terms",
+        type: "moreItem",
+        icon: ICONS.TNC,
+        title: `${i18nKey}.mainMenu.terms`
+      },
+      {
+        name: "privacy",
+        type: "moreItem",
+        icon: ICONS.PRIVACY,
+        title: `${i18nKey}.mainMenu.privacy`
+      }
+    ];
+
+    if (userStore.isUserLogon()) {
+      return [
+        ...baseMenuItems,
+        {
+          name: "profile",
+          type: "moreItem",
+          icon: ICONS.PROFILE,
+          title: `${i18nKey}.mainMenu.profile`
+        },
+        {
+          name: "account",
+          type: "moreItem",
+          icon: ICONS.ACCOUNT,
+          title: `${i18nKey}.mainMenu.account`
+        }
+      ];
     }
+
+    return baseMenuItems;
   }) as ComputedRef<RenderItem[]>;
 
   function handleAuthDialog(tabValue: string) {
@@ -141,7 +126,7 @@
   }
 
   function handleContentDialog(name: string) {
-    openContentDialog(isDialogOpen, isLoading,name);
+    openContentDialog(isDialogOpen, isLoading, name);
   }
 </script>
 
