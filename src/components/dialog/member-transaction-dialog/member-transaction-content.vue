@@ -65,6 +65,8 @@
 
   // Imports
   import { useUserStore } from "@/stores/user";
+  import { useMemberPointsStore } from "@/stores/member-points-store";
+
   import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";
   import { useTransactionGrouping } from "@/composable/use-transaction-grouping";
   import { ENTITY_URL, EntityURLKey } from "@/constants";
@@ -86,6 +88,7 @@
 
   // Composables and Utilities
   const userStore = useUserStore();
+  const memberPointStore = useMemberPointsStore();
   const { fetchData } = useApi();
   const { dateFormatter } = useUtilities();
   const { tab, tabItems, rows, setTab } = useTransactionGrouping(transactionItems, entityKey);
@@ -120,9 +123,9 @@
           transactionItems.value = history;
 
           const { total, spend, available, currentMonthTransactionCount } = memberPoints;
-          userStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
+          memberPointStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
 
-          userStore.setPoints(
+          memberPointStore.setPoints(
             memberConfig.meta?.postPoint ?? 50,
             memberConfig.meta?.requestFreePoints ?? 100,
             memberConfig.meta?.purchsePrice ?? 100,

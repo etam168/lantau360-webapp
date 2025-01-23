@@ -1,18 +1,12 @@
 <template>
   <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows :rows-per-page-options="[0]">
     <template v-slot:top>
-      <div v-if="rows.some(row => row.type === 'logoff')">
-        <app-more-page-logoff />
-      </div>
-      <div v-if="rows.some(row => row.type === 'logon')">
-        <app-more-page-logon @on-auth-dialog="handleAuthDialog" />
-      </div>
+      <app-more-page-logoff v-if="userStore.isUserLogon()" />
+      <app-more-page-logon v-else @on-auth-dialog="handleAuthDialog" />
     </template>
 
     <template v-slot:item="{ row }">
       <app-menu-item-member
-        v-if="['moreItem', 'language'].includes(row.type)"
-        :ref="(el: any) => setItemRef(row.name, el)"
         :type="row.type"
         :icon="row.icon!"
         :title="row.title"
@@ -40,10 +34,9 @@
 
   const { handleOpenDialog } = useEntityDataHandlingService();
 
-  const { openContentDialog, fetchTransactionData, openTransactionItemDialog } =
+  const { openContentDialog, openAuthDialog, openTransactionItemDialog } =
     useMemberItemDialogService();
 
-  const $q = useQuasar();
   const userStore = useUserStore();
   const isDialogOpen = ref(false);
 
@@ -67,13 +60,6 @@
   };
 
   const isLoading = ref(false);
-  const itemRefs = ref<{ [key: string]: any }>({});
-
-  const setItemRef = (name: string, el: any) => {
-    if (el) {
-      itemRefs.value[name] = el;
-    }
-  };
 
   interface RenderItem {
     name: string;
@@ -86,11 +72,6 @@
     switch (userStore.isUserLogon()) {
       case true:
         return [
-          {
-            name: "logoff",
-            type: "logoff",
-            title: `${i18nKey}.mainMenu.logoff}`
-          },
           {
             name: "language",
             type: "language",
@@ -125,11 +106,6 @@
       case false:
         return [
           {
-            name: "logon",
-            type: "logon",
-            title: `${i18nKey}.mainMenu.logon}`
-          },
-          {
             name: "language",
             type: "language",
             icon: ICONS.SETTING,
@@ -152,42 +128,20 @@
   }) as ComputedRef<RenderItem[]>;
 
   function handleAuthDialog(tabValue: string) {
-    isLoading.value = true;
-    $q.dialog({
-      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue")),
-      componentProps: {
-        mode: tabValue
-      }
-    });
+    openAuthDialog(isDialogOpen, tabValue);
   }
 
   function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
-    isLoading.value = true;
     member.memberId = userStore.userInfo.userId;
-
-    if (!isDialogOpen.value) {
-      openTransactionItemDialog(isDialogOpen, member, entityKey);
-      resetItemLoading(itemName);
-    }
+    openTransactionItemDialog(isDialogOpen, member, entityKey);
   }
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
-    if (!isDialogOpen.value) {
-      handleOpenDialog({}, isDialogOpen, entityKey, "edit");
-      resetItemLoading(itemName);
-    }
+    handleOpenDialog({}, isDialogOpen, entityKey, "edit");
   }
 
   function handleContentDialog(name: string) {
-    openContentDialog(isLoading, name, resetItemLoading);
-    resetItemLoading(name);
-  }
-
-  function resetItemLoading(name: string) {
-    const item = itemRefs.value[name];
-    if (item && typeof item.resetLoading === "function") {
-      item.resetLoading();
-    }
+    openContentDialog(isDialogOpen, isLoading,name);
   }
 </script>
 

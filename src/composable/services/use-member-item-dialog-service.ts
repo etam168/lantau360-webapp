@@ -4,12 +4,14 @@ import type { Member } from "@/interfaces/models/entities/member";
 import { Dialog } from "quasar";
 import { EntityURLKey, ENTITY_URL } from "@/constants";
 import { useUserStore } from "@/stores/user";
+import { useMemberPointsStore } from "@/stores/member-points-store";
 
 export function useMemberItemDialogService() {
   const trHistory = ref();
   const trRecent = ref();
   const memberConfig = ref();
   const userStore = useUserStore();
+  const memberPointStore = useMemberPointsStore();
   const { fetchData } = useApi();
 
   async function fetchTransactionData() {
@@ -25,7 +27,7 @@ export function useMemberItemDialogService() {
         trHistory.value = transactionHistory?.data ?? [];
         memberConfig.value = memberConfigResponse.data;
 
-        userStore.setPoints(
+        memberPointStore.setPoints(
           memberConfig.value?.meta.postPoint ?? 50,
           memberConfig.value?.meta.requestFreePoints ?? 100,
           memberConfig.value?.meta.purchsePrice ?? 100,
@@ -33,7 +35,10 @@ export function useMemberItemDialogService() {
         );
 
         // Sync user points.
-        userStore.fetchMemberPoints();
+        memberPointStore.fetchMemberPoints(
+          userStore.userInfo.userId,
+          userStore.userInfo.token
+        );
       }
     } catch (err) {
       console.error(err);
@@ -65,29 +70,49 @@ export function useMemberItemDialogService() {
   }
 
   async function openContentDialog(
+    isDialogOpen: Ref<Boolean>,
     isLoading: Ref<Boolean>,
-    name: string,
-    resetItemLoading: (name: string) => void
+    name: string
   ) {
+    if (isDialogOpen.value) return;
     isLoading.value = true;
+    isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/terms-privacy-detail-dialog/index.vue")
       ),
-      componentProps: { contentName: name, isLoading: isLoading }
+      componentProps: { contentName: name, isLoading }
     })
       .onCancel(() => {
-        isLoading.value = false;
-        resetItemLoading(name);
+        isDialogOpen.value = false;
       })
       .onOk(() => {
-        resetItemLoading(name);
+        isDialogOpen.value = false;
+      });
+  }
+
+  async function openAuthDialog(isDialogOpen: Ref<Boolean>, tabValue: string) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
+    Dialog.create({
+      component: defineAsyncComponent(() => import("@/components/dialog/auth-dialog/index.vue")),
+      componentProps: {
+        mode: tabValue
+      }
+    })
+      .onCancel(() => {
+        // isLoading.value = false;
+        isDialogOpen.value = false;
+      })
+      .onOk(() => {
+        isDialogOpen.value = false;
       });
   }
 
   return {
     fetchTransactionData,
     openContentDialog,
-    openTransactionItemDialog
+    openTransactionItemDialog,
+    openAuthDialog
   };
 }

@@ -6,10 +6,13 @@ import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
+import { useMemberPointsStore } from "@/stores/member-points-store";
 import { EventBus } from "quasar";
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
+const memberPointStore = useMemberPointsStore();
+
 const { isUserLogon } = userStore;
 const { handleOpenDialog } = useEntityDataHandlingService();
 
@@ -114,9 +117,9 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
     isDialogOpen.value = true;
     if (isUserLogon()) {
       // Fetch additional member points
-      await userStore.fetchMemberPoints();
+      await memberPointStore.fetchMemberPoints(userStore.userInfo.userId,userStore.userInfo.token);
       // Check whether user have required point to create post
-      if (userStore.availabelPoints < userStore.pointsPerPost) {
+      if (memberPointStore.availabelPoints < memberPointStore.pointsPerPost) {
         notify("Dont have enough points to post", "negative");
         return;
       }

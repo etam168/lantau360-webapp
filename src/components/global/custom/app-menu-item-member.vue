@@ -16,7 +16,6 @@
       <app-button-flat
         v-else-if="type === 'moreItem'"
         round
-        :loading="isLoading"
         :icon="fasAngleRight"
         @click="handleClick"
       />

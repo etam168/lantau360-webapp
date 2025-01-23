@@ -1,12 +1,8 @@
 import { defineStore } from "pinia";
+import { ref, computed } from "vue";
 import { RouteRecordRaw } from "vue-router";
 import router, { asyncRoutes } from "@/router";
 
-/**
- * Through meta.role determines whether the current user rights match
- * @param roles
- * @param route
- */
 const hasPermission = (roles: any, route: any) => {
   if (route.meta && route.meta.roles) {
     return roles.some((role: any) => route.meta.roles.includes(role));
@@ -14,15 +10,9 @@ const hasPermission = (roles: any, route: any) => {
   return false;
 };
 
-/**
- * Recursively filter asynchronous routing tables to return routing tables
- * that meet user role permissions
- * @param roles
- * @param routes asyncRoutes
- */
-export const filterAsyncRoutes = (roles: any, routes: Array<RouteRecordRaw>) => {
-  const res = <any>[];
-  routes.forEach((route: any) => {
+const filterAsyncRoutes = (roles: any, routes: RouteRecordRaw[]): RouteRecordRaw[] => {
+  const res: RouteRecordRaw[] = [];
+  routes.forEach(route => {
     const tmp = { ...route };
     if (hasPermission(roles, tmp)) {
       if (tmp.children) {
@@ -34,31 +24,45 @@ export const filterAsyncRoutes = (roles: any, routes: Array<RouteRecordRaw>) => 
   return res;
 };
 
-export const usePermissionStore = defineStore("permission", {
-  state: () => {
-    return { routes: [], addRoutes: <any>[] };
-  },
-  getters: {
-    permissionRoutes: state => state.routes
-  },
+export const usePermissionStore = defineStore(
+  "permission",
+  () => {
+    // State
+    const routes = ref<RouteRecordRaw[]>([]);
+    const addRoutes = ref<RouteRecordRaw[]>([]);
 
-  actions: {
-    GenerateRoutes(userData: any) {
+    // Getter
+    const permissionRoutes = computed(() => routes.value);
+
+    // Action
+    function GenerateRoutes(userData: any) {
       try {
         const { roles } = userData;
 
-        const accessedRoutes: Array<RouteRecordRaw> = filterAsyncRoutes(roles, asyncRoutes);
+        const accessedRoutes: RouteRecordRaw[] = filterAsyncRoutes(roles, asyncRoutes);
 
-        this.addRoutes = accessedRoutes[0].children;
-        //this.routes = constantRoutes.concat(accessedRoutes[0].children);
-        // Apply selected allowed routes
+        if (accessedRoutes.length > 0 && accessedRoutes[0].children) {
+          addRoutes.value = accessedRoutes[0].children;
+        } else {
+          addRoutes.value = [];
+        }
+
         accessedRoutes.forEach(asyncRoute => {
           router.addRoute(asyncRoute);
         });
       } catch (err) {
-        //console.warn("[pinia].permission] GenerateRoutes", err);
+        // Error handling if needed
       }
     }
+
+    return {
+      routes,
+      addRoutes,
+      permissionRoutes,
+      GenerateRoutes
+    };
   },
-  persist: true
-});
+  {
+    persist: true
+  }
+);
