@@ -21,7 +21,6 @@ function isRefreshTokenExpired(refreshTokenExpiry: string | null): boolean {
 // Helper function to refresh token
 async function refreshToken() {
   const userStore = useUserStore();
-  const { api } = useApi();
   const { notify } = useUtilities();
 
   try {
@@ -30,7 +29,7 @@ async function refreshToken() {
       throw new Error("Missing tokens in user information");
     }
 
-    const response = await api.create(`${ENTITY_URL.REFRESH_TOKEN}`, {
+    const response = await axiosInstance.post(`${ENTITY_URL.REFRESH_TOKEN}`, {
       accessToken: userInfo.token,
       refreshToken: userInfo.refreshToken
     });
