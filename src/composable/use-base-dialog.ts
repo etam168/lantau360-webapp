@@ -1,7 +1,8 @@
 // composables/useBaseDialog.ts
 import { ref, onMounted, onUnmounted, inject } from "vue";
-import { useDialogPluginComponent, EventBus } from "quasar";
+import { useDialogPluginComponent } from "quasar";
 import { useOpenDialogStore } from "@/stores/open-dialog-store";
+import { eventBus } from "@/plugins/quasar/event-bus";
 
 export function useBaseDialog() {
   const isDialogVisible = ref(true);
@@ -11,7 +12,6 @@ export function useBaseDialog() {
   // Get dialogRef and other utilities from Quasar's dialog plugin
   const { dialogRef, onDialogHide } = useDialogPluginComponent();
   const openDialogStore = useOpenDialogStore();
-  const bus = inject("bus") as EventBus;
 
   function handleCloseDialog(): void {
     setTimeout(() => {
@@ -40,11 +40,11 @@ export function useBaseDialog() {
     dialogId.value = dialogRef.value?.$el.parentElement.id;
     openDialogStore.updateQuery(dialogId.value);
     openDialogStore.updateWindowHistory();
-    bus.on("DialogClose", handleDialogClose);
+    eventBus.on("DialogClose", handleDialogClose);
   });
 
   onUnmounted(() => {
-    bus.off("DialogClose", handleDialogClose);
+    eventBus.off("DialogClose", handleDialogClose);
   });
 
   return {
