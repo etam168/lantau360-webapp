@@ -78,6 +78,38 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       });
   }
 
+    /**
+   * Opens a dialog for displaying category search items.
+   */
+    async function openCategoryItemSearchDialog(
+      isDialogOpen: Ref<Boolean>,
+      entityKey: EntityURLKey,
+      i18nKey?: string,
+      keyword?: string
+    ) {
+      if (isDialogOpen.value) return;
+  
+      isDialogOpen.value = true;
+      Dialog.create({
+        component: defineAsyncComponent(
+          () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
+        ),
+        componentProps: {
+          entityKey: entityKey,
+          i18nKey: i18nKey,
+          keyword: keyword
+        }
+      })
+        .onCancel(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        })
+        .onOk(() => {
+          // Reset dialog state when it is dismissed/closed
+          isDialogOpen.value = false;
+        });
+    }
+
   /**
    * Opens a dialog for displaying detailed information about a category.
    */
@@ -124,6 +156,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     fetchAllData,
     openCategoryDetailDialog,
     openCategoryItemDialog,
+    openCategoryItemSearchDialog,
     openGoogleMaps
   };
 }

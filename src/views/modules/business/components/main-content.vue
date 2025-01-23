@@ -66,7 +66,7 @@
     { name: PROMOTION, label: t(`${i18nKey}.tabItem.promotion`) },
     { name: "directory", label: t(`${i18nKey}.tabItem.directory`) }
   ]);
-
+  const { openCategoryItemDialog, openCategoryItemSearchDialog } = useCategoryDialogService(entityKey);
   const { isSmallScreen, getEntityKeyName } = useUtilities(locale.value);
 
   const $q = useQuasar();
@@ -88,27 +88,13 @@
     return tab.value === PROMOTION ? `${entityKeyName}PromotionId` : `${entityKeyName}DirectoryId`;
   });
 
-  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
 
   function handleSearchDialog() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
-      ),
-      componentProps: {
-        entityKey: entityKey,
-        i18nKey: i18nKey,
-        keyword: keyword.value
-      }
-    }).onDismiss(() => {
-      keyword.value = "";
-    });
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
   }
 
   async function handleDirectoryItem(directory: BusinessDirectory) {
-    if (!isDialogOpen.value) {
-      await openCategoryItemDialog(isDialogOpen, directory, i18nKey);
-    }
+    await openCategoryItemDialog(isDialogOpen, directory, i18nKey);
   }
 
   async function handlePromotionItem(promotion: BusinessPromotionView) {

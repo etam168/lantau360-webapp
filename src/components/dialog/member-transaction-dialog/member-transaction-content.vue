@@ -92,21 +92,17 @@
   const { fetchData } = useApi();
   const { dateFormatter } = useUtilities();
   const { tab, tabItems, rows, setTab } = useTransactionGrouping(transactionItems, entityKey);
+  const { openTopUpPointsDialog } = useMemberItemDialogService();
 
-  // Constants
   const $q = useQuasar();
+  const isDialogOpen = ref(false);
 
   // Computed Properties
   const hidePagination = computed(() => tab.value === "recent");
 
   // Methods
   function handleTopUpPoints() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/top-up-detail-dialog/index.vue")
-      ),
-      componentProps: { entityKey }
-    });
+    openTopUpPointsDialog(isDialogOpen,entityKey)
   }
 
   const fetchAllData = async () => {

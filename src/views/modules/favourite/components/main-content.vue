@@ -19,22 +19,6 @@
 
     <template v-slot:body="{ row }">
       <div :class="itemClass">
-        <!-- <app-fav-item
-          v-if="tab === 'location'"
-          :categoryItem="row"
-          :distance="0"
-          entity-key="SITE"
-          @on-directory-item="handleDetail(row)"
-        />
-
-        <app-fav-item
-          v-else-if="tab === 'business'"
-          :categoryItem="row"
-          :distance="0"
-          entity-key="BUSINESS"
-          @on-directory-item="handleDetail(row)"
-        /> -->
-
         <app-checkin-item
           v-if="tab == 'checkIn'"
           :siteData="row.siteData"

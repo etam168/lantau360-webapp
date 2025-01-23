@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
-  const { currentMonthFreeTransactionCount, userInfo } = useUserStore();
+  const {  userInfo } = useUserStore();
 
   const { t } = useI18n({ useScope: "global" });
   const { api } = useApi();

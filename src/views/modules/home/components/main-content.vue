@@ -52,7 +52,8 @@
 
   const { t, locale } = useI18n({ useScope: "global" });
   const { getEntityKeyName } = useUtilities(locale.value);
-  const { openCategoryItemDialog } = useCategoryDialogService(entityKey);
+  const { openCategoryItemDialog, openCategoryItemSearchDialog } =
+    useCategoryDialogService(entityKey);
 
   const SITESEEING = "sightSeeing";
   const setTab = (val: string) => (tab.value = val);
@@ -87,24 +88,11 @@
   });
 
   function handleSearchDialog() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
-      ),
-      componentProps: {
-        entityKey: entityKey,
-        i18nKey: i18nKey,
-        keyword: keyword.value
-      }
-    }).onDismiss(() => {
-      keyword.value = "";
-    });
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
   }
 
   async function handleDirectoryItem(directory: SiteDirectory) {
-    if (!isDialogOpen.value) {
-      await openCategoryItemDialog(isDialogOpen, directory, i18nKey);
-    }
+    await openCategoryItemDialog(isDialogOpen, directory, i18nKey);
   }
 </script>
 

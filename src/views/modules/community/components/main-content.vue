@@ -106,20 +106,10 @@
   const setTab = (val: string) => (tab.value = val);
 
   const { openCommunityItemDialog } = useCommunityDialogService(entityKey);
+  const { openCategoryItemSearchDialog } = useCategoryDialogService(entityKey);
 
   function handleSearchDialog() {
-    $q.dialog({
-      component: defineAsyncComponent(
-        () => import("@/components/dialog/catergory-items-search-dialog/index.vue")
-      ),
-      componentProps: {
-        entityKey: entityKey,
-        i18nKey: i18nKey,
-        keyword: keyword.value
-      }
-    }).onDismiss(() => {
-      keyword.value = "";
-    });
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
   }
 
   async function handleDirectoryItem(directory: CommunityDirectory) {

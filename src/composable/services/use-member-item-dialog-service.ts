@@ -109,10 +109,33 @@ export function useMemberItemDialogService() {
       });
   }
 
+
+  async function openTopUpPointsDialog(
+    isDialogOpen: Ref<Boolean>,
+    entityKey: string
+  ) {
+    if (isDialogOpen.value) return;
+    isDialogOpen.value = true;
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/top-up-detail-dialog/index.vue")
+      ),
+      componentProps: { entityKey }
+    })
+      .onCancel(() => {
+        isDialogOpen.value = false;
+      })
+      .onOk(() => {
+        isDialogOpen.value = false;
+      });
+  }
+
+
   return {
     fetchTransactionData,
     openContentDialog,
     openTransactionItemDialog,
-    openAuthDialog
+    openAuthDialog,
+    openTopUpPointsDialog
   };
 }
