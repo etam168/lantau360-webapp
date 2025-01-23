@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows>
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows :rows-per-page-options="[0]">
     <template v-slot:top>
       <div v-if="rows.some(row => row.type === 'logoff')">
         <app-more-page-logoff />
@@ -48,6 +48,7 @@
   const isDialogOpen = ref(false);
 
   const member = newMember;
+
   const onItemClick = (itemName: string) => {
     switch (itemName) {
       case "profile":
@@ -81,30 +82,74 @@
     type: "language" | "logoff" | "logon" | "moreItem";
   }
 
-  const MORE_ITEMS: Record<string, Partial<RenderItem>> = {
-    account: { type: "moreItem", icon: ICONS.ACCOUNT, title: `${i18nKey}.mainMenu.account` },
-    language: { type: "language", icon: ICONS.SETTING, title: `${i18nKey}.mainMenu.language` },
-    logon: { type: "logon", title: `${i18nKey}.mainMenu.logon}` },
-    logoff: { type: "logoff", title: `${i18nKey}.mainMenu.logoff}` },
-    privacy: { type: "moreItem", icon: ICONS.PRIVACY, title: `${i18nKey}.mainMenu.privacy` },
-    profile: { type: "moreItem", icon: ICONS.PROFILE, title: `${i18nKey}.mainMenu.profile` },
-    terms: { type: "moreItem", icon: ICONS.TNC, title: `${i18nKey}.mainMenu.terms` }
-  };
-
-  type MoreItemKey = keyof typeof MORE_ITEMS;
-
-  const getItem = (key: MoreItemKey) => {
-    // we can get the name from the key
-    return { name: key, ...MORE_ITEMS[key] };
-  };
-
   const rows = computed(() => {
-    const items = userStore.isUserLogon()
-      ? ["logoff", "language", "terms", "privacy", "profile", "account"]
-      : ["logon", "language", "privacy", "terms"];
-
-    return items.map(key => getItem(key)) as RenderItem[];
-  });
+    switch (userStore.isUserLogon()) {
+      case true:
+        return [
+          {
+            name: "logoff",
+            type: "logoff",
+            title: `${i18nKey}.mainMenu.logoff}`
+          },
+          {
+            name: "language",
+            type: "language",
+            icon: ICONS.SETTING,
+            title: `${i18nKey}.mainMenu.language`
+          },
+          {
+            name: "terms",
+            type: "moreItem",
+            icon: ICONS.TNC,
+            title: `${i18nKey}.mainMenu.terms`
+          },
+          {
+            name: "privacy",
+            type: "moreItem",
+            icon: ICONS.PRIVACY,
+            title: `${i18nKey}.mainMenu.privacy`
+          },
+          {
+            name: "profile",
+            type: "moreItem",
+            icon: ICONS.PROFILE,
+            title: `${i18nKey}.mainMenu.profile`
+          },
+          {
+            name: "account",
+            type: "moreItem",
+            icon: ICONS.ACCOUNT,
+            title: `${i18nKey}.mainMenu.account`
+          }
+        ];
+      case false:
+        return [
+          {
+            name: "logon",
+            type: "logon",
+            title: `${i18nKey}.mainMenu.logon}`
+          },
+          {
+            name: "language",
+            type: "language",
+            icon: ICONS.SETTING,
+            title: `${i18nKey}.mainMenu.language`
+          },
+          {
+            name: "privacy",
+            type: "moreItem",
+            icon: ICONS.PRIVACY,
+            title: `${i18nKey}.mainMenu.privacy`
+          },
+          {
+            name: "terms",
+            type: "moreItem",
+            icon: ICONS.TNC,
+            title: `${i18nKey}.mainMenu.terms`
+          }
+        ];
+    }
+  }) as ComputedRef<RenderItem[]>;
 
   function handleAuthDialog(tabValue: string) {
     isLoading.value = true;
