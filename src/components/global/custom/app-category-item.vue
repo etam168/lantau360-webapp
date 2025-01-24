@@ -2,7 +2,7 @@
   <div @click="$emit('on-directory-item')" class="cursor-pointer">
     <q-item :style="$q.screen.lt.sm ? 'max-width: 390px' : ''" class="full-width no-padding">
       <q-item-section avatar>
-        <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
+        <app-avatar-rounded :image-path="computedImagePath" size="54px" />
       </q-item-section>
 
       <q-item-section>
@@ -10,12 +10,11 @@
         <q-item-label caption lines="2">{{ line2 }}</q-item-label>
       </q-item-section>
 
-      <q-item-section side>
+      <q-item-section side v-if="!isCheckIn">
         <div class="q-col-gutter-sm" style="min-height: 32px">
           <q-icon :name="fasLocationDot" color="primary" size="xs" v-if="isCheckedIn" />
           <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavorite" />
         </div>
-
         <q-item-label caption>{{ formattedDistance }}</q-item-label>
       </q-item-section>
     </q-item>
@@ -40,14 +39,22 @@
     (e: "on-directory-item"): void;
   }>();
 
-  const { entityKey, categoryItem, directory } = defineProps<{
+  const {
+    entityKey,
+    categoryItem,
+    directory,
+    isCheckIn,
+    i18nKey = ""
+  } = defineProps<{
     categoryItem: CategoryTypes;
     entityKey: EntityURLKey;
     directory?: DirectoryTypes;
+    isCheckIn?: boolean;
+    i18nKey?: string;
   }>();
 
-  const { locale } = useI18n({ useScope: "global" });
-  const { getEntityName, translate } = useUtilities(locale.value);
+  const { t, locale } = useI18n({ useScope: "global" });
+  const { getEntityName, translate, dateFormatter } = useUtilities(locale.value);
 
   const entityName = getEntityName(entityKey);
   const checkInStore = useCheckInStore();
@@ -78,10 +85,6 @@
 
   const formattedDistance = computed(() => {
     const distance = getDistanceValue(categoryItem);
-    // Format distance:
-    // - If less than 10 meter, return "< 10M"
-    // - If less than 1KM, return meters with "M" suffix
-    // - If 1KM or more, return kilometers with "KM" suffix
     switch (true) {
       case categoryItem.directoryTemplate === TEMPLATE.TAXI.value:
       case categoryItem.directoryTemplate === TEMPLATE.TIMETABLE.value:
@@ -97,8 +100,19 @@
         return `${(distance / 1000).toFixed(1)}KM`;
     }
   });
+  const computedImagePath = computed(() => {
+    if (isCheckIn) {
+      return categoryItem.siteData?.iconPath ?? ""; // Use siteData.iconPath for check-in items
+    }
+    return categoryItem.iconPath ?? ""; // Use iconPath for general items
+  });
 
   const line1 = computed(() => {
+    if (isCheckIn) {
+      const { siteName, meta } = categoryItem.siteData as SiteView;
+      return siteName ? translate(siteName, meta, "siteName") : "";
+    }
+
     if (directory && directory.groupId === 5) {
       return "";
     }
@@ -108,6 +122,21 @@
   });
 
   const line2 = computed(() => {
+    if (isCheckIn) {
+      const checkInfo = categoryItem.checkInfo;
+      if (!checkInfo || !checkInfo.length) return "";
+      const lastCheckIn = checkInfo.reduce(
+        (
+          latest: { checkInAt: string | number | Date },
+          current: { checkInAt: string | number | Date }
+        ) => (new Date(current.checkInAt) > new Date(latest.checkInAt) ? current : latest)
+      );
+      return lastCheckIn.checkInAt
+        ? t(`${i18nKey}.checkIn.lastCheckIn`, {
+            date: dateFormatter(lastCheckIn.checkInAt)
+          })
+        : "";
+    }
     if (directory && directory.groupId === 5) {
       return title.value;
     }

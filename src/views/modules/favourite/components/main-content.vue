@@ -29,17 +29,11 @@
     <template v-slot:body="{ row }">
       <q-tr>
         <q-td colspan="100%">
-          <app-checkin-item
-            v-if="tab == 'checkIn'"
-            :siteData="row.siteData"
-            :checkInfo="row.checkInfo"
-            :i18nKey="i18nKey"
-          />
-
           <app-category-item
-            v-else
             :categoryItem="row"
             :entityKey
+            :isCheckIn="tab === 'checkIn'"
+            :i18nKey="i18nKey"
             @on-directory-item="handleDetail(row)"
           />
         </q-td>

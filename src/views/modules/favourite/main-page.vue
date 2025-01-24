@@ -11,6 +11,7 @@
       :is-user-logon="isUserLogon"
       :i18nKey="i18nKey"
       :entityKey="entityKey"
+      :style="tableStyle"
       @on-category-detail="onCategoryDetail"
       @on-checkin-detail="onCheckInDetail"
     />
@@ -60,6 +61,18 @@
   const businessItems = computed<BusinessView[]>(() => favStore.favoriteBusinesses);
   const checkinItems = computed<CheckInView[]>(() => checkInStore.checkInSites);
   const isUserLogon = computed(() => userStore.isUserLogon());
+
+  const usedHeight = computed(() => {
+    const width = Math.min($q.screen.width, 1024);
+    const carouselHeight = (width * 9) / 16; // Height for the carousel
+    return carouselHeight + 103;
+  });
+
+  const tableStyle = computed<Record<string, any> | undefined>(() => {
+    const THRESHOLD = 320 as const;
+    const height = $q.screen.height - usedHeight.value;
+    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
+  });
 
   async function fetchAllData() {
     try {
@@ -111,13 +124,13 @@
   }
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(isDialogOpen,category, "ADVERTISEMENT");
+    openCategoryDetailDialog(isDialogOpen, category, "ADVERTISEMENT");
   };
 
   async function onCategoryDetail(item: SiteView | BusinessView) {
     if (!isDialogOpen.value) {
       const entityType = "siteId" in item ? "SITE" : "BUSINESS";
-      openCategoryDetailDialog(isDialogOpen,item, entityType);
+      openCategoryDetailDialog(isDialogOpen, item, entityType);
     }
   }
 
