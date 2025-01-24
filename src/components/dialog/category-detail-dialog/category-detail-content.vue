@@ -22,7 +22,6 @@
       :category
       :entityKey
       :has-check-in="entityKey.includes('SITE') && getSiteTemplate() !== 'Taxi'"
-      @check-in="requestCheckIn(category)"
     />
     <open-close-time-section v-else-if="item.type === 'time'" :category :entityKey />
     <promotion-section v-else-if="item.type === 'promotion'" :category />
@@ -65,7 +64,6 @@
     type: string;
   }
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
-  const { requestCheckIn } = useCheckInDataService();
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
   const maskGalleryItems = computed(() => {

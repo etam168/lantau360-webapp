@@ -8,6 +8,7 @@ import { useUserStore } from "@/stores/user";
 import { SiteView } from "@/interfaces/models/views/site-view";
 
 export function useCheckInDataService() {
+  const { notify } = useUtilities();
   const userStore = useUserStore();
   const { handleOpenCheckInDialog } = useEntityDataHandlingService();
   const { fetchData } = useApi();
@@ -75,15 +76,18 @@ export function useCheckInDataService() {
   async function requestCheckIn(category: CategoryTypes) {
     try {
       switch (true) {
-        // case isOutOfRange(category):
-        //   notify("You must be under 100 meters of location for check-in", "primary");
-        //   return;
-        // case await hasLast24HrsCheckIn(category):
-        //   notify(
-        //     `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
-        //     "primary"
-        //   );
-        // return;
+        case !userStore.isUserLogon():
+          notify("You must be logon to do checkin", "primary");
+          return;
+        case isOutOfRange(category):
+          notify("You must be under 100 meters of location for check-in", "primary");
+          return;
+        case await hasLast24HrsCheckIn(category):
+          notify(
+            `You must wait ${timeUntilNextCheckIn.value} minutes before checking in again.`,
+            "primary"
+          );
+          return;
         default:
           openCheckInDialog(category);
           break;

@@ -9,7 +9,6 @@
       />
 
       <q-card-actions class="full-width" align="center">
-        <div>{{ keyword }}</div>
         <app-search-bar v-model:keyword="keyword" @on-search="handleSearchDialog" />
       </q-card-actions>
     </template>
@@ -93,7 +92,7 @@
   });
 
   function handleSearchDialog() {
-    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword);
   }
 
   async function handleDirectoryItem(directory: SiteDirectory) {

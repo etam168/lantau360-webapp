@@ -40,7 +40,7 @@
     hasCheckIn?: boolean;
   }>();
 
-  const { handleOpenCheckInDialog } = useEntityDataHandlingService();
+  const { requestCheckIn } = useCheckInDataService();
 
   // Composable function calls
   const favoriteStore = useFavoriteStore();
@@ -51,12 +51,7 @@
   const isCheckIn = computed(() => checkInStore.isCheckIn(category as SiteView));
 
   function onBtnCheckInClick() {
-    const isDialogOpen = ref(false);
-    const props = {
-      entityKey: "CHECKIN",
-      entityData: category
-    };
-    handleOpenCheckInDialog(props, isDialogOpen, "CHECKIN");
+    requestCheckIn(category);
   }
 
   function onBtnFavClick() {

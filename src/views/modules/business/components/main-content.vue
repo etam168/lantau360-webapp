@@ -93,7 +93,7 @@
   });
 
   function handleSearchDialog() {
-    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword);
   }
 
   async function handleDirectoryItem(directory: BusinessDirectory) {
