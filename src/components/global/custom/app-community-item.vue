@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable :style="$q.screen.lt.sm ? 'max-width: 390px' : ''" class="no-padding">
+  <q-item :style="$q.screen.lt.sm ? 'max-width: 390px' : ''" class="no-padding">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="(communityItem as PostingView).memberImage" size="54px" />
     </q-item-section>
@@ -10,7 +10,7 @@
     </q-item-section>
 
     <q-item-section side>
-      <q-btn flat round dense :icon="fasEllipsisVertical" class="custom-btn">
+      <q-btn flat round dense :icon="fasEllipsisVertical" size="sm">
         <q-menu self="top right">
           <q-list>
             <q-item

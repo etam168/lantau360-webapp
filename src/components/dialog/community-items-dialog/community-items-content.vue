@@ -5,6 +5,7 @@
     flat
     hide-header
     hide-pagination
+    separator="cell"
     :row-key="rowKey"
     :rows="sortedRows"
     :rows-per-page-options="[0]"

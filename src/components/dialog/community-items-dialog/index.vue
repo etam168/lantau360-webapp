@@ -18,7 +18,7 @@
         <Suspense>
           <template #default>
             <!-- Main community items dialog content -->
-            <community-items-content :directory :entity-key :style="tableStyle" />
+            <community-items-content :directory :entityKey :style="tableStyle" class="q-mt-xs" />
           </template>
 
           <template #fallback>
@@ -84,7 +84,7 @@
   );
 
   const tableStyle = computed<Record<string, any> | undefined>(() => {
-    const dialogTitleHeight = 51;
+    const dialogTitleHeight = 50 + 5;
     const usedHeight = dialogTitleHeight;
 
     const hasEnoughSpace = $q.screen.height > THRESHOLD;

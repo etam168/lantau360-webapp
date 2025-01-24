@@ -25,6 +25,7 @@
               :entityKey
               :sortByKey
               :style="tableStyle"
+              class="q-mt-xs"
             />
           </template>
 
