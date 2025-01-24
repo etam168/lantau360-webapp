@@ -97,7 +97,7 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
       componentProps: {
         entityKey: entityKey,
         i18nKey: i18nKey,
-        keyword: keyword
+        keyword: keyword?.value
       }
     })
       .onCancel(() => {
