@@ -1,39 +1,47 @@
 <template>
-  <q-table v-bind="$attrs" flat hide-header hide-pagination :rows row-key="name" :rows-per-page-options="[0]">
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    separator="cell"
+    :rows
+    :row-key
+    :rows-per-page-options="[0]"
+  >
     <template v-slot:top>
       <app-more-page-logoff v-if="userStore.isUserLogon()" />
       <app-more-page-logon v-else @on-auth-dialog="handleAuthDialog" />
     </template>
 
     <template v-slot:body="{ row }">
-      <app-menu-item-member
-        :type="row.type"
-        :icon="row.icon!"
-        :title="row.title"
-        @on-item-click="onItemClick(row.name)"
-      />
+      <q-tr>
+        <q-td colspan="100%">
+          <app-menu-item-member
+            :type="row.type"
+            :icon="row.icon!"
+            :title="row.title"
+            @on-item-click="onItemClick(row.name)"
+          />
+        </q-td>
+      </q-tr>
     </template>
 
-    <template v-slot:bottom> <app-more-page-footer /></template>
+    <template v-slot:bottom>
+      <app-more-page-footer />
+    </template>
   </q-table>
 </template>
 
 <script setup lang="ts">
+  import { newMember } from "@/interfaces/models/entities/member";
+  import { EntityURLKey, ICONS } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
-  // Interface files
-  import { newMember } from "@/interfaces/models/entities/member";
-
-  // Constants
-  import { EntityURLKey, ICONS } from "@/constants";
-
   // Props
-  const { i18nKey = "more" } = defineProps<{
-    i18nKey?: string;
-  }>();
+  const { i18nKey = "more" } = defineProps<{ i18nKey?: string }>();
 
   const { handleOpenDialog } = useEntityDataHandlingService();
-
   const { openContentDialog, openAuthDialog, openTransactionItemDialog } =
     useMemberItemDialogService();
 
@@ -68,65 +76,43 @@
     type: "language" | "logoff" | "logon" | "moreItem";
   }
 
+  const rowKey = "name";
   const rows = computed(() => {
-    // Base menu items that are always shown
-    const baseMenuItems: RenderItem[] = [
-      {
-        name: "language",
-        type: "language",
-        icon: ICONS.SETTING,
-        title: `${i18nKey}.mainMenu.language`
-      },
-      {
-        name: "terms",
-        type: "moreItem",
-        icon: ICONS.TNC,
-        title: `${i18nKey}.mainMenu.terms`
-      },
-      {
-        name: "privacy",
-        type: "moreItem",
-        icon: ICONS.PRIVACY,
-        title: `${i18nKey}.mainMenu.privacy`
-      }
+    const baseMenuItems = [
+      { name: "language", type: "language", icon: ICONS.SETTING },
+      { name: "terms", type: "moreItem", icon: ICONS.TNC },
+      { name: "privacy", type: "moreItem", icon: ICONS.PRIVACY }
     ];
 
-    if (userStore.isUserLogon()) {
-      return [
-        ...baseMenuItems,
-        {
-          name: "profile",
-          type: "moreItem",
-          icon: ICONS.PROFILE,
-          title: `${i18nKey}.mainMenu.profile`
-        },
-        {
-          name: "account",
-          type: "moreItem",
-          icon: ICONS.ACCOUNT,
-          title: `${i18nKey}.mainMenu.account`
-        }
-      ];
-    }
+    const menuItems = userStore.isUserLogon()
+      ? [
+          ...baseMenuItems,
+          { name: "profile", type: "moreItem", icon: ICONS.PROFILE },
+          { name: "account", type: "moreItem", icon: ICONS.ACCOUNT }
+        ]
+      : baseMenuItems;
 
-    return baseMenuItems;
-  }) as ComputedRef<RenderItem[]>;
+    return menuItems.map(item => ({
+      ...item,
+      title: `${i18nKey}.mainMenu.${item.name}`
+    })) as RenderItem[];
+  });
 
   function handleAuthDialog(tabValue: string) {
     openAuthDialog(isDialogOpen, tabValue);
   }
 
-  function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
-    member.memberId = userStore.userInfo.userId;
-    openTransactionItemDialog(isDialogOpen, member, entityKey);
+  function handleContentDialog(name: string) {
+    openContentDialog(isDialogOpen, isLoading, name);
   }
 
   function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
     handleOpenDialog({}, isDialogOpen, entityKey, "edit");
   }
 
-  function handleContentDialog(name: string) {
-    openContentDialog(isDialogOpen, isLoading, name);
+  function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
+    member.memberId = userStore.userInfo.userId;
+    openTransactionItemDialog(isDialogOpen, member, entityKey);
   }
 </script>
 
