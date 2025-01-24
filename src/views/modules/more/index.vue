@@ -2,7 +2,7 @@
   <q-page>
     <app-page-title :title="$t(`${i18nKey}.title`)"></app-page-title>
 
-    <main-content :i18nKey />
+    <main-content :i18nKey class="q-mt-xs"/>
   </q-page>
 </template>
 
