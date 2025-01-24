@@ -4,6 +4,7 @@
     flat
     hide-header
     hide-pagination
+    separator="cell"
     :rows="rows"
     :row-key="rowKey"
     :rows-per-page-options="[0]"
@@ -28,21 +29,19 @@
     <template v-slot:body="{ row }">
       <q-tr>
         <q-td colspan="100%">
-          <div :class="itemClass">
-            <app-checkin-item
-              v-if="tab == 'checkIn'"
-              :siteData="row.siteData"
-              :checkInfo="row.checkInfo"
-              :i18nKey="i18nKey"
-            />
+          <app-checkin-item
+            v-if="tab == 'checkIn'"
+            :siteData="row.siteData"
+            :checkInfo="row.checkInfo"
+            :i18nKey="i18nKey"
+          />
 
-            <app-category-item
-              v-else
-              :categoryItem="row"
-              :entityKey
-              @on-directory-item="handleDetail(row)"
-            />
-          </div>
+          <app-category-item
+            v-else
+            :categoryItem="row"
+            :entityKey
+            @on-directory-item="handleDetail(row)"
+          />
         </q-td>
       </q-tr>
     </template>
@@ -58,6 +57,11 @@
 
   // Constants
   import type { EntityURLKey } from "@/constants";
+
+  defineEmits<{
+    (e: "onCategoryDetail", value: SiteView | BusinessView): void;
+    (e: "onCheckInDetail", value: CheckInView): void;
+  }>();
 
   const {
     siteItems,
@@ -75,9 +79,9 @@
     i18nKey: string;
   }>();
 
+  const $q = useQuasar();
   const { t, locale } = useI18n({ useScope: "global" });
   const { isSmallScreen } = useUtilities(locale.value);
-  const $q = useQuasar();
   const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
 
   const isDialogOpen = ref(false);
@@ -116,21 +120,7 @@
     }
   });
 
-  const itemClass = computed(() => {
-    return tab.value === "checkIn" ? "col-12" : "col-xs-12 col-sm-6 col-md-4 q-pa-xs";
-  });
-
   const setTab = (val: string) => (tab.value = val);
-
-  const cardStyle = computed(() => ({
-    borderTop: "1px solid rgba(0, 0, 0, 0.12)",
-    borderBottom: "1px solid rgba(0, 0, 0, 0.12)"
-  }));
-
-  defineEmits<{
-    (e: "onCategoryDetail", value: SiteView | BusinessView): void;
-    (e: "onCheckInDetail", value: CheckInView): void;
-  }>();
 
   async function handleDetail(item: any) {
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
@@ -138,8 +128,11 @@
   }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
   .q-table__top {
+    padding: 0 !important;
+  }
+  .q-td {
     padding: 0 !important;
   }
 </style>
