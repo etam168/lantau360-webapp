@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey :rows>
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey :rows :rows-per-page-options="[0]">
     <template v-slot:top>
       <app-tab-select
         :tab-items="tabItems"

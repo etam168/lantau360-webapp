@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat hide-header hide-pagination :rows="rows" :row-key="rowKey">
+  <q-table v-bind="$attrs" flat hide-header hide-pagination :rows="rows" :row-key="rowKey" :rows-per-page-options="[0]">
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">

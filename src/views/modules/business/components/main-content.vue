@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey="rowKey" :rows="rows">
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rowKey="rowKey" :rows="rows" :rows-per-page-options="[0]">
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>

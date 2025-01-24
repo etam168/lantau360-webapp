@@ -1,11 +1,11 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows :rows-per-page-options="[0]">
+  <q-table v-bind="$attrs" flat hide-header hide-pagination :rows row-key="name" :rows-per-page-options="[0]">
     <template v-slot:top>
       <app-more-page-logoff v-if="userStore.isUserLogon()" />
       <app-more-page-logon v-else @on-auth-dialog="handleAuthDialog" />
     </template>
 
-    <template v-slot:item="{ row }">
+    <template v-slot:body="{ row }">
       <app-menu-item-member
         :type="row.type"
         :icon="row.icon!"

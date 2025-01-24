@@ -1,5 +1,5 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows="rows" :row-key="rowKey">
+  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows="rows" :row-key="rowKey" :rows-per-page-options="[0]">
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
@@ -115,7 +115,7 @@
   const { openCategoryItemSearchDialog } = useCategoryDialogService(entityKey);
 
   function handleSearchDialog() {
-    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword.value);
+    openCategoryItemSearchDialog(isDialogOpen, entityKey, i18nKey, keyword);
   }
 
   async function handleDirectoryItem(directory: CommunityDirectory) {
