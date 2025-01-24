@@ -55,7 +55,7 @@
   //Composable
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props

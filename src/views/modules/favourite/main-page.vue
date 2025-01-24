@@ -142,7 +142,9 @@
       componentProps: {
         item
       }
-    });
+    })
+      .onCancel(() => {})
+      .onOk(() => {});
   }
 
   await fetchAllData();

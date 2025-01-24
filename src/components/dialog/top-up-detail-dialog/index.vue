@@ -47,7 +47,7 @@
   //Composable
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
@@ -59,12 +59,7 @@
   const { getEntityName } = useUtilities();
 
   // Use the base dialog composition
-  const {
-    dialogRef,
-    isDialogVisible,
-    errorMessage,
-    updateDialogState
-  } = useBaseDialog();
+  const { dialogRef, isDialogVisible, errorMessage, updateDialogState } = useBaseDialog();
 
   // Reactive variables
   const entityName = getEntityName(entityKey);

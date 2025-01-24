@@ -102,6 +102,13 @@
   import { IMAGES } from "@/constants";
   import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
+  // Quasar Import
+  import { useDialogPluginComponent } from "quasar";
+
+  // Emits definition
+  defineEmits([...useDialogPluginComponent.emits]);
+
+  // Props
   const { imageList } = defineProps<{
     imageList: GalleryImageType[];
   }>();

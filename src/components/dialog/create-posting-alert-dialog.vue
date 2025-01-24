@@ -45,7 +45,7 @@
     entityKey: EntityURLKey;
   }>();
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Reactive variables

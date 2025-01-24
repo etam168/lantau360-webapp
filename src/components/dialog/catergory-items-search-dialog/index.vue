@@ -43,6 +43,12 @@
   import { EntityURLKey } from "@/constants/app/entity-url";
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
+  // Quasar  Imports
+  import { useDialogPluginComponent } from "quasar";
+
+  // Emits definition
+  defineEmits([...useDialogPluginComponent.emits]);
+
   // Props
   const { entityKey, i18nKey } = defineProps<{
     entityKey: EntityURLKey;

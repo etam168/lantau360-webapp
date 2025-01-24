@@ -34,7 +34,7 @@
   // Third party imports
   import { fasTriangleExclamation } from "@quasar/extras/fontawesome-v6";
 
-  // Emits
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Reactive variables
@@ -54,6 +54,8 @@
       componentProps: {
         mode: "login"
       }
-    });
+    })
+      .onCancel(() => {})
+      .onOk(() => {});
   };
 </script>

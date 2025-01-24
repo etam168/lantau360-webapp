@@ -48,9 +48,10 @@
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
 
   // Quasar  Imports
-  import { EventBus, useDialogPluginComponent } from "quasar";
+  import { useDialogPluginComponent } from "quasar";
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props

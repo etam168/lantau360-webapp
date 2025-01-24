@@ -88,10 +88,12 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         directory: directory, // Pass the row prop for the edit dialog
         entityKey: entityKey
       }
-    }).onCancel(() => {
-      // Reset dialog state when it is dismissed/closed
-      isDialogOpen.value = false;
-    });
+    })
+      .onOk(() => {})
+      .onCancel(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
+      });
   }
 
   async function handleEditPosting(
@@ -106,10 +108,12 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
       ),
       componentProps: { row: item, entityKey }
-    }).onCancel(() => {
-      // Reset dialog state when it is dismissed/closed
-      isDialogOpen.value = false;
-    });
+    })
+      .onOk(() => {})
+      .onCancel(() => {
+        // Reset dialog state when it is dismissed/closed
+        isDialogOpen.value = false;
+      });
   }
 
   async function openCreatePosting(isDialogOpen: Ref<Boolean>, directory: CommunityDirectory) {

@@ -51,14 +51,11 @@
   //Composable
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-  // Emit
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const {
-    row,
-    entityKey,
-  } = defineProps<{
+  const { row, entityKey } = defineProps<{
     row: CategoryTypes;
     entityKey: EntityURLKey;
   }>();

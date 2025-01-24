@@ -10,7 +10,9 @@ export function UserLogon() {
       componentProps: {
         mode: "login"
       }
-    });
+    })
+      .onCancel(() => {})
+      .onOk(() => {});
   }
 
   function localDataNotification() {

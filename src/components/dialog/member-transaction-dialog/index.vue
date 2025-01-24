@@ -56,7 +56,7 @@
 
   import i18n from "@/plugins/i18n/i18n";
 
-  // Emit
+  // Emits definition
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
