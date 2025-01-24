@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable :style="$q.screen.lt.sm ? 'max-width: 390px' : ''">
+  <q-item clickable :style="$q.screen.lt.sm ? 'max-width: 390px' : ''" class="no-padding">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="(communityItem as PostingView).memberImage" size="54px" />
     </q-item-section>

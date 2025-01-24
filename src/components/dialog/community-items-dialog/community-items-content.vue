@@ -26,11 +26,15 @@
     </template>
 
     <template v-slot:body="{ row }">
-      <app-community-item
-        :community-item="row"
-        @on-detail="handleDetail(row)"
-        @on-edit="handleEdit(row)"
-      />
+      <q-tr>
+        <q-td colspan="100%">
+          <app-community-item
+            :community-item="row"
+            @on-detail="handleDetail(row)"
+            @on-edit="handleEdit(row)"
+          />
+        </q-td>
+      </q-tr>
     </template>
   </q-table>
 </template>

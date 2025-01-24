@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable class="full-width" @click="$emit('click')">
+  <q-item clickable class="full-width no-padding" @click="$emit('click')">
     <q-item-section avatar>
       <app-avatar-rounded :image-path="computedImagePath" size="54px" />
     </q-item-section>

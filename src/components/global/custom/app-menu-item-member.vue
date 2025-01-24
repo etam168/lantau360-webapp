@@ -1,6 +1,6 @@
 <!-- app-menu-item-member.vue -->
 <template>
-  <q-item class="shadow-1 full-width">
+  <q-item class="full-width no-padding">
     <q-item-section avatar>
       <q-avatar square :icon font-size="36px"></q-avatar>
     </q-item-section>

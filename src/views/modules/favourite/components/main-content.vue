@@ -1,5 +1,13 @@
 <template>
-  <q-table v-bind="$attrs" flat hide-header hide-pagination :rows="rows" :row-key="rowKey" :rows-per-page-options="[0]">
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    :rows="rows"
+    :row-key="rowKey"
+    :rows-per-page-options="[0]"
+  >
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">
@@ -18,21 +26,25 @@
     </template>
 
     <template v-slot:body="{ row }">
-      <div :class="itemClass">
-        <app-checkin-item
-          v-if="tab == 'checkIn'"
-          :siteData="row.siteData"
-          :checkInfo="row.checkInfo"
-          :i18nKey="i18nKey"
-        />
+      <q-tr>
+        <q-td colspan="100%">
+          <div :class="itemClass">
+            <app-checkin-item
+              v-if="tab == 'checkIn'"
+              :siteData="row.siteData"
+              :checkInfo="row.checkInfo"
+              :i18nKey="i18nKey"
+            />
 
-        <app-category-item
-          v-else
-          :categoryItem="row"
-          :entityKey
-          @on-directory-item="handleDetail(row)"
-        />
-      </div>
+            <app-category-item
+              v-else
+              :categoryItem="row"
+              :entityKey
+              @on-directory-item="handleDetail(row)"
+            />
+          </div>
+        </q-td>
+      </q-tr>
     </template>
   </q-table>
 </template>

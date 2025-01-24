@@ -3,6 +3,7 @@
     clickable
     @click="$emit('on-directory-item')"
     :style="$q.screen.lt.sm ? 'max-width: 390px' : ''"
+    class="no-padding"
   >
     <q-item-section avatar>
       <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
