@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-md">
+  <q-card>
     <q-expansion-item group="itemGroup" dense-toggle expand-icon-toggle :expand-icon="fasAngleDown">
       <template v-slot:header>
         <q-item-section class="text-h6">
@@ -14,7 +14,11 @@
       </template>
       <q-separator />
 
-      <q-card>
+      <q-card
+        :style="{
+          height: $q.screen.gt.xs ? '350px' : '100%'
+        }"
+      >
         <q-card-section class="q-pa-md">
           <div v-html="translatedContent"></div>
         </q-card-section>

@@ -1,32 +1,52 @@
 <template>
-  <template v-for="(item, index) in renderItems" :key="index" class="full-height">
-    <carousel-image-list v-if="item.type === 'carousel'" :image-list="maskGalleryItems" />
-    <contact-section v-else-if="item.type === 'contact' && showContactSection" :category />
-    <expansion-contact-section
-      v-else-if="item.type === 'expansion-contact' && showContactSection"
-      :category
-    />
-    <expansion-description-section
-      v-else-if="item.type === 'expansion-description'"
-      :category
-      :entityKey
-    />
-    <expansion-location-section
-      v-else-if="item.type === 'expansion-location'"
-      :category
-      @open-map="openGoogleMaps(category)"
-    />
-    <description-section v-else-if="item.type === 'description'" :category />
-    <favourite-section
-      v-else-if="item.type === 'favourite'"
-      :category
-      :entityKey
-      :has-check-in="entityKey.includes('SITE') && getSiteTemplate() !== 'Taxi'"
-    />
-    <open-close-time-section v-else-if="item.type === 'time'" :category :entityKey />
-    <promotion-section v-else-if="item.type === 'promotion'" :category />
-    <timetable-section v-else-if="item.type === 'timetable'" :category :entityKey />
-  </template>
+  <q-table
+    v-bind="$attrs"
+    flat
+    hide-header
+    hide-pagination
+    separator="cell"
+    :rows="bodyRows"
+    :row-key="rowKey"
+    :rows-per-page-options="[0]"
+  >
+    <!-- Top Slot -->
+    <template v-slot:top>
+      <carousel-image-list v-if="carouselRow" :image-list="maskGalleryItems" class="full-width" />
+    </template>
+
+    <!-- Body Slot -->
+    <template v-slot:body="{ row }">
+      <q-tr>
+        <q-td colspan="100%">
+          <contact-section v-if="row.type === 'contact' && showContactSection" :category />
+          <expansion-contact-section
+            v-else-if="row.type === 'expansion-contact' && showContactSection"
+            :category
+          />
+          <expansion-description-section
+            v-else-if="row.type === 'expansion-description'"
+            :category
+            :entityKey
+          />
+          <expansion-location-section
+            v-else-if="row.type === 'expansion-location'"
+            :category
+            @open-map="openGoogleMaps(category)"
+          />
+          <description-section v-else-if="row.type === 'description'" :category />
+          <favourite-section
+            v-else-if="row.type === 'favourite'"
+            :category
+            :entityKey
+            :has-check-in="entityKey.includes('SITE') && getSiteTemplate() !== 'Taxi'"
+          />
+          <open-close-time-section v-else-if="row.type === 'time'" :category :entityKey />
+          <promotion-section v-else-if="row.type === 'promotion'" :category />
+          <timetable-section v-else-if="row.type === 'timetable'" :category :entityKey />
+        </q-td>
+      </q-tr>
+    </template>
+  </q-table>
 </template>
 
 <script setup lang="ts">
@@ -63,44 +83,45 @@
     itemCount?: number;
     type: string;
   }
+
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
+  // Separate rows for top and body slots
+  const carouselRow = computed(() => rows.value.find(row => row.type === "carousel"));
+  const bodyRows = computed(() => rows.value.filter(row => row.type !== "carousel"));
+
+  // Mask gallery items logic
   const maskGalleryItems = computed(() => {
-    // Get the displayMask from props (default value)
     const defaultDisplayMask = displayMask;
-
-    // Check if category has a displayMask (category's displayMask should override prop if non-zero)
     const categoryWithMask = category as { displayMask?: number };
-
-    // Determine the effective displayMask:
-    // - If category.displayMask is non-zero, use it
-    // - If category.displayMask is 0 or undefined, use the prop displayMask
     const effectiveDisplayMask =
       categoryWithMask.displayMask !== undefined && categoryWithMask.displayMask !== 0
         ? categoryWithMask.displayMask
         : defaultDisplayMask;
 
-    // If effectiveDisplayMask is less than 1, return all gallery items
     if (effectiveDisplayMask < 1) {
       return galleryItems.value;
     }
 
-    // Filter gallery items based on the effective displayMask
     return galleryItems.value.filter((_, index) => {
       return !(effectiveDisplayMask & (1 << index)); // Hide item if the corresponding bit is 1
     });
   });
 
+  // Check if contact section should be displayed
   const showContactSection = computed(() => {
     return !!(category.contactPhone || category.contactWhatsApp);
   });
 
+  // Constants for Render Items
   const CAROUSEL = { name: "carousel", type: "carousel" };
   const DESCRIPTION = { name: "description", type: "description" };
   const CONTACT = { name: "contact", type: "contact" };
 
-  const renderItems = computed((): RenderItem[] => {
+  // Rows and Template logic
+  const rowKey = "name";
+  const rows = computed((): RenderItem[] => {
     switch (template.value) {
       case RENDERER.ADVERTISEMENT:
         return [CAROUSEL, DESCRIPTION, CONTACT];
@@ -137,8 +158,8 @@
             (category[key] || "").toLowerCase().includes("call") ||
             (category[key] || "").toLowerCase().includes("telephone")
         );
-        // Construct baseItems conditionally
-        const baseItems: RenderItem[] = hasCallOrTelephone
+
+        return hasCallOrTelephone
           ? [
               { name: "description", type: "description" },
               { name: "contact", type: "contact" }
@@ -147,8 +168,6 @@
               { name: "carousel", type: "carousel" },
               { name: "favourite", type: "favourite" }
             ];
-
-        return baseItems;
       }
       case RENDERER.TIMETABLE:
         return [{ name: "timetable", type: "timetable" }];
@@ -175,7 +194,6 @@
   });
 
   function getBusinessTemplate() {
-    // we only need to process BusinessView data here
     switch (category.directoryTemplate) {
       case TEMPLATE.RESTAURANT.value:
         return RENDERER.RESTAURANT;
@@ -185,7 +203,6 @@
   }
 
   function getSiteTemplate() {
-    // we only need to process SiteView data here
     switch (category.directoryTemplate) {
       case TEMPLATE.ATM.value:
         return RENDERER.ATM;
@@ -202,9 +219,5 @@
     }
   }
 
-  /**
-   * Fetch data as part of the setup
-   * This ensures that the component is compatible with Suspense
-   */
   await fetchAllData(category);
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <q-card class="q-ma-md">
+  <q-card>
     <q-expansion-item
       group="itemGroup"
       dense-toggle
