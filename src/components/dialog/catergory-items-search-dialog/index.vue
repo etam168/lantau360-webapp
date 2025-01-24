@@ -9,9 +9,13 @@
     maximized
   >
     <q-layout view="lHh lpr lFf" class="bg-white" style="max-width: 1024px">
-      <app-dialog-title :i18nKey has-options @change:sort-option="handleChangeSortOptions">{{
-        dialogTitle
-      }}</app-dialog-title>
+      <app-dialog-title
+        :i18nKey
+        has-options
+        @dialog-closed="handleCloseDialog"
+        @change:sort-option="handleChangeSortOptions"
+        >{{ dialogTitle }}</app-dialog-title
+      >
 
       <q-page-container>
         <suspense>
@@ -66,7 +70,8 @@
   const { t } = useI18n({ useScope: "global" });
 
   // Use the base dialog composition
-  const { dialogRef, onDialogHide, isDialogVisible, updateDialogState } = useBaseDialog();
+  const { dialogRef, onDialogHide, isDialogVisible, handleCloseDialog, updateDialogState } =
+    useBaseDialog();
 
   // Reactive variables
   const sortByKey = ref("default");
