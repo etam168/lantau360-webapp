@@ -132,7 +132,4 @@
   .q-table__top {
     padding: 0 !important;
   }
-  .q-td {
-    padding: 0 !important;
-  }
 </style>

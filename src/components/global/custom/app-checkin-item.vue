@@ -1,14 +1,16 @@
 <template>
-  <q-item clickable class="full-width no-padding" @click="$emit('click')">
-    <q-item-section avatar>
-      <app-avatar-rounded :image-path="computedImagePath" size="54px" />
-    </q-item-section>
+  <div @click="$emit('click')" class="cursor-pointer">
+    <q-item class="full-width no-padding">
+      <q-item-section avatar>
+        <app-avatar-rounded :image-path="computedImagePath" size="54px" />
+      </q-item-section>
 
-    <q-item-section>
-      <q-item-label>{{ getLine1 }}</q-item-label>
-      <q-item-label caption>{{ getLine2 }}</q-item-label>
-    </q-item-section>
-  </q-item>
+      <q-item-section>
+        <q-item-label>{{ getLine1 }}</q-item-label>
+        <q-item-label caption>{{ getLine2 }}</q-item-label>
+      </q-item-section>
+    </q-item>
+  </div>
 </template>
 
 <script setup lang="ts">

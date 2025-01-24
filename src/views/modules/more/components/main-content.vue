@@ -10,8 +10,8 @@
     :rows-per-page-options="[0]"
   >
     <template v-slot:top>
-      <app-more-page-logoff v-if="userStore.isUserLogon()" />
-      <app-more-page-logon v-else @on-auth-dialog="handleAuthDialog" />
+      <app-more-page-logoff v-if="userStore.isUserLogon()" class="full-width" />
+      <app-more-page-logon v-else @on-auth-dialog="handleAuthDialog" class="full-width" />
     </template>
 
     <template v-slot:body="{ row }">
@@ -28,7 +28,7 @@
     </template>
 
     <template v-slot:bottom>
-      <app-more-page-footer />
+      <app-more-page-footer class="full-width" />
     </template>
   </q-table>
 </template>

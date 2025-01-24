@@ -1,28 +1,25 @@
 <template>
-  <q-item
-    clickable
-    @click="$emit('on-directory-item')"
-    :style="$q.screen.lt.sm ? 'max-width: 390px' : ''"
-    class="no-padding"
-  >
-    <q-item-section avatar>
-      <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
-    </q-item-section>
+  <div @click="$emit('on-directory-item')" class="cursor-pointer">
+    <q-item :style="$q.screen.lt.sm ? 'max-width: 390px' : ''" class="full-width no-padding">
+      <q-item-section avatar>
+        <app-avatar-rounded :image-path="categoryItem.iconPath" size="54px" />
+      </q-item-section>
 
-    <q-item-section>
-      <q-item-label lines="1">{{ line1 }}</q-item-label>
-      <q-item-label caption lines="2">{{ line2 }}</q-item-label>
-    </q-item-section>
+      <q-item-section>
+        <q-item-label lines="1">{{ line1 }}</q-item-label>
+        <q-item-label caption lines="2">{{ line2 }}</q-item-label>
+      </q-item-section>
 
-    <q-item-section side>
-      <div class="q-col-gutter-sm" style="min-height: 32px">
-        <q-icon :name="fasLocationDot" color="primary" size="xs" v-if="isCheckedIn" />
-        <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavorite" />
-      </div>
+      <q-item-section side>
+        <div class="q-col-gutter-sm" style="min-height: 32px">
+          <q-icon :name="fasLocationDot" color="primary" size="xs" v-if="isCheckedIn" />
+          <q-icon :name="fasHeart" color="red" size="xs" v-if="isFavorite" />
+        </div>
 
-      <q-item-label caption>{{ formattedDistance }}</q-item-label>
-    </q-item-section>
-  </q-item>
+        <q-item-label caption>{{ formattedDistance }}</q-item-label>
+      </q-item-section>
+    </q-item>
+  </div>
 </template>
 
 <script setup lang="ts">
