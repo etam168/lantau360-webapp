@@ -14,7 +14,7 @@
       style="max-width: 640px"
     >
       <q-header v-if="$q.screen.lt.sm" bordered class="bg-transparent text-dark">
-        <app-toolbar-dialog-title />
+        <app-toolbar-dialog-title @dialog-closed="handleCloseDialog" />
       </q-header>
 
       <q-page-container>
@@ -45,34 +45,15 @@
   }>();
 
   // Composable function calls
-  const { dialogRef, onDialogCancel } = useDialogPluginComponent();
-
-  // Reactive variables
-  const isDialogVisible = ref(true);
-  const errorMessage = ref<string | null>(null);
-
-  /**
-   * Handles the closing of the dialog
-   * Sets visibility to false and triggers the cancel action after a delay
-   */
-  function handleCloseDialog(): void {
-    isDialogVisible.value = false;
-    setTimeout(() => {
-      try {
-        onDialogCancel();
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
-
-  /**
-   * Updates the dialog's visibility state
-   * @param status - The new visibility state
-   */
-  function updateDialogState(status: boolean): void {
-    isDialogVisible.value = status;
-  }
+  // Use the base dialog composition
+  const {
+    dialogRef,
+    onDialogHide,
+    isDialogVisible,
+    errorMessage,
+    handleCloseDialog,
+    updateDialogState
+  } = useBaseDialog();
 
   /**
    * Error handling for the component
