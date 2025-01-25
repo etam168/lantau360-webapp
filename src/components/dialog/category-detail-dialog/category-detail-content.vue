@@ -10,7 +10,13 @@
   >
     <!-- Top Slot -->
     <template v-slot:top>
-      <carousel-image-list v-if="hasCarousel" :image-list="maskGalleryItems" class="full-width" />
+      <carousel-image-list
+        v-if="hasCarousel"
+        :gallery-items="galleryItems"
+        :display-mask="displayMask"
+        :category="category"
+        class="full-width"
+      />
     </template>
 
     <!-- Body Slot -->
@@ -90,24 +96,6 @@
 
   const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
-
-  // Mask gallery items logic
-  const maskGalleryItems = computed(() => {
-    const defaultDisplayMask = displayMask;
-    const categoryWithMask = category as { displayMask?: number };
-    const effectiveDisplayMask =
-      categoryWithMask.displayMask !== undefined && categoryWithMask.displayMask !== 0
-        ? categoryWithMask.displayMask
-        : defaultDisplayMask;
-
-    if (effectiveDisplayMask < 1) {
-      return galleryItems.value;
-    }
-
-    return galleryItems.value.filter((_, index) => {
-      return !(effectiveDisplayMask & (1 << index));
-    });
-  });
 
   const showContactSection = computed(() => {
     return !!(category.contactPhone || category.contactWhatsApp);

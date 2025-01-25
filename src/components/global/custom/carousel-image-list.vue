@@ -14,11 +14,12 @@
         class="bg-thumbnail"
       >
         <q-carousel-slide
-          v-for="(item, index) in galleryImages"
+          v-for="(item, index) in maskedGalleryItems"
           :key="index"
           :name="item.imageId"
           :img-src="getImageURL(item.imagePath)"
         ></q-carousel-slide>
+        
 
         <template v-slot:control>
           <q-carousel-control
@@ -42,30 +43,10 @@
         </template>
       </q-carousel>
 
-      <q-img v-else :src="image">
-        <div
-          v-if="imageList.length > 0"
-          class="absolute-top-right q-ma-md"
-          :offset="[18, 18]"
-          style="background: rgba(0, 0, 0, 0.3); padding: 4px 8px"
-        >
-          <q-btn
-            flat
-            dense
-            color="white"
-            size="sm"
-            :icon="fullscreen ? fasCompress : fasExpand"
-            @click="toggleFullscreen"
-          >
-            <q-tooltip class="bg-dark text-caption shadow-4">{{
-              $t("action.fullScreen")
-            }}</q-tooltip>
-          </q-btn>
-        </div>
-
+      <q-img v-else :src="singleImage">
         <!-- Fullscreen Dialog -->
         <q-dialog v-model="fullscreen" maximized>
-          <q-img :src="image">
+          <q-img :src="singleImage">
             <div
               class="absolute-top-right q-ma-md"
               style="background: rgba(0, 0, 0, 0.5); padding: 4px 8px"
@@ -93,44 +74,57 @@
 </template>
 
 <script setup lang="ts">
-  import {
-    fasCompress,
-    fasExpand,
-    fasChevronLeft,
-    fasChevronRight
-  } from "@quasar/extras/fontawesome-v6";
-  import { IMAGES } from "@/constants";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
+import {
+  fasCompress,
+  fasExpand,
+  fasChevronLeft,
+  fasChevronRight
+} from "@quasar/extras/fontawesome-v6";
+import { IMAGES } from "@/constants";
+import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
-  // Quasar Import
-  import { useDialogPluginComponent } from "quasar";
+// Props
+const { galleryItems, displayMask = 0, category } = defineProps<{
+  galleryItems: GalleryImageType[];
+  displayMask?: number;
+  category?: { displayMask?: number };
+}>();
 
-  // Emits definition
-  defineEmits([...useDialogPluginComponent.emits]);
+// Utilities
+const { getImageURL } = useUtilities();
 
-  // Props
-  const { imageList } = defineProps<{
-    imageList: GalleryImageType[];
-  }>();
+// State
+const fullscreen = ref(false);
+const slide = ref(galleryItems[0]?.imageId || '');
 
-  const { getImageURL } = useUtilities();
-  const galleryImages = computed(() => imageList);
-  const fullscreen = ref(false);
 
-  // Set slide to the first image's ID
-  const slide = ref(galleryImages.value.length ? galleryImages.value[0].imageId : null);
+// Computed Properties
+const effectiveDisplayMask = computed(() => {
+  const categoryDisplayMask = category?.displayMask;
+  return categoryDisplayMask !== undefined && categoryDisplayMask !== 0
+    ? categoryDisplayMask
+    : displayMask;
+});
 
-  const hasMultipleImage = computed(() => {
-    return imageList.length > 1;
+const maskedGalleryItems = computed(() => {
+  if (effectiveDisplayMask.value < 1) {
+    return galleryItems;
+  }
+  return galleryItems.filter((_, index) => {
+    return !(effectiveDisplayMask.value & (1 << index));
   });
+});
 
-  const toggleFullscreen = () => {
-    fullscreen.value = !fullscreen.value;
-  };
+const hasMultipleImage = computed(() => maskedGalleryItems.value.length > 1);
 
-  const image = computed(() => {
-    return imageList.length === 1
-      ? getImageURL(imageList[0].imagePath)
-      : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER;
-  });
+const singleImage = computed(() =>
+  maskedGalleryItems.value.length === 1
+    ? getImageURL(maskedGalleryItems.value[0].imagePath)
+    : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER
+);
+
+// Methods
+const toggleFullscreen = () => {
+  fullscreen.value = !fullscreen.value;
+};
 </script>
