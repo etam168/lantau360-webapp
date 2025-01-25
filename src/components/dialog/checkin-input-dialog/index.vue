@@ -1,12 +1,12 @@
 <template>
   <q-dialog
-    maximized
     ref="dialogRef"
     transition-show="slide-up"
     transition-hide="slide-down"
     :model-value="isDialogVisible"
     @hide="onDialogHide"
     @update:model-value="updateDialogState"
+    maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">

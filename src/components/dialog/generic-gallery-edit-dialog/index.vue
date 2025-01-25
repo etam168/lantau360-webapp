@@ -1,6 +1,5 @@
 <template>
   <q-dialog
-    maximized
     ref="dialogRef"
     transition-show="slide-up"
     transition-hide="slide-down"
@@ -8,6 +7,7 @@
     @hide="onDialogHide"
     @update:model-value="updateDialogState"
     persistent
+    maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">

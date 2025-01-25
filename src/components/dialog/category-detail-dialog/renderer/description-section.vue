@@ -1,7 +1,7 @@
 <template>
   <!-- Conditionally render the scroll area based on content overflow -->
   <q-scroll-area :style="{ height: scrollAreaHeight + 'px' }" v-if="shouldShowScroll">
-    <q-item>
+    <q-item class="no-padding no-wrap">
       <q-item-label>
         <div ref="contentRef" v-html="translatedContent"></div>
       </q-item-label>
@@ -9,13 +9,12 @@
   </q-scroll-area>
 
   <!-- Fallback for small content -->
-  <div v-else>
-    <q-item>
-      <q-item-label>
-        <div v-html="translatedContent"></div>
-      </q-item-label>
-    </q-item>
-  </div>
+
+  <q-item class="no-padding" v-else>
+    <q-item-label>
+      <div v-html="translatedContent"></div>
+    </q-item-label>
+  </q-item>
 </template>
 
 <script setup lang="ts">

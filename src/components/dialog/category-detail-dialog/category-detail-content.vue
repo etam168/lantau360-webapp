@@ -4,6 +4,7 @@
     flat
     hide-header
     hide-pagination
+    separator="none"
     :rows="rows"
     :rowKey="rowKey"
     :rows-per-page-options="[0]"
@@ -22,28 +23,32 @@
     <!-- Body Slot -->
     <template v-slot:body="{ row }: { row: RowItem }">
       <q-tr>
-        <q-td colspan="100%">
-          <contact-section v-if="row.type === 'contact' && showContactSection" :category />
-          <expansion-contact-section
-            v-else-if="row.type === 'expansion-contact' && showContactSection"
-            :category
-          />
-          <expansion-description-section
-            v-else-if="row.type === 'expansion-description'"
-            :category
-            :entityKey
-          />
-          <expansion-location-section
-            v-else-if="row.type === 'expansion-location'"
-            :category
-            @open-map="openGoogleMaps(category)"
-          />
-          <description-section v-else-if="row.type === 'description'" :category />
-          <favourite-section v-else-if="row.type === 'favourite'" :category :entityKey />
-          <open-close-time-section v-else-if="row.type === 'time'" :category :entityKey />
-          <promotion-section v-else-if="row.type === 'promotion'" :category />
-          <timetable-section v-else-if="row.type === 'timetable'" :category :entityKey />
-        </q-td>
+        <contact-section v-if="row.type === 'contact' && showContactSection" :category />
+        <expansion-contact-section
+          v-else-if="row.type === 'expansion-contact' && showContactSection"
+          :category
+        />
+        <expansion-description-section
+          v-else-if="row.type === 'expansion-description'"
+          :category
+          :entityKey
+        />
+        <expansion-location-section
+          v-else-if="row.type === 'expansion-location'"
+          :category
+          @open-map="openGoogleMaps(category)"
+        />
+        <!-- Use Quasar classes for description -->
+        <div
+          v-else-if="row.type === 'description'"
+          class="q-pa-md q-mx-auto q-overflow-auto text-wrap"
+        >
+          <description-section :category />
+        </div>
+        <favourite-section v-else-if="row.type === 'favourite'" :category :entityKey />
+        <open-close-time-section v-else-if="row.type === 'time'" :category :entityKey />
+        <promotion-section v-else-if="row.type === 'promotion'" :category />
+        <timetable-section v-else-if="row.type === 'timetable'" :category :entityKey />
       </q-tr>
     </template>
   </q-table>
@@ -104,9 +109,20 @@
   const rowKey = "id";
 
   const hasCarousel = computed(() => {
+    const hasCallOrTelephone = ["title", "subtitle3"].some(
+      key =>
+        (category[key] || "").toLowerCase().includes("call") ||
+        (category[key] || "").toLowerCase().includes("telephone")
+    );
+
+    // Explicitly handle the TAXI renderer case
+    if (category.directoryTemplate === TEMPLATE.TAXI.value) {
+      return !hasCallOrTelephone; // Do not show the carousel if hasCallOrTelephone is true
+    }
+
+    // Handle other directory templates
     switch (true) {
       case category.directoryTemplate === TEMPLATE.EMERGENCY.value:
-      case category.directoryTemplate === TEMPLATE.DAYTRIP.value:
       case category.directoryTemplate === TEMPLATE.TIMETABLE.value:
         return false;
       default:
@@ -126,8 +142,16 @@
         return ["description", "contact"];
       case category.directoryTemplate === TEMPLATE.TIMETABLE.value:
         return ["timetable"];
-      case category.directoryTemplate === TEMPLATE.TAXI.value:
-        return ["description", "contact"];
+      case category.directoryTemplate === TEMPLATE.TAXI.value: {
+        const hasCallOrTelephone = ["title", "subtitle3"].some(
+          key =>
+            (category[key] || "").toLowerCase().includes("call") ||
+            (category[key] || "").toLowerCase().includes("telephone")
+        );
+
+        return hasCallOrTelephone ? ["description", "contact"] : ["favourite"];
+      }
+
       case entityKey === "SITE":
         return ["favourite", "expansion-description", "expansion-location", "expansion-contact"];
       case entityKey === "BUSINESS":
