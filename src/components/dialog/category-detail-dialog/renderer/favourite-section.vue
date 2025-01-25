@@ -34,10 +34,9 @@
   const emit = defineEmits(["check-in"]);
 
   // Props
-  const { category, entityKey, hasCheckIn } = defineProps<{
+  const { category, entityKey } = defineProps<{
     category: CategoryTypes;
     entityKey: EntityURLKey;
-    hasCheckIn?: boolean;
   }>();
 
   const { requestCheckIn } = useCheckInDataService();
