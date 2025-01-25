@@ -14,7 +14,7 @@
       style="max-width: 640px"
     >
       <q-header v-if="$q.screen.lt.sm" bordered class="bg-transparent text-dark">
-        <app-toolbar-dialog-title @dialog-closed="handleCloseDialog" />
+        <app-toolbar-dialog-title @close-dialog="handleCloseDialog" />
       </q-header>
 
       <q-page-container>

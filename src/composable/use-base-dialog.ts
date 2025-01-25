@@ -10,7 +10,7 @@ export function useBaseDialog() {
   const dialogId = ref<string>("");
 
   // Get dialogRef and other utilities from Quasar's dialog plugin
-  const { dialogRef, onDialogHide } = useDialogPluginComponent();
+  const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent();
   const openDialogStore = useOpenDialogStore();
 
   function handleCloseDialog(): void {
@@ -19,6 +19,7 @@ export function useBaseDialog() {
         openDialogStore.removeDialogFromQuery(dialogId.value);
         openDialogStore.updateWindowHistory();
         isDialogVisible.value = false;
+        onDialogOK();
       } catch (error) {
         console.error("Error while closing dialog:", error);
       }

@@ -35,10 +35,7 @@ export function useMemberItemDialogService() {
         );
 
         // Sync user points.
-        memberPointStore.fetchMemberPoints(
-          userStore.userInfo.userId,
-          userStore.userInfo.token
-        );
+        memberPointStore.fetchMemberPoints(userStore.userInfo.userId, userStore.userInfo.token);
       }
     } catch (err) {
       console.error(err);
@@ -100,8 +97,10 @@ export function useMemberItemDialogService() {
         mode: tabValue
       }
     })
+      .onDismiss(() => {
+        isDialogOpen.value = false;
+      })
       .onCancel(() => {
-        // isLoading.value = false;
         isDialogOpen.value = false;
       })
       .onOk(() => {
@@ -109,11 +108,7 @@ export function useMemberItemDialogService() {
       });
   }
 
-
-  async function openTopUpPointsDialog(
-    isDialogOpen: Ref<Boolean>,
-    entityKey: string
-  ) {
+  async function openTopUpPointsDialog(isDialogOpen: Ref<Boolean>, entityKey: string) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
     Dialog.create({
@@ -129,7 +124,6 @@ export function useMemberItemDialogService() {
         isDialogOpen.value = false;
       });
   }
-
 
   return {
     fetchTransactionData,

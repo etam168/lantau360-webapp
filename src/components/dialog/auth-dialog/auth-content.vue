@@ -1,6 +1,6 @@
 <template>
   <q-card class="bg-secondary" :style="authStyle" :flat="$q.screen.lt.sm">
-    <app-bar-dialog-close v-if="$q.screen.gt.xs" />
+    <app-bar-dialog-close v-if="$q.screen.gt.xs" @dialog-closed="emitCloseEvent" />
     <app-auth-avatar class="q-my-md" />
 
     <Form
@@ -69,6 +69,10 @@
   const loading = ref(false);
   const renderMode = ref(mode);
   const userName = ref();
+
+  const emitCloseEvent = () => {
+    emits("close-dialog");
+  };
 
   // Composable function calls
   const { t } = useI18n({ useScope: "global" });
