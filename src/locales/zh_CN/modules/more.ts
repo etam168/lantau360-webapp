@@ -44,5 +44,22 @@ export default {
   footer: {
     version: "{version} 版本",
     copyright: "© {currentYear} Lantau360.com"
+  },
+  topUp: {
+    freePoints: {
+      option1: "选项 1",
+      subtitle: "免费积分充值",
+      description:
+        "领取 100 个免费积分，在社区中发布帖子。用户每月有一次机会领取免费积分，让他们能够参与并免费分享自己的想法和内容。",
+      buttonText: "领取您的免费积分",
+      error: "您本月已领取 100 个免费积分。"
+    },
+    purchasePoints: {
+      title: "选项 2",
+      subtitle: "购买充值积分",
+      description:
+        "购买积分以获得在社区模块中发布帖子的权限。通过购买积分，用户可以积极参与并与社区分享他们的想法、创意和内容。",
+      buttonText: "购买"
+    }
   }
 };

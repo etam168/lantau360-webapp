@@ -44,5 +44,23 @@ export default {
   footer: {
     version: "Ver {version}",
     copyright: "© {currentYear} Lantau360.com."
+  },
+
+  topUp: {
+    freePoints: {
+      option1: "Option 1",
+      subtitle: "Free top-up points",
+      description:
+        "Claim 100 free points to publish a post in the community. Users have the opportunity to claim free points once a month, allowing them to participate and share their thoughts and content without any cost",
+      buttonText: "CLAIM YOUR FREE POINT",
+      error: "You have already claimed your 100 free points for this month."
+    },
+    purchasePoints: {
+      title: "Option 2",
+      subtitle: "Purchase top-up points",
+      description:
+        "Purchase points to gain the ability to publish posts in the community module. By buying points, users can actively participate and share their thoughts, ideas, and content with the community",
+      buttonText: "PURCHASE"
+    }
   }
 };

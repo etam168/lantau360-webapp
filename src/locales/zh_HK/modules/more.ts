@@ -44,5 +44,22 @@ export default {
   footer: {
     version: "{version} 版本",
     copyright: "© {currentYear} Lantau360.com"
+  },
+  topUp: {
+    freePoints: {
+      option1: "選項 1",
+      subtitle: "免費積分充值",
+      description:
+        "領取 100 個免費積分，在社區中發布帖子。用戶每月有一次機會領取免費積分，讓他們能夠參與並免費分享自己的想法和內容。",
+      buttonText: "領取您的免費積分",
+      error: "您本月已領取 100 個免費積分。"
+    },
+    purchasePoints: {
+      title: "選項 2",
+      subtitle: "購買充值積分",
+      description:
+        "購買積分以獲得在社區模組中發布帖子的權限。通過購買積分，用戶可以積極參與並與社區分享他們的想法、創意和內容。",
+      buttonText: "購買"
+    }
   }
 };

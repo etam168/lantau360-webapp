@@ -41,7 +41,7 @@
   async function claimFreePoints() {
     try {
       const res = await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
-    } catch (err) {
+    } catch (err: any) {
       if (err instanceof AxiosError) {
         if (err.response?.status === 400 && err.response?.data === "have_enough_points") {
           notify(t("more.message.enoughPoints"), "negative");
@@ -57,25 +57,22 @@
     return [
       {
         name: "freePoints",
-        title: "Option 1",
-        subtitle: "Free top-up points",
-        description:
-          "Claim 100 free points to publish a post in the community. Users have the opportunity to claim free points once a month, allowing them to participate and share their thoughts and content without any cost",
-        buttonText: "CLAIM YOUR FREE POINT",
-        error: "You have already claimed your 100 free points for this month.",
+        title: t("more.topUp.freePoints.option1"),
+        subtitle: t("more.topUp.freePoints.subtitle"),
+        description: t("more.topUp.freePoints.description"),
+        buttonText: t("more.topUp.freePoints.buttonText"),
+        error: t("more.topUp.freePoints.error"),
         type: "option",
-        // disable: currentMonthFreeTransactionCount > 1
-        disable: false
+        disable: false // Update this dynamically if needed
       },
       {
         name: "purchasePoints",
-        title: "Option 2",
-        subtitle: "Purchase top-up points",
-        description:
-          "Purchase points to gain the ability to publish posts in the community module. By buying points, users can actively participate and share their thoughts, ideas, and content with the community",
-        buttonText: "PURCHASE",
+        title: t("more.topUp.purchasePoints.title"),
+        subtitle: t("more.topUp.purchasePoints.subtitle"),
+        description: t("more.topUp.purchasePoints.description"),
+        buttonText: t("more.topUp.purchasePoints.buttonText"),
         type: "option",
-        disable: true
+        disable: true // Update this dynamically if needed
       }
     ];
   });
