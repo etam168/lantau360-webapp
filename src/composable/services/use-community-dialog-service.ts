@@ -130,7 +130,9 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
 
       const entityKey = "POSTING" as EntityURLKey;
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
-      handleOpenDialog(props, isDialogOpen, entityKey);
+
+      // handleOpenDialog(props, isDialogOpen, entityKey);
+      handleCreatePosting(isDialogOpen,directory);
       // TO DO, USE new custom dialog for posting to keep it simple
     } else {
       Dialog.create({

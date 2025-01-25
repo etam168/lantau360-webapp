@@ -111,8 +111,8 @@
   const hasCarousel = computed(() => {
     const hasCallOrTelephone = ["title", "subtitle3"].some(
       key =>
-        (category[key] || "").toLowerCase().includes("call") ||
-        (category[key] || "").toLowerCase().includes("telephone")
+        ((category as any)[key] || "").toLowerCase().includes("call") ||
+        ((category as any)[key] || "").toLowerCase().includes("telephone")
     );
 
     // Explicitly handle the TAXI renderer case
@@ -145,8 +145,8 @@
       case category.directoryTemplate === TEMPLATE.TAXI.value: {
         const hasCallOrTelephone = ["title", "subtitle3"].some(
           key =>
-            (category[key] || "").toLowerCase().includes("call") ||
-            (category[key] || "").toLowerCase().includes("telephone")
+            ((category as any)[key] || "").toLowerCase().includes("call") ||
+            ((category as any)[key] || "").toLowerCase().includes("telephone")
         );
 
         return hasCallOrTelephone ? ["description", "contact"] : ["favourite"];

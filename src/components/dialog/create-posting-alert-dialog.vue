@@ -49,7 +49,9 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Reactive variables
-  const { openCreatePosting } = useCommunityDialogService(entityKey);
+const { handleOpenDialog } = useEntityDataHandlingService();
+
+  // const { handleOpenDialog } = useCommunityDialogService(entityKey);
 
   // Use the base dialog composition
   const { dialogRef, isDialogVisible, updateDialogState } = useBaseDialog();
@@ -57,7 +59,9 @@
 
   const onConfirm = () => {
     isDialogVisible.value = false;
-    openCreatePosting(isDialogVisible, directory);
+    const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
+
+    handleOpenDialog(props, isDialogVisible, entityKey);
   };
 
   const onCancel = () => {

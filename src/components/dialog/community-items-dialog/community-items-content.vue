@@ -65,7 +65,7 @@
   const { locale, t } = useI18n({ useScope: "global" });
   const { getEntityKeyName, getEntityName } = useUtilities(locale.value);
   const { fetchData } = useApi();
-  const { handleCreatePosting, handleEditPosting, openCommunityDetailDialog } =
+  const { openCreatePosting, handleEditPosting, openCommunityDetailDialog } =
     useCommunityDialogService(entityKey);
   const { sortCategoryTypes } = useSortCategoryItems(entityKey);
 
@@ -95,7 +95,7 @@
   );
 
   async function onCreatePosting() {
-    handleCreatePosting(isDialogOpen, directory);
+    openCreatePosting(isDialogOpen, directory);
   }
 
   async function handleDetail(item: any) {
