@@ -118,7 +118,8 @@
 
   async function handleDetail(item: any) {
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
-    openCategoryDetailDialog(isDialogOpen, item, entityKey);
+    const itemData = tab.value == "checkIn" ? item[entityKey.toLowerCase() +"Data"] :item;
+    openCategoryDetailDialog(isDialogOpen, itemData, entityKey);
   }
 </script>
 
