@@ -1,5 +1,5 @@
 <template>
-  <q-item clickable v-ripple @click="onCreatePosting">
+  <q-item clickable v-ripple @click="onCreatePosting" class="full-width">
     <q-item-section avatar>
       <q-avatar color="green-1" text-color="primary" :icon="fasPlus" />
     </q-item-section>

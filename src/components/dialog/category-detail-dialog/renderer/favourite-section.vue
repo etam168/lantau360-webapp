@@ -1,5 +1,5 @@
 <template>
-  <q-toolbar class="q-pr-md">
+  <q-toolbar class="no-padding">
     <q-space />
     <app-button-rounded
       v-if="hasCheckIn"
