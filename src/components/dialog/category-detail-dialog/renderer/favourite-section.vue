@@ -1,8 +1,8 @@
 <template>
-  <q-toolbar class="no-padding">
+  <q-toolbar class="q-pr-md">
     <q-space />
     <app-button-rounded
-      v-if="hasCheckIn"
+      v-if="entityKey.includes('SITE') && category.directoryTemplate !== TEMPLATE.TAXI.value"
       :text-color="isCheckIn ? 'amber' : 'white'"
       class="q-mr-sm"
       @click="onBtnCheckInClick"
@@ -24,7 +24,7 @@
 
   // Constants
   import { fasHeart, fasLocationDot } from "@quasar/extras/fontawesome-v6";
-  import { EntityURLKey } from "@/constants";
+  import { EntityURLKey, TEMPLATE } from "@/constants";
 
   // Stores
   import { useFavoriteStore } from "@/stores/favorite-store";
