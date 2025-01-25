@@ -1,5 +1,5 @@
 <template>
-  <q-card bordered flat square class="q-mt-xs q-ma-md">
+  <q-card bordered flat square class="q-mt-md">
     <q-toolbar>
       <q-toolbar-title>{{ formattedSubtitle1 }}</q-toolbar-title>
 
@@ -17,7 +17,7 @@
     </q-card-section>
   </q-card>
 
-  <q-card bordered flat square class="q-mt-xs q-ma-md" v-if="!isMaskValueOne">
+  <q-card bordered flat square class="q-mt-md" v-if="!isMaskValueOne">
     <!-- Display both bannerPath and imagePath if their conditions are met -->
     <q-toolbar>
       <q-toolbar-title>{{ formattedSubtitle2 }}</q-toolbar-title>

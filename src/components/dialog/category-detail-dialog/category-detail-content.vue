@@ -23,32 +23,28 @@
     <!-- Body Slot -->
     <template v-slot:body="{ row }: { row: RowItem }">
       <q-tr>
-        <contact-section v-if="row.type === 'contact' && showContactSection" :category />
-        <expansion-contact-section
-          v-else-if="row.type === 'expansion-contact' && showContactSection"
-          :category
-        />
-        <expansion-description-section
-          v-else-if="row.type === 'expansion-description'"
-          :category
-          :entityKey
-        />
-        <expansion-location-section
-          v-else-if="row.type === 'expansion-location'"
-          :category
-          @open-map="openGoogleMaps(category)"
-        />
-        <!-- Use Quasar classes for description -->
-        <div
-          v-else-if="row.type === 'description'"
-          class="q-pa-md q-mx-auto q-overflow-auto text-wrap"
-        >
-          <description-section :category />
-        </div>
-        <favourite-section v-else-if="row.type === 'favourite'" :category :entityKey />
-        <open-close-time-section v-else-if="row.type === 'time'" :category :entityKey />
-        <promotion-section v-else-if="row.type === 'promotion'" :category />
-        <timetable-section v-else-if="row.type === 'timetable'" :category :entityKey />
+        <q-td colspan="100%" style="word-break: break-word; white-space: normal">
+          <contact-section v-if="row.type === 'contact' && showContactSection" :category />
+          <expansion-contact-section
+            v-else-if="row.type === 'expansion-contact' && showContactSection"
+            :category
+          />
+          <expansion-description-section
+            v-else-if="row.type === 'expansion-description'"
+            :category
+            :entityKey
+          />
+          <expansion-location-section
+            v-else-if="row.type === 'expansion-location'"
+            :category
+            @open-map="openGoogleMaps(category)"
+          />
+          <description-section v-else-if="row.type === 'description'" :category />
+          <favourite-section v-else-if="row.type === 'favourite'" :category :entityKey />
+          <open-close-time-section v-else-if="row.type === 'time'" :category :entityKey />
+          <promotion-section v-else-if="row.type === 'promotion'" :category />
+          <timetable-section v-else-if="row.type === 'timetable'" :category :entityKey />
+        </q-td>
       </q-tr>
     </template>
   </q-table>
