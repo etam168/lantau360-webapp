@@ -50,32 +50,14 @@
     default: ""
   });
 
-  const isDialogOpen = ref(false);
-  const $q = useQuasar();
+  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
+  const { sortCategoryTypes } = useSortCategoryItems(entityKey);
   const { getEntityKeyName } = useUtilities();
 
   const entityUrl = computed(() => `${ENTITY_URL[entityKey]}/Datatable`);
-  const THRESHOLD = 150;
-
   const rowKey = getEntityKeyName(entityKey);
-
-  const tableStyle = computed<Record<string, any> | undefined>(() => {
-    const tabHeight = 120;
-    const usedHeight = tabHeight;
-
-    const hasEnoughSpace = $q.screen.height > THRESHOLD;
-
-    switch (true) {
-      case hasEnoughSpace:
-        return { height: `calc(100vh - ${usedHeight}px)` };
-      default:
-        return undefined;
-    }
-  });
-
   const { filter, pagination, rows, loadData } = useDataTable(entityUrl.value, rowKey);
-  const { openCategoryDetailDialog } = useCategoryDialogService(entityKey);
-  const { sortCategoryTypes } = useSortCategoryItems(entityKey);
+  const isDialogOpen = ref(false);
 
   const sortedRows = computed(() => {
     return sortCategoryTypes(rows.value, sortByKey);

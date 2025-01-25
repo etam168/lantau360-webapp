@@ -23,52 +23,49 @@ const iconVersion = "v=6";
 const iconType = "icons";
 const name = "Lantau360 Lite";
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
   esbuild: {
-    // drop: ["console", "debugger"]
+    drop: ["console", "debugger"] // Remove console and debugger in production
   },
   build: {
     rollupOptions: {
       output: {
-        experimentalMinChunkSize: 10000,
         manualChunks: {
-          'vendor-vue': [
-            'vue',
-            'vue-router',
-            'pinia',
-            '@vue/runtime-core',
-            '@vue/runtime-dom',
-            '@vue/shared',
-            'vue-i18n'
-          ],
-          'vendor-quasar': ['quasar'],
-          'vendor-utils': ['@vueuse/core', 'axios', 'lodash'],
+          vendor: [
+            "vue",
+            "vue-router",
+            "@vue/runtime-core",
+            "@vue/runtime-dom",
+            "@vue/shared",
+            "pinia",
+            "vue-i18n",
+            "@vueuse/core",
+            "quasar"
+          ]
         }
+      },
+      onwarn(warning, warn) {
+        console.log(`[${mode}] Build warning:`, warning);
       }
     },
-    chunkSizeWarningLimit: 800,
-    minify: 'terser',
+    chunkSizeWarningLimit: 720,
+    minify: "terser",
     terserOptions: {
       compress: {
-        drop_console: false,
-        drop_debugger: false
+        drop_console: true,
+        drop_debugger: true
       }
     },
     commonjsOptions: {
       include: [/node_modules/],
       strictRequires: true
-    }
+    },
+    reportCompressedSize: true,
+    cssCodeSplit: true,
+    assetsInlineLimit: 4096
   },
   optimizeDeps: {
-    include: [
-      'vue',
-      'vue-router',
-      'pinia',
-      '@vueuse/core',
-      'quasar',
-      'vue-i18n',
-      'axios'
-    ],
+    include: ["vue", "vue-router", "pinia", "@vueuse/core", "quasar", "vue-i18n", "axios"],
     exclude: []
   },
   plugins: [
@@ -129,7 +126,15 @@ export default defineConfig({
           `
         }
       }
-    })
+    }),
+    {
+      name: "build-info",
+      configResolved(config) {
+        console.log(`Mode: ${mode}`);
+        console.log(`Node ENV: ${process.env.NODE_ENV}`);
+        console.log(`Base: ${config.base}`);
+      }
+    }
   ],
   css: {
     preprocessorOptions: {
@@ -150,4 +155,4 @@ export default defineConfig({
   server: {
     port: 8080
   }
-});
+}));
