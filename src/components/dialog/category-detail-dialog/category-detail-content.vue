@@ -105,21 +105,12 @@
   const rowKey = "id";
 
   const hasCarousel = computed(() => {
-    const hasCallOrTelephone = ["title", "subtitle3"].some(
-      key =>
-        ((category as any)[key] || "").toLowerCase().includes("call") ||
-        ((category as any)[key] || "").toLowerCase().includes("telephone")
-    );
-
-    // Explicitly handle the TAXI renderer case
-    if (category.directoryTemplate === TEMPLATE.TAXI.value) {
-      return !hasCallOrTelephone; // Do not show the carousel if hasCallOrTelephone is true
-    }
-
     // Handle other directory templates
     switch (true) {
       case category.directoryTemplate === TEMPLATE.EMERGENCY.value:
       case category.directoryTemplate === TEMPLATE.TIMETABLE.value:
+        return false;
+      case category.directoryTemplate === TEMPLATE.TAXI.value && category.subtitle3 == "Call Taxi":
         return false;
       default:
         return true;
@@ -138,16 +129,10 @@
         return ["description", "contact"];
       case category.directoryTemplate === TEMPLATE.TIMETABLE.value:
         return ["timetable"];
-      case category.directoryTemplate === TEMPLATE.TAXI.value: {
-        const hasCallOrTelephone = ["title", "subtitle3"].some(
-          key =>
-            ((category as any)[key] || "").toLowerCase().includes("call") ||
-            ((category as any)[key] || "").toLowerCase().includes("telephone")
-        );
-
-        return hasCallOrTelephone ? ["description", "contact"] : ["favourite"];
-      }
-
+      case category.directoryTemplate === TEMPLATE.TAXI.value && category.subtitle3 == "Call Taxi":
+        return ["description", "contact"];
+      case category.directoryTemplate === TEMPLATE.TAXI.value:
+        return ["favourite"];
       case entityKey === "SITE":
         return ["favourite", "expansion-description", "expansion-location", "expansion-contact"];
       case entityKey === "BUSINESS":

@@ -1,6 +1,6 @@
 <template>
-  <q-toolbar class="q-pr-md" v-if="statusText">
-    <div>
+  <q-toolbar class="q-pr-md no-padding">
+    <div v-if="statusText">
       <span :class="statusClass" class="q-pr-sm text-subtitle1">{{ statusText }}</span>
       <q-icon :name="fasCircle" class="q-mr-sm" style="font-size: 0.8em" />
       {{ formattedTimes }}

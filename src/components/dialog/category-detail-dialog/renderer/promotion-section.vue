@@ -1,6 +1,6 @@
 <template>
-  <q-list padding class="q-mx-sm q-pa-none">
-    <q-item v-if="category.subtitle1">
+  <q-list padding class="q-pa-none">
+    <q-item v-if="category.subtitle1" class="no-padding">
       <q-item-section top>
         <q-item-label v-if="category.subtitle1" class="text-caption text-weight-light"
           >{{ translate(category.title, category.meta, "title") }}
@@ -8,10 +8,10 @@
       </q-item-section>
     </q-item>
 
-    <q-item>
+    <q-item class="no-padding">
       <q-item-label> <div v-html="translatedContent"></div></q-item-label>
     </q-item>
-    <q-item>
+    <q-item class="no-padding">
       <q-item-section>
         <div class="q-gutter-md">
           <app-button-rounded
