@@ -41,7 +41,6 @@
         <q-td colspan="100%">
           <app-category-item
             :categoryItem="row"
-            :directory
             :entityKey
             @on-directory-item="onCategoryDetail(row)"
           />

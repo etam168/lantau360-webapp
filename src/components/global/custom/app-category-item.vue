@@ -42,13 +42,11 @@
   const {
     entityKey,
     categoryItem,
-    directory,
     isCheckIn,
     i18nKey = ""
   } = defineProps<{
     categoryItem: CategoryTypes;
     entityKey: EntityURLKey;
-    directory?: DirectoryTypes;
     isCheckIn?: boolean;
     i18nKey?: string;
   }>();
@@ -85,10 +83,11 @@
 
   const formattedDistance = computed(() => {
     const distance = getDistanceValue(categoryItem);
+    const site = categoryItem as SiteView;
     switch (true) {
-      case categoryItem.directoryTemplate === TEMPLATE.TAXI.value:
-      case categoryItem.directoryTemplate === TEMPLATE.TIMETABLE.value:
-      case categoryItem.directoryTemplate === TEMPLATE.EMERGENCY.value:
+      case site.directoryTemplate === TEMPLATE.TAXI.value:
+      case site.directoryTemplate === TEMPLATE.TIMETABLE.value:
+      case site.directoryTemplate === TEMPLATE.EMERGENCY.value:
         return "N/A";
       case distance === Infinity:
         return "Infinity";
@@ -113,10 +112,11 @@
       return siteName ? translate(siteName, meta, "siteName") : "";
     }
 
-    if (directory && directory.groupId === 5) {
+    if (categoryItem.directoryTemplate === 5) {
       return "";
     }
 
+    debugger;
     const name = `${entityName}Name` as keyof CategoryTypes;
     return translate(categoryItem[name] as string, categoryItem.meta, name);
   });
@@ -137,10 +137,10 @@
           })
         : "";
     }
-    if (directory && directory.groupId === 5) {
+    if ( categoryItem.directoryTemplate === TEMPLATE.DAYTRIP.value) {
       return title.value;
     }
-    if (directory?.meta.template === 3) {
+    if (categoryItem?.meta.template === TEMPLATE.TIMETABLE.value) {
       return title.value;
     }
     return translate(categoryItem.subtitle1, categoryItem.meta, "subtitle1");

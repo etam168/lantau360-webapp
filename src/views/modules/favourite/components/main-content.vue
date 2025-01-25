@@ -31,7 +31,7 @@
         <q-td colspan="100%">
           <app-category-item
             :categoryItem="row"
-            :entityKey
+            :entityKey="itemEntityKey"
             :isCheckIn="tab === 'checkIn'"
             :i18nKey="i18nKey"
             @on-directory-item="handleDetail(row)"
@@ -87,6 +87,17 @@
     { name: "business", label: t(`${i18nKey}.tabItem.business`) },
     { name: "checkIn", label: t(`${i18nKey}.tabItem.checkIn`) }
   ]);
+
+  const itemEntityKey = computed(() => {
+    switch (tab.value) {
+      case "location":
+        return "SITE";
+      case "business":
+        return "BUSINESS";
+      default:
+        return entityKey;
+    }
+  });
 
   const rows = computed(() => {
     switch (tab.value) {

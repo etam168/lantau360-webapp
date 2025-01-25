@@ -2,12 +2,12 @@
   <q-toolbar class="q-pr-md">
     <q-space />
     <app-button-rounded
-      v-if="entityKey.includes('SITE') && category.directoryTemplate !== TEMPLATE.TAXI.value"
+      v-if="hasCheckInButton"
       :text-color="isCheckIn ? 'amber' : 'white'"
       class="q-mr-sm"
       @click="onBtnCheckInClick"
       :icon="fasLocationDot"
-    />
+    /> 
 
     <app-button-rounded
       :text-color="isFavourite ? 'red' : 'white'"
@@ -48,6 +48,10 @@
   // Computed properties
   const isFavourite = computed(() => favoriteStore.isSiteFavorite(category as SiteView));
   const isCheckIn = computed(() => checkInStore.isCheckIn(category as SiteView));
+
+ const hasCheckInButton = computed(() => {
+    return entityKey.includes("SITE") && category.directoryTemplate !== TEMPLATE.TAXI.value;
+  });
 
   function onBtnCheckInClick() {
     requestCheckIn(category);
