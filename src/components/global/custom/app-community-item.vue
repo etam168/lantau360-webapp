@@ -17,6 +17,7 @@
               v-for="item in menuItems"
               :key="item.value"
               :clickable="!item.disabled"
+              :disable="item.disabled"
               @click="handleMenuAction(item)"
               v-close-popup
             >
