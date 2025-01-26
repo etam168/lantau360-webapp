@@ -55,7 +55,7 @@
   import type { CategoryTypes } from "@/interfaces/types/category-types";
 
   // Constants
-  import { EntityURLKey, TEMPLATE } from "@/constants";
+  import { ENTITY_URL, EntityURLKey, TEMPLATE } from "@/constants";
 
   // Components
   import ContactSection from "./renderer/contact-section.vue";
@@ -67,6 +67,7 @@
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
+  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // Props
   const {
@@ -95,7 +96,10 @@
     type: RenderType;
   }
 
-  const { galleryItems, fetchAllData } = useCategoryDialogService(entityKey);
+  const { getEntityId, getEntityName } = useUtilities();
+  const { fetchData } = useApi();
+
+  const { galleryItems } = useCategoryDialogService(entityKey);
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
 
   const showContactSection = computed(() => {
@@ -144,5 +148,28 @@
 
   const rows = computed((): RowItem[] => types.value.map(type => ({ id: type, type })));
 
-  await fetchAllData(category);
+  async function fetchAllData() {
+    try {
+      switch (entityKey) {
+        case "SITE":
+        case "ADVERTISEMENT":
+        case "BUSINESS":
+        case "BUSINESS_PROMOTION":
+          const entityName = getEntityName(entityKey);
+          const id = getEntityId(category, entityName);
+          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
+          const finalUrl = `${baseUrl}/${id}`;
+          const response = await fetchData<GalleryImageType[]>(finalUrl);
+          galleryItems.value = response;
+          break;
+        default:
+          console.warn(`Unsupported entity type: ${entityKey}`);
+      }
+    } catch (error) {
+      console.error("Error fetching data:", error);
+      throw error;
+    }
+  }
+
+  await fetchAllData();
 </script>

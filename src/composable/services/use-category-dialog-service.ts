@@ -24,29 +24,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   const { api, fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
 
-  async function fetchAllData(category: CategoryTypes) {
-    try {
-      switch (entityKey) {
-        case "SITE":
-        case "ADVERTISEMENT":
-        case "BUSINESS":
-        case "BUSINESS_PROMOTION":
-          const entityName = getEntityName(entityKey);
-          const id = getEntityId(category, entityName);
-          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-          const finalUrl = `${baseUrl}/${id}`;
-          const response = await fetchData<GalleryImageType[]>(finalUrl);
-          galleryItems.value = response;
-          break;
-        default:
-          console.warn(`Unsupported entity type: ${entityKey}`);
-      }
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      throw error;
-    }
-  }
-
   /**
    * Opens a dialog for displaying category items.
    */
@@ -155,7 +132,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
     checkInData,
     galleryItems,
     memberConfig,
-    fetchAllData,
     openCategoryDetailDialog,
     openCategoryItemDialog,
     openCategoryItemSearchDialog,
