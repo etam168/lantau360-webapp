@@ -68,7 +68,6 @@ export function useEntityImageService<T extends GalleryImageType>(
           await api.update(`${entityImageUrl}/UpdateImageAndFile`, formData, {
             headers: { "Content-Type": "multipart/form-data" }
           });
-          eventBus.emit(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`);
         } else if (baseImage.imagePath !== newImage.imagePath) {
           baseImage.imagePath = newImage.imagePath;
           await api.update(`${entityImageUrl}/UpdateImage`, baseImage);
@@ -89,7 +88,6 @@ export function useEntityImageService<T extends GalleryImageType>(
           await api.create(`${entityImageUrl}/CreateImageAndFile`, formData, {
             headers: { "Content-Type": "multipart/form-data" }
           });
-          eventBus.emit(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`);
         } else {
           newImage.ranking = ranking;
           await api.create(`${entityImageUrl}/CreateImage`, newImage);
