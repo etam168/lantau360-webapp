@@ -361,6 +361,7 @@
     "useBaseDialog": true,
     "useDirectoryGrouping": true,
     "useSortCategoryItems": true,
-    "useTransactionGrouping": true
+    "useTransactionGrouping": true,
+    "useCountdown": true
   }
 }

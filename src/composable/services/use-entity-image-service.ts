@@ -15,7 +15,7 @@ import { IMAGE_URL, ImageURLKey } from "@/constants";
 export function useEntityImageService<T extends GalleryImageType>(
   imageUrlKey: ImageURLKey
 ): EntityImageService<T> {
-  const { api } = useApi();
+  const { api, fetchData } = useApi();
   const { isDevelopment, notify } = useUtilities();
   const { t } = i18n.global;
 
@@ -117,6 +117,58 @@ export function useEntityImageService<T extends GalleryImageType>(
       notify(error, "negative");
     }
   };
+
+  async function updateGalleryImages_new(
+    updatedImages: (GalleryImageType | File)[],
+    entityImage: GalleryImageType,
+    entityId: number
+  ): Promise<void> {
+    try {
+      const sortedImages = await fetchData<GalleryImageType[]>(
+        `${entityImageUrl}/ReorderImagesRanking/${entityId}`
+      );
+
+      const upperBound = Math.min(sortedImages.length, updatedImages.length);
+
+      for (let i = 0; i < upperBound; i++) {
+        const baseImage = sortedImages[i];
+        const newImage = updatedImages[i];
+
+        switch (true) {
+          case newImage instanceof File:
+            await updateImage({ file: newImage, imageData: baseImage });
+            break;
+
+          case baseImage.imagePath !== (newImage as GalleryImageType).imagePath:
+            baseImage.imagePath = newImage.imagePath;
+            await api.update(`${entityImageUrl}/UpdateImage`, baseImage);
+            break;
+
+          default:
+          // Images are identical, skip update
+        }
+      }
+
+      // Handle new items beyond upperBound
+      for (let i = upperBound; i < updatedImages.length; i++) {
+        const newImage = updatedImages[i];
+        const ranking = i + 1;
+
+        if (newImage instanceof File) {
+          entityImage.ranking = ranking;
+          await createImage({ file: newImage, imageData: entityImage });
+        } else {
+          newImage.ranking = ranking;
+          await api.create(`${entityImageUrl}/CreateImage`, newImage);
+        }
+      }
+
+      // await api.delete(`${entityImageUrl}/DeleteImagesAboveRank`, {
+      //   entityId,
+      //   rankingThreshold: upperBound
+      // });
+    } catch (error: any) {}
+  }
 
   async function updateGalleryImages(
     updatedImages: (GalleryImageType | File)[],
