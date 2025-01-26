@@ -48,11 +48,10 @@
   const imageUrlKey = `${entityKey}_IMAGE` as ImageURLKey;
   const supportedEntityTypes = ["POSTING", "MEMBER"];
 
-  // Composable function 
+  // Composable function
   const bus = inject("bus") as EventBus;
-  const { getEntityId, getEntityName, notify } = useUtilities();
+  const { getEntityId, getEntityName, notify ,getImageUrlKey} = useUtilities();
   const { t } = useI18n({ useScope: "global" });
-  const { fetchGalleryImages } = useEntityOptionsFetcherService();
 
   const { updateGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
 
@@ -87,6 +86,13 @@
     bus.emit("refreshData");
   }
 
+  async function fetchGalleryImages(entityKey: EntityURLKey, entityId: number) {
+    const imageUrlKey = getImageUrlKey(entityKey);
+    const { getGalleryImages } = useEntityImageService<GalleryImageType>(imageUrlKey);
+
+    return await getGalleryImages(entityId);
+  }
+
   /**
    * Fetches all required data concurrently
    * Populates the reactive variables with the fetched data
@@ -97,8 +103,13 @@
       switch (entityKey) {
         case "MEMBER":
           entityOptions.value.galleryImages = [];
-          rowData.value = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`);
-          entityOptions.value.galleryImages = await fetchGalleryImages(entityKey, userStore.userInfo.userId);
+          rowData.value = await fetchData(
+            `${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`
+          );
+          entityOptions.value.galleryImages = await fetchGalleryImages(
+            entityKey,
+            userStore.userInfo.userId
+          );
           entityId = getEntityId(rowData.value, entityName);
           break;
         case "CHECKIN":

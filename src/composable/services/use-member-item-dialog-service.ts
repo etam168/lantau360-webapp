@@ -14,34 +14,6 @@ export function useMemberItemDialogService() {
   const memberPointStore = useMemberPointsStore();
   const { fetchData } = useApi();
 
-  async function fetchTransactionData() {
-    try {
-      if (userStore.isUserLogon()) {
-        const [transactionHistory, recentTransactions, memberConfigResponse] = await Promise.all([
-          fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${userStore.userInfo.userId}`),
-          fetchData(`${ENTITY_URL.MEMBER_RECENT_TRANSACTIONS}/${userStore.userInfo.userId}`),
-          fetchData(ENTITY_URL.MEMBER_CONFIG)
-        ]);
-
-        trRecent.value = recentTransactions?.data ?? [];
-        trHistory.value = transactionHistory?.data ?? [];
-        memberConfig.value = memberConfigResponse.data;
-
-        memberPointStore.setPoints(
-          memberConfig.value?.meta.postPoint ?? 50,
-          memberConfig.value?.meta.requestFreePoints ?? 100,
-          memberConfig.value?.meta.purchsePrice ?? 100,
-          memberConfig.value?.meta.purchsePoints ?? 100
-        );
-
-        // Sync user points.
-        memberPointStore.fetchMemberPoints(userStore.userInfo.userId, userStore.userInfo.token);
-      }
-    } catch (err) {
-      console.error(err);
-    }
-  }
-
   async function openTransactionItemDialog(
     isDialogOpen: Ref<Boolean>,
     member: Member,
@@ -126,7 +98,6 @@ export function useMemberItemDialogService() {
   }
 
   return {
-    fetchTransactionData,
     openContentDialog,
     openTransactionItemDialog,
     openAuthDialog,
