@@ -7,7 +7,8 @@ import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
 import { useUserStore } from "@/stores/user";
 import { useMemberPointsStore } from "@/stores/member-points-store";
-import { EventBus } from "quasar";
+import { eventBus } from "@/plugins/quasar/event-bus";
+
 
 const { notify } = useUtilities();
 const userStore = useUserStore();
@@ -25,8 +26,6 @@ export interface RenderItem {
 
 export function useCommunityDialogService(entityKey: EntityURLKey, category?: CategoryTypes) {
   const galleryItems = ref<GalleryImageType[]>([]);
-
-  const bus = inject("bus") as EventBus;
 
   async function openCommunityDetailDialog(
     isDialogOpen: Ref<Boolean>,
@@ -50,7 +49,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       .onCancel(() => {
         // Handle the Cancel action
         isDialogOpen.value = false;
-        bus.emit("refreshData");
+        eventBus.emit("refreshData");
       });
   }
 
