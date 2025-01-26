@@ -89,7 +89,9 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         entityKey: entityKey
       }
     })
-      .onOk(() => {})
+      .onOk(() => {
+        isDialogOpen.value = false;
+      })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
         isDialogOpen.value = false;
@@ -109,7 +111,9 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       ),
       componentProps: { row: item, entityKey }
     })
-      .onOk(() => {})
+      .onOk(() => {
+        isDialogOpen.value = false;
+      })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
         isDialogOpen.value = false;

@@ -75,7 +75,6 @@
    */
   async function onAfterEntityUpdated(formData: any) {
     const newImage = newImageMap[entityKey as keyof typeof newImageMap];
-
     if (newImage) {
       const idKey = `${useChangeCase(entityKey, "camelCase").value}Id`;
       (newImage as any)[idKey] = entityId;

@@ -29,20 +29,6 @@ export function useEntityImageService<T extends GalleryImageType>(
   const entityName = useChangeCase(imageUrlKey, "camelCase").value;
   const entityIdKey = `${entityName}Id`;
 
-  async function deleteImage(imageId: number) {
-    const url = `${entityImageUrl}/${imageId}`;
-
-    try {
-      await api.delete(url);
-      eventBus.emit(`on-${imageUrlKey.toLowerCase()}-gallery-image-updates`);
-    } catch (error: any) {
-      if (isDevelopment) {
-        console.error("Error deleting image:", error);
-      }
-      notify(error, "negative");
-    }
-  }
-
   async function getGalleryImages(entityId: number): Promise<T[]> {
     const url = `${entityImageUrl}/GalleryImages/${entityId}`;
 
@@ -77,11 +63,11 @@ export function useEntityImageService<T extends GalleryImageType>(
 
     try {
       if (mode === "create") {
-        await api.create(entityImageUrl, formData, {
+        await api.create(`${entityImageUrl}/CreateImageAndFile`, formData, {
           headers: { "Content-Type": "multipart/form-data" }
         });
       } else {
-        await api.update(entityImageUrl, formData, {
+        await api.update(`${entityImageUrl}/UpdateImageAndFile`, formData, {
           headers: { "Content-Type": "multipart/form-data" }
         });
       }
@@ -95,30 +81,7 @@ export function useEntityImageService<T extends GalleryImageType>(
     }
   }
 
-  async function createImage(payload: ImageUploadPayload) {
-    const entityId = await handleImageUpload(payload, "create");
-    if (entityId) {
-      await getGalleryImages(entityId);
-    }
-  }
-
-  async function updateImage(payload: ImageUploadPayload) {
-    const entityId = await handleImageUpload(payload, "update");
-    if (entityId) {
-      await getGalleryImages(entityId);
-    }
-  }
-
-  const resequenceRankings = async (entityId: any) => {
-    try {
-      const imageList = await api.get(`${entityImageUrl}/ReorderImagesRanking/${entityId}`);
-      return imageList.data as GalleryImageType[];
-    } catch (error: any) {
-      notify(error, "negative");
-    }
-  };
-
-  async function updateGalleryImages_new(
+  async function updateGalleryImages(
     updatedImages: (GalleryImageType | File)[],
     entityImage: GalleryImageType,
     entityId: number
@@ -136,7 +99,7 @@ export function useEntityImageService<T extends GalleryImageType>(
 
         switch (true) {
           case newImage instanceof File:
-            await updateImage({ file: newImage, imageData: baseImage });
+            await handleImageUpload({ file: newImage, imageData: baseImage }, "update");
             break;
 
           case baseImage.imagePath !== (newImage as GalleryImageType).imagePath:
@@ -156,93 +119,21 @@ export function useEntityImageService<T extends GalleryImageType>(
 
         if (newImage instanceof File) {
           entityImage.ranking = ranking;
-          await createImage({ file: newImage, imageData: entityImage });
+          await handleImageUpload({ file: newImage, imageData: entityImage }, "create");
         } else {
           newImage.ranking = ranking;
           await api.create(`${entityImageUrl}/CreateImage`, newImage);
         }
       }
 
-      // await api.delete(`${entityImageUrl}/DeleteImagesAboveRank`, {
-      //   entityId,
-      //   rankingThreshold: upperBound
-      // });
+      const deletedThreshold = Math.max(upperBound, updatedImages.length);
+
+      await api.delete(`${entityImageUrl}/DeleteImagesAboveRank/${entityId}/${deletedThreshold}`);
     } catch (error: any) {}
   }
 
-  async function updateGalleryImages(
-    updatedImages: (GalleryImageType | File)[],
-    entityImage: GalleryImageType,
-    entityId: number
-  ): Promise<void> {
-    const sortedImages = await resequenceRankings(entityId);
-
-    if (!sortedImages) {
-      return;
-    }
-
-    // New List has more or equal elements
-    if (sortedImages.length <= updatedImages.length) {
-      for (let i = 0; i < sortedImages.length; i++) {
-        // Update image ranking if needed
-        const backendImage = sortedImages[i];
-        const newImage = updatedImages[i];
-        const newRanking = i + 1;
-
-        if (newImage instanceof File) {
-          await updateImage({ file: newImage, imageData: backendImage });
-        } else {
-          if (backendImage.imagePath != newImage.imagePath) {
-            backendImage.ranking = newRanking;
-            backendImage.imagePath = newImage.imagePath;
-            await api.update(`${entityImageUrl}/UpdateImage`, backendImage);
-          }
-        }
-      }
-
-      for (let i = sortedImages.length; i < updatedImages.length; i++) {
-        // Insert image record(s)
-        const newImage = updatedImages[i];
-        const newRanking = i + 1;
-
-        if (newImage instanceof File) {
-          entityImage.ranking = newRanking;
-          await createImage({ file: newImage, imageData: entityImage });
-        } else {
-          entityImage.imagePath = newImage.imagePath;
-          await api.create(`${entityImageUrl}/CreateImage`, entityImage);
-        }
-      }
-    } else {
-      // New List has less elements
-      for (let i = 0; i < updatedImages.length; i++) {
-        // Update image ranking if needed
-        const backendImage = sortedImages[i];
-        const newImage = updatedImages[i];
-
-        if (newImage instanceof File) {
-          await updateImage({ file: newImage, imageData: backendImage });
-        } else {
-          if (backendImage.imagePath != newImage.imagePath) {
-            // backendImage.ranking = i + 1;
-            backendImage.imagePath = newImage.imagePath;
-            await api.update(`${entityImageUrl}/UpdateImage`, backendImage);
-          }
-        }
-      }
-
-      for (let i = updatedImages.length; i < sortedImages.length; i++) {
-        // Delete iamge record
-        await deleteImage(sortedImages[i].imageId);
-      }
-    }
-  }
-
   return {
-    createImage,
     getGalleryImages,
-    deleteImage,
-    updateImage,
     updateGalleryImages
   };
 }
