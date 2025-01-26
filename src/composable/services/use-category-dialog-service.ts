@@ -1,29 +1,14 @@
 import type { DirectoryTypes } from "@/interfaces/types/directory-types";
 import type { CategoryTypes } from "@/interfaces/types/category-types";
-import type { CheckIn } from "@/interfaces/models/entities/checkin";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { Dialog } from "quasar";
-import { ENTITY_URL, EntityURLKey } from "@/constants";
-import { useUserStore } from "@/stores/user";
-
+import { EntityURLKey } from "@/constants";
 import i18n from "@/plugins/i18n/i18n";
 
 const { notify } = useUtilities();
 const { t } = i18n.global;
 
-interface FetchSiteDataResult {
-  directoryItemsList: CategoryTypes[];
-  directoryCheckIns: CheckIn[];
-}
-
 export function useCategoryDialogService(entityKey: EntityURLKey) {
-  const galleryItems = ref<GalleryImageType[]>([]);
-  const memberConfig = ref();
-  const checkInData = ref();
-  const { api, fetchData } = useApi();
-  const { getEntityId, getEntityName } = useUtilities();
-
   /**
    * Opens a dialog for displaying category items.
    */
@@ -129,9 +114,6 @@ export function useCategoryDialogService(entityKey: EntityURLKey) {
   }
 
   return {
-    checkInData,
-    galleryItems,
-    memberConfig,
     openCategoryDetailDialog,
     openCategoryItemDialog,
     openCategoryItemSearchDialog,

@@ -2,8 +2,6 @@ import type { EntityImageService } from "@/interfaces/stores/entity-image-servic
 import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 // External library imports
-import { useChangeCase } from "@vueuse/integrations/useChangeCase";
-import { eventBus } from "@/plugins/quasar/event-bus";
 import i18n from "@/plugins/i18n/i18n";
 
 // Internal constant imports
@@ -22,9 +20,6 @@ export function useEntityImageService<T extends GalleryImageType>(
   if (!entityImageUrl) {
     throw new Error(`No URL found for entity image type: ${imageUrlKey}`);
   }
-
-  const entityName = useChangeCase(imageUrlKey, "camelCase").value;
-  const entityIdKey = `${entityName}Id`;
 
   async function getGalleryImages(entityId: number): Promise<T[]> {
     const url = `${entityImageUrl}/GalleryImages/${entityId}`;

@@ -55,14 +55,10 @@
     entityKey: EntityURLKey;
   }>();
 
-  // Composable function calls
-  const { getEntityName } = useUtilities();
-
   // Use the base dialog composition
   const { dialogRef, isDialogVisible, errorMessage, updateDialogState } = useBaseDialog();
 
   // Reactive variables
-  const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog.account";
 
   /**
