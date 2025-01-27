@@ -35,13 +35,12 @@
 
 <script setup lang="ts">
   import { newMember } from "@/interfaces/models/entities/member";
-  import { EntityURLKey, ICONS } from "@/constants";
+  import { ICONS } from "@/constants";
   import { useUserStore } from "@/stores/user";
 
   // Props
   const { i18nKey = "more" } = defineProps<{ i18nKey?: string }>();
 
-  const { handleOpenDialog } = useEntityDataHandlingService();
   const { openContentDialog, openAuthDialog, openTransactionItemDialog, openEditProfileDialog } =
     useMemberItemDialogService();
 

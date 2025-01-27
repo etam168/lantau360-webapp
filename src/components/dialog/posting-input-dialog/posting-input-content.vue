@@ -26,9 +26,8 @@
   import GenericEntityCreateForm from "@/components/forms/generic-entity-create-form.vue";
 
   // Constant imports
-  import { ENTITY_URL, EntityURLKey } from "@/constants";
-  import { useUserStore } from "@/stores/user";
-  
+  import { EntityURLKey } from "@/constants";
+
   // Composables
   import { EventBus } from "quasar";
 
@@ -48,10 +47,8 @@
   const { getEntityId, getEntityName, getImageUrlKey, notify } = useUtilities();
   const { t } = useI18n({ useScope: "global" });
 
-  const { fetchData } = useApi();
   const entityName = getEntityName(entityKey);
   const imageUrlKey = getImageUrlKey(entityKey);
-  const userStore = useUserStore();
 
   // Property Listing Service Composable
   const updateGalleryImages =
@@ -66,7 +63,6 @@
   };
 
   const rowData = ref(newEntityMap[entityKey as keyof typeof newEntityMap] || {});
-  const initialization = ref();
   const entityOptions = ref<Record<string, any>>({});
 
   const fetchAllData = async () => {
@@ -91,7 +87,11 @@
     switch (entityKey) {
       case "POSTING":
         newPostingImage.postingId = entityId;
-        await updateGalleryImages(payload.formData.galleryImages, newPostingImage, entityId);
+        if (updateGalleryImages) {
+          await updateGalleryImages(payload.formData.galleryImages, newPostingImage, entityId);
+        } else {
+          console.warn("updateGalleryImages is not available for this entityKey.");
+        }
         break;
     }
 

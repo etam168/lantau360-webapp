@@ -64,7 +64,6 @@
   import type { Transaction } from "@/interfaces/models/entities/transaction";
 
   // Imports
-  import { useUserStore } from "@/stores/user";
   import { useMemberPointsStore } from "@/stores/member-points-store";
 
   import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";

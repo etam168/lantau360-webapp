@@ -1,7 +1,6 @@
 // useCommunityDialogService.ts
 import type { CategoryTypes } from "@/interfaces/types/category-types";
 import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
-import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
 import { Dialog } from "quasar";
 import { EntityURLKey } from "@/constants";
@@ -127,9 +126,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
         notify("Dont have enough points to post", "negative");
         return;
       }
-
-      const entityKey = "POSTING" as EntityURLKey;
-      const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
 
       // handleOpenDialog(props, isDialogOpen, entityKey);
       handleCreatePosting(isDialogOpen, directory);

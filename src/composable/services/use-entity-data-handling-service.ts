@@ -54,8 +54,7 @@ export function useEntityDataHandlingService() {
   function handleOpenCheckInDialog(
     props: Record<string, any>,
     isDialogOpen: Ref<Boolean>,
-    entityKey?: EntityURLKey,
-    mode?: string
+    entityKey?: EntityURLKey
   ) {
     if (isDialogOpen.value) {
       // Prevent opening another dialog if one is already open

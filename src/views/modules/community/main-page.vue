@@ -41,18 +41,10 @@
 
   const i18nKey = getEntityName(entityKey);
 
-  const $q = useQuasar();
-
-  const THRESHOLD = 320;
   const isDialogOpen = ref(false);
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16;
-    return carouselHeight + 105;
-  });
 
   const onImageClick = (category: AdvertisementView) => {
-    openCategoryDetailDialog(isDialogOpen,category, "ADVERTISEMENT");
+    openCategoryDetailDialog(isDialogOpen, category, "ADVERTISEMENT");
   };
 
   async function fetchAllData() {

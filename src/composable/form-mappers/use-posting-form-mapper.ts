@@ -92,15 +92,16 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
    * Prepares the entity record for submission by merging form data with existing entity data
    */
   function prepareEntityRecord(
-    entity: Posting | undefined,
+    entity: Posting | CategoryTypes | undefined,
     formData: Record<string, any>
   ): Posting {
+    // If the entity is undefined or null, create a new Posting object
     const newPosting: Posting = resetObject(typia.random<Posting>());
 
-    // If the entity is null, empty, or undefined, create a new record with default values
-    const entityCopy: Posting = entity ? { ...entity } : { ...newPosting };
+    // If the entity is defined, create a copy; otherwise, create a new one
+    const entityCopy: Posting = entity && "postingId" in entity ? { ...entity } : { ...newPosting };
 
-    // Then, remove extra fields from entityCopy record
+    // Ensure that the entity is of the correct type for pruning and updating
     const prunePosting = typia.misc.createPrune<Posting>();
     prunePosting(entityCopy);
 
@@ -110,11 +111,8 @@ export function usePostingFormMapper(): EntityFormMappers<Posting, CategoryTypes
       ...Object.fromEntries(
         Object.entries(formData).filter(([key]) => key in entityCopy && key !== "meta")
       )
-
-      // meta: {} // Simplified meta handling for now
     };
 
-    // Add more logic to handle the meta column if necessary
     return result;
   }
 

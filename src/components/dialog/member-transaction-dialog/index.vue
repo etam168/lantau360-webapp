@@ -51,9 +51,6 @@
   //Composable
   import { useBaseDialog } from "@/composable/use-base-dialog";
 
-  // Constants
-  import { EntityURLKey } from "@/constants/app/entity-url";
-
   import i18n from "@/plugins/i18n/i18n";
 
   // Emits definition
@@ -66,8 +63,6 @@
 
   // Composable function calls
   const { t } = i18n.global;
-
-  const { getEntityName } = useUtilities();
 
   // Use the base dialog composition
   const {

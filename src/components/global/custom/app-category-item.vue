@@ -59,8 +59,8 @@
 
   const entityName = computed(() => {
     return getEntityName(entityKey);
-  })
-  
+  });
+
   const isCheckedIn = computed(() => {
     switch (entityKey) {
       case "SITE":
@@ -119,7 +119,6 @@
       return "";
     }
 
-    debugger;
     const name = `${entityName.value}Name` as keyof CategoryTypes;
     return translate(categoryItem[name] as string, categoryItem.meta, name);
   });
@@ -140,7 +139,7 @@
           })
         : "";
     }
-    if ( categoryItem.directoryTemplate === TEMPLATE.DAYTRIP.value) {
+    if (categoryItem.directoryTemplate === TEMPLATE.DAYTRIP.value) {
       return title.value;
     }
     if (categoryItem?.meta.template === TEMPLATE.TIMETABLE.value) {

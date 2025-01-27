@@ -39,20 +39,7 @@
 
   const i18nKey = getEntityName(entityKey);
 
-  const $q = useQuasar();
-
   const isDialogOpen = ref(false);
-  const usedHeight = computed(() => {
-    const width = Math.min($q.screen.width, 1024);
-    const carouselHeight = (width * 9) / 16; // Height for the carousel
-    return carouselHeight + 101;
-  });
-
-  const tableStyle = computed<Record<string, any> | undefined>(() => {
-    const THRESHOLD = 320 as const;
-    const height = $q.screen.height - usedHeight.value;
-    return height > THRESHOLD ? { height: `calc(100vh - ${usedHeight.value}px)` } : undefined;
-  });
 
   const onImageClick = (category: AdvertisementView) => {
     openCategoryDetailDialog(isDialogOpen, category, "ADVERTISEMENT");

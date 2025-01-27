@@ -2,7 +2,6 @@
 import type { Member } from "@/interfaces/models/entities/member";
 
 import { Dialog } from "quasar";
-import { EntityURLKey } from "@/constants";
 
 export function useMemberItemDialogService() {
   async function openTransactionItemDialog(isDialogOpen: Ref<Boolean>, member: Member) {

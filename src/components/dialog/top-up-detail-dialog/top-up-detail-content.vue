@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
   import { useUserStore } from "@/stores/user";
-  const {  userInfo } = useUserStore();
+  const { userInfo } = useUserStore();
 
   const { t } = useI18n({ useScope: "global" });
   const { api } = useApi();
@@ -40,12 +40,13 @@
 
   async function claimFreePoints() {
     try {
-      const res = await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
-
+      await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
     } catch (err: any) {
-      debugger;
       if (err instanceof AxiosError) {
-        if (err.response?.status === 500 && err.response?.data.error.message === "pointsAlreadyAvailed") {
+        if (
+          err.response?.status === 500 &&
+          err.response?.data.error.message === "pointsAlreadyAvailed"
+        ) {
           notify(t("more.message.pointsAlreadyAvailed"), "negative");
         } else {
           notify(err.message, "negative");

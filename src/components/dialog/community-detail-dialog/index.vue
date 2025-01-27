@@ -44,9 +44,6 @@
   // Constants
   import { EntityURLKey } from "@/constants";
 
-  // Stores
-  import { useOpenDialogStore } from "@/stores/open-dialog-store";
-
   // Quasar  Imports
   import { useDialogPluginComponent } from "quasar";
   import { useBaseDialog } from "@/composable/use-base-dialog";
@@ -74,8 +71,6 @@
     handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
-
-  const openDialogStore = useOpenDialogStore();
 
   // Reactive variables
   const entityName = getEntityName(entityKey);

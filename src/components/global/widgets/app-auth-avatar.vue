@@ -7,5 +7,5 @@
 </template>
 
 <script setup lang="ts">
-  import { ICONS, IMAGES } from "@/constants";
+  import { IMAGES } from "@/constants";
 </script>

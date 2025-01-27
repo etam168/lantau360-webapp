@@ -21,7 +21,7 @@ export interface Member {
   createdBy: number;
   modifiedAt: Date;
   modifiedBy: number;
-  meta: Record<string, unknown>;
+  meta: Record<string, any>;
 }
 
 const { resetObject } = useUtilities();

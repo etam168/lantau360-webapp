@@ -93,20 +93,28 @@ export function useMemberFormMapper(): EntityFormMappers<Member, CategoryTypes> 
   /**
    * Prepares the entity record for submission by merging form data with existing entity data
    */
+  function isMember(entity: CategoryTypes | Member | undefined): entity is Member {
+    return (entity as Member)?.memberId !== undefined;
+  }
+
   function prepareEntityRecord(
-    entity: Member | MemberDatatable | undefined,
+    entity: CategoryTypes | Member | undefined,
     formData: Record<string, any>
   ): Member {
     const newMember: Member = resetObject(typia.random<Member>());
 
-    // If the entity is null, empty, or undefined, create a new record with default values
-    const entityCopy: Member = entity ? { ...entity } : { ...newMember };
+    let entityCopy: Member;
 
-    // Then, remove extra fields from entityCopy record
-    const pruneAdvertisement = typia.misc.createPrune<Member>();
-    pruneAdvertisement(entityCopy);
+    if (isMember(entity)) {
+      entityCopy = { ...entity };
+    } else {
+      // Handle the case where the entity is not a Member, and you may return a default Member
+      entityCopy = { ...newMember };
+    }
 
-    // Define the structure for the result
+    const pruneMember = typia.misc.createPrune<Member>();
+    pruneMember(entityCopy);
+
     const result: Member = {
       ...entityCopy,
       ...Object.fromEntries(
@@ -128,10 +136,8 @@ export function useMemberFormMapper(): EntityFormMappers<Member, CategoryTypes> 
           }
         }
       }
-      // meta: {} // Simplified meta handling for now
     };
 
-    // Add more logic to handle the meta column if necessary
     return result;
   }
 

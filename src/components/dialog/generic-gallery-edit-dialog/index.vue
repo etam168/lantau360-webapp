@@ -65,7 +65,6 @@
 
   // Reactive variables
   const entityName = getEntityName(entityKey);
-  const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   // Use the base dialog composition
   const {

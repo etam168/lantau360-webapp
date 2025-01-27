@@ -46,7 +46,7 @@
   import type { CommunityDirectory } from "@/interfaces/models/entities/community-directory";
 
   // Constants
-  import { ENTITY_URL, EntityURLKey, NONE } from "@/constants";
+  import { ENTITY_URL, EntityURLKey } from "@/constants";
 
   // Compontents
   import AppCreatePostItem from "@/components/global/custom/app-create-post-item.vue";

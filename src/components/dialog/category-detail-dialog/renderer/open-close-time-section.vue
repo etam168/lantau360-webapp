@@ -73,12 +73,6 @@
   });
 
   // Computed property for formatted times
-  const openTime = computed(() => {
-    if (!category.openTime || !category.closeTime) {
-      return "";
-    }
-  });
-
   const formattedTimes = computed(() => {
     if (!category.openTime || !category.closeTime) {
       return "";

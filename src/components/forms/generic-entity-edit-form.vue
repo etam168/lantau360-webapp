@@ -55,6 +55,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   import EntityFormContent from "@/components/forms/entity-form-content.vue";
 
   // Composable Imports
+  import { EventBus } from "quasar";
   import { useCrudService } from "@/composable/services/use-crud-service";
 
   // Constants
@@ -78,7 +79,7 @@ Supports validation, custom form structures, and integrates with a CRUD service.
   // Composables and Store Instantiation
   const bus = inject("bus") as EventBus;
   const { t } = useI18n({ useScope: "global" });
-  const {  notify } = useUtilities();
+  const { notify } = useUtilities();
   const userStore = useUserStore();
 
   // Reactive References

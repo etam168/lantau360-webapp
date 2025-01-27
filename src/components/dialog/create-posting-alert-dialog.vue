@@ -49,13 +49,10 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Reactive variables
-const { handleOpenDialog } = useEntityDataHandlingService();
-
-  // const { handleOpenDialog } = useCommunityDialogService(entityKey);
+  const { handleOpenDialog } = useEntityDataHandlingService();
 
   // Use the base dialog composition
   const { dialogRef, isDialogVisible, updateDialogState } = useBaseDialog();
-  const i18nKey = "dialog";
 
   const onConfirm = () => {
     isDialogVisible.value = false;

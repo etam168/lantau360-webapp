@@ -64,9 +64,6 @@
     associatedEntityId?: any;
   }>();
 
-  // Composable function calls
-  const { getEntityName } = useUtilities();
-
   // Use the base dialog composition
   const {
     dialogRef,
