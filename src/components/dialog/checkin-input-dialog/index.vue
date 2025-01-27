@@ -20,7 +20,7 @@
         <Suspense>
           <template #default>
             <!-- Main input dialog content -->
-            <input-dialog-content :entity-key :site @close-dialog="handleCloseDialog" />
+            <checkin-input-content :entity-key :site @close-dialog="handleCloseDialog" />
           </template>
 
           <template #fallback>
@@ -46,7 +46,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import InputDialogContent from "./input-dialog-content.vue";
+  import CheckinInputContent from "./checkin-input-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants";

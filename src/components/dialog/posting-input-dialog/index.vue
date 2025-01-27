@@ -20,7 +20,7 @@
         <Suspense>
           <template #default>
             <!-- Main input dialog content -->
-            <input-dialog-content
+            <posting-input-content
               :entity-key
               :associatedEntityId
               @close-dialog="handleCloseDialog"
@@ -47,7 +47,7 @@
   import { useDialogPluginComponent } from "quasar";
 
   // Components
-  import InputDialogContent from "./input-dialog-content.vue";
+  import PostingInputContent from "./posting-input-content.vue";
 
   // Constants
   import { EntityURLKey } from "@/constants";
@@ -76,8 +76,6 @@
     handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
-
-  const entityName = getEntityName(entityKey);
 
   /**
    * Error handling for the component
