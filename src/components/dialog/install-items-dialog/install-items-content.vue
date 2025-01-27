@@ -2,30 +2,17 @@
   <q-card>
     <q-toolbar class="bg-primary text-white">
       <q-toolbar-title class="text-weight-bold">
-        {{
-          browserType !== "unknow" ? $t("notification.installApp") : $t("notification.appinstalled")
-        }}
+        {{ titleText }}
       </q-toolbar-title>
 
       <q-btn flat round dense :icon="fasXmark" v-close-popup />
     </q-toolbar>
 
-    <q-card-section v-if="browserType !== 'unknow'">
+    <q-card-section>
       <div>
-        {{ "Follow the instructions to install the app" }}
+        {{ contentText }}
       </div>
-    </q-card-section>
-
-    <q-card-section v-if="browserType !== 'unknow'">
-      <img :src="platformIcon" alt="Install Image" />
-    </q-card-section>
-
-    <q-card-section v-else>
-      <div>
-        {{
-          "The app is installed. Please close the browser session and use the app from your home screen."
-        }}
-      </div>
+      <img v-if="browserType !== 'unknow'" :src="platformIcon" alt="Install Image" />
     </q-card-section>
   </q-card>
 </template>
@@ -37,11 +24,25 @@
   import { PLATFORM } from "@/constants";
   import { fasXmark } from "@quasar/extras/fontawesome-v6";
 
+  const { t } = useI18n({ useScope: "global" });
+
   const browserType = computed(() => {
     if (Platform.is.edge) return "edge";
     if (Platform.is.ios) return "ios";
     if (Platform.is.opera) return "opera";
     return "unknow";
+  });
+
+  const titleText = computed(() => {
+    return browserType.value !== "unknow"
+      ? t("notification.installApp")
+      : t("notification.appinstalled");
+  });
+
+  const contentText = computed(() => {
+    return browserType.value !== "unknow"
+      ? "Follow the instructions to install the app"
+      : "The app is installed. Please close the browser session and use the app from your home screen.";
   });
 
   const platformIcon = computed(() => {
