@@ -41,10 +41,12 @@
   async function claimFreePoints() {
     try {
       const res = await api.get(`/Member/RequestFreePoints/${userInfo.userId}`);
+
     } catch (err: any) {
+      debugger;
       if (err instanceof AxiosError) {
-        if (err.response?.status === 400 && err.response?.data === "have_enough_points") {
-          notify(t("more.message.enoughPoints"), "negative");
+        if (err.response?.status === 500 && err.response?.data.error.message === "pointsAlreadyAvailed") {
+          notify(t("more.message.pointsAlreadyAvailed"), "negative");
         } else {
           notify(err.message, "negative");
         }

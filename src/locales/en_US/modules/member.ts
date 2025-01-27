@@ -1,3 +1,5 @@
+import { message } from "typia/lib/protobuf";
+
 export default {
   title: "Member",
 
@@ -10,5 +12,8 @@ export default {
     firstName: "First Name",
     lastName: "Last Name",
     phone: "Phone"
+  },
+  message: {
+    updateSuccess: "Member Info updated."
   }
 };

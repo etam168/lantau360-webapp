@@ -11,7 +11,8 @@ export default {
     info: "info"
   },
   searchBar: {
-    businessSearch: "Business Search"
+    title: "Business Search",
+    placeholder: "Enter Keyword",
   },
   sort:
   {

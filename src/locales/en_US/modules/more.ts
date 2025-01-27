@@ -1,3 +1,5 @@
+import { message } from "typia/lib/protobuf";
+
 export default {
   title: "More",
   mainMenu: {
@@ -62,5 +64,8 @@ export default {
         "Purchase points to gain the ability to publish posts in the community module. By buying points, users can actively participate and share their thoughts, ideas, and content with the community",
       buttonText: "PURCHASE"
     }
+  },
+  message:{
+    pointsAlreadyAvailed: "Free points have already been claimed this month"
   }
 };

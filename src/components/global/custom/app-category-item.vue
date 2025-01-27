@@ -24,7 +24,6 @@
 <script setup lang="ts">
   import type { BusinessView } from "@/interfaces/models/views/business-view";
   import type { CategoryTypes } from "@/interfaces/types/category-types";
-  import type { DirectoryTypes } from "@/interfaces/types/directory-types";
   import type { SiteView } from "@/interfaces/models/views/site-view";
 
   // Constants
@@ -54,10 +53,14 @@
   const { t, locale } = useI18n({ useScope: "global" });
   const { getEntityName, translate, dateFormatter } = useUtilities(locale.value);
 
-  const entityName = getEntityName(entityKey);
   const checkInStore = useCheckInStore();
   const favoriteStore = useFavoriteStore();
+  // const entityName = getEntityName(entityKey);
 
+  const entityName = computed(() => {
+    return getEntityName(entityKey);
+  })
+  
   const isCheckedIn = computed(() => {
     switch (entityKey) {
       case "SITE":
@@ -117,7 +120,7 @@
     }
 
     debugger;
-    const name = `${entityName}Name` as keyof CategoryTypes;
+    const name = `${entityName.value}Name` as keyof CategoryTypes;
     return translate(categoryItem[name] as string, categoryItem.meta, name);
   });
 

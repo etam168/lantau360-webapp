@@ -516,7 +516,6 @@ declare module 'vue' {
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
     readonly useCommunityDialogService: UnwrapRef<typeof import('./composable/services/use-community-dialog-service')['useCommunityDialogService']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
-    readonly useCountdown: UnwrapRef<typeof import('@vueuse/core')['useCountdown']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
     readonly useCrudService: UnwrapRef<typeof import('./composable/services/use-crud-service')['useCrudService']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
@@ -547,7 +546,6 @@ declare module 'vue' {
     readonly useElementVisibility: UnwrapRef<typeof import('@vueuse/core')['useElementVisibility']>
     readonly useEntityDataHandlingService: UnwrapRef<typeof import('./composable/services/use-entity-data-handling-service')['useEntityDataHandlingService']>
     readonly useEntityImageService: UnwrapRef<typeof import('./composable/services/use-entity-image-service')['useEntityImageService']>
-    readonly useEntityOptionsFetcherService: UnwrapRef<typeof import('./composable/services/use-entity-options-fetcher-service')['useEntityOptionsFetcherService']>
     readonly useEventBus: UnwrapRef<typeof import('@vueuse/core')['useEventBus']>
     readonly useEventListener: UnwrapRef<typeof import('@vueuse/core')['useEventListener']>
     readonly useEventSource: UnwrapRef<typeof import('@vueuse/core')['useEventSource']>
