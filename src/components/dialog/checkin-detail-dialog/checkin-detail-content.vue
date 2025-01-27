@@ -39,9 +39,6 @@
 </template>
 
 <script setup lang="ts">
-  // Third party imports
-  import { QTable } from "quasar";
-
   const { item } = defineProps<{
     item: { checkInfo: Array<{ checkInAt: string; description: string }> };
   }>();

@@ -47,12 +47,11 @@
         case "COMMUNITY_EVENT":
         case "COMMUNITY_NOTICE":
         case "POSTING":
-          const entityName = getEntityName(entityKey);
-          const id = getEntityId(category, entityName);
-          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-          const finalUrl = `${baseUrl}/${id}`;
-          const response = await fetchData<GalleryImageType[]>(finalUrl);
-          galleryItems.value = response;
+          const id = getEntityId(category, getEntityName(entityKey));
+          const imageUrlKey = `${entityKey}_IMAGE` as EntityURLKey;
+          const url = `${ENTITY_URL[imageUrlKey]}/GalleryImages/${id}`;
+
+          galleryItems.value = await fetchData<GalleryImageType[]>(url);
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);

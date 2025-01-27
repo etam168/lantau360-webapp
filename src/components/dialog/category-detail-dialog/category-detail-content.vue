@@ -53,6 +53,7 @@
 <script setup lang="ts">
   // Interface files
   import type { CategoryTypes } from "@/interfaces/types/category-types";
+  import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // Constants
   import { ENTITY_URL, EntityURLKey, TEMPLATE } from "@/constants";
@@ -63,11 +64,10 @@
   import ExpansionContactSection from "./renderer/expansion-contact-section.vue";
   import ExpansionDescriptionSection from "./renderer/expansion-description-section.vue";
   import ExpansionLocationSection from "./renderer/expansion-location-section.vue";
-  import favouriteSection from "./renderer/favourite-section.vue";
+  import FavouriteSection from "./renderer/favourite-section.vue";
   import OpenCloseTimeSection from "./renderer/open-close-time-section.vue";
   import PromotionSection from "./renderer/promotion-section.vue";
   import TimetableSection from "./renderer/timetable-section.vue";
-  import { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // Props
   const {
@@ -155,12 +155,11 @@
         case "ADVERTISEMENT":
         case "BUSINESS":
         case "BUSINESS_PROMOTION":
-          const entityName = getEntityName(entityKey);
-          const id = getEntityId(category, entityName);
-          const baseUrl = ENTITY_URL[`${entityKey}_GALLERY`];
-          const finalUrl = `${baseUrl}/${id}`;
-          const response = await fetchData<GalleryImageType[]>(finalUrl);
-          galleryItems.value = response;
+          const id = getEntityId(category, getEntityName(entityKey));
+          const imageUrlKey = `${entityKey}_IMAGE` as EntityURLKey;
+          const url = `${ENTITY_URL[imageUrlKey]}/GalleryImages/${id}`;
+
+          galleryItems.value = await fetchData<GalleryImageType[]>(url);
           break;
         default:
           console.warn(`Unsupported entity type: ${entityKey}`);
