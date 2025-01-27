@@ -14,19 +14,9 @@
       </q-header>
 
       <q-page-container>
-        <!-- Suspense wrapper for async component loading -->
-        <Suspense>
-          <template #default>
-            <!-- Main more-detail content -->
-            <install-items-content />
-          </template>
-          <template #fallback>
-            <!-- Loading spinner shown while content is loading -->
-            <div class="row justify-center items-center" style="height: 500px">
-              <app-spinner size="10em" />
-            </div>
-          </template>
-        </Suspense>
+        <!-- Main more-detail content -->
+        <install-items-content />
+
         <!-- Error message display -->
         <div v-if="errorMessage" class="q-pa-md bg-negative text-white">
           {{ errorMessage }}
