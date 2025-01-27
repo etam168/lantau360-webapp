@@ -69,12 +69,11 @@
 
   import { fasAngleLeft, fasAngleRight } from "@quasar/extras/fontawesome-v6";
   import { useTransactionGrouping } from "@/composable/use-transaction-grouping";
-  import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import { ENTITY_URL } from "@/constants";
 
   // Props
-  const { member, entityKey } = defineProps<{
+  const { member } = defineProps<{
     member: Member;
-    entityKey: EntityURLKey;
   }>();
 
   // Reactive Variables
@@ -87,11 +86,10 @@
   });
 
   // Composables and Utilities
-  const userStore = useUserStore();
   const memberPointStore = useMemberPointsStore();
   const { fetchData } = useApi();
   const { dateFormatter } = useUtilities();
-  const { tab, tabItems, rows, setTab } = useTransactionGrouping(transactionItems, entityKey);
+  const { tab, tabItems, rows, setTab } = useTransactionGrouping(transactionItems);
   const { openTopUpPointsDialog } = useMemberItemDialogService();
 
   const $q = useQuasar();
@@ -102,36 +100,28 @@
 
   // Methods
   function handleTopUpPoints() {
-    openTopUpPointsDialog(isDialogOpen,entityKey)
+    openTopUpPointsDialog(isDialogOpen);
   }
 
   const fetchAllData = async () => {
     try {
-      switch (entityKey) {
-        case "ACCOUNT": {
-          const [history, mem, memberPoints, memberConfig] = await Promise.all([
-            fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
-            fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${member.memberId}`),
-            fetchData(`${ENTITY_URL.MEMBER_POINTS}/${member.memberId}`),
-            fetchData(`${ENTITY_URL.MEMBER_CONFIG}`)
-          ]);
+      const [history, memberPoints, memberConfig] = await Promise.all([
+        fetchData(`${ENTITY_URL.MEMBER_TRANSACTIONS}/${member.memberId}`),
+        fetchData(`${ENTITY_URL.MEMBER_POINTS}/${member.memberId}`),
+        fetchData(`${ENTITY_URL.MEMBER_CONFIG}`)
+      ]);
 
-          transactionItems.value = history;
+      transactionItems.value = history;
 
-          const { total, spend, available, currentMonthTransactionCount } = memberPoints;
-          memberPointStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
+      const { total, spend, available, currentMonthTransactionCount } = memberPoints;
+      memberPointStore.setPointsInfo({ total, spend, available, currentMonthTransactionCount });
 
-          memberPointStore.setPoints(
-            memberConfig.meta?.postPoint ?? 50,
-            memberConfig.meta?.requestFreePoints ?? 100,
-            memberConfig.meta?.purchsePrice ?? 100,
-            memberConfig.meta?.purchsePoints ?? 100
-          );
-          break;
-        }
-        default:
-          console.warn(`Unsupported entity type: ${entityKey}`);
-      }
+      memberPointStore.setPoints(
+        memberConfig.meta?.postPoint ?? 50,
+        memberConfig.meta?.requestFreePoints ?? 100,
+        memberConfig.meta?.purchsePrice ?? 100,
+        memberConfig.meta?.purchsePoints ?? 100
+      );
     } catch (error) {
       console.error("Error fetching data:", error);
       throw error;

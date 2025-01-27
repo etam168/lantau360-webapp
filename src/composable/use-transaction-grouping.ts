@@ -2,18 +2,13 @@
 import type { CategoryTypes } from "@/interfaces/types/category-types";
 import type { Transaction } from "@/interfaces/models/entities/transaction";
 
-import { EntityURLKey } from "@/constants";
 
 export function useTransactionGrouping(
-  transactionItems: Ref<Transaction[]>,
-  entityKey: EntityURLKey
+  transactionItems: Ref<Transaction[]>
 ) {
   const { t } = useI18n({ useScope: "global" });
-  const { groupBy, getEntityName, translate } = useUtilities();
   const i18nKeyMoreDialog = "more.mainMenuDialog";
   const tab = ref<string>("");
-
-  const entityName = getEntityName(entityKey);
 
   const hasGroup = computed(() => {
     return true;
@@ -43,8 +38,8 @@ export function useTransactionGrouping(
 
   const tabItems = computed(() => {
     return [
-      { name: "recent", label: t(`${i18nKeyMoreDialog}.${entityName}.recent`) },
-      { name: "history", label: t(`${i18nKeyMoreDialog}.${entityName}.history`) }
+      { name: "recent", label: t(`${i18nKeyMoreDialog}.account.recent`) },
+      { name: "history", label: t(`${i18nKeyMoreDialog}.account.history`) }
     ];
   });
 

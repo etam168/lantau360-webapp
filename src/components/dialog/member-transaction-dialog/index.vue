@@ -19,7 +19,7 @@
         <Suspense>
           <template #default>
             <!-- Main edit dialog content -->
-            <member-transaction-content :member :entity-key />
+            <member-transaction-content :member />
           </template>
 
           <template #fallback>
@@ -60,9 +60,8 @@
   defineEmits([...useDialogPluginComponent.emits]);
 
   // Props
-  const { member, entityKey } = defineProps<{
+  const { member } = defineProps<{
     member: Member;
-    entityKey: EntityURLKey;
   }>();
 
   // Composable function calls
@@ -81,11 +80,10 @@
   } = useBaseDialog();
 
   // Reactive variables
-  const entityName = getEntityName(entityKey);
   const i18nKeyMoreDialog = "more.mainMenuDialog";
 
   const dialogTitle = computed(() => {
-    return t(`${i18nKeyMoreDialog}.${entityName}.title`);
+    return t(`${i18nKeyMoreDialog}.account.title`);
   });
 
   /**

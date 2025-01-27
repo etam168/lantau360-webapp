@@ -42,7 +42,7 @@
   const { i18nKey = "more" } = defineProps<{ i18nKey?: string }>();
 
   const { handleOpenDialog } = useEntityDataHandlingService();
-  const { openContentDialog, openAuthDialog, openTransactionItemDialog } =
+  const { openContentDialog, openAuthDialog, openTransactionItemDialog, openEditProfileDialog } =
     useMemberItemDialogService();
 
   const userStore = useUserStore();
@@ -53,14 +53,14 @@
   const onItemClick = (itemName: string) => {
     switch (itemName) {
       case "profile":
-        handleProfileDialog("MEMBER", itemName);
+        handleProfileDialog();
         break;
       case "privacy":
       case "terms":
         handleContentDialog(itemName);
         break;
       case "account":
-        handleTransactionDialog("ACCOUNT", itemName);
+        handleTransactionDialog();
         break;
       default:
         break;
@@ -106,13 +106,13 @@
     openContentDialog(isDialogOpen, isLoading, name);
   }
 
-  function handleProfileDialog(entityKey: EntityURLKey, itemName: string) {
-    handleOpenDialog({}, isDialogOpen, entityKey, "edit");
+  function handleProfileDialog() {
+    openEditProfileDialog(isDialogOpen);
   }
 
-  function handleTransactionDialog(entityKey: EntityURLKey, itemName: string) {
+  function handleTransactionDialog() {
     member.memberId = userStore.userInfo.userId;
-    openTransactionItemDialog(isDialogOpen, member, entityKey);
+    openTransactionItemDialog(isDialogOpen, member);
   }
 </script>
 

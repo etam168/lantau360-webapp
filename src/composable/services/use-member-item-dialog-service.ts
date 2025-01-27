@@ -2,23 +2,10 @@
 import type { Member } from "@/interfaces/models/entities/member";
 
 import { Dialog } from "quasar";
-import { EntityURLKey, ENTITY_URL } from "@/constants";
-import { useUserStore } from "@/stores/user";
-import { useMemberPointsStore } from "@/stores/member-points-store";
+import { EntityURLKey } from "@/constants";
 
 export function useMemberItemDialogService() {
-  const trHistory = ref();
-  const trRecent = ref();
-  const memberConfig = ref();
-  const userStore = useUserStore();
-  const memberPointStore = useMemberPointsStore();
-  const { fetchData } = useApi();
-
-  async function openTransactionItemDialog(
-    isDialogOpen: Ref<Boolean>,
-    member: Member,
-    entityKey: EntityURLKey
-  ) {
+  async function openTransactionItemDialog(isDialogOpen: Ref<Boolean>, member: Member) {
     if (isDialogOpen.value) return;
 
     isDialogOpen.value = true;
@@ -26,7 +13,7 @@ export function useMemberItemDialogService() {
       component: defineAsyncComponent(
         () => import("@/components/dialog/member-transaction-dialog/index.vue")
       ),
-      componentProps: { member: member, entityKey: entityKey }
+      componentProps: { member: member }
     })
       .onCancel(() => {
         // Reset dialog state when it is dismissed/closed
@@ -80,14 +67,13 @@ export function useMemberItemDialogService() {
       });
   }
 
-  async function openTopUpPointsDialog(isDialogOpen: Ref<Boolean>, entityKey: string) {
+  async function openTopUpPointsDialog(isDialogOpen: Ref<Boolean>) {
     if (isDialogOpen.value) return;
     isDialogOpen.value = true;
     Dialog.create({
       component: defineAsyncComponent(
         () => import("@/components/dialog/top-up-detail-dialog/index.vue")
-      ),
-      componentProps: { entityKey }
+      )
     })
       .onCancel(() => {
         isDialogOpen.value = false;
@@ -97,8 +83,30 @@ export function useMemberItemDialogService() {
       });
   }
 
+  function openEditProfileDialog(isDialogOpen: Ref<Boolean>) {
+    if (isDialogOpen.value) {
+      // Prevent opening another dialog if one is already open
+      return;
+    }
+
+    // Set the dialog state to open
+    isDialogOpen.value = true;
+    Dialog.create({
+      component: defineAsyncComponent(
+        () => import("@/components/dialog/generic-gallery-edit-dialog/index.vue")
+      ),
+      componentProps: {
+        entityKey: "MEMBER"
+      }
+    }).onDismiss(() => {
+      // Reset dialog state when it is dismissed/closed
+      isDialogOpen.value = false;
+    });
+  }
+
   return {
     openContentDialog,
+    openEditProfileDialog,
     openTransactionItemDialog,
     openAuthDialog,
     openTopUpPointsDialog
