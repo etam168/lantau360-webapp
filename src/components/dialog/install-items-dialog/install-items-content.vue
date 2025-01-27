@@ -41,8 +41,8 @@
 
   const contentText = computed(() => {
     return browserType.value !== "unknow"
-      ? "Follow the instructions to install the app"
-      : "The app is installed. Please close the browser session and use the app from your home screen.";
+      ? t("notification.followInstructions")
+      : t("notification.appAlreadyInstalled");
   });
 
   const platformIcon = computed(() => {

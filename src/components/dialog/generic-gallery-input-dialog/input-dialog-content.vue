@@ -75,7 +75,9 @@
       switch (entityKey) {
         case "MEMBER":
           entityOptions.value.galleryImages = [];
-          const memberData = await fetchData(`${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`);
+          const memberData = await fetchData(
+            `${ENTITY_URL.MEMBER_BY_ID}/${userStore.userInfo.userId}`
+          );
           initialization.value = memberData;
           break;
         case "CHECKIN":
@@ -97,7 +99,11 @@
     switch (entityKey) {
       case "POSTING":
         newPostingImage.postingId = entityId;
-        await updateGalleryImages(payload.formData.galleryImages, newPostingImage, entityId);
+        if (updateGalleryImages) {
+          await updateGalleryImages(payload.formData.galleryImages, newPostingImage, entityId);
+        } else {
+          console.warn("updateGalleryImages is not available for this entityKey.");
+        }
         break;
     }
 

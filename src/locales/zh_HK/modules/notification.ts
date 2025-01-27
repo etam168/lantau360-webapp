@@ -1,5 +1,5 @@
 export default {
-  appInstalled: "應用程式已安裝。請關閉瀏覽器會話並從主畫面使用應用程式。",
+  appAlreadyInstalled: "應用程式已安裝。請關閉瀏覽器會話並從主畫面使用應用程式。",
   followInstructions: "請按照指示安裝應用程式",
   installApp: "安裝應用",
   workOffline: "離線使用",

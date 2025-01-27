@@ -1,5 +1,5 @@
 export default {
-  appInstalled:
+  appAlreadyInstalled:
     "The app is installed. Please close the browser session and use the app from your home screen.",
   followInstructions: "Follow the instructions to install the app",
   installApp: "Install App",

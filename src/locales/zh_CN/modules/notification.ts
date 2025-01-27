@@ -1,5 +1,5 @@
 export default {
-  appInstalled: "应用程序已安装。请关闭浏览器会话并从主屏幕使用该应用程序。",
+  appAlreadyInstalled: "应用程序已安装。请关闭浏览器会话并从主屏幕使用该应用程序。",
   followInstructions: "请按照说明安装该应用程序",
   installApp: "安装应用",
   workOffline: "离线使用",
