@@ -63,7 +63,7 @@
     useBaseDialog();
 
   const dialogTitle = computed(() => {
-    return translate(item.siteData?.siteName, item.siteData?.meta, "siteName");
+    return translate(item.siteData!.siteName, item.siteData?.meta, "siteName");
   });
 
   /**

@@ -9,7 +9,6 @@ import { useUserStore } from "@/stores/user";
 import { useMemberPointsStore } from "@/stores/member-points-store";
 import { eventBus } from "@/plugins/quasar/event-bus";
 
-
 const { notify } = useUtilities();
 const userStore = useUserStore();
 const memberPointStore = useMemberPointsStore();
@@ -25,8 +24,6 @@ export interface RenderItem {
 }
 
 export function useCommunityDialogService(entityKey: EntityURLKey, category?: CategoryTypes) {
-  const galleryItems = ref<GalleryImageType[]>([]);
-
   async function openCommunityDetailDialog(
     isDialogOpen: Ref<Boolean>,
     item: any,
@@ -135,7 +132,7 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
       const props = { associatedEntityId: directory.communityDirectoryId, entityKey: entityKey };
 
       // handleOpenDialog(props, isDialogOpen, entityKey);
-      handleCreatePosting(isDialogOpen,directory);
+      handleCreatePosting(isDialogOpen, directory);
       // TO DO, USE new custom dialog for posting to keep it simple
     } else {
       Dialog.create({
@@ -162,7 +159,6 @@ export function useCommunityDialogService(entityKey: EntityURLKey, category?: Ca
   }
 
   return {
-    galleryItems,
     openCreatePosting,
     handleCreatePosting,
     handleEditPosting,

@@ -98,9 +98,9 @@
 
   const { getEntityId, getEntityName } = useUtilities();
   const { fetchData } = useApi();
-
-  const { galleryItems } = useCategoryDialogService(entityKey);
   const { openGoogleMaps } = useCategoryDialogService(entityKey);
+
+  const galleryItems = ref<GalleryImageType[]>([]);
 
   const showContactSection = computed(() => {
     return !!(category.contactPhone || category.contactWhatsApp);

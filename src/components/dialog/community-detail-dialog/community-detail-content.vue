@@ -30,10 +30,10 @@
   }>();
 
   // Composable function calls
-  const { galleryItems } = useCommunityDialogService(entityKey);
   const { fetchData } = useApi();
   const { getEntityId, getEntityName } = useUtilities();
 
+  const galleryItems = ref<GalleryImageType[]>([]);
   const renderItems = computed((): RenderItem[] => {
     return [
       { name: "carousel", type: "carousel" },

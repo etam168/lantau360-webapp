@@ -46,14 +46,8 @@
 
   // Composable function calls
   // Use the base dialog composition
-  const {
-    dialogRef,
-    onDialogHide,
-    isDialogVisible,
-    errorMessage,
-    handleCloseDialog,
-    updateDialogState
-  } = useBaseDialog();
+  const { dialogRef, isDialogVisible, errorMessage, handleCloseDialog, updateDialogState } =
+    useBaseDialog();
 
   /**
    * Error handling for the component
