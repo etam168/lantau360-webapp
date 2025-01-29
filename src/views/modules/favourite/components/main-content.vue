@@ -39,6 +39,11 @@
         </q-td>
       </q-tr>
     </template>
+    <template v-slot:no-data>
+      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
+        {{ $t("errors.noRecord") }}
+      </div>
+    </template>
   </q-table>
 </template>
 
@@ -129,13 +134,16 @@
 
   async function handleDetail(item: any) {
     const entityKey = item.siteId ? "SITE" : "BUSINESS";
-    const itemData = tab.value == "checkIn" ? item[entityKey.toLowerCase() +"Data"] :item;
+    const itemData = tab.value == "checkIn" ? item[entityKey.toLowerCase() + "Data"] : item;
     openCategoryDetailDialog(isDialogOpen, itemData, entityKey);
   }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
   .q-table__top {
     padding: 0 !important;
+  }
+  .q-table__card .q-table__middle {
+    flex: 0 0 auto !important;
   }
 </style>

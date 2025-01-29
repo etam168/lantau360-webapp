@@ -1,5 +1,14 @@
 <template>
-  <q-table v-bind="$attrs" flat grid hide-header hide-pagination :rows="rows" :row-key="rowKey" :rows-per-page-options="[0]">
+  <q-table
+    v-bind="$attrs"
+    flat
+    grid
+    hide-header
+    hide-pagination
+    :rows="rows"
+    :row-key="rowKey"
+    :rows-per-page-options="[0]"
+  >
     <template v-slot:top>
       <q-banner :inline-actions="!isSmallScreen" class="full-width">
         <q-toolbar-title :class="titleClass">{{ $t(`${i18nKey}.title`) }}</q-toolbar-title>
@@ -34,6 +43,11 @@
         />
 
         <app-menu-item-directory v-else :item="row" @on-directory-item="handleDirectoryItem" />
+      </div>
+    </template>
+    <template v-slot:no-data>
+      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
+        {{ $t("errors.noRecord") }}
       </div>
     </template>
   </q-table>
@@ -128,5 +142,8 @@
 <style lang="scss">
   .q-table__top {
     padding: 0 !important;
+  }
+  .q-table__card .q-table__middle {
+    flex: 0 0 auto !important;
   }
 </style>
