@@ -36,6 +36,12 @@
               </q-td>
             </q-tr>
           </template>
+
+          <template v-slot:no-data>
+            <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold full-width">
+              {{ $t("errors.noCheckinRecord") }}
+            </div>
+          </template>
         </q-table>
       </q-card-section>
 

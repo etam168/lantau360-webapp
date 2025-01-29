@@ -44,7 +44,7 @@
       </div>
     </template>
     <template v-slot:no-data>
-      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold">
+      <div class="text-h6 text-center q-pa-md text-grey-6 text-weight-bold full-width">
         {{ $t("errors.noRecord") }}
       </div>
     </template>
