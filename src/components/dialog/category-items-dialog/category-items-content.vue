@@ -33,7 +33,7 @@
         :class="$q.screen.lt.sm ? 'justify-center' : ''"
       />
 
-      <app-taxi-fleet-banner v-if="directoryTemplate === 2" />
+      <app-taxi-banner :isCallTaxi />
     </template>
 
     <template v-slot:body="{ row }">
@@ -63,7 +63,7 @@
   import type { SiteDirectory } from "@/interfaces/models/entities/site-directory";
 
   // Constants
-  import { ENTITY_URL, EntityURLKey } from "@/constants";
+  import { ENTITY_URL, EntityURLKey, TEMPLATE } from "@/constants";
 
   //Composable import
   import { useSortCategoryItems } from "@/composable/use-sort-categorty-items";
@@ -114,6 +114,10 @@
 
   const sortedRows = computed(() => {
     return sortCategoryTypes(rows.value, sortByKey);
+  });
+
+  const isCallTaxi = computed(() => {
+    return directoryTemplate.value === TEMPLATE.TAXI.value && tab.value === "Call Taxi";
   });
 
   function onCategoryDetail(item: any) {
