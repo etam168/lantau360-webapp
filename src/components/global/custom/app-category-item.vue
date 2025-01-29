@@ -91,7 +91,7 @@
       case site.directoryTemplate === TEMPLATE.TAXI.value:
       case site.directoryTemplate === TEMPLATE.TIMETABLE.value:
       case site.directoryTemplate === TEMPLATE.EMERGENCY.value:
-        return "N/A";
+        return "";
       case distance === Infinity:
         return "Infinity";
       case distance < 10:
