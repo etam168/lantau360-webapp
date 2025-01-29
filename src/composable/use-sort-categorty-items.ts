@@ -47,8 +47,8 @@ export function useSortCategoryItems(entityKey: EntityURLKey) {
 
         if (a.directoryTemplate === 2 && b.directoryTemplate === 2) {
           // Use the entity name as the field for sorting
-          const entityFieldA = (a as any)[entityName] || "";
-          const entityFieldB = (b as any)[entityName] || "";
+          const entityFieldA = (a as any)[`${entityName}Name`] || "";
+          const entityFieldB = (b as any)[`${entityName}Name`] || "";
           return entityFieldA.localeCompare(entityFieldB);
         } else {
           const titleA = a.title || "";
