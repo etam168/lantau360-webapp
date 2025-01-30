@@ -33,7 +33,7 @@
         :class="$q.screen.lt.sm ? 'justify-center' : ''"
       />
 
-      <app-taxi-banner :isCallTaxi />
+      <app-taxi-banner :isCallTaxi v-if="isTaxiTemplate" />
     </template>
 
     <template v-slot:body="{ row }">
@@ -114,6 +114,10 @@
 
   const sortedRows = computed(() => {
     return sortCategoryTypes(rows.value, sortByKey);
+  });
+
+  const isTaxiTemplate = computed(() => {
+    return directoryTemplate.value === TEMPLATE.TAXI.value;
   });
 
   const isCallTaxi = computed(() => {
