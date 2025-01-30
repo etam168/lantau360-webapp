@@ -139,11 +139,12 @@
           })
         : "";
     }
+
     if (categoryItem.directoryTemplate === TEMPLATE.DAYTRIP.value) {
       return title.value;
     }
-    if (categoryItem?.meta.template === TEMPLATE.TIMETABLE.value) {
-      return title.value;
+    if (categoryItem.directoryTemplate === TEMPLATE.TIMETABLE.value) {
+      return translate(categoryItem.title, categoryItem.meta, "title");
     }
     return translate(categoryItem.subtitle1, categoryItem.meta, "subtitle1");
   });
