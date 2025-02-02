@@ -21,7 +21,7 @@
           />
           <app-button-rounded
             v-if="category.contactWhatsApp"
-            icon="fa-brands fa-whatsapp"
+            :icon="fabWhatsapp"
             @click="navigateToWhatsApp(category.contactWhatsApp)"
           />
         </div>
@@ -32,7 +32,7 @@
 
 <script setup lang="ts">
   // Third party imports
-  import { fasPhone } from "@quasar/extras/fontawesome-v6";
+  import { fasPhone, fabWhatsapp } from "@quasar/extras/fontawesome-v6";
 
   // Interface files
   import { CategoryTypes } from "@/interfaces/types/category-types";

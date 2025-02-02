@@ -31,7 +31,7 @@
         @click="selectAndUploadNewImage"
       >
         <q-card-section class="column items-center justify-center">
-          <q-icon name="fa fa-upload" size="md" color="grey" />
+          <q-icon :name="fasUpload" size="md" color="grey" />
           <div class="text-caption q-mt-sm">{{ $t("action.addPhoto") }}</div>
         </q-card-section>
       </q-card>
@@ -52,6 +52,8 @@
 </template>
 
 <script setup lang="ts">
+  // Third party imports
+  import { fasUpload } from "@quasar/extras/fontawesome-v6";
   import type { GalleryImageType } from "@/interfaces/types/gallery-image-type";
 
   // Composables
