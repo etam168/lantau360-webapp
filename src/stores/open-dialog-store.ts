@@ -2,68 +2,131 @@
 import { defineStore } from "pinia";
 
 export const useOpenDialogStore = defineStore("openDialog", () => {
-  const currentQuery = ref(new URLSearchParams(window.location.search));
+  const router = useRouter();
 
-  function getLatestDialogId() {
-    const dialogString = currentQuery.value.get("dialog");
-    return dialogString ? dialogString.split(",").at(-1) : null;
-  }
+  const homePageStack = ref<string[]>([]);
+  const businessPageStack = ref<string[]>([]);
+  const communityPageStack = ref<string[]>([]);
+  const favouritePageStack = ref<string[]>([]);
+  const morePageStack = ref<string[]>([]);
+  const emailConfirmationPageStack = ref<string[]>([]);
 
-  function hasDialogId() {
-    return currentQuery.value.has("dialog"); // true means we HAVE a dialog
-  }
+  function dialogStackPop(dialogId: string) {
+    const currentStackValue = getCurrentStackValue();
 
-  function removeDialogFromQuery(dialogId: string) {
-    if (dialogId === getLatestDialogId()) {
-      const dialogString = currentQuery.value.get("dialog");
-      if (!dialogString) return;
-
-      const dialogIds = dialogString.split(",");
-      dialogIds.pop();
-
-      if (dialogIds.length === 0) {
-        currentQuery.value.delete("dialog");
-      } else {
-        currentQuery.value.set("dialog", dialogIds.join(","));
+    if (currentStackValue === dialogId) {
+      const currentRouteName = router.currentRoute.value.name as string;
+      switch (currentRouteName) {
+        case "home":
+          return homePageStack.value.pop();
+        case "business":
+          return businessPageStack.value.pop();
+        case "community":
+          return communityPageStack.value.pop();
+        case "favourite":
+          return favouritePageStack.value.pop();
+        case "more":
+          return morePageStack.value.pop();
+        case "email-confirmation":
+          return emailConfirmationPageStack.value.pop();
+        default:
+          return undefined;
       }
     }
+
+    return undefined;
   }
 
-  function resetQuery() {
-    // Clear the URL query parameters and replace history entry
-    window.history.replaceState({}, "", window.location.pathname);
+  function dialogStackPush(dialogId: string) {
+    const currentRouteName = router.currentRoute.value.name as string;
 
-    // Reset the store's currentQuery
-    currentQuery.value = new URLSearchParams();
-  }
-
-  function updateQuery(dialogId: string) {
-    // Work with currentQuery directly since it's our source of truth
-    const existingDialog = currentQuery.value.get("dialog");
-
-    // Append new dialogId to existing value, separated by comma
-    const newDialogValue = existingDialog ? `${existingDialog},${dialogId}` : dialogId;
-
-    // Set the combined value
-    currentQuery.value.set("dialog", newDialogValue);
-  }
-
-  function updateWindowHistory() {
-    if (hasDialogId()) {
-      const latestId = getLatestDialogId();
-      window.history.replaceState({}, "", `${window.location.pathname}?dialog=${latestId}`);
-    } else {
-      resetQuery();
+    switch (currentRouteName) {
+      case "home":
+        homePageStack.value.push(dialogId);
+        break;
+      case "business":
+        businessPageStack.value.push(dialogId);
+        break;
+      case "community":
+        communityPageStack.value.push(dialogId);
+        break;
+      case "favourite":
+        favouritePageStack.value.push(dialogId);
+        break;
+      case "more":
+        morePageStack.value.push(dialogId);
+        break;
+      case "email-confirmation":
+        emailConfirmationPageStack.value.push(dialogId);
+        break;
+      default:
+        break;
     }
+  }
+
+  function dialogStackReset() {
+    const currentRouteName = router.currentRoute.value.name as string;
+
+    switch (currentRouteName) {
+      case "home":
+        homePageStack.value = [];
+        break;
+      case "business":
+        businessPageStack.value = [];
+        break;
+      case "community":
+        communityPageStack.value = [];
+        break;
+      case "favourite":
+        favouritePageStack.value = [];
+        break;
+      case "more":
+        morePageStack.value = [];
+        break;
+      case "email-confirmation":
+        emailConfirmationPageStack.value = [];
+        break;
+      default:
+        break;
+    }
+  }
+
+  function getCurrentStackValue() {
+    const currentRouteName = router.currentRoute.value.name as string;
+
+    switch (currentRouteName) {
+      case "home":
+        return homePageStack.value.at(-1);
+      case "business":
+        return businessPageStack.value.at(-1);
+      case "community":
+        return communityPageStack.value.at(-1);
+      case "favourite":
+        return favouritePageStack.value.at(-1);
+      case "more":
+        return morePageStack.value.at(-1);
+      case "email-confirmation":
+        return emailConfirmationPageStack.value.at(-1);
+      default:
+        return undefined;
+    }
+  }
+
+  function hasStackValue() {
+    return getCurrentStackValue() !== undefined;
   }
 
   return {
-    currentQuery,
-    getLatestDialogId,
-    hasDialogId,
-    removeDialogFromQuery,
-    resetQuery,
-    updateQuery,
-    updateWindowHistory
+    homePageStack,
+    businessPageStack,
+    communityPageStack,
+    favouritePageStack,
+    morePageStack,
+    emailConfirmationPageStack,
+    dialogStackPop,
+    dialogStackPush,
+    dialogStackReset,
+    getCurrentStackValue,
+    hasStackValue
   };
 });

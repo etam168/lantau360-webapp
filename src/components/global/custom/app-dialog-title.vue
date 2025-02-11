@@ -7,7 +7,6 @@
       round
       :icon="fasArrowLeft"
       v-close-popup
-      @click="emitCloseEvent"
     />
 
     <q-toolbar-title class="text-center text-weight-medium">

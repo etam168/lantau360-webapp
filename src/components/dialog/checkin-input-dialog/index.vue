@@ -71,12 +71,15 @@
     onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
 
   // Reactive variables
   const entityName = getEntityName(entityKey);
+
+  function handleCloseDialog() {
+    dialogRef?.value?.hide();
+  }
 
   /**
    * Error handling for the component

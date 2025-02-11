@@ -9,7 +9,7 @@
     maximized
   >
     <q-layout view="lHh lpr lFr" class="bg-white" style="max-width: 1024px">
-      <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
+      <app-dialog-title >{{ dialogTitle }}</app-dialog-title>
 
       <q-page-container>
         <!-- Suspense wrapper for async component loading -->
@@ -68,7 +68,6 @@
     onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
 

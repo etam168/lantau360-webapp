@@ -12,7 +12,6 @@
       <app-dialog-title
         :i18n-key
         :has-options
-        @dialog-closed="handleCloseDialog"
         @change:sort-option="handleChangeSortOptions"
         >{{ dialogTitle }}
       </app-dialog-title>
@@ -84,7 +83,6 @@
     onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
 

@@ -10,7 +10,7 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title >{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -73,7 +73,6 @@
     onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
 

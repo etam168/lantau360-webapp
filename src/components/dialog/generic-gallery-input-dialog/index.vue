@@ -68,17 +68,15 @@
   const { getEntityName } = useUtilities();
 
   // Use the base dialog composition
-  const {
-    dialogRef,
-    onDialogHide,
-    isDialogVisible,
-    errorMessage,
-    handleCloseDialog,
-    updateDialogState
-  } = useBaseDialog();
+  const { dialogRef, onDialogHide, isDialogVisible, errorMessage, updateDialogState } =
+    useBaseDialog();
 
   // Reactive variables
   const entityName = getEntityName(entityKey);
+
+  function handleCloseDialog() {
+    dialogRef?.value?.hide();
+  }
 
   /**
    * Error handling for the component

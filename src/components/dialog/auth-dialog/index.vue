@@ -14,7 +14,7 @@
       style="max-width: 640px"
     >
       <q-header v-if="$q.screen.lt.sm" bordered class="bg-transparent text-dark">
-        <app-toolbar-dialog-title @close-dialog="handleCloseDialog" />
+        <app-toolbar-dialog-title />
       </q-header>
 
       <q-page-container>
@@ -46,8 +46,11 @@
 
   // Composable function calls
   // Use the base dialog composition
-  const { dialogRef, isDialogVisible, errorMessage, handleCloseDialog, updateDialogState } =
-    useBaseDialog();
+  const { dialogRef, isDialogVisible, errorMessage, updateDialogState } = useBaseDialog();
+
+  function handleCloseDialog() {
+    dialogRef?.value?.hide();
+  }
 
   /**
    * Error handling for the component

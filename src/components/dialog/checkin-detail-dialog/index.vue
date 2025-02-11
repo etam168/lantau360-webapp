@@ -9,7 +9,7 @@
   >
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleCloseDialog">{{ dialogTitle }}</app-dialog-title>
+        <app-dialog-title >{{ dialogTitle }}</app-dialog-title>
       </q-header>
 
       <q-page-container>
@@ -59,7 +59,7 @@
   const { translate } = useUtilities(locale.value);
 
   // Use the base dialog composition
-  const { dialogRef, isDialogVisible, errorMessage, handleCloseDialog, updateDialogState } =
+  const { dialogRef, isDialogVisible, errorMessage, updateDialogState } =
     useBaseDialog();
 
   const dialogTitle = computed(() => {

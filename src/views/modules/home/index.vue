@@ -21,8 +21,10 @@
   import { useUserStore } from "@/stores/user";
 
   // Composables
+  import { storeToRefs } from "pinia";
   import { EventBus } from "quasar";
   import { UserLogon } from "@/composable/use-member";
+  import { eventBus } from "@/plugins/quasar/event-bus";
 
   //Components
   import MainPage from "./main-page.vue";
@@ -35,19 +37,26 @@
   const openDialogStore = useOpenDialogStore();
   const bus = inject("bus") as EventBus;
 
+  const store = useOpenDialogStore();
+
+  // Use storeToRefs for state properties
+  const { homePageStack } = storeToRefs(store);
+
+  // Destructure actions/methods directly
+  const { dialogStackReset, getCurrentStackValue } = store;
+
   onMounted(() => {
-    openDialogStore.resetQuery();
-    window.dispatchEvent(new Event("popstate")); // This causes route update
+    dialogStackReset();
   });
 
   onBeforeRouteLeave((_to, _from, next) => {
+    const currentStackValue = getCurrentStackValue();
+
     switch (true) {
-      case openDialogStore.hasDialogId(): {
-        const dialogId = openDialogStore.getLatestDialogId();
-        bus.emit("DialogClose", dialogId);
-        next(false); // Prevent navigation if dialogId exists
+      case currentStackValue !== undefined:
+        eventBus.emit("DialogCloseEvent", currentStackValue);
+        next(false);
         break;
-      }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
         userLogon.localDataNotification();
         next();

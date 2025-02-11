@@ -11,7 +11,7 @@
     <q-layout view="lHh lpr lFr" class="bg-white" container style="max-width: 1024px">
       <!-- <app-dialog-bar :barTitle="$t(`${entityName}.dialog.edit`)" /> -->
       <q-header bordered class="bg-transparent text-dark">
-        <app-dialog-title @dialog-closed="handleDialogClose">
+        <app-dialog-title>
           {{ $t(`${i18nKey}.${contentName}`) }}
         </app-dialog-title>
       </q-header>

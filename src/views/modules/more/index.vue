@@ -7,30 +7,52 @@
 </template>
 
 <script setup lang="ts">
+  // Constants
+  import { EntityURLKey } from "@/constants";
+  
   // Custom Components
   import MainContent from "./components/main-content.vue";
 
   // Stores
   import { useOpenDialogStore } from "@/stores/open-dialog-store";
   import { useUserStore } from "@/stores/user";
-  import { EventBus } from "quasar";
 
-  const bus = inject("bus") as EventBus;
+  // Composables
+  import { storeToRefs } from "pinia";
+  import { EventBus } from "quasar";
+  import { UserLogon } from "@/composable/use-member";
+  import { eventBus } from "@/plugins/quasar/event-bus";
+
 
   const i18nKey = "more";
 
-  const openDialogStore = useOpenDialogStore();
-  const userLogon = UserLogon();
+
   const userStore = useUserStore();
+  const userLogon = UserLogon();
+
+  const openDialogStore = useOpenDialogStore();
+  const bus = inject("bus") as EventBus;
+
+  const store = useOpenDialogStore();
+
+  // Use storeToRefs for state properties
+  const { homePageStack } = storeToRefs(store);
+
+  // Destructure actions/methods directly
+  const { dialogStackReset, getCurrentStackValue } = store;
+
+  onMounted(() => {
+    dialogStackReset();
+  });
 
   onBeforeRouteLeave((_to, _from, next) => {
+    const currentStackValue = getCurrentStackValue();
+
     switch (true) {
-      case openDialogStore.hasDialogId(): {
-        const dialogId = openDialogStore.getLatestDialogId();
-        bus.emit("DialogClose", dialogId);
-        next(false); // Prevent navigation if dialogId exists
+      case currentStackValue !== undefined:
+        eventBus.emit("DialogCloseEvent", currentStackValue);
+        next(false);
         break;
-      }
       case _to.name === "favourite" && !userStore.isUserLogon(): {
         userLogon.localDataNotification();
         next();

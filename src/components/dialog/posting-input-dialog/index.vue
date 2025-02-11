@@ -70,9 +70,12 @@
     onDialogHide,
     isDialogVisible,
     errorMessage,
-    handleCloseDialog,
     updateDialogState
   } = useBaseDialog();
+
+  function handleCloseDialog() {
+    dialogRef?.value?.hide();
+  }
 
   /**
    * Error handling for the component

@@ -4,56 +4,44 @@ import { useOpenDialogStore } from "@/stores/open-dialog-store";
 import { eventBus } from "@/plugins/quasar/event-bus";
 
 export function useBaseDialog() {
+  const { dialogStackPop, dialogStackPush } = useOpenDialogStore();
+
   const isDialogVisible = ref(true);
   const errorMessage = ref<string | null>(null);
   const dialogId = ref<string>("");
 
   // Get dialogRef and other utilities from Quasar's dialog plugin
-  const { dialogRef, onDialogHide, onDialogOK } = useDialogPluginComponent();
-  const openDialogStore = useOpenDialogStore();
-
-  function handleCloseDialog(): void {
-    setTimeout(() => {
-      try {
-        openDialogStore.removeDialogFromQuery(dialogId.value);
-        openDialogStore.updateWindowHistory();
-        isDialogVisible.value = false;
-        onDialogOK();
-      } catch (error) {
-        console.error("Error while closing dialog:", error);
-      }
-    }, 1200);
-  }
+  const { dialogRef, onDialogHide } = useDialogPluginComponent();
 
   function updateDialogState(status: boolean): void {
     isDialogVisible.value = status;
   }
 
-  const handleDialogClose = (receivedDialogId: string) => {
+  const handleDialogCloseEvent = (receivedDialogId: string) => {
     if (receivedDialogId === dialogId.value) {
-      handleCloseDialog();
+      dialogRef.value?.hide();
     }
   };
 
   onMounted(() => {
     // Now dialogRef comes from Quasar's plugin
     dialogId.value = dialogRef.value?.$el.parentElement.id;
-    openDialogStore.updateQuery(dialogId.value);
-    openDialogStore.updateWindowHistory();
-    eventBus.on("DialogClose", handleDialogClose);
+    dialogStackPush(dialogId.value);
+
+    eventBus.on("DialogCloseEvent", handleDialogCloseEvent);
   });
 
   onUnmounted(() => {
-    eventBus.off("DialogClose", handleDialogClose);
+    dialogStackPop(dialogId.value);
+    eventBus.off("DialogCloseEvent", handleDialogCloseEvent);
   });
 
   return {
-    dialogRef, // This now comes from Quasar's plugin
-    onDialogHide,
-    isDialogVisible,
-    errorMessage,
     dialogId,
-    handleCloseDialog,
+    dialogRef, // This now comes from Quasar's plugin
+    errorMessage,
+    isDialogVisible,
+    onDialogHide,
     updateDialogState
   };
 }

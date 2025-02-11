@@ -12,7 +12,6 @@
       <app-dialog-title
         :i18nKey
         has-options
-        @dialog-closed="handleCloseDialog"
         @change:sort-option="handleChangeSortOptions"
         >{{ dialogTitle }}</app-dialog-title
       >
@@ -71,7 +70,7 @@
   const { t } = useI18n({ useScope: "global" });
 
   // Use the base dialog composition
-  const { dialogRef, onDialogHide, isDialogVisible, handleCloseDialog, updateDialogState } =
+  const { dialogRef, onDialogHide, isDialogVisible, updateDialogState } =
     useBaseDialog();
 
   // Reactive variables
