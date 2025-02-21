@@ -12,28 +12,31 @@
         v-model="slide"
         v-model:fullscreen="fullscreen"
         class="bg-thumbnail"
+        @fullscreen="handleFullscreen"
         @mousedown="startPan"
         @mousemove="handlePan"
         @mouseup="endPan"
         @mouseleave="endPan"
-        @touchstart="startPan"
-        @touchmove="handlePan"
-        @touchend="endPan"
-        @wheel="handleZoom"
       >
         <q-carousel-slide
           v-for="(item, index) in maskedGalleryItems"
           :key="index"
           :name="item.imageId"
         >
-          <div class="image-container" :style="transformStyle">
-            <img
-              :src="getImageURL(item.imagePath)"
-              :style="{
-                transform: `scale(${zoom}) translate(${translateX}px, ${translateY}px)`,
-                transformOrigin: zoomOrigin
-              }"
-            />
+          <div
+            ref="imageContainer"
+            class="image-container"
+            :style="fullscreen ? transformStyle : {}"
+            @mousedown="startPan"
+            @mousemove="handlePan"
+            @mouseup="endPan"
+            @mouseleave="endPan"
+            @wheel="handleZoom"
+            @touchstart="startPan"
+            @touchmove="handlePan"
+            @touchend="endPan"
+          >
+            <q-img :src="getImageURL(item.imagePath)" :style="imageStyle" :draggable="false" />
           </div>
         </q-carousel-slide>
 
@@ -113,6 +116,8 @@
   const { getImageURL } = useUtilities();
 
   // State
+
+  const imageContainer = ref<HTMLElement | null>(null);
   const fullscreen = ref(false);
   const slide = ref(galleryItems[0]?.imageId || "");
   const zoom = ref<number>(1);
@@ -133,6 +138,30 @@
       : displayMask;
   });
 
+  const handleFullscreen = (value: boolean) => {
+    fullscreen.value = value;
+  };
+
+  const imageStyle = computed(() => ({
+    transform: fullscreen.value
+      ? `scale(${zoom.value}) translate(${translateX.value}px, ${translateY.value}px)`
+      : "none",
+    transformOrigin: zoomOrigin.value,
+    transition: isPanning.value ? "none" : "transform 0.2s ease-out",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    objectFit: "contain"
+  }));
+
+  const transformStyle = computed(() => ({
+    cursor: isPanningAllowed.value ? (isPanning.value ? "grabbing" : "grab") : "default",
+    overflow: "hidden",
+    width: "100%",
+    height: "100%"
+  }));
+
+  const isPanningAllowed = computed(() => fullscreen.value && zoom.value > 1);
+
   const maskedGalleryItems = computed(() =>
     effectiveDisplayMask.value < 1
       ? galleryItems
@@ -147,36 +176,38 @@
       : IMAGES.NO_IMAGE_AVAILABLE_PLACEHOLDER
   );
 
-  const transformStyle = computed(() => ({
-    cursor: isPanning.value ? "grabbing" : "grab"
-  }));
-
-  // Methods
   const startPan = (event: MouseEvent | TouchEvent) => {
-    if (fullscreen.value && zoom.value > 1) {
-      isPanning.value = true;
-      const e = "touches" in event ? event.touches[0] : event;
-      startX.value = e.clientX - lastTranslateX.value;
-      startY.value = e.clientY - lastTranslateY.value;
-    }
+    if (!isPanningAllowed.value) return;
+
+    event.preventDefault();
+    isPanning.value = true;
+
+    const e = "touches" in event ? event.touches[0] : event;
+    startX.value = e.clientX - lastTranslateX.value;
+    startY.value = e.clientY - lastTranslateY.value;
   };
 
   const handlePan = (event: MouseEvent | TouchEvent) => {
-    if (!isPanning.value) return;
+    if (!isPanning.value || !isPanningAllowed.value) return;
+
     event.preventDefault();
-
     const e = "touches" in event ? event.touches[0] : event;
-    translateX.value = e.clientX - startX.value;
-    translateY.value = e.clientY - startY.value;
 
-    // Prevent panning outside bounds
+    const newTranslateX = e.clientX - startX.value;
+    const newTranslateY = e.clientY - startY.value;
+
+    // Calculate boundaries
     const maxPanX = ((zoom.value - 1) * window.innerWidth) / 2;
     const maxPanY = ((zoom.value - 1) * window.innerHeight) / 2;
-    translateX.value = Math.min(Math.max(translateX.value, -maxPanX), maxPanX);
-    translateY.value = Math.min(Math.max(translateY.value, -maxPanY), maxPanY);
+
+    // Apply boundaries
+    translateX.value = Math.min(Math.max(newTranslateX, -maxPanX), maxPanX);
+    translateY.value = Math.min(Math.max(newTranslateY, -maxPanY), maxPanY);
   };
 
   const endPan = () => {
+    if (!isPanning.value) return;
+
     isPanning.value = false;
     lastTranslateX.value = translateX.value;
     lastTranslateY.value = translateY.value;
@@ -184,22 +215,30 @@
 
   const handleZoom = (event: WheelEvent) => {
     if (!fullscreen.value) return;
-    event.preventDefault();
 
-    const rect = (event.target as HTMLElement).getBoundingClientRect();
+    event.preventDefault();
+    const rect = (event.currentTarget as HTMLElement).getBoundingClientRect();
     const offsetX = ((event.clientX - rect.left) / rect.width) * 100;
     const offsetY = ((event.clientY - rect.top) / rect.height) * 100;
     zoomOrigin.value = `${offsetX}% ${offsetY}%`;
 
     const delta = event.deltaY < 0 ? 1.1 : 0.9;
-    zoom.value = Math.min(Math.max(1, zoom.value * delta), 4);
+    const newZoom = Math.min(Math.max(1, zoom.value * delta), 4);
+
+    // If zooming out, adjust translation to prevent jumping
+    if (newZoom < zoom.value) {
+      const scale = newZoom / zoom.value;
+      translateX.value *= scale;
+      translateY.value *= scale;
+      lastTranslateX.value = translateX.value;
+      lastTranslateY.value = translateY.value;
+    }
+
+    zoom.value = newZoom;
 
     // Reset panning if zoom is back to normal
     if (zoom.value === 1) {
-      translateX.value = 0;
-      translateY.value = 0;
-      lastTranslateX.value = 0;
-      lastTranslateY.value = 0;
+      resetZoomAndPan();
     }
   };
 
@@ -207,21 +246,37 @@
     fullscreen.value = !fullscreen.value;
   };
 
+
   const resetZoomAndPan = () => {
     zoom.value = 1;
     translateX.value = 0;
     translateY.value = 0;
     lastTranslateX.value = 0;
     lastTranslateY.value = 0;
+    zoomOrigin.value = "center center";
+    isPanning.value = false;
   };
+
+  // Watch handlers
+  watch(fullscreen, newVal => {
+    if (!newVal) {
+      resetZoomAndPan();
+    }
+  });
+
+  watch(slide, () => {
+    resetZoomAndPan();
+  });
 
   // Reset on exit fullscreen or slide change
   watch(fullscreen, newVal => {
     if (!newVal) resetZoomAndPan();
   });
 
-  watch(slide, () => {
-    resetZoomAndPan();
+  onUnmounted(() => {
+    if (imageContainer.value) {
+      imageContainer.value.removeEventListener("wheel", handleZoom);
+    }
   });
 </script>
 
@@ -234,12 +289,12 @@
     align-items: center;
     user-select: none;
     overflow: hidden;
+    position: relative;
   }
 
   .image-container img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
     pointer-events: none;
+    user-select: none;
+    -webkit-user-drag: none;
   }
 </style>
