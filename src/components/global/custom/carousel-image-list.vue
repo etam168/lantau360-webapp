@@ -13,32 +13,24 @@
         v-model:fullscreen="fullscreen"
         class="bg-thumbnail"
         @fullscreen="handleFullscreen"
-        @mousedown="startPan"
-        @mousemove="handlePan"
-        @mouseup="endPan"
-        @mouseleave="endPan"
       >
         <q-carousel-slide
           v-for="(item, index) in maskedGalleryItems"
           :key="index"
           :name="item.imageId"
-        >
-          <div
-            ref="imageContainer"
-            class="image-container"
-            :style="fullscreen ? transformStyle : {}"
-            @mousedown="startPan"
-            @mousemove="handlePan"
-            @mouseup="endPan"
-            @mouseleave="endPan"
-            @wheel="handleZoom"
-            @touchstart="startPan"
-            @touchmove="handlePan"
-            @touchend="endPan"
-          >
-            <q-img :src="getImageURL(item.imagePath)" :style="imageStyle" :draggable="false" />
-          </div>
-        </q-carousel-slide>
+          ref="imageContainer"
+          class="image-container"
+          :style="fullscreen ? transformStyle : {}"
+          :img-src="getImageURL(item.imagePath)"
+          @mousedown="startPan"
+          @mousemove="handlePan"
+          @mouseup="endPan"
+          @mouseleave="endPan"
+          @wheel="handleZoom"
+          @touchstart="startPan"
+          @touchmove="handlePan"
+          @touchend="endPan"
+        />
 
         <template v-slot:control>
           <q-carousel-control
@@ -142,22 +134,19 @@
     fullscreen.value = value;
   };
 
-  const imageStyle = computed(() => ({
+  const transformStyle = computed(() => ({
     transform: fullscreen.value
       ? `scale(${zoom.value}) translate(${translateX.value}px, ${translateY.value}px)`
       : "none",
     transformOrigin: zoomOrigin.value,
     transition: isPanning.value ? "none" : "transform 0.2s ease-out",
-    maxWidth: "100%",
-    maxHeight: "100%",
-    objectFit: "contain"
-  }));
-
-  const transformStyle = computed(() => ({
     cursor: isPanningAllowed.value ? (isPanning.value ? "grabbing" : "grab") : "default",
     overflow: "hidden",
     width: "100%",
-    height: "100%"
+    height: "100%",
+    maxWidth: "100%",
+    maxHeight: "100%",
+    objectFit: "contain"
   }));
 
   const isPanningAllowed = computed(() => fullscreen.value && zoom.value > 1);
@@ -245,7 +234,6 @@
   const toggleFullscreen = () => {
     fullscreen.value = !fullscreen.value;
   };
-
 
   const resetZoomAndPan = () => {
     zoom.value = 1;
