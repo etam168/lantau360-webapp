@@ -516,6 +516,7 @@ declare module 'vue' {
     readonly useCommunication: UnwrapRef<typeof import('./composable/use-communication')['useCommunication']>
     readonly useCommunityDialogService: UnwrapRef<typeof import('./composable/services/use-community-dialog-service')['useCommunityDialogService']>
     readonly useConfirmDialog: UnwrapRef<typeof import('@vueuse/core')['useConfirmDialog']>
+    readonly useCountdown: UnwrapRef<typeof import('@vueuse/core')['useCountdown']>
     readonly useCounter: UnwrapRef<typeof import('@vueuse/core')['useCounter']>
     readonly useCrudService: UnwrapRef<typeof import('./composable/services/use-crud-service')['useCrudService']>
     readonly useCssModule: UnwrapRef<typeof import('vue')['useCssModule']>
