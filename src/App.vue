@@ -4,7 +4,13 @@
 
 <script setup lang="ts">
   import { Platform } from "quasar";
+  import { useTitle, useFavicon } from "@vueuse/core";
+
   const $q = useQuasar();
+
+  // Import VueUse hooks
+  useTitle("Lantau360 Lite");
+  useFavicon("/favicon.ico");
 
   $q.addressbarColor.set("#478d45");
 
